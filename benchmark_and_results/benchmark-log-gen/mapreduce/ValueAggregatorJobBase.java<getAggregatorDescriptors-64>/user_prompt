@@ -1,0 +1,25 @@
+<code-whole>
+int num = conf.getInt(DESCRIPTOR_NUM, 0);
+ArrayList<ValueAggregatorDescriptor> retv =
+new ArrayList<ValueAggregatorDescriptor>(num);
+for (int i = 0; i < num; i++) {
+String spec = conf.get(DESCRIPTOR + "." + i);
+ValueAggregatorDescriptor ad = getValueAggregatorDescriptor(spec, conf);
+if (ad != null) {
+retv.add(ad);
+}
+}
+return retv;
+}
+</code-whole>
+
+<code-specified>
+if (ad != null) {
+retv.add(ad);
+}
+</code-specified>
+<code-specified>
+if (ad != null) {
+retv.add(ad);
+}
+</code-specified>

@@ -1,0 +1,36 @@
+<code-whole>
+assert bean != null;
+String path = null;
+if (parent != null) {
+path = mapBean2Path.get(parent);
+assert path != null;
+}
+path = makeFullPath(path, parent);
+if (bean.isHidden()) {
+return;
+}
+ObjectName oname = makeObjectName(path, bean);
+try {
+synchronized (LOCK) {
+mBeanServer.registerMBean(bean, oname);
+mapBean2Path.put(bean, path);
+}
+} catch (JMException e) {
+LOG.warn("Failed to register MBean {}", bean.getName());
+throw e;
+}
+}
+</code-whole>
+
+<code-specified>
+if (parent != null) {
+path = mapBean2Path.get(parent);
+assert path != null;
+}
+</code-specified>
+<code-specified>
+if (parent != null) {
+path = mapBean2Path.get(parent);
+assert path != null;
+}
+</code-specified>

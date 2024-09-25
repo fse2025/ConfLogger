@@ -1,0 +1,15 @@
+<code-whole>
+if (newVal == null) {
+return defaultVal;
+} else {
+return Integer.parseInt(newVal);
+}
+</code-whole>
+
+<code-specified>
+if (newVal == null) {
+return defaultVal;
+} else {
+return Integer.parseInt(newVal);
+}
+</code-specified>

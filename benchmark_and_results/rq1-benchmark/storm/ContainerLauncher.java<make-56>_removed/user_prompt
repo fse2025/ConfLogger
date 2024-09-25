@@ -1,0 +1,34 @@
+<code-whole>
+org.apache.storm.generated.Supervisor.Iface localSupervisor) throws IOException {
+if (ConfigUtils.isLocalMode(conf)) {
+return new LocalContainerLauncher(conf, supervisorId, supervisorPort, sharedContext, metricsRegistry, containerMemoryTracker,
+localSupervisor);
+}
+
+ResourceIsolationInterface resourceIsolationManager;
+if (ObjectReader.getBoolean(conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN_ENABLE), false)) {
+resourceIsolationManager = ReflectionUtils.newInstance((String) conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN));
+
+} else {
+resourceIsolationManager = new DefaultResourceIsolationManager();
+
+}
+
+resourceIsolationManager.prepare(conf);
+
+return new BasicContainerLauncher(conf, supervisorId, supervisorPort, resourceIsolationManager, metricsRegistry,
+containerMemoryTracker);
+</code-whole>
+
+<code-specified>
+if (ObjectReader.getBoolean(conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN_ENABLE), false)) {
+resourceIsolationManager = ReflectionUtils.newInstance((String) conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN));
+
+} else {
+resourceIsolationManager = new DefaultResourceIsolationManager();
+
+}
+</code-specified>
+<param>
+storm.resource.isolation.plugin.enable
+</param>

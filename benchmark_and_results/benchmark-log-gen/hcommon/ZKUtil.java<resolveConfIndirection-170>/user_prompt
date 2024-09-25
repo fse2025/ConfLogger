@@ -1,0 +1,18 @@
+<code-whole>
+if (valInConf == null) return null;
+if (!valInConf.startsWith("@")) {
+return valInConf;
+}
+String path = valInConf.substring(1).trim();
+return Files.asCharSource(new File(path), Charsets.UTF_8).read().trim();
+}
+</code-whole>
+
+<code-specified>
+if (valInConf == null) return null;
+</code-specified>
+<code-specified>
+if (!valInConf.startsWith("@")) {
+return valInConf;
+}
+</code-specified>

@@ -1,0 +1,18 @@
+<code-whole>
+if (newVal == null) {
+callerContextEnabled = HADOOP_CALLER_CONTEXT_ENABLED_DEFAULT;
+} else {
+callerContextEnabled = Boolean.parseBoolean(newVal);
+}
+namesystem.setCallerContextEnabled(callerContextEnabled);
+return Boolean.toString(callerContextEnabled);
+}
+</code-whole>
+
+<code-specified>
+if (newVal == null) {
+callerContextEnabled = HADOOP_CALLER_CONTEXT_ENABLED_DEFAULT;
+} else {
+callerContextEnabled = Boolean.parseBoolean(newVal);
+}
+</code-specified>

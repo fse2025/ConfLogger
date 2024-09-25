@@ -1,0 +1,18 @@
+<code-whole>
+final String storeUri = conf.get(JHAdminConfig.MR_HS_FS_STATE_STORE_URI);
+if (storeUri == null) {
+throw new IOException("No store location URI configured in " +
+JHAdminConfig.MR_HS_FS_STATE_STORE_URI);
+}
+
+LOG.info("Using " + storeUri + " for history server state storage");
+rootStatePath = new Path(storeUri, ROOT_STATE_DIR_NAME);
+}
+</code-whole>
+
+<code-specified>
+if (storeUri == null) {
+throw new IOException("No store location URI configured in " +
+JHAdminConfig.MR_HS_FS_STATE_STORE_URI);
+}
+</code-specified>

@@ -1,0 +1,17 @@
+<code-whole>
+Configuration sslConf = new Configuration(false);
+
+sslConf.addResource(YarnConfiguration.YARN_SSL_SERVER_RESOURCE_DEFAULT);
+if (conf != null) {
+sslConf.addResource(conf);
+}
+boolean needsClientAuth = YarnConfiguration.YARN_SSL_CLIENT_HTTPS_NEED_AUTH_DEFAULT;
+return builder
+.needsClientAuth(needsClientAuth)
+</code-whole>
+
+<code-specified>
+if (conf != null) {
+sslConf.addResource(conf);
+}
+</code-specified>

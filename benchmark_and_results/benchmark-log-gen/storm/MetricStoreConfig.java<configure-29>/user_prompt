@@ -1,0 +1,20 @@
+<code-whole>
+String storeClass = "None";
+try {
+storeClass = (String) conf.get(DaemonConfig.STORM_METRIC_STORE_CLASS);
+MetricStore store = (MetricStore) (Class.forName(storeClass)).newInstance();
+store.prepare(conf, metricsRegistry);
+return store;
+} catch (Exception e) {
+String rocksdbSpecificMsg = "";
+if (storeClass.contains("rocksdb")
+&& System.getenv("ROCKSDB_SHAREDLIB_DIR") == null) {
+rocksdbSpecificMsg = ", missing env var ROCKSDB_SHAREDLIB_DIR required to load JNI library in org.rocksdb.RocksDB class";
+}
+throw new MetricException("Failed to create metric store using store class " + storeClass + rocksdbSpecificMsg, e);
+}
+</code-whole>
+
+<code-specified>
+if (storeClass.contains("rocksdb")
+</code-specified>

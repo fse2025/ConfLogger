@@ -1,0 +1,20 @@
+<code-whole>
+T ret = (T) this;
+ret = setMemoryLoad(onHeap);
+
+if (offHeap != null) {
+offHeap = offHeap.doubleValue();
+addResource(Config.TOPOLOGY_COMPONENT_RESOURCES_OFFHEAP_MEMORY_MB, offHeap);
+ret = addConfiguration(Config.TOPOLOGY_COMPONENT_RESOURCES_OFFHEAP_MEMORY_MB, offHeap);
+}
+return ret;
+}
+</code-whole>
+
+<code-specified>
+if (offHeap != null) {
+offHeap = offHeap.doubleValue();
+addResource(Config.TOPOLOGY_COMPONENT_RESOURCES_OFFHEAP_MEMORY_MB, offHeap);
+ret = addConfiguration(Config.TOPOLOGY_COMPONENT_RESOURCES_OFFHEAP_MEMORY_MB, offHeap);
+}
+</code-specified>

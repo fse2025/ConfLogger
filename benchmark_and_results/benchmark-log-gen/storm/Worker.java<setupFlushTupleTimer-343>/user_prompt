@@ -1,0 +1,32 @@
+<code-whole>
+final Integer producerBatchSize = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_PRODUCER_BATCH_SIZE));
+final Integer xferBatchSize = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_TRANSFER_BATCH_SIZE));
+final Long flushIntervalMillis = ObjectReader.getLong(topologyConf.get(Config.TOPOLOGY_BATCH_FLUSH_INTERVAL_MILLIS));
+if ((producerBatchSize == 1 && xferBatchSize == 1) || flushIntervalMillis == 0) {
+LOG.info("Flush Tuple generation disabled. producerBatchSize={}, xferBatchSize={}, flushIntervalMillis={}",
+producerBatchSize, xferBatchSize, flushIntervalMillis);
+return;
+}
+
+workerState.flushTupleTimer.scheduleRecurringMs(flushIntervalMillis, flushIntervalMillis,
+() -> {
+// send flush tuple to all local executors
+for (int i = 0; i < executors.size(); i++) {
+IRunningExecutor exec = executors.get(i);
+if (exec.getExecutorId().get(0) != Constants.SYSTEM_TASK_ID) {
+exec.publishFlushTuple();
+}
+}
+}
+);
+LOG.info("Flush tuple will be generated every {} millis", flushIntervalMillis);
+}
+</code-whole>
+
+<code-specified>
+if ((producerBatchSize == 1 && xferBatchSize == 1) || flushIntervalMillis == 0) {
+LOG.info("Flush Tuple generation disabled. producerBatchSize={}, xferBatchSize={}, flushIntervalMillis={}",
+producerBatchSize, xferBatchSize, flushIntervalMillis);
+return;
+}
+</code-specified>

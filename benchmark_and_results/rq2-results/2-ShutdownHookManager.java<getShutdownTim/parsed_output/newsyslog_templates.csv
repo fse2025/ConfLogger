@@ -1,0 +1,3 @@
+EventId,EventTemplate,Occurrences
+19c2157f,Possible loss of precision converting 50ns to SECONDS for hadoop.service.shutdown.timeout,1
+f9dfe666,"The shutdown timeout duration is less than the minimum allowed value. Parameter: hadoop.service.shutdown.timeout, Provided Value: <*>, Minimum Allowed: <*>. Setting duration to the minimum value. Ensure the configuration parameter 'hadoop.service.shutdown.timeout' is set to a value greater than or equal to <*>.",1

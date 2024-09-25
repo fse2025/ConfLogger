@@ -1,0 +1,46 @@
+<code-whole>
+String zkHostPort = conf.get(CommonConfigurationKeys.ZK_ADDRESS);
+if (zkHostPort == null) {
+throw new IOException(
+CommonConfigurationKeys.ZK_ADDRESS + " is not configured.");
+}
+int numRetries = conf.getInt(CommonConfigurationKeys.ZK_NUM_RETRIES,
+CommonConfigurationKeys.ZK_NUM_RETRIES_DEFAULT);
+int zkSessionTimeout = conf.getInt(CommonConfigurationKeys.ZK_TIMEOUT_MS,
+CommonConfigurationKeys.ZK_TIMEOUT_MS_DEFAULT);
+int zkRetryInterval = conf.getInt(
+CommonConfigurationKeys.ZK_RETRY_INTERVAL_MS,
+CommonConfigurationKeys.ZK_RETRY_INTERVAL_MS_DEFAULT);
+RetryNTimes retryPolicy = new RetryNTimes(numRetries, zkRetryInterval);
+
+// Set up ZK auths
+List<ZKUtil.ZKAuthInfo> zkAuths = getZKAuths(conf);
+if (authInfos == null) {
+authInfos = new ArrayList<>();
+}
+for (ZKUtil.ZKAuthInfo zkAuth : zkAuths) {
+authInfos.add(new AuthInfo(zkAuth.getScheme(), zkAuth.getAuth()));
+}
+
+CuratorFramework client = CuratorFrameworkFactory.builder()
+.connectString(zkHostPort)
+.zookeeperFactory(new HadoopZookeeperFactory(
+conf.get(CommonConfigurationKeys.ZK_SERVER_PRINCIPAL),
+conf.get(CommonConfigurationKeys.ZK_KERBEROS_PRINCIPAL),
+conf.get(CommonConfigurationKeys.ZK_KERBEROS_KEYTAB)))
+.sessionTimeoutMs(zkSessionTimeout)
+.retryPolicy(retryPolicy)
+.authorization(authInfos)
+.build();
+client.start();
+
+this.curator = client;
+}
+</code-whole>
+
+<code-specified>
+if (zkHostPort == null) {
+throw new IOException(
+CommonConfigurationKeys.ZK_ADDRESS + " is not configured.");
+}
+</code-specified>

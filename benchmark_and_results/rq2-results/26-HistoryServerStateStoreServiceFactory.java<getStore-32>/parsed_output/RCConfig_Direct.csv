@@ -1,0 +1,3 @@
+name,value,relevant log,explanation
+mapreduce.framework.name,classic,"INFO	Using CLASSIC_FRAMEWORK_NAME. Master address: localhost, Master user name: null. Kerberos principal obtained for delegation token renewer.",property-item-hit	framework
+mapreduce.framework.name,classic,"INFO	Using CLASSIC_FRAMEWORK_NAME. Master address: localhost, Master user name: null. Kerberos principal obtained for delegation token renewer.",property-item-hit	name

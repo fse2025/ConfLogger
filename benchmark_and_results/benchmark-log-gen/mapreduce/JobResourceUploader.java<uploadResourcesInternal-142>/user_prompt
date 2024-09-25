@@ -1,0 +1,98 @@
+<code-whole>
+Configuration conf = job.getConfiguration();
+short replication =
+(short) conf.getInt(Job.SUBMIT_REPLICATION,
+Job.DEFAULT_SUBMIT_REPLICATION);
+
+if (!(conf.getBoolean(Job.USED_GENERIC_PARSER, false))) {
+LOG.warn("Hadoop command-line option parsing not performed. "
++ "Implement the Tool interface and execute your application "
++ "with ToolRunner to remedy this.");
+}
+
+//
+// Figure out what fs the JobTracker is using. Copy the
+// job to it, under a temporary name. This allows DFS to work,
+// and under the local fs also provides UNIX-like object loading
+// semantics. (that is, if the job file is deleted right after
+// submission, we can still run the submission to completion)
+//
+
+// Create a number of filenames in the JobTracker's fs namespace
+LOG.debug("default FileSystem: " + jtFs.getUri());
+if (jtFs.exists(submitJobDir)) {
+throw new IOException("Not submitting job. Job directory " + submitJobDir
++ " already exists!! This is unexpected.Please check what's there in"
++ " that directory");
+}
+// Create the submission directory for the MapReduce job.
+submitJobDir = jtFs.makeQualified(submitJobDir);
+submitJobDir = new Path(submitJobDir.toUri().getPath());
+FsPermission mapredSysPerms =
+new FsPermission(JobSubmissionFiles.JOB_DIR_PERMISSION);
+mkdirs(jtFs, submitJobDir, mapredSysPerms);
+
+if (!conf.getBoolean(MRJobConfig.MR_AM_STAGING_DIR_ERASURECODING_ENABLED,
+MRJobConfig.DEFAULT_MR_AM_STAGING_ERASURECODING_ENABLED)) {
+disableErasureCodingForPath(submitJobDir);
+}
+
+// Get the resources that have been added via command line arguments in the
+// GenericOptionsParser (i.e. files, libjars, archives).
+Collection<String> files = conf.getStringCollection("tmpfiles");
+Collection<String> libjars = conf.getStringCollection("tmpjars");
+Collection<String> archives = conf.getStringCollection("tmparchives");
+String jobJar = job.getJar();
+
+// Merge resources that have been programmatically specified for the shared
+// cache via the Job API.
+files.addAll(conf.getStringCollection(MRJobConfig.FILES_FOR_SHARED_CACHE));
+libjars.addAll(conf.getStringCollection(
+MRJobConfig.FILES_FOR_CLASSPATH_AND_SHARED_CACHE));
+archives.addAll(conf
+.getStringCollection(MRJobConfig.ARCHIVES_FOR_SHARED_CACHE));
+
+
+Map<URI, FileStatus> statCache = new HashMap<URI, FileStatus>();
+checkLocalizationLimits(conf, files, libjars, archives, jobJar, statCache);
+
+Map<String, Boolean> fileSCUploadPolicies =
+new LinkedHashMap<String, Boolean>();
+Map<String, Boolean> archiveSCUploadPolicies =
+new LinkedHashMap<String, Boolean>();
+
+uploadFiles(job, files, submitJobDir, mapredSysPerms, replication,
+fileSCUploadPolicies, statCache);
+uploadLibJars(job, libjars, submitJobDir, mapredSysPerms, replication,
+fileSCUploadPolicies, statCache);
+uploadArchives(job, archives, submitJobDir, mapredSysPerms, replication,
+archiveSCUploadPolicies, statCache);
+uploadJobJar(job, jobJar, submitJobDir, replication, statCache);
+addLog4jToDistributedCache(job, submitJobDir);
+
+// Note, we do not consider resources in the distributed cache for the
+// shared cache at this time. Only resources specified via the
+// GenericOptionsParser or the jobjar.
+Job.setFileSharedCacheUploadPolicies(conf, fileSCUploadPolicies);
+Job.setArchiveSharedCacheUploadPolicies(conf, archiveSCUploadPolicies);
+
+// set the timestamps of the archives and files
+// set the public/private visibility of the archives and files
+ClientDistributedCacheManager.determineTimestampsAndCacheVisibilities(conf,
+statCache);
+// get DelegationToken for cached file
+ClientDistributedCacheManager.getDelegationTokens(conf,
+job.getCredentials());
+}
+</code-whole>
+
+<code-specified>
+if (!conf.getBoolean(MRJobConfig.MR_AM_STAGING_DIR_ERASURECODING_ENABLED,
+</code-specified>
+<code-specified>
+if (!(conf.getBoolean(Job.USED_GENERIC_PARSER, false))) {
+LOG.warn("Hadoop command-line option parsing not performed. "
++ "Implement the Tool interface and execute your application "
++ "with ToolRunner to remedy this.");
+}
+</code-specified>

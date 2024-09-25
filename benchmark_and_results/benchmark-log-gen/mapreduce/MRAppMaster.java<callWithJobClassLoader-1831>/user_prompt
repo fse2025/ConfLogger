@@ -1,0 +1,30 @@
+<code-whole>
+ClassLoader currentClassLoader = conf.getClassLoader();
+boolean setJobClassLoader =
+jobClassLoader != null && currentClassLoader != jobClassLoader;
+if (setJobClassLoader) {
+MRApps.setClassLoader(jobClassLoader, conf);
+}
+try {
+return action.call(conf);
+} catch (IOException e) {
+throw e;
+} catch (YarnRuntimeException e) {
+throw e;
+} catch (Exception e) {
+// wrap it with a YarnRuntimeException
+throw new YarnRuntimeException(e);
+} finally {
+if (setJobClassLoader) {
+// restore the original classloader
+MRApps.setClassLoader(currentClassLoader, conf);
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (setJobClassLoader) {
+MRApps.setClassLoader(jobClassLoader, conf);
+}
+</code-specified>

@@ -1,0 +1,19 @@
+,name,value,description
+0,zookeeper.clientCnxnSocket,,
+1,dfs.client.socketcache.expiryMsec,3000,Socket cache expiration for short-circuit reads in msec.
+2,dfs.datanode.ec.reconstruction.stripedread.buffer.size,65536,Datanode striped read buffer size.
+3,dfs.batched.ls.limit,100,"Limit the number of paths that can be listed in a single batched
+    listing call. printed by ls. If less or equal to
+    zero, at most DFS_LIST_LIMIT_DEFAULT (= 1000) will be printed."
+4,mapreduce.job.end-notification.retry.interval,1000,"The number of milliseconds the submitter of the job wants to
+    wait before job end notification is retried if it fails. This is capped by
+    mapreduce.job.end-notification.max.retry.interval"
+5,dfs.checksum.ec.socket-timeout,3000,"Default timeout value in milliseconds for computing the checksum of striped blocks.
+    Recommended to set the same value between client and DNs in a cluster because mismatching
+    may cause exhausting handler threads."
+6,yarn.sharedcache.cleaner.resource-sleep-ms,0,
+7,dfs.datanode.ec.reconstruct.read.bandwidthPerSec,0,"Specifies the maximum amount of bandwidth that the EC reconstruction can utilize for reading.
+      When the bandwidth value is zero, there is no limit."
+8,yarn.resourcemanager.nodemanagers.heartbeat-interval-ms,1000,
+9,io.bytes.per.checksum,512,"The number of bytes per checksum.  Must not be larger than
+  io.file.buffer.size."

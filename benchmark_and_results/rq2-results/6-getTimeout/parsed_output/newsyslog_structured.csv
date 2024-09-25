@@ -1,0 +1,2 @@
+LineId,Date,Time,Pid,Level,Component,Content,EventId,EventTemplate,ParameterList
+1,2024-09-05,03:48:30,440,INFO,ConfLogger (Client.java:getTimeout(185)),IPC client ping is disabled. Configuration parameter 'ipc.client.ping' is set to false. Using ping interval as timeout.,1a4eb40d,IPC client ping is disabled. Configuration parameter 'ipc.client.ping' is set to false. Using ping interval as timeout.,[]

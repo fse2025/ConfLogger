@@ -1,0 +1,7 @@
+<configuration>
+<property>
+<name>zookeeper.admin.enableServer</name>
+<value>false</value>
+<description>admin.enableServer : (Java system property: zookeeper.admin.enableServer) Set to "false" to disable the AdminServer. By default the AdminServer is enabled.</description>
+</property>
+</configuration>

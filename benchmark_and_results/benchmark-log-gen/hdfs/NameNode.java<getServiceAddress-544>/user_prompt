@@ -1,0 +1,14 @@
+<code-whole>
+String addr = conf.getTrimmed(DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY);
+if (addr == null || addr.isEmpty()) {
+return fallback ? DFSUtilClient.getNNAddress(conf) : null;
+}
+return DFSUtilClient.getNNAddress(addr);
+}
+</code-whole>
+
+<code-specified>
+if (addr == null || addr.isEmpty()) {
+return fallback ? DFSUtilClient.getNNAddress(conf) : null;
+}
+</code-specified>

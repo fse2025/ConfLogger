@@ -1,0 +1,14 @@
+<code-whole>
+String fqdn = hostname;
+if (fqdn == null || fqdn.isEmpty() || fqdn.equals("0.0.0.0")) {
+fqdn = getLocalHostName(null);
+}
+return components[0] + "/" +
+StringUtils.toLowerCase(fqdn) + "@" + components[2];
+</code-whole>
+
+<code-specified>
+if (fqdn == null || fqdn.isEmpty() || fqdn.equals("0.0.0.0")) {
+fqdn = getLocalHostName(null);
+}
+</code-specified>

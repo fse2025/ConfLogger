@@ -1,0 +1,15 @@
+<code-whole>
+final String providerUriStr = conf.getTrimmed(configKeyName);
+// No provider set in conf
+if (providerUriStr == null || providerUriStr.isEmpty()) {
+return null;
+}
+return URI.create(providerUriStr);
+}
+</code-whole>
+
+<code-specified>
+if (providerUriStr == null || providerUriStr.isEmpty()) {
+return null;
+}
+</code-specified>

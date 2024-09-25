@@ -1,0 +1,16 @@
+<code-whole>
+int timeout = getRpcTimeout(conf);
+if (timeout > 0)  {
+return timeout;
+}
+if (!conf.getBoolean(CommonConfigurationKeys.IPC_CLIENT_PING_KEY,
+CommonConfigurationKeys.IPC_CLIENT_PING_DEFAULT)) {
+return getPingInterval(conf);
+}
+return -1;
+}
+</code-whole>
+
+<code-specified>
+if (!conf.getBoolean(CommonConfigurationKeys.IPC_CLIENT_PING_KEY,
+</code-specified>

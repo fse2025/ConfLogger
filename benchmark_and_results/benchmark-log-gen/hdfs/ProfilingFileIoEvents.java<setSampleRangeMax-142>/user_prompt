@@ -1,0 +1,21 @@
+<code-whole>
+isEnabled = Util.isDiskStatsEnabled(fileIOSamplingPercentage);
+if (fileIOSamplingPercentage > 100) {
+LOG.warn(DFSConfigKeys
+.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY +
+" value cannot be more than 100. Setting value to 100");
+fileIOSamplingPercentage = 100;
+}
+sampleRangeMax = (int) ((double) fileIOSamplingPercentage / 100 *
+Integer.MAX_VALUE);
+}
+</code-whole>
+
+<code-specified>
+if (fileIOSamplingPercentage > 100) {
+LOG.warn(DFSConfigKeys
+.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY +
+" value cannot be more than 100. Setting value to 100");
+fileIOSamplingPercentage = 100;
+}
+</code-specified>

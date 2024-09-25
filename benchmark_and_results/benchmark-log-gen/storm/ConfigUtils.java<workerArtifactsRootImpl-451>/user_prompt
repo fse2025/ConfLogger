@@ -1,0 +1,19 @@
+<code-whole>
+String artifactsDir = (String) conf.get(Config.STORM_WORKERS_ARTIFACTS_DIR);
+if (artifactsDir == null) {
+return (getLogDir() + FILE_SEPARATOR + "workers-artifacts");
+} else {
+if (new File(artifactsDir).isAbsolute()) {
+return artifactsDir;
+} else {
+return (getLogDir() + FILE_SEPARATOR + artifactsDir);
+}
+</code-whole>
+
+<code-specified>
+if (new File(artifactsDir).isAbsolute()) {
+return artifactsDir;
+} else {
+return (getLogDir() + FILE_SEPARATOR + artifactsDir);
+}
+</code-specified>

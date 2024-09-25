@@ -1,0 +1,35 @@
+<code-whole>
+Class<?> clazz = conf.getClass(ConnectionUtils.HBASE_CLIENT_CONNECTION_IMPL,
+ConnectionOverAsyncConnection.class, Connection.class);
+if (clazz != ConnectionOverAsyncConnection.class) {
+try {
+// Default HCM#HCI is not accessible; make it so before invoking.
+Constructor<?> constructor = clazz.getDeclaredConstructor(Configuration.class,
+ExecutorService.class, User.class, Map.class);
+constructor.setAccessible(true);
+return user.runAs((PrivilegedExceptionAction<Connection>) () -> (Connection) constructor
+.newInstance(conf, pool, user, connectionAttributes));
+} catch (Exception e) {
+throw new IOException(e);
+}
+} else {
+return FutureUtils.get(createAsyncConnection(conf, user, connectionAttributes))
+.toConnection();
+</code-whole>
+
+<code-specified>
+if (clazz != ConnectionOverAsyncConnection.class) {
+try {
+// Default HCM#HCI is not accessible; make it so before invoking.
+Constructor<?> constructor = clazz.getDeclaredConstructor(Configuration.class,
+ExecutorService.class, User.class, Map.class);
+constructor.setAccessible(true);
+return user.runAs((PrivilegedExceptionAction<Connection>) () -> (Connection) constructor
+.newInstance(conf, pool, user, connectionAttributes));
+} catch (Exception e) {
+throw new IOException(e);
+}
+} else {
+return FutureUtils.get(createAsyncConnection(conf, user, connectionAttributes))
+.toConnection();
+</code-specified>

@@ -1,0 +1,17 @@
+<code-whole>
+List<String> servers = (List<String>) conf.get(Config.STORM_ZOOKEEPER_SERVERS);
+Object port = conf.get(Config.STORM_ZOOKEEPER_PORT);
+String root = (String) conf.get(Config.STORM_ZOOKEEPER_ROOT);
+CuratorFramework ret = null;
+if (servers != null && port != null) {
+ret = ClientZookeeper.mkClient(conf, servers, port, root, new DefaultWatcherCallBack(), conf, DaemonType.NIMBUS);
+}
+return ret;
+}
+</code-whole>
+
+<code-specified>
+if (servers != null && port != null) {
+ret = ClientZookeeper.mkClient(conf, servers, port, root, new DefaultWatcherCallBack(), conf, DaemonType.NIMBUS);
+}
+</code-specified>

@@ -1,0 +1,18 @@
+<code-whole>
+boolean enableCorsFilter =
+conf.getBoolean(JHAdminConfig.MR_HISTORY_ENABLE_CORS_FILTER,
+JHAdminConfig.DEFAULT_MR_HISTORY_ENABLE_CORS_FILTER);
+
+if (enableCorsFilter) {
+conf.setBoolean(HttpCrossOriginFilterInitializer.PREFIX
++ HttpCrossOriginFilterInitializer.ENABLED_SUFFIX, true);
+}
+}
+</code-whole>
+
+<code-specified>
+if (enableCorsFilter) {
+conf.setBoolean(HttpCrossOriginFilterInitializer.PREFIX
++ HttpCrossOriginFilterInitializer.ENABLED_SUFFIX, true);
+}
+</code-specified>

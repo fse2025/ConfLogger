@@ -1,0 +1,26 @@
+<code-whole>
+if (!expression) {
+String msg;
+try {
+msg = String.format(errorMsg, errorMsgArgs);
+} catch (Exception e) {
+LOG.debug("Error formatting message", e);
+msg = CHECK_ARGUMENT_EX_MESSAGE;
+}
+throw new IllegalArgumentException(msg);
+}
+}
+</code-whole>
+
+<code-specified>
+if (!expression) {
+String msg;
+try {
+msg = String.format(errorMsg, errorMsgArgs);
+} catch (Exception e) {
+LOG.debug("Error formatting message", e);
+msg = CHECK_ARGUMENT_EX_MESSAGE;
+}
+throw new IllegalArgumentException(msg);
+}
+</code-specified>

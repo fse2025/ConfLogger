@@ -1,0 +1,73 @@
+<code-whole>
+Path[] dirs = getInputPaths(job);
+if (dirs.length == 0) {
+throw new IOException("No input paths specified in job");
+}
+
+// get tokens for all the required FileSystems..
+TokenCache.obtainTokensForNamenodes(job.getCredentials(), dirs,
+job.getConfiguration());
+
+// Whether we need to recursive look into the directory structure
+boolean recursive = getInputDirRecursive(job);
+
+// creates a MultiPathFilter with the hiddenFileFilter and the
+// user provided one (if any).
+List<PathFilter> filters = new ArrayList<PathFilter>();
+filters.add(hiddenFileFilter);
+PathFilter jobFilter = getInputPathFilter(job);
+if (jobFilter != null) {
+filters.add(jobFilter);
+}
+PathFilter inputFilter = new MultiPathFilter(filters);
+
+List<FileStatus> result = null;
+
+int numThreads = job.getConfiguration().getInt(LIST_STATUS_NUM_THREADS,
+DEFAULT_LIST_STATUS_NUM_THREADS);
+StopWatch sw = new StopWatch().start();
+if (numThreads == 1) {
+result = singleThreadedListStatus(job, dirs, inputFilter, recursive);
+} else {
+Iterable<FileStatus> locatedFiles = null;
+try {
+LocatedFileStatusFetcher locatedFileStatusFetcher = new LocatedFileStatusFetcher(
+job.getConfiguration(), dirs, recursive, inputFilter, true);
+locatedFiles = locatedFileStatusFetcher.getFileStatuses();
+} catch (InterruptedException e) {
+throw (IOException)
+new InterruptedIOException(
+"Interrupted while getting file statuses")
+.initCause(e);
+}
+result = Lists.newArrayList(locatedFiles);
+}
+
+sw.stop();
+if (LOG.isDebugEnabled()) {
+LOG.debug("Time taken to get FileStatuses: "
++ sw.now(TimeUnit.MILLISECONDS));
+}
+LOG.info("Total input files to process : " + result.size());
+return result;
+}
+</code-whole>
+
+<code-specified>
+if (numThreads == 1) {
+result = singleThreadedListStatus(job, dirs, inputFilter, recursive);
+} else {
+Iterable<FileStatus> locatedFiles = null;
+try {
+LocatedFileStatusFetcher locatedFileStatusFetcher = new LocatedFileStatusFetcher(
+job.getConfiguration(), dirs, recursive, inputFilter, true);
+locatedFiles = locatedFileStatusFetcher.getFileStatuses();
+} catch (InterruptedException e) {
+throw (IOException)
+new InterruptedIOException(
+"Interrupted while getting file statuses")
+.initCause(e);
+}
+result = Lists.newArrayList(locatedFiles);
+}
+</code-specified>

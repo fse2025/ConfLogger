@@ -1,0 +1,5 @@
+name,value,relevant log,explanation
+dfs.datanode.metrics.logger.period.seconds,-100,[main]	Metrics logger period is set to a non-positive value: -100. The metrics logger will not start. Please set 'dfs.datanode.metrics.logger.period.seconds' to a positive value to enable periodic logging.,value-hit
+ipc.[port_number].weighted-cost.response,1,[main]	Metrics logger period is set to a non-positive value: -100. The metrics logger will not start. Please set 'dfs.datanode.metrics.logger.period.seconds' to a positive value to enable periodic logging.,value-hit
+fs.trash.interval,0,[main]	Metrics logger period is set to a non-positive value: -100. The metrics logger will not start. Please set 'dfs.datanode.metrics.logger.period.seconds' to a positive value to enable periodic logging.,value-hit
+yarn.timeline-service.writer.async.queue.capacity,100,[main]	Metrics logger period is set to a non-positive value: -100. The metrics logger will not start. Please set 'dfs.datanode.metrics.logger.period.seconds' to a positive value to enable periodic logging.,value-hit

@@ -1,0 +1,33 @@
+<code-whole>
+UserParam.setUserPattern(conf.get(
+HdfsClientConfigKeys.DFS_WEBHDFS_USER_PATTERN_KEY,
+HdfsClientConfigKeys.DFS_WEBHDFS_USER_PATTERN_DEFAULT));
+AclPermissionParam.setAclPermissionPattern(conf.get(
+HdfsClientConfigKeys.DFS_WEBHDFS_ACL_PERMISSION_PATTERN_KEY,
+HdfsClientConfigKeys.DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT));
+
+final String pathSpec = WebHdfsFileSystem.PATH_PREFIX + "/*";
+
+// add REST CSRF prevention filter
+if (conf.getBoolean(DFS_WEBHDFS_REST_CSRF_ENABLED_KEY,
+DFS_WEBHDFS_REST_CSRF_ENABLED_DEFAULT)) {
+Map<String, String> restCsrfParams = RestCsrfPreventionFilter
+.getFilterParams(conf, "dfs.webhdfs.rest-csrf.");
+String restCsrfClassName = RestCsrfPreventionFilter.class.getName();
+HttpServer2.defineFilter(httpServer2.getWebAppContext(),
+restCsrfClassName, restCsrfClassName, restCsrfParams,
+new String[] {pathSpec});
+}
+
+// add webhdfs packages
+final Map<String, String> params = new HashMap<>();
+params.put(ResourceConfig.FEATURE_MATCH_MATRIX_PARAMS, "true");
+httpServer2.addJerseyResourcePackage(
+jerseyResourcePackage + ";" + Param.class.getPackage().getName(),
+pathSpec, params);
+}
+</code-whole>
+
+<code-specified>
+if (conf.getBoolean(DFS_WEBHDFS_REST_CSRF_ENABLED_KEY,
+</code-specified>

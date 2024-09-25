@@ -1,0 +1,19 @@
+<code-whole>
+public void setSampleRangeMax(int fileIOSamplingPercentage) {
+isEnabled = Util.isDiskStatsEnabled(fileIOSamplingPercentage);
+if (fileIOSamplingPercentage > 100) {
+fileIOSamplingPercentage = 100;
+}
+sampleRangeMax = (int) ((double) fileIOSamplingPercentage / 100 *
+Integer.MAX_VALUE);
+}
+</code-whole>
+
+<code-specified>
+if (fileIOSamplingPercentage > 100) {
+fileIOSamplingPercentage = 100;
+}
+</code-specified>
+<param>
+dfs.namenode.checkpoint.txns
+</param>

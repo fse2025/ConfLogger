@@ -1,0 +1,27 @@
+<code-whole>
+private static long preAllocSize = 65536 * 1024;
+private static final ByteBuffer fill = ByteBuffer.allocateDirect(1);
+
+static {
+LOG = LoggerFactory.getLogger(FileTxnLog.class);
+
+String size = System.getProperty("zookeeper.preAllocSize");
+if (size != null) {
+try {
+preAllocSize = Long.parseLong(size) * 1024;
+} catch (NumberFormatException e) {
+LOG.warn("{} is not a valid value for preAllocSize", size);
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (size != null) {
+try {
+preAllocSize = Long.parseLong(size) * 1024;
+} catch (NumberFormatException e) {
+LOG.warn("{} is not a valid value for preAllocSize", size);
+}
+}
+</code-specified>

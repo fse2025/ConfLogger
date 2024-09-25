@@ -1,0 +1,18 @@
+,name,value,description
+0,zookeeper.cnxTimeout,-1000,
+1,yarn.timeline-service.entity-group-fs-store.scan-interval-seconds,60,
+2,yarn.sharedcache.nm.uploader.thread-count,20,
+3,dfs.bytes-per-checksum,512,"The number of bytes per checksum.  Must not be larger than
+  dfs.stream-buffer-size"
+4,yarn.nodemanager.node-attributes.provider.fetch-timeout-ms,1200000,
+5,dfs.client.socket-timeout,60000,Default timeout value in milliseconds for all sockets.
+6,yarn.nodemanager.log-aggregation.num-log-files-per-app,30,
+7,yarn.client.nodemanager-connect.max-wait-ms,180000,
+8,seq.io.sort.mb,100,"The total amount of buffer memory to use while sorting files,
+      while using SequenceFile.Sorter, in megabytes. By default,
+      gives each merge stream 1MB, which should minimize seeks."
+9,dfs.datanode.transfer.socket.recv.buffer.size,0,"Socket receive buffer size for DataXceiver (receiving packets from client
+    during block writing). This may affect TCP connection throughput.
+    If it is set to zero or negative value, no buffer size will be set
+    explicitly, thus enable tcp auto-tuning on some system.
+    The default value is 0."

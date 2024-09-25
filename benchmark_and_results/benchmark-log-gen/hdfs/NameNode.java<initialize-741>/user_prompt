@@ -1,0 +1,86 @@
+<code-whole>
+if (conf.get(HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS) == null) {
+String intervals = conf.get(DFS_METRICS_PERCENTILES_INTERVALS_KEY);
+if (intervals != null) {
+conf.set(HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS,
+intervals);
+}
+}
+
+UserGroupInformation.setConfiguration(conf);
+loginAsNameNodeUser(conf);
+
+NameNode.initMetrics(conf, this.getRole());
+StartupProgressMetrics.register(startupProgress);
+
+pauseMonitor = new JvmPauseMonitor();
+pauseMonitor.init(conf);
+pauseMonitor.start();
+metrics.getJvmMetrics().setPauseMonitor(pauseMonitor);
+
+if (conf.getBoolean(DFS_NAMENODE_GC_TIME_MONITOR_ENABLE,
+DFS_NAMENODE_GC_TIME_MONITOR_ENABLE_DEFAULT)) {
+long observationWindow = conf.getTimeDuration(
+DFS_NAMENODE_GC_TIME_MONITOR_OBSERVATION_WINDOW_MS,
+DFS_NAMENODE_GC_TIME_MONITOR_OBSERVATION_WINDOW_MS_DEFAULT,
+TimeUnit.MILLISECONDS);
+long sleepInterval = conf.getTimeDuration(
+DFS_NAMENODE_GC_TIME_MONITOR_SLEEP_INTERVAL_MS,
+DFS_NAMENODE_GC_TIME_MONITOR_SLEEP_INTERVAL_MS_DEFAULT,
+TimeUnit.MILLISECONDS);
+gcTimeMonitor = new Builder().observationWindowMs(observationWindow)
+.sleepIntervalMs(sleepInterval).build();
+gcTimeMonitor.start();
+metrics.getJvmMetrics().setGcTimeMonitor(gcTimeMonitor);
+}
+
+if (NamenodeRole.NAMENODE == role) {
+startHttpServer(conf);
+}
+
+loadNamesystem(conf);
+startAliasMapServerIfNecessary(conf);
+
+rpcServer = createRpcServer(conf);
+
+initReconfigurableBackoffKey();
+
+if (clientNamenodeAddress == null) {
+// This is expected for MiniDFSCluster. Set it now using
+// the RPC server's bind address.
+clientNamenodeAddress =
+NetUtils.getHostPortString(getNameNodeAddress());
+LOG.info("Clients are to use " + clientNamenodeAddress + " to access"
++ " this namenode/service.");
+}
+if (NamenodeRole.NAMENODE == role) {
+httpServer.setNameNodeAddress(getNameNodeAddress());
+httpServer.setFSImage(getFSImage());
+if (levelDBAliasMapServer != null) {
+httpServer.setAliasMap(levelDBAliasMapServer.getAliasMap());
+}
+}
+
+startCommonServices(conf);
+startMetricsLogger(conf);
+}
+</code-whole>
+
+<code-specified>
+if (intervals != null) {
+conf.set(HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS,
+intervals);
+}
+</code-specified>
+<code-specified>
+if (conf.get(HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS) == null) {
+String intervals = conf.get(DFS_METRICS_PERCENTILES_INTERVALS_KEY);
+if (intervals != null) {
+conf.set(HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS,
+intervals);
+}
+}
+</code-specified>
+<code-specified>
+if (conf.getBoolean(DFS_NAMENODE_GC_TIME_MONITOR_ENABLE,
+</code-specified>

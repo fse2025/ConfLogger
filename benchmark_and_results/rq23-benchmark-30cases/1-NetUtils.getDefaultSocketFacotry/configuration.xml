@@ -1,0 +1,9 @@
+<configuration>
+<property>
+  <name>hadoop.rpc.socket.factory.class.default</name>
+  <value></value>
+  <description> Default SocketFactory to use. This parameter is expected to be
+    formatted as "package.FactoryClassName".
+  </description>
+</property>
+</property>

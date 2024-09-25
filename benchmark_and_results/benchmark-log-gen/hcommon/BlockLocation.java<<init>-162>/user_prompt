@@ -1,0 +1,45 @@
+<code-whole>
+long offset, long length, boolean corrupt) {
+if (names == null) {
+this.names = EMPTY_STR_ARRAY;
+} else {
+this.names = StringInterner.internStringsInArray(names);
+}
+if (hosts == null) {
+this.hosts = EMPTY_STR_ARRAY;
+} else {
+this.hosts = StringInterner.internStringsInArray(hosts);
+}
+if (cachedHosts == null) {
+this.cachedHosts = EMPTY_STR_ARRAY;
+} else {
+this.cachedHosts = StringInterner.internStringsInArray(cachedHosts);
+}
+if (topologyPaths == null) {
+this.topologyPaths = EMPTY_STR_ARRAY;
+} else {
+this.topologyPaths = StringInterner.internStringsInArray(topologyPaths);
+}
+if (storageIds == null) {
+this.storageIds = EMPTY_STR_ARRAY;
+} else {
+this.storageIds = StringInterner.internStringsInArray(storageIds);
+}
+if (storageTypes == null) {
+this.storageTypes = EMPTY_STORAGE_TYPE_ARRAY;
+} else {
+this.storageTypes = storageTypes;
+}
+this.offset = offset;
+this.length = length;
+this.corrupt = corrupt;
+}
+</code-whole>
+
+<code-specified>
+if (names == null) {
+this.names = EMPTY_STR_ARRAY;
+} else {
+this.names = StringInterner.internStringsInArray(names);
+}
+</code-specified>

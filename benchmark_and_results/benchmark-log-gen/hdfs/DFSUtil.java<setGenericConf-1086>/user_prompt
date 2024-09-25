@@ -1,0 +1,26 @@
+<code-whole>
+for (String key : keys) {
+String value = conf.get(addKeySuffixes(key, nameserviceId, nnId));
+if (value != null) {
+conf.set(key, value);
+continue;
+}
+value = conf.get(addKeySuffixes(key, nameserviceId));
+if (value != null) {
+conf.set(key, value);
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (value != null) {
+conf.set(key, value);
+}
+</code-specified>
+<code-specified>
+if (value != null) {
+conf.set(key, value);
+continue;
+}
+</code-specified>

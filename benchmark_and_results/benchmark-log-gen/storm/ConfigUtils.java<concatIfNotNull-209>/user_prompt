@@ -1,0 +1,15 @@
+<code-whole>
+String ret = "";
+// we do this since to concat a null String will actually concat a "null", which is not the expected: ""
+if (dir != null) {
+ret = dir;
+}
+return ret;
+}
+</code-whole>
+
+<code-specified>
+if (dir != null) {
+ret = dir;
+}
+</code-specified>

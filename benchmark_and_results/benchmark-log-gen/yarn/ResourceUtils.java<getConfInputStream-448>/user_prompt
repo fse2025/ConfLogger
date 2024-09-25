@@ -1,0 +1,27 @@
+<code-whole>
+ConfigurationProvider provider =
+ConfigurationProviderFactory.getConfigurationProvider(conf);
+try {
+provider.init(conf);
+} catch (Exception e) {
+throw new IOException(e);
+}
+
+InputStream ris = provider.getConfigurationInputStream(conf, resourceFile);
+if (ris == null) {
+if (conf.getResource(resourceFile) == null) {
+throw new FileNotFoundException("Unable to find " + resourceFile);
+}
+throw new IOException(
+"Unable to open resource types file '" + resourceFile
++ "'. Using provider " + provider);
+}
+return ris;
+}
+</code-whole>
+
+<code-specified>
+if (conf.getResource(resourceFile) == null) {
+throw new FileNotFoundException("Unable to find " + resourceFile);
+}
+</code-specified>

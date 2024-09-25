@@ -1,0 +1,19 @@
+<code-whole>
+if (confAddress != null) {
+return confAddress.getHostString()
+.replace("0.0.0.0", "localhost")
+.replace("0:0:0:0:0:0:0:0", "localhost")
++ ":" + boundPort;
+}
+throw new IllegalStateException("No client address is configured");
+}
+</code-whole>
+
+<code-specified>
+if (confAddress != null) {
+return confAddress.getHostString()
+.replace("0.0.0.0", "localhost")
+.replace("0:0:0:0:0:0:0:0", "localhost")
++ ":" + boundPort;
+}
+</code-specified>

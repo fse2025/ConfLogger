@@ -1,0 +1,23 @@
+<code-whole>
+if (rmPrincipal == null) {
+throw new IllegalArgumentException("RM principal string is null");
+}
+
+if (HAUtil.isHAEnabled(conf)) {
+conf = getYarnConfWithRmHaId(conf);
+}
+
+String hostname = conf.getSocketAddr(
+YarnConfiguration.RM_ADDRESS,
+YarnConfiguration.DEFAULT_RM_ADDRESS,
+YarnConfiguration.DEFAULT_RM_PORT).getHostName();
+
+return SecurityUtil.getServerPrincipal(rmPrincipal, hostname);
+}
+</code-whole>
+
+<code-specified>
+if (rmPrincipal == null) {
+throw new IllegalArgumentException("RM principal string is null");
+}
+</code-specified>

@@ -1,0 +1,20 @@
+<code-whole>
+if (ms > 0) {
+if (SIMULATING.get()) {
+simulatedSleepUntilNanos(millisToNanos(currentTimeMillis() + ms));
+} else {
+Thread.sleep(ms);
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (ms > 0) {
+if (SIMULATING.get()) {
+simulatedSleepUntilNanos(millisToNanos(currentTimeMillis() + ms));
+} else {
+Thread.sleep(ms);
+}
+}
+</code-specified>

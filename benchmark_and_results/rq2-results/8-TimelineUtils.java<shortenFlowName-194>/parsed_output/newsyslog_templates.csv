@@ -1,0 +1,2 @@
+EventId,EventTemplate,Occurrences
+c5da01f1,The configuration parameter 'yarn.timeline-service.flowname.max-size' is set to a non-positive value: <*>. The flow name will not be shortened. Please set a positive integer to enable flow name shortening.,1

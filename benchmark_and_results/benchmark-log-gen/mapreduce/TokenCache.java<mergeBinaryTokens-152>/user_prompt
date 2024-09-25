@@ -1,0 +1,34 @@
+<code-whole>
+String binaryTokenFilename =
+conf.get(MRJobConfig.MAPREDUCE_JOB_CREDENTIALS_BINARY);
+if (binaryTokenFilename != null) {
+Credentials binary;
+try {
+binary = Credentials.readTokenStorageFile(
+FileSystem.getLocal(conf).makeQualified(
+new Path(binaryTokenFilename)),
+conf);
+} catch (IOException e) {
+throw new RuntimeException(e);
+}
+// supplement existing tokens with the tokens in the binary file
+creds.mergeAll(binary);
+}
+}
+</code-whole>
+
+<code-specified>
+if (binaryTokenFilename != null) {
+Credentials binary;
+try {
+binary = Credentials.readTokenStorageFile(
+FileSystem.getLocal(conf).makeQualified(
+new Path(binaryTokenFilename)),
+conf);
+} catch (IOException e) {
+throw new RuntimeException(e);
+}
+// supplement existing tokens with the tokens in the binary file
+creds.mergeAll(binary);
+}
+</code-specified>

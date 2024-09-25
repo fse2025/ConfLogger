@@ -1,0 +1,10 @@
+<configuration>
+<property>
+  <name>mapreduce.job.dfs.storage.capacity.kill-limit-exceed</name>
+  <value>false</value>
+  <description>Whether to fast fail the task when exceeds allocated storage
+    capacity in the cluster filesystem(ClusterStorageCapacityExceededException
+    happens), for example, exceeds the dfs quota limitation. If true, the
+    task will fast fail. If false, the task will get retried.</description>
+</property>
+</configuration>

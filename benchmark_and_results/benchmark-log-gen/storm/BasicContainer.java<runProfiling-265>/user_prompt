@@ -1,0 +1,34 @@
+<code-whole>
+type.assertFull();
+String targetDir = ConfigUtils.workerArtifactsRoot(conf, topologyId, port);
+
+@SuppressWarnings("unchecked")
+Map<String, String> env = (Map<String, String>) topoConf.get(Config.TOPOLOGY_ENVIRONMENT);
+if (env == null) {
+env = new HashMap<>();
+}
+
+String str = ConfigUtils.workerArtifactsPidPath(conf, topologyId, port);
+
+String workerPid = ops.slurpString(new File(str)).trim();
+
+ProfileAction profileAction = request.get_action();
+String logPrefix = "ProfilerAction process " + topologyId + ":" + port + " PROFILER_ACTION: " + profileAction
++ " ";
+
+List<String> command = mkProfileCommand(profileAction, stop, workerPid, targetDir);
+
+File targetFile = new File(targetDir);
+if (command.size() > 0) {
+return resourceIsolationManager.runProfilingCommand(getWorkerUser(), workerId, command, env, logPrefix, targetFile);
+}
+LOG.warn("PROFILING REQUEST NOT SUPPORTED {} IGNORED...", request);
+return true;
+}
+</code-whole>
+
+<code-specified>
+if (env == null) {
+env = new HashMap<>();
+}
+</code-specified>

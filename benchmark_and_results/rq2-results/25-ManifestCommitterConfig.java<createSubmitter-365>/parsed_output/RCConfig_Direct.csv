@@ -1,0 +1,4 @@
+name,value,relevant log,explanation
+mapreduce.manifest.committer.io.threads,-80,WARN	The configuration parameter 'mapreduce.manifest.committer.io.threads' has an invalid value: -80. It should be greater than 0. Default value 32 will be used instead.,value-hit
+dfs.default.chunk.view.size,32768,WARN	The configuration parameter 'mapreduce.manifest.committer.io.threads' has an invalid value: -80. It should be greater than 0. Default value 32 will be used instead.,property-item-hit	default
+dfs.client.slow.io.warning.threshold.ms,30000,WARN	The configuration parameter 'mapreduce.manifest.committer.io.threads' has an invalid value: -80. It should be greater than 0. Default value 32 will be used instead.,property-item-hit	io

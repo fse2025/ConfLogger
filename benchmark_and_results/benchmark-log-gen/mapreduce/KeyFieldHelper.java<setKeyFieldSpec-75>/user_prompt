@@ -1,0 +1,20 @@
+<code-whole>
+if (end >= start) {
+KeyDescription k = new KeyDescription();
+k.beginFieldIdx = start;
+k.endFieldIdx = end;
+keySpecSeen = true;
+allKeySpecs.add(k);
+}
+}
+</code-whole>
+
+<code-specified>
+if (end >= start) {
+KeyDescription k = new KeyDescription();
+k.beginFieldIdx = start;
+k.endFieldIdx = end;
+keySpecSeen = true;
+allKeySpecs.add(k);
+}
+</code-specified>

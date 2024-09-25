@@ -1,0 +1,29 @@
+<code-whole>
+if (properties.containsKey(property)) {
+String propertyValue = properties.getString(property);
+String confValue = conf.get(properties.getString(property));
+
+if (confValue != null) {
+securityProperty = property + "=" + propertyValue
++ ", " + properties.getString(property) + "=" + confValue;
+} else {
+securityProperty = property + "=" + propertyValue
++ ", " + properties.getString(property) + "=<NOT SET>";
+}
+} else {
+securityProperty = property + "=<NOT SET>";
+}
+
+return securityProperty;
+}
+</code-whole>
+
+<code-specified>
+if (confValue != null) {
+securityProperty = property + "=" + propertyValue
++ ", " + properties.getString(property) + "=" + confValue;
+} else {
+securityProperty = property + "=" + propertyValue
++ ", " + properties.getString(property) + "=<NOT SET>";
+}
+</code-specified>

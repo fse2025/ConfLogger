@@ -1,0 +1,32 @@
+<code-whole>
+Configuration conf = getConfig();
+if (!conf.getBoolean(YarnConfiguration.LOG_AGGREGATION_ENABLED,
+YarnConfiguration.DEFAULT_LOG_AGGREGATION_ENABLED)) {
+// Log aggregation is not enabled so don't bother
+return;
+}
+long retentionSecs = conf.getLong(
+YarnConfiguration.LOG_AGGREGATION_RETAIN_SECONDS,
+YarnConfiguration.DEFAULT_LOG_AGGREGATION_RETAIN_SECONDS);
+if (retentionSecs < 0) {
+LOG.info("Log Aggregation deletion is disabled because retention is"
++ " too small (" + retentionSecs + ")");
+return;
+}
+setLogAggCheckIntervalMsecs(retentionSecs);
+task = new LogDeletionTask(conf, retentionSecs, createRMClient());
+timer = new Timer();
+timer.scheduleAtFixedRate(task, 0, checkIntervalMsecs);
+}
+</code-whole>
+
+<code-specified>
+if (retentionSecs < 0) {
+LOG.info("Log Aggregation deletion is disabled because retention is"
++ " too small (" + retentionSecs + ")");
+return;
+}
+</code-specified>
+<code-specified>
+if (!conf.getBoolean(YarnConfiguration.LOG_AGGREGATION_ENABLED,
+</code-specified>

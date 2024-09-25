@@ -1,0 +1,32 @@
+case,removed-vairable,removed-text,inserted-vairable,inserted-text
+AggregatedLogDeletionService.java<scheduleLogDeletionTask-258>,retentionSecs,"""Log Aggregation deletion is disabled because retention is too small ({})""
+","retentionSecs
+YarnConfiguration.LOG_AGGREGATION_RETAIN_SECONDS
+YarnConfiguration.DEFAULT_LOG_AGGREGATION_RETAIN_SECONDS","""Invalid retention period: {} seconds for '{}'. It must be non-negative. Using default value: {} seconds.""
+"
+HAUtil.java<getRMHAId-230>,"addr
+e","""Exception in creating socket address {},""
+","rmId
+addr","""Failed to create socket address for ResourceManager ID '{}'. Address: '{}'. Skipping this ID.""
+"
+ResourceCalculatorPlugin.java<getResourceCalculatorPlugin-187>,ue.getMessage(),"""Failed to instantiate default resource calculator. {}""
+",,"""UnsupportedOperationException encountered while creating ResourceCalculatorPlugin. This may indicate that the default resource calculator is not supported in the current environment.""
+"
+/usr/local/Lcg-src/rename-data/rerun/rerun-0821-yarn-all-1hour/LogAggregationFileController.java<verifyAndCreateRemoteLogDir-295>,"remoteRootLogDir
+TLDIR_PERMISSIONS
+perms","""Remote Root Log Dir [{}] already exist, but with incorrect permissions. Expected: [{}], Found: [{}]. The cluster may have problems with multiple users.""
+","TLDIR_PERMISSIONS
+perms","""The permissions for the remote root log directory do not match the expected {}. Current permissions: {}. Expected permissions: {}. Please ensure the directory permissions are correctly set.""
+"
+ResourceCalculatorPlugin.java<getResourceCalculatorPlugin-187>,t,"""{}: Failed to instantiate default resource calculator.""
+",t,"""Unexpected error occurred while creating ResourceCalculatorPlugin.""
+"
+ResourceUtils.java<getAllocation-208>,"resourceTypesKey
+schedulerKey","""Mandatory Resource '{}' is not configured in resource-types config file. Setting allocation specified using '{}'""
+",resourceTypesKey,"""Configuration parameter '{}' is not set or has an invalid value. Falling back to default scheduler configuration.""
+"
+ResourceUtils.java<getAllocation-208>,"resourceTypesKey
+schedulerKey","""Mandatory Resource '{}' is not configured in resource-types config file. Setting allocation specified using '{}'""
+","schedulerKey
+schedulerDefault","""Attempting to retrieve configuration using key '{}' with default value '{}'.""
+"

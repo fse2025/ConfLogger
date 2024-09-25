@@ -1,0 +1,28 @@
+<code-whole>
+if (conf != null) {
+String dnsInterface = conf.get(HADOOP_SECURITY_DNS_INTERFACE_KEY);
+String nameServer = conf.get(HADOOP_SECURITY_DNS_NAMESERVER_KEY);
+
+if (dnsInterface != null) {
+return DNS.getDefaultHost(dnsInterface, nameServer, true);
+} else if (nameServer != null) {
+throw new IllegalArgumentException(HADOOP_SECURITY_DNS_NAMESERVER_KEY +
+" requires " + HADOOP_SECURITY_DNS_INTERFACE_KEY + ". Check your" +
+"configuration.");
+}
+}
+
+// Fallback to querying the default hostname as we did before.
+return InetAddress.getLocalHost().getCanonicalHostName();
+}
+</code-whole>
+
+<code-specified>
+if (dnsInterface != null) {
+return DNS.getDefaultHost(dnsInterface, nameServer, true);
+} else if (nameServer != null) {
+throw new IllegalArgumentException(HADOOP_SECURITY_DNS_NAMESERVER_KEY +
+" requires " + HADOOP_SECURITY_DNS_INTERFACE_KEY + ". Check your" +
+"configuration.");
+}
+</code-specified>

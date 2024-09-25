@@ -1,0 +1,2 @@
+anomaly_degree,content
+0.6000000000000001,"INFO	JettyAdminServer is disabled. To enable, set 'zookeeper.admin.enableServer' to true."

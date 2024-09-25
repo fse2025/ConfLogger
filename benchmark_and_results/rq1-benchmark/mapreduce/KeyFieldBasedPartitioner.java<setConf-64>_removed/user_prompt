@@ -1,0 +1,29 @@
+<code-whole>
+public void setConf(Configuration conf) {
+this.conf = conf;
+keyFieldHelper = new KeyFieldHelper();
+String keyFieldSeparator =
+conf.get(MRJobConfig.MAP_OUTPUT_KEY_FIELD_SEPARATOR, "\t");
+keyFieldHelper.setKeyFieldSeparator(keyFieldSeparator);
+if (conf.get("num.key.fields.for.partition") != null) {
+this.numOfPartitionFields = conf.getInt("num.key.fields.for.partition",0);
+keyFieldHelper.setKeyFieldSpec(1,numOfPartitionFields);
+} else {
+String option = conf.get(PARTITIONER_OPTIONS);
+keyFieldHelper.parseOption(option);
+}
+}
+</code-whole>
+
+<code-specified>
+if (conf.get("num.key.fields.for.partition") != null) {
+this.numOfPartitionFields = conf.getInt("num.key.fields.for.partition",0);
+keyFieldHelper.setKeyFieldSpec(1,numOfPartitionFields);
+} else {
+String option = conf.get(PARTITIONER_OPTIONS);
+keyFieldHelper.parseOption(option);
+}
+</code-specified>
+<param>
+null
+</param>

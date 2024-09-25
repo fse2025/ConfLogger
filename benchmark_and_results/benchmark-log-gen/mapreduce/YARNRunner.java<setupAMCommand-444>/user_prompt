@@ -1,0 +1,74 @@
+<code-whole>
+List<String> vargs = new ArrayList<>(8);
+vargs.add(MRApps.crossPlatformifyMREnv(jobConf, Environment.JAVA_HOME)
++ "/bin/java");
+
+Path amTmpDir =
+new Path(MRApps.crossPlatformifyMREnv(conf, Environment.PWD),
+YarnConfiguration.DEFAULT_CONTAINER_TEMP_DIR);
+vargs.add("-Djava.io.tmpdir=" + amTmpDir);
+MRApps.addLog4jSystemProperties(null, vargs, conf);
+
+// Check for Java Lib Path usage in MAP and REDUCE configs
+warnForJavaLibPath(conf.get(MRJobConfig.MAP_JAVA_OPTS, ""),
+"map",
+MRJobConfig.MAP_JAVA_OPTS,
+MRJobConfig.MAP_ENV);
+warnForJavaLibPath(conf.get(MRJobConfig.MAPRED_MAP_ADMIN_JAVA_OPTS, ""),
+"map",
+MRJobConfig.MAPRED_MAP_ADMIN_JAVA_OPTS,
+MRJobConfig.MAPRED_ADMIN_USER_ENV);
+warnForJavaLibPath(conf.get(MRJobConfig.REDUCE_JAVA_OPTS, ""),
+"reduce",
+MRJobConfig.REDUCE_JAVA_OPTS,
+MRJobConfig.REDUCE_ENV);
+warnForJavaLibPath(conf.get(MRJobConfig.MAPRED_REDUCE_ADMIN_JAVA_OPTS, ""),
+"reduce",
+MRJobConfig.MAPRED_REDUCE_ADMIN_JAVA_OPTS,
+MRJobConfig.MAPRED_ADMIN_USER_ENV);
+
+// Add AM admin command opts before user command opts
+// so that it can be overridden by user
+String mrAppMasterAdminOptions = conf.get(MRJobConfig.MR_AM_ADMIN_COMMAND_OPTS,
+MRJobConfig.DEFAULT_MR_AM_ADMIN_COMMAND_OPTS);
+warnForJavaLibPath(mrAppMasterAdminOptions, "app master",
+MRJobConfig.MR_AM_ADMIN_COMMAND_OPTS, MRJobConfig.MR_AM_ADMIN_USER_ENV);
+vargs.add(mrAppMasterAdminOptions);
+
+// Add AM user command opts
+String mrAppMasterUserOptions = conf.get(MRJobConfig.MR_AM_COMMAND_OPTS,
+MRJobConfig.DEFAULT_MR_AM_COMMAND_OPTS);
+warnForJavaLibPath(mrAppMasterUserOptions, "app master",
+MRJobConfig.MR_AM_COMMAND_OPTS, MRJobConfig.MR_AM_ENV);
+vargs.add(mrAppMasterUserOptions);
+
+if (jobConf.getBoolean(MRJobConfig.MR_AM_PROFILE,
+MRJobConfig.DEFAULT_MR_AM_PROFILE)) {
+final String profileParams = jobConf.get(MRJobConfig.MR_AM_PROFILE_PARAMS,
+MRJobConfig.DEFAULT_TASK_PROFILE_PARAMS);
+if (profileParams != null) {
+vargs.add(String.format(profileParams,
+ApplicationConstants.LOG_DIR_EXPANSION_VAR + Path.SEPARATOR
++ TaskLog.LogName.PROFILE));
+}
+}
+
+vargs.add(MRJobConfig.APPLICATION_MASTER_CLASS);
+vargs.add("1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
+Path.SEPARATOR + ApplicationConstants.STDOUT);
+vargs.add("2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
+Path.SEPARATOR + ApplicationConstants.STDERR);
+return vargs;
+}
+</code-whole>
+
+<code-specified>
+if (profileParams != null) {
+vargs.add(String.format(profileParams,
+ApplicationConstants.LOG_DIR_EXPANSION_VAR + Path.SEPARATOR
++ TaskLog.LogName.PROFILE));
+}
+</code-specified>
+<code-specified>
+if (jobConf.getBoolean(MRJobConfig.MR_AM_PROFILE,
+</code-specified>

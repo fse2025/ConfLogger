@@ -1,0 +1,59 @@
+<code-whole>
+assert(limitLength >= 0) : "limitLength should be positive integer";
+
+if (encodedString.length() <= limitLength) {
+return encodedString;
+}
+
+int index = 0;
+int increase = 0;
+byte[] strBytes = encodedString.getBytes(UTF_8);
+
+// calculate effective character length based on UTF-8 specification.
+// The size of a character coded in UTF-8 should be 4-byte at most.
+// See RFC3629
+while (true) {
+byte b = strBytes[index];
+if (b == '%') {
+byte minuend1 = strBytes[index + 1];
+byte subtrahend1 = (byte)(Character.isDigit(
+minuend1) ? '0' : 'A' - 10);
+byte minuend2 = strBytes[index + 2];
+byte subtrahend2 = (byte)(Character.isDigit(
+minuend2) ? '0' : 'A' - 10);
+int initialHex =
+((Character.toUpperCase(minuend1) - subtrahend1) << 4) +
+(Character.toUpperCase(minuend2) - subtrahend2);
+
+if (0x00 <= initialHex && initialHex <= 0x7F) {
+// For 1-byte UTF-8 characters
+increase = 3;
+} else if (0xC2 <= initialHex && initialHex <= 0xDF) {
+// For 2-byte UTF-8 characters
+increase = 6;
+} else if (0xE0 <= initialHex && initialHex <= 0xEF) {
+// For 3-byte UTF-8 characters
+increase = 9;
+} else {
+// For 4-byte UTF-8 characters
+increase = 12;
+}
+} else {
+increase = 1;
+}
+if (index + increase > limitLength) {
+break;
+} else {
+index += increase;
+}
+}
+
+return encodedString.substring(0, index);
+}
+</code-whole>
+
+<code-specified>
+if (encodedString.length() <= limitLength) {
+return encodedString;
+}
+</code-specified>

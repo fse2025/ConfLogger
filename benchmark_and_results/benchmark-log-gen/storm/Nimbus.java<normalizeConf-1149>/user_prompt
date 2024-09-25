@@ -1,0 +1,94 @@
+<code-whole>
+topoConf.remove(Config.STORM_WORKERS_ARTIFACTS_DIR);
+
+//ensure that serializations are same for all tasks no matter what's on
+// the supervisors. this also allows you to declare the serializations as a sequence
+List<Map<String, Object>> allConfs = new ArrayList<>();
+for (Object comp : StormCommon.allComponents(topology).values()) {
+allConfs.add(StormCommon.componentConf(comp));
+}
+
+Set<String> decorators = new HashSet<>();
+//Yes we are putting in a config that is not the same type we pulled out.
+Map<String, String> serializers = new HashMap<>();
+for (Map<String, Object> c : allConfs) {
+addToDecorators(decorators, (List<String>) c.get(Config.TOPOLOGY_KRYO_DECORATORS));
+addToSerializers(serializers, (List<Object>) c.get(Config.TOPOLOGY_KRYO_REGISTER));
+}
+addToDecorators(decorators, (List<String>) topoConf.getOrDefault(Config.TOPOLOGY_KRYO_DECORATORS,
+conf.get(Config.TOPOLOGY_KRYO_DECORATORS)));
+addToSerializers(serializers, (List<Object>) topoConf.getOrDefault(Config.TOPOLOGY_KRYO_REGISTER,
+conf.get(Config.TOPOLOGY_KRYO_REGISTER)));
+
+Map<String, Object> mergedConf = Utils.merge(conf, topoConf);
+Map<String, Object> ret = new HashMap<>(topoConf);
+ret.put(Config.TOPOLOGY_KRYO_REGISTER, serializers);
+ret.put(Config.TOPOLOGY_KRYO_DECORATORS, new ArrayList<>(decorators));
+ret.put(Config.TOPOLOGY_ACKER_EXECUTORS, mergedConf.get(Config.TOPOLOGY_ACKER_EXECUTORS));
+ret.put(Config.TOPOLOGY_EVENTLOGGER_EXECUTORS, mergedConf.get(Config.TOPOLOGY_EVENTLOGGER_EXECUTORS));
+ret.put(Config.TOPOLOGY_MAX_TASK_PARALLELISM, mergedConf.get(Config.TOPOLOGY_MAX_TASK_PARALLELISM));
+
+// storm.messaging.netty.authentication is about inter-worker communication
+// enforce netty authentication when either topo or daemon set it to true
+boolean enforceNettyAuth = false;
+if (!topoConf.containsKey(Config.STORM_MESSAGING_NETTY_AUTHENTICATION)) {
+enforceNettyAuth = (Boolean) conf.get(Config.STORM_MESSAGING_NETTY_AUTHENTICATION);
+} else {
+enforceNettyAuth = (Boolean) topoConf.get(Config.STORM_MESSAGING_NETTY_AUTHENTICATION)
+|| (Boolean) conf.get(Config.STORM_MESSAGING_NETTY_AUTHENTICATION);
+}
+LOG.debug("For netty authentication, topo conf is: {}, cluster conf is: {}, Enforce netty auth: {}",
+topoConf.get(Config.STORM_MESSAGING_NETTY_AUTHENTICATION),
+conf.get(Config.STORM_MESSAGING_NETTY_AUTHENTICATION),
+enforceNettyAuth);
+ret.put(Config.STORM_MESSAGING_NETTY_AUTHENTICATION, enforceNettyAuth);
+
+if (!mergedConf.containsKey(Config.TOPOLOGY_METRICS_REPORTERS) && mergedConf.containsKey(Config.STORM_METRICS_REPORTERS)) {
+ret.put(Config.TOPOLOGY_METRICS_REPORTERS, mergedConf.get(Config.STORM_METRICS_REPORTERS));
+}
+
+// add any system metrics reporters to the topology metrics reporters
+if (conf.containsKey(Config.STORM_TOPOLOGY_METRICS_SYSTEM_REPORTERS)) {
+List<Map<String, Object>> reporters = (List<Map<String, Object>>)
+ret.computeIfAbsent(Config.TOPOLOGY_METRICS_REPORTERS, (key) -> new ArrayList<>());
+List<Map<String, Object>> systemReporters = (List<Map<String, Object>>)
+conf.get(Config.STORM_TOPOLOGY_METRICS_SYSTEM_REPORTERS);
+reporters.addAll(systemReporters);
+}
+
+// Don't allow topoConf to override various cluster-specific properties.
+// Specifically adding the cluster settings to the topoConf here will make sure these settings
+// also override the subsequently generated conf picked up locally on the classpath.
+//
+// We will be dealing with 3 confs:
+// 1) the submitted topoConf created here
+// 2) the combined classpath conf with the topoConf added on top
+// 3) the nimbus conf with conf 2 above added on top.
+//
+// By first forcing the topology conf to contain the nimbus settings, we guarantee all three confs
+// will have the correct settings that cannot be overriden by the submitter.
+ret.put(Config.STORM_CGROUP_HIERARCHY_DIR, conf.get(Config.STORM_CGROUP_HIERARCHY_DIR));
+ret.put(Config.WORKER_METRICS, conf.get(Config.WORKER_METRICS));
+
+if (mergedConf.containsKey(Config.TOPOLOGY_WORKER_TIMEOUT_SECS)) {
+int workerTimeoutSecs = (Integer) ObjectReader.getInt(mergedConf.get(Config.TOPOLOGY_WORKER_TIMEOUT_SECS));
+int workerMaxTimeoutSecs = (Integer) ObjectReader.getInt(mergedConf.get(Config.WORKER_MAX_TIMEOUT_SECS));
+if (workerTimeoutSecs > workerMaxTimeoutSecs) {
+ret.put(Config.TOPOLOGY_WORKER_TIMEOUT_SECS, workerMaxTimeoutSecs);
+String topoId = (String) mergedConf.get(Config.STORM_ID);
+LOG.warn("Topology {} topology.worker.timeout.secs is too large. Reducing from {} to {}",
+topoId, workerTimeoutSecs, workerMaxTimeoutSecs);
+}
+}
+return ret;
+}
+</code-whole>
+
+<code-specified>
+if (workerTimeoutSecs > workerMaxTimeoutSecs) {
+ret.put(Config.TOPOLOGY_WORKER_TIMEOUT_SECS, workerMaxTimeoutSecs);
+String topoId = (String) mergedConf.get(Config.STORM_ID);
+LOG.warn("Topology {} topology.worker.timeout.secs is too large. Reducing from {} to {}",
+topoId, workerTimeoutSecs, workerMaxTimeoutSecs);
+}
+</code-specified>

@@ -1,0 +1,20 @@
+<code-whole>
+KeyProvider keyProvider = KeyProviderFactory.get(providerUri, conf);
+if (keyProvider == null) {
+throw new IOException("Could not instantiate KeyProvider for uri: " +
+providerUri);
+}
+if (keyProvider.isTransient()) {
+throw new IOException("KeyProvider " + keyProvider.toString()
++ " was found but it is a transient provider.");
+}
+return keyProvider;
+}
+</code-whole>
+
+<code-specified>
+if (keyProvider == null) {
+throw new IOException("Could not instantiate KeyProvider for uri: " +
+providerUri);
+}
+</code-specified>

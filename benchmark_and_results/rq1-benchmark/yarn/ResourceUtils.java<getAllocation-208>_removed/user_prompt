@@ -1,0 +1,18 @@
+<code-whole>
+String resourceTypesKey, String schedulerKey, long schedulerDefault) {
+long value = conf.getLong(resourceTypesKey, -1L);
+if (value == -1) {
+value = conf.getLong(schedulerKey, schedulerDefault);
+}
+return value;
+}
+</code-whole>
+
+<code-specified>
+if (value == -1) {
+value = conf.getLong(schedulerKey, schedulerDefault);
+}
+</code-specified>
+<param>
+null
+</param>

@@ -1,0 +1,58 @@
+<code-whole>
+StringBuilder summary = new StringBuilder();
+summary.append("rmadmin is the command to execute YARN administrative " +
+"commands.\n");
+summary.append("The full syntax is: \n\n"
++ "yarn rmadmin"
++ " [-refreshQueues]"
++ " [-refreshNodes [-g|graceful [timeout in seconds] -client|server]]"
++ " [-refreshNodesResources]"
++ " [-refreshSuperUserGroupsConfiguration]"
++ " [-refreshUserToGroupsMappings]"
++ " [-refreshAdminAcls]"
++ " [-refreshServiceAcl]"
++ " [-getGroup [username]]"
++ " [-addToClusterNodeLabels <\"label1(exclusive=true),"
++ "label2(exclusive=false),label3\">]"
++ " [-removeFromClusterNodeLabels <label1,label2,label3>]"
++ " [-replaceLabelsOnNode "
++ "<\"node1[:port]=label1,label2 node2[:port]=label1\"> "
++ "[-failOnUnknownNodes]]"
++ " [-directlyAccessNodeLabelStore]"
++ " [-refreshClusterMaxPriority]"
++ " [-updateNodeResource [NodeID] [MemSize] [vCores]"
++ " ([OvercommitTimeout]) or -updateNodeResource [NodeID] "
++ "[ResourceTypes] ([OvercommitTimeout])]");
+if (isHAEnabled) {
+appendHAUsage(summary);
+}
+summary.append(" [-help [cmd]]")
+.append("\n");
+
+StringBuilder helpBuilder = new StringBuilder();
+System.out.println(summary);
+for (String cmdKey : ADMIN_USAGE.keySet()) {
+buildHelpMsg(cmdKey, helpBuilder);
+helpBuilder.append("\n");
+}
+if (isHAEnabled) {
+for (String cmdKey : USAGE.keySet()) {
+if (!cmdKey.equals("-help")) {
+buildHelpMsg(cmdKey, helpBuilder);
+helpBuilder.append("\n");
+}
+}
+}
+helpBuilder.append("   -help [cmd]: Displays help for the given command or all commands" +
+" if none is specified.");
+System.out.println(helpBuilder);
+System.out.println();
+ToolRunner.printGenericCommandUsage(System.out);
+}
+</code-whole>
+
+<code-specified>
+if (isHAEnabled) {
+appendHAUsage(summary);
+}
+</code-specified>

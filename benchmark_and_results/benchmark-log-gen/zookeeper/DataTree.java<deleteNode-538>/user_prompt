@@ -1,0 +1,100 @@
+<code-whole>
+int lastSlash = path.lastIndexOf('/');
+String parentName = path.substring(0, lastSlash);
+String childName = path.substring(lastSlash + 1);
+
+// The child might already be deleted during taking fuzzy snapshot,
+// but we still need to update the pzxid here before throw exception
+// for no such child
+DataNode parent = nodes.get(parentName);
+if (parent == null) {
+throw new NoNodeException();
+}
+synchronized (parent) {
+nodes.preChange(parentName, parent);
+parent.removeChild(childName);
+// Only update pzxid when the zxid is larger than the current pzxid,
+// otherwise we might override some higher pzxid set by a CreateTxn,
+// which could cause the cversion and pzxid inconsistent
+if (zxid > parent.stat.getPzxid()) {
+parent.stat.setPzxid(zxid);
+}
+nodes.postChange(parentName, parent);
+}
+
+DataNode node = nodes.get(path);
+if (node == null) {
+throw new NoNodeException();
+}
+List<ACL> acl;
+nodes.remove(path);
+synchronized (node) {
+acl = getACL(node);
+aclCache.removeUsage(node.acl);
+nodeDataSize.addAndGet(-getNodeSize(path, node.data));
+}
+
+// Synchronized to sync the containers and ttls change, probably
+// only need to sync on containers and ttls, will update it in a
+// separate patch.
+List<ACL> parentAcl;
+synchronized (parent) {
+parentAcl = getACL(parent);
+long owner = node.stat.getEphemeralOwner();
+EphemeralType ephemeralType = EphemeralType.get(owner);
+if (ephemeralType == EphemeralType.CONTAINER) {
+containers.remove(path);
+} else if (ephemeralType == EphemeralType.TTL) {
+ttls.remove(path);
+} else if (owner != 0) {
+Set<String> nodes = ephemerals.get(owner);
+if (nodes != null) {
+synchronized (nodes) {
+nodes.remove(path);
+}
+}
+}
+}
+
+if (parentName.startsWith(procZookeeper) && Quotas.limitNode.equals(childName)) {
+// delete the node in the trie.
+// we need to update the trie as well
+pTrie.deletePath(Quotas.trimQuotaPath(parentName));
+}
+
+// also check to update the quotas for this node
+String lastPrefix = getMaxPrefixWithQuota(path);
+if (lastPrefix != null) {
+// ok we have some match and need to update
+long bytes;
+synchronized (node) {
+bytes = (node.data == null ? 0 : -(node.data.length));
+}
+updateQuotaStat(lastPrefix, bytes, -1);
+}
+
+updateWriteStat(path, 0L);
+
+if (LOG.isTraceEnabled()) {
+ZooTrace.logTraceMessage(
+LOG,
+ZooTrace.EVENT_DELIVERY_TRACE_MASK,
+"dataWatches.triggerWatch " + path);
+ZooTrace.logTraceMessage(
+LOG,
+ZooTrace.EVENT_DELIVERY_TRACE_MASK,
+"childWatches.triggerWatch " + parentName);
+}
+
+WatcherOrBitSet processed = dataWatches.triggerWatch(path, EventType.NodeDeleted, zxid, acl);
+childWatches.triggerWatch(path, EventType.NodeDeleted, zxid, acl, processed);
+childWatches.triggerWatch("".equals(parentName) ? "/" : parentName,
+EventType.NodeChildrenChanged, zxid, parentAcl);
+}
+</code-whole>
+
+<code-specified>
+if (zxid > parent.stat.getPzxid()) {
+parent.stat.setPzxid(zxid);
+}
+</code-specified>

@@ -1,0 +1,10 @@
+<code-whole>
+if (principalConfig == null)
+return null;
+return principalConfig.split("[/@]");
+}
+</code-whole>
+
+<code-specified>
+if (principalConfig == null)
+</code-specified>

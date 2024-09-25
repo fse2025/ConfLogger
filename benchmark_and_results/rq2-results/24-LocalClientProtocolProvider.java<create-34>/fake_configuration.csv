@@ -1,0 +1,16 @@
+,name,value,description
+0,mapreduce.framework.name,,
+1,dfs.checksum.ec.socket-timeout,3000,"Default timeout value in milliseconds for computing the checksum of striped blocks.
+    Recommended to set the same value between client and DNs in a cluster because mismatching
+    may cause exhausting handler threads."
+2,dfs.namenode.blocks.per.postponedblocks.rescan,10000,"Number of blocks to rescan for each iteration of
+    postponedMisreplicatedBlocks."
+3,dfs.balancer.dispatcherThreads,200,"Size of the thread pool for the HDFS balancer block mover.
+    dispatchExecutor"
+4,mapreduce.ifile.readahead.bytes,4194304,Configuration key to set the IFile readahead length in bytes.
+5,yarn.resourcemanager.client.thread-count,50,
+6,yarn.nodemanager.container-log-monitor.total-size-limit-bytes,10000000000,
+7,yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds.min,3600,
+8,mapreduce.jobhistory.client.thread-count,10,The number of threads to handle client API requests
+9,dfs.client.write.byte-array-manager.count-reset-time-period-ms,10000,"The time period in milliseconds that the allocation count for each array length is
+    reset to zero if there is no increment."

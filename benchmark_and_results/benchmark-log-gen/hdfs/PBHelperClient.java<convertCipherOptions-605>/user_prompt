@@ -1,0 +1,23 @@
+<code-whole>
+if (options != null) {
+List<HdfsProtos.CipherOptionProto> protos =
+Lists.newArrayListWithCapacity(options.size());
+for (CipherOption option : options) {
+protos.add(convert(option));
+}
+return protos;
+}
+return null;
+}
+</code-whole>
+
+<code-specified>
+if (options != null) {
+List<HdfsProtos.CipherOptionProto> protos =
+Lists.newArrayListWithCapacity(options.size());
+for (CipherOption option : options) {
+protos.add(convert(option));
+}
+return protos;
+}
+</code-specified>

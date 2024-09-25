@@ -1,0 +1,60 @@
+<code-whole>
+asyncApiPollIntervalMillis =
+conf.getLong(YarnConfiguration.YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS,
+YarnConfiguration.DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS);
+asyncApiPollTimeoutMillis =
+conf.getLong(YarnConfiguration.YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS,
+YarnConfiguration.DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS);
+submitPollIntervalMillis = asyncApiPollIntervalMillis;
+if (conf.get(YarnConfiguration.YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS)
+!= null) {
+submitPollIntervalMillis = conf.getLong(
+YarnConfiguration.YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS,
+YarnConfiguration.DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS);
+}
+
+if (YarnConfiguration.timelineServiceV1Enabled(conf)) {
+timelineV1ServiceEnabled = true;
+timelineDTRenewer = getTimelineDelegationTokenRenewer(conf);
+timelineService = TimelineUtils.buildTimelineTokenService(conf);
+}
+
+if (YarnConfiguration.timelineServiceV2Enabled(conf)) {
+timelineV2ServiceEnabled = true;
+}
+
+// The AHSClientService is enabled by default when we start the
+// TimelineServer which means we are able to get history information
+// for applications/applicationAttempts/containers by using ahsClient
+// when the TimelineServer is running.
+if (timelineV1ServiceEnabled || conf.getBoolean(
+YarnConfiguration.APPLICATION_HISTORY_ENABLED,
+YarnConfiguration.DEFAULT_APPLICATION_HISTORY_ENABLED)) {
+historyServiceEnabled = true;
+historyClient = AHSClient.createAHSClient();
+historyClient.init(conf);
+}
+
+if (timelineV2ServiceEnabled) {
+ahsV2Client = AHSClient.createAHSv2Client();
+ahsV2Client.init(conf);
+}
+
+timelineServiceBestEffort = conf.getBoolean(
+YarnConfiguration.TIMELINE_SERVICE_CLIENT_BEST_EFFORT,
+YarnConfiguration.DEFAULT_TIMELINE_SERVICE_CLIENT_BEST_EFFORT);
+
+loadResourceTypesFromServer = conf.getBoolean(
+YarnConfiguration.YARN_CLIENT_LOAD_RESOURCETYPES_FROM_SERVER,
+YarnConfiguration.DEFAULT_YARN_CLIENT_LOAD_RESOURCETYPES_FROM_SERVER);
+
+super.serviceInit(conf);
+}
+</code-whole>
+
+<code-specified>
+if (timelineV1ServiceEnabled || conf.getBoolean(
+</code-specified>
+<code-specified>
+if (conf.get(YarnConfiguration.YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS)
+</code-specified>

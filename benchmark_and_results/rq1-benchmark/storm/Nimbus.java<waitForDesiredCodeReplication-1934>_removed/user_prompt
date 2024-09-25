@@ -1,0 +1,63 @@
+<code-whole>
+private void waitForDesiredCodeReplication(Map<String, Object> topoConf, String topoId) throws Exception {
+int minReplicationCount = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_MIN_REPLICATION_COUNT));
+int maxWaitTime = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_MAX_REPLICATION_WAIT_TIME_SEC));
+int jarCount = minReplicationCount;
+if (!ConfigUtils.isLocalMode(topoConf)) {
+jarCount = getBlobReplicationCount(ConfigUtils.masterStormJarKey(topoId));
+}
+int codeCount = getBlobReplicationCount(ConfigUtils.masterStormCodeKey(topoId));
+int confCount = getBlobReplicationCount(ConfigUtils.masterStormConfKey(topoId));
+long totalWaitTime = 0;
+//When is this ever null?
+if (blobStore != null) {
+while (jarCount < minReplicationCount
+&& codeCount < minReplicationCount
+&& confCount < minReplicationCount) {
+if (maxWaitTime > 0 && totalWaitTime > maxWaitTime) {
+return;
+}
+LOG.debug("Checking if I am still the leader");
+assertIsLeader();
+LOG.info("WAITING... storm-id {}, {} <? {} {} {}", topoId, minReplicationCount, jarCount, codeCount, confCount);
+LOG.info("WAITING... {} <? {}", totalWaitTime, maxWaitTime);
+Time.sleepSecs(1);
+totalWaitTime++;
+if (!ConfigUtils.isLocalMode(topoConf)) {
+jarCount = getBlobReplicationCount(ConfigUtils.masterStormJarKey(topoId));
+}
+codeCount = getBlobReplicationCount(ConfigUtils.masterStormCodeKey(topoId));
+confCount = getBlobReplicationCount(ConfigUtils.masterStormConfKey(topoId));
+}
+}
+LOG.info("desired replication count {} achieved for topology {}, current-replication-count for conf key = {},"
++ " current-replication-count for code key = {}, current-replication-count for jar key = {}",
+minReplicationCount, topoId, confCount, codeCount, jarCount);
+}
+</code-whole>
+
+<code-specified>
+if (blobStore != null) {
+while (jarCount < minReplicationCount
+&& codeCount < minReplicationCount
+&& confCount < minReplicationCount) {
+if (maxWaitTime > 0 && totalWaitTime > maxWaitTime) {
+return;
+}
+LOG.debug("Checking if I am still the leader");
+assertIsLeader();
+LOG.info("WAITING... storm-id {}, {} <? {} {} {}", topoId, minReplicationCount, jarCount, codeCount, confCount);
+LOG.info("WAITING... {} <? {}", totalWaitTime, maxWaitTime);
+Time.sleepSecs(1);
+totalWaitTime++;
+if (!ConfigUtils.isLocalMode(topoConf)) {
+jarCount = getBlobReplicationCount(ConfigUtils.masterStormJarKey(topoId));
+}
+codeCount = getBlobReplicationCount(ConfigUtils.masterStormCodeKey(topoId));
+confCount = getBlobReplicationCount(ConfigUtils.masterStormConfKey(topoId));
+}
+}
+</code-specified>
+<param>
+topology.min.replication.count
+</param>

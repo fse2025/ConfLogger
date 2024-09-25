@@ -1,0 +1,75 @@
+<code-whole>
+GenericOptionsParser genericParser
+= new GenericOptionsParser(conf, args);
+args = genericParser.getRemainingArgs();
+
+if (args.length < 2) {
+System.out.println("usage: inputDirs outDir "
++ "[numOfReducer [textinputformat|seq [specfile [jobName]]]]");
+GenericOptionsParser.printGenericCommandUsage(System.out);
+System.exit(2);
+}
+String inputDir = args[0];
+String outputDir = args[1];
+int numOfReducers = 1;
+if (args.length > 2) {
+numOfReducers = Integer.parseInt(args[2]);
+}
+
+Class<? extends InputFormat> theInputFormat = null;
+if (args.length > 3 &&
+args[3].compareToIgnoreCase("textinputformat") == 0) {
+theInputFormat = TextInputFormat.class;
+} else {
+theInputFormat = SequenceFileInputFormat.class;
+}
+
+Path specFile = null;
+
+if (args.length > 4) {
+specFile = new Path(args[4]);
+}
+
+String jobName = "";
+
+if (args.length > 5) {
+jobName = args[5];
+}
+
+if (specFile != null) {
+conf.addResource(specFile);
+}
+String userJarFile = conf.get(ValueAggregatorJobBase.USER_JAR);
+if (userJarFile != null) {
+conf.set(MRJobConfig.JAR, userJarFile);
+}
+
+Job theJob = Job.getInstance(conf);
+if (userJarFile == null) {
+theJob.setJarByClass(ValueAggregator.class);
+}
+theJob.setJobName("ValueAggregatorJob: " + jobName);
+
+FileInputFormat.addInputPaths(theJob, inputDir);
+
+theJob.setInputFormatClass(theInputFormat);
+
+theJob.setMapperClass(ValueAggregatorMapper.class);
+FileOutputFormat.setOutputPath(theJob, new Path(outputDir));
+theJob.setOutputFormatClass(TextOutputFormat.class);
+theJob.setMapOutputKeyClass(Text.class);
+theJob.setMapOutputValueClass(Text.class);
+theJob.setOutputKeyClass(Text.class);
+theJob.setOutputValueClass(Text.class);
+theJob.setReducerClass(ValueAggregatorReducer.class);
+theJob.setCombinerClass(ValueAggregatorCombiner.class);
+theJob.setNumReduceTasks(numOfReducers);
+return theJob;
+}
+</code-whole>
+
+<code-specified>
+if (userJarFile != null) {
+conf.set(MRJobConfig.JAR, userJarFile);
+}
+</code-specified>

@@ -1,0 +1,26 @@
+<code-whole>
+String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+String bindHostActualKey;
+if (nsId != null) {
+String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+address = DFSUtilClient.getAddressesForNameserviceId(
+conf, nsId, null, confKey).get(namenodeId);
+bindHostActualKey = DFSUtil.addKeySuffixes(bindHostKey, nsId, namenodeId);
+} else {
+address = NetUtils.createSocketAddr(conf.get(confKey, defaultValue));
+bindHostActualKey = bindHostKey;
+}
+
+String bindHost = conf.get(bindHostActualKey);
+if (bindHost == null || bindHost.isEmpty()) {
+bindHost = address.getHostName();
+}
+return new InetSocketAddress(bindHost, address.getPort());
+}
+</code-whole>
+
+<code-specified>
+if (bindHost == null || bindHost.isEmpty()) {
+bindHost = address.getHostName();
+}
+</code-specified>

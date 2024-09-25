@@ -1,0 +1,2 @@
+0,1
+c28825cd,"Setting heartbeat recheck interval to <*>. The configuration parameter 'dfs.namenode.stale.datanode.interval' is set to <*>, which is not less than the recheck interval 'dfs.namenode.heartbeat.recheck-interval' set to <*>. Ensure 'dfs.namenode.stale.datanode.interval' is less than 'dfs.namenode.heartbeat.recheck.interval' for avoiding stale data nodes."

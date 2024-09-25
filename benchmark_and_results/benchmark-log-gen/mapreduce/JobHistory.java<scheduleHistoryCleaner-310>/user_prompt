@@ -1,0 +1,26 @@
+<code-whole>
+boolean startCleanerService = conf.getBoolean(
+JHAdminConfig.MR_HISTORY_CLEANER_ENABLE, true);
+if (startCleanerService) {
+cleanerInterval = conf.getLong(
+JHAdminConfig.MR_HISTORY_CLEANER_INTERVAL_MS,
+JHAdminConfig.DEFAULT_MR_HISTORY_CLEANER_INTERVAL_MS);
+
+futureHistoryCleaner = scheduledExecutor.scheduleAtFixedRate(
+new HistoryCleaner(), getInitDelaySecs() * 1000l, cleanerInterval,
+TimeUnit.MILLISECONDS);
+}
+}
+</code-whole>
+
+<code-specified>
+if (startCleanerService) {
+cleanerInterval = conf.getLong(
+JHAdminConfig.MR_HISTORY_CLEANER_INTERVAL_MS,
+JHAdminConfig.DEFAULT_MR_HISTORY_CLEANER_INTERVAL_MS);
+
+futureHistoryCleaner = scheduledExecutor.scheduleAtFixedRate(
+new HistoryCleaner(), getInitDelaySecs() * 1000l, cleanerInterval,
+TimeUnit.MILLISECONDS);
+}
+</code-specified>

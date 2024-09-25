@@ -1,0 +1,26 @@
+<code-whole>
+topologyResolutionEnabled = config.getBoolean(
+FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED,
+FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED_DEFAULT);
+if (!topologyResolutionEnabled) {
+return;
+}
+DNSToSwitchMapping dnsToSwitchMapping = ReflectionUtils.newInstance(
+config.getClass(
+CommonConfigurationKeys.NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY,
+ScriptBasedMapping.class, DNSToSwitchMapping.class), config);
+String clientHostName = NetUtils.getLocalHostname();
+List<String> nodes = new ArrayList<>();
+nodes.add(clientHostName);
+List<String> resolvedHosts = dnsToSwitchMapping.resolve(nodes);
+if (resolvedHosts != null && !resolvedHosts.isEmpty() &&
+!resolvedHosts.get(0).equals(NetworkTopology.DEFAULT_RACK)) {
+// The client machine is able to resolve its own network location.
+this.clientNode = new NodeBase(clientHostName, resolvedHosts.get(0));
+}
+}
+</code-whole>
+
+<code-specified>
+if (resolvedHosts != null && !resolvedHosts.isEmpty() &&
+</code-specified>

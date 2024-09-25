@@ -1,0 +1,19 @@
+<code-whole>
+private static PreparableReporter getPreparableReporter(String clazz) {
+PreparableReporter reporter = null;
+LOG.info("Using statistics reporter plugin:" + clazz);
+if (clazz != null) {
+reporter = (PreparableReporter) ReflectionUtils.newInstance(clazz);
+}
+return reporter;
+}
+</code-whole>
+
+<code-specified>
+if (clazz != null) {
+reporter = (PreparableReporter) ReflectionUtils.newInstance(clazz);
+}
+</code-specified>
+<param>
+storm.daemon.metrics.reporter.plugins
+</param>

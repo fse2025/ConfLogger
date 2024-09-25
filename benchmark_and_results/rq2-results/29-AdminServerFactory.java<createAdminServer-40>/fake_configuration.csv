@@ -1,0 +1,16 @@
+,name,value,description
+0,zookeeper.admin.enableServer,false,
+1,yarn.router.interceptor.user.threadpool-size,5,
+2,hadoop.zk.retry-interval-ms,1000,Retry interval in milliseconds when connecting to ZooKeeper.
+3,yarn.resourcemanager.am-rm-tokens.master-key-rolling-interval-secs,86400,
+4,dfs.namenode.snapshot.skiplist.max.levels,0,"Maximum no of the skip levels to be maintained in the skip list for
+    storing directory snapshot diffs. By default, it is set to 0 and a linear
+    list will be used to store the directory snapshot diffs."
+5,yarn.dispatcher.drain-events.timeout,300000,
+6,yarn.nodemanager.recovery.compaction-interval-secs,3600,
+7,yarn.app.mapreduce.am.scheduler.heartbeat.interval-ms,1000,"The interval in ms at which the MR AppMaster should send
+    heartbeats to the ResourceManager"
+8,yarn.nodemanager.resource-monitor.interval-ms,3000,
+9,mapreduce.map.maxattempts,4,"Expert: The maximum number of attempts per map task.
+  In other words, framework will try to execute a map task these many number
+  of times before giving up on it."

@@ -1,0 +1,24 @@
+<code-whole>
+if (nsId == null) {
+nsId = getOnlyNameServiceIdOrNull(conf);
+}
+
+String serviceAddrKey = DFSUtilClient.concatSuffixes(
+DFSConfigKeys.DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY, nsId, nnId);
+
+String addrKey = DFSUtilClient.concatSuffixes(
+DFSConfigKeys.DFS_NAMENODE_RPC_ADDRESS_KEY, nsId, nnId);
+
+String serviceRpcAddr = conf.get(serviceAddrKey);
+if (serviceRpcAddr == null) {
+serviceRpcAddr = conf.get(addrKey);
+}
+return serviceRpcAddr;
+}
+</code-whole>
+
+<code-specified>
+if (serviceRpcAddr == null) {
+serviceRpcAddr = conf.get(addrKey);
+}
+</code-specified>

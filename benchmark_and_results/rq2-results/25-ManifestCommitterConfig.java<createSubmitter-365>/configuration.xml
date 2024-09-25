@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+<property>
+<name>mapreduce.manifest.committer.io.threads</name>
+<value>-80</value>
+<description>Thread count for parallel operations </description>
+</property>
+</configuration>

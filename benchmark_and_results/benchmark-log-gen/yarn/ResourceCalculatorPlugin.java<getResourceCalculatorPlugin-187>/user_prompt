@@ -1,0 +1,21 @@
+<code-whole>
+if (clazz != null) {
+return ReflectionUtils.newInstance(clazz, conf);
+}
+try {
+return new ResourceCalculatorPlugin();
+} catch (UnsupportedOperationException ue) {
+LOG.warn("Failed to instantiate default resource calculator. "
++ ue.getMessage());
+} catch (Throwable t) {
+LOG.warn(t + ": Failed to instantiate default resource calculator.", t);
+}
+return null;
+}
+</code-whole>
+
+<code-specified>
+if (clazz != null) {
+return ReflectionUtils.newInstance(clazz, conf);
+}
+</code-specified>

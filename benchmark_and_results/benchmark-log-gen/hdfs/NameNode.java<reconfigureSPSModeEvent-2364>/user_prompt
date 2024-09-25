@@ -1,0 +1,44 @@
+<code-whole>
+if (newVal == null
+|| StoragePolicySatisfierMode.fromString(newVal) == null) {
+throw new ReconfigurationException(property, newVal,
+getConf().get(property),
+new HadoopIllegalArgumentException(
+"For enabling or disabling storage policy satisfier, must "
++ "pass either internal/external/none string value only"));
+}
+
+if (!isActiveState()) {
+throw new ReconfigurationException(property, newVal,
+getConf().get(property),
+new HadoopIllegalArgumentException(
+"Enabling or disabling storage policy satisfier service on "
++ state + " NameNode is not allowed"));
+}
+StoragePolicySatisfierMode mode = StoragePolicySatisfierMode
+.fromString(newVal);
+if (mode == StoragePolicySatisfierMode.NONE) {
+// disabling sps service
+if (namesystem.getBlockManager().getSPSManager() != null) {
+namesystem.getBlockManager().getSPSManager().changeModeEvent(mode);
+namesystem.getBlockManager().disableSPS();
+}
+} else {
+// enabling sps service
+boolean spsCreated = (namesystem.getBlockManager()
+.getSPSManager() != null);
+if (!spsCreated) {
+spsCreated = namesystem.getBlockManager().createSPSManager(getConf(),
+newVal);
+}
+if (spsCreated) {
+namesystem.getBlockManager().getSPSManager().changeModeEvent(mode);
+}
+}
+return newVal;
+}
+</code-whole>
+
+<code-specified>
+if (newVal == null
+</code-specified>

@@ -1,0 +1,75 @@
+<code-whole>
+long lastLoggedZxid = self.getLastLoggedZxid();
+QuorumPacket qp = new QuorumPacket();
+qp.setType(pktType);
+qp.setZxid(ZxidUtils.makeZxid(self.getAcceptedEpoch(), 0));
+
+/*
+* Add sid to payload
+*/
+LearnerInfo li = new LearnerInfo(self.getMyId(), 0x10000, self.getQuorumVerifier().getVersion());
+ByteArrayOutputStream bsid = new ByteArrayOutputStream();
+BinaryOutputArchive boa = BinaryOutputArchive.getArchive(bsid);
+boa.writeRecord(li, "LearnerInfo");
+qp.setData(bsid.toByteArray());
+
+writePacket(qp, true);
+readPacket(qp);
+final long newEpoch = ZxidUtils.getEpochFromZxid(qp.getZxid());
+if (qp.getType() == Leader.LEADERINFO) {
+// we are connected to a 1.0 server so accept the new epoch and read the next packet
+leaderProtocolVersion = ByteBuffer.wrap(qp.getData()).getInt();
+byte[] epochBytes = new byte[4];
+final ByteBuffer wrappedEpochBytes = ByteBuffer.wrap(epochBytes);
+if (newEpoch > self.getAcceptedEpoch()) {
+wrappedEpochBytes.putInt((int) self.getCurrentEpoch());
+self.setAcceptedEpoch(newEpoch);
+} else if (newEpoch == self.getAcceptedEpoch()) {
+// since we have already acked an epoch equal to the leaders, we cannot ack
+// again, but we still need to send our lastZxid to the leader so that we can
+// sync with it if it does assume leadership of the epoch.
+// the -1 indicates that this reply should not count as an ack for the new epoch
+wrappedEpochBytes.putInt(-1);
+} else {
+throw new IOException("Leaders epoch, "
++ newEpoch
++ " is less than accepted epoch, "
++ self.getAcceptedEpoch());
+}
+QuorumPacket ackNewEpoch = new QuorumPacket(Leader.ACKEPOCH, lastLoggedZxid, epochBytes, null);
+writePacket(ackNewEpoch, true);
+return ZxidUtils.makeZxid(newEpoch, 0);
+} else {
+if (newEpoch > self.getAcceptedEpoch()) {
+self.setAcceptedEpoch(newEpoch);
+}
+if (qp.getType() != Leader.NEWLEADER) {
+LOG.error("First packet should have been NEWLEADER");
+throw new IOException("First packet should have been NEWLEADER");
+}
+return qp.getZxid();
+}
+</code-whole>
+
+<code-specified>
+if (newEpoch > self.getAcceptedEpoch()) {
+self.setAcceptedEpoch(newEpoch);
+}
+</code-specified>
+<code-specified>
+if (newEpoch > self.getAcceptedEpoch()) {
+wrappedEpochBytes.putInt((int) self.getCurrentEpoch());
+self.setAcceptedEpoch(newEpoch);
+} else if (newEpoch == self.getAcceptedEpoch()) {
+// since we have already acked an epoch equal to the leaders, we cannot ack
+// again, but we still need to send our lastZxid to the leader so that we can
+// sync with it if it does assume leadership of the epoch.
+// the -1 indicates that this reply should not count as an ack for the new epoch
+wrappedEpochBytes.putInt(-1);
+} else {
+throw new IOException("Leaders epoch, "
++ newEpoch
++ " is less than accepted epoch, "
++ self.getAcceptedEpoch());
+}
+</code-specified>

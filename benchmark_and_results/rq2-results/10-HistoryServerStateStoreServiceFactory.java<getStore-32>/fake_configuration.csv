@@ -1,0 +1,17 @@
+,name,value,description
+0,yarn.web-proxy.address, ,
+1,mapreduce.shuffle.listen.queue.size,128,The length of the shuffle server listen queue.
+2,yarn.timeline-service.leveldb-timeline-store.read-cache-size,104857600,
+3,mapreduce.reduce.shuffle.fetch.retry.timeout-ms,30000,"Timeout value for fetcher to retry to fetch again when some
+  non-fatal failure happens because of some events like NM restart."
+4,mapreduce.job.speculative.retry-after-speculate,15000,"The waiting time(ms) to do next round of speculation
+  if there are tasks speculated in this round."
+5,dfs.namenode.reconstruction.pending.timeout-sec,300,"Timeout in seconds for block reconstruction.  If this value is 0 or less,
+    then it will default to 5 minutes."
+6,dfs.datanode.http.internal-proxy.port,0,"The datanode's internal web proxy port.
+    By default it selects a random port available in runtime."
+7,yarn.nodemanager.runtime.linux.docker.userremapping-gid-threshold,1,
+8,mapreduce.jobhistory.loadedjobs.cache.size,5,"Size of the loaded job cache.  This property is ignored if
+  the property mapreduce.jobhistory.loadedtasks.cache.size is set to a
+  positive value."
+9,yarn.resourcemanager.zk-appid-node.split-index,0,

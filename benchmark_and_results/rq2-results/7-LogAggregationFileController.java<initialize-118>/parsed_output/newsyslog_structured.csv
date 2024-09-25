@@ -1,0 +1,2 @@
+LineId,Date,Time,Pid,Level,Component,Content,EventId,EventTemplate,ParameterList
+1,2024-09-04,15:18:21,167,WARN,[main] ConfLogger (LogAggregationFileController.java:initialize(125)),Configured retention size is less than or equal to 0. Using default retention size: 30. Please set 'yarn.nodemanager.log-aggregation.num-log-files-per-app' to a positive integer.,b607d7b8,Configured retention size is less than or equal to <*>. Using default retention size: <*>. Please set 'yarn.nodemanager.log-aggregation.num-log-files-per-app' to a positive integer.,"['0', '30']"

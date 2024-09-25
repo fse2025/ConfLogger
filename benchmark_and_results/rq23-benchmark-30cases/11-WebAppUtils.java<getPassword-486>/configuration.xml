@@ -1,0 +1,22 @@
+<configuration>
+<property>
+  <name>ssl.server.keystore.keypassword</name>
+  <value></value>
+  <description>Must be specified.
+  </description>
+</property>
+
+<property>
+  <name>ssl.server.keystore.password</name>
+  <value></value>
+  <description>Must be specified.
+  </description>
+</property>
+
+<property>
+  <name>ssl.server.truststore.password</name>
+  <value></value>
+  <description>Optional. Default value is "".
+  </description>
+</property>
+</configuration>

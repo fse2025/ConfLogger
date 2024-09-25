@@ -1,0 +1,19 @@
+<code-whole>
+String confPath = conf.get(JHAdminConfig.MR_HS_LEVELDB_STATE_STORE_PATH);
+if (confPath == null) {
+throw new IOException("No store location directory configured in " +
+JHAdminConfig.MR_HS_LEVELDB_STATE_STORE_PATH);
+}
+Path root = new Path(confPath, DB_NAME);
+FileSystem fs = FileSystem.getLocal(conf);
+fs.mkdirs(root, new FsPermission((short)0700));
+return root;
+}
+</code-whole>
+
+<code-specified>
+if (confPath == null) {
+throw new IOException("No store location directory configured in " +
+JHAdminConfig.MR_HS_LEVELDB_STATE_STORE_PATH);
+}
+</code-specified>

@@ -1,0 +1,76 @@
+<code-whole>
+String providerPath = config.get(
+CredentialProviderFactory.CREDENTIAL_PROVIDER_PATH);
+
+if (providerPath == null) {
+return config;
+}
+StringBuffer newProviderPath = new StringBuffer();
+String[] providers = providerPath.split(",");
+Path path = null;
+for (String provider: providers) {
+try {
+path = unnestUri(new URI(provider));
+Class<? extends FileSystem> clazz = null;
+try {
+String scheme = path.toUri().getScheme();
+clazz = FileSystem.getFileSystemClass(scheme, config);
+} catch (IOException ioe) {
+// not all providers are filesystem based
+// for instance user:/// will not be able to
+// have a filesystem class associated with it.
+if (newProviderPath.length() > 0) {
+newProviderPath.append(",");
+}
+newProviderPath.append(provider);
+}
+if (clazz != null) {
+if (fileSystemClass.isAssignableFrom(clazz)) {
+LOG.debug("Filesystem based provider excluded from provider " +
+"path due to recursive dependency: {}", provider);
+} else {
+if (newProviderPath.length() > 0) {
+newProviderPath.append(",");
+}
+newProviderPath.append(provider);
+}
+}
+} catch (URISyntaxException e) {
+LOG.warn("Credential Provider URI is invalid." + provider);
+}
+}
+
+String effectivePath = newProviderPath.toString();
+if (effectivePath.equals(providerPath)) {
+return config;
+}
+
+Configuration conf = new Configuration(config);
+if (effectivePath.equals("")) {
+conf.unset(CredentialProviderFactory.CREDENTIAL_PROVIDER_PATH);
+} else {
+conf.set(CredentialProviderFactory.CREDENTIAL_PROVIDER_PATH,
+effectivePath);
+}
+return conf;
+}
+</code-whole>
+
+<code-specified>
+if (clazz != null) {
+if (fileSystemClass.isAssignableFrom(clazz)) {
+LOG.debug("Filesystem based provider excluded from provider " +
+"path due to recursive dependency: {}", provider);
+} else {
+if (newProviderPath.length() > 0) {
+newProviderPath.append(",");
+}
+newProviderPath.append(provider);
+}
+}
+</code-specified>
+<code-specified>
+if (providerPath == null) {
+return config;
+}
+</code-specified>

@@ -1,0 +1,7 @@
+<configuration>
+<property>
+<name>mapreduce.manifest.committer.io.threads</name>
+<value>-80</value>
+<description>Thread count for parallel operations </description>
+</property>
+</configuration>

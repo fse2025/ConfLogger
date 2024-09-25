@@ -1,0 +1,30 @@
+<code-whole>
+QuorumJournalManager.checkJournalId(jid);
+
+Journal journal = journalsById.get(jid);
+if (journal == null) {
+File logDir = getLogDir(jid, nameServiceId);
+LOG.info("Initializing journal in directory " + logDir);
+journal = new Journal(conf, logDir, jid, startOpt, new ErrorReporter());
+journalsById.put(jid, journal);
+// Start SyncJouranl thread, if JournalNode Sync is enabled
+if (conf.getBoolean(
+DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_KEY,
+DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_DEFAULT)) {
+startSyncer(journal, jid, nameServiceId);
+}
+} else if (journalSyncersById.get(jid) != null &&
+!journalSyncersById.get(jid).isJournalSyncerStarted() &&
+!journalsById.get(jid).getTriedJournalSyncerStartedwithnsId() &&
+nameServiceId != null) {
+startSyncer(journal, jid, nameServiceId);
+}
+
+
+return journal;
+}
+</code-whole>
+
+<code-specified>
+if (conf.getBoolean(
+</code-specified>

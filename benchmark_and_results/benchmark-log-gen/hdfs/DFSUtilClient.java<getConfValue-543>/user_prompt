@@ -1,0 +1,21 @@
+<code-whole>
+String value = null;
+for (String key : keys) {
+key = addSuffix(key, keySuffix);
+value = conf.get(key);
+if (value != null) {
+break;
+}
+}
+if (value == null) {
+value = defaultValue;
+}
+return value;
+}
+</code-whole>
+
+<code-specified>
+if (value != null) {
+break;
+}
+</code-specified>

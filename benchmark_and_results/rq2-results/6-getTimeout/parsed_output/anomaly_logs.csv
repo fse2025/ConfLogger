@@ -1,0 +1,2 @@
+anomaly_degree,content
+1.2,INFO	IPC client ping is disabled. Configuration parameter 'ipc.client.ping' is set to false. Using ping interval as timeout.

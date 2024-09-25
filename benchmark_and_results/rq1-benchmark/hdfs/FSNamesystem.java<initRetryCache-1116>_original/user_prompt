@@ -1,0 +1,61 @@
+<code-whole>
+static RetryCache initRetryCache(Configuration conf) {
+boolean enable = conf.getBoolean(DFS_NAMENODE_ENABLE_RETRY_CACHE_KEY,
+DFS_NAMENODE_ENABLE_RETRY_CACHE_DEFAULT);
+LOG.info("Retry cache on namenode is " + (enable ? "enabled" : "disabled"));
+if (enable) {
+float heapPercent = conf.getFloat(
+DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_KEY,
+DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_DEFAULT);
+long entryExpiryMillis = conf.getLong(
+DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_KEY,
+DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_DEFAULT);
+LOG.info("Retry cache will use " + heapPercent
++ " of total heap and retry cache entry expiry time is "
++ entryExpiryMillis + " millis");
+long entryExpiryNanos = entryExpiryMillis * 1000 * 1000;
+return new RetryCache("NameNodeRetryCache", heapPercent,
+entryExpiryNanos);
+}
+return null;
+}
+</code-whole>
+
+<code-specified>
+if (enable) {
+float heapPercent = conf.getFloat(
+DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_KEY,
+DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_DEFAULT);
+long entryExpiryMillis = conf.getLong(
+DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_KEY,
+DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_DEFAULT);
+LOG.info("Retry cache will use " + heapPercent
++ " of total heap and retry cache entry expiry time is "
++ entryExpiryMillis + " millis");
+long entryExpiryNanos = entryExpiryMillis * 1000 * 1000;
+return new RetryCache("NameNodeRetryCache", heapPercent,
+entryExpiryNanos);
+}
+</code-specified>
+<param>
+dfs.namenode.retrycache.expirytime.millis
+</param>
+<code-specified>
+if (enable) {
+float heapPercent = conf.getFloat(
+DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_KEY,
+DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_DEFAULT);
+long entryExpiryMillis = conf.getLong(
+DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_KEY,
+DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_DEFAULT);
+LOG.info("Retry cache will use " + heapPercent
++ " of total heap and retry cache entry expiry time is "
++ entryExpiryMillis + " millis");
+long entryExpiryNanos = entryExpiryMillis * 1000 * 1000;
+return new RetryCache("NameNodeRetryCache", heapPercent,
+entryExpiryNanos);
+}
+</code-specified>
+<param>
+dfs.namenode.enable.retrycache
+</param>

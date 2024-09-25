@@ -1,0 +1,17 @@
+<code-whole>
+if (suffix == null || suffix.isEmpty()) {
+return key;
+}
+if (suffix.startsWith(".")) {
+throw new IllegalArgumentException("suffix '" + suffix + "' should not " +
+"already have '.' prepended.");
+}
+return key + "." + suffix;
+}
+</code-whole>
+
+<code-specified>
+if (suffix == null || suffix.isEmpty()) {
+return key;
+}
+</code-specified>

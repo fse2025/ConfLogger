@@ -1,0 +1,27 @@
+<code-whole>
+if (nameNodeUri == null) {
+return null;
+}
+String host = nameNodeUri.getHost();
+String configKey = HdfsClientConfigKeys.Failover.PROXY_PROVIDER_KEY_PREFIX
++ "." + host;
+try {
+@SuppressWarnings("unchecked")
+Class<FailoverProxyProvider<T>> ret = (Class<FailoverProxyProvider<T>>)
+conf.getClass(configKey, null, FailoverProxyProvider.class);
+return ret;
+} catch (RuntimeException e) {
+if (e.getCause() instanceof ClassNotFoundException) {
+throw new IOException("Could not load failover proxy provider class "
++ conf.get(configKey) + " which is configured for authority "
++ nameNodeUri, e);
+} else {
+throw e;
+}
+</code-whole>
+
+<code-specified>
+if (nameNodeUri == null) {
+return null;
+}
+</code-specified>

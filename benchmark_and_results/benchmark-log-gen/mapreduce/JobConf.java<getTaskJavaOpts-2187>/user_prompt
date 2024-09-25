@@ -1,0 +1,34 @@
+<code-whole>
+String javaOpts = getConfiguredTaskJavaOpts(taskType);
+
+if (!javaOpts.contains("-Xmx")) {
+float heapRatio = getFloat(MRJobConfig.HEAP_MEMORY_MB_RATIO,
+MRJobConfig.DEFAULT_HEAP_MEMORY_MB_RATIO);
+
+if (heapRatio > 1.0f || heapRatio < 0) {
+LOG.warn("Invalid value for " + MRJobConfig.HEAP_MEMORY_MB_RATIO
++ ", using the default.");
+heapRatio = MRJobConfig.DEFAULT_HEAP_MEMORY_MB_RATIO;
+}
+
+int taskContainerMb = getMemoryRequired(taskType);
+int taskHeapSize = (int)Math.ceil(taskContainerMb * heapRatio);
+
+String xmxArg = String.format("-Xmx%dm", taskHeapSize);
+LOG.info("Task java-opts do not specify heap size. Setting task attempt" +
+" jvm max heap size to " + xmxArg);
+
+javaOpts += " " + xmxArg;
+}
+
+return javaOpts;
+}
+</code-whole>
+
+<code-specified>
+if (heapRatio > 1.0f || heapRatio < 0) {
+LOG.warn("Invalid value for " + MRJobConfig.HEAP_MEMORY_MB_RATIO
++ ", using the default.");
+heapRatio = MRJobConfig.DEFAULT_HEAP_MEMORY_MB_RATIO;
+}
+</code-specified>

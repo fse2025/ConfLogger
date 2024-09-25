@@ -1,0 +1,69 @@
+<code-whole>
+String locationProperty =
+resolvePropertyName(mode, SSL_KEYSTORE_LOCATION_TPL_KEY);
+String keystoreLocation = conf.get(locationProperty, "");
+if (keystoreLocation.isEmpty()) {
+throw new GeneralSecurityException("The property '" + locationProperty +
+"' has not been set in the ssl configuration file.");
+}
+String passwordProperty =
+resolvePropertyName(mode, SSL_KEYSTORE_PASSWORD_TPL_KEY);
+String keystorePassword = getPassword(conf, passwordProperty, "");
+if (keystorePassword.isEmpty()) {
+throw new GeneralSecurityException("The property '" + passwordProperty +
+"' has not been set in the ssl configuration file.");
+}
+String keyPasswordProperty =
+resolvePropertyName(mode, SSL_KEYSTORE_KEYPASSWORD_TPL_KEY);
+// Key password defaults to the same value as store password for
+// compatibility with legacy configurations that did not use a separate
+// configuration property for key password.
+String keystoreKeyPassword = getPassword(
+conf, keyPasswordProperty, keystorePassword);
+if (LOG.isDebugEnabled()) {
+LOG.debug(mode.toString() + " KeyStore: " + keystoreLocation);
+}
+
+ReloadingX509KeystoreManager keystoreManager =  new ReloadingX509KeystoreManager(
+keystoreType,
+keystoreLocation,
+keystorePassword,
+keystoreKeyPassword);
+
+if (storesReloadInterval > 0) {
+fileMonitoringTimer.schedule(
+new FileMonitoringTimerTask(
+Paths.get(keystoreLocation),
+path -> keystoreManager.loadFrom(path),
+exception -> LOG.error(ReloadingX509KeystoreManager.RELOAD_ERROR_MESSAGE, exception)),
+storesReloadInterval,
+storesReloadInterval);
+}
+
+keyManagers = new KeyManager[] { keystoreManager };
+}
+</code-whole>
+
+<code-specified>
+if (storesReloadInterval > 0) {
+fileMonitoringTimer.schedule(
+new FileMonitoringTimerTask(
+Paths.get(keystoreLocation),
+path -> keystoreManager.loadFrom(path),
+exception -> LOG.error(ReloadingX509KeystoreManager.RELOAD_ERROR_MESSAGE, exception)),
+storesReloadInterval,
+storesReloadInterval);
+}
+</code-specified>
+<code-specified>
+if (keystoreLocation.isEmpty()) {
+throw new GeneralSecurityException("The property '" + locationProperty +
+"' has not been set in the ssl configuration file.");
+}
+</code-specified>
+<code-specified>
+if (keystorePassword.isEmpty()) {
+throw new GeneralSecurityException("The property '" + passwordProperty +
+"' has not been set in the ssl configuration file.");
+}
+</code-specified>

@@ -1,0 +1,13 @@
+<code-whole>
+if (suffixes == null) {
+return null;
+}
+return Joiner.on(".").skipNulls().join(suffixes);
+}
+</code-whole>
+
+<code-specified>
+if (suffixes == null) {
+return null;
+}
+</code-specified>

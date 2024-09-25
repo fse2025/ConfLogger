@@ -1,0 +1,14 @@
+<code-whole>
+String enabledProtocolsInput = config.get(TLS_ENABLED_PROTOCOLS);
+if (enabledProtocolsInput == null) {
+return new String[] { config.get(TLS_CONFIG_PROTOCOL, DEFAULT_PROTOCOL) };
+}
+return enabledProtocolsInput.split(",");
+}
+</code-whole>
+
+<code-specified>
+if (enabledProtocolsInput == null) {
+return new String[] { config.get(TLS_CONFIG_PROTOCOL, DEFAULT_PROTOCOL) };
+}
+</code-specified>

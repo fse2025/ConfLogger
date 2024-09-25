@@ -1,0 +1,40 @@
+<code-whole>
+if (srcFS == dstFS) {
+String srcq = srcFS.makeQualified(src).toString() + Path.SEPARATOR;
+String dstq = dstFS.makeQualified(dst).toString() + Path.SEPARATOR;
+if (dstq.startsWith(srcq)) {
+if (srcq.length() == dstq.length()) {
+throw new IOException("Cannot copy " + src + " to itself.");
+} else {
+throw new IOException("Cannot copy " + src + " to its subdirectory " +
+dst);
+}
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (srcFS == dstFS) {
+String srcq = srcFS.makeQualified(src).toString() + Path.SEPARATOR;
+String dstq = dstFS.makeQualified(dst).toString() + Path.SEPARATOR;
+if (dstq.startsWith(srcq)) {
+if (srcq.length() == dstq.length()) {
+throw new IOException("Cannot copy " + src + " to itself.");
+} else {
+throw new IOException("Cannot copy " + src + " to its subdirectory " +
+dst);
+}
+}
+}
+</code-specified>
+<code-specified>
+if (dstq.startsWith(srcq)) {
+if (srcq.length() == dstq.length()) {
+throw new IOException("Cannot copy " + src + " to itself.");
+} else {
+throw new IOException("Cannot copy " + src + " to its subdirectory " +
+dst);
+}
+}
+</code-specified>

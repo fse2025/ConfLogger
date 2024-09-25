@@ -1,0 +1,17 @@
+<code-whole>
+String classpath = conf.get(MRJobConfig.CLASSPATH_FILES);
+conf.set(MRJobConfig.CLASSPATH_FILES,
+classpath == null ? file.toString() : classpath + "," + file.toString());
+if (addToCache) {
+URI uri = fs.makeQualified(file).toUri();
+Job.addCacheFile(uri, conf);
+}
+}
+</code-whole>
+
+<code-specified>
+if (addToCache) {
+URI uri = fs.makeQualified(file).toUri();
+Job.addCacheFile(uri, conf);
+}
+</code-specified>

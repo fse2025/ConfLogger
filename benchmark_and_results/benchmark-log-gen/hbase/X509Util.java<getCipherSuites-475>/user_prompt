@@ -1,0 +1,16 @@
+<code-whole>
+String cipherSuitesInput = config.get(TLS_CIPHER_SUITES);
+if (cipherSuitesInput == null) {
+return getDefaultCipherSuites(useOpenSsl);
+} else {
+return cipherSuitesInput.split(",");
+}
+</code-whole>
+
+<code-specified>
+if (cipherSuitesInput == null) {
+return getDefaultCipherSuites(useOpenSsl);
+} else {
+return cipherSuitesInput.split(",");
+}
+</code-specified>

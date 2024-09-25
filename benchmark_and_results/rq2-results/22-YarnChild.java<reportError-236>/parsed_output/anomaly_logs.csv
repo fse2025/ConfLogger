@@ -1,0 +1,2 @@
+anomaly_degree,content
+0.9,WARN	The job will not fast fail despite the cluster storage capacity being exceeded. Consider setting the configuration parameter mapreduce.job.dfs.storage.capacity.kill-limit-exceed to true to enable fast fail. Current value: false

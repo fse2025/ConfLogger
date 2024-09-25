@@ -1,0 +1,52 @@
+<code-whole>
+if ((nameserviceId != null && !nameserviceId.isEmpty()) ||
+(namenodeId != null && !namenodeId.isEmpty())) {
+if (nameserviceId != null) {
+conf.set(DFS_NAMESERVICE_ID, nameserviceId);
+}
+if (namenodeId != null) {
+conf.set(DFS_HA_NAMENODE_ID_KEY, namenodeId);
+}
+
+DFSUtil.setGenericConf(conf, nameserviceId, namenodeId,
+NAMENODE_SPECIFIC_KEYS);
+DFSUtil.setGenericConf(conf, nameserviceId, null,
+NAMESERVICE_SPECIFIC_KEYS);
+}
+
+// If the RPC address is set use it to (re-)configure the default FS
+if (conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY) != null) {
+URI defaultUri = URI.create(HdfsConstants.HDFS_URI_SCHEME + "://"
++ conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY));
+conf.set(FS_DEFAULT_NAME_KEY, defaultUri.toString());
+LOG.debug("Setting {} to {}", FS_DEFAULT_NAME_KEY, defaultUri);
+}
+}
+</code-whole>
+
+<code-specified>
+if (nameserviceId != null) {
+conf.set(DFS_NAMESERVICE_ID, nameserviceId);
+}
+</code-specified>
+<code-specified>
+if (nameserviceId != null) {
+conf.set(DFS_NAMESERVICE_ID, nameserviceId);
+}
+</code-specified>
+<code-specified>
+if ((nameserviceId != null && !nameserviceId.isEmpty()) ||
+</code-specified>
+<code-specified>
+if (namenodeId != null) {
+conf.set(DFS_HA_NAMENODE_ID_KEY, namenodeId);
+}
+</code-specified>
+<code-specified>
+if (conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY) != null) {
+URI defaultUri = URI.create(HdfsConstants.HDFS_URI_SCHEME + "://"
++ conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY));
+conf.set(FS_DEFAULT_NAME_KEY, defaultUri.toString());
+LOG.debug("Setting {} to {}", FS_DEFAULT_NAME_KEY, defaultUri);
+}
+</code-specified>

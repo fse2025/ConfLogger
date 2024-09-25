@@ -1,0 +1,30 @@
+case,removed-vairable,removed-text,inserted-vairable,inserted-text,
+AdminServerFactory.java<createAdminServer-40>,e,"""Unable to start JettyAdminServer""
+",System.getProperty("zookeeper.admin.enableServer"),"""Failed to enable JettyAdminServer because the class was not found. Ensure that the class 'org.apache.zookeeper.server.admin.JettyAdminServer' is available in the classpath. Configuration parameter: zookeeper.admin.enableServer, value: {}""
+",
+AdminServerFactory.java<createAdminServer-40>,e,"""Unable to start JettyAdminServer""
+",System.getProperty("zookeeper.admin.enableServer"),"""Failed to instantiate JettyAdminServer. Check if the class is abstract or an interface. Configuration parameter: zookeeper.admin.enableServer, value: {}""
+",
+AdminServerFactory.java<createAdminServer-40>,e,"""Unable to start JettyAdminServer""
+",System.getProperty("zookeeper.admin.enableServer"),"""Illegal access while trying to instantiate JettyAdminServer. Ensure that the constructor is accessible. Configuration parameter: zookeeper.admin.enableServer, value: {}""
+",
+AdminServerFactory.java<createAdminServer-40>,e,"""Unable to start JettyAdminServer""
+",System.getProperty("zookeeper.admin.enableServer"),"""Invocation target exception occurred while creating JettyAdminServer. Check the constructor for exceptions. Configuration parameter: zookeeper.admin.enableServer, value: {}""
+",
+AdminServerFactory.java<createAdminServer-40>,e,"""Unable to start JettyAdminServer""
+",System.getProperty("zookeeper.admin.enableServer"),"""No suitable constructor found for JettyAdminServer. Ensure the default constructor is present. Configuration parameter: zookeeper.admin.enableServer, value: {}""
+",
+AdminServerFactory.java<createAdminServer-40>,e,"""Unable to start JettyAdminServer""
+",System.getProperty("zookeeper.admin.enableServer"),"""NoClassDefFoundError while trying to load JettyAdminServer. Check for missing dependencies. Configuration parameter: zookeeper.admin.enableServer, value: {}""
+",
+FileTxnLog.java<<clinit>-101>,"txnLogSizeLimitSetting
+logSize","""{} = {}""
+","txnLogSizeLimit
+txnLogSizeLimitSetting","""Transaction log size limit set to {} bytes based on configuration '{}'.""
+",
+Learner.java<syncWithLeader-545>,signature,"""Missing signature. Got {}""
+",signature,"""Signature verification failed. Expected 'BenWasHere', but got '{}'. Ensure the leader's signature is correctly set.""
+",
+ZooKeeperSaslClient.java<clientTunneledAuthenticationInProgress-412>,e,"""Could not retrieve login configuration""
+",,"""SecurityException caught: Caller does not have permission to retrieve the Configuration. Returning false for clientTunneledAuthenticationInProgress.""
+",

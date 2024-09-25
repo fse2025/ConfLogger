@@ -1,0 +1,3 @@
+EventId,EventTemplate,Occurrences
+9a0f6383,Server variable blacklist enabled. Using variable file: /etc/hadoop/blackList with expiry time: 3600000ms. Configuration key: dfs.datatransfer.server.variableBlackList.enable,1
+3e4fbee4,Client variable blacklist not enabled. Defaulting to fixed file: /etc/hadoop/fixedBlackList. Configuration key: dfs.datatransfer.client.variableBlackList.enable,1

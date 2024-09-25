@@ -1,0 +1,23 @@
+<code-whole>
+String configName = YarnConfiguration.NM_CSI_ADAPTOR_PREFIX
++ driverName + YarnConfiguration.NM_CSI_ADAPTOR_ADDRESS_SUFFIX;
+String errorMessage = "Failed to load CSI adaptor address for driver "
++ driverName + ", configuration property " + configName
++ " is not defined or invalid.";
+try {
+InetSocketAddress address = conf
+.getSocketAddr(configName, null, -1);
+if (address == null) {
+throw new YarnException(errorMessage);
+}
+return address;
+} catch (IllegalArgumentException e) {
+throw new YarnException(errorMessage);
+}
+</code-whole>
+
+<code-specified>
+if (address == null) {
+throw new YarnException(errorMessage);
+}
+</code-specified>

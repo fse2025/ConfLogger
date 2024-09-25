@@ -1,0 +1,28 @@
+<configuration>
+<property>
+  <name>mapreduce.framework.name</name>
+  <value>local</value>
+  <description>The runtime framework for executing MapReduce jobs.
+  Can be one of local, classic or yarn.
+  </description>
+</property>
+
+  <property>
+    <description>Whether the shared cache is enabled</description>
+    <name>yarn.sharedcache.enabled</name>
+    <value>true</value>
+  </property>
+
+
+  <property>
+  <name>mapreduce.job.sharedcache.mode</name>
+  <value>libjars</value>
+  <description>
+    A comma delimited list of resource categories to submit to the shared cache.
+    The valid categories are: jobjar, libjars, files, archives.
+    If "disabled" is specified then the job submission code will not use
+    the shared cache.
+  </description>
+</property>
+
+</configuration>

@@ -1,0 +1,6 @@
+<configuration>
+<property>
+<name>dfs.datatransfer.server.variableBlackList.enable</name>
+<value>true</value>
+</property>
+</configuration>

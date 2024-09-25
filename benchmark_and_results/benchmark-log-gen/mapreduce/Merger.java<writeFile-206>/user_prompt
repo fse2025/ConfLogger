@@ -1,0 +1,19 @@
+<code-whole>
+long progressBar = conf.getLong(JobContext.RECORDS_BEFORE_PROGRESS,
+10000);
+long recordCtr = 0;
+while(records.next()) {
+writer.append(records.getKey(), records.getValue());
+
+if (((recordCtr++) % progressBar) == 0) {
+progressable.progress();
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (((recordCtr++) % progressBar) == 0) {
+progressable.progress();
+}
+</code-specified>

@@ -1,0 +1,18 @@
+<code-whole>
+String value = conf.get(key);
+
+if(value == null) {
+throw new IllegalArgumentException("No value for " + key +
+" found in conf file.");
+}
+
+return value;
+}
+</code-whole>
+
+<code-specified>
+if(value == null) {
+throw new IllegalArgumentException("No value for " + key +
+" found in conf file.");
+}
+</code-specified>

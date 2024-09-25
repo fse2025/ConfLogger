@@ -1,0 +1,12 @@
+<code-whole>
+if (tags != null) {
+this.tags = tags;
+}
+}
+</code-whole>
+
+<code-specified>
+if (tags != null) {
+this.tags = tags;
+}
+</code-specified>

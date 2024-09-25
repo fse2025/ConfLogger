@@ -1,0 +1,35 @@
+<code-whole>
+Options options = new Options();
+options.createIfMissing(true);
+String directory =
+conf.get(DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_LEVELDB_DIR);
+if (directory == null) {
+throw new IOException("InMemoryAliasMap location is null");
+}
+File levelDBpath;
+if (blockPoolID != null) {
+levelDBpath = new File(directory, blockPoolID);
+} else {
+levelDBpath = new File(directory);
+}
+if (!levelDBpath.exists()) {
+LOG.warn("InMemoryAliasMap location {} is missing. Creating it.",
+levelDBpath);
+if(!levelDBpath.mkdirs()) {
+throw new IOException(
+"Unable to create missing aliasmap location: " + levelDBpath);
+}
+}
+DB levelDb = JniDBFactory.factory.open(levelDBpath, options);
+InMemoryAliasMap aliasMap =  new InMemoryAliasMap(levelDBpath.toURI(),
+levelDb, blockPoolID);
+aliasMap.setConf(conf);
+return aliasMap;
+}
+</code-whole>
+
+<code-specified>
+if (directory == null) {
+throw new IOException("InMemoryAliasMap location is null");
+}
+</code-specified>

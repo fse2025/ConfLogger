@@ -1,0 +1,5 @@
+name,value,relevant log,explanation
+dfs.image.parallel.load,true,[Time-limited	Parallel Image loading and saving is enabled as dfs.image.compress is set to false. Ensure th,property-item-hit	image
+dfs.image.parallel.load,true,[Time-limited	Parallel Image loading and saving is enabled as dfs.image.compress is set to false. Ensure th,property-item-hit	parallel
+dfs.image.parallel.load,true,[Time-limited	Parallel Image loading and saving is enabled as dfs.image.compress is set to false. Ensure th,property-item-hit	load
+fs.s3a.retry.limit,7,[Time-limited	Parallel Image loading and saving is enabled as dfs.image.compress is set to false. Ensure th,property-item-hit	limit

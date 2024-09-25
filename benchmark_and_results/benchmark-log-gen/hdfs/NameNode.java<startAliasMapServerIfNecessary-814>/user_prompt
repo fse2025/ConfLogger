@@ -1,0 +1,16 @@
+<code-whole>
+if (conf.getBoolean(DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED,
+DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED_DEFAULT)
+&& conf.getBoolean(DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED,
+DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED_DEFAULT)) {
+levelDBAliasMapServer = new InMemoryLevelDBAliasMapServer(
+InMemoryAliasMap::init, namesystem.getBlockPoolId());
+levelDBAliasMapServer.setConf(conf);
+levelDBAliasMapServer.start();
+}
+}
+</code-whole>
+
+<code-specified>
+if (conf.getBoolean(DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED,
+</code-specified>

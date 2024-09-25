@@ -1,0 +1,2 @@
+anomaly_degree,content
+0.30000000000000004,WARN	Password retrieval failed: No password found for alias: ssl.server.keystore.keypassword

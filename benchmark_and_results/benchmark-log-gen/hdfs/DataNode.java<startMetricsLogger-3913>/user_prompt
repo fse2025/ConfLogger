@@ -1,0 +1,25 @@
+<code-whole>
+long metricsLoggerPeriodSec = getConf().getInt(
+DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_KEY,
+DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_DEFAULT);
+
+if (metricsLoggerPeriodSec <= 0) {
+return;
+}
+
+MetricsLoggerTask.makeMetricsLoggerAsync(METRICS_LOG);
+
+// Schedule the periodic logging.
+metricsLoggerTimer = new ScheduledThreadPoolExecutor(1);
+metricsLoggerTimer.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+metricsLoggerTimer.scheduleWithFixedDelay(new MetricsLoggerTask(METRICS_LOG,
+"DataNode", (short) 0), metricsLoggerPeriodSec, metricsLoggerPeriodSec,
+TimeUnit.SECONDS);
+}
+</code-whole>
+
+<code-specified>
+if (metricsLoggerPeriodSec <= 0) {
+return;
+}
+</code-specified>

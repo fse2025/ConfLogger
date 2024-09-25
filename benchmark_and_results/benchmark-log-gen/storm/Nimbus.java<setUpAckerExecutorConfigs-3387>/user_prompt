@@ -1,0 +1,39 @@
+<code-whole>
+if (totalConf.get(Config.TOPOLOGY_ACKER_EXECUTORS) == null) {
+numAckerExecsPerWorker = ObjectReader.getInt(
+totalConf.get(Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER));
+numAckerExecs = estimatedNumWorker * numAckerExecsPerWorker;
+} else {
+numAckerExecs = ObjectReader.getInt(totalConf.get(Config.TOPOLOGY_ACKER_EXECUTORS));
+if (estimatedNumWorker == 0) {
+numAckerExecsPerWorker = 0;
+} else {
+numAckerExecsPerWorker = (int) Math.ceil((double) numAckerExecs / (double) estimatedNumWorker);
+}
+}
+
+totalConfToSave.put(Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER, numAckerExecsPerWorker);
+totalConfToSave.put(Config.TOPOLOGY_ACKER_EXECUTORS, numAckerExecs);
+
+LOG.info("Config {} set to: {} for topology: {}",
+Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER, numAckerExecsPerWorker, topoName);
+LOG.info("Config {} set to: {} for topology: {}",
+Config.TOPOLOGY_ACKER_EXECUTORS, numAckerExecs, topoName);
+
+}
+</code-whole>
+
+<code-specified>
+if (totalConf.get(Config.TOPOLOGY_ACKER_EXECUTORS) == null) {
+numAckerExecsPerWorker = ObjectReader.getInt(
+totalConf.get(Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER));
+numAckerExecs = estimatedNumWorker * numAckerExecsPerWorker;
+} else {
+numAckerExecs = ObjectReader.getInt(totalConf.get(Config.TOPOLOGY_ACKER_EXECUTORS));
+if (estimatedNumWorker == 0) {
+numAckerExecsPerWorker = 0;
+} else {
+numAckerExecsPerWorker = (int) Math.ceil((double) numAckerExecs / (double) estimatedNumWorker);
+}
+}
+</code-specified>

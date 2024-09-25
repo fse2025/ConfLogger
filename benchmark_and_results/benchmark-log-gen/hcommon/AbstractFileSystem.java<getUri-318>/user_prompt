@@ -1,0 +1,34 @@
+<code-whole>
+checkScheme(uri, supportedScheme);
+// A file system implementation that requires authority must always
+// specify default port
+if (defaultPort < 0 && authorityNeeded) {
+throw new HadoopIllegalArgumentException(
+"FileSystem implementation error -  default port " + defaultPort
++ " is not valid");
+}
+String authority = uri.getAuthority();
+if (authority == null) {
+if (authorityNeeded) {
+throw new HadoopIllegalArgumentException("Uri without authority: " + uri);
+} else {
+return new URI(supportedScheme + ":///");
+}
+}
+// authority is non null  - AuthorityNeeded may be true or false.
+int port = uri.getPort();
+port = (port == -1 ? defaultPort : port);
+if (port == -1) { // no port supplied and default port is not specified
+return new URI(supportedScheme, authority, "/", null);
+}
+return new URI(supportedScheme + "://" + uri.getHost() + ":" + port);
+}
+</code-whole>
+
+<code-specified>
+if (defaultPort < 0 && authorityNeeded) {
+throw new HadoopIllegalArgumentException(
+"FileSystem implementation error -  default port " + defaultPort
++ " is not valid");
+}
+</code-specified>

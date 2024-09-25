@@ -1,0 +1,95 @@
+<code-whole>
+Map<String, ResourceInformation> resourceInformationMap = new HashMap<>();
+String[] resourceNames =
+conf.getTrimmedStrings(YarnConfiguration.RESOURCE_TYPES);
+
+if (resourceNames != null && resourceNames.length != 0) {
+for (String resourceName : resourceNames) {
+String resourceUnits = conf.get(
+YarnConfiguration.RESOURCE_TYPES + "." + resourceName + UNITS, "");
+String resourceTypeName = conf.get(
+YarnConfiguration.RESOURCE_TYPES + "." + resourceName + TYPE,
+ResourceTypes.COUNTABLE.toString());
+Long minimumAllocation = conf.getLong(
+YarnConfiguration.RESOURCE_TYPES + "." + resourceName
++ MINIMUM_ALLOCATION, 0L);
+Long maximumAllocation = conf.getLong(
+YarnConfiguration.RESOURCE_TYPES + "." + resourceName
++ MAXIMUM_ALLOCATION, Long.MAX_VALUE);
+if (resourceName == null || resourceName.isEmpty()
+|| resourceUnits == null || resourceTypeName == null) {
+throw new YarnRuntimeException(
+"Incomplete configuration for resource type '" + resourceName
++ "'. One of name, units or type is configured incorrectly.");
+}
+ResourceTypes resourceType = ResourceTypes.valueOf(resourceTypeName);
+String[] resourceTags = conf.getTrimmedStrings(
+YarnConfiguration.RESOURCE_TYPES + "." + resourceName + TAGS);
+Set<String> resourceTagSet = new HashSet<>();
+Collections.addAll(resourceTagSet, resourceTags);
+LOG.info("Adding resource type - name = " + resourceName + ", units = "
++ resourceUnits + ", type = " + resourceTypeName);
+if (resourceInformationMap.containsKey(resourceName)) {
+throw new YarnRuntimeException(
+"Error in config, key '" + resourceName + "' specified twice");
+}
+resourceInformationMap.put(resourceName, ResourceInformation
+.newInstance(resourceName, resourceUnits, 0L, resourceType,
+minimumAllocation, maximumAllocation, resourceTagSet, null));
+}
+}
+
+// Validate names of resource information map.
+for (String name : resourceInformationMap.keySet()) {
+validateNameOfResourceNameAndThrowException(name);
+}
+
+checkSpecialResources(resourceInformationMap);
+addMandatoryResources(resourceInformationMap);
+
+setAllocationForMandatoryResources(resourceInformationMap, conf);
+
+return resourceInformationMap;
+}
+</code-whole>
+
+<code-specified>
+if (resourceName == null || resourceName.isEmpty()
+</code-specified>
+<code-specified>
+if (resourceNames != null && resourceNames.length != 0) {
+for (String resourceName : resourceNames) {
+String resourceUnits = conf.get(
+YarnConfiguration.RESOURCE_TYPES + "." + resourceName + UNITS, "");
+String resourceTypeName = conf.get(
+YarnConfiguration.RESOURCE_TYPES + "." + resourceName + TYPE,
+ResourceTypes.COUNTABLE.toString());
+Long minimumAllocation = conf.getLong(
+YarnConfiguration.RESOURCE_TYPES + "." + resourceName
++ MINIMUM_ALLOCATION, 0L);
+Long maximumAllocation = conf.getLong(
+YarnConfiguration.RESOURCE_TYPES + "." + resourceName
++ MAXIMUM_ALLOCATION, Long.MAX_VALUE);
+if (resourceName == null || resourceName.isEmpty()
+|| resourceUnits == null || resourceTypeName == null) {
+throw new YarnRuntimeException(
+"Incomplete configuration for resource type '" + resourceName
++ "'. One of name, units or type is configured incorrectly.");
+}
+ResourceTypes resourceType = ResourceTypes.valueOf(resourceTypeName);
+String[] resourceTags = conf.getTrimmedStrings(
+YarnConfiguration.RESOURCE_TYPES + "." + resourceName + TAGS);
+Set<String> resourceTagSet = new HashSet<>();
+Collections.addAll(resourceTagSet, resourceTags);
+LOG.info("Adding resource type - name = " + resourceName + ", units = "
++ resourceUnits + ", type = " + resourceTypeName);
+if (resourceInformationMap.containsKey(resourceName)) {
+throw new YarnRuntimeException(
+"Error in config, key '" + resourceName + "' specified twice");
+}
+resourceInformationMap.put(resourceName, ResourceInformation
+.newInstance(resourceName, resourceUnits, 0L, resourceType,
+minimumAllocation, maximumAllocation, resourceTagSet, null));
+}
+}
+</code-specified>

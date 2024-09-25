@@ -1,0 +1,42 @@
+<code-whole>
+if (file == null) {
+return null;
+}
+if (file.isEmpty()) {
+throw new IllegalArgumentException("File name can't be empty string");
+}
+String finalPath;
+URI pathURI;
+try {
+pathURI = new URI(file);
+} catch (URISyntaxException e) {
+throw new IllegalArgumentException(e);
+}
+Path path = new Path(pathURI);
+if (pathURI.getScheme() == null) {
+FileSystem localFs = FileSystem.getLocal(conf);
+// default to the local file system
+// check if the file exists or not first
+localFs.getFileStatus(path);
+finalPath =
+path.makeQualified(localFs.getUri(), localFs.getWorkingDirectory())
+.toString();
+} else {
+// check if the file exists in this file system
+// we need to recreate this filesystem object to copy
+// these files to the file system ResourceManager is running
+// on.
+FileSystem fs = path.getFileSystem(conf);
+fs.getFileStatus(path);
+finalPath =
+path.makeQualified(fs.getUri(), fs.getWorkingDirectory()).toString();
+}
+return finalPath;
+}
+</code-whole>
+
+<code-specified>
+if (file == null) {
+return null;
+}
+</code-specified>

@@ -1,0 +1,30 @@
+<code-whole>
+Map<JobACL, AccessControlList> acls =
+new HashMap<JobACL, AccessControlList>();
+
+// Don't construct anything if authorization is disabled.
+if (!areACLsEnabled()) {
+return acls;
+}
+
+for (JobACL aclName : JobACL.values()) {
+String aclConfigName = aclName.getAclName();
+String aclConfigured = conf.get(aclConfigName);
+if (aclConfigured == null) {
+// If ACLs are not configured at all, we grant no access to anyone. So
+// jobOwner and cluster administrator _only_ can do 'stuff'
+aclConfigured = " ";
+}
+acls.put(aclName, new AccessControlList(aclConfigured));
+}
+return acls;
+}
+</code-whole>
+
+<code-specified>
+if (aclConfigured == null) {
+// If ACLs are not configured at all, we grant no access to anyone. So
+// jobOwner and cluster administrator _only_ can do 'stuff'
+aclConfigured = " ";
+}
+</code-specified>

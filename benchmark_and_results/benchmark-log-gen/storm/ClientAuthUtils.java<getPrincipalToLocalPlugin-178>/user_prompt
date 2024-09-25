@@ -1,0 +1,33 @@
+<code-whole>
+IPrincipalToLocal ptol = null;
+try {
+String ptolClassname = (String) topoConf.get(Config.STORM_PRINCIPAL_TO_LOCAL_PLUGIN);
+if (ptolClassname == null) {
+LOG.warn("No principal to local given {}", Config.STORM_PRINCIPAL_TO_LOCAL_PLUGIN);
+} else {
+ptol = ReflectionUtils.newInstance(ptolClassname);
+//TODO this can only ever be null if someone is doing something odd with mocking
+// We should really fix the mocking and remove this
+if (ptol != null) {
+ptol.prepare(topoConf);
+}
+}
+} catch (Exception e) {
+throw new RuntimeException(e);
+}
+return ptol;
+}
+</code-whole>
+
+<code-specified>
+if (ptolClassname == null) {
+LOG.warn("No principal to local given {}", Config.STORM_PRINCIPAL_TO_LOCAL_PLUGIN);
+} else {
+ptol = ReflectionUtils.newInstance(ptolClassname);
+//TODO this can only ever be null if someone is doing something odd with mocking
+// We should really fix the mocking and remove this
+if (ptol != null) {
+ptol.prepare(topoConf);
+}
+}
+</code-specified>

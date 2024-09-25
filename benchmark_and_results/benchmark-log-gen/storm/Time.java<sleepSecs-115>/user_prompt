@@ -1,0 +1,12 @@
+<code-whole>
+if (secs > 0) {
+sleep(secs * 1000);
+}
+}
+</code-whole>
+
+<code-specified>
+if (secs > 0) {
+sleep(secs * 1000);
+}
+</code-specified>

@@ -1,0 +1,34 @@
+<code-whole>
+final boolean isEnabled;
+if (fileIOSamplingPercentage <= 0) {
+LOG.info(DFSConfigKeys
+.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY + " set to "
++ fileIOSamplingPercentage + ". Disabling file IO profiling");
+isEnabled = false;
+} else {
+LOG.info(DFSConfigKeys
+.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY + " set to "
++ fileIOSamplingPercentage + ". Enabling file IO profiling");
+isEnabled = true;
+}
+
+return isEnabled;
+}
+</code-whole>
+
+<code-specified>
+if (fileIOSamplingPercentage <= 0) {
+LOG.info(DFSConfigKeys
+.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY + " set to "
++ fileIOSamplingPercentage + ". Disabling file IO profiling");
+isEnabled = false;
+} else {
+LOG.info(DFSConfigKeys
+.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY + " set to "
++ fileIOSamplingPercentage + ". Enabling file IO profiling");
+isEnabled = true;
+}
+</code-specified>
+<param>
+dfs.datanode.lifeline.interval.seconds
+</param>

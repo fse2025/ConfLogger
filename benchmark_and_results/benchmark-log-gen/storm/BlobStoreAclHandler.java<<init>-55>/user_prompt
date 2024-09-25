@@ -1,0 +1,33 @@
+<code-whole>
+public BlobStoreAclHandler(Map<String, Object> conf) {
+ptol = ClientAuthUtils.getPrincipalToLocalPlugin(conf);
+if (conf.get(Config.STORM_GROUP_MAPPING_SERVICE_PROVIDER_PLUGIN) != null) {
+groupMappingServiceProvider = ClientAuthUtils.getGroupMappingServiceProviderPlugin(conf);
+} else {
+groupMappingServiceProvider = null;
+}
+supervisors = new HashSet<String>();
+admins = new HashSet<String>();
+adminsGroups = new HashSet<>();
+if (conf.containsKey(Config.NIMBUS_SUPERVISOR_USERS)) {
+supervisors.addAll((List<String>) conf.get(Config.NIMBUS_SUPERVISOR_USERS));
+}
+if (conf.containsKey(Config.NIMBUS_ADMINS)) {
+admins.addAll((List<String>) conf.get(Config.NIMBUS_ADMINS));
+}
+if (conf.containsKey(Config.NIMBUS_ADMINS_GROUPS)) {
+adminsGroups.addAll((List<String>) conf.get(Config.NIMBUS_ADMINS_GROUPS));
+}
+if (conf.containsKey(Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED)) {
+doAclValidation = (boolean) conf.get(Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED);
+}
+}
+</code-whole>
+
+<code-specified>
+if (conf.get(Config.STORM_GROUP_MAPPING_SERVICE_PROVIDER_PLUGIN) != null) {
+groupMappingServiceProvider = ClientAuthUtils.getGroupMappingServiceProviderPlugin(conf);
+} else {
+groupMappingServiceProvider = null;
+}
+</code-specified>

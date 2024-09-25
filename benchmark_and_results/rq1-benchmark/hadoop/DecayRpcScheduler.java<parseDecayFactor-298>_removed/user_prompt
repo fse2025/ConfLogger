@@ -1,0 +1,32 @@
+<code-whole>
+private static double parseDecayFactor(String ns, Configuration conf) {
+double factor = conf.getDouble(ns + "." +
+IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY, 0.0);
+if (factor == 0.0) {
+factor = conf.getDouble(ns + "." +
+IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY,
+IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_DEFAULT);
+} else if ((factor > 0.0) && (factor < 1)) {
+;
+}
+if (factor <= 0 || factor >= 1) {
+throw new IllegalArgumentException("Decay Factor " +
+"must be between 0 and 1");
+}
+
+return factor;
+}
+</code-whole>
+
+<code-specified>
+if (factor == 0.0) {
+factor = conf.getDouble(ns + "." +
+IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY,
+IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_DEFAULT);
+} else if ((factor > 0.0) && (factor < 1)) {
+;
+}
+</code-specified>
+<param>
+null
+</param>

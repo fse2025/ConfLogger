@@ -1,0 +1,23 @@
+<code-whole>
+if (clazz != null) {
+return ReflectionUtils.newInstance(clazz, conf);
+}
+try {
+return new ResourceCalculatorPlugin();
+} catch (UnsupportedOperationException ue) {
+;
+} catch (Throwable t) {
+;
+}
+return null;
+}
+</code-whole>
+
+<code-specified>
+if (clazz != null) {
+return ReflectionUtils.newInstance(clazz, conf);
+}
+</code-specified>
+<param>
+yarn.nodemanager.resource-calculator.class
+</param>

@@ -1,0 +1,47 @@
+<code-whole>
+if (senderWorkerMap.get(sid) != null) {
+LOG.debug("There is a connection already for server {}", sid);
+if (self.isMultiAddressEnabled() && self.isMultiAddressReachabilityCheckEnabled()) {
+// since ZOOKEEPER-3188 we can use multiple election addresses to reach a server. It is possible, that the
+// one we are using is already dead and we need to clean-up, so when we will create a new connection
+// then we will choose an other one, which is actually reachable
+senderWorkerMap.get(sid).asyncValidateIfSocketIsStillReachable();
+}
+return;
+}
+synchronized (self.QV_LOCK) {
+boolean knownId = false;
+// Resolve hostname for the remote server before attempting to
+// connect in case the underlying ip address has changed.
+self.recreateSocketAddresses(sid);
+Map<Long, QuorumPeer.QuorumServer> lastCommittedView = self.getView();
+QuorumVerifier lastSeenQV = self.getLastSeenQuorumVerifier();
+Map<Long, QuorumPeer.QuorumServer> lastProposedView = lastSeenQV.getAllMembers();
+if (lastCommittedView.containsKey(sid)) {
+knownId = true;
+LOG.debug("Server {} knows {} already, it is in the lastCommittedView", self.getMyId(), sid);
+if (connectOne(sid, lastCommittedView.get(sid).electionAddr)) {
+return;
+}
+}
+if (lastSeenQV != null
+&& lastProposedView.containsKey(sid)
+&& (!knownId
+|| !lastProposedView.get(sid).electionAddr.equals(lastCommittedView.get(sid).electionAddr))) {
+knownId = true;
+LOG.debug("Server {} knows {} already, it is in the lastProposedView", self.getMyId(), sid);
+
+if (connectOne(sid, lastProposedView.get(sid).electionAddr)) {
+return;
+}
+}
+if (!knownId) {
+LOG.warn("Invalid server id: {} ", sid);
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (lastSeenQV != null
+</code-specified>

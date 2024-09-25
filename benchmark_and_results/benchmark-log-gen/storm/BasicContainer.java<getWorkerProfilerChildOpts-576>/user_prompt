@@ -1,0 +1,18 @@
+<code-whole>
+List<String> workerProfilerChildopts = new ArrayList<>();
+if (ObjectReader.getBoolean(conf.get(DaemonConfig.WORKER_PROFILER_ENABLED), false)) {
+workerProfilerChildopts = substituteChildopts(
+conf.get(DaemonConfig.WORKER_PROFILER_CHILDOPTS), memOnheap, memOffheap
+);
+}
+return workerProfilerChildopts;
+}
+</code-whole>
+
+<code-specified>
+if (ObjectReader.getBoolean(conf.get(DaemonConfig.WORKER_PROFILER_ENABLED), false)) {
+workerProfilerChildopts = substituteChildopts(
+conf.get(DaemonConfig.WORKER_PROFILER_CHILDOPTS), memOnheap, memOffheap
+);
+}
+</code-specified>

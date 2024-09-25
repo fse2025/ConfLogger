@@ -1,0 +1,16 @@
+<code-whole>
+public UniqValueCount(long maxNum) {
+uniqItems = new TreeMap<Object, Object>();
+this.numItems = 0;
+maxNumItems = Long.MAX_VALUE;
+if (maxNum > 0 ) {
+this.maxNumItems = maxNum;
+}
+}
+</code-whole>
+
+<code-specified>
+if (maxNum > 0 ) {
+this.maxNumItems = maxNum;
+}
+</code-specified>

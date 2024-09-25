@@ -1,0 +1,24 @@
+<code-whole>
+String key = getEnabledConfigKey();
+boolean enabled = conf.getBoolean(key, false);
+if (enabled) {
+container.addGlobalFilter("Cross Origin Filter",
+CrossOriginFilter.class.getName(),
+getFilterParameters(conf, getPrefix()));
+} else {
+LOG.info("CORS filter not enabled. Please set " + key
++ " to 'true' to enable it");
+}
+}
+</code-whole>
+
+<code-specified>
+if (enabled) {
+container.addGlobalFilter("Cross Origin Filter",
+CrossOriginFilter.class.getName(),
+getFilterParameters(conf, getPrefix()));
+} else {
+LOG.info("CORS filter not enabled. Please set " + key
++ " to 'true' to enable it");
+}
+</code-specified>

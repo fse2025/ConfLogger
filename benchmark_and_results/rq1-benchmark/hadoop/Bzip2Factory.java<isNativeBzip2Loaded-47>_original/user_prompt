@@ -1,0 +1,51 @@
+<code-whole>
+public static synchronized boolean isNativeBzip2Loaded(Configuration conf) {
+String libname = conf.get("io.compression.codec.bzip2.library",
+"system-native");
+if (!bzip2LibraryName.equals(libname)) {
+nativeBzip2Loaded = false;
+bzip2LibraryName = libname;
+if (libname.equals("java-builtin")) {
+LOG.info("Using pure-Java version of bzip2 library");
+} else if (NativeCodeLoader.isNativeCodeLoaded()) {
+try {
+// Initialize the native library.
+Bzip2Compressor.initSymbols(libname);
+Bzip2Decompressor.initSymbols(libname);
+nativeBzip2Loaded = true;
+LOG.info("Successfully loaded & initialized native-bzip2 library " +
+libname);
+} catch (Throwable t) {
+LOG.warn("Failed to load/initialize native-bzip2 library " +
+libname + ", will use pure-Java version");
+}
+}
+}
+return nativeBzip2Loaded;
+}
+</code-whole>
+
+<code-specified>
+if (!bzip2LibraryName.equals(libname)) {
+nativeBzip2Loaded = false;
+bzip2LibraryName = libname;
+if (libname.equals("java-builtin")) {
+LOG.info("Using pure-Java version of bzip2 library");
+} else if (NativeCodeLoader.isNativeCodeLoaded()) {
+try {
+// Initialize the native library.
+Bzip2Compressor.initSymbols(libname);
+Bzip2Decompressor.initSymbols(libname);
+nativeBzip2Loaded = true;
+LOG.info("Successfully loaded & initialized native-bzip2 library " +
+libname);
+} catch (Throwable t) {
+LOG.warn("Failed to load/initialize native-bzip2 library " +
+libname + ", will use pure-Java version");
+}
+}
+}
+</code-specified>
+<param>
+io.compression.codec.bzip2.library
+</param>

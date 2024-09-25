@@ -1,0 +1,23 @@
+<code-whole>
+Configuration conf) {
+if (OpenSsl.isAvailable() && conf.getBoolean(TLS_USE_OPENSSL, true)) {
+sslContextBuilder.sslProvider(SslProvider.OPENSSL);
+return true;
+} else {
+sslContextBuilder.sslProvider(SslProvider.JDK);
+return false;
+}
+</code-whole>
+
+<code-specified>
+if (OpenSsl.isAvailable() && conf.getBoolean(TLS_USE_OPENSSL, true)) {
+sslContextBuilder.sslProvider(SslProvider.OPENSSL);
+return true;
+} else {
+sslContextBuilder.sslProvider(SslProvider.JDK);
+return false;
+}
+</code-specified>
+<param>
+null
+</param>

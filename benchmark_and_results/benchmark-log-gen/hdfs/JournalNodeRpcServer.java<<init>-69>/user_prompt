@@ -1,0 +1,64 @@
+<code-whole>
+JournalNodeRpcServer(Configuration conf, JournalNode jn) throws IOException {
+this.jn = jn;
+
+Configuration confCopy = new Configuration(conf);
+
+// Ensure that nagling doesn't kick in, which could cause latency issues.
+confCopy.setBoolean(
+CommonConfigurationKeysPublic.IPC_SERVER_TCPNODELAY_KEY,
+true);
+
+InetSocketAddress addr = getAddress(confCopy);
+String bindHost = conf.getTrimmed(DFS_JOURNALNODE_RPC_BIND_HOST_KEY, null);
+if (bindHost == null) {
+bindHost = addr.getHostName();
+}
+LOG.info("RPC server is binding to " + bindHost + ":" + addr.getPort());
+
+RPC.setProtocolEngine(confCopy, QJournalProtocolPB.class,
+ProtobufRpcEngine2.class);
+QJournalProtocolServerSideTranslatorPB translator =
+new QJournalProtocolServerSideTranslatorPB(this);
+BlockingService service = QJournalProtocolService
+.newReflectiveBlockingService(translator);
+
+this.server = new RPC.Builder(confCopy)
+.setProtocol(QJournalProtocolPB.class)
+.setInstance(service)
+.setBindAddress(bindHost)
+.setPort(addr.getPort())
+.setNumHandlers(HANDLER_COUNT)
+.setVerbose(false)
+.build();
+
+
+//Adding InterQJournalProtocolPB to server
+InterQJournalProtocolServerSideTranslatorPB
+qJournalProtocolServerSideTranslatorPB = new
+InterQJournalProtocolServerSideTranslatorPB(this);
+
+BlockingService interQJournalProtocolService = InterQJournalProtocolService
+.newReflectiveBlockingService(qJournalProtocolServerSideTranslatorPB);
+
+DFSUtil.addPBProtocol(confCopy, InterQJournalProtocolPB.class,
+interQJournalProtocolService, server);
+
+
+// set service-level authorization security policy
+if (confCopy.getBoolean(
+CommonConfigurationKeys.HADOOP_SECURITY_AUTHORIZATION, false)) {
+server.refreshServiceAcl(confCopy, new HDFSPolicyProvider());
+}
+this.server.setTracer(jn.tracer);
+}
+</code-whole>
+
+<code-specified>
+if (confCopy.getBoolean(
+</code-specified>
+<code-specified>
+if (bindHost == null) {
+bindHost = addr.getHostName();
+}
+</code-specified>

@@ -1,0 +1,26 @@
+<code-whole>
+Context context) {
+this.service = service;
+long recheckTimeout = this.service.getConf().getLong(
+DFS_STORAGE_POLICY_SATISFIER_RECHECK_TIMEOUT_MILLIS_KEY,
+DFS_STORAGE_POLICY_SATISFIER_RECHECK_TIMEOUT_MILLIS_DEFAULT);
+if (recheckTimeout > 0) {
+this.minCheckTimeout = Math.min(minCheckTimeout, recheckTimeout);
+}
+
+this.selfRetryTimeout = this.service.getConf().getLong(
+DFS_STORAGE_POLICY_SATISFIER_SELF_RETRY_TIMEOUT_MILLIS_KEY,
+DFS_STORAGE_POLICY_SATISFIER_SELF_RETRY_TIMEOUT_MILLIS_DEFAULT);
+this.blockStorageMovementNeeded = unsatisfiedStorageMovementFiles;
+storageMovementAttemptedItems = new ArrayList<>();
+scheduledBlkLocs = new HashMap<>();
+movementFinishedBlocks = new LinkedBlockingQueue<>();
+this.context = context;
+}
+</code-whole>
+
+<code-specified>
+if (recheckTimeout > 0) {
+this.minCheckTimeout = Math.min(minCheckTimeout, recheckTimeout);
+}
+</code-specified>

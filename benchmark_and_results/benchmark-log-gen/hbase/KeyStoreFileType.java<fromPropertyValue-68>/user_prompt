@@ -1,0 +1,13 @@
+<code-whole>
+if (propertyValue == null || propertyValue.length() == 0) {
+return null;
+}
+return KeyStoreFileType.valueOf(propertyValue.toUpperCase());
+}
+</code-whole>
+
+<code-specified>
+if (propertyValue == null || propertyValue.length() == 0) {
+return null;
+}
+</code-specified>

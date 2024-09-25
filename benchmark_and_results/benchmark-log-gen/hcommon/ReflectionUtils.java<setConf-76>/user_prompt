@@ -1,0 +1,23 @@
+<code-whole>
+if (conf != null) {
+if (theObject instanceof Configurable) {
+((Configurable) theObject).setConf(conf);
+}
+setJobConf(theObject, conf);
+}
+}
+</code-whole>
+
+<code-specified>
+if (theObject instanceof Configurable) {
+((Configurable) theObject).setConf(conf);
+}
+</code-specified>
+<code-specified>
+if (conf != null) {
+if (theObject instanceof Configurable) {
+((Configurable) theObject).setConf(conf);
+}
+setJobConf(theObject, conf);
+}
+</code-specified>

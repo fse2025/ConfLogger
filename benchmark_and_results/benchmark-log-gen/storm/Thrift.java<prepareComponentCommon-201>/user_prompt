@@ -1,0 +1,30 @@
+<code-whole>
+Map<GlobalStreamId, Grouping> mappedInputs = new HashMap<>();
+Map<String, StreamInfo> mappedOutputs = new HashMap<>();
+if (inputs != null && !inputs.isEmpty()) {
+mappedInputs.putAll(inputs);
+}
+if (outputs != null && !outputs.isEmpty()) {
+mappedOutputs.putAll(outputs);
+}
+ComponentCommon component = new ComponentCommon(mappedInputs, mappedOutputs);
+if (parallelismHint != null) {
+component.set_parallelism_hint(parallelismHint);
+}
+if (conf != null) {
+component.set_json_conf(JSONValue.toJSONString(conf));
+}
+return component;
+}
+</code-whole>
+
+<code-specified>
+if (conf != null) {
+component.set_json_conf(JSONValue.toJSONString(conf));
+}
+</code-specified>
+<code-specified>
+if (parallelismHint != null) {
+component.set_parallelism_hint(parallelismHint);
+}
+</code-specified>

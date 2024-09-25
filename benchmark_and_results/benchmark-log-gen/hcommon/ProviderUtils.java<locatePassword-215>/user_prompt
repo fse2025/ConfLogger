@@ -1,0 +1,28 @@
+<code-whole>
+char[] pass = null;
+if (System.getenv().containsKey(envWithPass)) {
+pass = System.getenv(envWithPass).toCharArray();
+}
+if (pass == null) {
+if (fileWithPass != null) {
+ClassLoader cl = Thread.currentThread().getContextClassLoader();
+URL pwdFile = cl.getResource(fileWithPass);
+if (pwdFile == null) {
+// Provided Password file does not exist
+throw new IOException("Password file does not exist");
+}
+try (InputStream is = pwdFile.openStream()) {
+pass = IOUtils.toString(is, StandardCharsets.UTF_8).trim().toCharArray();
+}
+}
+}
+return pass;
+}
+</code-whole>
+
+<code-specified>
+if (pwdFile == null) {
+// Provided Password file does not exist
+throw new IOException("Password file does not exist");
+}
+</code-specified>

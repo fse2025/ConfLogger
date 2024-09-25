@@ -1,0 +1,64 @@
+<code-whole>
+String nameserviceId, String namenodeId) {
+if ((nameserviceId != null && !nameserviceId.isEmpty()) ||
+(namenodeId != null && !namenodeId.isEmpty())) {
+if (nameserviceId != null) {
+conf.set(DFS_NAMESERVICE_ID, nameserviceId);
+}
+if (namenodeId != null) {
+conf.set(DFS_HA_NAMENODE_ID_KEY, namenodeId);
+}
+
+DFSUtil.setGenericConf(conf, nameserviceId, namenodeId,
+NAMENODE_SPECIFIC_KEYS);
+DFSUtil.setGenericConf(conf, nameserviceId, null,
+NAMESERVICE_SPECIFIC_KEYS);
+}
+
+// If the RPC address is set use it to (re-)configure the default FS
+if (conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY) != null) {
+URI defaultUri = URI.create(HdfsConstants.HDFS_URI_SCHEME + "://"
++ conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY));
+conf.set(FS_DEFAULT_NAME_KEY, defaultUri.toString());
+}
+}
+</code-whole>
+
+<code-specified>
+if ((nameserviceId != null && !nameserviceId.isEmpty()) ||
+</code-specified>
+<param>
+dfs.web.authentication.kerberos.keytab
+</param>
+<code-specified>
+if (nameserviceId != null) {
+conf.set(DFS_NAMESERVICE_ID, nameserviceId);
+}
+</code-specified>
+<param>
+dfs.storage.policy.satisfier.mode
+</param>
+<code-specified>
+if ((nameserviceId != null && !nameserviceId.isEmpty()) ||
+</code-specified>
+<param>
+dfs.namenode.rpc-address
+</param>
+<code-specified>
+if (namenodeId != null) {
+conf.set(DFS_HA_NAMENODE_ID_KEY, namenodeId);
+}
+</code-specified>
+<param>
+dfs.namenode.fslock.fair
+</param>
+<code-specified>
+if (conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY) != null) {
+URI defaultUri = URI.create(HdfsConstants.HDFS_URI_SCHEME + "://"
++ conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY));
+conf.set(FS_DEFAULT_NAME_KEY, defaultUri.toString());
+}
+</code-specified>
+<param>
+dfs.namenode.rpc-address
+</param>

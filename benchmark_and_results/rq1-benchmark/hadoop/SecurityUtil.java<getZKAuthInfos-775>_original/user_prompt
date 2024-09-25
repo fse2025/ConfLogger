@@ -1,0 +1,28 @@
+<code-whole>
+String configKey) throws IOException {
+char[] zkAuthChars = conf.getPassword(configKey);
+String zkAuthConf =
+zkAuthChars != null ? String.valueOf(zkAuthChars) : null;
+try {
+zkAuthConf = ZKUtil.resolveConfIndirection(zkAuthConf);
+if (zkAuthConf != null) {
+return ZKUtil.parseAuth(zkAuthConf);
+} else {
+return Collections.emptyList();
+}
+} catch (IOException | ZKUtil.BadAuthFormatException e) {
+LOG.error("Couldn't read Auth based on {}", configKey);
+throw e;
+}
+</code-whole>
+
+<code-specified>
+if (zkAuthConf != null) {
+return ZKUtil.parseAuth(zkAuthConf);
+} else {
+return Collections.emptyList();
+}
+</code-specified>
+<param>
+null
+</param>

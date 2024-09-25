@@ -1,0 +1,227 @@
+<code-whole>
+throws IOException {
+provider = DFSUtil.createKeyProviderCryptoExtension(conf);
+LOG.info("KeyProvider: " + provider);
+if (conf.getBoolean(DFS_NAMENODE_AUDIT_LOG_ASYNC_KEY,
+DFS_NAMENODE_AUDIT_LOG_ASYNC_DEFAULT)) {
+LOG.info("Enabling async auditlog");
+enableAsyncAuditLog(conf);
+}
+auditLogWithRemotePort =
+conf.getBoolean(DFS_NAMENODE_AUDIT_LOG_WITH_REMOTE_PORT_KEY,
+DFS_NAMENODE_AUDIT_LOG_WITH_REMOTE_PORT_DEFAULT);
+this.contextFieldSeparator =
+conf.get(HADOOP_CALLER_CONTEXT_SEPARATOR_KEY,
+HADOOP_CALLER_CONTEXT_SEPARATOR_DEFAULT);
+fsLock = new FSNamesystemLock(conf, detailedLockHoldTimeMetrics);
+cond = fsLock.newWriteLockCondition();
+cpLock = new ReentrantLock();
+
+this.fsImage = fsImage;
+try {
+resourceRecheckInterval = conf.getLong(
+DFS_NAMENODE_RESOURCE_CHECK_INTERVAL_KEY,
+DFS_NAMENODE_RESOURCE_CHECK_INTERVAL_DEFAULT);
+
+this.fsOwner = UserGroupInformation.getCurrentUser();
+this.supergroup = conf.get(DFS_PERMISSIONS_SUPERUSERGROUP_KEY,
+DFS_PERMISSIONS_SUPERUSERGROUP_DEFAULT);
+this.isPermissionEnabled = conf.getBoolean(DFS_PERMISSIONS_ENABLED_KEY,
+DFS_PERMISSIONS_ENABLED_DEFAULT);
+
+this.isStoragePolicyEnabled =
+conf.getBoolean(DFS_STORAGE_POLICY_ENABLED_KEY,
+DFS_STORAGE_POLICY_ENABLED_DEFAULT);
+this.isStoragePolicySuperuserOnly =
+conf.getBoolean(DFS_STORAGE_POLICY_PERMISSIONS_SUPERUSER_ONLY_KEY,
+DFS_STORAGE_POLICY_PERMISSIONS_SUPERUSER_ONLY_DEFAULT);
+
+this.snapshotDiffReportLimit =
+conf.getInt(DFS_NAMENODE_SNAPSHOT_DIFF_LISTING_LIMIT,
+DFS_NAMENODE_SNAPSHOT_DIFF_LISTING_LIMIT_DEFAULT);
+
+LOG.info("fsOwner                = " + fsOwner);
+LOG.info("supergroup             = " + supergroup);
+LOG.info("isPermissionEnabled    = " + isPermissionEnabled);
+LOG.info("isStoragePolicyEnabled = " + isStoragePolicyEnabled);
+
+// block allocation has to be persisted in HA using a shared edits directory
+// so that the standby has up-to-date namespace information
+nameserviceId = DFSUtil.getNamenodeNameServiceId(conf);
+this.haEnabled = HAUtil.isHAEnabled(conf, nameserviceId);
+
+// Sanity check the HA-related config.
+if (nameserviceId != null) {
+LOG.info("Determined nameservice ID: " + nameserviceId);
+}
+LOG.info("HA Enabled: " + haEnabled);
+if (!haEnabled && HAUtil.usesSharedEditsDir(conf)) {
+LOG.warn("Configured NNs:\n" + DFSUtil.nnAddressesAsString(conf));
+throw new IOException("Invalid configuration: a shared edits dir " +
+"must not be specified if HA is not enabled.");
+}
+
+// block manager needs the haEnabled initialized
+this.blockManager = new BlockManager(this, haEnabled, conf);
+this.datanodeStatistics = blockManager.getDatanodeManager().getDatanodeStatistics();
+
+// Get the checksum type from config
+String checksumTypeStr = conf.get(DFS_CHECKSUM_TYPE_KEY,
+DFS_CHECKSUM_TYPE_DEFAULT);
+DataChecksum.Type checksumType;
+try {
+checksumType = DataChecksum.Type.valueOf(checksumTypeStr);
+} catch (IllegalArgumentException iae) {
+throw new IOException("Invalid checksum type in "
++ DFS_CHECKSUM_TYPE_KEY + ": " + checksumTypeStr);
+}
+
+try {
+digest = MessageDigest.getInstance("MD5");
+} catch (NoSuchAlgorithmException e) {
+throw new IOException("Algorithm 'MD5' not found");
+}
+
+this.serverDefaults = new FsServerDefaults(
+conf.getLongBytes(DFS_BLOCK_SIZE_KEY, DFS_BLOCK_SIZE_DEFAULT),
+conf.getInt(DFS_BYTES_PER_CHECKSUM_KEY, DFS_BYTES_PER_CHECKSUM_DEFAULT),
+conf.getInt(DFS_CLIENT_WRITE_PACKET_SIZE_KEY, DFS_CLIENT_WRITE_PACKET_SIZE_DEFAULT),
+(short) conf.getInt(DFS_REPLICATION_KEY, DFS_REPLICATION_DEFAULT),
+conf.getInt(IO_FILE_BUFFER_SIZE_KEY, IO_FILE_BUFFER_SIZE_DEFAULT),
+conf.getBoolean(DFS_ENCRYPT_DATA_TRANSFER_KEY, DFS_ENCRYPT_DATA_TRANSFER_DEFAULT),
+conf.getLong(FS_TRASH_INTERVAL_KEY, FS_TRASH_INTERVAL_DEFAULT),
+checksumType,
+conf.getTrimmed(
+CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH,
+""),
+blockManager.getStoragePolicySuite().getDefaultPolicy().getId());
+
+this.maxFsObjects = conf.getLong(DFS_NAMENODE_MAX_OBJECTS_KEY,
+DFS_NAMENODE_MAX_OBJECTS_DEFAULT);
+
+this.minBlockSize = conf.getLongBytes(
+DFSConfigKeys.DFS_NAMENODE_MIN_BLOCK_SIZE_KEY,
+DFSConfigKeys.DFS_NAMENODE_MIN_BLOCK_SIZE_DEFAULT);
+this.maxBlocksPerFile = conf.getLong(DFSConfigKeys.DFS_NAMENODE_MAX_BLOCKS_PER_FILE_KEY,
+DFSConfigKeys.DFS_NAMENODE_MAX_BLOCKS_PER_FILE_DEFAULT);
+this.batchedListingLimit = conf.getInt(
+DFSConfigKeys.DFS_NAMENODE_BATCHED_LISTING_LIMIT,
+DFSConfigKeys.DFS_NAMENODE_BATCHED_LISTING_LIMIT_DEFAULT);
+Preconditions.checkArgument(
+batchedListingLimit > 0,
+DFSConfigKeys.DFS_NAMENODE_BATCHED_LISTING_LIMIT +
+" must be greater than zero");
+this.numCommittedAllowed = conf.getInt(
+DFSConfigKeys.DFS_NAMENODE_FILE_CLOSE_NUM_COMMITTED_ALLOWED_KEY,
+DFSConfigKeys.DFS_NAMENODE_FILE_CLOSE_NUM_COMMITTED_ALLOWED_DEFAULT);
+
+this.maxCorruptFileBlocksReturn = conf.getInt(
+DFSConfigKeys.DFS_NAMENODE_MAX_CORRUPT_FILE_BLOCKS_RETURNED_KEY,
+DFSConfigKeys.DFS_NAMENODE_MAX_CORRUPT_FILE_BLOCKS_RETURNED_DEFAULT);
+
+this.dtpReplaceDatanodeOnFailure = ReplaceDatanodeOnFailure.get(conf);
+
+this.standbyShouldCheckpoint = conf.getBoolean(
+DFS_HA_STANDBY_CHECKPOINTS_KEY, DFS_HA_STANDBY_CHECKPOINTS_DEFAULT);
+// # edit autoroll threshold is a multiple of the checkpoint threshold
+this.editLogRollerThreshold = (long)
+(conf.getFloat(
+DFS_NAMENODE_EDIT_LOG_AUTOROLL_MULTIPLIER_THRESHOLD,
+DFS_NAMENODE_EDIT_LOG_AUTOROLL_MULTIPLIER_THRESHOLD_DEFAULT) *
+conf.getLong(
+DFS_NAMENODE_CHECKPOINT_TXNS_KEY,
+DFS_NAMENODE_CHECKPOINT_TXNS_DEFAULT));
+this.editLogRollerInterval = conf.getInt(
+DFS_NAMENODE_EDIT_LOG_AUTOROLL_CHECK_INTERVAL_MS,
+DFS_NAMENODE_EDIT_LOG_AUTOROLL_CHECK_INTERVAL_MS_DEFAULT);
+
+this.lazyPersistFileScrubIntervalSec = conf.getInt(
+DFS_NAMENODE_LAZY_PERSIST_FILE_SCRUB_INTERVAL_SEC,
+DFS_NAMENODE_LAZY_PERSIST_FILE_SCRUB_INTERVAL_SEC_DEFAULT);
+
+if (this.lazyPersistFileScrubIntervalSec < 0) {
+throw new IllegalArgumentException(
+DFS_NAMENODE_LAZY_PERSIST_FILE_SCRUB_INTERVAL_SEC
++ " must be zero (for disable) or greater than zero.");
+}
+
+this.edekCacheLoaderDelay = conf.getInt(
+DFSConfigKeys.DFS_NAMENODE_EDEKCACHELOADER_INITIAL_DELAY_MS_KEY,
+DFSConfigKeys.DFS_NAMENODE_EDEKCACHELOADER_INITIAL_DELAY_MS_DEFAULT);
+this.edekCacheLoaderInterval = conf.getInt(
+DFSConfigKeys.DFS_NAMENODE_EDEKCACHELOADER_INTERVAL_MS_KEY,
+DFSConfigKeys.DFS_NAMENODE_EDEKCACHELOADER_INTERVAL_MS_DEFAULT);
+
+this.leaseRecheckIntervalMs = conf.getLong(
+DFS_NAMENODE_LEASE_RECHECK_INTERVAL_MS_KEY,
+DFS_NAMENODE_LEASE_RECHECK_INTERVAL_MS_DEFAULT);
+Preconditions.checkArgument(
+leaseRecheckIntervalMs > 0,
+DFSConfigKeys.DFS_NAMENODE_LEASE_RECHECK_INTERVAL_MS_KEY +
+" must be greater than zero");
+this.maxLockHoldToReleaseLeaseMs = conf.getLong(
+DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_KEY,
+DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_DEFAULT);
+
+// For testing purposes, allow the DT secret manager to be started regardless
+// of whether security is enabled.
+alwaysUseDelegationTokensForTests = conf.getBoolean(
+DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_KEY,
+DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_DEFAULT);
+
+this.dtSecretManager = createDelegationTokenSecretManager(conf);
+this.dir = new FSDirectory(this, conf);
+this.snapshotManager = new SnapshotManager(conf, dir);
+this.cacheManager = new CacheManager(this, conf, blockManager);
+// Init ErasureCodingPolicyManager instance.
+ErasureCodingPolicyManager.getInstance().init(conf);
+this.topConf = new TopConf(conf);
+this.auditLoggers = initAuditLoggers(conf);
+this.isDefaultAuditLogger = auditLoggers.size() == 1 &&
+auditLoggers.get(0) instanceof DefaultAuditLogger;
+this.retryCache = ignoreRetryCache ? null : initRetryCache(conf);
+Class<? extends INodeAttributeProvider> klass = conf.getClass(
+DFS_NAMENODE_INODE_ATTRIBUTES_PROVIDER_KEY,
+null, INodeAttributeProvider.class);
+if (klass != null) {
+inodeAttributeProvider = ReflectionUtils.newInstance(klass, conf);
+LOG.info("Using INode attribute provider: " + klass.getName());
+}
+this.maxListOpenFilesResponses = conf.getInt(
+DFSConfigKeys.DFS_NAMENODE_LIST_OPENFILES_NUM_RESPONSES,
+DFSConfigKeys.DFS_NAMENODE_LIST_OPENFILES_NUM_RESPONSES_DEFAULT
+);
+Preconditions.checkArgument(maxListOpenFilesResponses > 0,
+DFSConfigKeys.DFS_NAMENODE_LIST_OPENFILES_NUM_RESPONSES +
+" must be a positive integer."
+);
+this.allowOwnerSetQuota = conf.getBoolean(
+DFSConfigKeys.DFS_PERMISSIONS_ALLOW_OWNER_SET_QUOTA_KEY,
+DFSConfigKeys.DFS_PERMISSIONS_ALLOW_OWNER_SET_QUOTA_DEFAULT);
+this.blockDeletionIncrement = conf.getInt(
+DFSConfigKeys.DFS_NAMENODE_BLOCK_DELETION_INCREMENT_KEY,
+DFSConfigKeys.DFS_NAMENODE_BLOCK_DELETION_INCREMENT_DEFAULT);
+Preconditions.checkArgument(blockDeletionIncrement > 0,
+DFSConfigKeys.DFS_NAMENODE_BLOCK_DELETION_INCREMENT_KEY +
+" must be a positive integer.");
+} catch(IOException e) {
+LOG.error(getClass().getSimpleName() + " initialization failed.", e);
+close();
+throw e;
+} catch (RuntimeException re) {
+LOG.error(getClass().getSimpleName() + " initialization failed.", re);
+close();
+throw re;
+}
+}
+</code-whole>
+
+<code-specified>
+if (klass != null) {
+inodeAttributeProvider = ReflectionUtils.newInstance(klass, conf);
+LOG.info("Using INode attribute provider: " + klass.getName());
+}
+</code-specified>
+<code-specified>
+if (conf.getBoolean(DFS_NAMENODE_AUDIT_LOG_ASYNC_KEY,
+</code-specified>

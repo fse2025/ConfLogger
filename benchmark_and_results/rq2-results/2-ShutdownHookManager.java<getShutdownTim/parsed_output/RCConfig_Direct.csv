@@ -1,0 +1,8 @@
+name,value,relevant log,explanation
+hadoop.service.shutdown.timeout,<missing>,INFO	Possible loss of precision converting 50ns to SECONDS for hadoop.service.shutdown.timeout,property-hit
+mapreduce.jobhistory.loadedjobs.cache.size,5,INFO	Possible loss of precision converting 50ns to SECONDS for hadoop.service.shutdown.timeout,value-hit
+ipc.client.connect.max.retries.on.timeouts,45,INFO	Possible loss of precision converting 50ns to SECONDS for hadoop.service.shutdown.timeout,property-item-hit	on
+mapreduce.shuffle.max.threads,0,INFO	Possible loss of precision converting 50ns to SECONDS for hadoop.service.shutdown.timeout,value-hit
+hadoop.service.shutdown.timeout,<missing>,"WARN	The shutdown timeout duration is less than the minimum allowed value. Parameter: hadoop.service.shutdown.timeout, Provided Value: 0, Minimum Allowed: 1. Setting duration to the minimum value. Ensure the configuration parameter 'hadoop.service.shutdown.timeout' is set to a value greater than or equal to 1.",property-hit
+ipc.client.connect.max.retries.on.timeouts,45,"WARN	The shutdown timeout duration is less than the minimum allowed value. Parameter: hadoop.service.shutdown.timeout, Provided Value: 0, Minimum Allowed: 1. Setting duration to the minimum value. Ensure the configuration parameter 'hadoop.service.shutdown.timeout' is set to a value greater than or equal to 1.",property-item-hit	on
+mapreduce.shuffle.max.threads,0,"WARN	The shutdown timeout duration is less than the minimum allowed value. Parameter: hadoop.service.shutdown.timeout, Provided Value: 0, Minimum Allowed: 1. Setting duration to the minimum value. Ensure the configuration parameter 'hadoop.service.shutdown.timeout' is set to a value greater than or equal to 1.",value-hit

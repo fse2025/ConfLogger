@@ -1,0 +1,44 @@
+<code-whole>
+// values for future expansion.
+String cipherSuites = conf.get(DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY);
+if (cipherSuites == null || cipherSuites.isEmpty()) {
+return null;
+}
+if (!cipherSuites.equals(CipherSuite.AES_CTR_NOPADDING.getName())) {
+throw new IOException(String.format("Invalid cipher suite, %s=%s",
+DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY, cipherSuites));
+}
+if (options != null) {
+for (CipherOption option : options) {
+CipherSuite suite = option.getCipherSuite();
+if (suite == CipherSuite.AES_CTR_NOPADDING) {
+int keyLen = conf.getInt(
+DFS_ENCRYPT_DATA_TRANSFER_CIPHER_KEY_BITLENGTH_KEY,
+DFS_ENCRYPT_DATA_TRANSFER_CIPHER_KEY_BITLENGTH_DEFAULT) / 8;
+CryptoCodec codec = CryptoCodec.getInstance(conf, suite);
+byte[] inKey = new byte[keyLen];
+byte[] inIv = new byte[suite.getAlgorithmBlockSize()];
+byte[] outKey = new byte[keyLen];
+byte[] outIv = new byte[suite.getAlgorithmBlockSize()];
+assert codec != null;
+codec.generateSecureRandom(inKey);
+codec.generateSecureRandom(inIv);
+codec.generateSecureRandom(outKey);
+codec.generateSecureRandom(outIv);
+codec.close();
+return new CipherOption(suite, inKey, inIv, outKey, outIv);
+}
+}
+}
+return null;
+}
+</code-whole>
+
+<code-specified>
+if (cipherSuites == null || cipherSuites.isEmpty()) {
+return null;
+}
+</code-specified>
+<param>
+dfs.encrypt.data.transfer.cipher.suites
+</param>

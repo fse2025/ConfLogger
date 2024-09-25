@@ -1,0 +1,50 @@
+<code-whole>
+RPC.setProtocolEngine(conf, RefreshUserMappingsProtocolPB.class,
+ProtobufRpcEngine2.class);
+
+RefreshUserMappingsProtocolServerSideTranslatorPB refreshUserMappingXlator = new RefreshUserMappingsProtocolServerSideTranslatorPB(
+this);
+BlockingService refreshUserMappingService = RefreshUserMappingsProtocolService
+.newReflectiveBlockingService(refreshUserMappingXlator);
+
+GetUserMappingsProtocolServerSideTranslatorPB getUserMappingXlator = new GetUserMappingsProtocolServerSideTranslatorPB(
+this);
+BlockingService getUserMappingService = GetUserMappingsProtocolService
+.newReflectiveBlockingService(getUserMappingXlator);
+
+HSAdminRefreshProtocolServerSideTranslatorPB refreshHSAdminProtocolXlator = new HSAdminRefreshProtocolServerSideTranslatorPB(
+this);
+BlockingService refreshHSAdminProtocolService = HSAdminRefreshProtocolService
+.newReflectiveBlockingService(refreshHSAdminProtocolXlator);
+
+clientRpcAddress = conf.getSocketAddr(
+JHAdminConfig.MR_HISTORY_BIND_HOST,
+JHAdminConfig.JHS_ADMIN_ADDRESS,
+JHAdminConfig.DEFAULT_JHS_ADMIN_ADDRESS,
+JHAdminConfig.DEFAULT_JHS_ADMIN_PORT);
+clientRpcServer = new RPC.Builder(conf)
+.setProtocol(RefreshUserMappingsProtocolPB.class)
+.setInstance(refreshUserMappingService)
+.setBindAddress(clientRpcAddress.getHostName())
+.setPort(clientRpcAddress.getPort()).setVerbose(false).build();
+
+addProtocol(conf, GetUserMappingsProtocolPB.class, getUserMappingService);
+addProtocol(conf, HSAdminRefreshProtocolPB.class,
+refreshHSAdminProtocolService);
+
+// Enable service authorization?
+if (conf.getBoolean(
+CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHORIZATION,
+false)) {
+clientRpcServer.refreshServiceAcl(conf, new ClientHSPolicyProvider());
+}
+
+adminAcl = new AccessControlList(conf.get(JHAdminConfig.JHS_ADMIN_ACL,
+JHAdminConfig.DEFAULT_JHS_ADMIN_ACL));
+
+}
+</code-whole>
+
+<code-specified>
+if (conf.getBoolean(
+</code-specified>

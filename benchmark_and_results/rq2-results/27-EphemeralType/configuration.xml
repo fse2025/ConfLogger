@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+<property>
+<name>zookeeper.extendedTypesEnabled</name>
+<value>true</value>
+<description>Define to true to enable extended features such as the creation of TTL Nodes. They are disabled by default. IMPORTANT: when enabled server IDs must be less than 255 due to internal limitations.</description>
+</property>
+</configuration>

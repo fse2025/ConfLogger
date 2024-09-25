@@ -1,0 +1,16 @@
+<code-whole>
+int numThreads = conf.getInt(key, defVal);
+if (numThreads <= 0) {
+// ignore the setting if it is too invalid.
+numThreads = defVal;
+}
+return createCloseableTaskSubmitter(numThreads, getJobAttemptId());
+}
+</code-whole>
+
+<code-specified>
+if (numThreads <= 0) {
+// ignore the setting if it is too invalid.
+numThreads = defVal;
+}
+</code-specified>

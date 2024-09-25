@@ -1,0 +1,43 @@
+<code-whole>
+if (o == null) {
+return new ArrayList<>();
+} else if (o instanceof String) {
+return new ArrayList<String>() {
+{
+add((String) o);
+}
+};
+} else if (o instanceof Collection) {
+List<String> answer = new ArrayList<>();
+for (Object v : (Collection) o) {
+if (v != null) {
+answer.add(v.toString());
+}
+}
+return answer;
+} else {
+throw new IllegalArgumentException("Don't know how to convert to string list");
+}
+</code-whole>
+
+<code-specified>
+if (o == null) {
+return new ArrayList<>();
+} else if (o instanceof String) {
+return new ArrayList<String>() {
+{
+add((String) o);
+}
+};
+} else if (o instanceof Collection) {
+List<String> answer = new ArrayList<>();
+for (Object v : (Collection) o) {
+if (v != null) {
+answer.add(v.toString());
+}
+}
+return answer;
+} else {
+throw new IllegalArgumentException("Don't know how to convert to string list");
+}
+</code-specified>

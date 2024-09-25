@@ -1,0 +1,64 @@
+<code-whole>
+private List<InetSocketAddress> getOtherJournalNodeAddrs() {
+String uriStr = "";
+try {
+uriStr = conf.getTrimmed(DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+
+if (uriStr == null || uriStr.isEmpty()) {
+if (nameServiceId != null) {
+uriStr = conf.getTrimmed(DFSConfigKeys
+.DFS_NAMENODE_SHARED_EDITS_DIR_KEY + "." + nameServiceId);
+}
+}
+
+if (uriStr == null || uriStr.isEmpty()) {
+HashSet<String> sharedEditsUri = Sets.newHashSet();
+if (nameServiceId != null) {
+Collection<String> nnIds = DFSUtilClient.getNameNodeIds(
+conf, nameServiceId);
+for (String nnId : nnIds) {
+String suffix = nameServiceId + "." + nnId;
+uriStr = conf.getTrimmed(DFSConfigKeys
+.DFS_NAMENODE_SHARED_EDITS_DIR_KEY + "." + suffix);
+sharedEditsUri.add(uriStr);
+}
+if (sharedEditsUri.size() > 1) {
+uriStr = null;
+}
+}
+}
+
+if (uriStr == null || uriStr.isEmpty()) {
+return null;
+} else {
+return getJournalAddrList(uriStr);
+}
+
+} catch (URISyntaxException e) {
+} catch (IOException e) {
+}
+return null;
+}
+</code-whole>
+
+<code-specified>
+if (uriStr == null || uriStr.isEmpty()) {
+HashSet<String> sharedEditsUri = Sets.newHashSet();
+if (nameServiceId != null) {
+Collection<String> nnIds = DFSUtilClient.getNameNodeIds(
+conf, nameServiceId);
+for (String nnId : nnIds) {
+String suffix = nameServiceId + "." + nnId;
+uriStr = conf.getTrimmed(DFSConfigKeys
+.DFS_NAMENODE_SHARED_EDITS_DIR_KEY + "." + suffix);
+sharedEditsUri.add(uriStr);
+}
+if (sharedEditsUri.size() > 1) {
+uriStr = null;
+}
+}
+}
+</code-specified>
+<param>
+null
+</param>

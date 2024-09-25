@@ -1,0 +1,46 @@
+<code-whole>
+if (!isSASLConfigured) {
+return false;
+}
+// TODO: Rather than checking a disjunction here, should be a single member
+// variable or method in this class to determine whether the client is
+// configured to use SASL. (see also ZOOKEEPER-1455).
+try {
+if ((clientConfig.getJaasConfKey() != null)
+|| ((Configuration.getConfiguration() != null)
+&& (Configuration.getConfiguration().getAppConfigurationEntry(
+clientConfig.getProperty(
+ZKClientConfig.LOGIN_CONTEXT_NAME_KEY,
+ZKClientConfig.LOGIN_CONTEXT_NAME_KEY_DEFAULT)) != null))) {
+// Client is configured to use a valid login Configuration, so
+// authentication is either in progress, successful, or failed.
+
+// 1. Authentication hasn't finished yet: we must wait for it to do so.
+if (!isComplete() && !isFailed()) {
+return true;
+}
+
+// 2. SASL authentication has succeeded or failed..
+//noinspection RedundantIfStatement
+if (!gotLastPacket) {
+// ..but still in progress, because there is a final SASL
+// message from server which must be received.
+return true;
+}
+}
+// Either client is not configured to use a tunnelled authentication
+// scheme, or tunnelled authentication has completed (successfully or
+// not), and all server SASL messages have been received.
+return false;
+} catch (SecurityException e) {
+// Thrown if the caller does not have permission to retrieve the Configuration.
+// In this case, simply returning false is correct.
+LOG.debug("Could not retrieve login configuration", e);
+
+return false;
+}
+</code-whole>
+
+<code-specified>
+if ((clientConfig.getJaasConfKey() != null)
+</code-specified>

@@ -1,0 +1,6 @@
+<configuration>
+<property>
+<name>mapreduce.partition.keypartitioner.options </name>
+<value>-1;93</value>
+</property>
+</configuration>

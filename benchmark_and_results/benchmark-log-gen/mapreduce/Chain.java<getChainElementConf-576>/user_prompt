@@ -1,0 +1,37 @@
+<code-whole>
+Configuration conf = null;
+try (Stringifier<Configuration> stringifier =
+new DefaultStringifier<Configuration>(jobConf, Configuration.class);) {
+String confString = jobConf.get(confKey, null);
+if (confString != null) {
+conf = stringifier.fromString(jobConf.get(confKey, null));
+}
+} catch (IOException ioex) {
+throw new RuntimeException(ioex);
+}
+// we have to do this because the Writable desearialization clears all
+// values set in the conf making not possible do a
+// new Configuration(jobConf) in the creation of the conf above
+jobConf = new Configuration(jobConf);
+
+if (conf != null) {
+for (Map.Entry<String, String> entry : conf) {
+jobConf.set(entry.getKey(), entry.getValue());
+}
+}
+return jobConf;
+}
+</code-whole>
+
+<code-specified>
+if (confString != null) {
+conf = stringifier.fromString(jobConf.get(confKey, null));
+}
+</code-specified>
+<code-specified>
+if (conf != null) {
+for (Map.Entry<String, String> entry : conf) {
+jobConf.set(entry.getKey(), entry.getValue());
+}
+}
+</code-specified>

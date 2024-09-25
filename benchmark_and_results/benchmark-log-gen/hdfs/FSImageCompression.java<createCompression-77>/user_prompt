@@ -1,0 +1,21 @@
+<code-whole>
+boolean compressImage = conf.getBoolean(
+DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY,
+DFSConfigKeys.DFS_IMAGE_COMPRESS_DEFAULT);
+
+if (!compressImage) {
+return createNoopCompression();
+}
+
+String codecClassName = conf.get(
+DFSConfigKeys.DFS_IMAGE_COMPRESSION_CODEC_KEY,
+DFSConfigKeys.DFS_IMAGE_COMPRESSION_CODEC_DEFAULT);
+return createCompression(conf, codecClassName);
+}
+</code-whole>
+
+<code-specified>
+if (!compressImage) {
+return createNoopCompression();
+}
+</code-specified>

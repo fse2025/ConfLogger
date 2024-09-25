@@ -1,0 +1,33 @@
+<code-whole>
+Map<String, String> saslProps = saslPropsResolver.getClientProperties(addr);
+
+// secretKey != null only happens when this is called by DN
+// sending to downstream DN. If called from client, this will be null,
+// as there is no key for client to generate mac instance.
+// So that, if a different QOP is desired for inter-DN communication,
+// the check below will use new QOP to create a secret, which includes
+// the new QOP.
+if (secretKey != null) {
+String newQOP = conf
+.get(DFS_ENCRYPT_DATA_OVERWRITE_DOWNSTREAM_NEW_QOP_KEY);
+if (newQOP != null) {
+saslProps.put(Sasl.QOP, newQOP);
+}
+LOG.debug("DataNode overwriting downstream QOP " +
+saslProps.get(Sasl.QOP));
+updateToken(accessToken, secretKey, saslProps);
+}
+targetQOP = saslProps.get(Sasl.QOP);
+String userName = buildUserName(accessToken);
+char[] password = buildClientPassword(accessToken);
+CallbackHandler callbackHandler = new SaslClientCallbackHandler(userName,
+password);
+return doSaslHandshake(addr, underlyingOut, underlyingIn, userName,
+saslProps, callbackHandler, accessToken);
+</code-whole>
+
+<code-specified>
+if (newQOP != null) {
+saslProps.put(Sasl.QOP, newQOP);
+}
+</code-specified>

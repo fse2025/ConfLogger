@@ -1,0 +1,34 @@
+<code-whole>
+Class<?> jobConfClass =
+conf.getClassByNameOrNull("org.apache.hadoop.mapred.JobConf");
+if (jobConfClass == null) {
+return;
+}
+
+Class<?> jobConfigurableClass =
+conf.getClassByNameOrNull("org.apache.hadoop.mapred.JobConfigurable");
+if (jobConfigurableClass == null) {
+return;
+}
+if (jobConfClass.isAssignableFrom(conf.getClass()) &&
+jobConfigurableClass.isAssignableFrom(theObject.getClass())) {
+Method configureMethod =
+jobConfigurableClass.getMethod("configure", jobConfClass);
+configureMethod.invoke(theObject, conf);
+}
+} catch (Exception e) {
+throw new RuntimeException("Error in configuring object", e);
+}
+}
+</code-whole>
+
+<code-specified>
+if (jobConfigurableClass == null) {
+return;
+}
+</code-specified>
+<code-specified>
+if (jobConfClass == null) {
+return;
+}
+</code-specified>

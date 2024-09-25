@@ -1,0 +1,2 @@
+EventId,EventTemplate,Occurrences
+83988550,"Variable whitelist is disabled. Only fixed whitelist will be used. To enable variable whitelist, set HADOOP_SECURITY_SASL_VARIABLEWHITELIST_ENABLE to true.",1

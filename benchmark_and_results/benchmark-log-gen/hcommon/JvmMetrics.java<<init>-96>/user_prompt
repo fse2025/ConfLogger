@@ -1,0 +1,15 @@
+<code-whole>
+JvmMetrics(String processName, String sessionId, boolean useThreadMXBean) {
+this.processName = processName;
+this.sessionId = sessionId;
+if (useThreadMXBean) {
+this.threadMXBean = ManagementFactory.getThreadMXBean();
+}
+}
+</code-whole>
+
+<code-specified>
+if (useThreadMXBean) {
+this.threadMXBean = ManagementFactory.getThreadMXBean();
+}
+</code-specified>

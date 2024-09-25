@@ -1,0 +1,33 @@
+<code-whole>
+public static IGroupMappingServiceProvider getGroupMappingServiceProviderPlugin(Map<String, Object> conf) {
+IGroupMappingServiceProvider gmsp = null;
+try {
+String gmspClassName = (String) conf.get(Config.STORM_GROUP_MAPPING_SERVICE_PROVIDER_PLUGIN);
+if (gmspClassName == null) {
+LOG.warn("No group mapper given {}", Config.STORM_GROUP_MAPPING_SERVICE_PROVIDER_PLUGIN);
+} else {
+gmsp = ReflectionUtils.newInstance(gmspClassName);
+if (gmsp != null) {
+gmsp.prepare(conf);
+}
+}
+} catch (Exception e) {
+throw new RuntimeException(e);
+}
+return gmsp;
+}
+</code-whole>
+
+<code-specified>
+if (gmspClassName == null) {
+LOG.warn("No group mapper given {}", Config.STORM_GROUP_MAPPING_SERVICE_PROVIDER_PLUGIN);
+} else {
+gmsp = ReflectionUtils.newInstance(gmspClassName);
+if (gmsp != null) {
+gmsp.prepare(conf);
+}
+}
+</code-specified>
+<param>
+storm.group.mapping.service
+</param>

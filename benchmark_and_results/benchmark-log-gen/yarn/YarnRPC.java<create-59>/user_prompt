@@ -1,0 +1,19 @@
+<code-whole>
+LOG.debug("Creating YarnRPC for {}",
+conf.get(YarnConfiguration.IPC_RPC_IMPL));
+String clazzName = conf.get(YarnConfiguration.IPC_RPC_IMPL);
+if (clazzName == null) {
+clazzName = YarnConfiguration.DEFAULT_IPC_RPC_IMPL;
+}
+try {
+return (YarnRPC) Class.forName(clazzName).newInstance();
+} catch (Exception e) {
+throw new YarnRuntimeException(e);
+}
+</code-whole>
+
+<code-specified>
+if (clazzName == null) {
+clazzName = YarnConfiguration.DEFAULT_IPC_RPC_IMPL;
+}
+</code-specified>

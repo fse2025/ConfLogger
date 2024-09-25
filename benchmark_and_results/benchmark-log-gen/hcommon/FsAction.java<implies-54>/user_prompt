@@ -1,0 +1,13 @@
+<code-whole>
+if (that != null) {
+return (ordinal() & that.ordinal()) == that.ordinal();
+}
+return false;
+}
+</code-whole>
+
+<code-specified>
+if (that != null) {
+return (ordinal() & that.ordinal()) == that.ordinal();
+}
+</code-specified>

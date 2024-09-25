@@ -1,0 +1,29 @@
+<code-whole>
+if (conf.get(DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS) != null) {
+Object targetObj = ReflectionUtils.newInstance((String)
+conf.get(DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS));
+Preconditions.checkState(targetObj instanceof IWorkerHeartbeatsRecoveryStrategy,
+"{} must implements IWorkerHeartbeatsRecoveryStrategy",
+DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS);
+strategy = ((IWorkerHeartbeatsRecoveryStrategy) targetObj);
+} else {
+strategy = new TimeOutWorkerHeartbeatsRecoveryStrategy();
+}
+
+strategy.prepare(conf);
+return strategy;
+}
+</code-whole>
+
+<code-specified>
+if (conf.get(DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS) != null) {
+Object targetObj = ReflectionUtils.newInstance((String)
+conf.get(DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS));
+Preconditions.checkState(targetObj instanceof IWorkerHeartbeatsRecoveryStrategy,
+"{} must implements IWorkerHeartbeatsRecoveryStrategy",
+DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS);
+strategy = ((IWorkerHeartbeatsRecoveryStrategy) targetObj);
+} else {
+strategy = new TimeOutWorkerHeartbeatsRecoveryStrategy();
+}
+</code-specified>

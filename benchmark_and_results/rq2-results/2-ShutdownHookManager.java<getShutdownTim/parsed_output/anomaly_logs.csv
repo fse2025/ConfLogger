@@ -1,0 +1,3 @@
+anomaly_degree,content
+0.2,INFO	Possible loss of precision converting 50ns to SECONDS for hadoop.service.shutdown.timeout
+0.7000000000000001,"WARN	The shutdown timeout duration is less than the minimum allowed value. Parameter: hadoop.service.shutdown.timeout, Provided Value: 0, Minimum Allowed: 1. Setting duration to the minimum value. Ensure the configuration parameter 'hadoop.service.shutdown.timeout' is set to a value greater than or equal to 1."

@@ -1,0 +1,27 @@
+<code-whole>
+if (!ServerUtils.isRas(nimbusConf)) {
+int workerCount = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_WORKERS), 1);
+Integer allowedWorkers = ObjectReader.getInt(nimbusConf.get(DaemonConfig.NIMBUS_SLOTS_PER_TOPOLOGY), null);
+if (allowedWorkers != null && workerCount > allowedWorkers) {
+throw new WrappedInvalidTopologyException("Failed to submit topology. Topology requests more than "
++ allowedWorkers + " workers.");
+}
+}
+int executorsCount = 0;
+for (Object comp : StormCommon.allComponents(topology).values()) {
+executorsCount += StormCommon.numStartExecutors(comp);
+}
+Integer allowedExecutors = ObjectReader.getInt(nimbusConf.get(DaemonConfig.NIMBUS_EXECUTORS_PER_TOPOLOGY), null);
+if (allowedExecutors != null && executorsCount > allowedExecutors) {
+throw new WrappedInvalidTopologyException("Failed to submit topology. Topology requests more than "
++ allowedExecutors + " executors.");
+}
+}
+</code-whole>
+
+<code-specified>
+if (allowedWorkers != null && workerCount > allowedWorkers) {
+throw new WrappedInvalidTopologyException("Failed to submit topology. Topology requests more than "
++ allowedWorkers + " workers.");
+}
+</code-specified>

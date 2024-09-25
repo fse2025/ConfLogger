@@ -1,0 +1,69 @@
+<code-whole>
+String path = null;
+List<OpenFilesType> types = new ArrayList<>();
+if (argv != null) {
+List<String> args = new ArrayList<>(Arrays.asList(argv));
+if (StringUtils.popOption("-blockingDecommission", args)) {
+types.add(OpenFilesType.BLOCKING_DECOMMISSION);
+}
+
+path = StringUtils.popOptionWithArgument("-path", args);
+}
+if (types.isEmpty()) {
+types.add(OpenFilesType.ALL_OPEN_FILES);
+}
+
+if (path != null) {
+path = path.trim();
+if (path.length() == 0) {
+path = OpenFilesIterator.FILTER_PATH_DEFAULT;
+}
+} else {
+path = OpenFilesIterator.FILTER_PATH_DEFAULT;
+}
+
+EnumSet<OpenFilesType> openFilesTypes = EnumSet.copyOf(types);
+
+DistributedFileSystem dfs = getDFS();
+RemoteIterator<OpenFileEntry> openFilesRemoteIterator;
+try{
+openFilesRemoteIterator = dfs.listOpenFiles(openFilesTypes, path);
+printOpenFiles(openFilesRemoteIterator);
+} catch (IOException ioe){
+System.out.println("List open files failed.");
+throw ioe;
+}
+return 0;
+}
+</code-whole>
+
+<code-specified>
+if (StringUtils.popOption("-blockingDecommission", args)) {
+types.add(OpenFilesType.BLOCKING_DECOMMISSION);
+}
+</code-specified>
+<code-specified>
+if (path != null) {
+path = path.trim();
+if (path.length() == 0) {
+path = OpenFilesIterator.FILTER_PATH_DEFAULT;
+}
+} else {
+path = OpenFilesIterator.FILTER_PATH_DEFAULT;
+}
+</code-specified>
+<code-specified>
+if (path.length() == 0) {
+path = OpenFilesIterator.FILTER_PATH_DEFAULT;
+}
+</code-specified>
+<code-specified>
+if (argv != null) {
+List<String> args = new ArrayList<>(Arrays.asList(argv));
+if (StringUtils.popOption("-blockingDecommission", args)) {
+types.add(OpenFilesType.BLOCKING_DECOMMISSION);
+}
+
+path = StringUtils.popOptionWithArgument("-path", args);
+}
+</code-specified>

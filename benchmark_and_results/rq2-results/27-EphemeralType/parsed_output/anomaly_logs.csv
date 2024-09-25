@@ -1,0 +1,2 @@
+anomaly_degree,content
+0.30000000000000004,ERROR	Invalid ephemeralOwner detected. No matching ephemeral type found for extended feature bit. EphemeralOwner: ff00010000000000

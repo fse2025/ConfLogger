@@ -1,0 +1,12 @@
+<code-whole>
+if (!expression) {
+throw new IllegalArgumentException(String.valueOf(errorMessage));
+}
+}
+</code-whole>
+
+<code-specified>
+if (!expression) {
+throw new IllegalArgumentException(String.valueOf(errorMessage));
+}
+</code-specified>

@@ -1,0 +1,57 @@
+<code-whole>
+if (!UserGroupInformation.isSecurityEnabled()) {
+return;
+}
+
+// Abort out of inconsistent state if Kerberos is enabled
+// but block access tokens are not enabled.
+boolean isEnabled = conf.getBoolean(
+DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY,
+DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_DEFAULT);
+if (!isEnabled) {
+String errMessage = "Security is enabled but block access tokens " +
+"(via " + DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY + ") " +
+"aren't enabled. This may cause issues " +
+"when clients attempt to connect to a DataNode. Aborting DataNode";
+throw new RuntimeException(errMessage);
+}
+
+if (dnConf.getIgnoreSecurePortsForTesting()) {
+return;
+}
+
+if (resources != null) {
+final boolean httpSecured = resources.isHttpPortPrivileged()
+|| DFSUtil.getHttpPolicy(conf) == HttpConfig.Policy.HTTPS_ONLY;
+final boolean rpcSecured = resources.isRpcPortPrivileged()
+|| resources.isSaslEnabled();
+
+// Allow secure DataNode to startup if:
+// 1. Http is secure.
+// 2. Rpc is secure
+if (rpcSecured && httpSecured) {
+return;
+}
+} else {
+// Handle cases when SecureDataNodeStarter#getSecureResources is not
+// invoked
+SaslPropertiesResolver saslPropsResolver = dnConf.getSaslPropsResolver();
+if (saslPropsResolver != null &&
+DFSUtil.getHttpPolicy(conf) == HttpConfig.Policy.HTTPS_ONLY) {
+return;
+}
+}
+
+throw new RuntimeException("Cannot start secure DataNode due to incorrect "
++ "config. See https://cwiki.apache.org/confluence/display/HADOOP/"
+</code-whole>
+
+<code-specified>
+if (!isEnabled) {
+String errMessage = "Security is enabled but block access tokens " +
+"(via " + DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY + ") " +
+"aren't enabled. This may cause issues " +
+"when clients attempt to connect to a DataNode. Aborting DataNode";
+throw new RuntimeException(errMessage);
+}
+</code-specified>

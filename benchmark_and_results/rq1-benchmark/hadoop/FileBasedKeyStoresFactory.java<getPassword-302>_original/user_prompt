@@ -1,0 +1,25 @@
+<code-whole>
+String getPassword(Configuration conf, String alias, String defaultPass) {
+String password = defaultPass;
+try {
+char[] passchars = conf.getPassword(alias);
+if (passchars != null) {
+password = new String(passchars);
+}
+}
+catch (IOException ioe) {
+LOG.warn("Exception while trying to get password for alias " + alias +
+": " + ioe.getMessage());
+}
+return password;
+}
+</code-whole>
+
+<code-specified>
+if (passchars != null) {
+password = new String(passchars);
+}
+</code-specified>
+<param>
+null
+</param>

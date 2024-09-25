@@ -1,0 +1,78 @@
+<code-whole>
+boolean requireClientCert =
+conf.getBoolean(SSLFactory.SSL_REQUIRE_CLIENT_CERT_KEY,
+SSLFactory.SSL_REQUIRE_CLIENT_CERT_DEFAULT);
+
+long storesReloadInterval = conf.getLong(
+resolvePropertyName(mode, SSL_STORES_RELOAD_INTERVAL_TPL_KEY),
+DEFAULT_SSL_STORES_RELOAD_INTERVAL);
+
+fileMonitoringTimer = new Timer(SSL_MONITORING_THREAD_NAME, true);
+
+// certificate store
+String keystoreType =
+conf.get(resolvePropertyName(mode, SSL_KEYSTORE_TYPE_TPL_KEY),
+DEFAULT_KEYSTORE_TYPE);
+
+if (requireClientCert || mode == SSLFactory.Mode.SERVER) {
+createKeyManagersFromConfiguration(mode, keystoreType, storesReloadInterval);
+} else {
+KeyStore keystore = KeyStore.getInstance(keystoreType);
+keystore.load(null, null);
+KeyManagerFactory keyMgrFactory = KeyManagerFactory
+.getInstance(SSLFactory.SSLCERTIFICATE);
+
+keyMgrFactory.init(keystore, null);
+keyManagers = keyMgrFactory.getKeyManagers();
+}
+
+//trust store
+String truststoreType =
+conf.get(resolvePropertyName(mode, SSL_TRUSTSTORE_TYPE_TPL_KEY),
+DEFAULT_KEYSTORE_TYPE);
+
+String locationProperty =
+resolvePropertyName(mode, SSL_TRUSTSTORE_LOCATION_TPL_KEY);
+String truststoreLocation = conf.get(locationProperty, "");
+if (!truststoreLocation.isEmpty()) {
+createTrustManagersFromConfiguration(mode, truststoreType, truststoreLocation, storesReloadInterval);
+} else {
+if (LOG.isDebugEnabled()) {
+LOG.debug("The property '" + locationProperty + "' has not been set, " +
+"no TrustStore will be loaded");
+}
+trustManagers = null;
+}
+}
+</code-whole>
+
+<code-specified>
+if (requireClientCert || mode == SSLFactory.Mode.SERVER) {
+createKeyManagersFromConfiguration(mode, keystoreType, storesReloadInterval);
+} else {
+KeyStore keystore = KeyStore.getInstance(keystoreType);
+keystore.load(null, null);
+KeyManagerFactory keyMgrFactory = KeyManagerFactory
+.getInstance(SSLFactory.SSLCERTIFICATE);
+
+keyMgrFactory.init(keystore, null);
+keyManagers = keyMgrFactory.getKeyManagers();
+}
+</code-specified>
+<code-specified>
+if (LOG.isDebugEnabled()) {
+LOG.debug("The property '" + locationProperty + "' has not been set, " +
+"no TrustStore will be loaded");
+}
+</code-specified>
+<code-specified>
+if (!truststoreLocation.isEmpty()) {
+createTrustManagersFromConfiguration(mode, truststoreType, truststoreLocation, storesReloadInterval);
+} else {
+if (LOG.isDebugEnabled()) {
+LOG.debug("The property '" + locationProperty + "' has not been set, " +
+"no TrustStore will be loaded");
+}
+trustManagers = null;
+}
+</code-specified>

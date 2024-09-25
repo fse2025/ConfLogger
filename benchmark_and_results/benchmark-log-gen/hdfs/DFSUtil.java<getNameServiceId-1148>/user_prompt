@@ -1,0 +1,25 @@
+<code-whole>
+String nameserviceId = conf.get(DFS_NAMESERVICE_ID);
+if (nameserviceId != null) {
+return nameserviceId;
+}
+Collection<String> nsIds = DFSUtilClient.getNameServiceIds(conf);
+if (1 == nsIds.size()) {
+return nsIds.toArray(new String[1])[0];
+}
+String nnId = conf.get(DFS_HA_NAMENODE_ID_KEY);
+
+return getSuffixIDs(conf, addressKey, null, nnId, LOCAL_ADDRESS_MATCHER)[0];
+}
+</code-whole>
+
+<code-specified>
+if (1 == nsIds.size()) {
+return nsIds.toArray(new String[1])[0];
+}
+</code-specified>
+<code-specified>
+if (nameserviceId != null) {
+return nameserviceId;
+}
+</code-specified>

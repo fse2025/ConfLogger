@@ -1,0 +1,28 @@
+<code-whole>
+boolean providedEnabled = configuration.getBoolean(
+DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED,
+DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED_DEFAULT);
+boolean inmemoryAliasmapConfigured = configuration.getBoolean(
+DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED,
+DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED_DEFAULT);
+if (providedEnabled && inmemoryAliasmapConfigured) {
+inMemoryAliasMapEnabled = true;
+aliasMapPath = configuration.get(
+DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_LEVELDB_DIR);
+} else {
+inMemoryAliasMapEnabled = false;
+aliasMapPath = null;
+}
+}
+</code-whole>
+
+<code-specified>
+if (providedEnabled && inmemoryAliasmapConfigured) {
+inMemoryAliasMapEnabled = true;
+aliasMapPath = configuration.get(
+DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_LEVELDB_DIR);
+} else {
+inMemoryAliasMapEnabled = false;
+aliasMapPath = null;
+}
+</code-specified>

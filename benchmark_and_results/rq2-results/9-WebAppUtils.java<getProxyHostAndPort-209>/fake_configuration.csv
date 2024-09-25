@@ -1,0 +1,14 @@
+,name,value,description
+0,yarn.web-proxy.address,,
+1,dfs.namenode.reencrypt.batch.size,1000,How many EDEKs should the re-encrypt thread process in one batch.
+2,yarn.nodemanager.default-container-executor.log-dirs.permissions,710,
+3,hadoop.security.kms.client.encrypted.key.cache.num.refill.threads,2,"Number of threads to use for refilling depleted EncryptedKeyVersion
+    cache Queues"
+4,yarn.am.liveness-monitor.expiry-interval-ms,600000,
+5,dfs.content-summary.limit,5000,"The maximum content summary counts allowed in one locking period. 0 or a negative number
+    means no limit (i.e. no yielding)."
+6,dfs.namenode.edekcacheloader.initial.delay.ms,3000,"When KeyProvider is configured, the time delayed until the first
+    attempt to warm up edek cache on NN start up / become active."
+7,mapreduce.task.userlog.limit.kb,0,The maximum size of user-logs of each task in KB. 0 disables the cap.
+8,yarn.resourcemanager.node-labels.provider.fetch-interval-ms,1800000,
+9,yarn.resourcemanager.nodemanagers.heartbeat-interval-min-ms,1000,

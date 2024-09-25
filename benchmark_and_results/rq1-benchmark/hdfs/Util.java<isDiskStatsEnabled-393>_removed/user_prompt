@@ -1,0 +1,22 @@
+<code-whole>
+final boolean isEnabled;
+if (fileIOSamplingPercentage <= 0) {
+isEnabled = false;
+} else {
+isEnabled = true;
+}
+
+return isEnabled;
+}
+</code-whole>
+
+<code-specified>
+if (fileIOSamplingPercentage <= 0) {
+isEnabled = false;
+} else {
+isEnabled = true;
+}
+</code-specified>
+<param>
+dfs.datanode.lifeline.interval.seconds
+</param>

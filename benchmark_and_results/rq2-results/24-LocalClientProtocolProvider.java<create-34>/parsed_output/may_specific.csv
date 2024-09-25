@@ -1,0 +1,2 @@
+0,1
+10b998fb,The framework name is not set to LOCAL_FRAMEWORK_NAME. Current value: . Please ensure that the configuration parameter 'mapreduce.framework.name' is set to 'local' to enable LocalJobRunner.

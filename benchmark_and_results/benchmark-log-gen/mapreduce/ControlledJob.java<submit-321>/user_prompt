@@ -1,0 +1,40 @@
+<code-whole>
+Configuration conf = job.getConfiguration();
+if (conf.getBoolean(CREATE_DIR, false)) {
+FileSystem fs = FileSystem.get(conf);
+Path inputPaths[] = FileInputFormat.getInputPaths(job);
+for (int i = 0; i < inputPaths.length; i++) {
+if (!fs.exists(inputPaths[i])) {
+try {
+fs.mkdirs(inputPaths[i]);
+} catch (IOException e) {
+
+}
+}
+}
+}
+job.submit();
+this.state = State.RUNNING;
+} catch (Exception ioe) {
+LOG.info(getJobName()+" got an error while submitting ",ioe);
+this.state = State.FAILED;
+this.message = StringUtils.stringifyException(ioe);
+}
+}
+</code-whole>
+
+<code-specified>
+if (conf.getBoolean(CREATE_DIR, false)) {
+FileSystem fs = FileSystem.get(conf);
+Path inputPaths[] = FileInputFormat.getInputPaths(job);
+for (int i = 0; i < inputPaths.length; i++) {
+if (!fs.exists(inputPaths[i])) {
+try {
+fs.mkdirs(inputPaths[i]);
+} catch (IOException e) {
+
+}
+}
+}
+}
+</code-specified>

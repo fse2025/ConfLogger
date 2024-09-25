@@ -1,0 +1,4 @@
+name,value,relevant log,explanation
+zookeeper.clientCnxnSocket,<missing>,INFO	Configuration parameter ZOOKEEPER_CLIENT_CNXN_SOCKET is not set or set to default NIO. Using ClientCnxnSocketNIO. Parameter value: org.apache.zookeeper.ClientCnxnSocketNIO,property-item-hit	zookeeper
+io.bytes.per.checksum,512,INFO	Configuration parameter ZOOKEEPER_CLIENT_CNXN_SOCKET is not set or set to default NIO. Using ClientCnxnSocketNIO. Parameter value: org.apache.zookeeper.ClientCnxnSocketNIO,property-item-hit	io
+io.bytes.per.checksum,512,INFO	Configuration parameter ZOOKEEPER_CLIENT_CNXN_SOCKET is not set or set to default NIO. Using ClientCnxnSocketNIO. Parameter value: org.apache.zookeeper.ClientCnxnSocketNIO,property-item-hit	per

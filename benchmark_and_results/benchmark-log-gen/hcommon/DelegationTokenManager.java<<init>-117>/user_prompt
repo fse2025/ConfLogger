@@ -1,0 +1,18 @@
+<code-whole>
+public DelegationTokenManager(Configuration conf, Text tokenKind) {
+if (conf.getBoolean(ENABLE_ZK_KEY, false)) {
+this.secretManager = new ZKSecretManager(conf, tokenKind);
+} else {
+this.secretManager = new DelegationTokenSecretManager(conf, tokenKind);
+}
+managedSecretManager = true;
+}
+</code-whole>
+
+<code-specified>
+if (conf.getBoolean(ENABLE_ZK_KEY, false)) {
+this.secretManager = new ZKSecretManager(conf, tokenKind);
+} else {
+this.secretManager = new DelegationTokenSecretManager(conf, tokenKind);
+}
+</code-specified>

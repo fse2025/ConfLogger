@@ -1,0 +1,124 @@
+case,removed-vairable,removed-text,inserted-vairable,inserted-text,constant,
+DatanodeAdminManager.java<activate-103>,deprecatedKey,"""Deprecated configuration key {} will be ignored.""
+","deprecatedKey
+strNodes
+DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_BLOCKS_PER_INTERVAL_KEY","""The deprecated configuration key '{}' is set with value '{}'. Consider using '{}' instead.""
+",,
+DatanodeAdminManager.java<activate-103>,DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_BLOCKS_PER_INTERVAL_KEY,"""Please update your configuration to use {} instead.""
+","deprecatedKey
+strNodes
+DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_BLOCKS_PER_INTERVAL_KEY","""The deprecated configuration key '{}' is set with value '{}'. Consider using '{}' instead.""
+",dfs.namenode.decommission.blocks.per.interval,
+DFSUtil.java<getPassword-1570>,ioe,"""Setting password to null since IOException is caught when getting password""
+",alias,"""IOException occurred while retrieving password for alias '{}'. The password is set to null. Check the configuration source and ensure it is accessible.""
+",,
+DirectoryScanner.java<<init>-285>,"DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_KEY
+DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT","""{} set to value above 1000 ms/sec. Assuming default value of {}""
+","throttle
+DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT
+DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_KEY
+
+
+
+
+
+
+","""Throttle limit for directory scan is set too high ({} ms). Resetting to default value ({} ms). Ensure that '{}' is set below 1000 ms for optimal performance.""
+",,
+FSImageFormatProtobuf.java<enableParallelSaveAndLoad-585>,DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY,"""Parallel Image loading and saving is not supported when {} is set to true. Parallel will be disabled.""
+","DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY
+compressionEnabled","""Parallel load is disabled due to compression being enabled. Configuration parameter: {}, value: {}. To enable parallel load, set compression to false.""
+",,
+FSImageFormatProtobuf.java<enableParallelSaveAndLoad-585>,"heapPercent
+entryExpiryMillis","""Retry cache will use {} of total heap and retry cache entry expiry time is {} millis""
+","heapPercent
+entryExpiryMillis
+entryExpiryNanos
+DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_KEY
+DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_KEY","""RetryCache is enabled with heapPercent: {},"" +
+"" entryExpiryMillis: {},"" +
+"" entryExpiryNanos: {}."" +
+"" Configuration keys: {} and {}.""
+",,
+HeartbeatManager.java<<init>-83>,"staleInterval
+DFSConfigKeys.DFS_NAMENODE_STALE_DATANODE_INTERVAL_KEY
+DFSConfigKeys.DFS_NAMENODE_HEARTBEAT_RECHECK_INTERVAL_KEY","""Setting heartbeat recheck interval to {} since {} is less than {}""
+","DFSConfigKeys.DFS_NAMENODE_STALE_DATANODE_INTERVAL_KEY
+staleInterval
+recheckInterval","""Setting heartbeatRecheckInterval to staleInterval due to avoidStaleDataNodesForWrite being true and staleInterval being less than recheckInterval. "" +
+""Configuration parameter: {}, staleInterval: {}, recheckInterval: {}""
+",,
+JournalNodeSyncer.java<getOtherJournalNodeAddrs-268>,"DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+sharedEditsUri.toString()
+nameServiceId","""The conf property "" + DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY + "" not set properly, it has been configured with different journalnode values "" + sharedEditsUri.toString() + "" for a single nameserviceId"" + nameServiceId
+","nameServiceId
+sharedEditsUri","""Multiple shared edits URIs found for nameServiceId: {}. Expected only one. URIs: {}. Setting uriStr to null.""
+",dfs.namenode.shared.edits.dir,
+JournalNodeSyncer.java<getOtherJournalNodeAddrs-268>,,Could not construct Shared Edits Uri,DFS_NAMENODE_SHARED_EDITS_DIR_KEY,"""No valid shared edits URI found. Returning null. Ensure that the configuration for DFS_NAMENODE_SHARED_EDITS_DIR_KEY is correctly set.""
+",,
+JournalNodeSyncer.java<getOtherJournalNodeAddrs-268>,"DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+
+
+
+
+
+
+","""The conf property {} not set properly.""
+","uriStr
+e.getMessage()","""URISyntaxException encountered while processing shared edits URI: {}. Exception: {}""
+",,dfs.namenode.shared.edits.dir
+JournalNodeSyncer.java<getOtherJournalNodeAddrs-268>,uriStr,"""Could not parse JournalNode addresses: {}""
+","uriStr
+e.getMessage()","""IOException encountered while processing shared edits URI: {}. Exception: {}""
+",,
+KeyProviderCache.java<createKeyProviderURI-116>,"providerUriStr
+e.getCause()",KeyProvider URI string is invalid [{}]!!","uriStr
+e.getMessage()","""URISyntaxException encountered while processing shared edits URI: {}. Exception: {}""
+",,
+KeyProviderCache.java<createKeyProviderURI-116>,CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH,"""Could not find uri with key [{}] to create a keyProvider !!""",DFS_NAMENODE_SHARED_EDITS_DIR_KEY,"""No valid shared edits URI found. Returning null. Ensure that the configuration for {} is correctly set.""",hadoop.security.key.provider.path,
+MetricsLoggerTask.java<makeMetricsLoggerAsync-153>,,"""Metrics logging will not be async since the logger is not log4j""
+",metricsLog.getClass().getName(),The provided metricsLog is not an instance of Log4JLogger. Ensure that the metrics logger is properly configured to use Log4JLogger for asynchronous logging. Current metricsLog class: {}",,
+MetricsLoggerTask.java<makeMetricsLoggerAsync-153>,,"""Metrics logging will not be async since the logger is not log4j""
+",DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_DEFAULT,"""Configuration parameter 'dfs.mover.retry.max.attempts' is set to a negative value. "" +
+""Using default value: {}. Ensure 'dfs.mover.retry.max.attempts' is set to a non-negative integer to control retry attempts.""
+",,dfs.mover.retry.max.attempts
+Mover.java<<init>-123>,"DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_KEY
+DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_DEFAULT","""{} is configured with a negative value, using default value of {}""
+","DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_DEFAULT
+
+
+
+
+
+
+","""Configuration parameter 'dfs.mover.retry.max.attempts' is set to a negative value. Using default value: {}. Ensure 'dfs.mover.retry.max.attempts' is set to a non-negative integer to control retry attempts.""
+",,dfs.mover.retry.max.attempts
+NameNode.java<checkHaStateChange-2148>,Server.getRemoteAddress(),"""Allowing manual HA control from {} even though automatic HA is enabled, because the user specified the force flag""
+","DFS_HA_AUTO_FAILOVER_ENABLED_KEY
+autoHaEnabled","""Forced manual HA control request received while automatic HA is enabled. Configuration parameter: {} = {}. Proceeding with caution.""
+",,
+NameNode.java<initializeGenericKeys-1805>,"FS_DEFAULT_NAME_KEY
+defaultUri","""Setting {} to {}""
+","conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY)
+DFS_NAMENODE_RPC_ADDRESS_KEY","""Configured default FS with RPC address: {}. Parameter: {}""
+",,fs.defaultFS
+NameNode.java<initializeSharedEdits-1358>,"nsId
+namenodeId","""No shared edits directory configured for namespace {} namenode {}""
+",,"""The configuration parameter 'dfs.namenode.shared.edits.dir' is not set. Shared edits directory is required for HA setup. Please ensure it is properly configured.""
+",,
+NameNodeConnector.java<<init>-174>,"nameNodeUri
+getBlocksMaxQps","""getBlocks calls for {} will be rate-limited to {} per second""
+","getBlocksMaxQps
+DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_KEY","""Rate limiter created with max QPS: {} for configuration parameter: {}""
+",,
+ProfilingFileIoEvents.java<setSampleRangeMax-142>,DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY,"""{} value cannot be more than 100. Setting value to 100""
+",fileIOSamplingPercentage,"""The provided fileIOSamplingPercentage exceeds 100. Adjusting to maximum allowed value of 100. Ensure that the configuration parameter 'dfs.namenode.checkpoint.txns' is set correctly to avoid this adjustment. Current value: {}""
+",,dfs.datanode.fileio.profiling.sampling.percentage
+Util.java<isDiskStatsEnabled-393>,"DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY
+fileIOSamplingPercentage","""{} set to {}. Disabling file IO profiling""
+",fileIOSamplingPercentage,"""Service disabled due to non-positive fileIOSamplingPercentage. Ensure 'dfs.datanode.lifeline.interval.seconds' is set to a positive value. Current value: {}""
+",,dfs.datanode.fileio.profiling.sampling.percentage
+Util.java<isDiskStatsEnabled-393>,"DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY
+fileIOSamplingPercentage","""{} set to {}. Enabling file IO profiling""
+",fileIOSamplingPercentage,"""Service enabled with fileIOSamplingPercentage: {}. Ensure 'dfs.datanode.lifeline.interval.seconds' is set correctly.""
+",,dfs.datanode.fileio.profiling.sampling.percentage

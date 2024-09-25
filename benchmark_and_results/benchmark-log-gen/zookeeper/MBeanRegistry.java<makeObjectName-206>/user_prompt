@@ -1,0 +1,22 @@
+<code-whole>
+if (path == null) {
+return null;
+}
+StringBuilder beanName = new StringBuilder(DOMAIN + ":");
+int counter = 0;
+counter = tokenize(beanName, path, counter);
+tokenize(beanName, bean.getName(), counter);
+beanName.deleteCharAt(beanName.length() - 1);
+try {
+return new ObjectName(beanName.toString());
+} catch (MalformedObjectNameException e) {
+LOG.warn("Invalid name \"{}\" for class {}", beanName, bean.getClass());
+throw e;
+}
+</code-whole>
+
+<code-specified>
+if (path == null) {
+return null;
+}
+</code-specified>

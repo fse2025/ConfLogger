@@ -1,0 +1,60 @@
+<code-whole>
+List<Class<? extends CompressionCodec>> result
+= new ArrayList<Class<? extends CompressionCodec>>();
+// Add codec classes discovered via service loading
+synchronized (CODEC_PROVIDERS) {
+// CODEC_PROVIDERS is a lazy collection. Synchronize so it is
+// thread-safe. See HADOOP-8406.
+for (CompressionCodec codec : CODEC_PROVIDERS) {
+result.add(codec.getClass());
+}
+}
+// Add codec classes from configuration
+String codecsString = conf.get(
+CommonConfigurationKeys.IO_COMPRESSION_CODECS_KEY);
+if (codecsString != null) {
+StringTokenizer codecSplit = new StringTokenizer(codecsString, ",");
+while (codecSplit.hasMoreElements()) {
+String codecSubstring = codecSplit.nextToken().trim();
+if (codecSubstring.length() != 0) {
+try {
+Class<?> cls = conf.getClassByName(codecSubstring);
+if (!CompressionCodec.class.isAssignableFrom(cls)) {
+throw new IllegalArgumentException("Class " + codecSubstring +
+" is not a CompressionCodec");
+}
+result.add(cls.asSubclass(CompressionCodec.class));
+} catch (ClassNotFoundException ex) {
+throw new IllegalArgumentException("Compression codec " +
+codecSubstring + " not found.",
+ex);
+}
+}
+}
+}
+return result;
+}
+</code-whole>
+
+<code-specified>
+if (codecsString != null) {
+StringTokenizer codecSplit = new StringTokenizer(codecsString, ",");
+while (codecSplit.hasMoreElements()) {
+String codecSubstring = codecSplit.nextToken().trim();
+if (codecSubstring.length() != 0) {
+try {
+Class<?> cls = conf.getClassByName(codecSubstring);
+if (!CompressionCodec.class.isAssignableFrom(cls)) {
+throw new IllegalArgumentException("Class " + codecSubstring +
+" is not a CompressionCodec");
+}
+result.add(cls.asSubclass(CompressionCodec.class));
+} catch (ClassNotFoundException ex) {
+throw new IllegalArgumentException("Compression codec " +
+codecSubstring + " not found.",
+ex);
+}
+}
+}
+}
+</code-specified>

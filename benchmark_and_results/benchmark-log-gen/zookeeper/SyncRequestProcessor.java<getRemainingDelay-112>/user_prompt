@@ -1,0 +1,15 @@
+<code-whole>
+long flushDelay = zks.getFlushDelay();
+long duration = Time.currentElapsedTime() - lastFlushTime;
+if (duration < flushDelay) {
+return flushDelay - duration;
+}
+return 0;
+}
+</code-whole>
+
+<code-specified>
+if (duration < flushDelay) {
+return flushDelay - duration;
+}
+</code-specified>

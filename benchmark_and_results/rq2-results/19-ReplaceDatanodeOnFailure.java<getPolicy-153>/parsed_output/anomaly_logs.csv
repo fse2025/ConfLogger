@@ -1,0 +1,2 @@
+anomaly_degree,content
+1.5999999999999999,"[main]	Illegal configuration value for dfs.client.block.write.replace-datanode-on-failure.policy: . Please set it to one of the valid policies: [DISABLE, NEVER, DEFAULT, ALWAYS].org.apache.hadoop.HadoopIllegalArgumentException: Illegal configuration value for dfs.client.block.write.replace-datanode-on-failure.policy"

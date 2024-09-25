@@ -1,0 +1,100 @@
+<code-whole>
+self.end_fle = Time.currentElapsedTime();
+long electionTimeTaken = self.end_fle - self.start_fle;
+self.setElectionTimeTaken(electionTimeTaken);
+ServerMetrics.getMetrics().ELECTION_TIME.add(electionTimeTaken);
+LOG.info("FOLLOWING - LEADER ELECTION TOOK - {} {}", electionTimeTaken, QuorumPeer.FLE_TIME_UNIT);
+self.start_fle = 0;
+self.end_fle = 0;
+fzk.registerJMX(new FollowerBean(this, zk), self.jmxLocalPeerBean);
+
+long connectionTime = 0;
+boolean completedSync = false;
+
+try {
+self.setZabState(QuorumPeer.ZabState.DISCOVERY);
+QuorumServer leaderServer = findLeader();
+try {
+connectToLeader(leaderServer.addr, leaderServer.hostname);
+connectionTime = System.currentTimeMillis();
+long newEpochZxid = registerWithLeader(Leader.FOLLOWERINFO);
+if (self.isReconfigStateChange()) {
+throw new Exception("learned about role change");
+}
+//check to see if the leader zxid is lower than ours
+//this should never happen but is just a safety check
+long newEpoch = ZxidUtils.getEpochFromZxid(newEpochZxid);
+if (newEpoch < self.getAcceptedEpoch()) {
+LOG.error("Proposed leader epoch "
++ ZxidUtils.zxidToString(newEpochZxid)
++ " is less than our accepted epoch "
++ ZxidUtils.zxidToString(self.getAcceptedEpoch()));
+throw new IOException("Error: Epoch of leader is lower");
+}
+long startTime = Time.currentElapsedTime();
+self.setLeaderAddressAndId(leaderServer.addr, leaderServer.getId());
+self.setZabState(QuorumPeer.ZabState.SYNCHRONIZATION);
+syncWithLeader(newEpochZxid);
+self.setZabState(QuorumPeer.ZabState.BROADCAST);
+completedSync = true;
+long syncTime = Time.currentElapsedTime() - startTime;
+ServerMetrics.getMetrics().FOLLOWER_SYNC_TIME.add(syncTime);
+if (self.getObserverMasterPort() > 0) {
+LOG.info("Starting ObserverMaster");
+
+om = new ObserverMaster(self, fzk, self.getObserverMasterPort());
+om.start();
+} else {
+om = null;
+}
+// create a reusable packet to reduce gc impact
+QuorumPacket qp = new QuorumPacket();
+while (this.isRunning()) {
+readPacket(qp);
+processPacket(qp);
+}
+} catch (Exception e) {
+LOG.warn("Exception when following the leader", e);
+closeSocket();
+
+// clear pending revalidations
+pendingRevalidations.clear();
+}
+} finally {
+if (om != null) {
+om.stop();
+}
+zk.unregisterJMX(this);
+
+if (connectionTime != 0) {
+long connectionDuration = System.currentTimeMillis() - connectionTime;
+LOG.info(
+"Disconnected from leader (with address: {}). Was connected for {}ms. Sync state: {}",
+leaderAddr,
+connectionDuration,
+completedSync);
+messageTracker.dumpToLog(leaderAddr.toString());
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (self.getObserverMasterPort() > 0) {
+LOG.info("Starting ObserverMaster");
+
+om = new ObserverMaster(self, fzk, self.getObserverMasterPort());
+om.start();
+} else {
+om = null;
+}
+</code-specified>
+<code-specified>
+if (newEpoch < self.getAcceptedEpoch()) {
+LOG.error("Proposed leader epoch "
++ ZxidUtils.zxidToString(newEpochZxid)
++ " is less than our accepted epoch "
++ ZxidUtils.zxidToString(self.getAcceptedEpoch()));
+throw new IOException("Error: Epoch of leader is lower");
+}
+</code-specified>

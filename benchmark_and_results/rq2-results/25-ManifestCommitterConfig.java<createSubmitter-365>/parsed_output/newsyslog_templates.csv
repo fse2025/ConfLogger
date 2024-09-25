@@ -1,0 +1,2 @@
+EventId,EventTemplate,Occurrences
+eb9b749b,The configuration parameter 'mapreduce.manifest.committer.io.threads' has an invalid value: <*>. It should be greater than <*>. Default value <*> will be used instead.,1

@@ -1,0 +1,12 @@
+case,removed-vairable,removed-text,inserted-vairable,inserted-text,,,,
+ExtensionFactoryRegistry.java<findAllWithRecorder-136>,"eligibleFactories.size()
+path","""Find {} eligible items from registered factories for path {}""
+",path,"""Eligible factories found for path {}. Returning existing eligible factories.""
+",,,,
+RaftJournalSystem.java<initServer-294>,"PropertyKey.MASTER_JOURNAL_LOG_SIZE_BYTES_MAX
+segmentSize
+Integer.MAX_VALUE
+Integer.MAX_VALUE","""{} has value {} but must not exceed {}. Resetting to {}.""
+","segmentSize
+PropertyKey.MASTER_JOURNAL_LOG_SIZE_BYTES_MAX","""Segment size {} exceeds Integer.MAX_VALUE. Setting segment size to Integer.MAX_VALUE. Ensure that the configuration for {} is set appropriately to avoid this adjustment.""
+",,,,

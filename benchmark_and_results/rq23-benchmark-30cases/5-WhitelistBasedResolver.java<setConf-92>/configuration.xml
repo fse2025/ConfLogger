@@ -1,0 +1,7 @@
+<configuration>
+<property>
+<name>hadoop.security.sasl.fixedwhitelist.file</name>
+<value></value>
+</property>
+
+</configuration>

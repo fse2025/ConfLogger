@@ -1,0 +1,22 @@
+,name,value,description
+0,mapreduce.framework.name,local,
+1,yarn.sharedcache.enabled,true,
+2,mapreduce.job.sharedcache.mode,libjars,
+3,mapreduce.shuffle.pathcache.max-weight,10485760,The maximum total weight of entries the cache may contain.
+4,dfs.mover.retry.max.attempts,10,"The maximum number of retries before the mover consider the
+    move failed."
+5,dfs.namenode.path.based.cache.refresh.interval.ms,30000,"The amount of milliseconds between subsequent path cache rescans.  Path
+    cache rescans are when we calculate which blocks should be cached, and on
+    what datanodes.
+
+    By default, this parameter is set to 30 seconds."
+6,dfs.blockreport.intervalMsec,21600000,Determines block reporting interval in milliseconds.
+7,ha.health-monitor.connect-retry-interval.ms,1000,How often to retry connecting to the service.
+8,hadoop.http.authentication.token.validity,36000,"Indicates how long (in seconds) an authentication token is valid before it has
+    to be renewed."
+9,yarn.sharedcache.store.in-memory.staleness-period-mins,10080,
+10,yarn.nodemanager.logaggregation.threadpool-size-max,100,
+11,mapreduce.job.cache.limit.max-resources-mb,0,"The maximum size (in MB) a map reduce job is allowed to submit
+    for localization via files, libjars, archives, and jobjar command line
+    arguments and through the distributed cache. If set to 0 the limit is
+    ignored."

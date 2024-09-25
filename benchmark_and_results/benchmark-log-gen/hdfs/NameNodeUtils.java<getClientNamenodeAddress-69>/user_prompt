@@ -1,0 +1,64 @@
+<code-whole>
+final Collection<String> nameservices =
+DFSUtilClient.getNameServiceIds(conf);
+
+final String nnAddr = conf.get(FS_DEFAULT_NAME_KEY);
+if (nnAddr == null) {
+// default fs is not set.
+return null;
+}
+
+LOG.info("{} is {}", FS_DEFAULT_NAME_KEY, nnAddr);
+final URI nnUri = URI.create(nnAddr);
+
+String defaultNnHost = nnUri.getHost();
+if (defaultNnHost == null) {
+return null;
+}
+
+// Current Nameservice is HA.
+if (nsId != null && nameservices.contains(nsId)) {
+final Collection<String> namenodes = conf.getTrimmedStringCollection(
+DFS_HA_NAMENODES_KEY_PREFIX + "." + nsId);
+if (namenodes.size() > 1) {
+return nsId;
+}
+}
+
+// Federation without HA. We must handle the case when the current NN
+// is not in the default nameservice.
+String currentNnAddress = null;
+if (nsId != null) {
+String hostNameKey = DFS_NAMENODE_RPC_ADDRESS_KEY + "." + nsId;
+currentNnAddress = conf.get(hostNameKey);
+}
+
+// Fallback to the address in fs.defaultFS.
+if (currentNnAddress == null) {
+currentNnAddress = nnUri.getAuthority();
+}
+
+int port = 0;
+if (currentNnAddress.contains(":")) {
+port = Integer.parseInt(currentNnAddress.split(":")[1]);
+}
+
+if (port > 0) {
+return currentNnAddress;
+} else {
+// the port is missing or 0. Figure out real bind address later.
+return null;
+}
+</code-whole>
+
+<code-specified>
+if (nnAddr == null) {
+// default fs is not set.
+return null;
+}
+</code-specified>
+<code-specified>
+if (currentNnAddress == null) {
+currentNnAddress = nnUri.getAuthority();
+}
+</code-specified>

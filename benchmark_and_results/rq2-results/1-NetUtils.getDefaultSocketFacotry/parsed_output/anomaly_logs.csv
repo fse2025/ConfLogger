@@ -1,0 +1,2 @@
+anomaly_degree,content
+0.9,WARN	The configuration parameter 'hadoop.rpc.socket.factory.class.default' is not set or is empty. Using default SocketFactory. Ensure 'hadoop.rpc.socket.factory.class.default' is properly configured to specify a custom socket factory if needed.

@@ -1,0 +1,50 @@
+<code-whole>
+IntegerRanges range = null;
+if (rangeConf != null) {
+range = conf.getRange(rangeConf, "");
+}
+if (range == null || range.isEmpty() || (address.getPort() != 0)) {
+socket.bind(address, backlog);
+} else {
+for (Integer port : range) {
+if (socket.isBound()) break;
+try {
+InetSocketAddress temp = new InetSocketAddress(address.getAddress(),
+port);
+socket.bind(temp, backlog);
+} catch(BindException e) {
+//Ignored
+}
+}
+if (!socket.isBound()) {
+throw new BindException("Could not find a free port in "+range);
+}
+}
+} catch (SocketException e) {
+throw NetUtils.wrapException(null,
+0,
+address.getHostName(),
+address.getPort(), e);
+}
+}
+</code-whole>
+
+<code-specified>
+if (range == null || range.isEmpty() || (address.getPort() != 0)) {
+socket.bind(address, backlog);
+} else {
+for (Integer port : range) {
+if (socket.isBound()) break;
+try {
+InetSocketAddress temp = new InetSocketAddress(address.getAddress(),
+port);
+socket.bind(temp, backlog);
+} catch(BindException e) {
+//Ignored
+}
+}
+if (!socket.isBound()) {
+throw new BindException("Could not find a free port in "+range);
+}
+}
+</code-specified>

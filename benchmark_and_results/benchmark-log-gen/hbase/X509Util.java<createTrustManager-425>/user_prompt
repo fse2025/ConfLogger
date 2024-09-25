@@ -1,0 +1,61 @@
+<code-whole>
+if (trustStorePassword == null) {
+trustStorePassword = EMPTY_CHAR_ARRAY;
+}
+
+try {
+KeyStoreFileType storeFileType =
+KeyStoreFileType.fromPropertyValueOrFileName(trustStoreType, trustStoreLocation);
+KeyStore ts = FileKeyStoreLoaderBuilderProvider.getBuilderForKeyStoreFileType(storeFileType)
+.setTrustStorePath(trustStoreLocation).setTrustStorePassword(trustStorePassword).build()
+.loadTrustStore();
+
+PKIXBuilderParameters pbParams = new PKIXBuilderParameters(ts, new X509CertSelector());
+if (crlEnabled || ocspEnabled) {
+pbParams.setRevocationEnabled(true);
+System.setProperty("com.sun.net.ssl.checkRevocation", "true");
+if (crlEnabled) {
+System.setProperty("com.sun.security.enableCRLDP", "true");
+}
+if (ocspEnabled) {
+Security.setProperty("ocsp.enable", "true");
+}
+} else {
+pbParams.setRevocationEnabled(false);
+}
+
+// Revocation checking is only supported with the PKIX algorithm
+TrustManagerFactory tmf = TrustManagerFactory.getInstance("PKIX");
+tmf.init(new CertPathTrustManagerParameters(pbParams));
+
+for (final TrustManager tm : tmf.getTrustManagers()) {
+if (tm instanceof X509ExtendedTrustManager) {
+return new HBaseTrustManager((X509ExtendedTrustManager) tm, verifyHostName,
+allowReverseDnsLookup);
+}
+}
+throw new TrustManagerException("Couldn't find X509TrustManager");
+} catch (IOException | GeneralSecurityException | IllegalArgumentException e) {
+throw new TrustManagerException(e);
+}
+</code-whole>
+
+<code-specified>
+if (trustStorePassword == null) {
+trustStorePassword = EMPTY_CHAR_ARRAY;
+}
+</code-specified>
+<code-specified>
+if (crlEnabled || ocspEnabled) {
+pbParams.setRevocationEnabled(true);
+System.setProperty("com.sun.net.ssl.checkRevocation", "true");
+if (crlEnabled) {
+System.setProperty("com.sun.security.enableCRLDP", "true");
+}
+if (ocspEnabled) {
+Security.setProperty("ocsp.enable", "true");
+}
+} else {
+pbParams.setRevocationEnabled(false);
+}
+</code-specified>

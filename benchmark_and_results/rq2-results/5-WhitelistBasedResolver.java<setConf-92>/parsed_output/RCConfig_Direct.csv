@@ -1,0 +1,4 @@
+name,value,relevant log,explanation
+hadoop.security.sasl.fixedwhitelist.file,<missing>,"INFO	Variable whitelist is disabled. Only fixed whitelist will be used. To enable variable whitelist, set HADOOP_SECURITY_SASL_VARIABLEWHITELIST_ENABLE to true.",property-item-hit	security
+hadoop.security.sasl.fixedwhitelist.file,<missing>,"INFO	Variable whitelist is disabled. Only fixed whitelist will be used. To enable variable whitelist, set HADOOP_SECURITY_SASL_VARIABLEWHITELIST_ENABLE to true.",property-item-hit	sasl
+dfs.namenode.ec.policies.max.cellsize,4194304,"INFO	Variable whitelist is disabled. Only fixed whitelist will be used. To enable variable whitelist, set HADOOP_SECURITY_SASL_VARIABLEWHITELIST_ENABLE to true.",property-item-hit	ec

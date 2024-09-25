@@ -1,0 +1,14 @@
+<code-whole>
+String addr = conf.getTrimmed(BN_SERVICE_RPC_ADDRESS_KEY);
+if (addr == null || addr.isEmpty()) {
+return null;
+}
+return NetUtils.createSocketAddr(addr);
+}
+</code-whole>
+
+<code-specified>
+if (addr == null || addr.isEmpty()) {
+return null;
+}
+</code-specified>

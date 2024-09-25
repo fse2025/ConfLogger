@@ -1,0 +1,18 @@
+<code-whole>
+if (extendedEphemeralTypesEnabled()) {
+if (serverId > EphemeralType.MAX_EXTENDED_SERVER_ID) {
+throw new RuntimeException(
+"extendedTypesEnabled is true but Server ID is too large. Cannot be larger than "
++ EphemeralType.MAX_EXTENDED_SERVER_ID);
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (serverId > EphemeralType.MAX_EXTENDED_SERVER_ID) {
+throw new RuntimeException(
+"extendedTypesEnabled is true but Server ID is too large. Cannot be larger than "
++ EphemeralType.MAX_EXTENDED_SERVER_ID);
+}
+</code-specified>

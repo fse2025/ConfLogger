@@ -1,0 +1,39 @@
+<code-whole>
+Integer recvQueueSize = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_EXECUTOR_RECEIVE_BUFFER_SIZE));
+Integer recvBatchSize = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_PRODUCER_BATCH_SIZE));
+Integer overflowLimit = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_EXECUTOR_OVERFLOW_LIMIT));
+
+if (recvBatchSize > recvQueueSize / 2) {
+throw new IllegalArgumentException(Config.TOPOLOGY_PRODUCER_BATCH_SIZE + ":" + recvBatchSize
++ " is greater than half of " + Config.TOPOLOGY_EXECUTOR_RECEIVE_BUFFER_SIZE + ":"
++ recvQueueSize);
+}
+
+IWaitStrategy backPressureWaitStrategy = IWaitStrategy.createBackPressureWaitStrategy(topologyConf);
+Map<List<Long>, JCQueue> receiveQueueMap = new HashMap<>();
+
+for (List<Long> executor : executors) {
+List<Integer> taskIds = StormCommon.executorIdToTasks(executor);
+int taskId = taskIds.get(0);
+String compId;
+if (taskId == Constants.SYSTEM_TASK_ID) {
+compId = Constants.SYSTEM_COMPONENT_ID;
+} else {
+compId = taskToComponent.get(taskId);
+}
+receiveQueueMap.put(executor, new JCQueue("receive-queue" + executor.toString(), "receive-queue",
+recvQueueSize, overflowLimit, recvBatchSize, backPressureWaitStrategy,
+this.getTopologyId(), compId, taskIds, this.getPort(), metricRegistry));
+
+}
+return receiveQueueMap;
+}
+</code-whole>
+
+<code-specified>
+if (recvBatchSize > recvQueueSize / 2) {
+throw new IllegalArgumentException(Config.TOPOLOGY_PRODUCER_BATCH_SIZE + ":" + recvBatchSize
++ " is greater than half of " + Config.TOPOLOGY_EXECUTOR_RECEIVE_BUFFER_SIZE + ":"
++ recvQueueSize);
+}
+</code-specified>

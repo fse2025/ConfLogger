@@ -1,0 +1,21 @@
+<code-whole>
+String name =  conf.get(OUT_PATH);
+if(name!=null) {
+if("none".equals(name)) {
+return null;
+}
+return new Path(name);
+}
+Path outPath = FileOutputFormat.getOutputPath(new JobConf(conf));
+return outPath==null ? null : new Path(outPath,
+"_logs"+Path.SEPARATOR+"skip");
+</code-whole>
+
+<code-specified>
+if(name!=null) {
+if("none".equals(name)) {
+return null;
+}
+return new Path(name);
+}
+</code-specified>

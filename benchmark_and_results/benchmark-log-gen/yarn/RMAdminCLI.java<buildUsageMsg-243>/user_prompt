@@ -1,0 +1,38 @@
+<code-whole>
+builder.append("Usage: yarn rmadmin\n");
+for (Map.Entry<String,UsageInfo> cmdEntry : ADMIN_USAGE.entrySet()) {
+UsageInfo usageInfo = cmdEntry.getValue();
+builder.append("   " + cmdEntry.getKey() + " " + usageInfo.args + "\n");
+}
+if (isHAEnabled) {
+for (Map.Entry<String,UsageInfo> cmdEntry : USAGE.entrySet()) {
+String cmdKey = cmdEntry.getKey();
+if (!cmdKey.equals("-help")) {
+UsageInfo usageInfo = cmdEntry.getValue();
+if (usageInfo.args == null) {
+builder.append("   " + cmdKey + "\n");
+} else {
+builder.append("   " + cmdKey + " " + usageInfo.args + "\n");
+}
+}
+}
+}
+builder.append("   -help" + " [cmd]\n");
+}
+</code-whole>
+
+<code-specified>
+if (isHAEnabled) {
+for (Map.Entry<String,UsageInfo> cmdEntry : USAGE.entrySet()) {
+String cmdKey = cmdEntry.getKey();
+if (!cmdKey.equals("-help")) {
+UsageInfo usageInfo = cmdEntry.getValue();
+if (usageInfo.args == null) {
+builder.append("   " + cmdKey + "\n");
+} else {
+builder.append("   " + cmdKey + " " + usageInfo.args + "\n");
+}
+}
+}
+}
+</code-specified>

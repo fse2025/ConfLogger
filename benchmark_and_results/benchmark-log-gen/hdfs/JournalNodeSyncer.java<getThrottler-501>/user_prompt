@@ -1,0 +1,17 @@
+<code-whole>
+long transferBandwidth =
+conf.getLong(DFSConfigKeys.DFS_EDIT_LOG_TRANSFER_RATE_KEY,
+DFSConfigKeys.DFS_EDIT_LOG_TRANSFER_RATE_DEFAULT);
+DataTransferThrottler throttler = null;
+if (transferBandwidth > 0) {
+throttler = new DataTransferThrottler(transferBandwidth);
+}
+return throttler;
+}
+</code-whole>
+
+<code-specified>
+if (transferBandwidth > 0) {
+throttler = new DataTransferThrottler(transferBandwidth);
+}
+</code-specified>

@@ -1,0 +1,24 @@
+<code-whole>
+DefaultStringifier<K> stringifier = new DefaultStringifier<K>(conf,
+itemClass);
+try {
+String itemStr = conf.get(keyName);
+ArrayList<K> list = new ArrayList<K>();
+String[] parts = itemStr.split(SEPARATOR);
+
+for (String part : parts) {
+if (!part.isEmpty())
+list.add(stringifier.fromString(part));
+}
+
+return GenericsUtil.toArray(itemClass, list);
+}
+finally {
+stringifier.close();
+}
+}
+</code-whole>
+
+<code-specified>
+if (!part.isEmpty())
+</code-specified>

@@ -1,0 +1,6 @@
+<configuration>
+<property>
+<name>hbase.rpc.crypto.encryption.aes.enabled</name>
+<value></value>
+</property>
+</configuration>

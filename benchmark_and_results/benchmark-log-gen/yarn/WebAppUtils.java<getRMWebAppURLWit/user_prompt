@@ -1,0 +1,36 @@
+<code-whole>
+YarnConfiguration yarnConfig = new YarnConfiguration(conf);
+// set RM_ID if we have not configure it.
+if (isHAEnabled) {
+String rmId = yarnConfig.get(YarnConfiguration.RM_HA_ID);
+if (rmId == null || rmId.isEmpty()) {
+List<String> rmIds = new ArrayList<>(HAUtil.getRMHAIds(conf));
+if (rmIds != null && !rmIds.isEmpty()) {
+yarnConfig.set(YarnConfiguration.RM_HA_ID, rmIds.get(haIdIndex));
+}
+}
+}
+if (YarnConfiguration.useHttps(yarnConfig)) {
+if (isHAEnabled) {
+return HAUtil.getConfValueForRMInstance(
+YarnConfiguration.RM_WEBAPP_HTTPS_ADDRESS, yarnConfig);
+}
+return yarnConfig.get(YarnConfiguration.RM_WEBAPP_HTTPS_ADDRESS,
+YarnConfiguration.DEFAULT_RM_WEBAPP_HTTPS_ADDRESS);
+}else {
+if (isHAEnabled) {
+return HAUtil.getConfValueForRMInstance(
+YarnConfiguration.RM_WEBAPP_ADDRESS, yarnConfig);
+}
+return yarnConfig.get(YarnConfiguration.RM_WEBAPP_ADDRESS,
+YarnConfiguration.DEFAULT_RM_WEBAPP_ADDRESS);
+</code-whole>
+
+<code-specified>
+if (rmId == null || rmId.isEmpty()) {
+List<String> rmIds = new ArrayList<>(HAUtil.getRMHAIds(conf));
+if (rmIds != null && !rmIds.isEmpty()) {
+yarnConfig.set(YarnConfiguration.RM_HA_ID, rmIds.get(haIdIndex));
+}
+}
+</code-specified>

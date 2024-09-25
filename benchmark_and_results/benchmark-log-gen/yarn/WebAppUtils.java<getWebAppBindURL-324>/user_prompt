@@ -1,0 +1,27 @@
+<code-whole>
+String host = conf.getTrimmed(hostProperty);
+if (host != null && !host.isEmpty()) {
+if (webAppURLWithoutScheme.contains(":")) {
+webAppURLWithoutScheme = host + ":" + webAppURLWithoutScheme.split(":")[1];
+}
+else {
+throw new YarnRuntimeException("webAppURLWithoutScheme must include port specification but doesn't: " +
+webAppURLWithoutScheme);
+}
+}
+
+return webAppURLWithoutScheme;
+}
+</code-whole>
+
+<code-specified>
+if (host != null && !host.isEmpty()) {
+if (webAppURLWithoutScheme.contains(":")) {
+webAppURLWithoutScheme = host + ":" + webAppURLWithoutScheme.split(":")[1];
+}
+else {
+throw new YarnRuntimeException("webAppURLWithoutScheme must include port specification but doesn't: " +
+webAppURLWithoutScheme);
+}
+}
+</code-specified>

@@ -1,0 +1,15 @@
+<code-whole>
+if (o == null) {
+throw new IllegalArgumentException("Parameter '" + name +
+"' cannot be null");
+}
+return o;
+}
+</code-whole>
+
+<code-specified>
+if (o == null) {
+throw new IllegalArgumentException("Parameter '" + name +
+"' cannot be null");
+}
+</code-specified>

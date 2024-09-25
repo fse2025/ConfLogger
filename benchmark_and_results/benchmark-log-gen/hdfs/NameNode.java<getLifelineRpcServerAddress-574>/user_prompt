@@ -1,0 +1,14 @@
+<code-whole>
+String addr = getTrimmedOrNull(conf, DFS_NAMENODE_LIFELINE_RPC_ADDRESS_KEY);
+if (addr == null) {
+return null;
+}
+return NetUtils.createSocketAddr(addr);
+}
+</code-whole>
+
+<code-specified>
+if (addr == null) {
+return null;
+}
+</code-specified>

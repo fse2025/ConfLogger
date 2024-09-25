@@ -1,0 +1,56 @@
+<code-whole>
+if ("distributed".equals(conf.get(Config.STORM_CLUSTER_MODE))) {
+if (!this.leaderElector.isLeader()) {
+IStormClusterState state = stormClusterState;
+NimbusInfo nimbusInfo = this.nimbusInfo;
+BlobStore store = this;
+Set<String> allKeys = new HashSet<>();
+for (Iterator<String> it = store.listKeys(); it.hasNext();) {
+allKeys.add(it.next());
+}
+Set<String> zkKeys = new HashSet<>(state.blobstore(() -> {
+try {
+this.blobSync();
+} catch (Exception e) {
+throw new RuntimeException(e);
+}
+}));
+LOG.debug("blob-sync blob-store-keys {} zookeeper-keys {}", allKeys, zkKeys);
+LocalFsBlobStoreSynchronizer sync = new LocalFsBlobStoreSynchronizer(store, conf);
+sync.setNimbusInfo(nimbusInfo);
+sync.setBlobStoreKeySet(allKeys);
+sync.setZookeeperKeySet(zkKeys);
+sync.setZkClient(zkClient);
+sync.syncBlobs();
+} //else leader (NOOP)
+} //else local (NOOP)
+}
+</code-whole>
+
+<code-specified>
+if ("distributed".equals(conf.get(Config.STORM_CLUSTER_MODE))) {
+if (!this.leaderElector.isLeader()) {
+IStormClusterState state = stormClusterState;
+NimbusInfo nimbusInfo = this.nimbusInfo;
+BlobStore store = this;
+Set<String> allKeys = new HashSet<>();
+for (Iterator<String> it = store.listKeys(); it.hasNext();) {
+allKeys.add(it.next());
+}
+Set<String> zkKeys = new HashSet<>(state.blobstore(() -> {
+try {
+this.blobSync();
+} catch (Exception e) {
+throw new RuntimeException(e);
+}
+}));
+LOG.debug("blob-sync blob-store-keys {} zookeeper-keys {}", allKeys, zkKeys);
+LocalFsBlobStoreSynchronizer sync = new LocalFsBlobStoreSynchronizer(store, conf);
+sync.setNimbusInfo(nimbusInfo);
+sync.setBlobStoreKeySet(allKeys);
+sync.setZookeeperKeySet(zkKeys);
+sync.setZkClient(zkClient);
+sync.syncBlobs();
+} //else leader (NOOP)
+} //else local (NOOP)
+</code-specified>

@@ -1,0 +1,6 @@
+<configuration>
+<property>
+<name>fs.viewfs.trash.force-inside-mount-point</name>
+<value></value>
+</property>
+</configuration>

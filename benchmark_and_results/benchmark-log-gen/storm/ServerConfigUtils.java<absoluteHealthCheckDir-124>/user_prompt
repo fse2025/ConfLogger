@@ -1,0 +1,20 @@
+<code-whole>
+String stormHome = System.getProperty(ConfigUtils.STORM_HOME);
+String healthCheckDir = (String) conf.get(DaemonConfig.STORM_HEALTH_CHECK_DIR);
+if (healthCheckDir == null) {
+return (stormHome + FILE_SEPARATOR + "healthchecks");
+} else {
+if (new File(healthCheckDir).isAbsolute()) {
+return healthCheckDir;
+} else {
+return (stormHome + FILE_SEPARATOR + healthCheckDir);
+}
+</code-whole>
+
+<code-specified>
+if (new File(healthCheckDir).isAbsolute()) {
+return healthCheckDir;
+} else {
+return (stormHome + FILE_SEPARATOR + healthCheckDir);
+}
+</code-specified>

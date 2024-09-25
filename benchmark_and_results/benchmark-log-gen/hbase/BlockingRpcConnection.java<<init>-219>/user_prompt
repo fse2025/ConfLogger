@@ -1,0 +1,44 @@
+<code-whole>
+super(rpcClient.conf, AbstractRpcClient.WHEEL_TIMER, remoteId, rpcClient.clusterId,
+rpcClient.userProvider.isHBaseSecurityEnabled(), rpcClient.codec, rpcClient.compressor,
+rpcClient.metrics, rpcClient.connectionAttributes);
+this.rpcClient = rpcClient;
+this.connectionHeaderPreamble = getConnectionHeaderPreamble();
+ConnectionHeader header = getConnectionHeader();
+ByteArrayOutputStream baos = new ByteArrayOutputStream(4 + header.getSerializedSize());
+DataOutputStream dos = new DataOutputStream(baos);
+dos.writeInt(header.getSerializedSize());
+header.writeTo(dos);
+assert baos.size() == 4 + header.getSerializedSize();
+this.connectionHeaderWithLength = baos.getBuffer();
+
+UserGroupInformation ticket = remoteId.ticket.getUGI();
+this.threadName = "BRPC Connection (" + this.rpcClient.socketFactory.hashCode() + ") to "
++ remoteId.getAddress().toString()
++ ((ticket == null) ? " from an unknown user" : (" from " + ticket.getUserName()));
+
+if (this.rpcClient.conf.getBoolean(BlockingRpcClient.SPECIFIC_WRITE_THREAD, false)) {
+callSender = new CallSender(threadName, this.rpcClient.conf);
+callSender.start();
+} else {
+callSender = null;
+}
+}
+</code-whole>
+
+<code-specified>
+if (this.rpcClient.conf.getBoolean(BlockingRpcClient.SPECIFIC_WRITE_THREAD, false)) {
+callSender = new CallSender(threadName, this.rpcClient.conf);
+callSender.start();
+} else {
+callSender = null;
+}
+</code-specified>
+<code-specified>
+if (this.rpcClient.conf.getBoolean(BlockingRpcClient.SPECIFIC_WRITE_THREAD, false)) {
+callSender = new CallSender(threadName, this.rpcClient.conf);
+callSender.start();
+} else {
+callSender = null;
+}
+</code-specified>

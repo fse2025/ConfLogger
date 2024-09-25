@@ -1,0 +1,37 @@
+<code-whole>
+if (null == expr) {
+throw new IOException("Expression is null");
+}
+Class<? extends WritableComparator> cmpcl = conf.getClass(
+CompositeInputFormat.JOIN_COMPARATOR, null, WritableComparator.class);
+Lexer lex = new Lexer(expr);
+Stack<Token> st = new Stack<Token>();
+Token tok;
+while ((tok = lex.next()) != null) {
+if (TType.RPAREN.equals(tok.getType())) {
+st.push(reduce(st, conf));
+} else {
+st.push(tok);
+}
+}
+if (st.size() == 1 && TType.CIF.equals(st.peek().getType())) {
+Node ret = st.pop().getNode();
+if (cmpcl != null) {
+ret.setKeyComparator(cmpcl);
+}
+return ret;
+}
+throw new IOException("Missing ')'");
+}
+</code-whole>
+
+<code-specified>
+if (cmpcl != null) {
+ret.setKeyComparator(cmpcl);
+}
+</code-specified>
+<code-specified>
+if (null == expr) {
+throw new IOException("Expression is null");
+}
+</code-specified>

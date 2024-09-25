@@ -1,0 +1,8 @@
+    <configuration>
+  <property>
+    <description>The address for the web proxy as HOST:PORT, if this is not
+     given then the proxy will run as part of the RM</description>
+     <name>yarn.web-proxy.address</name>
+     <value/>
+  </property>
+</configuration>

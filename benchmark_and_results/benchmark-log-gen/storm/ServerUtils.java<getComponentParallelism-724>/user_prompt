@@ -1,0 +1,17 @@
+<code-whole>
+Map<String, Object> combinedConf = Utils.merge(topoConf, StormCommon.componentConf(component));
+int numTasks = ObjectReader.getInt(combinedConf.get(Config.TOPOLOGY_TASKS), StormCommon.numStartExecutors(component));
+Integer maxParallel = ObjectReader.getInt(combinedConf.get(Config.TOPOLOGY_MAX_TASK_PARALLELISM), null);
+int ret = numTasks;
+if (maxParallel != null) {
+ret = Math.min(maxParallel, numTasks);
+}
+return ret;
+}
+</code-whole>
+
+<code-specified>
+if (maxParallel != null) {
+ret = Math.min(maxParallel, numTasks);
+}
+</code-specified>

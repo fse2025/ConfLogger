@@ -1,0 +1,58 @@
+<code-whole>
+if (shouldPreserve(FileAttribute.TIMESTAMPS)) {
+target.fs.setTimes(
+target.path,
+src.stat.getModificationTime(),
+src.stat.getAccessTime());
+}
+if (shouldPreserve(FileAttribute.OWNERSHIP)) {
+target.fs.setOwner(
+target.path,
+src.stat.getOwner(),
+src.stat.getGroup());
+}
+if (shouldPreserve(FileAttribute.PERMISSION) ||
+shouldPreserve(FileAttribute.ACL)) {
+target.fs.setPermission(
+target.path,
+src.stat.getPermission());
+}
+if (shouldPreserve(FileAttribute.ACL)) {
+if (src.stat.hasAcl()) {
+FsPermission perm = src.stat.getPermission();
+List<AclEntry> srcEntries =
+src.fs.getAclStatus(src.path).getEntries();
+List<AclEntry> srcFullEntries =
+AclUtil.getAclFromPermAndEntries(perm, srcEntries);
+target.fs.setAcl(target.path, srcFullEntries);
+}
+}
+final boolean preserveXAttrs = shouldPreserve(FileAttribute.XATTR);
+if (preserveXAttrs || preserveRawXAttrs) {
+Map<String, byte[]> srcXAttrs = src.fs.getXAttrs(src.path);
+if (srcXAttrs != null) {
+Iterator<Entry<String, byte[]>> iter = srcXAttrs.entrySet().iterator();
+while (iter.hasNext()) {
+Entry<String, byte[]> entry = iter.next();
+final String xattrName = entry.getKey();
+if (xattrName.startsWith(RAW) || preserveXAttrs) {
+target.fs.setXAttr(target.path, entry.getKey(), entry.getValue());
+}
+}
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (srcXAttrs != null) {
+Iterator<Entry<String, byte[]>> iter = srcXAttrs.entrySet().iterator();
+while (iter.hasNext()) {
+Entry<String, byte[]> entry = iter.next();
+final String xattrName = entry.getKey();
+if (xattrName.startsWith(RAW) || preserveXAttrs) {
+target.fs.setXAttr(target.path, entry.getKey(), entry.getValue());
+}
+}
+}
+</code-specified>

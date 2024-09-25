@@ -1,0 +1,22 @@
+<code-whole>
+Set<String> envSet = new HashSet<>();
+if (envString != null && envString.length() > 0) {
+Matcher varValMatcher = VARVAL_SPLITTER.matcher(envString);
+while (varValMatcher.find()) {
+String envVar = varValMatcher.group(1);
+envSet.add(envVar);
+}
+}
+return envSet;
+}
+</code-whole>
+
+<code-specified>
+if (envString != null && envString.length() > 0) {
+Matcher varValMatcher = VARVAL_SPLITTER.matcher(envString);
+while (varValMatcher.find()) {
+String envVar = varValMatcher.group(1);
+envSet.add(envVar);
+}
+}
+</code-specified>

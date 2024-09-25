@@ -1,0 +1,107 @@
+<code-whole>
+Progress mergePhase, MapOutputFile mapOutputFile) {
+this.reduceId = reduceId;
+this.jobConf = jobConf;
+this.localDirAllocator = localDirAllocator;
+this.exceptionReporter = exceptionReporter;
+
+this.reporter = reporter;
+this.codec = codec;
+this.combinerClass = combinerClass;
+this.combineCollector = combineCollector;
+this.reduceCombineInputCounter = reduceCombineInputCounter;
+this.spilledRecordsCounter = spilledRecordsCounter;
+this.mergedMapOutputsCounter = mergedMapOutputsCounter;
+this.mapOutputFile = mapOutputFile;
+this.mapOutputFile.setConf(jobConf);
+
+this.localFS = localFS;
+this.rfs = ((LocalFileSystem)localFS).getRaw();
+
+final float maxInMemCopyUse =
+jobConf.getFloat(MRJobConfig.SHUFFLE_INPUT_BUFFER_PERCENT,
+MRJobConfig.DEFAULT_SHUFFLE_INPUT_BUFFER_PERCENT);
+if (maxInMemCopyUse > 1.0 || maxInMemCopyUse < 0.0) {
+throw new IllegalArgumentException("Invalid value for " +
+MRJobConfig.SHUFFLE_INPUT_BUFFER_PERCENT + ": " +
+maxInMemCopyUse);
+}
+
+// Allow unit tests to fix Runtime memory
+this.memoryLimit = (long)(jobConf.getLong(
+MRJobConfig.REDUCE_MEMORY_TOTAL_BYTES,
+Runtime.getRuntime().maxMemory()) * maxInMemCopyUse);
+
+this.ioSortFactor = jobConf.getInt(MRJobConfig.IO_SORT_FACTOR,
+MRJobConfig.DEFAULT_IO_SORT_FACTOR);
+
+final float singleShuffleMemoryLimitPercent =
+jobConf.getFloat(MRJobConfig.SHUFFLE_MEMORY_LIMIT_PERCENT,
+DEFAULT_SHUFFLE_MEMORY_LIMIT_PERCENT);
+if (singleShuffleMemoryLimitPercent < 0.0f
+|| singleShuffleMemoryLimitPercent > 1.0f) {
+throw new IllegalArgumentException("Invalid value for "
++ MRJobConfig.SHUFFLE_MEMORY_LIMIT_PERCENT + ": "
++ singleShuffleMemoryLimitPercent);
+}
+
+usedMemory = 0L;
+commitMemory = 0L;
+long maxSingleShuffleLimitConfiged =
+(long)(memoryLimit * singleShuffleMemoryLimitPercent);
+if(maxSingleShuffleLimitConfiged > Integer.MAX_VALUE) {
+maxSingleShuffleLimitConfiged = Integer.MAX_VALUE;
+LOG.info("The max number of bytes for a single in-memory shuffle cannot" +
+" be larger than Integer.MAX_VALUE. Setting it to Integer.MAX_VALUE");
+}
+this.maxSingleShuffleLimit = maxSingleShuffleLimitConfiged;
+this.memToMemMergeOutputsThreshold =
+jobConf.getInt(MRJobConfig.REDUCE_MEMTOMEM_THRESHOLD, ioSortFactor);
+this.mergeThreshold = (long)(this.memoryLimit *
+jobConf.getFloat(
+MRJobConfig.SHUFFLE_MERGE_PERCENT,
+MRJobConfig.DEFAULT_SHUFFLE_MERGE_PERCENT));
+LOG.info("MergerManager: memoryLimit=" + memoryLimit + ", " +
+"maxSingleShuffleLimit=" + maxSingleShuffleLimit + ", " +
+"mergeThreshold=" + mergeThreshold + ", " +
+"ioSortFactor=" + ioSortFactor + ", " +
+"memToMemMergeOutputsThreshold=" + memToMemMergeOutputsThreshold);
+
+if (this.maxSingleShuffleLimit >= this.mergeThreshold) {
+throw new RuntimeException("Invalid configuration: "
++ "maxSingleShuffleLimit should be less than mergeThreshold "
++ "maxSingleShuffleLimit: " + this.maxSingleShuffleLimit
++ "mergeThreshold: " + this.mergeThreshold);
+}
+
+boolean allowMemToMemMerge =
+jobConf.getBoolean(MRJobConfig.REDUCE_MEMTOMEM_ENABLED, false);
+if (allowMemToMemMerge) {
+this.memToMemMerger =
+new IntermediateMemoryToMemoryMerger(this,
+memToMemMergeOutputsThreshold);
+this.memToMemMerger.start();
+} else {
+this.memToMemMerger = null;
+}
+
+this.inMemoryMerger = createInMemoryMerger();
+this.inMemoryMerger.start();
+
+this.onDiskMerger = new OnDiskMerger(this);
+this.onDiskMerger.start();
+
+this.mergePhase = mergePhase;
+}
+</code-whole>
+
+<code-specified>
+if (maxInMemCopyUse > 1.0 || maxInMemCopyUse < 0.0) {
+throw new IllegalArgumentException("Invalid value for " +
+MRJobConfig.SHUFFLE_INPUT_BUFFER_PERCENT + ": " +
+maxInMemCopyUse);
+}
+</code-specified>
+<code-specified>
+if (singleShuffleMemoryLimitPercent < 0.0f
+</code-specified>

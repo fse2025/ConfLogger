@@ -1,0 +1,2 @@
+EventId,EventTemplate,Occurrences
+1a4eb40d,IPC client ping is disabled. Configuration parameter 'ipc.client.ping' is set to false. Using ping interval as timeout.,1

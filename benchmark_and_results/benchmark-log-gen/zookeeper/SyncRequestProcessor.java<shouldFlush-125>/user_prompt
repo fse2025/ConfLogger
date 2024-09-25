@@ -1,0 +1,15 @@
+<code-whole>
+long flushDelay = zks.getFlushDelay();
+long maxBatchSize = zks.getMaxBatchSize();
+if ((flushDelay > 0) && (getRemainingDelay() == 0)) {
+return true;
+}
+return (maxBatchSize > 0) && (toFlush.size() >= maxBatchSize);
+}
+</code-whole>
+
+<code-specified>
+if ((flushDelay > 0) && (getRemainingDelay() == 0)) {
+return true;
+}
+</code-specified>

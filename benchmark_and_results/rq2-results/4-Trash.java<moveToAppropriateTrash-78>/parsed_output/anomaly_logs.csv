@@ -1,0 +1,2 @@
+anomaly_degree,content
+0.6000000000000001,"INFO	Localized trash flag is not enabled. Initializing Trash with fully resolved FileSystem object. Configuration parameter: CONFIG_VIEWFS_TRASH_FORCE_INSIDE_MOUNT_POINT, Value: false"

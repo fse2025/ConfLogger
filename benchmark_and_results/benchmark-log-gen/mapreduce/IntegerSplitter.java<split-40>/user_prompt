@@ -1,0 +1,59 @@
+<code-whole>
+long minVal = results.getLong(1);
+long maxVal = results.getLong(2);
+
+String lowClausePrefix = colName + " >= ";
+String highClausePrefix = colName + " < ";
+
+int numSplits = conf.getInt(MRJobConfig.NUM_MAPS, 1);
+if (numSplits < 1) {
+numSplits = 1;
+}
+
+if (results.getString(1) == null && results.getString(2) == null) {
+// Range is null to null. Return a null split accordingly.
+List<InputSplit> splits = new ArrayList<InputSplit>();
+splits.add(new DataDrivenDBInputFormat.DataDrivenDBInputSplit(
+colName + " IS NULL", colName + " IS NULL"));
+return splits;
+}
+
+// Get all the split points together.
+List<Long> splitPoints = split(numSplits, minVal, maxVal);
+List<InputSplit> splits = new ArrayList<InputSplit>();
+
+// Turn the split points into a set of intervals.
+long start = splitPoints.get(0);
+for (int i = 1; i < splitPoints.size(); i++) {
+long end = splitPoints.get(i);
+
+if (i == splitPoints.size() - 1) {
+// This is the last one; use a closed interval.
+splits.add(new DataDrivenDBInputFormat.DataDrivenDBInputSplit(
+lowClausePrefix + Long.toString(start),
+colName + " <= " + Long.toString(end)));
+} else {
+// Normal open-interval case.
+splits.add(new DataDrivenDBInputFormat.DataDrivenDBInputSplit(
+lowClausePrefix + Long.toString(start),
+highClausePrefix + Long.toString(end)));
+}
+
+start = end;
+}
+
+if (results.getString(1) == null || results.getString(2) == null) {
+// At least one extrema is null; add a null split.
+splits.add(new DataDrivenDBInputFormat.DataDrivenDBInputSplit(
+colName + " IS NULL", colName + " IS NULL"));
+}
+
+return splits;
+}
+</code-whole>
+
+<code-specified>
+if (numSplits < 1) {
+numSplits = 1;
+}
+</code-specified>

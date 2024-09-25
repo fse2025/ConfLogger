@@ -1,0 +1,14 @@
+<code-whole>
+String confStr = conf.get(confKey);
+if (confStr == null) {
+return null;
+}
+return new NodeFencer(conf, confStr);
+}
+</code-whole>
+
+<code-specified>
+if (confStr == null) {
+return null;
+}
+</code-specified>

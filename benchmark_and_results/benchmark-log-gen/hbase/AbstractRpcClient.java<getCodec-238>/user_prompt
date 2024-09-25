@@ -1,0 +1,18 @@
+<code-whole>
+String className = conf.get(HConstants.RPC_CODEC_CONF_KEY, getDefaultCodec(this.conf));
+if (className == null || className.length() == 0) {
+return null;
+}
+try {
+return Class.forName(className).asSubclass(Codec.class).getDeclaredConstructor()
+.newInstance();
+} catch (Exception e) {
+throw new RuntimeException("Failed getting codec " + className, e);
+}
+</code-whole>
+
+<code-specified>
+if (className == null || className.length() == 0) {
+return null;
+}
+</code-specified>

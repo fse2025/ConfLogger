@@ -1,0 +1,14 @@
+<code-whole>
+String valueString = conf.get(name, defaultValue);
+if (valueString == null) {
+return new ArrayList<>();
+}
+return new ArrayList<>(StringUtils.getTrimmedStringCollection(valueString));
+}
+</code-whole>
+
+<code-specified>
+if (valueString == null) {
+return new ArrayList<>();
+}
+</code-specified>

@@ -1,0 +1,97 @@
+<code-whole>
+if (socket != null) {
+// The connection is already available. Perfect.
+return;
+}
+
+if (this.rpcClient.failedServers.isFailedServer(remoteId.getAddress())) {
+if (LOG.isDebugEnabled()) {
+LOG.debug("Not trying to connect to " + remoteId.getAddress()
++ " this server is in the failed servers list");
+}
+throw new FailedServerException(
+"This server is in the failed servers list: " + remoteId.getAddress());
+}
+
+try {
+if (LOG.isDebugEnabled()) {
+LOG.debug("Connecting to " + remoteId.getAddress());
+}
+
+short numRetries = 0;
+int reloginMaxRetries = this.rpcClient.conf.getInt("hbase.security.relogin.maxretries", 5);
+while (true) {
+setupConnection();
+InputStream inStream = NetUtils.getInputStream(socket);
+// This creates a socket with a write timeout. This timeout cannot be changed.
+OutputStream outStream = NetUtils.getOutputStream(socket, this.rpcClient.writeTO);
+// Write out the preamble -- MAGIC, version, and auth to use.
+writeConnectionHeaderPreamble(outStream);
+if (useSasl) {
+final InputStream in2 = inStream;
+final OutputStream out2 = outStream;
+UserGroupInformation ticket = provider.getRealUser(remoteId.ticket);
+boolean continueSasl;
+if (ticket == null) {
+throw new FatalConnectionException("ticket/user is null");
+}
+try {
+continueSasl = ticket.doAs(new PrivilegedExceptionAction<Boolean>() {
+@Override
+public Boolean run() throws IOException {
+return setupSaslConnection(in2, out2);
+}
+});
+} catch (Exception ex) {
+ExceptionUtil.rethrowIfInterrupt(ex);
+handleSaslConnectionFailure(numRetries++, reloginMaxRetries, ex, ticket);
+continue;
+}
+if (continueSasl) {
+// Sasl connect is successful. Let's set up Sasl i/o streams.
+inStream = saslRpcClient.getInputStream();
+outStream = saslRpcClient.getOutputStream();
+} else {
+// fall back to simple auth because server told us so.
+// do not change authMethod and useSasl here, we should start from secure when
+// reconnecting because regionserver may change its sasl config after restart.
+}
+}
+this.in = new DataInputStream(new BufferedInputStream(inStream));
+this.out = new DataOutputStream(new BufferedOutputStream(outStream));
+// Now write out the connection header
+writeConnectionHeader();
+// process the response from server for connection header if necessary
+processResponseForConnectionHeader();
+
+break;
+}
+} catch (Throwable t) {
+closeSocket();
+IOException e = ExceptionUtil.asInterrupt(t);
+if (e == null) {
+this.rpcClient.failedServers.addToFailedServers(remoteId.getAddress(), t);
+if (t instanceof LinkageError) {
+// probably the hbase hadoop version does not match the running hadoop version
+e = new DoNotRetryIOException(t);
+} else if (t instanceof IOException) {
+e = (IOException) t;
+} else {
+e = new IOException("Could not set up IO Streams to " + remoteId.getAddress(), t);
+}
+}
+throw e;
+}
+
+// start the receiver thread after the socket connection has been set up
+thread = new Thread(this, threadName);
+thread.setDaemon(true);
+thread.start();
+}
+</code-whole>
+
+<code-specified>
+if (ticket == null) {
+throw new FatalConnectionException("ticket/user is null");
+}
+</code-specified>

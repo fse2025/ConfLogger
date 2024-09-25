@@ -1,0 +1,14 @@
+<code-whole>
+final Map<String, Number> metricsMap = new ConcurrentHashMap<>();
+if (dataTree != null) {
+getQuotaLimitOrUsage(Quotas.quotaZookeeper, metricsMap, type, dataTree);
+}
+return metricsMap;
+}
+</code-whole>
+
+<code-specified>
+if (dataTree != null) {
+getQuotaLimitOrUsage(Quotas.quotaZookeeper, metricsMap, type, dataTree);
+}
+</code-specified>

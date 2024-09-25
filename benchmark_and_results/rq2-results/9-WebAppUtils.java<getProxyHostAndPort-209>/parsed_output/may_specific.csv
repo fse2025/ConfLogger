@@ -1,0 +1,2 @@
+0,1
+91a8b19b,The configuration parameter 'yarn.web-proxy.address' is not set or is empty. Falling back to the resolved RM Web App URL without scheme. Please ensure 'yarn.web-proxy.address' is properly configured for correct proxy settings.

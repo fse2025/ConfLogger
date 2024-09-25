@@ -1,0 +1,25 @@
+<code-whole>
+String clientCnxnSocketName = getClientConfig().getProperty(ZKClientConfig.ZOOKEEPER_CLIENT_CNXN_SOCKET);
+if (clientCnxnSocketName == null || clientCnxnSocketName.equals(ClientCnxnSocketNIO.class.getSimpleName())) {
+clientCnxnSocketName = ClientCnxnSocketNIO.class.getName();
+} else if (clientCnxnSocketName.equals(ClientCnxnSocketNetty.class.getSimpleName())) {
+clientCnxnSocketName = ClientCnxnSocketNetty.class.getName();
+}
+
+try {
+Constructor<?> clientCxnConstructor = Class.forName(clientCnxnSocketName)
+.getDeclaredConstructor(ZKClientConfig.class);
+ClientCnxnSocket clientCxnSocket = (ClientCnxnSocket) clientCxnConstructor.newInstance(getClientConfig());
+return clientCxnSocket;
+} catch (Exception e) {
+throw new IOException("Couldn't instantiate " + clientCnxnSocketName, e);
+}
+</code-whole>
+
+<code-specified>
+if (clientCnxnSocketName == null || clientCnxnSocketName.equals(ClientCnxnSocketNIO.class.getSimpleName())) {
+clientCnxnSocketName = ClientCnxnSocketNIO.class.getName();
+} else if (clientCnxnSocketName.equals(ClientCnxnSocketNetty.class.getSimpleName())) {
+clientCnxnSocketName = ClientCnxnSocketNetty.class.getName();
+}
+</code-specified>

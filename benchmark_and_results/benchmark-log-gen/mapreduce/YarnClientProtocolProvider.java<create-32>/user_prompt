@@ -1,0 +1,13 @@
+<code-whole>
+if (MRConfig.YARN_FRAMEWORK_NAME.equals(conf.get(MRConfig.FRAMEWORK_NAME))) {
+return new YARNRunner(conf);
+}
+return null;
+}
+</code-whole>
+
+<code-specified>
+if (MRConfig.YARN_FRAMEWORK_NAME.equals(conf.get(MRConfig.FRAMEWORK_NAME))) {
+return new YARNRunner(conf);
+}
+</code-specified>

@@ -1,0 +1,2 @@
+LineId,Date,Time,Pid,Id,Level,Component,Content,EventId,EventTemplate,ParameterList
+1,2024-09-05,13:17:27,046,[myid:],INFO,[main:o.a.z.s.a.AdminServerFactory@64],"JettyAdminServer is disabled. To enable, set 'zookeeper.admin.enableServer' to true.",9beb49a0,"JettyAdminServer is disabled. To enable, set 'zookeeper.admin.enableServer' to true.",[]

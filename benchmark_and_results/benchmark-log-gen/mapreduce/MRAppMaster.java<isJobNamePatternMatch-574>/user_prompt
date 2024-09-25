@@ -1,0 +1,25 @@
+<code-whole>
+if (conf.getKeepTaskFilesPattern() != null && jobTempDir != null) {
+java.nio.file.Path pathName = Paths.get(jobTempDir).getFileName();
+if (pathName != null) {
+String jobFileName = pathName.toString();
+Pattern pattern = Pattern.compile(conf.getKeepTaskFilesPattern());
+Matcher matcher = pattern.matcher(jobFileName);
+return matcher.find();
+}
+}
+return false;
+}
+</code-whole>
+
+<code-specified>
+if (conf.getKeepTaskFilesPattern() != null && jobTempDir != null) {
+java.nio.file.Path pathName = Paths.get(jobTempDir).getFileName();
+if (pathName != null) {
+String jobFileName = pathName.toString();
+Pattern pattern = Pattern.compile(conf.getKeepTaskFilesPattern());
+Matcher matcher = pattern.matcher(jobFileName);
+return matcher.find();
+}
+}
+</code-specified>

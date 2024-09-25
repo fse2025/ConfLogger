@@ -1,0 +1,19 @@
+<code-whole>
+String remoteDirStr = String.format(
+YarnConfiguration.LOG_AGGREGATION_REMOTE_APP_LOG_DIR_FMT,
+fileControllerName);
+String remoteDir = conf.get(remoteDirStr);
+if (remoteDir == null || remoteDir.isEmpty()) {
+remoteDir = conf.get(YarnConfiguration.NM_REMOTE_APP_LOG_DIR,
+YarnConfiguration.DEFAULT_NM_REMOTE_APP_LOG_DIR);
+}
+remoteRootLogDir = new Path(remoteDir);
+}
+</code-whole>
+
+<code-specified>
+if (remoteDir == null || remoteDir.isEmpty()) {
+remoteDir = conf.get(YarnConfiguration.NM_REMOTE_APP_LOG_DIR,
+YarnConfiguration.DEFAULT_NM_REMOTE_APP_LOG_DIR);
+}
+</code-specified>

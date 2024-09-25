@@ -1,0 +1,42 @@
+<code-whole>
+boolean isChainJob = false;
+try {
+String mapClassName = conf.get(MRJobConfig.MAP_CLASS_ATTR);
+if (mapClassName != null) {
+Class<?> mapClass = Class.forName(mapClassName);
+if (ChainMapper.class.isAssignableFrom(mapClass))
+isChainJob = true;
+}
+} catch (ClassNotFoundException cnfe) {
+// don't care; assume it's not derived from ChainMapper
+} catch (NoClassDefFoundError ignored) {
+}
+try {
+String reduceClassName = conf.get(MRJobConfig.REDUCE_CLASS_ATTR);
+if (reduceClassName != null) {
+Class<?> reduceClass = Class.forName(reduceClassName);
+if (ChainReducer.class.isAssignableFrom(reduceClass))
+isChainJob = true;
+}
+} catch (ClassNotFoundException cnfe) {
+// don't care; assume it's not derived from ChainReducer
+} catch (NoClassDefFoundError ignored) {
+}
+return isChainJob;
+}
+</code-whole>
+
+<code-specified>
+if (reduceClassName != null) {
+Class<?> reduceClass = Class.forName(reduceClassName);
+if (ChainReducer.class.isAssignableFrom(reduceClass))
+isChainJob = true;
+}
+</code-specified>
+<code-specified>
+if (mapClassName != null) {
+Class<?> mapClass = Class.forName(mapClassName);
+if (ChainMapper.class.isAssignableFrom(mapClass))
+isChainJob = true;
+}
+</code-specified>

@@ -1,0 +1,12 @@
+<code-whole>
+if (om != null && om.getNumActiveObservers() > 0) {
+om.resetObserverConnectionStats();
+}
+}
+</code-whole>
+
+<code-specified>
+if (om != null && om.getNumActiveObservers() > 0) {
+om.resetObserverConnectionStats();
+}
+</code-specified>

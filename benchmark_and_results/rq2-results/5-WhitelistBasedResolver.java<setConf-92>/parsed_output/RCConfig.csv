@@ -1,0 +1,2 @@
+name,value,relevant log,explanation
+hadoop.security.sasl.fixedwhitelist.file,<missing>,"1-INFO	Variable whitelist is disabled. Only fixed whitelist will be used. To enable variable whitelist, set HADOOP_SECURITY_SASL_VARIABLEWHITELIST_ENABLE to true.","The log indicates that the variable whitelist is disabled and only the fixed whitelist will be used. The configuration option 'hadoop.security.sasl.fixedwhitelist.file' is missing a value, which could be the cause of this issue. Setting a value for this configuration option might resolve the issue."

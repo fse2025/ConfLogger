@@ -1,0 +1,14 @@
+<code-whole>
+if (conf.get(ENGINE_PROP+"."+protocol.getName()) == null) {
+conf.setClass(ENGINE_PROP+"."+protocol.getName(), engine,
+RpcEngine.class);
+}
+}
+</code-whole>
+
+<code-specified>
+if (conf.get(ENGINE_PROP+"."+protocol.getName()) == null) {
+conf.setClass(ENGINE_PROP+"."+protocol.getName(), engine,
+RpcEngine.class);
+}
+</code-specified>

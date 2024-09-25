@@ -1,0 +1,54 @@
+<code-whole>
+if (!MRConfig.YARN_FRAMEWORK_NAME.equals(conf.get(
+MRConfig.FRAMEWORK_NAME))) {
+// Shared cache is only valid if the job runs on yarn
+return;
+}
+
+if(!conf.getBoolean(YarnConfiguration.SHARED_CACHE_ENABLED,
+YarnConfiguration.DEFAULT_SHARED_CACHE_ENABLED)) {
+return;
+}
+
+
+Collection<String> configs = StringUtils.getTrimmedStringCollection(
+conf.get(MRJobConfig.SHARED_CACHE_MODE,
+MRJobConfig.SHARED_CACHE_MODE_DEFAULT));
+if (configs.contains("files")) {
+this.sharedCacheFilesEnabled = true;
+}
+if (configs.contains("libjars")) {
+this.sharedCacheLibjarsEnabled = true;
+}
+if (configs.contains("archives")) {
+this.sharedCacheArchivesEnabled = true;
+}
+if (configs.contains("jobjar")) {
+this.sharedCacheJobjarEnabled = true;
+}
+if (configs.contains("enabled")) {
+this.sharedCacheFilesEnabled = true;
+this.sharedCacheLibjarsEnabled = true;
+this.sharedCacheArchivesEnabled = true;
+this.sharedCacheJobjarEnabled = true;
+}
+if (configs.contains("disabled")) {
+this.sharedCacheFilesEnabled = false;
+this.sharedCacheLibjarsEnabled = false;
+this.sharedCacheArchivesEnabled = false;
+this.sharedCacheJobjarEnabled = false;
+}
+}
+</code-whole>
+
+<code-specified>
+if (!MRConfig.YARN_FRAMEWORK_NAME.equals(conf.get(
+</code-specified>
+<code-specified>
+if (configs.contains("files")) {
+this.sharedCacheFilesEnabled = true;
+}
+</code-specified>
+<code-specified>
+if(!conf.getBoolean(YarnConfiguration.SHARED_CACHE_ENABLED,
+</code-specified>

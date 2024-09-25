@@ -1,0 +1,59 @@
+<code-whole>
+if (whiteListInitialized) {
+return whiteListedCommands.contains(command);
+}
+
+String commands = System.getProperty(ZOOKEEPER_4LW_COMMANDS_WHITELIST);
+if (commands != null) {
+String[] list = commands.split(",");
+for (String cmd : list) {
+if (cmd.trim().equals("*")) {
+for (Map.Entry<Integer, String> entry : cmd2String.entrySet()) {
+whiteListedCommands.add(entry.getValue());
+}
+break;
+}
+if (!cmd.trim().isEmpty()) {
+whiteListedCommands.add(cmd.trim());
+}
+}
+}
+
+// It is sad that isro and srvr are used by ZooKeeper itself. Need fix this
+// before deprecating 4lw.
+if (System.getProperty("readonlymode.enabled", "false").equals("true")) {
+whiteListedCommands.add("isro");
+}
+// zkServer.sh depends on "srvr".
+whiteListedCommands.add("srvr");
+whiteListInitialized = true;
+LOG.info("The list of known four letter word commands is : {}", Arrays.asList(cmd2String));
+LOG.info("The list of enabled four letter word commands is : {}", Arrays.asList(whiteListedCommands));
+return whiteListedCommands.contains(command);
+}
+</code-whole>
+
+<code-specified>
+if (commands != null) {
+String[] list = commands.split(",");
+for (String cmd : list) {
+if (cmd.trim().equals("*")) {
+for (Map.Entry<Integer, String> entry : cmd2String.entrySet()) {
+whiteListedCommands.add(entry.getValue());
+}
+break;
+}
+if (!cmd.trim().isEmpty()) {
+whiteListedCommands.add(cmd.trim());
+}
+}
+}
+</code-specified>
+<code-specified>
+if (cmd.trim().equals("*")) {
+for (Map.Entry<Integer, String> entry : cmd2String.entrySet()) {
+whiteListedCommands.add(entry.getValue());
+}
+break;
+}
+</code-specified>

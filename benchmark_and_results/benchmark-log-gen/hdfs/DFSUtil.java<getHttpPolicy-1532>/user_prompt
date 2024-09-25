@@ -1,0 +1,20 @@
+<code-whole>
+String policyStr = conf.get(DFSConfigKeys.DFS_HTTP_POLICY_KEY,
+DFSConfigKeys.DFS_HTTP_POLICY_DEFAULT);
+HttpConfig.Policy policy = HttpConfig.Policy.fromString(policyStr);
+if (policy == null) {
+throw new HadoopIllegalArgumentException("Unrecognized value '"
++ policyStr + "' for " + DFSConfigKeys.DFS_HTTP_POLICY_KEY);
+}
+
+conf.set(DFSConfigKeys.DFS_HTTP_POLICY_KEY, policy.name());
+return policy;
+}
+</code-whole>
+
+<code-specified>
+if (policy == null) {
+throw new HadoopIllegalArgumentException("Unrecognized value '"
++ policyStr + "' for " + DFSConfigKeys.DFS_HTTP_POLICY_KEY);
+}
+</code-specified>

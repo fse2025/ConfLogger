@@ -1,0 +1,7 @@
+<configuration>
+<property>
+<name>zookeeper.cnxTimeout</name>
+<value>-1000</value>
+<description>cnxTimeout : (Java system property: zookeeper.cnxTimeout) Sets the timeout value for opening connections for leader election notifications. Only applicable if you are using electionAlg 3. Default value is 5 seconds.</description>
+</property>
+</configuration>

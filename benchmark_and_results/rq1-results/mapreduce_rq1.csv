@@ -1,0 +1,83 @@
+case,removed-vairable,removed-text,inserted-vairable,inserted-text,,
+ClientServiceDelegate.java<getProxy-147>,jobId,"""Job {} is running, but the host is unknown. Verify user has VIEW_JOB access.""
+",MRJobConfig.JOB_AM_ACCESS_DISABLED,"""Access to the Application Master is disabled by configuration. Ensure that the configuration parameter {} is set to false to enable access.""
+",,
+DeprecatedQueueConfigurationParser.java<deprecatedConf-91>,QUEUE_CONF_FILE_NAME,"""Configuring queue ACLs in mapred-site.xml or hadoop-site.xml is deprecated. Configure queue ACLs in {}""
+","queue
+qAcl.getAclName()","""ACL configuration found for queue: {}, ACL: {}. This indicates that deprecated ACL settings are being used. Consider updating the configuration to use the new format.""
+",,
+HistoryFileManager.java<tryCreatingHistoryDirs-674>,doneDirPrefixPath.toUri().getAuthority(),Waiting for FileSystem at {} to be available,doneDirPrefix,"""Connection exception occurred while trying to create the done directory. The system will retry. Ensure the FileSystem is available. DoneDirPrefix: {}""
+",,
+Job.java<getCompletionPollInterval-1832>,"COMPLETION_POLL_INTERVAL_KEY
+DEFAULT_COMPLETION_POLL_INTERVAL","""{} has been set to an invalid value; replacing with {}""
+","COMPLETION_POLL_INTERVAL_KEY
+completionPollIntervalMillis
+DEFAULT_COMPLETION_POLL_INTERVAL","""The configuration parameter '{}' is set to a value less than 1: {}. Resetting to default value: {}. Ensure the value is a positive integer to properly configure the poll interval.""
+",,
+Job.java<getProgressPollInterval-1819>,"PROGRESS_MONITOR_POLL_INTERVAL_KEY
+DEFAULT_MONITOR_POLL_INTERVAL","""{} has been set to an invalid value; replacing with {}""
+",DEFAULT_MONITOR_POLL_INTERVAL,"""The configuration parameter 'mapreduce.client.progressmonitor.pollinterval' is set to a value less than 1. This is invalid as the poll interval must be at least 1 millisecond. Reverting to default value: {} milliseconds. Please ensure 'mapreduce.client.progressmonitor.pollinterval' is set to a valid positive integer.""
+",,
+JobHistoryUtils.java<getConfiguredHistoryIntermediateUserDoneDirPermissions-216>,"JHAdminConfig.MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS
+permission.toString()","""Unsupported permission configured in {}, the user and the group permission must be 7 (rwx). The permission was set to {}""
+",userDoneDirPermissions,"""Configuration parameter 'mapreduce.jobhistory.intermediate-user-done-dir.permissions' is set to '{}', but user and group actions are not set to 'ALL'. Adjusting permissions to ensure user and group have 'ALL' actions.""
+",,mapreduce.jobhistory.intermediate-user-done-dir.permissions
+/JobHistoryUtils.java<getDefaultFileContext-262>,defaultConf.get(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY),"""Unable to create default file context [{}]""
+",,"""Failed to get FileContext due to UnsupportedFileSystemException. Ensure that the file system is supported and properly configured.""
+",,fs.defaultFS
+JobResourceUploader.java<uploadResourcesInternal-142>,,"""Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.""
+",,"""The generic parser is not used. Ensure that the configuration parameter 'Job.USED_GENERIC_PARSER' is set to true if you want to enable the generic parser functionality.""
+",,
+JobSplitWriter.java<writeNewSplits-120>,"split
+locations.length
+maxBlockLocations","""Max block location exceeded for split: {} splitsize: {} maxsize: {}""
+","maxBlockLocations
+locations.length","""The number of split locations exceeds the maximum allowed by configuration. Truncating locations to maxBlockLocations. Consider increasing the 'mapreduce.job.max.split.locations' if necessary. Current maxBlockLocations: {}, Actual locations length: {}""
+",,
+JobSplitWriter.java<writeOldSplits-155>,"split
+locations.length
+maxBlockLocations","""Max block location exceeded for split: {} splitsize: {} maxsize: {}""
+","locations.length
+maxBlockLocations
+MRConfig.MAX_BLOCK_LOCATIONS_KEY","""The number of split locations ({}) exceeds the maximum allowed ({}). Truncating to maxBlockLocations. Ensure that the configuration parameter '{}' is set appropriately to accommodate the required number of locations.""
+",,
+JobSubmitter.java<readTokensFromFiles-388>,,"""couldn't parse Token Cache JSON file with user secret keys""
+","tokensFileName
+e.getMessage()","""Failed to parse JSON from the file: {}. Ensure the JSON structure is correct. Exception: {}""
+",,
+MRAppMaster.java<cleanupStagingDir-617>,,"""Job Staging directory is null""
+",,"""The job temporary directory is not set (jobTempDir is null). Ensure that MRJobConfig.MAPREDUCE_JOB_DIR is properly configured to avoid potential issues with job file management.""
+",,
+MRAppMaster.java<cleanupStagingDir-617>,"FileSystem.getDefaultUri(getConfig())
+jobTempDir","""Deleting staging directory {} {}""
+",jobTempDir,"""Deleted job temporary directory: {}. Ensure that MRJobConfig.MAPREDUCE_JOB_DIR is set correctly to manage job files effectively.""
+",,
+MRAppMaster.java<cleanupStagingDir-617>,"jobTempDir
+io","""Failed to cleanup staging dir {}""
+",jobTempDir,"""IOException occurred while attempting to delete the job temporary directory: {}. Check file system permissions and the validity of the path.""
+",,
+MRAppMaster.java<shouldAttemptRecovery-1353>,MRJobConfig.MR_AM_JOB_RECOVERY_ENABLE,"""Not attempting to recover. Recovery disabled. To enable recovery, set {}""
+",,"""Recovery is disabled. Ensure that the configuration parameter MRJobConfig.MR_AM_JOB_RECOVERY_ENABLE is set to true to enable recovery.""
+",,
+Task.java<normalizeStatus-635>,"status
+progressStatusLength","""Task status: \""{}\"" truncated to max limit ({}) characters""
+","status.length()
+progressStatusLength
+MRConfig.PROGRESS_STATUS_LEN_LIMIT_KEY","""Truncating status to comply with the configured length limit. Original status length: {}, Configured limit: {} (Parameter: {}). Ensure the configuration parameter is set appropriately to avoid truncation.""
+",,
+YARNRunner.java<generateResourceRequests-668>,"MR_AM_RESOURCE_PREFIX
+resourceName
+resourceReq.getValue()
+resourceReq.getUnits()
+MRJobConfig.MR_AM_VMEM_MB
+conf.get(MRJobConfig.MR_AM_VMEM_MB)","""Configuration {}{}={}{} is overriding the {}={}""
+",conf.get(MRJobConfig.MR_AM_VMEM_MB),"""Memory configuration set using MR_AM_VMEM_MB. Value: {}""
+",,
+YARNRunner.java<generateResourceRequests-668>,"MR_AM_RESOURCE_PREFIX
+resourceName
+resourceReq.getValue()
+resourceReq.getUnits()
+MRJobConfig.MR_AM_CPU_VCORES
+conf.get(MRJobConfig.MR_AM_CPU_VCORES)","""Configuration {}{}={}{} is overriding the {}={}""
+",conf.get(MRJobConfig.MR_AM_CPU_VCORES),"""CPU vcores configuration set using MR_AM_CPU_VCORES. Value: {}""
+",,

@@ -1,0 +1,18 @@
+<code-whole>
+if (protectedDirsString == null) {
+protectedDirectories = new TreeSet<>();
+} else {
+protectedDirectories = parseProtectedDirectories(protectedDirsString);
+}
+
+return Joiner.on(",").skipNulls().join(protectedDirectories);
+}
+</code-whole>
+
+<code-specified>
+if (protectedDirsString == null) {
+protectedDirectories = new TreeSet<>();
+} else {
+protectedDirectories = parseProtectedDirectories(protectedDirsString);
+}
+</code-specified>

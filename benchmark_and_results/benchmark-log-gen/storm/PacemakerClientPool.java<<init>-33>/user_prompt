@@ -1,0 +1,25 @@
+<code-whole>
+public PacemakerClientPool(Map<String, Object> config) {
+this.config = config;
+List<String> serverList = (List<String>) config.get(Config.PACEMAKER_SERVERS);
+if (serverList == null) {
+serverList = new ArrayList<>();
+} else {
+serverList = new ArrayList<>(serverList);
+}
+Collections.shuffle(serverList);
+if (serverList != null) {
+servers = new ConcurrentLinkedQueue<>(serverList);
+} else {
+servers = new ConcurrentLinkedQueue<>();
+}
+}
+</code-whole>
+
+<code-specified>
+if (serverList == null) {
+serverList = new ArrayList<>();
+} else {
+serverList = new ArrayList<>(serverList);
+}
+</code-specified>

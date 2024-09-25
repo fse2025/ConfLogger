@@ -1,0 +1,16 @@
+<code-whole>
+if (Utils.isOnWindows()) {
+return new AdvancedWindowsFSOps(conf);
+}
+if (ObjectReader.getBoolean(conf.get(Config.SUPERVISOR_RUN_WORKER_AS_USER), false)) {
+return new AdvancedRunAsUserFSOps(conf);
+}
+return new AdvancedFSOps(conf);
+}
+</code-whole>
+
+<code-specified>
+if (ObjectReader.getBoolean(conf.get(Config.SUPERVISOR_RUN_WORKER_AS_USER), false)) {
+return new AdvancedRunAsUserFSOps(conf);
+}
+</code-specified>

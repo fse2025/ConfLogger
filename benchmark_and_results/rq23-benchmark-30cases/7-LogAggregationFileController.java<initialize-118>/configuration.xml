@@ -1,0 +1,11 @@
+    <configuration>
+  <property>
+    <description>Define how many aggregated log files per application per NM
+    we can have in remote file system. By default, the total number of
+    aggregated log files per application per NM is 30.
+    </description>
+    <name>yarn.nodemanager.log-aggregation.num-log-files-per-app</name>
+    <value>-1</value>
+  </property>
+
+</configuration>

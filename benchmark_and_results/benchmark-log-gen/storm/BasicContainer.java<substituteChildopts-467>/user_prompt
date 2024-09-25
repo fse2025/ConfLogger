@@ -1,0 +1,68 @@
+<code-whole>
+List<String> rets = new ArrayList<>();
+if (value instanceof String) {
+String string = substituteChildOptsInternal((String) value, memOnheap, memOffHeap);
+if (StringUtils.isNotBlank(string)) {
+String[] strings = string.split("\\s+");
+for (String s : strings) {
+if (StringUtils.isNotBlank(s)) {
+rets.add(s);
+}
+}
+}
+} else if (value instanceof List) {
+@SuppressWarnings("unchecked")
+List<String> objects = (List<String>) value;
+for (String object : objects) {
+String str = substituteChildOptsInternal(object, memOnheap, memOffHeap);
+if (StringUtils.isNotBlank(str)) {
+rets.add(str);
+}
+}
+}
+return rets;
+}
+</code-whole>
+
+<code-specified>
+if (StringUtils.isNotBlank(str)) {
+rets.add(str);
+}
+</code-specified>
+<code-specified>
+if (StringUtils.isNotBlank(s)) {
+rets.add(s);
+}
+</code-specified>
+<code-specified>
+if (StringUtils.isNotBlank(string)) {
+String[] strings = string.split("\\s+");
+for (String s : strings) {
+if (StringUtils.isNotBlank(s)) {
+rets.add(s);
+}
+}
+}
+</code-specified>
+<code-specified>
+if (value instanceof String) {
+String string = substituteChildOptsInternal((String) value, memOnheap, memOffHeap);
+if (StringUtils.isNotBlank(string)) {
+String[] strings = string.split("\\s+");
+for (String s : strings) {
+if (StringUtils.isNotBlank(s)) {
+rets.add(s);
+}
+}
+}
+} else if (value instanceof List) {
+@SuppressWarnings("unchecked")
+List<String> objects = (List<String>) value;
+for (String object : objects) {
+String str = substituteChildOptsInternal(object, memOnheap, memOffHeap);
+if (StringUtils.isNotBlank(str)) {
+rets.add(str);
+}
+}
+}
+</code-specified>

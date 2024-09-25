@@ -1,0 +1,15 @@
+<code-whole>
+List<String> values = new ArrayList<String>();
+if (str == null)
+return values;
+StringTokenizer tokenizer = new StringTokenizer(str, delim);
+while (tokenizer.hasMoreTokens()) {
+values.add(tokenizer.nextToken());
+}
+return values;
+}
+</code-whole>
+
+<code-specified>
+if (str == null)
+</code-specified>

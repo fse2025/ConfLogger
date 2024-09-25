@@ -1,0 +1,23 @@
+<code-whole>
+if (null == o) {
+return defaultValue;
+}
+if (o instanceof Boolean) {
+return (Boolean) o;
+} else {
+throw new IllegalArgumentException("Don't know how to convert " + o + " to boolean");
+}
+</code-whole>
+
+<code-specified>
+if (null == o) {
+return defaultValue;
+}
+</code-specified>
+<code-specified>
+if (o instanceof Boolean) {
+return (Boolean) o;
+} else {
+throw new IllegalArgumentException("Don't know how to convert " + o + " to boolean");
+}
+</code-specified>

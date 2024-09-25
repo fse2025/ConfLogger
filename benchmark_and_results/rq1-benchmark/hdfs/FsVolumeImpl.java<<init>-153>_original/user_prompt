@@ -1,0 +1,52 @@
+<code-whole>
+FileIoProvider fileIoProvider, Configuration conf, DF usage)
+throws IOException {
+
+if (sd.getStorageLocation() == null) {
+throw new IOException("StorageLocation specified for storage directory " +
+sd + " is null");
+}
+this.dataset = dataset;
+this.storageID = storageID;
+this.reservedForReplicas = new AtomicLong(0L);
+this.storageLocation = sd.getStorageLocation();
+this.currentDir = sd.getCurrentDir();
+this.storageType = storageLocation.getStorageType();
+this.configuredCapacity = -1;
+this.usage = usage;
+if (this.usage != null) {
+reserved = new ReservedSpaceCalculator.Builder(conf)
+.setUsage(this.usage).setStorageType(storageType).build();
+boolean fixedSizeVolume = conf.getBoolean(
+DFSConfigKeys.DFS_DATANODE_FIXED_VOLUME_SIZE_KEY,
+DFSConfigKeys.DFS_DATANODE_FIXED_VOLUME_SIZE_DEFAULT);
+if (fixedSizeVolume) {
+cachedCapacity = this.usage.getCapacity();
+}
+} else {
+reserved = null;
+LOG.warn("Setting reserved to null as usage is null");
+cachedCapacity = -1;
+}
+if (currentDir != null) {
+File parent = currentDir.getParentFile();
+cacheExecutor = initializeCacheExecutor(parent);
+this.metrics = DataNodeVolumeMetrics.create(conf, parent.getPath());
+this.baseURI = new File(currentDir.getParent()).toURI();
+} else {
+cacheExecutor = null;
+this.metrics = null;
+}
+this.conf = conf;
+this.fileIoProvider = fileIoProvider;
+}
+</code-whole>
+
+<code-specified>
+if (fixedSizeVolume) {
+cachedCapacity = this.usage.getCapacity();
+}
+</code-specified>
+<param>
+dfs.datanode.fixed.volume.size
+</param>

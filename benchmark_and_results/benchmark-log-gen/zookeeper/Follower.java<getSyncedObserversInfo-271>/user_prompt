@@ -1,0 +1,13 @@
+<code-whole>
+if (om != null && om.getNumActiveObservers() > 0) {
+return om.getActiveObservers();
+}
+return Collections.emptySet();
+}
+</code-whole>
+
+<code-specified>
+if (om != null && om.getNumActiveObservers() > 0) {
+return om.getActiveObservers();
+}
+</code-specified>

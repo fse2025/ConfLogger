@@ -1,0 +1,23 @@
+<code-whole>
+String password = null;
+try {
+char[] passchars = conf.getPassword(alias);
+if (passchars != null) {
+password = new String(passchars);
+}
+}
+catch (IOException ioe) {
+LOG.warn("Setting password to null since IOException is caught"
++ " when getting password", ioe);
+
+password = null;
+}
+return password;
+}
+</code-whole>
+
+<code-specified>
+if (passchars != null) {
+password = new String(passchars);
+}
+</code-specified>

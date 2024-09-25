@@ -1,0 +1,19 @@
+,name,value,description
+0,ssl.server.keystore.keypassword,,
+1,ssl.server.keystore.password,,
+2,ssl.server.truststore.password,,
+3,yarn.sharedcache.store.in-memory.staleness-period-mins,10080,
+4,dfs.datanode.slow.io.warning.threshold.ms,300,"The threshold in milliseconds at which we will log a slow
+    io warning in a datanode. By default, this parameter is set to 300
+    milliseconds."
+5,yarn.resourcemanager.container-tokens.master-key-rolling-interval-secs,86400,
+6,hadoop.security.kms.client.encrypted.key.cache.num.refill.threads,2,"Number of threads to use for refilling depleted EncryptedKeyVersion
+    cache Queues"
+7,yarn.am.liveness-monitor.expiry-interval-ms,600000,
+8,yarn.nodemanager.process-kill-wait.ms,5000,
+9,dfs.datanode.data.dir.perm,700,"Permissions for the directories on on the local filesystem where
+  the DFS data node store its blocks. The permissions can either be octal or
+  symbolic."
+10,yarn.resourcemanager.rm.container-allocation.expiry-interval-ms,600000,
+11,fs.s3a.list.version,2,"Select which version of the S3 SDK's List Objects API to use.  Currently
+    support 2 (default) and 1 (older API)."

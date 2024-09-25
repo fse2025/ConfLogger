@@ -1,0 +1,61 @@
+<code-whole>
+this.conf = conf;
+
+numTries = Math.min(
+conf.getInt(MRJobConfig.MR_JOB_END_RETRY_ATTEMPTS, 0) + 1
+, conf.getInt(MRJobConfig.MR_JOB_END_NOTIFICATION_MAX_ATTEMPTS, 1)
+);
+waitInterval = Math.min(
+conf.getInt(MRJobConfig.MR_JOB_END_RETRY_INTERVAL, 5000)
+, conf.getInt(MRJobConfig.MR_JOB_END_NOTIFICATION_MAX_RETRY_INTERVAL, 5000)
+);
+waitInterval = (waitInterval < 0) ? 5000 : waitInterval;
+
+timeout = conf.getInt(JobContext.MR_JOB_END_NOTIFICATION_TIMEOUT,
+JobContext.DEFAULT_MR_JOB_END_NOTIFICATION_TIMEOUT);
+
+userUrl = conf.get(MRJobConfig.MR_JOB_END_NOTIFICATION_URL);
+
+proxyConf = conf.get(MRJobConfig.MR_JOB_END_NOTIFICATION_PROXY);
+
+customJobEndNotifierClassName = StringUtils.stripToNull(
+conf.get(MRJobConfig.MR_JOB_END_NOTIFICATION_CUSTOM_NOTIFIER_CLASS));
+
+//Configure the proxy to use if its set. It should be set like
+//proxyType@proxyHostname:port
+if(proxyConf != null && !proxyConf.equals("") &&
+proxyConf.lastIndexOf(":") != -1) {
+int typeIndex = proxyConf.indexOf("@");
+Proxy.Type proxyType = Proxy.Type.HTTP;
+if(typeIndex != -1 &&
+proxyConf.substring(0, typeIndex).compareToIgnoreCase("socks") == 0) {
+proxyType = Proxy.Type.SOCKS;
+}
+String hostname = proxyConf.substring(typeIndex + 1,
+proxyConf.lastIndexOf(":"));
+String portConf = proxyConf.substring(proxyConf.lastIndexOf(":") + 1);
+try {
+int port = Integer.parseInt(portConf);
+proxyToUse = new Proxy(proxyType,
+new InetSocketAddress(hostname, port));
+Log.getLog().info("Job end notification using proxy type \""
++ proxyType + "\" hostname \"" + hostname + "\" and port \"" + port
++ "\"");
+} catch(NumberFormatException nfe) {
+Log.getLog().warn("Job end notification couldn't parse configured"
++ "proxy's port " + portConf + ". Not going to use a proxy");
+}
+}
+
+}
+</code-whole>
+
+<code-specified>
+if(proxyConf != null && !proxyConf.equals("") &&
+</code-specified>
+<code-specified>
+if(typeIndex != -1 &&
+</code-specified>
+<code-specified>
+if(typeIndex != -1 &&
+</code-specified>

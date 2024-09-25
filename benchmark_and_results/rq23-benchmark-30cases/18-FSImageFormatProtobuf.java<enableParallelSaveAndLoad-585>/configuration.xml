@@ -1,0 +1,6 @@
+<configuration>
+<property>
+<name>dfs.image.parallel.load</name>
+<value>true</value>
+</property>
+</configuration>

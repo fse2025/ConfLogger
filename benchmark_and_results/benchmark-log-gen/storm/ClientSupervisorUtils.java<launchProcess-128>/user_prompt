@@ -1,0 +1,47 @@
+<code-whole>
+ProcessBuilder builder = new ProcessBuilder(command);
+Map<String, String> procEnv = builder.environment();
+if (dir != null) {
+builder.directory(dir);
+}
+builder.redirectErrorStream(true);
+if (environment != null) {
+procEnv.putAll(environment);
+}
+final Process process;
+try {
+process = builder.start();
+} catch (IOException e) {
+numWorkerLaunchExceptions.mark();
+throw e;
+}
+if (logPrefix != null || exitCodeCallback != null) {
+Utils.asyncLoop(new Callable<Long>() {
+@Override
+public Long call() {
+if (logPrefix != null) {
+Utils.readAndLogStream(logPrefix,
+process.getInputStream());
+}
+if (exitCodeCallback != null) {
+try {
+process.waitFor();
+exitCodeCallback.call(process.exitValue());
+} catch (InterruptedException ie) {
+LOG.info("{} interrupted", logPrefix);
+exitCodeCallback.call(-1);
+}
+}
+return null; // Run only once.
+}
+});
+}
+return process;
+}
+</code-whole>
+
+<code-specified>
+if (environment != null) {
+procEnv.putAll(environment);
+}
+</code-specified>

@@ -1,0 +1,12 @@
+<code-whole>
+if (conf.getBoolean(DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_KEY,
+DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_DEFAULT)) {
+return new JournaledEditsCache(conf);
+} else {
+return null;
+}
+</code-whole>
+
+<code-specified>
+if (conf.getBoolean(DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_KEY,
+</code-specified>

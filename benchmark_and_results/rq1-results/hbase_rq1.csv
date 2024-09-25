@@ -1,0 +1,10 @@
+case,removed-vairable,removed-text,inserted-vairable,inserted-text,,
+X509Util.java<configureOpenSslIfAvailable-305>,,"""Using netty-tcnative to accelerate SSL handling""
+",,"""OpenSSL is available and TLS_USE_OPENSSL is set to true. Using OpenSSL as the SSL provider.""
+",,
+X509Util.java<configureOpenSslIfAvailable-305>,OpenSsl.isAvailable() ? "enabled" : "available","""Using default JDK SSL provider because netty-tcnative is not {}""
+",,"""OpenSSL is not available. Falling back to JDK SSL provider.""
+",,
+X509Util.java<configureOpenSslIfAvailable-305>,OpenSsl.isAvailable() ? "enabled" : "available","""Using default JDK SSL provider because netty-tcnative is not {}""
+",,"""TLS_USE_OPENSSL is set to false. Using JDK as the SSL provider.""
+",,

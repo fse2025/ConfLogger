@@ -1,0 +1,21 @@
+<code-whole>
+final String fsImplConf = String.format("fs.AbstractFileSystem.%s.impl",
+uri.getScheme());
+
+Class<?> clazz = conf.getClass(fsImplConf, null);
+if (clazz == null) {
+throw new UnsupportedFileSystemException(String.format(
+"%s=null: %s: %s",
+fsImplConf, NO_ABSTRACT_FS_ERROR, uri.getScheme()));
+}
+return (AbstractFileSystem) newInstance(clazz, uri, conf);
+}
+</code-whole>
+
+<code-specified>
+if (clazz == null) {
+throw new UnsupportedFileSystemException(String.format(
+"%s=null: %s: %s",
+fsImplConf, NO_ABSTRACT_FS_ERROR, uri.getScheme()));
+}
+</code-specified>

@@ -1,0 +1,29 @@
+<code-whole>
+String key
+= DFSConfigKeys.DFS_NAMENODE_EDITS_PLUGIN_PREFIX + "." + uriScheme;
+Class <? extends JournalManager> clazz = null;
+try {
+clazz = conf.getClass(key, null, JournalManager.class);
+} catch (RuntimeException re) {
+throw new IllegalArgumentException(
+"Invalid class specified for " + uriScheme, re);
+}
+
+if (clazz == null) {
+LOG.warn("No class configured for " +uriScheme
++ ", " + key + " is empty");
+throw new IllegalArgumentException(
+"No class configured for " + uriScheme);
+}
+return clazz;
+}
+</code-whole>
+
+<code-specified>
+if (clazz == null) {
+LOG.warn("No class configured for " +uriScheme
++ ", " + key + " is empty");
+throw new IllegalArgumentException(
+"No class configured for " + uriScheme);
+}
+</code-specified>

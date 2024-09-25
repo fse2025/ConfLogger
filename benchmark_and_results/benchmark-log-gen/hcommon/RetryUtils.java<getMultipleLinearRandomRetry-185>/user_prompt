@@ -1,0 +1,21 @@
+<code-whole>
+final boolean enabled =
+conf.getBoolean(retryPolicyEnabledKey, defaultRetryPolicyEnabled);
+if (!enabled) {
+return null;
+}
+
+final String policy = conf.get(retryPolicySpecKey, defaultRetryPolicySpec);
+
+final RetryPolicy r =
+RetryPolicies.MultipleLinearRandomRetry.parseCommaSeparatedString(
+policy);
+return (r != null) ?
+r :
+</code-whole>
+
+<code-specified>
+if (!enabled) {
+return null;
+}
+</code-specified>

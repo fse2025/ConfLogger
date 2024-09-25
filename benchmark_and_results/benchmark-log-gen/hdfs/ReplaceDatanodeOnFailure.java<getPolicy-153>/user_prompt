@@ -1,0 +1,31 @@
+<code-whole>
+final boolean enabled = conf.getBoolean(
+HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.ENABLE_KEY,
+HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.ENABLE_DEFAULT);
+if (!enabled) {
+return Policy.DISABLE;
+}
+
+final String policy = conf.get(
+HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_KEY,
+HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_DEFAULT);
+for(int i = 1; i < Policy.values().length; i++) {
+final Policy p = Policy.values()[i];
+if (p.name().equalsIgnoreCase(policy)) {
+return p;
+}
+}
+throw new HadoopIllegalArgumentException("Illegal configuration value for "
++ HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_KEY
+</code-whole>
+
+<code-specified>
+if (!enabled) {
+return Policy.DISABLE;
+}
+</code-specified>
+<code-specified>
+if (p.name().equalsIgnoreCase(policy)) {
+return p;
+}
+</code-specified>

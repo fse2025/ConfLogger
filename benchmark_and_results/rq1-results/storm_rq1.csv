@@ -1,0 +1,35 @@
+case,removed-vairable,removed-text,inserted-vairable,inserted-text
+ClientAuthUtils.java<getGroupMappingServiceProviderPlugin-204>,,No principal to local given storm.principal.tolocal,,The configuration parameter 'storm.group.mapping.service' is not set. The group mapping service provider will not be initialized. Please ensure that the configuration parameter is properly set to enable the service.
+ClientAuthUtils.java<getPrincipalToLocalPlugin-178>,,No principal to local given storm.principal.tolocal,,The configuration parameter 'storm.principal.tolocal' is not set. Please ensure it is properly configured to enable the PrincipalToLocal plugin.
+ContainerLauncher.java<make-56>,conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN),Using resource isolation plugin storm.resource.isolation.plugin: {},conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN),Resource isolation plugin enabled. Using plugin: {}
+ContainerLauncher.java<make-56>,"DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN_ENABLE
+resourceIsolationManager","""{} is false. Using default resource isolation plugin: {}""",,Resource isolation plugin not enabled. Using DefaultResourceIsolationManager.
+Executor.java<setupTicks-502>,"componentId
+executorId","""Timeouts disabled for executor {}:{}""",isAcker,"""Tick tuple scheduling skipped. Conditions: isAcker={}, isSystemId={}, enableMessageTimeout={}, isSpout={}. Proper configuration needed for tick tuple scheduling."", , , enableMessageTimeout, isSpout"
+Nimbus.java<waitForDesiredCodeReplication-1934>,"minReplicationCount
+topoId
+maxWaitTime
+confCount
+codeCount
+jarCount","""desired replication count of {} not achieved for {} but we have hit the max wait time {} so moving on with replication count for conf key = {} for code key = {} for jar key = ""
+","topoId
+minReplicationCount
+maxWaitTime
+totalWaitTime","""Max wait time exceeded while waiting for desired replication count. Ensure that the replication count is achievable within the max wait time. Current values - topoId: {}, minReplicationCount: {}, maxWaitTime: {}, totalWaitTime: {}""
+"
+ServerUtils.java<validateTopologyAckerBundleResource-1348>,"topoName
+Config.TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB
+topologyWorkerMaxHeapSize
+maxTopoExecMem
+numOfAckerExecutorsPerWorker","""For topology %s. Worker max on-heap limit %s is %s. The biggest topo executor requires %s MB on-heap memory, there might not be enough space for %s ackers. Real acker-per-worker will be determined by scheduler.""
+","oneExecutorPerWorker
+oneComponentPerWorker
+topologyWorkerMaxHeapSize
+minMemReqForWorker
+numOfAckerExecutorsPerWorker","""Configuration issue detected: The worker does not have enough resources. Ensure that the topology worker max heap size is greater than or equal to the minimum memory required for a worker. Current settings - oneExecutorPerWorker: {}, oneComponentPerWorker: {}, topologyWorkerMaxHeapSize: {}, minMemReqForWorker: {}, topology.ras.acker.executors.per.worker: {}.""
+"
+WorkerHeartbeatsRecoveryStrategyFactory.java<getStrategy-31>,"producerBatchSize
+xferBatchSize
+flushIntervalMillis","Flush Tuple generation disabled. producerBatchSize={}, xferBatchSize={}, flushIntervalMillis={}"""," producerBatchSize
+xferBatchSize
+flushIntervalMillis","""Flush tuple timer setup skipped due to configuration: producerBatchSize={}, xferBatchSize={}, flushIntervalMillis={}. Ensure that 'topology.producer.batch.size' and 'topology.transfer.batch.size' are not both set to 1, and 'topology.batch.flush.interval.millis' is not set to 0 for enabling flush tuple timer."""

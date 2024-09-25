@@ -1,0 +1,16 @@
+<code-whole>
+int tmpPurgeInterval = CommonConfigurationKeysPublic.
+IPC_SERVER_PURGE_INTERVAL_MINUTES_DEFAULT;
+if (purgeInterval > 0) {
+tmpPurgeInterval = purgeInterval;
+}
+this.purgeIntervalNanos = TimeUnit.NANOSECONDS.convert(
+tmpPurgeInterval, TimeUnit.MINUTES);
+}
+</code-whole>
+
+<code-specified>
+if (purgeInterval > 0) {
+tmpPurgeInterval = purgeInterval;
+}
+</code-specified>

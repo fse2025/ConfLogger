@@ -1,0 +1,37 @@
+<code-whole>
+Configuration conf = getConfig();
+YarnRPC rpc = YarnRPC.create(conf);
+initializeWebApp(conf);
+InetSocketAddress address = conf.getSocketAddr(
+JHAdminConfig.MR_HISTORY_BIND_HOST,
+JHAdminConfig.MR_HISTORY_ADDRESS,
+JHAdminConfig.DEFAULT_MR_HISTORY_ADDRESS,
+JHAdminConfig.DEFAULT_MR_HISTORY_PORT);
+
+server =
+rpc.getServer(HSClientProtocol.class, protocolHandler, address,
+conf, jhsDTSecretManager,
+conf.getInt(JHAdminConfig.MR_HISTORY_CLIENT_THREAD_COUNT,
+JHAdminConfig.DEFAULT_MR_HISTORY_CLIENT_THREAD_COUNT));
+
+// Enable service authorization?
+if (conf.getBoolean(
+CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHORIZATION,
+false)) {
+server.refreshServiceAcl(conf, new ClientHSPolicyProvider());
+}
+
+server.start();
+this.bindAddress = conf.updateConnectAddr(JHAdminConfig.MR_HISTORY_BIND_HOST,
+JHAdminConfig.MR_HISTORY_ADDRESS,
+JHAdminConfig.DEFAULT_MR_HISTORY_ADDRESS,
+server.getListenerAddress());
+LOG.info("Instantiated HistoryClientService at " + this.bindAddress);
+
+super.serviceStart();
+}
+</code-whole>
+
+<code-specified>
+if (conf.getBoolean(
+</code-specified>

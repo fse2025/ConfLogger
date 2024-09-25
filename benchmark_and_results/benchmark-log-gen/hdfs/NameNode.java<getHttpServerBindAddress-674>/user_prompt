@@ -1,0 +1,19 @@
+<code-whole>
+InetSocketAddress bindAddress = getHttpServerAddress(conf);
+
+// If DFS_NAMENODE_HTTP_BIND_HOST_KEY exists then it overrides the
+// host name portion of DFS_NAMENODE_HTTP_ADDRESS_KEY.
+final String bindHost = conf.getTrimmed(DFS_NAMENODE_HTTP_BIND_HOST_KEY);
+if (bindHost != null && !bindHost.isEmpty()) {
+bindAddress = new InetSocketAddress(bindHost, bindAddress.getPort());
+}
+
+return bindAddress;
+}
+</code-whole>
+
+<code-specified>
+if (bindHost != null && !bindHost.isEmpty()) {
+bindAddress = new InetSocketAddress(bindHost, bindAddress.getPort());
+}
+</code-specified>

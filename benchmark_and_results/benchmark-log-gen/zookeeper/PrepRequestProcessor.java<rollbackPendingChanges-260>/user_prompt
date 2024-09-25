@@ -1,0 +1,48 @@
+<code-whole>
+synchronized (zks.outstandingChanges) {
+// Grab a list iterator starting at the END of the list so we can iterate in reverse
+Iterator<ChangeRecord> iter = zks.outstandingChanges.descendingIterator();
+while (iter.hasNext()) {
+ChangeRecord c = iter.next();
+if (c.zxid == zxid) {
+iter.remove();
+// Remove all outstanding changes for paths of this multi.
+// Previous records will be added back later.
+zks.outstandingChangesForPath.remove(c.path);
+} else {
+break;
+}
+}
+
+// we don't need to roll back any records because there is nothing left.
+if (zks.outstandingChanges.isEmpty()) {
+return;
+}
+
+long firstZxid = zks.outstandingChanges.peek().zxid;
+
+for (ChangeRecord c : pendingChangeRecords.values()) {
+// Don't apply any prior change records less than firstZxid.
+// Note that previous outstanding requests might have been removed
+// once they are completed.
+if (c.zxid < firstZxid) {
+continue;
+}
+
+// add previously existing records back.
+zks.outstandingChangesForPath.put(c.path, c);
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (c.zxid == zxid) {
+iter.remove();
+// Remove all outstanding changes for paths of this multi.
+// Previous records will be added back later.
+zks.outstandingChangesForPath.remove(c.path);
+} else {
+break;
+}
+</code-specified>

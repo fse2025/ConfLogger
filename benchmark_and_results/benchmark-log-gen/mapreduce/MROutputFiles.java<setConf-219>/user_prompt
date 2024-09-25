@@ -1,0 +1,13 @@
+<code-whole>
+if (!(conf instanceof JobConf)) {
+conf = new JobConf(conf);
+}
+super.setConf(conf);
+}
+</code-whole>
+
+<code-specified>
+if (!(conf instanceof JobConf)) {
+conf = new JobConf(conf);
+}
+</code-specified>

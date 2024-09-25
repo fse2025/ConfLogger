@@ -1,0 +1,18 @@
+<code-whole>
+if ( path == null ) {
+throw new IllegalArgumentException(
+"Can not create a Path from a null string");
+}
+if( path.length() == 0 ) {
+throw new IllegalArgumentException(
+"Can not create a Path from an empty string");
+}
+}
+</code-whole>
+
+<code-specified>
+if ( path == null ) {
+throw new IllegalArgumentException(
+"Can not create a Path from a null string");
+}
+</code-specified>

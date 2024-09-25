@@ -1,0 +1,32 @@
+<code-whole>
+Integer ret = null;
+for (Group g : groups) {
+if (isSpoutGroup(g)) {
+SpoutNode n = (SpoutNode) g.nodes.iterator().next();
+Map<String, Object> conf = getSpoutComponentConfig(n.spout);
+if (conf == null) {
+conf = new HashMap();
+}
+Number maxP = (Number) conf.get(Config.TOPOLOGY_MAX_TASK_PARALLELISM);
+if (maxP != null) {
+if (ret == null) {
+ret = maxP.intValue();
+} else {
+ret = Math.min(ret, maxP.intValue());
+}
+}
+}
+}
+return ret;
+}
+</code-whole>
+
+<code-specified>
+if (maxP != null) {
+if (ret == null) {
+ret = maxP.intValue();
+} else {
+ret = Math.min(ret, maxP.intValue());
+}
+}
+</code-specified>

@@ -1,0 +1,10 @@
+<code-whole>
+if(credentials == null)
+return null;
+return credentials.getSecretKey(alias);
+}
+</code-whole>
+
+<code-specified>
+if(credentials == null)
+</code-specified>

@@ -1,0 +1,82 @@
+<code-whole>
+if (fileName != null) {
+File file = new File (fileName);
+if (file.exists()) {
+try (
+Reader fileReader = new InputStreamReader(
+Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);
+BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+List<String> lines = new ArrayList<String>();
+String line = null;
+while ((line = bufferedReader.readLine()) != null) {
+lines.add(line);
+}
+if (LOG.isDebugEnabled()) {
+LOG.debug("Loaded IP list of size = " + lines.size() +
+" from file = " + fileName);
+}
+return (lines.toArray(new String[lines.size()]));
+}
+} else {
+LOG.debug("Missing ip list file : "+ fileName);
+}
+}
+} catch (IOException ioe) {
+LOG.error(ioe.toString());
+throw ioe;
+}
+return null;
+}
+</code-whole>
+
+<code-specified>
+if (fileName != null) {
+File file = new File (fileName);
+if (file.exists()) {
+try (
+Reader fileReader = new InputStreamReader(
+Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);
+BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+List<String> lines = new ArrayList<String>();
+String line = null;
+while ((line = bufferedReader.readLine()) != null) {
+lines.add(line);
+}
+if (LOG.isDebugEnabled()) {
+LOG.debug("Loaded IP list of size = " + lines.size() +
+" from file = " + fileName);
+}
+return (lines.toArray(new String[lines.size()]));
+}
+} else {
+LOG.debug("Missing ip list file : "+ fileName);
+}
+}
+</code-specified>
+<code-specified>
+if (LOG.isDebugEnabled()) {
+LOG.debug("Loaded IP list of size = " + lines.size() +
+" from file = " + fileName);
+}
+</code-specified>
+<code-specified>
+if (file.exists()) {
+try (
+Reader fileReader = new InputStreamReader(
+Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);
+BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+List<String> lines = new ArrayList<String>();
+String line = null;
+while ((line = bufferedReader.readLine()) != null) {
+lines.add(line);
+}
+if (LOG.isDebugEnabled()) {
+LOG.debug("Loaded IP list of size = " + lines.size() +
+" from file = " + fileName);
+}
+return (lines.toArray(new String[lines.size()]));
+}
+} else {
+LOG.debug("Missing ip list file : "+ fileName);
+}
+</code-specified>

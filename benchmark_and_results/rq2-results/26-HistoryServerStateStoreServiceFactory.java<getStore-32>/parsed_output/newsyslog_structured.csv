@@ -1,0 +1,2 @@
+LineId,Date,Time,Pid,Level,Component,Content,EventId,EventTemplate,ParameterList
+1,2024-09-03,21:53:32,963,INFO,[main] ConfLogger (Master.java:getMasterPrincipal(66)),"Using CLASSIC_FRAMEWORK_NAME. Master address: localhost, Master user name: null. Kerberos principal obtained for delegation token renewer.",560d5c41,"Using CLASSIC_FRAMEWORK_NAME. Master address: localhost, Master user name: null. Kerberos principal obtained for delegation token renewer.",[]

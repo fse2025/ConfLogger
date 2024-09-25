@@ -1,0 +1,20 @@
+,name,value,description
+0,hadoop.nfs.userupdate.milly,1*1000,
+1,yarn.nodemanager.runtime.linux.runc.layer-mounts-to-keep,100,
+2,dfs.namenode.resource.du.reserved,104857600,"The amount of space to reserve/require for a NameNode storage directory
+    in bytes. The default is 100MB. Support multiple size unit
+    suffix(case insensitive), as described in dfs.blocksize."
+3,dfs.mover.moverThreads,1000,Configure the balancer's mover thread pool size.
+4,dfs.datanode.socket.reuse.keepalive,4000,"The window of time in ms before the DataXceiver closes a socket for a
+    single request.  If a second request occurs within that window, the
+    socket can be reused."
+5,fs.permissions.umask-mode,22,"The umask used when creating files and directories.
+    Can be in octal or in symbolic. Examples are:
+    ""022"" (octal for u=rwx,g=r-x,o=r-x in symbolic),
+    or ""u=rwx,g=rwx,o="" (symbolic for 007 in octal)."
+6,yarn.nodemanager.node-attributes.resync-interval-ms,120000,
+7,yarn.resourcemanager.delegation.token.renew-interval,86400000,
+8,dfs.client.failover.connection.retries,0,"Expert only. Indicates the number of retries a failover IPC client
+    will make to establish a server connection."
+9,dfs.qjournal.write-txns.timeout.ms,20000,"Write timeout in milliseconds when writing to a quorum of remote
+    journals."

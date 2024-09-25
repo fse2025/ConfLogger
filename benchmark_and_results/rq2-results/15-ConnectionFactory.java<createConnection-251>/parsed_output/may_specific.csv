@@ -1,0 +1,2 @@
+0,1
+1973c48f,Failed to create a connection using the custom implementation class: org.apache.hadoop.hbase.client.Connection. Ensure the class is accessible and properly configured.

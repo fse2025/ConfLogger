@@ -1,0 +1,39 @@
+<code-whole>
+String key = DFS_NAMENODE_RPC_ADDRESS_AUXILIARY_KEY;
+key = addSuffix(key, suffix);
+int[] ports = conf.getInts(key);
+if (ports == null || ports.length == 0) {
+return address;
+}
+LOG.info("Using server auxiliary ports " + Arrays.toString(ports));
+URI uri;
+try {
+uri = new URI(address);
+} catch (URISyntaxException e) {
+// return the original address untouched if it is not a valid URI. This
+// happens in unit test, as MiniDFSCluster sets the value to
+// 127.0.0.1:0, without schema (i.e. "hdfs://"). While in practice, this
+// should not be the case. So log a warning message here.
+LOG.warn("NameNode address is not a valid uri:" + address);
+return address;
+}
+// Ignore the port, only take the schema(e.g. hdfs) and host (e.g.
+// localhost), then append port
+// TODO : revisit if there is a better way
+StringBuilder sb = new StringBuilder();
+sb.append(uri.getScheme())
+.append("://")
+.append(uri.getHost())
+.append(":");
+// TODO : currently, only the very first auxiliary port is being used.
+// But actually NN supports running multiple auxiliary
+sb.append(ports[0]);
+return sb.toString();
+}
+</code-whole>
+
+<code-specified>
+if (ports == null || ports.length == 0) {
+return address;
+}
+</code-specified>

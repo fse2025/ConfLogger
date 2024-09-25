@@ -1,0 +1,29 @@
+case,removed-vairable,removed-text,inserted-vairable,inserted-text,,,,,,,,,,,
+Bzip2Factory.java<isNativeBzip2Loaded-47>,,"""Using pure-Java version of bzip2 library""
+",,"""Using Java built-in Bzip2 library. Configuration parameter 'io.compression.codec.bzip2.library' is set to 'java-builtin'.""
+",,,,,,,,,,,
+Bzip2Factory.java<isNativeBzip2Loaded-47>,libname,"""Successfully loaded & initialized native-bzip2 library ""
+",libname,"""Native Bzip2 library loaded successfully. Configuration parameter 'io.compression.codec.bzip2.library' is set to '{}'.""
+",,,,,,,,,,,
+Bzip2Factory.java<isNativeBzip2Loaded-47>,libname,"""Failed to load/initialize native-bzip2 library {}, will use pure-Java version""
+","libname
+libname","""Failed to load native Bzip2 library '{}'. Ensure the library is available and properly configured. Configuration parameter 'io.compression.codec.bzip2.library' is set to '{}'.""
+",,,,,,,,,,,
+DecayRpcScheduler.java<parseDecayFactor-298>,"IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY
+IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY",{} is deprecated. Please use {}.,"factor
+ns
+IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY","""Decay factor is set correctly between 0 and 1: {}. Configuration parameter: {}.{}""
+",,,,,,,,,,,
+HttpCrossOriginFilterInitializer.java<initFilter-41>,key,"""CORS filter not enabled. Please set {} to 'true' to enable it""
+",key,"""Cross Origin Filter is disabled. To enable, set the configuration key: {} to true.""
+",,,,,,,,,,,
+ProviderUtils.java<excludeIncompatibleCredentialProviders-144>,provider,"""Filesystem based provider excluded from provider path due to recursive dependency: {}""
+","provider
+path.toUri().getScheme()","""Provider '{}' with scheme '{}' is a valid filesystem class and will be used.""
+",,,,,,,,,,,
+StaticUserWebFilter.java<getUsernameFromConf-137>,"DEPRECATED_UGI_KEY
+HADOOP_HTTP_STATIC_USER","""{} should not be used. Instead, use {}.""
+","parts[0]
+DEPRECATED_UGI_KEY
+oldStyleUgi","""Using deprecated UGI configuration. Extracted username from UGI: {}. Configuration key: {}, value: {}""
+",,,,,,,,,,,

@@ -1,0 +1,28 @@
+<code-whole>
+if (path == null) {
+return;
+}
+if (!bean.isHidden()) {
+final ObjectName objName = makeObjectName(path, bean);
+LOG.debug("Unregister MBean [{}]", objName);
+synchronized (LOCK) {
+mBeanServer.unregisterMBean(objName);
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (path == null) {
+return;
+}
+</code-specified>
+<code-specified>
+if (!bean.isHidden()) {
+final ObjectName objName = makeObjectName(path, bean);
+LOG.debug("Unregister MBean [{}]", objName);
+synchronized (LOCK) {
+mBeanServer.unregisterMBean(objName);
+}
+}
+</code-specified>

@@ -1,0 +1,30 @@
+<code-whole>
+static String getUsernameFromConf(Configuration conf) {
+String oldStyleUgi = conf.get(DEPRECATED_UGI_KEY);
+if (oldStyleUgi != null) {
+// We can't use the normal configuration deprecation mechanism here
+// since we need to split out the username from the configured UGI.
+LOG.warn(DEPRECATED_UGI_KEY + " should not be used. Instead, use " +
+HADOOP_HTTP_STATIC_USER + ".");
+String[] parts = oldStyleUgi.split(",");
+return parts[0];
+} else {
+return conf.get(HADOOP_HTTP_STATIC_USER,
+DEFAULT_HADOOP_HTTP_STATIC_USER);
+</code-whole>
+
+<code-specified>
+if (oldStyleUgi != null) {
+// We can't use the normal configuration deprecation mechanism here
+// since we need to split out the username from the configured UGI.
+LOG.warn(DEPRECATED_UGI_KEY + " should not be used. Instead, use " +
+HADOOP_HTTP_STATIC_USER + ".");
+String[] parts = oldStyleUgi.split(",");
+return parts[0];
+} else {
+return conf.get(HADOOP_HTTP_STATIC_USER,
+DEFAULT_HADOOP_HTTP_STATIC_USER);
+</code-specified>
+<param>
+null
+</param>

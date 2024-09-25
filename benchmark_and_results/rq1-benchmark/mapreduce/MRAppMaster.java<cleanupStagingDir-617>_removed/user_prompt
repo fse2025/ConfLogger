@@ -1,0 +1,30 @@
+<code-whole>
+/* make sure we clean the staging files */
+String jobTempDir = getConfig().get(MRJobConfig.MAPREDUCE_JOB_DIR);
+FileSystem fs = getFileSystem(getConfig());
+try {
+if (!keepJobFiles(new JobConf(getConfig()), jobTempDir)) {
+if (jobTempDir == null) {
+return;
+}
+Path jobTempDirPath = new Path(jobTempDir);
+fs.delete(jobTempDirPath, true);
+}
+} catch(IOException io) {
+;
+}
+}
+</code-whole>
+
+<code-specified>
+if (!keepJobFiles(new JobConf(getConfig()), jobTempDir)) {
+if (jobTempDir == null) {
+return;
+}
+Path jobTempDirPath = new Path(jobTempDir);
+fs.delete(jobTempDirPath, true);
+}
+</code-specified>
+<param>
+null
+</param>

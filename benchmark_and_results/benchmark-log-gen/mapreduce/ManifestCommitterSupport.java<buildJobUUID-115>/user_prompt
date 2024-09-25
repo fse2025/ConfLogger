@@ -1,0 +1,18 @@
+<code-whole>
+String jobUUID = conf.getTrimmed(SPARK_WRITE_UUID, "");
+if (jobUUID.isEmpty()) {
+jobUUID = jobId.toString();
+return Pair.of(jobUUID, JOB_ID_SOURCE_MAPREDUCE);
+} else {
+return Pair.of(jobUUID, SPARK_WRITE_UUID);
+}
+</code-whole>
+
+<code-specified>
+if (jobUUID.isEmpty()) {
+jobUUID = jobId.toString();
+return Pair.of(jobUUID, JOB_ID_SOURCE_MAPREDUCE);
+} else {
+return Pair.of(jobUUID, SPARK_WRITE_UUID);
+}
+</code-specified>

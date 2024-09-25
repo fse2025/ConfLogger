@@ -1,0 +1,14 @@
+<code-whole>
+this.conf = conf;
+String proxyStr = conf.get(HADOOP_SOCKS_SERVER_KEY);
+if ((proxyStr != null) && (proxyStr.length() > 0)) {
+setProxy(proxyStr);
+}
+}
+</code-whole>
+
+<code-specified>
+if ((proxyStr != null) && (proxyStr.length() > 0)) {
+setProxy(proxyStr);
+}
+</code-specified>

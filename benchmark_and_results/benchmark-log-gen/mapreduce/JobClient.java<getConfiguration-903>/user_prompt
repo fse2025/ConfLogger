@@ -1,0 +1,23 @@
+<code-whole>
+Configuration conf = new Configuration();
+if (jobTrackerSpec != null) {
+if (jobTrackerSpec.indexOf(":") >= 0) {
+conf.set("mapred.job.tracker", jobTrackerSpec);
+} else {
+String classpathFile = "hadoop-" + jobTrackerSpec + ".xml";
+URL validate = conf.getResource(classpathFile);
+if (validate == null) {
+throw new RuntimeException(classpathFile + " not found on CLASSPATH");
+}
+conf.addResource(classpathFile);
+}
+}
+return conf;
+}
+</code-whole>
+
+<code-specified>
+if (validate == null) {
+throw new RuntimeException(classpathFile + " not found on CLASSPATH");
+}
+</code-specified>

@@ -1,0 +1,42 @@
+<code-whole>
+throws IOException {
+
+final float bufferPercent =
+conf.getFloat(JobContext.REDUCE_MARKRESET_BUFFER_PERCENT, 0f);
+
+if (bufferPercent > 1.0 || bufferPercent < 0.0) {
+throw new IOException(JobContext.REDUCE_MARKRESET_BUFFER_PERCENT +
+bufferPercent);
+}
+
+int maxSize = (int)Math.min(
+Runtime.getRuntime().maxMemory() * bufferPercent, Integer.MAX_VALUE);
+
+// Support an absolute size also.
+int tmp = conf.getInt(JobContext.REDUCE_MARKRESET_BUFFER_SIZE, 0);
+if (tmp >  0) {
+maxSize = tmp;
+}
+
+memCache = new MemoryCache(maxSize);
+fileCache = new FileCache(conf);
+tid = taskid;
+
+this.conf = conf;
+
+LOG.info("Created a new BackupStore with a memory of " + maxSize);
+
+}
+</code-whole>
+
+<code-specified>
+if (tmp >  0) {
+maxSize = tmp;
+}
+</code-specified>
+<code-specified>
+if (bufferPercent > 1.0 || bufferPercent < 0.0) {
+throw new IOException(JobContext.REDUCE_MARKRESET_BUFFER_PERCENT +
+bufferPercent);
+}
+</code-specified>

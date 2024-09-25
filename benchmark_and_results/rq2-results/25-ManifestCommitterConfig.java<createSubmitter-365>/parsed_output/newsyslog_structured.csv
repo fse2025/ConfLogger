@@ -1,0 +1,2 @@
+LineId,Date,Time,Pid,Level,Component,Content,EventId,EventTemplate,ParameterList
+1,2024-09-03,21:30:17,806,WARN,[main] ConfLogger (ManifestCommitterConfig.java:createSubmitter(368)),The configuration parameter 'mapreduce.manifest.committer.io.threads' has an invalid value: -80. It should be greater than 0. Default value 32 will be used instead.,eb9b749b,The configuration parameter 'mapreduce.manifest.committer.io.threads' has an invalid value: <*>. It should be greater than <*>. Default value <*> will be used instead.,"['-80', '0', '32']"

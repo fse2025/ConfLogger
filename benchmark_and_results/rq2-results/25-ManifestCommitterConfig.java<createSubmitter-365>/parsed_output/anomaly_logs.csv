@@ -1,0 +1,2 @@
+anomaly_degree,content
+0.7000000000000001,WARN	The configuration parameter 'mapreduce.manifest.committer.io.threads' has an invalid value: -80. It should be greater than 0. Default value 32 will be used instead.

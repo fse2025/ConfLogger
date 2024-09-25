@@ -1,0 +1,11 @@
+<configuration>
+<property>
+<name>ipc.client.rpc-timeout.ms</name>
+<value>-100</value>
+</property>
+
+<property>
+<name>ipc.client.rpc-timeout.ms</name>
+<value></value>
+</property>
+</configuration>

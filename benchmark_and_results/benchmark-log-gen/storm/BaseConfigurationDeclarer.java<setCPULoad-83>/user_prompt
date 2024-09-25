@@ -1,0 +1,15 @@
+<code-whole>
+if (amount != null) {
+addResource(Config.TOPOLOGY_COMPONENT_CPU_PCORE_PERCENT, amount);
+return addConfiguration(Config.TOPOLOGY_COMPONENT_CPU_PCORE_PERCENT, amount);
+}
+return (T) this;
+}
+</code-whole>
+
+<code-specified>
+if (amount != null) {
+addResource(Config.TOPOLOGY_COMPONENT_CPU_PCORE_PERCENT, amount);
+return addConfiguration(Config.TOPOLOGY_COMPONENT_CPU_PCORE_PERCENT, amount);
+}
+</code-specified>

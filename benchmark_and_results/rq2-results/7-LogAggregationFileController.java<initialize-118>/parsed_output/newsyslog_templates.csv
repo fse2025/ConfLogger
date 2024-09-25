@@ -1,0 +1,2 @@
+EventId,EventTemplate,Occurrences
+b607d7b8,Configured retention size is less than or equal to <*>. Using default retention size: <*>. Please set 'yarn.nodemanager.log-aggregation.num-log-files-per-app' to a positive integer.,1

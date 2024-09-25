@@ -1,0 +1,2 @@
+LineId,Date,Time,Pid,Level,Component,Content,EventId,EventTemplate,ParameterList
+1,2024-09-03,20:09:08,375,WARN,[main] ConfLogger (LocalClientProtocolProvider.java:create(44)),The framework name is not set to LOCAL_FRAMEWORK_NAME. Current value: . Please ensure that the configuration parameter 'mapreduce.framework.name' is set to 'local' to enable LocalJobRunner.,10b998fb,The framework name is not set to LOCAL_FRAMEWORK_NAME. Current value: . Please ensure that the configuration parameter 'mapreduce.framework.name' is set to 'local' to enable LocalJobRunner.,[]

@@ -1,0 +1,32 @@
+<code-whole>
+FileContext fc = null;
+Configuration defaultConf = new Configuration();
+String[] sources;
+sources = defaultConf.getPropertySources(
+CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY);
+if (sources != null &&
+(!Arrays.asList(sources).contains("core-default.xml") ||
+sources.length > 1)) {
+try {
+fc = FileContext.getFileContext(defaultConf);
+LOG.info("Default file system [" +
+fc.getDefaultFileSystem().getUri() + "]");
+} catch (UnsupportedFileSystemException e) {
+LOG.error("Unable to create default file context [" +
+defaultConf.get(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY) +
+"]",
+e);
+}
+}
+else {
+LOG.info("Default file system is set solely " +
+"by core-default.xml therefore -  ignoring");
+}
+
+return fc;
+}
+</code-whole>
+
+<code-specified>
+if (sources != null &&
+</code-specified>

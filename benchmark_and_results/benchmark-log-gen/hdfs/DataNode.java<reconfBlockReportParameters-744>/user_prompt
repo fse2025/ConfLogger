@@ -1,0 +1,65 @@
+<code-whole>
+String result = null;
+try {
+LOG.info("Reconfiguring {} to {}", property, newVal);
+if (property.equals(DFS_BLOCKREPORT_INTERVAL_MSEC_KEY)) {
+Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+long intervalMs = newVal == null ? DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT :
+Long.parseLong(newVal);
+result = Long.toString(intervalMs);
+dnConf.setBlockReportInterval(intervalMs);
+for (BPOfferService bpos : blockPoolManager.getAllNamenodeThreads()) {
+if (bpos != null) {
+for (BPServiceActor actor : bpos.getBPServiceActors()) {
+actor.getScheduler().setBlockReportIntervalMs(intervalMs);
+}
+}
+}
+} else if (property.equals(DFS_BLOCKREPORT_SPLIT_THRESHOLD_KEY)) {
+Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+long threshold = newVal == null ? DFS_BLOCKREPORT_SPLIT_THRESHOLD_DEFAULT :
+Long.parseLong(newVal);
+result = Long.toString(threshold);
+dnConf.setBlockReportSplitThreshold(threshold);
+} else if (property.equals(DFS_BLOCKREPORT_INITIAL_DELAY_KEY)) {
+Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+int initialDelay = newVal == null ? DFS_BLOCKREPORT_INITIAL_DELAY_DEFAULT :
+Integer.parseInt(newVal);
+result = Integer.toString(initialDelay);
+dnConf.setInitBRDelayMs(result);
+}
+LOG.info("RECONFIGURE* changed {} to {}", property, newVal);
+return result;
+} catch (IllegalArgumentException e) {
+throw new ReconfigurationException(property, newVal, getConf().get(property), e);
+}
+</code-whole>
+
+<code-specified>
+if (property.equals(DFS_BLOCKREPORT_INTERVAL_MSEC_KEY)) {
+Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+long intervalMs = newVal == null ? DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT :
+Long.parseLong(newVal);
+result = Long.toString(intervalMs);
+dnConf.setBlockReportInterval(intervalMs);
+for (BPOfferService bpos : blockPoolManager.getAllNamenodeThreads()) {
+if (bpos != null) {
+for (BPServiceActor actor : bpos.getBPServiceActors()) {
+actor.getScheduler().setBlockReportIntervalMs(intervalMs);
+}
+}
+}
+} else if (property.equals(DFS_BLOCKREPORT_SPLIT_THRESHOLD_KEY)) {
+Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+long threshold = newVal == null ? DFS_BLOCKREPORT_SPLIT_THRESHOLD_DEFAULT :
+Long.parseLong(newVal);
+result = Long.toString(threshold);
+dnConf.setBlockReportSplitThreshold(threshold);
+} else if (property.equals(DFS_BLOCKREPORT_INITIAL_DELAY_KEY)) {
+Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+int initialDelay = newVal == null ? DFS_BLOCKREPORT_INITIAL_DELAY_DEFAULT :
+Integer.parseInt(newVal);
+result = Integer.toString(initialDelay);
+dnConf.setInitBRDelayMs(result);
+}
+</code-specified>

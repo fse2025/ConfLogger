@@ -1,0 +1,6 @@
+<configuration>
+<property>
+<name>zookeeper.clientCnxnSocket</name>
+<value></value>
+</property>
+</configuration>

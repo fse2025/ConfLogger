@@ -1,0 +1,48 @@
+<code-whole>
+String schedulerKeyname = prefix + "." + CommonConfigurationKeys
+.IPC_SCHEDULER_IMPL_KEY;
+Class<?> schedulerClass = conf.getClass(schedulerKeyname, null);
+// Patch the configuration for legacy fcq configuration that does not have
+// a separate scheduler setting
+if (schedulerClass == null) {
+String queueKeyName = prefix + "." + CommonConfigurationKeys
+.IPC_CALLQUEUE_IMPL_KEY;
+Class<?> queueClass = conf.getClass(queueKeyName, null);
+if (queueClass != null) {
+if (queueClass.getCanonicalName().equals(
+FairCallQueue.class.getCanonicalName())) {
+conf.setClass(schedulerKeyname, DecayRpcScheduler.class,
+RpcScheduler.class);
+}
+}
+}
+schedulerClass = conf.getClass(schedulerKeyname,
+DefaultRpcScheduler.class);
+
+return CallQueueManager.convertSchedulerClass(schedulerClass);
+}
+</code-whole>
+
+<code-specified>
+if (queueClass != null) {
+if (queueClass.getCanonicalName().equals(
+FairCallQueue.class.getCanonicalName())) {
+conf.setClass(schedulerKeyname, DecayRpcScheduler.class,
+RpcScheduler.class);
+}
+}
+</code-specified>
+<code-specified>
+if (schedulerClass == null) {
+String queueKeyName = prefix + "." + CommonConfigurationKeys
+.IPC_CALLQUEUE_IMPL_KEY;
+Class<?> queueClass = conf.getClass(queueKeyName, null);
+if (queueClass != null) {
+if (queueClass.getCanonicalName().equals(
+FairCallQueue.class.getCanonicalName())) {
+conf.setClass(schedulerKeyname, DecayRpcScheduler.class,
+RpcScheduler.class);
+}
+}
+}
+</code-specified>

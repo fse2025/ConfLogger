@@ -1,0 +1,23 @@
+<code-whole>
+String type = (String) conf.get(DaemonConfig.NIMBUS_BLOBSTORE);
+if (type == null) {
+type = LocalFsBlobStore.class.getName();
+}
+BlobStore store = (BlobStore) ReflectionUtils.newInstance(type);
+Map<String, Object> nconf = new HashMap<>(conf);
+// only enable cleanup of blobstore on nimbus
+nconf.put(Config.BLOBSTORE_CLEANUP_ENABLE, Boolean.TRUE);
+
+if (store != null) {
+// store can be null during testing when mocking utils.
+store.prepare(nconf, baseDir, nimbusInfo, leaderElector);
+}
+return store;
+}
+</code-whole>
+
+<code-specified>
+if (type == null) {
+type = LocalFsBlobStore.class.getName();
+}
+</code-specified>

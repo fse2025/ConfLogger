@@ -1,0 +1,13 @@
+<code-whole>
+if (conf != null) {
+conf = addSecurityConfiguration(conf);
+}
+super.setConf(conf);
+}
+</code-whole>
+
+<code-specified>
+if (conf != null) {
+conf = addSecurityConfiguration(conf);
+}
+</code-specified>

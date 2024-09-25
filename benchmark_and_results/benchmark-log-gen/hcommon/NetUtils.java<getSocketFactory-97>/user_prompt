@@ -1,0 +1,18 @@
+<code-whole>
+SocketFactory factory = null;
+
+String propValue =
+conf.get("hadoop.rpc.socket.factory.class." + clazz.getSimpleName());
+if ((propValue != null) && (propValue.length() > 0))
+factory = getSocketFactoryFromProperty(conf, propValue);
+
+if (factory == null)
+factory = getDefaultSocketFactory(conf);
+
+return factory;
+}
+</code-whole>
+
+<code-specified>
+if ((propValue != null) && (propValue.length() > 0))
+</code-specified>

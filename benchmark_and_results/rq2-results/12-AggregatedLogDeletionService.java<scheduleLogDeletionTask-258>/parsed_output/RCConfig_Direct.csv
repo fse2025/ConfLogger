@@ -1,0 +1,2 @@
+name,value,relevant log,explanation
+yarn.log-aggregation-enable,false,INFO	Log aggregation is not enabled. Please ensure that the configuration parameter 'yarn.log-aggregation-enable' is set to true to enable log aggregation.,property-hit

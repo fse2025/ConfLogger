@@ -1,0 +1,28 @@
+<code-whole>
+super.setConf(conf);
+String fixedFile = conf.get(HADOOP_SECURITY_SASL_FIXEDWHITELIST_FILE,
+FIXEDWHITELIST_DEFAULT_LOCATION);
+String variableFile = null;
+long expiryTime = 0;
+
+if (conf.getBoolean(HADOOP_SECURITY_SASL_VARIABLEWHITELIST_ENABLE, false)) {
+variableFile = conf.get(HADOOP_SECURITY_SASL_VARIABLEWHITELIST_FILE,
+VARIABLEWHITELIST_DEFAULT_LOCATION);
+expiryTime =
+conf.getLong(HADOOP_SECURITY_SASL_VARIABLEWHITELIST_CACHE_SECS,3600) * 1000;
+}
+
+whiteList = new CombinedIPWhiteList(fixedFile,variableFile,expiryTime);
+
+this.saslProps = getSaslProperties(conf);
+}
+</code-whole>
+
+<code-specified>
+if (conf.getBoolean(HADOOP_SECURITY_SASL_VARIABLEWHITELIST_ENABLE, false)) {
+variableFile = conf.get(HADOOP_SECURITY_SASL_VARIABLEWHITELIST_FILE,
+VARIABLEWHITELIST_DEFAULT_LOCATION);
+expiryTime =
+conf.getLong(HADOOP_SECURITY_SASL_VARIABLEWHITELIST_CACHE_SECS,3600) * 1000;
+}
+</code-specified>

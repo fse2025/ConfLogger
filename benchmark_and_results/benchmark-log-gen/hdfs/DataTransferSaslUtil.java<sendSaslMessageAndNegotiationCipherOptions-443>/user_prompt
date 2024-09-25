@@ -1,0 +1,22 @@
+<code-whole>
+DataTransferEncryptorMessageProto.newBuilder();
+
+builder.setStatus(DataTransferEncryptorStatus.SUCCESS);
+if (payload != null) {
+builder.setPayload(ByteString.copyFrom(payload));
+}
+if (options != null) {
+builder.addAllCipherOption(PBHelperClient.convertCipherOptions(options));
+}
+
+DataTransferEncryptorMessageProto proto = builder.build();
+proto.writeDelimitedTo(out);
+out.flush();
+}
+</code-whole>
+
+<code-specified>
+if (options != null) {
+builder.addAllCipherOption(PBHelperClient.convertCipherOptions(options));
+}
+</code-specified>

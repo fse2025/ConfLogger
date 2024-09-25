@@ -1,0 +1,175 @@
+<code-whole>
+private MRClientProtocol getProxy() throws IOException {
+if (realProxy != null) {
+return realProxy;
+}
+
+// Possibly allow nulls through the PB tunnel, otherwise deal with an exception
+// and redirect to the history server.
+ApplicationReport application = null;
+try {
+application = rm.getApplicationReport(appId);
+} catch (ApplicationNotFoundException e) {
+application = null;
+} catch (YarnException e2) {
+throw new IOException(e2);
+}
+if (application != null) {
+trackingUrl = application.getTrackingUrl();
+}
+InetSocketAddress serviceAddr = null;
+while (application == null
+|| YarnApplicationState.RUNNING == application
+.getYarnApplicationState()) {
+if (application == null) {
+LOG.info("Could not get Job info from RM for job " + jobId
++ ". Redirecting to job history server.");
+return checkAndGetHSProxy(null, JobState.NEW);
+}
+try {
+if (application.getHost() == null || "".equals(application.getHost())) {
+LOG.debug("AM not assigned to Job. Waiting to get the AM ...");
+Thread.sleep(2000);
+
+LOG.debug("Application state is " + application.getYarnApplicationState());
+application = rm.getApplicationReport(appId);
+continue;
+} else if (UNAVAILABLE.equals(application.getHost())) {
+if (!amAclDisabledStatusLogged) {
+LOG.info("Job " + jobId + " is running, but the host is unknown."
++ " Verify user has VIEW_JOB access.");
+amAclDisabledStatusLogged = true;
+}
+return getNotRunningJob(application, JobState.RUNNING);
+}
+if(!conf.getBoolean(MRJobConfig.JOB_AM_ACCESS_DISABLED, false)) {
+UserGroupInformation newUgi = UserGroupInformation.createRemoteUser(
+UserGroupInformation.getCurrentUser().getUserName());
+serviceAddr = NetUtils.createSocketAddrForHost(
+application.getHost(), application.getRpcPort());
+if (UserGroupInformation.isSecurityEnabled()) {
+org.apache.hadoop.yarn.api.records.Token clientToAMToken =
+application.getClientToAMToken();
+Token<ClientToAMTokenIdentifier> token =
+ConverterUtils.convertFromYarn(clientToAMToken, serviceAddr);
+newUgi.addToken(token);
+}
+LOG.debug("Connecting to " + serviceAddr);
+final InetSocketAddress finalServiceAddr = serviceAddr;
+realProxy = newUgi.doAs(new PrivilegedExceptionAction<MRClientProtocol>() {
+@Override
+public MRClientProtocol run() throws IOException {
+return instantiateAMProxy(finalServiceAddr);
+}
+});
+} else {
+if (!amAclDisabledStatusLogged) {
+LOG.info("Network ACL closed to AM for job " + jobId
++ ". Not going to try to reach the AM.");
+amAclDisabledStatusLogged = true;
+}
+return getNotRunningJob(null, JobState.RUNNING);
+}
+return realProxy;
+} catch (IOException e) {
+//possibly the AM has crashed
+//there may be some time before AM is restarted
+//keep retrying by getting the address from RM
+LOG.info("Could not connect to " + serviceAddr +
+". Waiting for getting the latest AM address...");
+try {
+Thread.sleep(2000);
+} catch (InterruptedException e1) {
+LOG.warn("getProxy() call interruped", e1);
+throw new YarnRuntimeException(e1);
+}
+try {
+application = rm.getApplicationReport(appId);
+} catch (YarnException e1) {
+throw new IOException(e1);
+}
+if (application == null) {
+LOG.info("Could not get Job info from RM for job " + jobId
++ ". Redirecting to job history server.");
+return checkAndGetHSProxy(null, JobState.RUNNING);
+}
+} catch (InterruptedException e) {
+LOG.warn("getProxy() call interruped", e);
+throw new YarnRuntimeException(e);
+} catch (YarnException e) {
+throw new IOException(e);
+}
+}
+
+/** we just want to return if its allocating, so that we don't
+* block on it. This is to be able to return job status
+* on an allocating Application.
+*/
+String user = application.getUser();
+if (user == null) {
+throw new IOException("User is not set in the application report");
+}
+if (application.getYarnApplicationState() == YarnApplicationState.NEW
+|| application.getYarnApplicationState() ==
+YarnApplicationState.NEW_SAVING
+|| application.getYarnApplicationState() == YarnApplicationState.SUBMITTED
+|| application.getYarnApplicationState() == YarnApplicationState.ACCEPTED) {
+realProxy = null;
+return getNotRunningJob(application, JobState.NEW);
+}
+
+if (application.getYarnApplicationState() == YarnApplicationState.FAILED) {
+realProxy = null;
+return getNotRunningJob(application, JobState.FAILED);
+}
+
+if (application.getYarnApplicationState() == YarnApplicationState.KILLED) {
+realProxy = null;
+return getNotRunningJob(application, JobState.KILLED);
+}
+
+//History server can serve a job only if application
+//succeeded.
+if (application.getYarnApplicationState() == YarnApplicationState.FINISHED) {
+LOG.info("Application state is completed. FinalApplicationStatus="
++ application.getFinalApplicationStatus().toString()
++ ". Redirecting to job history server");
+realProxy = checkAndGetHSProxy(application, JobState.SUCCEEDED);
+}
+return realProxy;
+}
+</code-whole>
+
+<code-specified>
+if(!conf.getBoolean(MRJobConfig.JOB_AM_ACCESS_DISABLED, false)) {
+UserGroupInformation newUgi = UserGroupInformation.createRemoteUser(
+UserGroupInformation.getCurrentUser().getUserName());
+serviceAddr = NetUtils.createSocketAddrForHost(
+application.getHost(), application.getRpcPort());
+if (UserGroupInformation.isSecurityEnabled()) {
+org.apache.hadoop.yarn.api.records.Token clientToAMToken =
+application.getClientToAMToken();
+Token<ClientToAMTokenIdentifier> token =
+ConverterUtils.convertFromYarn(clientToAMToken, serviceAddr);
+newUgi.addToken(token);
+}
+LOG.debug("Connecting to " + serviceAddr);
+final InetSocketAddress finalServiceAddr = serviceAddr;
+realProxy = newUgi.doAs(new PrivilegedExceptionAction<MRClientProtocol>() {
+@Override
+public MRClientProtocol run() throws IOException {
+return instantiateAMProxy(finalServiceAddr);
+}
+});
+} else {
+if (!amAclDisabledStatusLogged) {
+LOG.info("Network ACL closed to AM for job " + jobId
++ ". Not going to try to reach the AM.");
+amAclDisabledStatusLogged = true;
+}
+return getNotRunningJob(null, JobState.RUNNING);
+}
+</code-specified>
+<param>
+null
+</param>

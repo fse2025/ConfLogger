@@ -1,0 +1,17 @@
+<code-whole>
+if (onHeap != null) {
+onHeap = onHeap.doubleValue();
+addResource(Config.TOPOLOGY_COMPONENT_RESOURCES_ONHEAP_MEMORY_MB, onHeap);
+return addConfiguration(Config.TOPOLOGY_COMPONENT_RESOURCES_ONHEAP_MEMORY_MB, onHeap);
+}
+return (T) this;
+}
+</code-whole>
+
+<code-specified>
+if (onHeap != null) {
+onHeap = onHeap.doubleValue();
+addResource(Config.TOPOLOGY_COMPONENT_RESOURCES_ONHEAP_MEMORY_MB, onHeap);
+return addConfiguration(Config.TOPOLOGY_COMPONENT_RESOURCES_ONHEAP_MEMORY_MB, onHeap);
+}
+</code-specified>

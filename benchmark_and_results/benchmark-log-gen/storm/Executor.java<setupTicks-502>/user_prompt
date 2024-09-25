@@ -1,0 +1,63 @@
+<code-whole>
+final Integer tickTimeSecs = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_TICK_TUPLE_FREQ_SECS), null);
+if (tickTimeSecs != null) {
+boolean enableMessageTimeout = (Boolean) topoConf.get(Config.TOPOLOGY_ENABLE_MESSAGE_TIMEOUTS);
+boolean isAcker = Acker.ACKER_COMPONENT_ID.equals(componentId);
+if ((!isAcker && Utils.isSystemId(componentId))
+|| (!enableMessageTimeout && isSpout)
+|| (!enableMessageTimeout && isAcker)) {
+LOG.info("Timeouts disabled for executor {}:{}", componentId, executorId);
+} else {
+StormTimer timerTask = workerData.getUserTimer();
+timerTask.scheduleRecurring(tickTimeSecs, tickTimeSecs,
+() -> {
+TupleImpl tuple = new TupleImpl(workerTopologyContext, new Values(tickTimeSecs),
+Constants.SYSTEM_COMPONENT_ID,
+(int) Constants.SYSTEM_TASK_ID,
+Constants.SYSTEM_TICK_STREAM_ID);
+AddressedTuple tickTuple = new AddressedTuple(AddressedTuple.BROADCAST_DEST, tuple);
+try {
+receiveQueue.publish(tickTuple);
+receiveQueue.flush(); // avoid buffering
+} catch (InterruptedException e) {
+LOG.warn("Thread interrupted when emitting tick tuple. Setting interrupt flag.");
+Thread.currentThread().interrupt();
+return;
+}
+}
+);
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (tickTimeSecs != null) {
+boolean enableMessageTimeout = (Boolean) topoConf.get(Config.TOPOLOGY_ENABLE_MESSAGE_TIMEOUTS);
+boolean isAcker = Acker.ACKER_COMPONENT_ID.equals(componentId);
+if ((!isAcker && Utils.isSystemId(componentId))
+|| (!enableMessageTimeout && isSpout)
+|| (!enableMessageTimeout && isAcker)) {
+LOG.info("Timeouts disabled for executor {}:{}", componentId, executorId);
+} else {
+StormTimer timerTask = workerData.getUserTimer();
+timerTask.scheduleRecurring(tickTimeSecs, tickTimeSecs,
+() -> {
+TupleImpl tuple = new TupleImpl(workerTopologyContext, new Values(tickTimeSecs),
+Constants.SYSTEM_COMPONENT_ID,
+(int) Constants.SYSTEM_TASK_ID,
+Constants.SYSTEM_TICK_STREAM_ID);
+AddressedTuple tickTuple = new AddressedTuple(AddressedTuple.BROADCAST_DEST, tuple);
+try {
+receiveQueue.publish(tickTuple);
+receiveQueue.flush(); // avoid buffering
+} catch (InterruptedException e) {
+LOG.warn("Thread interrupted when emitting tick tuple. Setting interrupt flag.");
+Thread.currentThread().interrupt();
+return;
+}
+}
+);
+}
+}
+</code-specified>

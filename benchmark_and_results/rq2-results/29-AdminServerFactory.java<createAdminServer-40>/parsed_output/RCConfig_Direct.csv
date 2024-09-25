@@ -1,0 +1,2 @@
+name,value,relevant log,explanation
+zookeeper.admin.enableServer,false,"INFO	JettyAdminServer is disabled. To enable, set 'zookeeper.admin.enableServer' to true.",property-hit

@@ -1,0 +1,15 @@
+<code-whole>
+final int v = conf.getInt(key, defaultValue);
+LOG.info(key + " = " + v + " (default=" + defaultValue + ")");
+if (v <= 0) {
+throw new HadoopIllegalArgumentException(key + " = " + v  + " <= " + 0);
+}
+return v;
+}
+</code-whole>
+
+<code-specified>
+if (v <= 0) {
+throw new HadoopIllegalArgumentException(key + " = " + v  + " <= " + 0);
+}
+</code-specified>

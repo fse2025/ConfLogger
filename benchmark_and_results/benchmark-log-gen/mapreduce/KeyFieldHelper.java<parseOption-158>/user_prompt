@@ -1,0 +1,61 @@
+<code-whole>
+if (option == null || option.equals("")) {
+//we will have only default comparison
+return;
+}
+StringTokenizer args = new StringTokenizer(option);
+KeyDescription global = new KeyDescription();
+while (args.hasMoreTokens()) {
+String arg = args.nextToken();
+if (arg.equals("-n")) {
+global.numeric = true;
+}
+if (arg.equals("-r")) {
+global.reverse = true;
+}
+if (arg.equals("-nr")) {
+global.numeric = true;
+global.reverse = true;
+}
+if (arg.startsWith("-k")) {
+KeyDescription k = parseKey(arg, args);
+if (k != null) {
+allKeySpecs.add(k);
+keySpecSeen = true;
+}
+}
+}
+for (KeyDescription key : allKeySpecs) {
+if (!(key.reverse | key.numeric)) {
+key.reverse = global.reverse;
+key.numeric = global.numeric;
+}
+}
+if (allKeySpecs.size() == 0) {
+allKeySpecs.add(global);
+}
+}
+</code-whole>
+
+<code-specified>
+if (arg.equals("-n")) {
+global.numeric = true;
+}
+</code-specified>
+<code-specified>
+if (option == null || option.equals("")) {
+//we will have only default comparison
+return;
+}
+</code-specified>
+<code-specified>
+if (!(key.reverse | key.numeric)) {
+key.reverse = global.reverse;
+key.numeric = global.numeric;
+}
+</code-specified>
+<code-specified>
+if (allKeySpecs.size() == 0) {
+allKeySpecs.add(global);
+}
+</code-specified>

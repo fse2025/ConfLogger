@@ -1,0 +1,19 @@
+<code-whole>
+String configKey = IPFAILOVER_CONFIG_PREFIX + "." + nameServiceID;
+String virtualIP = conf.get(configKey);
+LOG.info("Name service ID {} will use virtual IP {} for failover",
+nameServiceID, virtualIP);
+if (virtualIP == null) {
+throw new IllegalArgumentException("Virtual IP for failover not found,"
++ "misconfigured " + configKey + "?");
+}
+return URI.create(virtualIP);
+}
+</code-whole>
+
+<code-specified>
+if (virtualIP == null) {
+throw new IllegalArgumentException("Virtual IP for failover not found,"
++ "misconfigured " + configKey + "?");
+}
+</code-specified>

@@ -1,0 +1,19 @@
+<code-whole>
+GetChildrenRequest getChildrenRequest = (GetChildrenRequest) request;
+String path = getChildrenRequest.getPath();
+DataNode n = zks.getZKDatabase().getNode(path);
+if (n == null) {
+throw new KeeperException.NoNodeException();
+}
+zks.checkACL(cnxn, zks.getZKDatabase().aclForNode(n), ZooDefs.Perms.READ, authInfo, path, null);
+List<String> children = zks.getZKDatabase()
+.getChildren(path, null, getChildrenRequest.getWatch() ? cnxn : null);
+return new GetChildrenResponse(children);
+}
+</code-whole>
+
+<code-specified>
+if (n == null) {
+throw new KeeperException.NoNodeException();
+}
+</code-specified>

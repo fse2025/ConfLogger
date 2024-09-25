@@ -1,0 +1,26 @@
+<code-whole>
+String mode = (String) conf.get(Config.STORM_CLUSTER_MODE);
+if (mode != null) {
+if ("local".equals(mode)) {
+return true;
+}
+if ("distributed".equals(mode)) {
+return false;
+}
+throw new IllegalArgumentException("Illegal cluster mode in conf: " + mode);
+}
+return true;
+}
+</code-whole>
+
+<code-specified>
+if (mode != null) {
+if ("local".equals(mode)) {
+return true;
+}
+if ("distributed".equals(mode)) {
+return false;
+}
+throw new IllegalArgumentException("Illegal cluster mode in conf: " + mode);
+}
+</code-specified>

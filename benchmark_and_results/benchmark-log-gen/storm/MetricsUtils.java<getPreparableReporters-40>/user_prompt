@@ -1,0 +1,23 @@
+<code-whole>
+List<String> clazzes = (List<String>) daemonConf.get(DaemonConfig.STORM_DAEMON_METRICS_REPORTER_PLUGINS);
+List<PreparableReporter> reporterList = new ArrayList<>();
+
+if (clazzes != null) {
+for (String clazz : clazzes) {
+reporterList.add(getPreparableReporter(clazz));
+}
+}
+if (reporterList.isEmpty()) {
+reporterList.add(new JmxPreparableReporter());
+}
+return reporterList;
+}
+</code-whole>
+
+<code-specified>
+if (clazzes != null) {
+for (String clazz : clazzes) {
+reporterList.add(getPreparableReporter(clazz));
+}
+}
+</code-specified>

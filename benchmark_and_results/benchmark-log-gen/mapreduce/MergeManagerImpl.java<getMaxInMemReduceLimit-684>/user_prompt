@@ -1,0 +1,19 @@
+<code-whole>
+final float maxRedPer =
+jobConf.getFloat(MRJobConfig.REDUCE_INPUT_BUFFER_PERCENT, 0f);
+if (maxRedPer > 1.0 || maxRedPer < 0.0) {
+throw new RuntimeException(maxRedPer + ": "
++ MRJobConfig.REDUCE_INPUT_BUFFER_PERCENT
++ " must be a float between 0 and 1.0");
+}
+return (long)(memoryLimit * maxRedPer);
+}
+</code-whole>
+
+<code-specified>
+if (maxRedPer > 1.0 || maxRedPer < 0.0) {
+throw new RuntimeException(maxRedPer + ": "
++ MRJobConfig.REDUCE_INPUT_BUFFER_PERCENT
++ " must be a float between 0 and 1.0");
+}
+</code-specified>

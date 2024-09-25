@@ -1,0 +1,2 @@
+LineId,Date,Time,Pid,Level,Component,Content,EventId,EventTemplate,ParameterList
+1,2024-09-04,17:59:38,086,[Time-limited,test] INFO  ConfLogger (FSImageFormatProtobuf.java:enableParallelSaveAndLoad(605)),Parallel Image loading and saving is enabled as dfs.image.compress is set to false. Ensure that parallel processing is supported by your environment.,92b65e1b,Parallel Image loading and saving is enabled as dfs.image.compress is set to false. Ensure that parallel processing is supported by your environment.,[]

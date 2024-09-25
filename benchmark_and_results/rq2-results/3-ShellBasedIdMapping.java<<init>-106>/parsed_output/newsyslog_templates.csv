@@ -1,0 +1,2 @@
+EventId,EventTemplate,Occurrences
+c0ac8c16,User configured user account update time is less than <*> minute. Using default minimum of <*> minute instead. Please ensure usergroupid.update.millis is set to at least <*> milliseconds.,1

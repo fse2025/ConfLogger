@@ -1,0 +1,31 @@
+<code-whole>
+if (extendedEphemeralTypesEnabled()) {
+if (Boolean.getBoolean(TTL_3_5_3_EMULATION_PROPERTY)) {
+if (EphemeralTypeEmulate353.get(ephemeralOwner) == EphemeralTypeEmulate353.TTL) {
+return TTL;
+}
+}
+
+if ((ephemeralOwner & EXTENDED_MASK) == EXTENDED_MASK) {
+long extendedFeatureBit = getExtendedFeatureBit(ephemeralOwner);
+EphemeralType ephemeralType = extendedFeatureMap.get(extendedFeatureBit);
+if (ephemeralType == null) {
+throw new IllegalArgumentException(String.format("Invalid ephemeralOwner. [%s]", Long.toHexString(ephemeralOwner)));
+}
+return ephemeralType;
+}
+}
+if (ephemeralOwner == CONTAINER_EPHEMERAL_OWNER) {
+return CONTAINER;
+}
+return (ephemeralOwner == 0) ? VOID : NORMAL;
+}
+</code-whole>
+
+<code-specified>
+if (Boolean.getBoolean(TTL_3_5_3_EMULATION_PROPERTY)) {
+if (EphemeralTypeEmulate353.get(ephemeralOwner) == EphemeralTypeEmulate353.TTL) {
+return TTL;
+}
+}
+</code-specified>

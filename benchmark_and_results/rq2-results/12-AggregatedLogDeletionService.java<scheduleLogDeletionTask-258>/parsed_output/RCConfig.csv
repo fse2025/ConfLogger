@@ -1,0 +1,2 @@
+name,value,relevant log,explanation
+yarn.log-aggregation-enable,false,1-INFO	Log aggregation is not enabled. Please ensure that the configuration parameter 'yarn.log-aggregation-enable' is set to true to enable log aggregation.,"The log indicates that log aggregation is not enabled, which is due to the 'yarn.log-aggregation-enable' configuration being set to false. This should be set to true to enable log aggregation."
