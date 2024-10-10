@@ -1,0 +1,47 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ClusterUtils.java	methodSinagture:	org.apache.storm.cluster.ClusterUtils.mkStateStorageImpl(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage;	methodLines:	308:319
+blockLines:	311:-1
+paras:	storm.cluster.state.store
+TaintedStat:	NORMAL mkStateStorageImpl:conditional branch(eq, to iindex=15) 9,6 Node: < Application, Lorg/apache/storm/cluster/ClusterUtils, mkStateStorageImpl(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/cluster/ClusterUtils, mkStateStorageImpl(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage; > Context: Everywhere[6]9 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,7 @9 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/cluster/ClusterUtils, mkStateStorageImpl(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage; > Context: Everywhere[6]9 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,7 @9 exception:8
+NORMAL mkStateStorageImpl:conditional branch(eq, to iindex=15) 9,6 Node: < Application, Lorg/apache/storm/cluster/ClusterUtils, mkStateStorageImpl(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        Exception {
+        String className = null;
+        IStateStorage stateStorage = null;
+        if (config.get(Config.STORM_CLUSTER_STATE_STORE) != null) {
+            className = (String) config.get(Config.STORM_CLUSTER_STATE_STORE);
+        } else {
+            className = "org.apache.storm.cluster.ZKStateStorageFactory";
+        }
+        Class clazz = Class.forName(className);
+        StateStorageFactory storageFactory = (StateStorageFactory) clazz.newInstance();
+        stateStorage = storageFactory.mkStore(config, authConf, context);
+        return stateStorage;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/cluster/ClusterUtils, mkStateStorage(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.storm.cluster.ClusterUtils.mkStateStorage(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage;, BB[SSA:-1..-2]0 - org.apache.storm.cluster.ClusterUtils.mkStateStorage(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage;, BB[SSA:5..5]2 - org.apache.storm.cluster.ClusterUtils.mkStateStorage(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage;, BB[SSA:-1..-2]3 - org.apache.storm.cluster.ClusterUtils.mkStateStorage(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage;], numberOfBasicBlocks=4, firstLineNumber=276, lastLineNumber=277, firstMethodNumber=276, lastMethodNumber=277, isFirstLineValid=false, methodSrcCode=
+                                               ClusterStateContext context) throws Exception {
+        return _instance.mkStateStorageImpl(config, authConf, context);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/cluster/ClusterUtils, mkStormClusterStateImpl(Ljava/lang/Object;Lorg/apache/storm/assignments/ILocalAssignmentsBackend;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStormClusterState; > Context: Everywhere, blocks=[BB[SSA:18..19]8 - org.apache.storm.cluster.ClusterUtils.mkStormClusterStateImpl(Ljava/lang/Object;Lorg/apache/storm/assignments/ILocalAssignmentsBackend;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStormClusterState;, BB[SSA:16..17]7 - org.apache.storm.cluster.ClusterUtils.mkStormClusterStateImpl(Ljava/lang/Object;Lorg/apache/storm/assignments/ILocalAssignmentsBackend;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStormClusterState;, BB[SSA:20..21]9 - org.apache.storm.cluster.ClusterUtils.mkStormClusterStateImpl(Ljava/lang/Object;Lorg/apache/storm/assignments/ILocalAssignmentsBackend;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStormClusterState;, BB[SSA:-1..-2]12 - org.apache.storm.cluster.ClusterUtils.mkStormClusterStateImpl(Ljava/lang/Object;Lorg/apache/storm/assignments/ILocalAssignmentsBackend;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStormClusterState;], numberOfBasicBlocks=4, firstLineNumber=301, lastLineNumber=303, firstMethodNumber=297, lastMethodNumber=303, isFirstLineValid=true, methodSrcCode=
+                                                      ClusterStateContext context) throws Exception {
+        if (stateStorage instanceof IStateStorage) {
+            return new StormClusterStateImpl((IStateStorage) stateStorage, backend, context, false);
+        } else {
+            IStateStorage storage = _instance.mkStateStorageImpl((Map<String, Object>) stateStorage,
+                                                                 (Map<String, Object>) stateStorage, context);
+            return new StormClusterStateImpl(storage, backend, context, true);
+        }
+}

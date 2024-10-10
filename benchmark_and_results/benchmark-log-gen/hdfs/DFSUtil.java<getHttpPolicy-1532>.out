@@ -1,0 +1,551 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.getHttpPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpConfig$Policy;	methodLines:	1532:1542
+blockLines:	1536:-1
+paras:	dfs.http.policy
+TaintedStat:	NORMAL getHttpPolicy:conditional branch(ne, to iindex=27) 8,9 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getHttpPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpConfig$Policy; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getHttpPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpConfig$Policy; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,3,4 @6 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getHttpPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpConfig$Policy; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,3,4 @6 exception:5
+NORMAL getHttpPolicy:8 = invokestatic < Application, Lorg/apache/hadoop/http/HttpConfig$Policy, fromString(Ljava/lang/String;)Lorg/apache/hadoop/http/HttpConfig$Policy; > 6 @11 exception:7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getHttpPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpConfig$Policy; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/http/HttpConfig$Policy, fromString(Ljava/lang/String;)Lorg/apache/hadoop/http/HttpConfig$Policy; > Context: Everywhere
+NORMAL fromString:conditional branch(ge, to iindex=27) 13,4 Node: < Extension, Lorg/apache/hadoop/http/HttpConfig$Policy, fromString(Ljava/lang/String;)Lorg/apache/hadoop/http/HttpConfig$Policy; > Context: Everywhere
+NORMAL fromString:return 14 Node: < Extension, Lorg/apache/hadoop/http/HttpConfig$Policy, fromString(Ljava/lang/String;)Lorg/apache/hadoop/http/HttpConfig$Policy; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/http/HttpConfig$Policy, fromString(Ljava/lang/String;)Lorg/apache/hadoop/http/HttpConfig$Policy; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getHttpPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpConfig$Policy; > Context: Everywhere[6]8 = invokestatic < Application, Lorg/apache/hadoop/http/HttpConfig$Policy, fromString(Ljava/lang/String;)Lorg/apache/hadoop/http/HttpConfig$Policy; > 6 @11 exception:7
+NORMAL getHttpPolicy:conditional branch(ne, to iindex=27) 8,9 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getHttpPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpConfig$Policy; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static HttpConfig.Policy getHttpPolicy(Configuration conf) {
+    String policyStr = conf.get(DFSConfigKeys.DFS_HTTP_POLICY_KEY,
+        DFSConfigKeys.DFS_HTTP_POLICY_DEFAULT);
+    HttpConfig.Policy policy = HttpConfig.Policy.fromString(policyStr);
+    if (policy == null) {
+      throw new HadoopIllegalArgumentException("Unrecognized value '"
+          + policyStr + "' for " + DFSConfigKeys.DFS_HTTP_POLICY_KEY);
+    }
+
+    conf.set(DFSConfigKeys.DFS_HTTP_POLICY_KEY, policy.name());
+    return policy;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V > Context: Everywhere, blocks=[BB[SSA:31..32]15 - org.apache.hadoop.hdfs.server.datanode.DataNode.checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:29..30]14 - org.apache.hadoop.hdfs.server.datanode.DataNode.checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:33..34]16 - org.apache.hadoop.hdfs.server.datanode.DataNode.checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:-1..-2]37 - org.apache.hadoop.hdfs.server.datanode.DataNode.checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:65..66]31 - org.apache.hadoop.hdfs.server.datanode.DataNode.checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:61..64]30 - org.apache.hadoop.hdfs.server.datanode.DataNode.checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:67..68]32 - org.apache.hadoop.hdfs.server.datanode.DataNode.checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:-1..-2]37 - org.apache.hadoop.hdfs.server.datanode.DataNode.checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V], numberOfBasicBlocks=8, firstLineNumber=1830, lastLineNumber=1832, firstMethodNumber=1793, lastMethodNumber=1837, isFirstLineValid=true, methodSrcCode=
+      SecureResources resources) throws RuntimeException {
+    if (!UserGroupInformation.isSecurityEnabled()) {
+      return;
+    }
+
+    // Abort out of inconsistent state if Kerberos is enabled
+    // but block access tokens are not enabled.
+    boolean isEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY,
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_DEFAULT);
+    if (!isEnabled) {
+      String errMessage = "Security is enabled but block access tokens " +
+          "(via " + DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY + ") " +
+          "aren't enabled. This may cause issues " +
+          "when clients attempt to connect to a DataNode. Aborting DataNode";
+      throw new RuntimeException(errMessage);
+    }
+
+    if (dnConf.getIgnoreSecurePortsForTesting()) {
+      return;
+    }
+
+    if (resources != null) {
+      final boolean httpSecured = resources.isHttpPortPrivileged()
+          || DFSUtil.getHttpPolicy(conf) == HttpConfig.Policy.HTTPS_ONLY;
+      final boolean rpcSecured = resources.isRpcPortPrivileged()
+          || resources.isSaslEnabled();
+
+      // Allow secure DataNode to startup if:
+      // 1. Http is secure.
+      // 2. Rpc is secure
+      if (rpcSecured && httpSecured) {
+        return;
+      }
+    } else {
+      // Handle cases when SecureDataNodeStarter#getSecureResources is not
+      // invoked
+      SaslPropertiesResolver saslPropsResolver = dnConf.getSaslPropsResolver();
+      if (saslPropsResolver != null &&
+          DFSUtil.getHttpPolicy(conf) == HttpConfig.Policy.HTTPS_ONLY) {
+        return;
+      }
+    }
+
+    throw new RuntimeException("Cannot start secure DataNode due to incorrect "
+        + "config. See https://cwiki.apache.org/confluence/display/HADOOP/"
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, startInfoServer()V > Context: Everywhere, blocks=[BB[SSA:76..76]31 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.startInfoServer()V, BB[SSA:74..75]30 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.startInfoServer()V, BB[SSA:77..81]32 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.startInfoServer()V, BB[SSA:-1..-2]47 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.startInfoServer()V], numberOfBasicBlocks=4, firstLineNumber=502, lastLineNumber=504, firstMethodNumber=470, lastMethodNumber=517, isFirstLineValid=true, methodSrcCode=
+  public void startInfoServer() throws IOException {
+    final InetSocketAddress httpAddr = getHttpAddress(conf);
+    final String httpsAddrString = conf.getTrimmed(
+        DFSConfigKeys.DFS_NAMENODE_SECONDARY_HTTPS_ADDRESS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_SECONDARY_HTTPS_ADDRESS_DEFAULT);
+    InetSocketAddress httpsAddr = NetUtils.createSocketAddr(httpsAddrString);
+
+    HttpServer2.Builder builder = DFSUtil.httpServerTemplateForNNAndJN(conf,
+        httpAddr, httpsAddr, "secondary", DFSConfigKeys.
+            DFS_SECONDARY_NAMENODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY,
+        DFSConfigKeys.DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY);
+
+    final boolean xFrameEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED,
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED_DEFAULT);
+
+    final String xFrameOptionValue = conf.getTrimmed(
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE,
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE_DEFAULT);
+
+    builder.configureXFrame(xFrameEnabled).setXFrameOption(xFrameOptionValue);
+
+    infoServer = builder.build();
+    infoServer.setAttribute("secondary.name.node", this);
+    infoServer.setAttribute("name.system.image", checkpointImage);
+    infoServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    infoServer.addInternalServlet("imagetransfer", ImageServlet.PATH_SPEC,
+        ImageServlet.class, true);
+    infoServer.start();
+
+    LOG.info("Web server init done");
+
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    int connIdx = 0;
+    if (policy.isHttpEnabled()) {
+      InetSocketAddress httpAddress =
+          infoServer.getConnectorAddress(connIdx++);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpAddress));
+    }
+
+    if (policy.isHttpsEnabled()) {
+      InetSocketAddress httpsAddress =
+          infoServer.getConnectorAddress(connIdx);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_SECONDARY_HTTPS_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpsAddress));
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:6..11]4 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:0..2]1 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:5..5]3 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:12..13]5 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]14 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=5, firstLineNumber=1391, lastLineNumber=1397, firstMethodNumber=1390, lastMethodNumber=1404, isFirstLineValid=true, methodSrcCode=
+
+    if (nsId == null) {
+      nsId = getOnlyNameServiceIdOrNull(conf);
+    }
+
+    String webAddrBaseKey = DFSConfigKeys.DFS_NAMENODE_HTTP_ADDRESS_KEY;
+    String webAddrDefault = DFSConfigKeys.DFS_NAMENODE_HTTP_ADDRESS_DEFAULT;
+    if (getHttpPolicy(conf) == HttpConfig.Policy.HTTPS_ONLY) {
+      webAddrBaseKey = DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY;
+      webAddrDefault = DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_DEFAULT;
+    }
+    String webAddrKey = DFSUtilClient.concatSuffixes(
+        webAddrBaseKey, nsId, nnId);
+    String webAddr = conf.get(webAddrKey, webAddrDefault);
+    return webAddr;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getHttpClientScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.hdfs.DFSUtil.getHttpClientScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.DFSUtil.getHttpClientScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:2..5]2 - org.apache.hadoop.hdfs.DFSUtil.getHttpClientScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]6 - org.apache.hadoop.hdfs.DFSUtil.getHttpClientScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=1027, lastLineNumber=1029, firstMethodNumber=1027, lastMethodNumber=1029, isFirstLineValid=false, methodSrcCode=
+  public static String getHttpClientScheme(Configuration conf) {
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    return policy == HttpConfig.Policy.HTTPS_ONLY ? "https" : "http";
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter, getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.hdfs.server.datanode.SecureDataNodeStarter.getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.server.datanode.SecureDataNodeStarter.getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;, BB[SSA:2..4]2 - org.apache.hadoop.hdfs.server.datanode.SecureDataNodeStarter.getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;, BB[SSA:-1..-2]100 - org.apache.hadoop.hdfs.server.datanode.SecureDataNodeStarter.getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;], numberOfBasicBlocks=4, firstLineNumber=113, lastLineNumber=116, firstMethodNumber=113, lastMethodNumber=181, isFirstLineValid=false, methodSrcCode=
+      throws Exception {
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    boolean isSaslEnabled =
+        DataTransferSaslUtil.getSaslPropertiesResolver(conf) != null;
+    boolean isRpcPrivileged;
+    boolean isHttpPrivileged = false;
+
+    System.err.println("isSaslEnabled:" + isSaslEnabled);
+    // Obtain secure port for data streaming to datanode
+    InetSocketAddress streamingAddr  = DataNode.getStreamingAddr(conf);
+    int socketWriteTimeout = conf.getInt(
+        DFSConfigKeys.DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY,
+        HdfsConstants.WRITE_TIMEOUT);
+    int backlogLength = conf.getInt(
+        CommonConfigurationKeysPublic.IPC_SERVER_LISTEN_QUEUE_SIZE_KEY,
+        CommonConfigurationKeysPublic.IPC_SERVER_LISTEN_QUEUE_SIZE_DEFAULT);
+
+    ServerSocket ss = (socketWriteTimeout > 0) ? 
+        ServerSocketChannel.open().socket() : new ServerSocket();
+    try {
+      ss.bind(streamingAddr, backlogLength);
+    } catch (BindException e) {
+      BindException newBe = appendMessageToBindException(e,
+          streamingAddr.toString());
+      throw newBe;
+    }
+
+    // Check that we got the port we need
+    if (ss.getLocalPort() != streamingAddr.getPort()) {
+      throw new RuntimeException(
+          "Unable to bind on specified streaming port in secure "
+              + "context. Needed " + streamingAddr.getPort() + ", got "
+              + ss.getLocalPort());
+    }
+    isRpcPrivileged = SecurityUtil.isPrivilegedPort(ss.getLocalPort());
+    System.err.println("Opened streaming server at " + streamingAddr);
+
+    // Bind a port for the web server. The code intends to bind HTTP server to
+    // privileged port only, as the client can authenticate the server using
+    // certificates if they are communicating through SSL.
+    final ServerSocketChannel httpChannel;
+    if (policy.isHttpEnabled()) {
+      httpChannel = ServerSocketChannel.open();
+      InetSocketAddress infoSocAddr = DataNode.getInfoAddr(conf);
+      try {
+        httpChannel.socket().bind(infoSocAddr);
+      } catch (BindException e) {
+        BindException newBe = appendMessageToBindException(e,
+            infoSocAddr.toString());
+        throw newBe;
+      }
+      InetSocketAddress localAddr = (InetSocketAddress) httpChannel.socket()
+        .getLocalSocketAddress();
+
+      if (localAddr.getPort() != infoSocAddr.getPort()) {
+        throw new RuntimeException("Unable to bind on specified info port in " +
+            "secure context. Needed " + infoSocAddr.getPort() + ", got " +
+             ss.getLocalPort());
+      }
+      System.err.println("Successfully obtained privileged resources (streaming port = "
+          + ss + " ) (http listener port = " + localAddr.getPort() +")");
+
+      isHttpPrivileged = SecurityUtil.isPrivilegedPort(localAddr.getPort());
+      System.err.println("Opened info server at " + infoSocAddr);
+    } else {
+      httpChannel = null;
+    }
+
+    return new SecureResources(ss, httpChannel, isSaslEnabled,
+        isRpcPrivileged, isHttpPrivileged);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Ljava/nio/channels/ServerSocketChannel;)V > Context: Everywhere, blocks=[BB[SSA:133..134]59 - org.apache.hadoop.hdfs.server.datanode.web.DatanodeHttpServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Ljava/nio/channels/ServerSocketChannel;)V, BB[SSA:130..132]58 - org.apache.hadoop.hdfs.server.datanode.web.DatanodeHttpServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Ljava/nio/channels/ServerSocketChannel;)V, BB[SSA:135..138]60 - org.apache.hadoop.hdfs.server.datanode.web.DatanodeHttpServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Ljava/nio/channels/ServerSocketChannel;)V, BB[SSA:-1..-2]118 - org.apache.hadoop.hdfs.server.datanode.web.DatanodeHttpServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Ljava/nio/channels/ServerSocketChannel;)V], numberOfBasicBlocks=4, firstLineNumber=147, lastLineNumber=149, firstMethodNumber=100, lastMethodNumber=233, isFirstLineValid=true, methodSrcCode=
+        final ServerSocketChannel externalHttpChannel)
+        throws IOException {
+    this.conf = conf;
+
+    Configuration confForInfoServer = new Configuration(conf);
+    confForInfoServer.setInt(HttpServer2.HTTP_MAX_THREADS_KEY,
+        HTTP_MAX_THREADS);
+    confForInfoServer.setInt(HttpServer2.HTTP_SELECTOR_COUNT_KEY,
+        HTTP_SELECTOR_THREADS);
+    confForInfoServer.setInt(HttpServer2.HTTP_ACCEPTOR_COUNT_KEY,
+        HTTP_ACCEPTOR_THREADS);
+    int proxyPort =
+        confForInfoServer.getInt(DFS_DATANODE_HTTP_INTERNAL_PROXY_PORT, 0);
+    HttpServer2.Builder builder = new HttpServer2.Builder()
+        .setName("datanode")
+        .setConf(confForInfoServer)
+        .setACL(new AccessControlList(conf.get(DFS_ADMIN, " ")))
+        .hostName(getHostnameForSpnegoPrincipal(confForInfoServer))
+        .addEndpoint(URI.create("http://localhost:" + proxyPort))
+        .setFindPort(true);
+
+    final boolean xFrameEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED,
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED_DEFAULT);
+
+    final String xFrameOptionValue = conf.getTrimmed(
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE,
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE_DEFAULT);
+
+    builder.configureXFrame(xFrameEnabled).setXFrameOption(xFrameOptionValue);
+
+    this.infoServer = builder.build();
+
+    this.infoServer.setAttribute(HttpServer2.CONF_CONTEXT_ATTRIBUTE, conf);
+    this.infoServer.setAttribute("datanode", datanode);
+    this.infoServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    this.infoServer.addServlet(null, "/blockScannerReport",
+        BlockScanner.Servlet.class);
+    DataNodeUGIProvider.init(conf);
+    this.infoServer.start();
+    final InetSocketAddress jettyAddr = infoServer.getConnectorAddress(0);
+
+    this.confForCreate = new Configuration(conf);
+    confForCreate.set(FsPermission.UMASK_LABEL, "000");
+
+    this.bossGroup = new NioEventLoopGroup();
+    this.workerGroup = new NioEventLoopGroup();
+    this.externalHttpChannel = externalHttpChannel;
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    final ChannelHandler[] handlers = getFilterHandlers(conf);
+
+    if (policy.isHttpEnabled()) {
+      this.httpServer = new ServerBootstrap().group(bossGroup, workerGroup)
+            .childHandler(new ChannelInitializer<SocketChannel>() {
+              @Override
+              protected void initChannel(SocketChannel ch) throws Exception {
+                ChannelPipeline p = ch.pipeline();
+                p.addLast(new HttpRequestDecoder(),
+                    new HttpResponseEncoder());
+                if (handlers != null) {
+                  for (ChannelHandler c : handlers) {
+                    p.addLast(c);
+                  }
+                }
+                p.addLast(
+                    new ChunkedWriteHandler(),
+                    new URLDispatcher(jettyAddr, conf, confForCreate));
+              }
+            });
+
+      this.httpServer.childOption(
+          ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK,
+          conf.getInt(
+              DFSConfigKeys.DFS_WEBHDFS_NETTY_HIGH_WATERMARK,
+              DFSConfigKeys.DFS_WEBHDFS_NETTY_HIGH_WATERMARK_DEFAULT));
+      this.httpServer.childOption(
+          ChannelOption.WRITE_BUFFER_LOW_WATER_MARK,
+          conf.getInt(
+              DFSConfigKeys.DFS_WEBHDFS_NETTY_LOW_WATERMARK,
+              DFSConfigKeys.DFS_WEBHDFS_NETTY_LOW_WATERMARK_DEFAULT));
+
+      if (externalHttpChannel == null) {
+        httpServer.channel(NioServerSocketChannel.class);
+      } else {
+        httpServer.channelFactory(new ChannelFactory<NioServerSocketChannel>() {
+          @Override
+          public NioServerSocketChannel newChannel() {
+            return new NioServerSocketChannel(externalHttpChannel) {
+              // The channel has been bounded externally via JSVC,
+              // thus bind() becomes a no-op.
+              @Override
+              protected void doBind(SocketAddress localAddress)
+                  throws Exception {
+              }
+            };
+          }
+        });
+      }
+    } else {
+      this.httpServer = null;
+    }
+
+    if (policy.isHttpsEnabled()) {
+      this.sslFactory = new SSLFactory(SSLFactory.Mode.SERVER, conf);
+      try {
+        sslFactory.init();
+      } catch (GeneralSecurityException e) {
+        throw new IOException(e);
+      }
+      this.httpsServer = new ServerBootstrap().group(bossGroup, workerGroup)
+          .channel(NioServerSocketChannel.class)
+          .childHandler(new ChannelInitializer<SocketChannel>() {
+            @Override
+            protected void initChannel(SocketChannel ch) throws Exception {
+              ChannelPipeline p = ch.pipeline();
+              p.addLast(
+                  new SslHandler(sslFactory.createSSLEngine()),
+                  new HttpRequestDecoder(),
+                  new HttpResponseEncoder());
+              if (handlers != null) {
+                for (ChannelHandler c : handlers) {
+                  p.addLast(c);
+                }
+              }
+              p.addLast(
+                  new ChunkedWriteHandler(),
+                  new URLDispatcher(jettyAddr, conf, confForCreate));
+            }
+          });
+    } else {
+      this.httpsServer = null;
+      this.sslFactory = null;
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:2..8]2 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]108 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;], numberOfBasicBlocks=4, firstLineNumber=1672, lastLineNumber=1676, firstMethodNumber=1672, lastMethodNumber=1732, isFirstLineValid=false, methodSrcCode=
+      String spnegoKeytabFileKey) throws IOException {
+    HttpConfig.Policy policy = getHttpPolicy(conf);
+
+    String filterInitializerConfKey = "hadoop.http.filter.initializers";
+    String initializers = conf.get(filterInitializerConfKey, "");
+
+    String[] parts = initializers.split(",");
+    Set<String> target = new LinkedHashSet<String>();
+    for (String filterInitializer : parts) {
+      filterInitializer = filterInitializer.trim();
+      if (filterInitializer.equals(
+          AuthenticationFilterInitializer.class.getName()) ||
+          filterInitializer.equals(
+          ProxyUserAuthenticationFilterInitializer.class.getName()) ||
+          filterInitializer.isEmpty()) {
+        continue;
+      }
+      target.add(filterInitializer);
+    }
+    target.add(AuthFilterInitializer.class.getName());
+    initializers = StringUtils.join(target, ",");
+    conf.set(filterInitializerConfKey, initializers);
+
+    LOG.info("Filter initializers set : " + initializers);
+
+    HttpServer2.Builder builder = new HttpServer2.Builder().setName(name)
+        .setConf(conf).setACL(new AccessControlList(conf.get(DFS_ADMIN, " ")))
+        .setSecurityEnabled(UserGroupInformation.isSecurityEnabled())
+        .setUsernameConfKey(spnegoUserNameKey)
+        .setKeytabConfKey(getSpnegoKeytabKey(conf, spnegoKeytabFileKey));
+
+    // initialize the webserver for uploading/downloading files.
+    if (UserGroupInformation.isSecurityEnabled()) {
+      LOG.info("Starting web server as: "
+          + SecurityUtil.getServerPrincipal(conf.get(spnegoUserNameKey),
+              httpAddr.getHostName()));
+    }
+
+    if (policy.isHttpEnabled()) {
+      if (httpAddr.getPort() == 0) {
+        builder.setFindPort(true);
+      }
+
+      URI uri = URI.create("http://" + NetUtils.getHostPortString(httpAddr));
+      builder.addEndpoint(uri);
+      LOG.info("Starting Web-server for " + name + " at: " + uri);
+    }
+
+    if (policy.isHttpsEnabled() && httpsAddr != null) {
+      Configuration sslConf = loadSslConfiguration(conf);
+      loadSslConfToHttpServerBuilder(builder, sslConf);
+
+      if (httpsAddr.getPort() == 0) {
+        builder.setFindPort(true);
+      }
+
+      URI uri = URI.create("https://" + NetUtils.getHostPortString(httpsAddr));
+      builder.addEndpoint(uri);
+      LOG.info("Starting Web-server for " + name + " at: " + uri);
+    }
+    return builder;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere, blocks=[BB[SSA:71..71]31 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeHttpServer.start()V, BB[SSA:69..70]30 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeHttpServer.start()V, BB[SSA:72..76]32 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeHttpServer.start()V, BB[SSA:-1..-2]51 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeHttpServer.start()V], numberOfBasicBlocks=4, firstLineNumber=88, lastLineNumber=90, firstMethodNumber=58, lastMethodNumber=101, isFirstLineValid=true, methodSrcCode=
+  void start() throws IOException {
+    final InetSocketAddress httpAddr = bindAddress;
+
+    final String httpsAddrString = conf.get(
+        DFSConfigKeys.DFS_JOURNALNODE_HTTPS_ADDRESS_KEY,
+        DFSConfigKeys.DFS_JOURNALNODE_HTTPS_ADDRESS_DEFAULT);
+    InetSocketAddress httpsAddr = NetUtils.createSocketAddr(httpsAddrString);
+
+    if (httpsAddr != null) {
+      // If DFS_JOURNALNODE_HTTPS_BIND_HOST_KEY exists then it overrides the
+      // host name portion of DFS_NAMENODE_HTTPS_ADDRESS_KEY.
+      final String bindHost =
+          conf.getTrimmed(DFSConfigKeys.DFS_JOURNALNODE_HTTPS_BIND_HOST_KEY);
+      if (bindHost != null && !bindHost.isEmpty()) {
+        httpsAddr = new InetSocketAddress(bindHost, httpsAddr.getPort());
+      }
+    }
+
+    HttpServer2.Builder builder = DFSUtil.httpServerTemplateForNNAndJN(conf,
+        httpAddr, httpsAddr, "journal",
+        DFSConfigKeys.DFS_JOURNALNODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY,
+        DFSConfigKeys.DFS_JOURNALNODE_KEYTAB_FILE_KEY);
+
+    httpServer = builder.build();
+    httpServer.setAttribute(JN_ATTRIBUTE_KEY, localJournalNode);
+    httpServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    httpServer.addInternalServlet("getJournal", "/getJournal",
+        GetJournalEditServlet.class, true);
+    httpServer.start();
+
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    int connIdx = 0;
+    if (policy.isHttpEnabled()) {
+      httpAddress = httpServer.getConnectorAddress(connIdx++);
+      conf.set(DFSConfigKeys.DFS_JOURNALNODE_HTTP_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpAddress));
+    }
+
+    if (policy.isHttpsEnabled()) {
+      httpsAddress = httpServer.getConnectorAddress(connIdx);
+      conf.set(DFSConfigKeys.DFS_JOURNALNODE_HTTPS_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpsAddress));
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere, blocks=[BB[SSA:2..2]2 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:0..1]1 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:3..5]3 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:-1..-2]85 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V], numberOfBasicBlocks=4, firstLineNumber=118, lastLineNumber=119, firstMethodNumber=117, lastMethodNumber=184, isFirstLineValid=true, methodSrcCode=
+  void start() throws IOException {
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    final String infoHost = bindAddress.getHostName();
+
+    final InetSocketAddress httpAddr = bindAddress;
+    final String httpsAddrString = conf.getTrimmed(
+        DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_DEFAULT);
+    InetSocketAddress httpsAddr = NetUtils.createSocketAddr(httpsAddrString);
+
+    if (httpsAddr != null) {
+      // If DFS_NAMENODE_HTTPS_BIND_HOST_KEY exists then it overrides the
+      // host name portion of DFS_NAMENODE_HTTPS_ADDRESS_KEY.
+      final String bindHost =
+          conf.getTrimmed(DFSConfigKeys.DFS_NAMENODE_HTTPS_BIND_HOST_KEY);
+      if (bindHost != null && !bindHost.isEmpty()) {
+        httpsAddr = new InetSocketAddress(bindHost, httpsAddr.getPort());
+      }
+    }
+
+    HttpServer2.Builder builder = DFSUtil.httpServerTemplateForNNAndJN(conf,
+        httpAddr, httpsAddr, "hdfs",
+        DFSConfigKeys.DFS_NAMENODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY,
+        DFSConfigKeys.DFS_NAMENODE_KEYTAB_FILE_KEY);
+
+    final boolean xFrameEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED,
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED_DEFAULT);
+
+    final String xFrameOptionValue = conf.getTrimmed(
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE,
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE_DEFAULT);
+
+    builder.configureXFrame(xFrameEnabled).setXFrameOption(xFrameOptionValue);
+
+    httpServer = builder.build();
+
+    if (policy.isHttpsEnabled()) {
+      // assume same ssl port for all datanodes
+      InetSocketAddress datanodeSslPort = NetUtils.createSocketAddr(conf.getTrimmed(
+          DFSConfigKeys.DFS_DATANODE_HTTPS_ADDRESS_KEY, infoHost + ":"
+              + DFSConfigKeys.DFS_DATANODE_HTTPS_DEFAULT_PORT));
+      httpServer.setAttribute(DFSConfigKeys.DFS_DATANODE_HTTPS_PORT_KEY,
+          datanodeSslPort.getPort());
+    }
+    String httpKeytab = conf.get(DFSUtil.getSpnegoKeytabKey(conf,
+        DFSConfigKeys.DFS_NAMENODE_KEYTAB_FILE_KEY));
+    initWebHdfs(conf, bindAddress.getHostName(), httpKeytab, httpServer,
+        NamenodeWebHdfsMethods.class.getPackage().getName());
+
+    httpServer.setAttribute(NAMENODE_ATTRIBUTE_KEY, nn);
+    httpServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    setupServlets(httpServer);
+    httpServer.start();
+
+    int connIdx = 0;
+    if (policy.isHttpEnabled()) {
+      httpAddress = httpServer.getConnectorAddress(connIdx++);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_HTTP_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpAddress));
+    }
+
+    if (policy.isHttpsEnabled()) {
+      httpsAddress = httpServer.getConnectorAddress(connIdx);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpsAddress));
+    }
+  }
+
+}

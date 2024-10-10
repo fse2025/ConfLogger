@@ -1,0 +1,185 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Worker.java	methodSinagture:	org.apache.storm.daemon.worker.Worker.setupFlushTupleTimer(Ljava/util/Map;Ljava/util/List;)V	methodLines:	343:365
+blockLines:	347:-1
+paras:	topology.producer.batch.size
+TaintedStat:	NORMAL setupFlushTupleTimer:conditional branch(eq, to iindex=29) 24,22 Node: < Application, Lorg/apache/storm/daemon/worker/Worker, setupFlushTupleTimer(Ljava/util/Map;Ljava/util/List;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/Worker, setupFlushTupleTimer(Ljava/util/Map;Ljava/util/List;)V > Context: Everywhere[2]7 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,5 @4 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/Worker, setupFlushTupleTimer(Ljava/util/Map;Ljava/util/List;)V > Context: Everywhere[2]7 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,5 @4 exception:6
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/Worker, setupFlushTupleTimer(Ljava/util/Map;Ljava/util/List;)V > Context: Everywhere[3]9 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > 7 @9 exception:8 v7
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:30 = checkcast <Application,Ljava/lang/Number>1 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:32 = invokevirtual < Application, Ljava/lang/Number, intValue()I > 30 @32 exception:31 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL intValue:return 3 Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/Worker, setupFlushTupleTimer(Ljava/util/Map;Ljava/util/List;)V > Context: Everywhere[20]24 = invokevirtual < Application, Ljava/lang/Integer, intValue()I > 14 @51 exception:23
+NORMAL setupFlushTupleTimer:conditional branch(eq, to iindex=29) 24,22 Node: < Application, Lorg/apache/storm/daemon/worker/Worker, setupFlushTupleTimer(Ljava/util/Map;Ljava/util/List;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private void setupFlushTupleTimer(final Map<String, Object> topologyConf, final List<IRunningExecutor> executors) {
+        final Integer producerBatchSize = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_PRODUCER_BATCH_SIZE));
+        final Integer xferBatchSize = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_TRANSFER_BATCH_SIZE));
+        final Long flushIntervalMillis = ObjectReader.getLong(topologyConf.get(Config.TOPOLOGY_BATCH_FLUSH_INTERVAL_MILLIS));
+        if ((producerBatchSize == 1 && xferBatchSize == 1) || flushIntervalMillis == 0) {
+            LOG.info("Flush Tuple generation disabled. producerBatchSize={}, xferBatchSize={}, flushIntervalMillis={}",
+                     producerBatchSize, xferBatchSize, flushIntervalMillis);
+            return;
+        }
+
+        workerState.flushTupleTimer.scheduleRecurringMs(flushIntervalMillis, flushIntervalMillis,
+            () -> {
+                // send flush tuple to all local executors
+                for (int i = 0; i < executors.size(); i++) {
+                    IRunningExecutor exec = executors.get(i);
+                    if (exec.getExecutorId().get(0) != Constants.SYSTEM_TASK_ID) {
+                        exec.publishFlushTuple();
+                    }
+                }
+            }
+        );
+        LOG.info("Flush tuple will be generated every {} millis", flushIntervalMillis);
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/worker/Worker, loadWorker(Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Map;Lorg/apache/storm/generated/Credentials;)Ljava/lang/Object; > Context: Everywhere, blocks=[BB[SSA:339..340]182 - org.apache.storm.daemon.worker.Worker.loadWorker(Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Map;Lorg/apache/storm/generated/Credentials;)Ljava/lang/Object;, BB[SSA:336..338]181 - org.apache.storm.daemon.worker.Worker.loadWorker(Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Map;Lorg/apache/storm/generated/Credentials;)Ljava/lang/Object;, BB[SSA:341..343]183 - org.apache.storm.daemon.worker.Worker.loadWorker(Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Map;Lorg/apache/storm/generated/Credentials;)Ljava/lang/Object;, BB[SSA:-1..-2]200 - org.apache.storm.daemon.worker.Worker.loadWorker(Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Map;Lorg/apache/storm/generated/Credentials;)Ljava/lang/Object;], numberOfBasicBlocks=4, firstLineNumber=335, lastLineNumber=340, firstMethodNumber=212, lastMethodNumber=340, isFirstLineValid=true, methodSrcCode=
+        throws Exception {
+        workerState =
+            new WorkerState(conf, context, topologyId, assignmentId, supervisorIfaceSupplier, port, workerId,
+                            topologyConf, stateStorage, stormClusterState,
+                            autoCreds, metricRegistry, initialCredentials);
+        this.heatbeatMeter = metricRegistry.meter("doHeartbeat-calls", workerState.getWorkerTopologyContext(),
+                Constants.SYSTEM_COMPONENT_ID, (int) Constants.SYSTEM_TASK_ID);
+
+        // Heartbeat here so that worker process dies if this fails
+        // it's important that worker heartbeat to supervisor ASAP so that supervisor knows
+        // that worker is running and moves on
+        doHeartBeat();
+
+        executorsAtom = new AtomicReference<>(null);
+
+        // launch heartbeat threads immediately so that slow-loading tasks don't cause the worker to timeout
+        // to the supervisor
+        workerState.heartbeatTimer
+            .scheduleRecurring(0, (Integer) conf.get(Config.WORKER_HEARTBEAT_FREQUENCY_SECS), () -> {
+                try {
+                    doHeartBeat();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+        Integer execHeartBeatFreqSecs = workerState.stormClusterState.isPacemakerStateStore()
+            ? (Integer) conf.get(Config.TASK_HEARTBEAT_FREQUENCY_SECS)
+            : (Integer) conf.get(Config.EXECUTOR_METRICS_FREQUENCY_SECS);
+        workerState.executorHeartbeatTimer
+            .scheduleRecurring(0, execHeartBeatFreqSecs,
+                               Worker.this::doExecutorHeartbeats);
+
+        workerState.refreshConnections();
+
+        workerState.activateWorkerWhenAllConnectionsReady();
+
+        workerState.refreshStormActive(null);
+
+        workerState.runWorkerStartHooks();
+
+        List<Executor> execs = new ArrayList<>();
+        for (List<Long> e : workerState.getLocalExecutors()) {
+            if (ConfigUtils.isLocalMode(conf)) {
+                Executor executor = LocalExecutor.mkExecutor(workerState, e, initCreds);
+                execs.add(executor);
+                for (int i = 0; i < executor.getTaskIds().size(); ++i) {
+                    workerState.localReceiveQueues.put(executor.getTaskIds().get(i), executor.getReceiveQueue());
+                }
+            } else {
+                Executor executor = Executor.mkExecutor(workerState, e, initCreds);
+                for (int i = 0; i < executor.getTaskIds().size(); ++i) {
+                    workerState.localReceiveQueues.put(executor.getTaskIds().get(i), executor.getReceiveQueue());
+                }
+                execs.add(executor);
+            }
+        }
+
+        List<IRunningExecutor> newExecutors = new ArrayList<IRunningExecutor>();
+        for (Executor executor : execs) {
+            newExecutors.add(executor.execute());
+        }
+        executorsAtom.set(newExecutors);
+
+        // This thread will send out messages destined for remote tasks (on other workers)
+        // If there are no remote outbound tasks, don't start the thread.
+        if (workerState.hasRemoteOutboundTasks()) {
+            transferThread = workerState.makeTransferThread();
+            transferThread.setName("Worker-Transfer");
+        }
+
+        establishLogSettingCallback();
+
+        final int credCheckMaxAllowed = 10;
+        final int[] credCheckErrCnt = new int[1]; // consecutive-error-count
+
+        workerState.refreshCredentialsTimer.scheduleRecurring(0,
+                                                              (Integer) conf.get(Config.TASK_CREDENTIALS_POLL_SECS), () -> {
+                try {
+                    checkCredentialsChanged();
+                    credCheckErrCnt[0] = 0;
+                } catch (Exception ex) {
+                    credCheckErrCnt[0]++;
+                    if (credCheckErrCnt[0] <= credCheckMaxAllowed) {
+                        LOG.warn("Ignoring {} of {} consecutive exceptions when checking for credential change",
+                            credCheckErrCnt[0], credCheckMaxAllowed, ex);
+                    } else {
+                        LOG.error("Received {} consecutive exceptions, {} tolerated, when checking for credential change",
+                            credCheckErrCnt[0], credCheckMaxAllowed, ex);
+                        throw ex;
+                    }
+                }
+            });
+
+        workerState.checkForUpdatedBlobsTimer.scheduleRecurring(0,
+                (Integer) conf.getOrDefault(Config.WORKER_BLOB_UPDATE_POLL_INTERVAL_SECS, 10),
+            () -> {
+                try {
+                    LOG.debug("Checking if blobs have updated");
+                    updateBlobUpdates();
+                } catch (IOException e) {
+                    // IOException from reading the version files to be ignored
+                    LOG.error(e.getStackTrace().toString());
+                }
+            }
+        );
+
+        // The jitter allows the clients to get the data at different times, and avoids thundering herd
+        if (!(Boolean) topologyConf.get(Config.TOPOLOGY_DISABLE_LOADAWARE_MESSAGING)) {
+            workerState.refreshLoadTimer.scheduleRecurringWithJitter(0, 1, 500, Worker.this::doRefreshLoad);
+        }
+
+        workerState.refreshConnectionsTimer.scheduleRecurring(0,
+                                                              (Integer) conf.get(Config.TASK_REFRESH_POLL_SECS),
+                                                              workerState::refreshConnections);
+
+        workerState.resetLogLevelsTimer.scheduleRecurring(0,
+                                                          (Integer) conf.get(Config.WORKER_LOG_LEVEL_RESET_POLL_SECS),
+                                                          logConfigManager::resetLogLevels);
+
+        workerState.refreshActiveTimer.scheduleRecurring(0, (Integer) conf.get(Config.TASK_REFRESH_POLL_SECS),
+                                                         workerState::refreshStormActive);
+
+        setupFlushTupleTimer(topologyConf, newExecutors);
+        setupBackPressureCheckTimer(topologyConf);
+
+        LOG.info("Worker has topology config {}", ConfigUtils.maskPasswords(topologyConf));
+        LOG.info("Worker {} for storm {} on {}:{}  has finished loading", workerId, topologyId, assignmentId, port);
+        return this;
+    }
+}

@@ -1,0 +1,53 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	LocalFsBlobStore.java	methodSinagture:	org.apache.storm.blobstore.LocalFsBlobStore.blobSync()V	methodLines:	151:177
+blockLines:	152:-1
+paras:	storm.cluster.mode
+TaintedStat:	NORMAL blobSync:conditional branch(eq, to iindex=74) 9,10 Node: < Application, Lorg/apache/storm/blobstore/LocalFsBlobStore, blobSync()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/blobstore/LocalFsBlobStore, blobSync()V > Context: Everywhere[4]7 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 4,5 @8 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/blobstore/LocalFsBlobStore, blobSync()V > Context: Everywhere[4]7 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 4,5 @8 exception:6
+NORMAL blobSync:9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 3,7 @13 exception:8 Node: < Application, Lorg/apache/storm/blobstore/LocalFsBlobStore, blobSync()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/blobstore/LocalFsBlobStore, blobSync()V > Context: Everywhere[5]9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 3,7 @13 exception:8
+NORMAL blobSync:conditional branch(eq, to iindex=74) 9,10 Node: < Application, Lorg/apache/storm/blobstore/LocalFsBlobStore, blobSync()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private void blobSync() throws Exception {
+        if ("distributed".equals(conf.get(Config.STORM_CLUSTER_MODE))) {
+            if (!this.leaderElector.isLeader()) {
+                IStormClusterState state = stormClusterState;
+                NimbusInfo nimbusInfo = this.nimbusInfo;
+                BlobStore store = this;
+                Set<String> allKeys = new HashSet<>();
+                for (Iterator<String> it = store.listKeys(); it.hasNext();) {
+                    allKeys.add(it.next());
+                }
+                Set<String> zkKeys = new HashSet<>(state.blobstore(() -> {
+                    try {
+                        this.blobSync();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }));
+                LOG.debug("blob-sync blob-store-keys {} zookeeper-keys {}", allKeys, zkKeys);
+                LocalFsBlobStoreSynchronizer sync = new LocalFsBlobStoreSynchronizer(store, conf);
+                sync.setNimbusInfo(nimbusInfo);
+                sync.setBlobStoreKeySet(allKeys);
+                sync.setZookeeperKeySet(zkKeys);
+                sync.setZkClient(zkClient);
+                sync.syncBlobs();
+            } //else leader (NOOP)
+        } //else local (NOOP)
+    }
+
+
+
+====================ctx:=======================

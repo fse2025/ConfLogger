@@ -1,0 +1,22 @@
+```java
+Class<? extends HistoryServerStateStoreService> storeClass =
+HistoryServerNullStateStoreService.class;
+boolean recoveryEnabled = conf.getBoolean(
+JHAdminConfig.MR_HS_RECOVERY_ENABLE,
+JHAdminConfig.DEFAULT_MR_HS_RECOVERY_ENABLE);
+if (recoveryEnabled) {
+storeClass = conf.getClass(JHAdminConfig.MR_HS_STATE_STORE, null,
+HistoryServerStateStoreService.class);
+if (storeClass == null) {
+logger.error("Recovery is enabled but unable to locate storage class. Please check the configuration parameter: " + JHAdminConfig.MR_HS_STATE_STORE + ". Current value: " + conf.get(JHAdminConfig.MR_HS_STATE_STORE)); // ConfLogger Inserted Start
+throw new RuntimeException("Unable to locate storage class, check "
++ JHAdminConfig.MR_HS_STATE_STORE);
+// ConfLogger Commented: Not Informative
+}
+} else {
+logger.info("Recovery is disabled. Using default storage class: " + storeClass.getName()); // ConfLogger Inserted Start
+// ConfLogger Inserted End
+}
+return ReflectionUtils.newInstance(storeClass, conf);
+}
+```

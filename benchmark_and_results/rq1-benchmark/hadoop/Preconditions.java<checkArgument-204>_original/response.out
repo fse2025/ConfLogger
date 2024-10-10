@@ -1,0 +1,19 @@
+```java
+Object... errorMsgArgs) {
+    if (!expression) {
+        String msg;
+        try {
+            msg = String.format(errorMsg, errorMsgArgs);
+        } catch (Exception e) {
+            // ConfLogger Skipped: The existing log provides information about the error in formatting the message.
+            LOG.debug("Error formatting message", e);
+            msg = CHECK_ARGUMENT_EX_MESSAGE;
+        }
+        // ConfLogger Inserted Start
+        // Log the misconfiguration before throwing the exception
+        logger.error("Configuration parameter 'fs.creation.parallel.count' is not properly set. Expression evaluated to false. Please ensure the parameter is correctly configured. Error message: {}", errorMsg);
+        // ConfLogger Inserted End
+        throw new IllegalArgumentException(msg);
+    }
+}
+```

@@ -1,0 +1,38 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	WhitelistBasedResolver.java	methodSinagture:	org.apache.hadoop.security.WhitelistBasedResolver.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	92:109
+blockLines:	99:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=30) 14,12 Node: < Application, Lorg/apache/hadoop/security/WhitelistBasedResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/WhitelistBasedResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[15]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,11,12 @23 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/WhitelistBasedResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[15]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,11,12 @23 exception:13
+NORMAL setConf:conditional branch(eq, to iindex=30) 14,12 Node: < Application, Lorg/apache/hadoop/security/WhitelistBasedResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setConf(Configuration conf) {
+    super.setConf(conf);
+    String fixedFile = conf.get(HADOOP_SECURITY_SASL_FIXEDWHITELIST_FILE,
+        FIXEDWHITELIST_DEFAULT_LOCATION);
+    String variableFile = null;
+    long expiryTime = 0;
+
+    if (conf.getBoolean(HADOOP_SECURITY_SASL_VARIABLEWHITELIST_ENABLE, false)) {
+      variableFile = conf.get(HADOOP_SECURITY_SASL_VARIABLEWHITELIST_FILE,
+          VARIABLEWHITELIST_DEFAULT_LOCATION);
+      expiryTime =
+        conf.getLong(HADOOP_SECURITY_SASL_VARIABLEWHITELIST_CACHE_SECS,3600) * 1000;
+    }
+
+    whiteList = new CombinedIPWhiteList(fixedFile,variableFile,expiryTime);
+
+    this.saslProps = getSaslProperties(conf);
+  }
+
+
+
+====================ctx:=======================

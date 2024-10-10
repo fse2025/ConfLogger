@@ -1,0 +1,23 @@
+```java
+if (!(acl || crypt || ec || sn)) {
+    // ConfLogger Inserted Start
+    logger.warn("None of the configuration parameters (acl, crypt, ec, sn) are enabled. Ensure at least one of them is set to true.");
+    // ConfLogger Inserted End
+    return NONE;
+}
+EnumSet<AttrFlags> ret = EnumSet.noneOf(AttrFlags.class);
+if (acl) {
+    ret.add(AttrFlags.HAS_ACL);
+}
+if (crypt) {
+    ret.add(AttrFlags.HAS_CRYPT);
+}
+if (ec) {
+    ret.add(AttrFlags.HAS_EC);
+}
+if (sn) {
+    ret.add(AttrFlags.SNAPSHOT_ENABLED);
+}
+return ret;
+}
+```

@@ -1,0 +1,59 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ResourceUtils.java	methodSinagture:	org.apache.hadoop.yarn.util.resource.ResourceUtils.getAllocation(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;J)J	methodLines:	208:216
+blockLines:	210:-1
+paras:	null
+TaintedStat:	NORMAL getAllocation:conditional branch(ne, to iindex=20) 9,10 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getAllocation(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;J)J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getAllocation(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;J)J > Context: Everywhere[3]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 1,2,6 @5 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getAllocation(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;J)J > Context: Everywhere[3]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 1,2,6 @5 exception:7
+NORMAL getAllocation:9 = compare 8,6 opcode=cmp Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getAllocation(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;J)J > Context: Everywhere
+NORMAL getAllocation:conditional branch(ne, to iindex=20) 9,10 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getAllocation(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;J)J > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String resourceTypesKey, String schedulerKey, long schedulerDefault) {
+    long value = conf.getLong(resourceTypesKey, -1L);
+    if (value == -1) {
+      LOG.debug("Mandatory Resource '{}' is not "
+          + "configured in resource-types config file. Setting allocation "
+          + "specified using '{}'", resourceTypesKey, schedulerKey);
+      value = conf.getLong(schedulerKey, schedulerDefault);
+    }
+    return value;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:19..21]11 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:18..18]10 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:22..22]12 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:36..38]20 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:35..35]19 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:39..39]21 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:59..61]32 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:58..58]31 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:62..62]33 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:76..78]41 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:75..75]40 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:79..79]42 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.yarn.util.resource.ResourceUtils.setAllocationForMandatoryResources(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=16, firstLineNumber=202, lastLineNumber=200, firstMethodNumber=180, lastMethodNumber=205, isFirstLineValid=true, methodSrcCode=
+      Map<String, ResourceInformation> res, Configuration conf) {
+    ResourceInformation mem = res.get(ResourceInformation.MEMORY_MB.getName());
+    mem.setMinimumAllocation(getAllocation(conf,
+        YarnConfiguration.RESOURCE_TYPES + "." +
+            mem.getName() + MINIMUM_ALLOCATION,
+        YarnConfiguration.RM_SCHEDULER_MINIMUM_ALLOCATION_MB,
+        YarnConfiguration.DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB));
+    mem.setMaximumAllocation(getAllocation(conf,
+        YarnConfiguration.RESOURCE_TYPES + "." +
+            mem.getName() + MAXIMUM_ALLOCATION,
+        YarnConfiguration.RM_SCHEDULER_MAXIMUM_ALLOCATION_MB,
+        YarnConfiguration.DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_MB));
+
+    ResourceInformation cpu = res.get(ResourceInformation.VCORES.getName());
+
+    cpu.setMinimumAllocation(getAllocation(conf,
+        YarnConfiguration.RESOURCE_TYPES + "." +
+            cpu.getName() + MINIMUM_ALLOCATION,
+        YarnConfiguration.RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES,
+        YarnConfiguration.DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES));
+    cpu.setMaximumAllocation(getAllocation(conf,
+        YarnConfiguration.RESOURCE_TYPES + "." +
+        cpu.getName() + MAXIMUM_ALLOCATION,
+        YarnConfiguration.RM_SCHEDULER_MAXIMUM_ALLOCATION_VCORES,
+        YarnConfiguration.DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_VCORES));
+  }
+
+}

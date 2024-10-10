@@ -1,0 +1,137 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileStatus.java	methodSinagture:	org.apache.hadoop.fs.FileStatus.attributes(ZZZZ)Ljava/util/Set;	methodLines:	87:104
+blockLines:	88:-1
+paras:	null
+TaintedStat:	NORMAL attributes:conditional branch(ne, to iindex=14) 3,6 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, attributes(ZZZZ)Ljava/util/Set; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/LocatedFileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;[Lorg/apache/hadoop/fs/BlockLocation;)V > Context: Everywhere[32]24 = invokevirtual < Application, Lorg/apache/hadoop/fs/permission/FsPermission, getErasureCodedBit()Z > 8 @60 exception:23
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/LocatedFileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;[Lorg/apache/hadoop/fs/BlockLocation;)V > Context: Everywhere[32]24 = invokevirtual < Application, Lorg/apache/hadoop/fs/permission/FsPermission, getErasureCodedBit()Z > 8 @60 exception:23
+PHI Node: < Application, Lorg/apache/hadoop/fs/LocatedFileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;[Lorg/apache/hadoop/fs/BlockLocation;)V > Context: Everywhere:25 = phi  18,24
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/LocatedFileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;[Lorg/apache/hadoop/fs/BlockLocation;)V > Context: Everywhere[34]invokespecial < Application, Lorg/apache/hadoop/fs/LocatedFileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ[Lorg/apache/hadoop/fs/BlockLocation;)V > 1,2,3,4,5,6,7,8,9,10,11,12,19,22,25,13 @65 exception:26 v25
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/LocatedFileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ[Lorg/apache/hadoop/fs/BlockLocation;)V > Context: Everywhere v15
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/LocatedFileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ[Lorg/apache/hadoop/fs/BlockLocation;)V > Context: Everywhere[16]20 = invokestatic < Application, Lorg/apache/hadoop/fs/LocatedFileStatus, attributes(ZZZZ)Ljava/util/Set; > 13,14,15,18 @28 exception:19 v15
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, attributes(ZZZZ)Ljava/util/Set; > Context: Everywhere v3
+NORMAL attributes:conditional branch(ne, to iindex=14) 3,6 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, attributes(ZZZZ)Ljava/util/Set; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                          boolean ec, boolean sn) {
+    if (!(acl || crypt || ec || sn)) {
+      return NONE;
+    }
+    EnumSet<AttrFlags> ret = EnumSet.noneOf(AttrFlags.class);
+    if (acl) {
+      ret.add(AttrFlags.HAS_ACL);
+    }
+    if (crypt) {
+      ret.add(AttrFlags.HAS_CRYPT);
+    }
+    if (ec) {
+      ret.add(AttrFlags.HAS_EC);
+    }
+    if (sn) {
+      ret.add(AttrFlags.SNAPSHOT_ENABLED);
+    }
+    return ret;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/FileStatus, readFields(Ljava/io/DataInput;)V > Context: Everywhere, blocks=[BB[SSA:90..90]46 - org.apache.hadoop.fs.FileStatus.readFields(Ljava/io/DataInput;)V, BB[SSA:88..89]45 - org.apache.hadoop.fs.FileStatus.readFields(Ljava/io/DataInput;)V, BB[SSA:91..91]47 - org.apache.hadoop.fs.FileStatus.readFields(Ljava/io/DataInput;)V, BB[SSA:-1..-2]57 - org.apache.hadoop.fs.FileStatus.readFields(Ljava/io/DataInput;)V], numberOfBasicBlocks=4, firstLineNumber=518, lastLineNumber=517, firstMethodNumber=496, lastMethodNumber=520, isFirstLineValid=true, methodSrcCode=
+  public void readFields(DataInput in) throws IOException {
+    int size = in.readInt();
+    if (size < 0) {
+      throw new IOException("Can't read FileStatusProto with negative " +
+          "size of " + size);
+    }
+    byte[] buf = new byte[size];
+    in.readFully(buf);
+    FileStatusProto proto = FileStatusProto.parseFrom(buf);
+    FileStatus other = PBHelper.convert(proto);
+    isdir = other.isDirectory();
+    length = other.getLen();
+    block_replication = other.getReplication();
+    blocksize = other.getBlockSize();
+    modification_time = other.getModificationTime();
+    access_time = other.getAccessTime();
+    setPermission(other.getPermission());
+    setOwner(other.getOwner());
+    setGroup(other.getGroup());
+    setSymlink((other.isSymlink() ? other.getSymlink() : null));
+    setPath(other.getPath());
+    attr = attributes(other.hasAcl(), other.isEncrypted(),
+        other.isErasureCoded(), other.isSnapshotEnabled());
+    assert !(isDirectory() && isSymlink()) : "A directory cannot be a symlink";
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > Context: Everywhere, blocks=[BB[SSA:0..16]1 - org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V, BB[SSA:-1..-2]0 - org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V, BB[SSA:17..17]2 - org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V, BB[SSA:-1..-2]4 - org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V], numberOfBasicBlocks=4, firstLineNumber=154, lastLineNumber=155, firstMethodNumber=154, lastMethodNumber=158, isFirstLineValid=false, methodSrcCode=
+      Path path, boolean hasAcl, boolean isEncrypted, boolean isErasureCoded) {
+    this(length, isdir, block_replication, blocksize, modification_time,
+        access_time, permission, owner, group, symlink, path,
+        attributes(hasAcl, isEncrypted, isErasureCoded, false));
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/LocatedFileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ[Lorg/apache/hadoop/fs/BlockLocation;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=118, lastMethodNumber=123, isFirstLineValid=true, methodSrcCode=
+      BlockLocation[] locations) {
+    this(length, isdir, block_replication, blocksize, modification_time,
+        access_time, permission, owner, group, symlink, path,
+        attributes(hasAcl, isEncrypted, isErasureCoded, false), locations);
+    this.locations = locations;
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/protocolPB/PBHelper, convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere, blocks=[BB[SSA:152..152]56 - org.apache.hadoop.fs.protocolPB.PBHelper.convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus;, BB[SSA:149..150]54 - org.apache.hadoop.fs.protocolPB.PBHelper.convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus;, BB[SSA:151..151]55 - org.apache.hadoop.fs.protocolPB.PBHelper.convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus;, BB[SSA:153..153]57 - org.apache.hadoop.fs.protocolPB.PBHelper.convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus;, BB[SSA:-1..-2]59 - org.apache.hadoop.fs.protocolPB.PBHelper.convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus;], numberOfBasicBlocks=5, firstLineNumber=98, lastLineNumber=105, firstMethodNumber=60, lastMethodNumber=105, isFirstLineValid=true, methodSrcCode=
+    final Path symlink;
+    switch (proto.getFileType()) {
+    case FT_DIR:
+      isdir = true;
+      symlink = null;
+      blocksize = 0;
+      length = 0;
+      blockReplication = 0;
+      break;
+    case FT_SYMLINK:
+      isdir = false;
+      symlink = new Path(proto.getSymlink());
+      blocksize = 0;
+      length = 0;
+      blockReplication = 0;
+      break;
+    case FT_FILE:
+      isdir = false;
+      symlink = null;
+      blocksize = proto.getBlockSize();
+      length = proto.getLength();
+      int brep = proto.getBlockReplication();
+      if ((brep & 0xffff0000) != 0) {
+        throw new IOException(String.format("Block replication 0x%08x " +
+            "doesn't fit in 16 bits.", brep));
+      }
+      blockReplication = (short)brep;
+      break;
+    default:
+      throw new IllegalStateException("Unknown type: " + proto.getFileType());
+    }
+    path = new Path(proto.getPath());
+    mtime = proto.getModificationTime();
+    atime = proto.getAccessTime();
+    permission = convert(proto.getPermission());
+    owner = StringInterner.weakIntern(proto.getOwner());
+    group = StringInterner.weakIntern(proto.getGroup());
+    int flags = proto.getFlags();
+    FileStatus fileStatus = new FileStatus(length, isdir, blockReplication,
+        blocksize, mtime, atime, permission, owner, group, symlink, path,
+        FileStatus.attributes(
+          (flags & FileStatusProto.Flags.HAS_ACL_VALUE) != 0,
+          (flags & FileStatusProto.Flags.HAS_CRYPT_VALUE) != 0,
+          (flags & FileStatusProto.Flags.HAS_EC_VALUE) != 0,
+          (flags & FileStatusProto.Flags.SNAPSHOT_ENABLED_VALUE) != 0));
+    return fileStatus;
+  }
+}

@@ -1,0 +1,218 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Preconditions.java	methodSinagture:	org.apache.hadoop.util.Preconditions.checkArgument(ZLjava/lang/String;[Ljava/lang/Object;)V	methodLines:	204:215
+blockLines:	205:-1
+paras:	fs.creation.parallel.count
+TaintedStat:	NORMAL checkArgument:conditional branch(ne, to iindex=20) 1,5 Node: < Application, Lorg/apache/hadoop/util/Preconditions, checkArgument(ZLjava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem$Cache, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[28]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,15,16 @56 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem$Cache, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[28]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,15,16 @56 exception:17
+NORMAL <init>:conditional branch(le, to iindex=35) 18,19 Node: < Application, Lorg/apache/hadoop/fs/FileSystem$Cache, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/fs/FileSystem$Cache, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere:21 = phi  20,19
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem$Cache, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[48]invokestatic < Application, Lorg/apache/hadoop/util/Preconditions, checkArgument(ZLjava/lang/String;[Ljava/lang/Object;)V > 21,22,24 @87 exception:27 v21
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/Preconditions, checkArgument(ZLjava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere v1
+NORMAL checkArgument:conditional branch(ne, to iindex=20) 1,5 Node: < Application, Lorg/apache/hadoop/util/Preconditions, checkArgument(ZLjava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Object... errorMsgArgs) {
+    if (!expression) {
+      String msg;
+      try {
+        msg = String.format(errorMsg, errorMsgArgs);
+      } catch (Exception e) {
+        LOG.debug("Error formatting message", e);
+        msg = CHECK_ARGUMENT_EX_MESSAGE;
+      }
+      throw new IllegalArgumentException(msg);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkPositiveInteger(JLjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:15..15]6 - org.apache.hadoop.fs.impl.prefetch.Validate.checkPositiveInteger(JLjava/lang/String;)V, BB[SSA:11..14]5 - org.apache.hadoop.fs.impl.prefetch.Validate.checkPositiveInteger(JLjava/lang/String;)V, BB[SSA:16..16]7 - org.apache.hadoop.fs.impl.prefetch.Validate.checkPositiveInteger(JLjava/lang/String;)V, BB[SSA:-1..-2]8 - org.apache.hadoop.fs.impl.prefetch.Validate.checkPositiveInteger(JLjava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=55, lastLineNumber=56, firstMethodNumber=54, lastMethodNumber=56, isFirstLineValid=true, methodSrcCode=
+  public static void checkPositiveInteger(long value, String argName) {
+    checkArgument(value > 0, "'%s' must be a positive integer.", argName);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkNotEmpty(ILjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:13..13]6 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotEmpty(ILjava/lang/String;)V, BB[SSA:9..12]5 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotEmpty(ILjava/lang/String;)V, BB[SSA:14..14]7 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotEmpty(ILjava/lang/String;)V, BB[SSA:-1..-2]8 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotEmpty(ILjava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=394, lastLineNumber=398, firstMethodNumber=393, lastMethodNumber=398, isFirstLineValid=true, methodSrcCode=
+  private static void checkNotEmpty(int arraySize, String argName) {
+    checkArgument(
+        arraySize > 0,
+        "'%s' must have at least one element.",
+        argName);
+  }
+}
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkGreaterOrEqual(JLjava/lang/String;JLjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:29..29]11 - org.apache.hadoop.fs.impl.prefetch.Validate.checkGreaterOrEqual(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:28..28]10 - org.apache.hadoop.fs.impl.prefetch.Validate.checkGreaterOrEqual(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:30..30]12 - org.apache.hadoop.fs.impl.prefetch.Validate.checkGreaterOrEqual(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:-1..-2]13 - org.apache.hadoop.fs.impl.prefetch.Validate.checkGreaterOrEqual(JLjava/lang/String;JLjava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=275, lastLineNumber=276, firstMethodNumber=268, lastMethodNumber=276, isFirstLineValid=true, methodSrcCode=
+      String value2Name) {
+    checkArgument(
+        value1 >= value2,
+        "'%s' (%s) must be greater than or equal to '%s' (%s).",
+        value1Name,
+        value1,
+        value2Name,
+        value2);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:21..21]10 - org.apache.hadoop.conf.Configuration.set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:17..20]9 - org.apache.hadoop.conf.Configuration.set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:22..23]11 - org.apache.hadoop.conf.Configuration.set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]70 - org.apache.hadoop.conf.Configuration.set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=1404, lastLineNumber=1407, firstMethodNumber=1400, lastMethodNumber=1438, isFirstLineValid=true, methodSrcCode=
+  public void set(String name, String value, String source) {
+    Preconditions.checkArgument(
+        name != null,
+        "Property name must not be null");
+    Preconditions.checkArgument(
+        value != null,
+        "The value of property %s must not be null", name);
+    name = name.trim();
+    DeprecationContext deprecations = deprecationContext.get();
+    if (deprecations.getDeprecatedKeyMap().isEmpty()) {
+      getProps();
+    }
+    getOverlay().setProperty(name, value);
+    getProps().setProperty(name, value);
+    String newSource = (source == null ? "programmatically" : source);
+
+    if (!isDeprecated(name)) {
+      putIntoUpdatingResource(name, new String[] {newSource});
+      String[] altNames = getAlternativeNames(name);
+      if(altNames != null) {
+        for(String n: altNames) {
+          if(!n.equals(name)) {
+            getOverlay().setProperty(n, value);
+            getProps().setProperty(n, value);
+            putIntoUpdatingResource(n, new String[] {newSource});
+          }
+        }
+      }
+    }
+    else {
+      String[] names = handleDeprecation(deprecationContext.get(), name);
+      String altSource = "because " + name + " is deprecated";
+      for(String n : names) {
+        getOverlay().setProperty(n, value);
+        getProps().setProperty(n, value);
+        putIntoUpdatingResource(n, new String[] {altSource});
+      }
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkValuesEqual(JLjava/lang/String;JLjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:29..29]11 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValuesEqual(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:28..28]10 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValuesEqual(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:30..30]12 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValuesEqual(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:-1..-2]13 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValuesEqual(JLjava/lang/String;JLjava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=212, lastLineNumber=213, firstMethodNumber=205, lastMethodNumber=213, isFirstLineValid=true, methodSrcCode=
+      String value2Name) {
+    checkArgument(
+        value1 == value2,
+        "'%s' (%s) must equal '%s' (%s).",
+        value1Name,
+        value1,
+        value2Name,
+        value2);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkValid(ZLjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:8..8]3 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValid(ZLjava/lang/String;)V, BB[SSA:4..7]2 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValid(ZLjava/lang/String;)V, BB[SSA:9..9]4 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValid(ZLjava/lang/String;)V, BB[SSA:-1..-2]5 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValid(ZLjava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=82, lastLineNumber=83, firstMethodNumber=81, lastMethodNumber=83, isFirstLineValid=true, methodSrcCode=
+  public static void checkValid(boolean isValid, String argName) {
+    checkArgument(isValid, "'%s' is invalid.", argName);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkGreater(JLjava/lang/String;JLjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:29..29]11 - org.apache.hadoop.fs.impl.prefetch.Validate.checkGreater(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:28..28]10 - org.apache.hadoop.fs.impl.prefetch.Validate.checkGreater(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:30..30]12 - org.apache.hadoop.fs.impl.prefetch.Validate.checkGreater(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:-1..-2]13 - org.apache.hadoop.fs.impl.prefetch.Validate.checkGreater(JLjava/lang/String;JLjava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=254, lastLineNumber=255, firstMethodNumber=247, lastMethodNumber=255, isFirstLineValid=true, methodSrcCode=
+      String value2Name) {
+    checkArgument(
+        value1 > value2,
+        "'%s' (%s) must be greater than '%s' (%s).",
+        value1Name,
+        value1,
+        value2Name,
+        value2);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkLessOrEqual(JLjava/lang/String;JLjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:29..29]11 - org.apache.hadoop.fs.impl.prefetch.Validate.checkLessOrEqual(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:28..28]10 - org.apache.hadoop.fs.impl.prefetch.Validate.checkLessOrEqual(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:30..30]12 - org.apache.hadoop.fs.impl.prefetch.Validate.checkLessOrEqual(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:-1..-2]13 - org.apache.hadoop.fs.impl.prefetch.Validate.checkLessOrEqual(JLjava/lang/String;JLjava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=296, lastLineNumber=297, firstMethodNumber=289, lastMethodNumber=297, isFirstLineValid=true, methodSrcCode=
+      String value2Name) {
+    checkArgument(
+        value1 <= value2,
+        "'%s' (%s) must be less than or equal to '%s' (%s).",
+        value1Name,
+        value1,
+        value2Name,
+        value2);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:13..13]6 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V, BB[SSA:9..12]5 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V, BB[SSA:14..14]7 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V, BB[SSA:-1..-2]8 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=46, lastLineNumber=47, firstMethodNumber=45, lastMethodNumber=47, isFirstLineValid=true, methodSrcCode=
+  public static void checkNotNull(Object obj, String argName) {
+    checkArgument(obj != null, "'%s' must not be null.", argName);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkValid(ZLjava/lang/String;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:12..12]4 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValid(ZLjava/lang/String;Ljava/lang/String;)V, BB[SSA:8..11]3 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValid(ZLjava/lang/String;Ljava/lang/String;)V, BB[SSA:13..13]5 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValid(ZLjava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]6 - org.apache.hadoop.fs.impl.prefetch.Validate.checkValid(ZLjava/lang/String;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=94, lastLineNumber=96, firstMethodNumber=93, lastMethodNumber=96, isFirstLineValid=true, methodSrcCode=
+      String validValues) {
+    checkArgument(isValid, "'%s' is invalid. Valid values are: %s.", argName,
+        validValues);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkNotNullAndNotEmpty(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:17..17]8 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNullAndNotEmpty(Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:13..16]7 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNullAndNotEmpty(Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:18..18]9 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNullAndNotEmpty(Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]10 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNullAndNotEmpty(Ljava/lang/String;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=106, lastLineNumber=109, firstMethodNumber=103, lastMethodNumber=109, isFirstLineValid=true, methodSrcCode=
+  public static void checkNotNullAndNotEmpty(String arg, String argName) {
+    checkNotNull(arg, argName);
+    checkArgument(
+        !arg.isEmpty(),
+        "'%s' must not be empty.",
+        argName);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkIntegerMultiple(JLjava/lang/String;JLjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:31..31]12 - org.apache.hadoop.fs.impl.prefetch.Validate.checkIntegerMultiple(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:30..30]11 - org.apache.hadoop.fs.impl.prefetch.Validate.checkIntegerMultiple(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:32..32]13 - org.apache.hadoop.fs.impl.prefetch.Validate.checkIntegerMultiple(JLjava/lang/String;JLjava/lang/String;)V, BB[SSA:-1..-2]14 - org.apache.hadoop.fs.impl.prefetch.Validate.checkIntegerMultiple(JLjava/lang/String;JLjava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=233, lastLineNumber=234, firstMethodNumber=226, lastMethodNumber=234, isFirstLineValid=true, methodSrcCode=
+      String value2Name) {
+    checkArgument(
+        (value1 % value2) == 0,
+        "'%s' (%s) must be an integer multiple of '%s' (%s).",
+        value1Name,
+        value1,
+        value2Name,
+        value2);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkRequired(ZLjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:8..8]3 - org.apache.hadoop.fs.impl.prefetch.Validate.checkRequired(ZLjava/lang/String;)V, BB[SSA:4..7]2 - org.apache.hadoop.fs.impl.prefetch.Validate.checkRequired(ZLjava/lang/String;)V, BB[SSA:9..9]4 - org.apache.hadoop.fs.impl.prefetch.Validate.checkRequired(ZLjava/lang/String;)V, BB[SSA:-1..-2]5 - org.apache.hadoop.fs.impl.prefetch.Validate.checkRequired(ZLjava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=73, lastLineNumber=74, firstMethodNumber=72, lastMethodNumber=74, isFirstLineValid=true, methodSrcCode=
+  public static void checkRequired(boolean isPresent, String argName) {
+    checkArgument(isPresent, "'%s' is required.", argName);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkNotNegative(JLjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:15..15]6 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNegative(JLjava/lang/String;)V, BB[SSA:11..14]5 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNegative(JLjava/lang/String;)V, BB[SSA:16..16]7 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNegative(JLjava/lang/String;)V, BB[SSA:-1..-2]8 - org.apache.hadoop.fs.impl.prefetch.Validate.checkNotNegative(JLjava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=64, lastLineNumber=65, firstMethodNumber=63, lastMethodNumber=65, isFirstLineValid=true, methodSrcCode=
+  public static void checkNotNegative(long value, String argName) {
+    checkArgument(value >= 0, "'%s' must not be negative.", argName);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkWithinRange(JLjava/lang/String;JJ)V > Context: Everywhere, blocks=[BB[SSA:35..35]13 - org.apache.hadoop.fs.impl.prefetch.Validate.checkWithinRange(JLjava/lang/String;JJ)V, BB[SSA:34..34]12 - org.apache.hadoop.fs.impl.prefetch.Validate.checkWithinRange(JLjava/lang/String;JJ)V, BB[SSA:36..36]14 - org.apache.hadoop.fs.impl.prefetch.Validate.checkWithinRange(JLjava/lang/String;JJ)V, BB[SSA:-1..-2]15 - org.apache.hadoop.fs.impl.prefetch.Validate.checkWithinRange(JLjava/lang/String;JJ)V], numberOfBasicBlocks=4, firstLineNumber=317, lastLineNumber=318, firstMethodNumber=310, lastMethodNumber=318, isFirstLineValid=true, methodSrcCode=
+      long maxValueInclusive) {
+    checkArgument(
+        (value >= minValueInclusive) && (value <= maxValueInclusive),
+        "'%s' (%s) must be within the range [%s, %s].",
+        valueName,
+        value,
+        minValueInclusive,
+        maxValueInclusive);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/impl/prefetch/Validate, checkWithinRange(DLjava/lang/String;DD)V > Context: Everywhere, blocks=[BB[SSA:35..35]13 - org.apache.hadoop.fs.impl.prefetch.Validate.checkWithinRange(DLjava/lang/String;DD)V, BB[SSA:34..34]12 - org.apache.hadoop.fs.impl.prefetch.Validate.checkWithinRange(DLjava/lang/String;DD)V, BB[SSA:36..36]14 - org.apache.hadoop.fs.impl.prefetch.Validate.checkWithinRange(DLjava/lang/String;DD)V, BB[SSA:-1..-2]15 - org.apache.hadoop.fs.impl.prefetch.Validate.checkWithinRange(DLjava/lang/String;DD)V], numberOfBasicBlocks=4, firstLineNumber=338, lastLineNumber=339, firstMethodNumber=331, lastMethodNumber=339, isFirstLineValid=true, methodSrcCode=
+      double maxValueInclusive) {
+    checkArgument(
+        (value >= minValueInclusive) && (value <= maxValueInclusive),
+        "'%s' (%s) must be within the range [%s, %s].",
+        valueName,
+        value,
+        minValueInclusive,
+        maxValueInclusive);
+  }
+
+}

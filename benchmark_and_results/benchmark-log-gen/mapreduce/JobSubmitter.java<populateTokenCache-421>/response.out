@@ -1,0 +1,22 @@
+```java
+readTokensFromFiles(conf, credentials);
+// add the delegation tokens from configuration
+String [] nameNodes = conf.getStrings(MRJobConfig.JOB_NAMENODES);
+LOG.debug("adding the following namenodes' delegation tokens:" +
+Arrays.toString(nameNodes));
+if(nameNodes != null) {
+    // ConfLogger Inserted Start
+    logger.debug("Configuration parameter MRJobConfig.JOB_NAMENODES is set. Value: " + Arrays.toString(nameNodes));
+    // ConfLogger Inserted End
+    Path [] ps = new Path[nameNodes.length];
+    for(int i=0; i< nameNodes.length; i++) {
+        ps[i] = new Path(nameNodes[i]);
+    }
+    TokenCache.obtainTokensForNamenodes(credentials, ps, conf);
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter MRJobConfig.JOB_NAMENODES is not set. Delegation tokens for namenodes will not be obtained.");
+    // ConfLogger Inserted End
+}
+}
+```

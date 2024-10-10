@@ -1,0 +1,738 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	EphemeralType.java	methodSinagture:	org.apache.zookeeper.server.EphemeralType.get(J)Lorg/apache/zookeeper/server/EphemeralType;	methodLines:	168:188
+blockLines:	170:-1
+paras:	zookeeper.emulate353TTLNodes
+TaintedStat:	NORMAL get:conditional branch(eq, to iindex=13) 8,5 Node: < Application, Lorg/apache/zookeeper/server/EphemeralType, get(J)Lorg/apache/zookeeper/server/EphemeralType; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/EphemeralType, get(J)Lorg/apache/zookeeper/server/EphemeralType; > Context: Everywhere[4]8 = invokestatic < Application, Ljava/lang/Boolean, getBoolean(Ljava/lang/String;)Z > 6 @8 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/EphemeralType, get(J)Lorg/apache/zookeeper/server/EphemeralType; > Context: Everywhere[4]8 = invokestatic < Application, Ljava/lang/Boolean, getBoolean(Ljava/lang/String;)Z > 6 @8 exception:7
+NORMAL get:conditional branch(eq, to iindex=13) 8,5 Node: < Application, Lorg/apache/zookeeper/server/EphemeralType, get(J)Lorg/apache/zookeeper/server/EphemeralType; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static EphemeralType get(long ephemeralOwner) {
+        if (extendedEphemeralTypesEnabled()) {
+            if (Boolean.getBoolean(TTL_3_5_3_EMULATION_PROPERTY)) {
+                if (EphemeralTypeEmulate353.get(ephemeralOwner) == EphemeralTypeEmulate353.TTL) {
+                    return TTL;
+                }
+            }
+
+            if ((ephemeralOwner & EXTENDED_MASK) == EXTENDED_MASK) {
+                long extendedFeatureBit = getExtendedFeatureBit(ephemeralOwner);
+                EphemeralType ephemeralType = extendedFeatureMap.get(extendedFeatureBit);
+                if (ephemeralType == null) {
+                    throw new IllegalArgumentException(String.format("Invalid ephemeralOwner. [%s]", Long.toHexString(ephemeralOwner)));
+                }
+                return ephemeralType;
+            }
+        }
+        if (ephemeralOwner == CONTAINER_EPHEMERAL_OWNER) {
+            return CONTAINER;
+        }
+        return (ephemeralOwner == 0) ? VOID : NORMAL;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/DataTree, deserialize(Lorg/apache/jute/InputArchive;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:105..107]48 - org.apache.zookeeper.server.DataTree.deserialize(Lorg/apache/jute/InputArchive;Ljava/lang/String;)V, BB[SSA:104..104]47 - org.apache.zookeeper.server.DataTree.deserialize(Lorg/apache/jute/InputArchive;Ljava/lang/String;)V, BB[SSA:108..111]49 - org.apache.zookeeper.server.DataTree.deserialize(Lorg/apache/jute/InputArchive;Ljava/lang/String;)V, BB[SSA:-1..-2]77 - org.apache.zookeeper.server.DataTree.deserialize(Lorg/apache/jute/InputArchive;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=1374, lastLineNumber=1376, firstMethodNumber=1350, lastMethodNumber=1399, isFirstLineValid=true, methodSrcCode=
+    public void deserialize(InputArchive ia, String tag) throws IOException {
+        aclCache.deserialize(ia);
+        nodes.clear();
+        pTrie.clear();
+        nodeDataSize.set(0);
+        String path = ia.readString("path");
+        while (!"/".equals(path)) {
+            DataNode node = new DataNode();
+            ia.readRecord(node, "node");
+            nodes.put(path, node);
+            synchronized (node) {
+                aclCache.addUsage(node.acl);
+            }
+            int lastSlash = path.lastIndexOf('/');
+            if (lastSlash == -1) {
+                root = node;
+            } else {
+                String parentPath = path.substring(0, lastSlash);
+                DataNode parent = nodes.get(parentPath);
+                if (parent == null) {
+                    throw new IOException(
+                            "Invalid Datatree, unable to find parent " + parentPath + " of path " + path);
+                }
+                parent.addChild(path.substring(lastSlash + 1));
+                long owner = node.stat.getEphemeralOwner();
+                EphemeralType ephemeralType = EphemeralType.get(owner);
+                if (ephemeralType == EphemeralType.CONTAINER) {
+                    containers.add(path);
+                } else if (ephemeralType == EphemeralType.TTL) {
+                    ttls.add(path);
+                } else if (owner != 0) {
+                    HashSet<String> list = ephemerals.computeIfAbsent(owner, k -> new HashSet<>());
+                    list.add(path);
+                }
+            }
+            path = ia.readString("path");
+        }
+        // have counted digest for root node with "", ignore here to avoid
+        // counting twice for root node
+        nodes.putWithoutDigest("/", root);
+
+        nodeDataSize.set(approximateDataSize());
+
+        // we are done with deserializing the datatree
+        // update the quotas - create path trie
+        // and also update the stat nodes
+        setupQuota();
+
+        aclCache.purgeUnused();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/DataNode, getClientEphemeralOwner(Lorg/apache/zookeeper/data/StatPersisted;)J > Context: Everywhere, blocks=[BB[SSA:2..2]2 - org.apache.zookeeper.server.DataNode.getClientEphemeralOwner(Lorg/apache/zookeeper/data/StatPersisted;)J, BB[SSA:0..1]1 - org.apache.zookeeper.server.DataNode.getClientEphemeralOwner(Lorg/apache/zookeeper/data/StatPersisted;)J, BB[SSA:3..6]3 - org.apache.zookeeper.server.DataNode.getClientEphemeralOwner(Lorg/apache/zookeeper/data/StatPersisted;)J, BB[SSA:-1..-2]7 - org.apache.zookeeper.server.DataNode.getClientEphemeralOwner(Lorg/apache/zookeeper/data/StatPersisted;)J], numberOfBasicBlocks=4, firstLineNumber=167, lastLineNumber=168, firstMethodNumber=166, lastMethodNumber=171, isFirstLineValid=true, methodSrcCode=
+    private static long getClientEphemeralOwner(StatPersisted stat) {
+        EphemeralType ephemeralType = EphemeralType.get(stat.getEphemeralOwner());
+        if (ephemeralType != EphemeralType.NORMAL) {
+            return 0;
+        }
+        return stat.getEphemeralOwner();
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/DataTree, deleteNode(Ljava/lang/String;J)V > Context: Everywhere, blocks=[BB[SSA:122..124]50 - org.apache.zookeeper.server.DataTree.deleteNode(Ljava/lang/String;J)V, BB[SSA:121..121]49 - org.apache.zookeeper.server.DataTree.deleteNode(Ljava/lang/String;J)V, BB[SSA:125..128]51 - org.apache.zookeeper.server.DataTree.deleteNode(Ljava/lang/String;J)V], numberOfBasicBlocks=3, firstLineNumber=580, lastLineNumber=582, firstMethodNumber=538, lastMethodNumber=630, isFirstLineValid=true, methodSrcCode=
+    public void deleteNode(String path, long zxid) throws NoNodeException {
+        int lastSlash = path.lastIndexOf('/');
+        String parentName = path.substring(0, lastSlash);
+        String childName = path.substring(lastSlash + 1);
+
+        // The child might already be deleted during taking fuzzy snapshot,
+        // but we still need to update the pzxid here before throw exception
+        // for no such child
+        DataNode parent = nodes.get(parentName);
+        if (parent == null) {
+            throw new NoNodeException();
+        }
+        synchronized (parent) {
+            nodes.preChange(parentName, parent);
+            parent.removeChild(childName);
+            // Only update pzxid when the zxid is larger than the current pzxid,
+            // otherwise we might override some higher pzxid set by a CreateTxn,
+            // which could cause the cversion and pzxid inconsistent
+            if (zxid > parent.stat.getPzxid()) {
+                parent.stat.setPzxid(zxid);
+            }
+            nodes.postChange(parentName, parent);
+        }
+
+        DataNode node = nodes.get(path);
+        if (node == null) {
+            throw new NoNodeException();
+        }
+        List<ACL> acl;
+        nodes.remove(path);
+        synchronized (node) {
+            acl = getACL(node);
+            aclCache.removeUsage(node.acl);
+            nodeDataSize.addAndGet(-getNodeSize(path, node.data));
+        }
+
+        // Synchronized to sync the containers and ttls change, probably
+        // only need to sync on containers and ttls, will update it in a
+        // separate patch.
+        List<ACL> parentAcl;
+        synchronized (parent) {
+            parentAcl = getACL(parent);
+            long owner = node.stat.getEphemeralOwner();
+            EphemeralType ephemeralType = EphemeralType.get(owner);
+            if (ephemeralType == EphemeralType.CONTAINER) {
+                containers.remove(path);
+            } else if (ephemeralType == EphemeralType.TTL) {
+                ttls.remove(path);
+            } else if (owner != 0) {
+                Set<String> nodes = ephemerals.get(owner);
+                if (nodes != null) {
+                    synchronized (nodes) {
+                        nodes.remove(path);
+                    }
+                }
+            }
+        }
+
+        if (parentName.startsWith(procZookeeper) && Quotas.limitNode.equals(childName)) {
+            // delete the node in the trie.
+            // we need to update the trie as well
+            pTrie.deletePath(Quotas.trimQuotaPath(parentName));
+        }
+
+        // also check to update the quotas for this node
+        String lastPrefix = getMaxPrefixWithQuota(path);
+        if (lastPrefix != null) {
+            // ok we have some match and need to update
+            long bytes;
+            synchronized (node) {
+                bytes = (node.data == null ? 0 : -(node.data.length));
+            }
+            updateQuotaStat(lastPrefix, bytes, -1);
+        }
+
+        updateWriteStat(path, 0L);
+
+        if (LOG.isTraceEnabled()) {
+            ZooTrace.logTraceMessage(
+                LOG,
+                ZooTrace.EVENT_DELIVERY_TRACE_MASK,
+                "dataWatches.triggerWatch " + path);
+            ZooTrace.logTraceMessage(
+                LOG,
+                ZooTrace.EVENT_DELIVERY_TRACE_MASK,
+                "childWatches.triggerWatch " + parentName);
+        }
+
+        WatcherOrBitSet processed = dataWatches.triggerWatch(path, EventType.NodeDeleted, zxid, acl);
+        childWatches.triggerWatch(path, EventType.NodeDeleted, zxid, acl, processed);
+        childWatches.triggerWatch("".equals(parentName) ? "/" : parentName,
+            EventType.NodeChildrenChanged, zxid, parentAcl);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/DataTree, createNode(Ljava/lang/String;[BLjava/util/List;JIJJLorg/apache/zookeeper/data/Stat;)V > Context: Everywhere, blocks=[BB[SSA:115..117]45 - org.apache.zookeeper.server.DataTree.createNode(Ljava/lang/String;[BLjava/util/List;JIJJLorg/apache/zookeeper/data/Stat;)V, BB[SSA:112..114]44 - org.apache.zookeeper.server.DataTree.createNode(Ljava/lang/String;[BLjava/util/List;JIJJLorg/apache/zookeeper/data/Stat;)V, BB[SSA:118..121]46 - org.apache.zookeeper.server.DataTree.createNode(Ljava/lang/String;[BLjava/util/List;JIJJLorg/apache/zookeeper/data/Stat;)V], numberOfBasicBlocks=3, firstLineNumber=488, lastLineNumber=490, firstMethodNumber=439, lastMethodNumber=527, isFirstLineValid=true, methodSrcCode=
+    public void createNode(final String path, byte[] data, List<ACL> acl, long ephemeralOwner, int parentCVersion, long zxid, long time, Stat outputStat) throws NoNodeException, NodeExistsException {
+        int lastSlash = path.lastIndexOf('/');
+        String parentName = path.substring(0, lastSlash);
+        String childName = path.substring(lastSlash + 1);
+        StatPersisted stat = createStat(zxid, time, ephemeralOwner);
+        DataNode parent = nodes.get(parentName);
+        if (parent == null) {
+            throw new NoNodeException();
+        }
+        List<ACL> parentAcl;
+        synchronized (parent) {
+            parentAcl = getACL(parent);
+
+            // Add the ACL to ACL cache first, to avoid the ACL not being
+            // created race condition during fuzzy snapshot sync.
+            //
+            // This is the simplest fix, which may add ACL reference count
+            // again if it's already counted in the ACL map of fuzzy
+            // snapshot, which might also happen for deleteNode txn, but
+            // at least it won't cause the ACL not exist issue.
+            //
+            // Later we can audit and delete all non-referenced ACLs from
+            // ACL map when loading the snapshot/txns from disk, like what
+            // we did for the global sessions.
+            Long acls = aclCache.convertAcls(acl);
+
+            Set<String> children = parent.getChildren();
+            if (children.contains(childName)) {
+                throw new NodeExistsException();
+            }
+
+            nodes.preChange(parentName, parent);
+            if (parentCVersion == -1) {
+                parentCVersion = parent.stat.getCversion();
+                parentCVersion++;
+            }
+            // There is possibility that we'll replay txns for a node which
+            // was created and then deleted in the fuzzy range, and it's not
+            // exist in the snapshot, so replay the creation might revert the
+            // cversion and pzxid, need to check and only update when it's
+            // larger.
+            if (parentCVersion > parent.stat.getCversion()) {
+                parent.stat.setCversion(parentCVersion);
+                parent.stat.setPzxid(zxid);
+            }
+            DataNode child = new DataNode(data, acls, stat);
+            parent.addChild(childName);
+            nodes.postChange(parentName, parent);
+            nodeDataSize.addAndGet(getNodeSize(path, child.data));
+            nodes.put(path, child);
+            EphemeralType ephemeralType = EphemeralType.get(ephemeralOwner);
+            if (ephemeralType == EphemeralType.CONTAINER) {
+                containers.add(path);
+            } else if (ephemeralType == EphemeralType.TTL) {
+                ttls.add(path);
+            } else if (ephemeralOwner != 0) {
+                HashSet<String> list = ephemerals.computeIfAbsent(ephemeralOwner, k -> new HashSet<>());
+                synchronized (list) {
+                    list.add(path);
+                }
+            }
+            if (outputStat != null) {
+                child.copyStat(outputStat);
+            }
+        }
+        // now check if its one of the zookeeper node child
+        if (parentName.startsWith(quotaZookeeper)) {
+            // now check if it's the limit node
+            if (Quotas.limitNode.equals(childName)) {
+                // this is the limit node
+                // get the parent and add it to the trie
+                pTrie.addPath(Quotas.trimQuotaPath(parentName));
+            }
+            if (Quotas.statNode.equals(childName)) {
+                updateQuotaForPath(Quotas.trimQuotaPath(parentName));
+            }
+        }
+
+        String lastPrefix = getMaxPrefixWithQuota(path);
+        long bytes = data == null ? 0 : data.length;
+        // also check to update the quotas for this node
+        if (lastPrefix != null) {    // ok we have some match and need to update
+            updateQuotaStat(lastPrefix, bytes, 1);
+        }
+        updateWriteStat(path, bytes);
+        dataWatches.triggerWatch(path, Event.EventType.NodeCreated, zxid, acl);
+        childWatches.triggerWatch(parentName.equals("") ? "/" : parentName,
+            Event.EventType.NodeChildrenChanged, zxid, parentAcl);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, pRequest2Txn(IJLorg/apache/zookeeper/server/Request;Lorg/apache/jute/Record;)V > Context: Everywhere, blocks=[BB[SSA:50..50]23 - org.apache.zookeeper.server.PrepRequestProcessor.pRequest2Txn(IJLorg/apache/zookeeper/server/Request;Lorg/apache/jute/Record;)V, BB[SSA:49..49]22 - org.apache.zookeeper.server.PrepRequestProcessor.pRequest2Txn(IJLorg/apache/zookeeper/server/Request;Lorg/apache/jute/Record;)V, BB[SSA:51..52]24 - org.apache.zookeeper.server.PrepRequestProcessor.pRequest2Txn(IJLorg/apache/zookeeper/server/Request;Lorg/apache/jute/Record;)V, BB[SSA:-1..-2]550 - org.apache.zookeeper.server.PrepRequestProcessor.pRequest2Txn(IJLorg/apache/zookeeper/server/Request;Lorg/apache/jute/Record;)V], numberOfBasicBlocks=4, firstLineNumber=337, lastLineNumber=337, firstMethodNumber=315, lastMethodNumber=637, isFirstLineValid=true, methodSrcCode=
+    protected void pRequest2Txn(int type, long zxid, Request request, Record record) throws KeeperException, IOException, RequestProcessorException {
+        if (request.getHdr() == null) {
+            request.setHdr(new TxnHeader(request.sessionId, request.cxid, zxid,
+                    Time.currentWallTime(), type));
+        }
+
+        switch (type) {
+        case OpCode.create:
+        case OpCode.create2:
+        case OpCode.createTTL:
+        case OpCode.createContainer: {
+            pRequest2TxnCreate(type, request, record);
+            break;
+        }
+        case OpCode.deleteContainer: {
+            DeleteContainerRequest txn = (DeleteContainerRequest) record;
+            String path = txn.getPath();
+            String parentPath = getParentPathAndValidate(path);
+            ChangeRecord nodeRecord = getRecordForPath(path);
+            if (nodeRecord.childCount > 0) {
+                throw new KeeperException.NotEmptyException(path);
+            }
+            if (EphemeralType.get(nodeRecord.stat.getEphemeralOwner()) == EphemeralType.NORMAL) {
+                throw new KeeperException.BadVersionException(path);
+            }
+            ChangeRecord parentRecord = getRecordForPath(parentPath);
+            request.setTxn(new DeleteTxn(path));
+            parentRecord = parentRecord.duplicate(request.getHdr().getZxid());
+            parentRecord.childCount--;
+            parentRecord.stat.setPzxid(request.getHdr().getZxid());
+            parentRecord.precalculatedDigest = precalculateDigest(
+                    DigestOpCode.UPDATE, parentPath, parentRecord.data, parentRecord.stat);
+            addChangeRecord(parentRecord);
+
+            nodeRecord = new ChangeRecord(request.getHdr().getZxid(), path, null, -1, null);
+            nodeRecord.precalculatedDigest = precalculateDigest(DigestOpCode.REMOVE, path);
+            setTxnDigest(request, nodeRecord.precalculatedDigest);
+            addChangeRecord(nodeRecord);
+            break;
+        }
+        case OpCode.delete:
+            zks.sessionTracker.checkSession(request.sessionId, request.getOwner());
+            DeleteRequest deleteRequest = (DeleteRequest) record;
+            String path = deleteRequest.getPath();
+            String parentPath = getParentPathAndValidate(path);
+            ChangeRecord parentRecord = getRecordForPath(parentPath);
+            zks.checkACL(request.cnxn, parentRecord.acl, ZooDefs.Perms.DELETE, request.authInfo, path, null);
+            ChangeRecord nodeRecord = getRecordForPath(path);
+            checkAndIncVersion(nodeRecord.stat.getVersion(), deleteRequest.getVersion(), path);
+            if (nodeRecord.childCount > 0) {
+                throw new KeeperException.NotEmptyException(path);
+            }
+            request.setTxn(new DeleteTxn(path));
+            parentRecord = parentRecord.duplicate(request.getHdr().getZxid());
+            parentRecord.childCount--;
+            parentRecord.stat.setPzxid(request.getHdr().getZxid());
+            parentRecord.precalculatedDigest = precalculateDigest(
+                    DigestOpCode.UPDATE, parentPath, parentRecord.data, parentRecord.stat);
+            addChangeRecord(parentRecord);
+
+            nodeRecord = new ChangeRecord(request.getHdr().getZxid(), path, null, -1, null);
+            nodeRecord.precalculatedDigest = precalculateDigest(DigestOpCode.REMOVE, path);
+            setTxnDigest(request, nodeRecord.precalculatedDigest);
+            addChangeRecord(nodeRecord);
+            break;
+        case OpCode.setData:
+            zks.sessionTracker.checkSession(request.sessionId, request.getOwner());
+            SetDataRequest setDataRequest = (SetDataRequest) record;
+            path = setDataRequest.getPath();
+            validatePath(path, request.sessionId);
+            nodeRecord = getRecordForPath(path);
+            zks.checkACL(request.cnxn, nodeRecord.acl, ZooDefs.Perms.WRITE, request.authInfo, path, null);
+            zks.checkQuota(path, nodeRecord.data, setDataRequest.getData(), OpCode.setData);
+            int newVersion = checkAndIncVersion(nodeRecord.stat.getVersion(), setDataRequest.getVersion(), path);
+            request.setTxn(new SetDataTxn(path, setDataRequest.getData(), newVersion));
+            nodeRecord = nodeRecord.duplicate(request.getHdr().getZxid());
+            nodeRecord.stat.setVersion(newVersion);
+            nodeRecord.stat.setMtime(request.getHdr().getTime());
+            nodeRecord.stat.setMzxid(zxid);
+            nodeRecord.data = setDataRequest.getData();
+            nodeRecord.precalculatedDigest = precalculateDigest(
+                    DigestOpCode.UPDATE, path, nodeRecord.data, nodeRecord.stat);
+            setTxnDigest(request, nodeRecord.precalculatedDigest);
+            addChangeRecord(nodeRecord);
+            break;
+        case OpCode.reconfig:
+            if (!zks.isReconfigEnabled()) {
+                LOG.error("Reconfig operation requested but reconfig feature is disabled.");
+                throw new KeeperException.ReconfigDisabledException();
+            }
+
+            if (ZooKeeperServer.skipACL) {
+                LOG.warn("skipACL is set, reconfig operation will skip ACL checks!");
+            }
+
+            zks.sessionTracker.checkSession(request.sessionId, request.getOwner());
+            LeaderZooKeeperServer lzks;
+            try {
+                lzks = (LeaderZooKeeperServer) zks;
+            } catch (ClassCastException e) {
+                // standalone mode - reconfiguration currently not supported
+                throw new KeeperException.UnimplementedException();
+            }
+            QuorumVerifier lastSeenQV = lzks.self.getLastSeenQuorumVerifier();
+            // check that there's no reconfig in progress
+            if (lastSeenQV.getVersion() != lzks.self.getQuorumVerifier().getVersion()) {
+                throw new KeeperException.ReconfigInProgress();
+            }
+            ReconfigRequest reconfigRequest = (ReconfigRequest) record;
+            long configId = reconfigRequest.getCurConfigId();
+
+            if (configId != -1 && configId != lzks.self.getLastSeenQuorumVerifier().getVersion()) {
+                String msg = "Reconfiguration from version "
+                             + configId
+                             + " failed -- last seen version is "
+                             + lzks.self.getLastSeenQuorumVerifier().getVersion();
+                throw new KeeperException.BadVersionException(msg);
+            }
+
+            String newMembers = reconfigRequest.getNewMembers();
+
+            if (newMembers != null) { //non-incremental membership change
+                LOG.info("Non-incremental reconfig");
+
+                // Input may be delimited by either commas or newlines so convert to common newline separated format
+                newMembers = newMembers.replaceAll(",", "\n");
+
+                try {
+                    Properties props = new Properties();
+                    props.load(new StringReader(newMembers));
+                    request.qv = QuorumPeerConfig.parseDynamicConfig(props, lzks.self.getElectionType(), true, false, lastSeenQV.getOraclePath());
+                    request.qv.setVersion(request.getHdr().getZxid());
+                } catch (IOException | ConfigException e) {
+                    throw new KeeperException.BadArgumentsException(e.getMessage());
+                }
+            } else { //incremental change - must be a majority quorum system
+                LOG.info("Incremental reconfig");
+
+                List<String> joiningServers = null;
+                String joiningServersString = reconfigRequest.getJoiningServers();
+                if (joiningServersString != null) {
+                    joiningServers = StringUtils.split(joiningServersString, ",");
+                }
+
+                List<String> leavingServers = null;
+                String leavingServersString = reconfigRequest.getLeavingServers();
+                if (leavingServersString != null) {
+                    leavingServers = StringUtils.split(leavingServersString, ",");
+                }
+
+                if (!(lastSeenQV instanceof QuorumMaj) && !(lastSeenQV instanceof QuorumOracleMaj)) {
+                    String msg = "Incremental reconfiguration requested but last configuration seen has a non-majority quorum system";
+                    LOG.warn(msg);
+                    throw new KeeperException.BadArgumentsException(msg);
+                }
+                Map<Long, QuorumServer> nextServers = new HashMap<>(lastSeenQV.getAllMembers());
+                try {
+                    if (leavingServers != null) {
+                        for (String leaving : leavingServers) {
+                            long sid = Long.parseLong(leaving);
+                            nextServers.remove(sid);
+                        }
+                    }
+                    if (joiningServers != null) {
+                        for (String joiner : joiningServers) {
+                            // joiner should have the following format: server.x = server_spec;client_spec
+                            String[] parts = StringUtils.split(joiner, "=").toArray(new String[0]);
+                            if (parts.length != 2) {
+                                throw new KeeperException.BadArgumentsException("Wrong format of server string");
+                            }
+                            // extract server id x from first part of joiner: server.x
+                            Long sid = Long.parseLong(parts[0].substring(parts[0].lastIndexOf('.') + 1));
+                            QuorumServer qs = new QuorumServer(sid, parts[1]);
+                            if (qs.clientAddr == null || qs.electionAddr == null || qs.addr == null) {
+                                throw new KeeperException.BadArgumentsException("Wrong format of server string - each server should have 3 ports specified");
+                            }
+
+                            // check duplication of addresses and ports
+                            for (QuorumServer nqs : nextServers.values()) {
+                                if (qs.id == nqs.id) {
+                                    continue;
+                                }
+                                qs.checkAddressDuplicate(nqs);
+                            }
+
+                            nextServers.remove(qs.id);
+                            nextServers.put(qs.id, qs);
+                        }
+                    }
+                } catch (ConfigException e) {
+                    throw new KeeperException.BadArgumentsException("Reconfiguration failed");
+                }
+
+                if (lastSeenQV instanceof QuorumMaj) {
+                    request.qv = new QuorumMaj(nextServers);
+                } else {
+                    request.qv = new QuorumOracleMaj(nextServers, lastSeenQV.getOraclePath());
+                }
+
+                request.qv.setVersion(request.getHdr().getZxid());
+            }
+            if (QuorumPeerConfig.isStandaloneEnabled() && request.qv.getVotingMembers().size() < 2) {
+                String msg = "Reconfig failed - new configuration must include at least 2 followers";
+                LOG.warn(msg);
+                throw new KeeperException.BadArgumentsException(msg);
+            } else if (request.qv.getVotingMembers().size() < 1) {
+                String msg = "Reconfig failed - new configuration must include at least 1 follower";
+                LOG.warn(msg);
+                throw new KeeperException.BadArgumentsException(msg);
+            }
+
+            if (!lzks.getLeader().isQuorumSynced(request.qv)) {
+                String msg2 = "Reconfig failed - there must be a connected and synced quorum in new configuration";
+                LOG.warn(msg2);
+                throw new KeeperException.NewConfigNoQuorum();
+            }
+
+            nodeRecord = getRecordForPath(ZooDefs.CONFIG_NODE);
+            zks.checkACL(request.cnxn, nodeRecord.acl, ZooDefs.Perms.WRITE, request.authInfo, null, null);
+            SetDataTxn setDataTxn = new SetDataTxn(ZooDefs.CONFIG_NODE, request.qv.toString().getBytes(), -1);
+            request.setTxn(setDataTxn);
+            nodeRecord = nodeRecord.duplicate(request.getHdr().getZxid());
+            nodeRecord.stat.setVersion(-1);
+            nodeRecord.stat.setMtime(request.getHdr().getTime());
+            nodeRecord.stat.setMzxid(zxid);
+            nodeRecord.data = setDataTxn.getData();
+            // Reconfig is currently a noop from digest computation
+            // perspective since config node is not covered by the digests.
+            nodeRecord.precalculatedDigest = precalculateDigest(
+                    DigestOpCode.NOOP, ZooDefs.CONFIG_NODE, nodeRecord.data, nodeRecord.stat);
+            setTxnDigest(request, nodeRecord.precalculatedDigest);
+            addChangeRecord(nodeRecord);
+
+            break;
+        case OpCode.setACL:
+            zks.sessionTracker.checkSession(request.sessionId, request.getOwner());
+            SetACLRequest setAclRequest = (SetACLRequest) record;
+            path = setAclRequest.getPath();
+            validatePath(path, request.sessionId);
+            List<ACL> listACL = fixupACL(path, request.authInfo, setAclRequest.getAcl());
+            nodeRecord = getRecordForPath(path);
+            zks.checkACL(request.cnxn, nodeRecord.acl, ZooDefs.Perms.ADMIN, request.authInfo, path, listACL);
+            newVersion = checkAndIncVersion(nodeRecord.stat.getAversion(), setAclRequest.getVersion(), path);
+            request.setTxn(new SetACLTxn(path, listACL, newVersion));
+            nodeRecord = nodeRecord.duplicate(request.getHdr().getZxid());
+            nodeRecord.stat.setAversion(newVersion);
+            nodeRecord.precalculatedDigest = precalculateDigest(
+                    DigestOpCode.UPDATE, path, nodeRecord.data, nodeRecord.stat);
+            setTxnDigest(request, nodeRecord.precalculatedDigest);
+            addChangeRecord(nodeRecord);
+            break;
+        case OpCode.createSession:
+            CreateSessionTxn createSessionTxn = request.readRequestRecord(CreateSessionTxn::new);
+            request.setTxn(createSessionTxn);
+            // only add the global session tracker but not to ZKDb
+            zks.sessionTracker.trackSession(request.sessionId, createSessionTxn.getTimeOut());
+            zks.setOwner(request.sessionId, request.getOwner());
+            break;
+        case OpCode.closeSession:
+            // We don't want to do this check since the session expiration thread
+            // queues up this operation without being the session owner.
+            // this request is the last of the session so it should be ok
+            //zks.sessionTracker.checkSession(request.sessionId, request.getOwner());
+            long startTime = Time.currentElapsedTime();
+            synchronized (zks.outstandingChanges) {
+                // need to move getEphemerals into zks.outstandingChanges
+                // synchronized block, otherwise there will be a race
+                // condition with the on flying deleteNode txn, and we'll
+                // delete the node again here, which is not correct
+                Set<String> es = zks.getZKDatabase().getEphemerals(request.sessionId);
+                for (ChangeRecord c : zks.outstandingChanges) {
+                    if (c.stat == null) {
+                        // Doing a delete
+                        es.remove(c.path);
+                    } else if (c.stat.getEphemeralOwner() == request.sessionId) {
+                        es.add(c.path);
+                    }
+                }
+                for (String path2Delete : es) {
+                    if (digestEnabled) {
+                        parentPath = getParentPathAndValidate(path2Delete);
+                        parentRecord = getRecordForPath(parentPath);
+                        parentRecord = parentRecord.duplicate(request.getHdr().getZxid());
+                        parentRecord.stat.setPzxid(request.getHdr().getZxid());
+                        parentRecord.precalculatedDigest = precalculateDigest(
+                                DigestOpCode.UPDATE, parentPath, parentRecord.data, parentRecord.stat);
+                        addChangeRecord(parentRecord);
+                    }
+                    nodeRecord = new ChangeRecord(
+                            request.getHdr().getZxid(), path2Delete, null, 0, null);
+                    nodeRecord.precalculatedDigest = precalculateDigest(
+                            DigestOpCode.REMOVE, path2Delete);
+                    addChangeRecord(nodeRecord);
+                }
+                if (ZooKeeperServer.isCloseSessionTxnEnabled()) {
+                    request.setTxn(new CloseSessionTxn(new ArrayList<String>(es)));
+                }
+                zks.sessionTracker.setSessionClosing(request.sessionId);
+            }
+            ServerMetrics.getMetrics().CLOSE_SESSION_PREP_TIME.add(Time.currentElapsedTime() - startTime);
+            break;
+        case OpCode.check:
+            zks.sessionTracker.checkSession(request.sessionId, request.getOwner());
+            CheckVersionRequest checkVersionRequest = (CheckVersionRequest) record;
+            path = checkVersionRequest.getPath();
+            validatePath(path, request.sessionId);
+            nodeRecord = getRecordForPath(path);
+            zks.checkACL(request.cnxn, nodeRecord.acl, ZooDefs.Perms.READ, request.authInfo, path, null);
+            request.setTxn(new CheckVersionTxn(
+                path,
+                checkAndIncVersion(nodeRecord.stat.getVersion(), checkVersionRequest.getVersion(), path)));
+            break;
+        default:
+            LOG.warn("unknown type {}", type);
+            break;
+        }
+
+        // If the txn is not going to mutate anything, like createSession,
+        // we just set the current tree digest in it
+        if (request.getTxnDigest() == null && digestEnabled) {
+            setTxnDigest(request);
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/ContainerManager, getCandidates()Ljava/util/Collection; > Context: Everywhere, blocks=[BB[SSA:94..94]50 - org.apache.zookeeper.server.ContainerManager.getCandidates()Ljava/util/Collection;, BB[SSA:93..93]49 - org.apache.zookeeper.server.ContainerManager.getCandidates()Ljava/util/Collection;, BB[SSA:95..96]51 - org.apache.zookeeper.server.ContainerManager.getCandidates()Ljava/util/Collection;, BB[SSA:-1..-2]62 - org.apache.zookeeper.server.ContainerManager.getCandidates()Ljava/util/Collection;], numberOfBasicBlocks=4, firstLineNumber=189, lastLineNumber=189, firstMethodNumber=159, lastMethodNumber=198, isFirstLineValid=true, methodSrcCode=
+    protected Collection<String> getCandidates() {
+        Set<String> candidates = new HashSet<>();
+        for (String containerPath : zkDb.getDataTree().getContainers()) {
+            DataNode node = zkDb.getDataTree().getNode(containerPath);
+            if ((node != null) && node.getChildren().isEmpty()) {
+                /*
+                    cversion > 0: keep newly created containers from being deleted
+                    before any children have been added. If you were to create the
+                    container just before a container cleaning period the container
+                    would be immediately be deleted.
+                 */
+                if (node.stat.getCversion() > 0) {
+                    candidates.add(containerPath);
+                } else {
+                    /*
+                        Users may not want unused containers to live indefinitely. Allow a system
+                        property to be set that sets the max time for a cversion-0 container
+                        to stay before being deleted
+                     */
+                    if ((maxNeverUsedIntervalMs != 0) && (getElapsed(node) > maxNeverUsedIntervalMs)) {
+                        candidates.add(containerPath);
+                    }
+                }
+            }
+        }
+        for (String ttlPath : zkDb.getDataTree().getTtls()) {
+            DataNode node = zkDb.getDataTree().getNode(ttlPath);
+            if (node != null) {
+                Set<String> children = node.getChildren();
+                if (children.isEmpty()) {
+                    if (EphemeralType.get(node.stat.getEphemeralOwner()) == EphemeralType.TTL) {
+                        long ttl = EphemeralType.TTL.getValue(node.stat.getEphemeralOwner());
+                        if ((ttl != 0) && (getElapsed(node) > ttl)) {
+                            candidates.add(ttlPath);
+                        }
+                    }
+                }
+            }
+        }
+        return candidates;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, pRequest2TxnCreate(ILorg/apache/zookeeper/server/Request;Lorg/apache/jute/Record;)V > Context: Everywhere, blocks=[BB[SSA:122..122]52 - org.apache.zookeeper.server.PrepRequestProcessor.pRequest2TxnCreate(ILorg/apache/zookeeper/server/Request;Lorg/apache/jute/Record;)V, BB[SSA:121..121]51 - org.apache.zookeeper.server.PrepRequestProcessor.pRequest2TxnCreate(ILorg/apache/zookeeper/server/Request;Lorg/apache/jute/Record;)V, BB[SSA:123..124]53 - org.apache.zookeeper.server.PrepRequestProcessor.pRequest2TxnCreate(ILorg/apache/zookeeper/server/Request;Lorg/apache/jute/Record;)V, BB[SSA:-1..-2]121 - org.apache.zookeeper.server.PrepRequestProcessor.pRequest2TxnCreate(ILorg/apache/zookeeper/server/Request;Lorg/apache/jute/Record;)V], numberOfBasicBlocks=4, firstLineNumber=680, lastLineNumber=680, firstMethodNumber=644, lastMethodNumber=718, isFirstLineValid=true, methodSrcCode=
+        long ttl;
+        if (type == OpCode.createTTL) {
+            CreateTTLRequest createTtlRequest = (CreateTTLRequest) record;
+            flags = createTtlRequest.getFlags();
+            path = createTtlRequest.getPath();
+            acl = createTtlRequest.getAcl();
+            data = createTtlRequest.getData();
+            ttl = createTtlRequest.getTtl();
+        } else {
+            CreateRequest createRequest = (CreateRequest) record;
+            flags = createRequest.getFlags();
+            path = createRequest.getPath();
+            acl = createRequest.getAcl();
+            data = createRequest.getData();
+            ttl = -1;
+        }
+        CreateMode createMode = CreateMode.fromFlag(flags);
+        validateCreateRequest(path, createMode, request, ttl);
+        String parentPath = validatePathForCreate(path, request.sessionId);
+
+        List<ACL> listACL = fixupACL(path, request.authInfo, acl);
+        ChangeRecord parentRecord = getRecordForPath(parentPath);
+
+        zks.checkACL(request.cnxn, parentRecord.acl, ZooDefs.Perms.CREATE, request.authInfo, path, listACL);
+        int parentCVersion = parentRecord.stat.getCversion();
+        if (createMode.isSequential()) {
+            path = path + String.format(Locale.ENGLISH, "%010d", parentCVersion);
+        }
+        validatePath(path, request.sessionId);
+        try {
+            if (getRecordForPath(path) != null) {
+                throw new KeeperException.NodeExistsException(path);
+            }
+        } catch (KeeperException.NoNodeException e) {
+            // ignore this one
+        }
+        boolean ephemeralParent = EphemeralType.get(parentRecord.stat.getEphemeralOwner()) == EphemeralType.NORMAL;
+        if (ephemeralParent) {
+            throw new KeeperException.NoChildrenForEphemeralsException(path);
+        }
+        int newCversion = parentRecord.stat.getCversion() + 1;
+        zks.checkQuota(path, null, data, OpCode.create);
+        if (type == OpCode.createContainer) {
+            request.setTxn(new CreateContainerTxn(path, data, listACL, newCversion));
+        } else if (type == OpCode.createTTL) {
+            request.setTxn(new CreateTTLTxn(path, data, listACL, newCversion, ttl));
+        } else {
+            request.setTxn(new CreateTxn(path, data, listACL, createMode.isEphemeral(), newCversion));
+        }
+
+        TxnHeader hdr = request.getHdr();
+        long ephemeralOwner = 0;
+        if (createMode.isContainer()) {
+            ephemeralOwner = EphemeralType.CONTAINER_EPHEMERAL_OWNER;
+        } else if (createMode.isTTL()) {
+            ephemeralOwner = EphemeralType.TTL.toEphemeralOwner(ttl);
+        } else if (createMode.isEphemeral()) {
+            ephemeralOwner = request.sessionId;
+        }
+        StatPersisted s = DataTree.createStat(hdr.getZxid(), hdr.getTime(), ephemeralOwner);
+        parentRecord = parentRecord.duplicate(request.getHdr().getZxid());
+        parentRecord.childCount++;
+        parentRecord.stat.setCversion(newCversion);
+        parentRecord.stat.setPzxid(request.getHdr().getZxid());
+        parentRecord.precalculatedDigest = precalculateDigest(
+                DigestOpCode.UPDATE, parentPath, parentRecord.data, parentRecord.stat);
+        addChangeRecord(parentRecord);
+        ChangeRecord nodeRecord = new ChangeRecord(
+                request.getHdr().getZxid(), path, s, 0, listACL);
+        nodeRecord.data = data;
+        nodeRecord.precalculatedDigest = precalculateDigest(
+                DigestOpCode.ADD, path, nodeRecord.data, s);
+        setTxnDigest(request, nodeRecord.precalculatedDigest);
+        addChangeRecord(nodeRecord);
+    }
+
+}

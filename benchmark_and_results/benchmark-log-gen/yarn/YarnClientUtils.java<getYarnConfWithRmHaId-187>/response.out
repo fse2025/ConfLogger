@@ -1,0 +1,24 @@
+```java
+YarnConfiguration yarnConf = new YarnConfiguration(conf);
+
+if (yarnConf.get(YarnConfiguration.RM_HA_ID) == null) {
+    // If RM_HA_ID is not configured, use the first of RM_HA_IDS.
+    // Any valid RM HA ID should work.
+    String[] rmIds = yarnConf.getStrings(YarnConfiguration.RM_HA_IDS);
+
+    if ((rmIds != null) && (rmIds.length > 0)) {
+        yarnConf.set(YarnConfiguration.RM_HA_ID, rmIds[0]);
+        // ConfLogger Inserted Start
+        logger.info("RM_HA_ID is not configured. Setting RM_HA_ID to the first value from RM_HA_IDS: " + rmIds[0]);
+        // ConfLogger Inserted End
+    } else {
+        // ConfLogger Inserted Start
+        logger.error("RM_HA_IDS property is not set for HA resource manager. Unable to configure RM_HA_ID.");
+        // ConfLogger Inserted End
+        throw new IOException("RM_HA_IDS property is not set for HA resource manager");
+    }
+}
+
+return yarnConf;
+}
+```

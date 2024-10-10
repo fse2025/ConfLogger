@@ -1,0 +1,8 @@
+```java
+if (!expression) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration error: The expression evaluated to false. Please check the configuration parameter and its value.");
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException(String.valueOf(errorMessage));
+}
+```

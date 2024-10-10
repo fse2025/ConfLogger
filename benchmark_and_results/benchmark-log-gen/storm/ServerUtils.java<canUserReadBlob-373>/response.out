@@ -1,0 +1,26 @@
+```java
+if (!ObjectReader.getBoolean(conf.get(Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED), false)) {
+    // ConfLogger Inserted Start
+    logger.info("ACL validation is disabled. Config parameter: " + Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED + " = " + conf.get(Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED));
+    // ConfLogger Inserted End
+    return true;
+}
+
+SettableBlobMeta settable = meta.get_settable();
+for (AccessControl acl : settable.get_acl()) {
+    if (acl.get_type().equals(AccessControlType.OTHER) && (acl.get_access() & BlobStoreAclHandler.READ) > 0) {
+        // ConfLogger Inserted Start
+        logger.info("Access granted to 'OTHER' type with READ permission. Config parameter: " + Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED + " = " + conf.get(Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED));
+        // ConfLogger Inserted End
+        return true;
+    }
+    if (acl.get_name().equals(user) && (acl.get_access() & BlobStoreAclHandler.READ) > 0) {
+        // ConfLogger Inserted Start
+        logger.info("Access granted to user: " + user + " with READ permission. Config parameter: " + Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED + " = " + conf.get(Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED));
+        // ConfLogger Inserted End
+        return true;
+    }
+}
+return false;
+}
+```

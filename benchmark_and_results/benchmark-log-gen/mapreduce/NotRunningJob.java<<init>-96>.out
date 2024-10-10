@@ -1,0 +1,65 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NotRunningJob.java	methodSinagture:	org.apache.hadoop.mapred.NotRunningJob.<init>(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)V	methodLines:	96:102
+blockLines:	98:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=13) 2,6 Node: < Application, Lorg/apache/hadoop/mapred/NotRunningJob, <init>(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere[131]79 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 76,77,27 @276 exception:78
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere[131]79 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 76,77,27 @276 exception:78
+NORMAL getProxy:conditional branch(ne, to iindex=181) 79,27 Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere
+NORMAL getProxy:109 = invokevirtual < Application, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 107 @350 exception:108 Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[10]16 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 14 @23 exception:15
+NORMAL getCodecClasses:19 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 16,17 @31 exception:18 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere[70]26 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 22,24 @134 exception:25
+NORMAL getProxy:conditional branch(eq, to iindex=96) 26,27 Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere:50 = phi  49,156,14
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere[125]75 = invokespecial < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob; > 1,50,73 @265 exception:74 v50
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob; > Context: Everywhere[44]invokespecial < Application, Lorg/apache/hadoop/mapred/NotRunningJob, <init>(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)V > 24,2,3 @84 exception:25 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapred/NotRunningJob, <init>(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)V > Context: Everywhere v2
+NORMAL <init>:conditional branch(ne, to iindex=13) 2,6 Node: < Application, Lorg/apache/hadoop/mapred/NotRunningJob, <init>(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+  NotRunningJob(ApplicationReport applicationReport, JobState jobState) {
+    this.applicationReport =
+        (applicationReport ==  null) ?
+            getUnknownApplicationReport() : applicationReport;
+    this.jobState = jobState;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob; > Context: Everywhere, blocks=[BB[SSA:41..44]19 - org.apache.hadoop.mapred.ClientServiceDelegate.getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob;, BB[SSA:40..40]18 - org.apache.hadoop.mapred.ClientServiceDelegate.getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob;, BB[SSA:45..49]20 - org.apache.hadoop.mapred.ClientServiceDelegate.getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob;], numberOfBasicBlocks=3, firstLineNumber=140, lastLineNumber=141, firstMethodNumber=128, lastMethodNumber=144, isFirstLineValid=true, methodSrcCode=
+      JobState state) {
+    synchronized (notRunningJobs) {
+      HashMap<String, NotRunningJob> map = notRunningJobs.get(state);
+      if (map == null) {
+        map = new HashMap<String, NotRunningJob>();
+        notRunningJobs.put(state, map);
+      }
+      String user =
+          (applicationReport == null) ?
+              UNKNOWN_USER : applicationReport.getUser();
+      NotRunningJob notRunningJob = map.get(user);
+      if (notRunningJob == null) {
+        notRunningJob = new NotRunningJob(applicationReport, state);
+        map.put(user, notRunningJob);
+      }
+      return notRunningJob;
+    }
+  }
+}

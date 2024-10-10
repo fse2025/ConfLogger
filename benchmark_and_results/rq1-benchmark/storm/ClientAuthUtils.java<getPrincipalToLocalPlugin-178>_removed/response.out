@@ -1,0 +1,27 @@
+```java
+public static IPrincipalToLocal getPrincipalToLocalPlugin(Map<String, Object> topoConf) {
+    IPrincipalToLocal ptol = null;
+    try {
+        String ptolClassname = (String) topoConf.get(Config.STORM_PRINCIPAL_TO_LOCAL_PLUGIN);
+        if (ptolClassname == null) {
+            // ConfLogger Inserted Start
+            logger.warn("The configuration parameter 'storm.principal.tolocal' is not set. Please ensure it is properly configured to enable the PrincipalToLocal plugin.");
+            // ConfLogger Inserted End
+        } else {
+            ptol = ReflectionUtils.newInstance(ptolClassname);
+            //TODO this can only ever be null if someone is doing something odd with mocking
+            // We should really fix the mocking and remove this
+            if (ptol != null) {
+                ptol.prepare(topoConf);
+            } else {
+                // ConfLogger Inserted Start
+                logger.error("Failed to instantiate PrincipalToLocal plugin with class name: " + ptolClassname + ". Please check if the class name is correct and the class is accessible.");
+                // ConfLogger Inserted End
+            }
+        }
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+    return ptol;
+}
+```

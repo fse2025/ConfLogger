@@ -1,0 +1,69 @@
+```java
+byte[] header = serializeRecord(h);
+byte[] data = null;
+if (r != null) {
+    ResponseCache cache = null;
+    Counter cacheHit = null, cacheMiss = null;
+    switch (opCode) {
+        case OpCode.getData : {
+            cache = zkServer.getReadResponseCache();
+            cacheHit = ServerMetrics.getMetrics().RESPONSE_PACKET_CACHE_HITS;
+            cacheMiss = ServerMetrics.getMetrics().RESPONSE_PACKET_CACHE_MISSING;
+            break;
+        }
+        case OpCode.getChildren2 : {
+            cache = zkServer.getGetChildrenResponseCache();
+            cacheHit = ServerMetrics.getMetrics().RESPONSE_PACKET_GET_CHILDREN_CACHE_HITS;
+            cacheMiss = ServerMetrics.getMetrics().RESPONSE_PACKET_GET_CHILDREN_CACHE_MISSING;
+            break;
+        }
+        default:
+            // op codes where response cache is not supported.
+    }
+
+    if (cache != null && stat != null && cacheKey != null && !cacheKey.endsWith(Quotas.statNode)) {
+        // Use cache to get serialized data.
+        //
+        // NB: Tag is ignored both during cache lookup and serialization,
+        // since is is not used in read responses, which are being cached.
+        data = cache.get(cacheKey, stat);
+        if (data == null) {
+            // Cache miss, serialize the response and put it in cache.
+            data = serializeRecord(r);
+            cache.put(cacheKey, data, stat);
+            cacheMiss.add(1);
+            // ConfLogger Inserted Start
+            logger.info("Cache miss for key: " + cacheKey + ". Serialized and cached the response. Stat: " + stat);
+            // ConfLogger Inserted End
+        } else {
+            cacheHit.add(1);
+            // ConfLogger Inserted Start
+            logger.info("Cache hit for key: " + cacheKey + ". Retrieved cached response. Stat: " + stat);
+            // ConfLogger Inserted End
+        }
+    } else {
+        data = serializeRecord(r);
+        // ConfLogger Inserted Start
+        logger.info("Cache not used. Serialized the response directly. Cache: " + cache + ", Stat: " + stat + ", CacheKey: " + cacheKey);
+        // ConfLogger Inserted End
+    }
+}
+int dataLength = data == null ? 0 : data.length;
+int packetLength = header.length + dataLength;
+ServerStats serverStats = serverStats();
+if (serverStats != null) {
+    serverStats.updateClientResponseSize(packetLength);
+}
+ByteBuffer lengthBuffer = ByteBuffer.allocate(4).putInt(packetLength);
+lengthBuffer.rewind();
+
+int bufferLen = data != null ? 3 : 2;
+ByteBuffer[] buffers = new ByteBuffer[bufferLen];
+
+buffers[0] = lengthBuffer;
+buffers[1] = ByteBuffer.wrap(header);
+if (data != null) {
+    buffers[2] = ByteBuffer.wrap(data);
+}
+return buffers;
+```

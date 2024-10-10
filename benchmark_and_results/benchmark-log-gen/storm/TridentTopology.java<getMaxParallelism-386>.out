@@ -1,0 +1,91 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TridentTopology.java	methodSinagture:	org.apache.storm.trident.TridentTopology.getMaxParallelism(Ljava/util/Set;)Ljava/lang/Integer;	methodLines:	386:405
+blockLines:	396:-1
+paras:	topology.max.task.parallelism
+TaintedStat:	NORMAL getMaxParallelism:conditional branch(eq, to iindex=57) 29,3 Node: < Application, Lorg/apache/storm/trident/TridentTopology, getMaxParallelism(Ljava/util/Set;)Ljava/lang/Integer; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/trident/TridentTopology, getMaxParallelism(Ljava/util/Set;)Ljava/lang/Integer; > Context: Everywhere[36]28 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 25,26 @83 exception:27
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/trident/TridentTopology, getMaxParallelism(Ljava/util/Set;)Ljava/lang/Integer; > Context: Everywhere[36]28 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 25,26 @83 exception:27
+NORMAL getMaxParallelism:29 = checkcast <Application,Ljava/lang/Number>28 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/trident/TridentTopology, getMaxParallelism(Ljava/util/Set;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getMaxParallelism:conditional branch(eq, to iindex=57) 29,3 Node: < Application, Lorg/apache/storm/trident/TridentTopology, getMaxParallelism(Ljava/util/Set;)Ljava/lang/Integer; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private static Integer getMaxParallelism(Set<Group> groups) {
+        Integer ret = null;
+        for (Group g : groups) {
+            if (isSpoutGroup(g)) {
+                SpoutNode n = (SpoutNode) g.nodes.iterator().next();
+                Map<String, Object> conf = getSpoutComponentConfig(n.spout);
+                if (conf == null) {
+                    conf = new HashMap();
+                }
+                Number maxP = (Number) conf.get(Config.TOPOLOGY_MAX_TASK_PARALLELISM);
+                if (maxP != null) {
+                    if (ret == null) {
+                        ret = maxP.intValue();
+                    } else {
+                        ret = Math.min(ret, maxP.intValue());
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/trident/TridentTopology, getGroupParallelisms(Lorg/apache/storm/shade/org/jgrapht/DirectedGraph;Lorg/apache/storm/trident/graph/GraphGrouper;Ljava/util/Collection;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:95..97]49 - org.apache.storm.trident.TridentTopology.getGroupParallelisms(Lorg/apache/storm/shade/org/jgrapht/DirectedGraph;Lorg/apache/storm/trident/graph/GraphGrouper;Ljava/util/Collection;)Ljava/util/Map;, BB[SSA:92..94]48 - org.apache.storm.trident.TridentTopology.getGroupParallelisms(Lorg/apache/storm/shade/org/jgrapht/DirectedGraph;Lorg/apache/storm/trident/graph/GraphGrouper;Ljava/util/Collection;)Ljava/util/Map;, BB[SSA:98..101]50 - org.apache.storm.trident.TridentTopology.getGroupParallelisms(Lorg/apache/storm/shade/org/jgrapht/DirectedGraph;Lorg/apache/storm/trident/graph/GraphGrouper;Ljava/util/Collection;)Ljava/util/Map;, BB[SSA:-1..-2]101 - org.apache.storm.trident.TridentTopology.getGroupParallelisms(Lorg/apache/storm/shade/org/jgrapht/DirectedGraph;Lorg/apache/storm/trident/graph/GraphGrouper;Ljava/util/Collection;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=356, lastLineNumber=359, firstMethodNumber=337, lastMethodNumber=383, isFirstLineValid=true, methodSrcCode=
+                                                            Collection<Group> groups) {
+        UndirectedGraph<Group, Object> equivs = new Pseudograph<>(Object.class);
+        for (Group g : groups) {
+            equivs.addVertex(g);
+        }
+        for (Group g : groups) {
+            for (PartitionNode n : externalGroupInputs(g)) {
+                if (isIdentityPartition(n)) {
+                    Node parent = TridentUtils.getParent(graph, n);
+                    Group parentGroup = grouper.nodeGroup(parent);
+                    if (parentGroup != null && !parentGroup.equals(g)) {
+                        equivs.addEdge(parentGroup, g);
+                    }
+                }
+            }
+        }
+
+        Map<Group, Integer> ret = new HashMap<>();
+        List<Set<Group>> equivGroups = new ConnectivityInspector<>(equivs).connectedSets();
+        for (Set<Group> equivGroup : equivGroups) {
+            Integer fixedP = getFixedParallelism(equivGroup);
+            Integer maxP = getMaxParallelism(equivGroup);
+            if (fixedP != null && maxP != null && maxP < fixedP) {
+                throw new RuntimeException("Parallelism is fixed to " + fixedP + " but max parallelism is less than that: " + maxP);
+            }
+
+
+            Integer p = 1;
+            for (Group g : equivGroup) {
+                for (Node n : g.nodes) {
+                    if (n.parallelismHint != null) {
+                        p = Math.max(p, n.parallelismHint);
+                    }
+                }
+            }
+            if (maxP != null) {
+                p = Math.min(maxP, p);
+            }
+
+            if (fixedP != null) {
+                p = fixedP;
+            }
+            for (Group g : equivGroup) {
+                ret.put(g, p);
+            }
+        }
+        return ret;
+    }
+}

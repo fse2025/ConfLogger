@@ -1,0 +1,36 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FilePadding.java	methodSinagture:	org.apache.zookeeper.server.persistence.FilePadding.<clinit>()V	methodLines:	29:44
+blockLines:	37:-1
+paras:	zookeeper.preAllocSize
+TaintedStat:	NORMAL <clinit>:conditional branch(eq, to iindex=25) 11,12 Node: < Application, Lorg/apache/zookeeper/server/persistence/FilePadding, <clinit>()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FilePadding, <clinit>()V > Context: Everywhere[9]11 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 9 @23 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FilePadding, <clinit>()V > Context: Everywhere[9]11 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 9 @23 exception:10
+NORMAL <clinit>:conditional branch(eq, to iindex=25) 11,12 Node: < Application, Lorg/apache/zookeeper/server/persistence/FilePadding, <clinit>()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private static final Logger LOG;
+    private static long preAllocSize = 65536 * 1024;
+    private static final ByteBuffer fill = ByteBuffer.allocateDirect(1);
+
+    static {
+        LOG = LoggerFactory.getLogger(FileTxnLog.class);
+
+        String size = System.getProperty("zookeeper.preAllocSize");
+        if (size != null) {
+            try {
+                preAllocSize = Long.parseLong(size) * 1024;
+            } catch (NumberFormatException e) {
+                LOG.warn("{} is not a valid value for preAllocSize", size);
+            }
+        }
+    }
+
+
+
+====================ctx:=======================

@@ -1,0 +1,30 @@
+```java
+throws IOException {
+    if (conf.getBoolean(DFSConfigKeys.DFS_BALANCER_KEYTAB_ENABLED_KEY,
+            DFSConfigKeys.DFS_BALANCER_KEYTAB_ENABLED_DEFAULT)) {
+        UserGroupInformation.setConfiguration(conf);
+        String addr = conf.get(DFSConfigKeys.DFS_BALANCER_ADDRESS_KEY,
+                DFSConfigKeys.DFS_BALANCER_ADDRESS_DEFAULT);
+        InetSocketAddress socAddr = NetUtils.createSocketAddr(addr, 0,
+                DFSConfigKeys.DFS_BALANCER_ADDRESS_KEY);
+        SecurityUtil.login(conf, DFSConfigKeys.DFS_BALANCER_KEYTAB_FILE_KEY,
+                DFSConfigKeys.DFS_BALANCER_KERBEROS_PRINCIPAL_KEY,
+                socAddr.getHostName());
+        // ConfLogger Inserted Start
+        logger.info("Balancer keytab authentication is enabled. Configuration key: " 
+                + DFSConfigKeys.DFS_BALANCER_KEYTAB_ENABLED_KEY 
+                + ", value: " + conf.getBoolean(DFSConfigKeys.DFS_BALANCER_KEYTAB_ENABLED_KEY, 
+                DFSConfigKeys.DFS_BALANCER_KEYTAB_ENABLED_DEFAULT) 
+                + ". Proceeding with Kerberos authentication using keytab file.");
+        // ConfLogger Inserted End
+    } else {
+        // ConfLogger Inserted Start
+        logger.warn("Balancer keytab authentication is disabled. Configuration key: " 
+                + DFSConfigKeys.DFS_BALANCER_KEYTAB_ENABLED_KEY 
+                + ", value: " + conf.getBoolean(DFSConfigKeys.DFS_BALANCER_KEYTAB_ENABLED_KEY, 
+                DFSConfigKeys.DFS_BALANCER_KEYTAB_ENABLED_DEFAULT) 
+                + ". Ensure this is intentional. To enable, set the configuration key to true.");
+        // ConfLogger Inserted End
+    }
+}
+```

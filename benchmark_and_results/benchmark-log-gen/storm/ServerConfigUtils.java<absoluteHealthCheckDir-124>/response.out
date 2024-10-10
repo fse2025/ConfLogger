@@ -1,0 +1,22 @@
+```java
+String stormHome = System.getProperty(ConfigUtils.STORM_HOME);
+String healthCheckDir = (String) conf.get(DaemonConfig.STORM_HEALTH_CHECK_DIR);
+if (healthCheckDir == null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'STORM_HEALTH_CHECK_DIR' is not set. Using default directory: " + stormHome + FILE_SEPARATOR + "healthchecks");
+    // ConfLogger Inserted End
+    return (stormHome + FILE_SEPARATOR + "healthchecks");
+} else {
+    if (new File(healthCheckDir).isAbsolute()) {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter 'STORM_HEALTH_CHECK_DIR' is set to an absolute path: " + healthCheckDir);
+        // ConfLogger Inserted End
+        return healthCheckDir;
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter 'STORM_HEALTH_CHECK_DIR' is set to a relative path. Using combined path: " + stormHome + FILE_SEPARATOR + healthCheckDir);
+        // ConfLogger Inserted End
+        return (stormHome + FILE_SEPARATOR + healthCheckDir);
+    }
+}
+```

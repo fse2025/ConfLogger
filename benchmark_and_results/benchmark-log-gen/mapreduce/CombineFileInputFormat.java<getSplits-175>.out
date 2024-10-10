@@ -1,0 +1,121 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CombineFileInputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;	methodLines:	175:247
+blockLines:	205:-1
+paras:	null
+TaintedStat:	NORMAL getSplits:conditional branch(eq, to iindex=116) 32,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[37]19 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 6,17,4 @65 exception:18
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[37]19 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 6,17,4 @65 exception:18
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere:21 = phi  20,19
+NORMAL getSplits:32 = compare 21,4 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+NORMAL getSplits:conditional branch(eq, to iindex=116) 32,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	CombineFileInputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;	methodLines:	175:247
+blockLines:	200:-1
+paras:	null
+TaintedStat:	NORMAL getSplits:conditional branch(eq, to iindex=85) 29,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[22]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 6,10,4 @38 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[22]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 6,10,4 @38 exception:11
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere:14 = phi  13,12
+NORMAL getSplits:29 = compare 14,4 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+NORMAL getSplits:conditional branch(eq, to iindex=85) 29,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    throws IOException {
+    long minSizeNode = 0;
+    long minSizeRack = 0;
+    long maxSize = 0;
+    Configuration conf = job.getConfiguration();
+
+    // the values specified by setxxxSplitSize() takes precedence over the
+    // values that might have been specified in the config
+    if (minSplitSizeNode != 0) {
+      minSizeNode = minSplitSizeNode;
+    } else {
+      minSizeNode = conf.getLong(SPLIT_MINSIZE_PERNODE, 0);
+    }
+    if (minSplitSizeRack != 0) {
+      minSizeRack = minSplitSizeRack;
+    } else {
+      minSizeRack = conf.getLong(SPLIT_MINSIZE_PERRACK, 0);
+    }
+    if (maxSplitSize != 0) {
+      maxSize = maxSplitSize;
+    } else {
+      maxSize = conf.getLong("mapreduce.input.fileinputformat.split.maxsize", 0);
+      // If maxSize is not configured, a single split will be generated per
+      // node.
+    }
+    if (minSizeNode != 0 && maxSize != 0 && minSizeNode > maxSize) {
+      throw new IOException("Minimum split size pernode " + minSizeNode +
+                            " cannot be larger than maximum split size " +
+                            maxSize);
+    }
+    if (minSizeRack != 0 && maxSize != 0 && minSizeRack > maxSize) {
+      throw new IOException("Minimum split size per rack " + minSizeRack +
+                            " cannot be larger than maximum split size " +
+                            maxSize);
+    }
+    if (minSizeRack != 0 && minSizeNode > minSizeRack) {
+      throw new IOException("Minimum split size per node " + minSizeNode +
+                            " cannot be larger than minimum split " +
+                            "size per rack " + minSizeRack);
+    }
+
+    // all the files in input set
+    List<FileStatus> stats = listStatus(job);
+    List<InputSplit> splits = new ArrayList<InputSplit>();
+    if (stats.size() == 0) {
+      return splits;    
+    }
+
+    // In one single iteration, process all the paths in a single pool.
+    // Processing one pool at a time ensures that a split contains paths
+    // from a single pool only.
+    for (MultiPathFilter onepool : pools) {
+      ArrayList<FileStatus> myPaths = new ArrayList<FileStatus>();
+      
+      // pick one input path. If it matches all the filters in a pool,
+      // add it to the output set
+      for (Iterator<FileStatus> iter = stats.iterator(); iter.hasNext();) {
+        FileStatus p = iter.next();
+        if (onepool.accept(p.getPath())) {
+          myPaths.add(p); // add it to my output set
+          iter.remove();
+        }
+      }
+      // create splits for all files in this pool.
+      getMoreSplits(job, myPaths, maxSize, minSizeNode, minSizeRack, splits);
+    }
+
+    // create splits for all files that are not in any pool.
+    getMoreSplits(job, stats, maxSize, minSizeNode, minSizeRack, splits);
+
+    // free up rackToNodes map
+    rackToNodes.clear();
+    return splits;    
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/lib/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit; > Context: Everywhere, blocks=[BB[SSA:3..3]2 - org.apache.hadoop.mapred.lib.CombineFileInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;, BB[SSA:0..2]1 - org.apache.hadoop.mapred.lib.CombineFileInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;, BB[SSA:4..6]3 - org.apache.hadoop.mapred.lib.CombineFileInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;, BB[SSA:-1..-2]19 - org.apache.hadoop.mapred.lib.CombineFileInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;], numberOfBasicBlocks=4, firstLineNumber=75, lastLineNumber=77, firstMethodNumber=74, lastMethodNumber=85, isFirstLineValid=true, methodSrcCode=
+    throws IOException {
+    List<org.apache.hadoop.mapreduce.InputSplit> newStyleSplits =
+      super.getSplits(Job.getInstance(job));
+    InputSplit[] ret = new InputSplit[newStyleSplits.size()];
+    for(int pos = 0; pos < newStyleSplits.size(); ++pos) {
+      org.apache.hadoop.mapreduce.lib.input.CombineFileSplit newStyleSplit = 
+        (org.apache.hadoop.mapreduce.lib.input.CombineFileSplit) newStyleSplits.get(pos);
+      ret[pos] = new CombineFileSplit(job, newStyleSplit.getPaths(),
+        newStyleSplit.getStartOffsets(), newStyleSplit.getLengths(),
+        newStyleSplit.getLocations());
+    }
+    return ret;
+  }
+}

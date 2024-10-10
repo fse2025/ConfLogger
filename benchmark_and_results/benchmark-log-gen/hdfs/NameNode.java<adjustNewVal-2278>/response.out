@@ -1,0 +1,13 @@
+```java
+if (newVal == null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'newVal' is null. Returning default value: {}", defaultVal);
+    // ConfLogger Inserted End
+    return defaultVal;
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'newVal' is set. Parsing value: {}", newVal);
+    // ConfLogger Inserted End
+    return Integer.parseInt(newVal);
+}
+```

@@ -1,0 +1,157 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileStatus.java	methodSinagture:	org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V	methodLines:	162:190
+blockLines:	172:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=36) 3,20 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/sftp/SFTPFileSystem, getFileStatus(Lcom/jcraft/jsch/ChannelSftp;Lcom/jcraft/jsch/ChannelSftp$LsEntry;Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[75]61 = invokespecial < Application, Lorg/apache/hadoop/fs/sftp/SFTPFileSystem, getPermissions(Lcom/jcraft/jsch/ChannelSftp$LsEntry;)Lorg/apache/hadoop/fs/permission/FsPermission; > 1,3 @159 exception:60
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/sftp/SFTPFileSystem, getFileStatus(Lcom/jcraft/jsch/ChannelSftp;Lcom/jcraft/jsch/ChannelSftp$LsEntry;Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[75]61 = invokespecial < Application, Lorg/apache/hadoop/fs/sftp/SFTPFileSystem, getPermissions(Lcom/jcraft/jsch/ChannelSftp$LsEntry;)Lorg/apache/hadoop/fs/permission/FsPermission; > 1,3 @159 exception:60
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/sftp/SFTPFileSystem, getFileStatus(Lcom/jcraft/jsch/ChannelSftp;Lcom/jcraft/jsch/ChannelSftp$LsEntry;Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[110]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;)V > 74,47,48,49,50,55,59,61,65,69,80 @234 exception:81 v61
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere v8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[12]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > 1,2,3,4,5,6,7,8,9,10,13,11 @20 exception:14 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere v8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[15]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > 1,2,3,4,5,6,7,8,9,10,11,12,14,14,14 @24 exception:15 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > Context: Everywhere v8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > Context: Everywhere[17]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > 1,2,3,4,5,6,7,8,9,10,11,12,19 @31 exception:20 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere v8
+NORMAL <init>:conditional branch(eq, to iindex=29) 8,19 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere
+NORMAL <init>:conditional branch(eq, to iindex=36) 3,20 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	FileStatus.java	methodSinagture:	org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V	methodLines:	162:190
+blockLines:	174:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=43) 11,19 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, getFileStatus(Lorg/apache/commons/net/ftp/FTPFile;Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[18]17 = invokespecial < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, getPermissions(Lorg/apache/commons/net/ftp/FTPFile;)Lorg/apache/hadoop/fs/permission/FsPermission; > 1,2 @33 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, getFileStatus(Lorg/apache/commons/net/ftp/FTPFile;Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[18]17 = invokespecial < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, getPermissions(Lorg/apache/commons/net/ftp/FTPFile;)Lorg/apache/hadoop/fs/permission/FsPermission; > 1,2 @33 exception:16
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, getFileStatus(Lorg/apache/commons/net/ftp/FTPFile;Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[47]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;)V > 26,6,8,9,10,14,15,17,19,21,28 @91 exception:29 v17
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere v8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[12]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > 1,2,3,4,5,6,7,8,9,10,13,11 @20 exception:14 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere v8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[15]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > 1,2,3,4,5,6,7,8,9,10,11,12,14,14,14 @24 exception:15 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > Context: Everywhere v8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > Context: Everywhere[17]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > 1,2,3,4,5,6,7,8,9,10,11,12,19 @31 exception:20 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere v8
+NORMAL <init>:conditional branch(eq, to iindex=29) 8,19 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere
+NORMAL <init>:conditional branch(eq, to iindex=36) 3,20 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere
+NORMAL <init>:conditional branch(eq, to iindex=43) 11,19 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	FileStatus.java	methodSinagture:	org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V	methodLines:	162:190
+blockLines:	170:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=29) 8,19 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/RawLocalFileSystem, deprecatedGetFileLinkStatusInternal(Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[56]41 = invokestatic < Application, Lorg/apache/hadoop/fs/permission/FsPermission, getDefault()Lorg/apache/hadoop/fs/permission/FsPermission; > @98 exception:40
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/RawLocalFileSystem, deprecatedGetFileLinkStatusInternal(Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[56]41 = invokestatic < Application, Lorg/apache/hadoop/fs/permission/FsPermission, getDefault()Lorg/apache/hadoop/fs/permission/FsPermission; > @98 exception:40
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/RawLocalFileSystem, deprecatedGetFileLinkStatusInternal(Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[64]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > 38,39,14,14,39,39,39,41,42,42,43,2 @114 exception:45 v41
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere v8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[15]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > 1,2,3,4,5,6,7,8,9,10,11,12,14,14,14 @24 exception:15 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > Context: Everywhere v8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > Context: Everywhere[17]invokespecial < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > 1,2,3,4,5,6,7,8,9,10,11,12,19 @31 exception:20 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere v8
+NORMAL <init>:conditional branch(eq, to iindex=29) 8,19 Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      FsPermission permission, String owner, String group, Path symlink,
+      Path path, Set<AttrFlags> attr) {
+    this.length = length;
+    this.isdir = isdir;
+    this.block_replication = (short)block_replication;
+    this.blocksize = blocksize;
+    this.modification_time = modification_time;
+    this.access_time = access_time;
+    if (permission != null) {
+      this.permission = permission;
+    } else if (isdir) {
+      this.permission = FsPermission.getDirDefault();
+    } else if (symlink != null) {
+      this.permission = FsPermission.getDefault();
+    } else {
+      this.permission = FsPermission.getFileDefault();
+    }
+    this.owner = (owner == null) ? "" : owner;
+    this.group = (group == null) ? "" : group;
+    this.symlink = symlink;
+    this.path = path;
+    this.attr = attr;
+
+    // The variables isdir and symlink indicate the type:
+    // 1. isdir implies directory, in which case symlink must be null.
+    // 2. !isdir implies a file or symlink, symlink != null implies a
+    //    symlink, otherwise it's a file.
+    assert (isdir && symlink == null) || !isdir;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/FileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V > Context: Everywhere, blocks=[BB[SSA:17..17]2 - org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V, BB[SSA:0..16]1 - org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V, BB[SSA:18..18]3 - org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V, BB[SSA:-1..-2]4 - org.apache.hadoop.fs.FileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;ZZZ)V], numberOfBasicBlocks=4, firstLineNumber=155, lastLineNumber=158, firstMethodNumber=154, lastMethodNumber=158, isFirstLineValid=true, methodSrcCode=
+      Path path, boolean hasAcl, boolean isEncrypted, boolean isErasureCoded) {
+    this(length, isdir, block_replication, blocksize, modification_time,
+        access_time, permission, owner, group, symlink, path,
+        attributes(hasAcl, isEncrypted, isErasureCoded, false));
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/protocolPB/PBHelper, convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere, blocks=[BB[SSA:153..153]57 - org.apache.hadoop.fs.protocolPB.PBHelper.convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus;, BB[SSA:152..152]56 - org.apache.hadoop.fs.protocolPB.PBHelper.convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus;, BB[SSA:154..156]58 - org.apache.hadoop.fs.protocolPB.PBHelper.convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus;, BB[SSA:-1..-2]59 - org.apache.hadoop.fs.protocolPB.PBHelper.convert(Lorg/apache/hadoop/fs/FSProtos$FileStatusProto;)Lorg/apache/hadoop/fs/FileStatus;], numberOfBasicBlocks=4, firstLineNumber=100, lastLineNumber=105, firstMethodNumber=60, lastMethodNumber=105, isFirstLineValid=true, methodSrcCode=
+    final Path symlink;
+    switch (proto.getFileType()) {
+    case FT_DIR:
+      isdir = true;
+      symlink = null;
+      blocksize = 0;
+      length = 0;
+      blockReplication = 0;
+      break;
+    case FT_SYMLINK:
+      isdir = false;
+      symlink = new Path(proto.getSymlink());
+      blocksize = 0;
+      length = 0;
+      blockReplication = 0;
+      break;
+    case FT_FILE:
+      isdir = false;
+      symlink = null;
+      blocksize = proto.getBlockSize();
+      length = proto.getLength();
+      int brep = proto.getBlockReplication();
+      if ((brep & 0xffff0000) != 0) {
+        throw new IOException(String.format("Block replication 0x%08x " +
+            "doesn't fit in 16 bits.", brep));
+      }
+      blockReplication = (short)brep;
+      break;
+    default:
+      throw new IllegalStateException("Unknown type: " + proto.getFileType());
+    }
+    path = new Path(proto.getPath());
+    mtime = proto.getModificationTime();
+    atime = proto.getAccessTime();
+    permission = convert(proto.getPermission());
+    owner = StringInterner.weakIntern(proto.getOwner());
+    group = StringInterner.weakIntern(proto.getGroup());
+    int flags = proto.getFlags();
+    FileStatus fileStatus = new FileStatus(length, isdir, blockReplication,
+        blocksize, mtime, atime, permission, owner, group, symlink, path,
+        FileStatus.attributes(
+          (flags & FileStatusProto.Flags.HAS_ACL_VALUE) != 0,
+          (flags & FileStatusProto.Flags.HAS_CRYPT_VALUE) != 0,
+          (flags & FileStatusProto.Flags.HAS_EC_VALUE) != 0,
+          (flags & FileStatusProto.Flags.SNAPSHOT_ENABLED_VALUE) != 0));
+    return fileStatus;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/LocatedFileStatus, <init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;[Lorg/apache/hadoop/fs/BlockLocation;)V > Context: Everywhere, blocks=[BB[SSA:0..13]1 - org.apache.hadoop.fs.LocatedFileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;[Lorg/apache/hadoop/fs/BlockLocation;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.fs.LocatedFileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;[Lorg/apache/hadoop/fs/BlockLocation;)V, BB[SSA:14..16]2 - org.apache.hadoop.fs.LocatedFileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;[Lorg/apache/hadoop/fs/BlockLocation;)V, BB[SSA:-1..-2]4 - org.apache.hadoop.fs.LocatedFileStatus.<init>(JZIJJJLorg/apache/hadoop/fs/permission/FsPermission;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;Ljava/util/Set;[Lorg/apache/hadoop/fs/BlockLocation;)V], numberOfBasicBlocks=4, firstLineNumber=145, lastLineNumber=148, firstMethodNumber=145, lastMethodNumber=149, isFirstLineValid=false, methodSrcCode=
+      Path path, Set<AttrFlags> attr, BlockLocation[] locations) {
+    super(length, isdir, block_replication, blocksize, modification_time,
+        access_time, permission, owner, group, symlink, path, attr);
+    this.locations = locations;
+  }
+
+}

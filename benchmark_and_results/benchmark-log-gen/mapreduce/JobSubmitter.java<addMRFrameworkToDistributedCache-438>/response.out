@@ -1,0 +1,50 @@
+```java
+String framework =
+conf.get(MRJobConfig.MAPREDUCE_APPLICATION_FRAMEWORK_PATH, "");
+if (!framework.isEmpty()) {
+    URI uri;
+    try {
+        uri = new URI(framework);
+    } catch (URISyntaxException e) {
+        // ConfLogger Skipped
+        throw new IllegalArgumentException("Unable to parse '" + framework
+                + "' as a URI, check the setting for "
+                + MRJobConfig.MAPREDUCE_APPLICATION_FRAMEWORK_PATH, e);
+    }
+
+    String linkedName = uri.getFragment();
+
+    // resolve any symlinks in the URI path so using a "current" symlink
+    // to point to a specific version shows the specific version
+    // in the distributed cache configuration
+    FileSystem fs = FileSystem.get(uri, conf);
+    Path frameworkPath = fs.makeQualified(
+            new Path(uri.getScheme(), uri.getAuthority(), uri.getPath()));
+    FileContext fc = FileContext.getFileContext(frameworkPath.toUri(), conf);
+    frameworkPath = fc.resolvePath(frameworkPath);
+    uri = frameworkPath.toUri();
+    try {
+        uri = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(),
+                null, linkedName);
+    } catch (URISyntaxException e) {
+        // ConfLogger Inserted Start
+        logger.error("Failed to create URI with scheme: {}, authority: {}, path: {}, and linkedName: {}. Check the configuration parameter: {} with value: {}",
+                uri.getScheme(), uri.getAuthority(), uri.getPath(), linkedName, MRJobConfig.MAPREDUCE_APPLICATION_FRAMEWORK_PATH, framework);
+        // ConfLogger Inserted End
+        throw new IllegalArgumentException(e);
+    }
+
+    Job.addCacheArchive(uri, conf);
+    // ConfLogger Inserted Start
+    logger.info("Successfully added cache archive with URI: {}. Configuration parameter: {} with value: {}",
+            uri, MRJobConfig.MAPREDUCE_APPLICATION_FRAMEWORK_PATH, framework);
+    // ConfLogger Inserted End
+}
+}
+```
+
+Explanation:
+1. The code checks if the `framework` parameter is set and processes it if it is not empty.
+2. The first `catch` block already contains a log message with the configuration parameter, so it is skipped.
+3. The second `catch` block does not contain a log message with the configuration parameter, so a new log statement is inserted before throwing the exception.
+4. An additional log statement is inserted at the end of the block to log the successful addition of the cache archive.

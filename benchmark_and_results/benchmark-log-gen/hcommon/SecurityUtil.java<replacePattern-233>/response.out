@@ -1,0 +1,11 @@
+```java
+String fqdn = hostname;
+if (fqdn == null || fqdn.isEmpty() || fqdn.equals("0.0.0.0")) {
+    // ConfLogger Inserted Start
+    logger.warn("FQDN is not properly set. It is either null, empty, or '0.0.0.0'. Attempting to retrieve local host name. Original FQDN: " + fqdn);
+    // ConfLogger Inserted End
+    fqdn = getLocalHostName(null);
+}
+return components[0] + "/" +
+StringUtils.toLowerCase(fqdn) + "@" + components[2];
+```

@@ -1,0 +1,15 @@
+```java
+if (onHeap != null) {
+    onHeap = onHeap.doubleValue();
+    addResource(Config.TOPOLOGY_COMPONENT_RESOURCES_ONHEAP_MEMORY_MB, onHeap);
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'TOPOLOGY_COMPONENT_RESOURCES_ONHEAP_MEMORY_MB' is set with value: " + onHeap);
+    // ConfLogger Inserted End
+    return addConfiguration(Config.TOPOLOGY_COMPONENT_RESOURCES_ONHEAP_MEMORY_MB, onHeap);
+}
+// ConfLogger Inserted Start
+logger.info("Configuration parameter 'TOPOLOGY_COMPONENT_RESOURCES_ONHEAP_MEMORY_MB' is not set as 'onHeap' is null.");
+// ConfLogger Inserted End
+return (T) this;
+}
+```

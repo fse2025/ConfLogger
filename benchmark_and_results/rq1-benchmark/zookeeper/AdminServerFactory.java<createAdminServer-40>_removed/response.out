@@ -1,0 +1,31 @@
+```java
+public static AdminServer createAdminServer() {
+    // ConfLogger Inserted Start
+    if ("false".equals(System.getProperty("zookeeper.admin.enableServer"))) {
+        logger.info("Admin server is disabled. To enable, set 'zookeeper.admin.enableServer' to a value other than 'false'. Current value: {}", System.getProperty("zookeeper.admin.enableServer"));
+    }
+    // ConfLogger Inserted End
+    if (!"false".equals(System.getProperty("zookeeper.admin.enableServer"))) {
+        try {
+            Class<?> jettyAdminServerC = Class.forName("org.apache.zookeeper.server.admin.JettyAdminServer");
+            Object adminServer = jettyAdminServerC.getConstructor().newInstance();
+            return (AdminServer) adminServer;
+        } catch (ClassNotFoundException e) {
+            LOG.warn("Unable to start JettyAdminServer", e);
+        } catch (InstantiationException e) {
+            LOG.warn("Unable to start JettyAdminServer", e);
+        } catch (IllegalAccessException e) {
+            LOG.warn("Unable to start JettyAdminServer", e);
+        } catch (InvocationTargetException e) {
+            LOG.warn("Unable to start JettyAdminServer", e);
+        } catch (NoSuchMethodException e) {
+            LOG.warn("Unable to start JettyAdminServer", e);
+        } catch (NoClassDefFoundError e) {
+            // ConfLogger Inserted Start
+            logger.error("JettyAdminServer class definition not found. Ensure that the necessary libraries are included in the classpath. 'zookeeper.admin.enableServer' is set to: {}", System.getProperty("zookeeper.admin.enableServer"));
+            // ConfLogger Inserted End
+        }
+    }
+    return new DummyAdminServer();
+}
+```

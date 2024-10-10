@@ -1,0 +1,40 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	LocalFileSystemPathHandle.java	methodSinagture:	org.apache.hadoop.fs.LocalFileSystemPathHandle.verify(Lorg/apache/hadoop/fs/FileStatus;)V	methodLines:	54:61
+blockLines:	55:-1
+paras:	null
+TaintedStat:	NORMAL verify:conditional branch(ne, to iindex=8) 4,2 Node: < Application, Lorg/apache/hadoop/fs/LocalFileSystemPathHandle, verify(Lorg/apache/hadoop/fs/FileStatus;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/RawLocalFileSystem, open(Lorg/apache/hadoop/fs/PathHandle;I)Lorg/apache/hadoop/fs/FSDataInputStream; > Context: Everywhere[20]18 = invokevirtual < Application, Lorg/apache/hadoop/fs/RawLocalFileSystem, getFileStatus(Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > 1,13 @39 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/RawLocalFileSystem, open(Lorg/apache/hadoop/fs/PathHandle;I)Lorg/apache/hadoop/fs/FSDataInputStream; > Context: Everywhere[20]18 = invokevirtual < Application, Lorg/apache/hadoop/fs/RawLocalFileSystem, getFileStatus(Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > 1,13 @39 exception:17
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/RawLocalFileSystem, open(Lorg/apache/hadoop/fs/PathHandle;I)Lorg/apache/hadoop/fs/FSDataInputStream; > Context: Everywhere[21]invokevirtual < Application, Lorg/apache/hadoop/fs/LocalFileSystemPathHandle, verify(Lorg/apache/hadoop/fs/FileStatus;)V > 12,18 @42 exception:19 v18
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/LocalFileSystemPathHandle, verify(Lorg/apache/hadoop/fs/FileStatus;)V > Context: Everywhere v2
+NORMAL verify:conditional branch(ne, to iindex=8) 4,2 Node: < Application, Lorg/apache/hadoop/fs/LocalFileSystemPathHandle, verify(Lorg/apache/hadoop/fs/FileStatus;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void verify(FileStatus stat) throws InvalidPathHandleException {
+    if (null == stat) {
+      throw new InvalidPathHandleException("Could not resolve handle");
+    }
+    if (mtime != null && mtime != stat.getModificationTime()) {
+      throw new InvalidPathHandleException("Content changed");
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/RawLocalFileSystem, open(Lorg/apache/hadoop/fs/PathHandle;I)Lorg/apache/hadoop/fs/FSDataInputStream; > Context: Everywhere, blocks=[BB[SSA:21..21]11 - org.apache.hadoop.fs.RawLocalFileSystem.open(Lorg/apache/hadoop/fs/PathHandle;I)Lorg/apache/hadoop/fs/FSDataInputStream;, BB[SSA:20..20]10 - org.apache.hadoop.fs.RawLocalFileSystem.open(Lorg/apache/hadoop/fs/PathHandle;I)Lorg/apache/hadoop/fs/FSDataInputStream;, BB[SSA:22..22]12 - org.apache.hadoop.fs.RawLocalFileSystem.open(Lorg/apache/hadoop/fs/PathHandle;I)Lorg/apache/hadoop/fs/FSDataInputStream;, BB[SSA:-1..-2]22 - org.apache.hadoop.fs.RawLocalFileSystem.open(Lorg/apache/hadoop/fs/PathHandle;I)Lorg/apache/hadoop/fs/FSDataInputStream;], numberOfBasicBlocks=4, firstLineNumber=404, lastLineNumber=405, firstMethodNumber=399, lastMethodNumber=405, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    if (!(fd instanceof LocalFileSystemPathHandle)) {
+      fd = new LocalFileSystemPathHandle(fd.bytes());
+    }
+    LocalFileSystemPathHandle id = (LocalFileSystemPathHandle) fd;
+    id.verify(getFileStatus(new Path(id.getPath())));
+    return new FSDataInputStream(new BufferedFSInputStream(
+        new LocalFSFileInputStream(new Path(id.getPath())), bufferSize));
+}

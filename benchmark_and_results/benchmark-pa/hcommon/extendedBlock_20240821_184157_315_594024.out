@@ -1,0 +1,32 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NetUtils.java	methodSinagture:	org.apache.hadoop.net.NetUtils.getSocketFactory(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Ljavax/net/SocketFactory;	methodLines:	97:108
+blockLines:	102:-1
+paras:	null
+TaintedStat:	NORMAL getSocketFactory:conditional branch(eq, to iindex=25) 17,4 Node: < Application, Lorg/apache/hadoop/net/NetUtils, getSocketFactory(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Ljavax/net/SocketFactory; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/net/NetUtils, getSocketFactory(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Ljavax/net/SocketFactory; > Context: Everywhere[12]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @25 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/net/NetUtils, getSocketFactory(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Ljavax/net/SocketFactory; > Context: Everywhere[12]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @25 exception:16
+NORMAL getSocketFactory:conditional branch(eq, to iindex=25) 17,4 Node: < Application, Lorg/apache/hadoop/net/NetUtils, getSocketFactory(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Ljavax/net/SocketFactory; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    SocketFactory factory = null;
+
+    String propValue =
+        conf.get("hadoop.rpc.socket.factory.class." + clazz.getSimpleName());
+    if ((propValue != null) && (propValue.length() > 0))
+      factory = getSocketFactoryFromProperty(conf, propValue);
+
+    if (factory == null)
+      factory = getDefaultSocketFactory(conf);
+
+    return factory;
+  }
+
+
+====================ctx:=======================

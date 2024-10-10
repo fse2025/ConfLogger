@@ -1,0 +1,226 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Learner.java	methodSinagture:	org.apache.zookeeper.server.quorum.Learner.registerWithLeader(I)J	methodLines:	485:534
+blockLines:	527:-1
+paras:	null
+TaintedStat:	NORMAL registerWithLeader:conditional branch(le, to iindex=148) 50,51 Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere[140]49 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getAcceptedEpoch()J > 47 @304 exception:48
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere[140]49 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getAcceptedEpoch()J > 47 @304 exception:48
+NORMAL registerWithLeader:50 = compare 43,49 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere
+NORMAL registerWithLeader:conditional branch(le, to iindex=148) 50,51 Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	Learner.java	methodSinagture:	org.apache.zookeeper.server.quorum.Learner.registerWithLeader(I)J	methodLines:	485:534
+blockLines:	508:-1
+paras:	null
+TaintedStat:	NORMAL registerWithLeader:conditional branch(le, to iindex=91) 77,51 Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere[75]76 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getAcceptedEpoch()J > 74 @170 exception:75
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere[75]76 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getAcceptedEpoch()J > 74 @170 exception:75
+NORMAL registerWithLeader:77 = compare 43,76 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere
+NORMAL registerWithLeader:conditional branch(le, to iindex=91) 77,51 Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	Learner.java	methodSinagture:	org.apache.zookeeper.server.quorum.Learner.registerWithLeader(I)J	methodLines:	485:534
+blockLines:	511:-1
+paras:	null
+TaintedStat:	NORMAL registerWithLeader:conditional branch(ne, to iindex=103) 81,51 Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere[94]80 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getAcceptedEpoch()J > 78 @209 exception:79
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere[94]80 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getAcceptedEpoch()J > 78 @209 exception:79
+NORMAL registerWithLeader:81 = compare 43,80 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere
+NORMAL registerWithLeader:conditional branch(ne, to iindex=103) 81,51 Node: < Application, Lorg/apache/zookeeper/server/quorum/Learner, registerWithLeader(I)J > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+         */
+        long lastLoggedZxid = self.getLastLoggedZxid();
+        QuorumPacket qp = new QuorumPacket();
+        qp.setType(pktType);
+        qp.setZxid(ZxidUtils.makeZxid(self.getAcceptedEpoch(), 0));
+
+        /*
+         * Add sid to payload
+         */
+        LearnerInfo li = new LearnerInfo(self.getMyId(), 0x10000, self.getQuorumVerifier().getVersion());
+        ByteArrayOutputStream bsid = new ByteArrayOutputStream();
+        BinaryOutputArchive boa = BinaryOutputArchive.getArchive(bsid);
+        boa.writeRecord(li, "LearnerInfo");
+        qp.setData(bsid.toByteArray());
+
+        writePacket(qp, true);
+        readPacket(qp);
+        final long newEpoch = ZxidUtils.getEpochFromZxid(qp.getZxid());
+        if (qp.getType() == Leader.LEADERINFO) {
+            // we are connected to a 1.0 server so accept the new epoch and read the next packet
+            leaderProtocolVersion = ByteBuffer.wrap(qp.getData()).getInt();
+            byte[] epochBytes = new byte[4];
+            final ByteBuffer wrappedEpochBytes = ByteBuffer.wrap(epochBytes);
+            if (newEpoch > self.getAcceptedEpoch()) {
+                wrappedEpochBytes.putInt((int) self.getCurrentEpoch());
+                self.setAcceptedEpoch(newEpoch);
+            } else if (newEpoch == self.getAcceptedEpoch()) {
+                // since we have already acked an epoch equal to the leaders, we cannot ack
+                // again, but we still need to send our lastZxid to the leader so that we can
+                // sync with it if it does assume leadership of the epoch.
+                // the -1 indicates that this reply should not count as an ack for the new epoch
+                wrappedEpochBytes.putInt(-1);
+            } else {
+                throw new IOException("Leaders epoch, "
+                                      + newEpoch
+                                      + " is less than accepted epoch, "
+                                      + self.getAcceptedEpoch());
+            }
+            QuorumPacket ackNewEpoch = new QuorumPacket(Leader.ACKEPOCH, lastLoggedZxid, epochBytes, null);
+            writePacket(ackNewEpoch, true);
+            return ZxidUtils.makeZxid(newEpoch, 0);
+        } else {
+            if (newEpoch > self.getAcceptedEpoch()) {
+                self.setAcceptedEpoch(newEpoch);
+            }
+            if (qp.getType() != Leader.NEWLEADER) {
+                LOG.error("First packet should have been NEWLEADER");
+                throw new IOException("First packet should have been NEWLEADER");
+            }
+            return qp.getZxid();
+        }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/Follower, followLeader()V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=72, lastMethodNumber=150, isFirstLineValid=true, methodSrcCode=
+    void followLeader() throws InterruptedException {
+        self.end_fle = Time.currentElapsedTime();
+        long electionTimeTaken = self.end_fle - self.start_fle;
+        self.setElectionTimeTaken(electionTimeTaken);
+        ServerMetrics.getMetrics().ELECTION_TIME.add(electionTimeTaken);
+        LOG.info("FOLLOWING - LEADER ELECTION TOOK - {} {}", electionTimeTaken, QuorumPeer.FLE_TIME_UNIT);
+        self.start_fle = 0;
+        self.end_fle = 0;
+        fzk.registerJMX(new FollowerBean(this, zk), self.jmxLocalPeerBean);
+
+        long connectionTime = 0;
+        boolean completedSync = false;
+
+        try {
+            self.setZabState(QuorumPeer.ZabState.DISCOVERY);
+            QuorumServer leaderServer = findLeader();
+            try {
+                connectToLeader(leaderServer.addr, leaderServer.hostname);
+                connectionTime = System.currentTimeMillis();
+                long newEpochZxid = registerWithLeader(Leader.FOLLOWERINFO);
+                if (self.isReconfigStateChange()) {
+                    throw new Exception("learned about role change");
+                }
+                //check to see if the leader zxid is lower than ours
+                //this should never happen but is just a safety check
+                long newEpoch = ZxidUtils.getEpochFromZxid(newEpochZxid);
+                if (newEpoch < self.getAcceptedEpoch()) {
+                    LOG.error("Proposed leader epoch "
+                              + ZxidUtils.zxidToString(newEpochZxid)
+                              + " is less than our accepted epoch "
+                              + ZxidUtils.zxidToString(self.getAcceptedEpoch()));
+                    throw new IOException("Error: Epoch of leader is lower");
+                }
+                long startTime = Time.currentElapsedTime();
+                self.setLeaderAddressAndId(leaderServer.addr, leaderServer.getId());
+                self.setZabState(QuorumPeer.ZabState.SYNCHRONIZATION);
+                syncWithLeader(newEpochZxid);
+                self.setZabState(QuorumPeer.ZabState.BROADCAST);
+                completedSync = true;
+                long syncTime = Time.currentElapsedTime() - startTime;
+                ServerMetrics.getMetrics().FOLLOWER_SYNC_TIME.add(syncTime);
+                if (self.getObserverMasterPort() > 0) {
+                    LOG.info("Starting ObserverMaster");
+
+                    om = new ObserverMaster(self, fzk, self.getObserverMasterPort());
+                    om.start();
+                } else {
+                    om = null;
+                }
+                // create a reusable packet to reduce gc impact
+                QuorumPacket qp = new QuorumPacket();
+                while (this.isRunning()) {
+                    readPacket(qp);
+                    processPacket(qp);
+                }
+            } catch (Exception e) {
+                LOG.warn("Exception when following the leader", e);
+                closeSocket();
+
+                // clear pending revalidations
+                pendingRevalidations.clear();
+            }
+        } finally {
+            if (om != null) {
+                om.stop();
+            }
+            zk.unregisterJMX(this);
+
+            if (connectionTime != 0) {
+                long connectionDuration = System.currentTimeMillis() - connectionTime;
+                LOG.info(
+                    "Disconnected from leader (with address: {}). Was connected for {}ms. Sync state: {}",
+                    leaderAddr,
+                    connectionDuration,
+                    completedSync);
+                messageTracker.dumpToLog(leaderAddr.toString());
+            }
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/Observer, observeLeader()V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=103, lastMethodNumber=152, isFirstLineValid=true, methodSrcCode=
+    void observeLeader() throws Exception {
+        zk.registerJMX(new ObserverBean(this, zk), self.jmxLocalPeerBean);
+        long connectTime = 0;
+        boolean completedSync = false;
+        try {
+            self.setZabState(QuorumPeer.ZabState.DISCOVERY);
+            QuorumServer master = findLearnerMaster();
+            try {
+                connectToLeader(master.addr, master.hostname);
+                connectTime = System.currentTimeMillis();
+                long newLeaderZxid = registerWithLeader(Leader.OBSERVERINFO);
+                if (self.isReconfigStateChange()) {
+                    throw new Exception("learned about role change");
+                }
+
+                final long startTime = Time.currentElapsedTime();
+                self.setLeaderAddressAndId(master.addr, master.getId());
+                self.setZabState(QuorumPeer.ZabState.SYNCHRONIZATION);
+                syncWithLeader(newLeaderZxid);
+                self.setZabState(QuorumPeer.ZabState.BROADCAST);
+                completedSync = true;
+                final long syncTime = Time.currentElapsedTime() - startTime;
+                ServerMetrics.getMetrics().OBSERVER_SYNC_TIME.add(syncTime);
+                QuorumPacket qp = new QuorumPacket();
+                while (this.isRunning() && nextLearnerMaster.get() == null) {
+                    readPacket(qp);
+                    processPacket(qp);
+                }
+            } catch (Exception e) {
+                LOG.warn("Exception when observing the leader", e);
+                closeSocket();
+
+                // clear pending revalidations
+                pendingRevalidations.clear();
+            }
+        } finally {
+            currentLearnerMaster = null;
+            zk.unregisterJMX(this);
+            if (connectTime != 0) {
+                long connectionDuration = System.currentTimeMillis() - connectTime;
+
+                LOG.info(
+                    "Disconnected from leader (with address: {}). Was connected for {}ms. Sync state: {}",
+                    leaderAddr,
+                    connectionDuration,
+                    completedSync);
+                messageTracker.dumpToLog(leaderAddr.toString());
+            }
+        }
+    }
+
+}

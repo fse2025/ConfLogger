@@ -1,0 +1,91 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ZooKeeper.java	methodSinagture:	org.apache.zookeeper.ZooKeeper.getClientCnxnSocket()Lorg/apache/zookeeper/ClientCnxnSocket;	methodLines:	3029:3043
+blockLines:	3031:-1
+paras:	null
+TaintedStat:	NORMAL getClientCnxnSocket:conditional branch(eq, to iindex=14) 7,8 Node: < Application, Lorg/apache/zookeeper/ZooKeeper, getClientCnxnSocket()Lorg/apache/zookeeper/ClientCnxnSocket; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/ZooKeeper, getClientCnxnSocket()Lorg/apache/zookeeper/ClientCnxnSocket; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/zookeeper/client/ZKClientConfig, getProperty(Ljava/lang/String;)Ljava/lang/String; > 4,5 @7 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/ZooKeeper, getClientCnxnSocket()Lorg/apache/zookeeper/ClientCnxnSocket; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/zookeeper/client/ZKClientConfig, getProperty(Ljava/lang/String;)Ljava/lang/String; > 4,5 @7 exception:6
+NORMAL getClientCnxnSocket:conditional branch(eq, to iindex=14) 7,8 Node: < Application, Lorg/apache/zookeeper/ZooKeeper, getClientCnxnSocket()Lorg/apache/zookeeper/ClientCnxnSocket; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private ClientCnxnSocket getClientCnxnSocket() throws IOException {
+        String clientCnxnSocketName = getClientConfig().getProperty(ZKClientConfig.ZOOKEEPER_CLIENT_CNXN_SOCKET);
+        if (clientCnxnSocketName == null || clientCnxnSocketName.equals(ClientCnxnSocketNIO.class.getSimpleName())) {
+            clientCnxnSocketName = ClientCnxnSocketNIO.class.getName();
+        } else if (clientCnxnSocketName.equals(ClientCnxnSocketNetty.class.getSimpleName())) {
+            clientCnxnSocketName = ClientCnxnSocketNetty.class.getName();
+        }
+
+        try {
+            Constructor<?> clientCxnConstructor = Class.forName(clientCnxnSocketName)
+                                                       .getDeclaredConstructor(ZKClientConfig.class);
+            ClientCnxnSocket clientCxnSocket = (ClientCnxnSocket) clientCxnConstructor.newInstance(getClientConfig());
+            return clientCxnSocket;
+        } catch (Exception e) {
+            throw new IOException("Couldn't instantiate " + clientCnxnSocketName, e);
+        }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/ZooKeeper, <init>(Ljava/lang/String;ILorg/apache/zookeeper/Watcher;ZLorg/apache/zookeeper/client/HostProvider;Lorg/apache/zookeeper/client/ZKClientConfig;)V > Context: Everywhere, blocks=[BB[SSA:46..48]18 - org.apache.zookeeper.ZooKeeper.<init>(Ljava/lang/String;ILorg/apache/zookeeper/Watcher;ZLorg/apache/zookeeper/client/HostProvider;Lorg/apache/zookeeper/client/ZKClientConfig;)V, BB[SSA:42..45]17 - org.apache.zookeeper.ZooKeeper.<init>(Ljava/lang/String;ILorg/apache/zookeeper/Watcher;ZLorg/apache/zookeeper/client/HostProvider;Lorg/apache/zookeeper/client/ZKClientConfig;)V, BB[SSA:49..50]19 - org.apache.zookeeper.ZooKeeper.<init>(Ljava/lang/String;ILorg/apache/zookeeper/Watcher;ZLorg/apache/zookeeper/client/HostProvider;Lorg/apache/zookeeper/client/ZKClientConfig;)V, BB[SSA:-1..-2]24 - org.apache.zookeeper.ZooKeeper.<init>(Ljava/lang/String;ILorg/apache/zookeeper/Watcher;ZLorg/apache/zookeeper/client/HostProvider;Lorg/apache/zookeeper/client/ZKClientConfig;)V], numberOfBasicBlocks=4, firstLineNumber=648, lastLineNumber=647, firstMethodNumber=635, lastMethodNumber=656, isFirstLineValid=true, methodSrcCode=
+        ZKClientConfig clientConfig
+    ) throws IOException {
+        LOG.info(
+            "Initiating client connection, connectString={} sessionTimeout={} watcher={}",
+            connectString,
+            sessionTimeout,
+            watcher);
+
+        this.clientConfig = clientConfig != null ? clientConfig : new ZKClientConfig();
+        this.hostProvider = hostProvider;
+        ConnectStringParser connectStringParser = new ConnectStringParser(connectString);
+
+        cnxn = createConnection(
+            connectStringParser.getChrootPath(),
+            hostProvider,
+            sessionTimeout,
+            this.clientConfig,
+            watcher,
+            getClientCnxnSocket(),
+            canBeReadOnly);
+        cnxn.start();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/ZooKeeper, <init>(Ljava/lang/String;ILorg/apache/zookeeper/Watcher;J[BZLorg/apache/zookeeper/client/HostProvider;Lorg/apache/zookeeper/client/ZKClientConfig;)V > Context: Everywhere, blocks=[BB[SSA:61..63]25 - org.apache.zookeeper.ZooKeeper.<init>(Ljava/lang/String;ILorg/apache/zookeeper/Watcher;J[BZLorg/apache/zookeeper/client/HostProvider;Lorg/apache/zookeeper/client/ZKClientConfig;)V, BB[SSA:57..60]24 - org.apache.zookeeper.ZooKeeper.<init>(Ljava/lang/String;ILorg/apache/zookeeper/Watcher;J[BZLorg/apache/zookeeper/client/HostProvider;Lorg/apache/zookeeper/client/ZKClientConfig;)V, BB[SSA:64..67]26 - org.apache.zookeeper.ZooKeeper.<init>(Ljava/lang/String;ILorg/apache/zookeeper/Watcher;J[BZLorg/apache/zookeeper/client/HostProvider;Lorg/apache/zookeeper/client/ZKClientConfig;)V, BB[SSA:-1..-2]33 - org.apache.zookeeper.ZooKeeper.<init>(Ljava/lang/String;ILorg/apache/zookeeper/Watcher;J[BZLorg/apache/zookeeper/client/HostProvider;Lorg/apache/zookeeper/client/ZKClientConfig;)V], numberOfBasicBlocks=4, firstLineNumber=1042, lastLineNumber=1047, firstMethodNumber=1026, lastMethodNumber=1053, isFirstLineValid=true, methodSrcCode=
+        HostProvider hostProvider,
+        ZKClientConfig clientConfig) throws IOException {
+        LOG.info(
+            "Initiating client connection, connectString={} "
+                + "sessionTimeout={} watcher={} sessionId=0x{} sessionPasswd={}",
+            connectString,
+            sessionTimeout,
+            watcher,
+            Long.toHexString(sessionId),
+            (sessionPasswd == null ? "<null>" : "<hidden>"));
+
+        this.clientConfig = clientConfig != null ? clientConfig : new ZKClientConfig();
+        ConnectStringParser connectStringParser = new ConnectStringParser(connectString);
+        this.hostProvider = hostProvider;
+
+        cnxn = new ClientCnxn(
+            connectStringParser.getChrootPath(),
+            hostProvider,
+            sessionTimeout,
+            this.clientConfig,
+            watcher,
+            getClientCnxnSocket(),
+            sessionId,
+            sessionPasswd,
+            canBeReadOnly);
+        cnxn.seenRwServerBefore = true; // since user has provided sessionId
+        cnxn.start();
+    }
+
+}

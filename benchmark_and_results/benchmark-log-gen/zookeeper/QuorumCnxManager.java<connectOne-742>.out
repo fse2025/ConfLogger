@@ -1,0 +1,103 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	QuorumCnxManager.java	methodSinagture:	org.apache.zookeeper.server.quorum.QuorumCnxManager.connectOne(J)V	methodLines:	742:783
+blockLines:	768:-1
+paras:	null
+TaintedStat:	NORMAL connectOne:conditional branch(eq, to iindex=136) 20,9 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, connectOne(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, connectOne(J)V > Context: Everywhere[48]20 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getLastSeenQuorumVerifier()Lorg/apache/zookeeper/server/quorum/flexible/QuorumVerifier; > 18 @100 exception:19
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, connectOne(J)V > Context: Everywhere[48]20 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getLastSeenQuorumVerifier()Lorg/apache/zookeeper/server/quorum/flexible/QuorumVerifier; > 18 @100 exception:19
+NORMAL connectOne:conditional branch(eq, to iindex=136) 20,9 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, connectOne(J)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    synchronized void connectOne(long sid) {
+        if (senderWorkerMap.get(sid) != null) {
+            LOG.debug("There is a connection already for server {}", sid);
+            if (self.isMultiAddressEnabled() && self.isMultiAddressReachabilityCheckEnabled()) {
+                // since ZOOKEEPER-3188 we can use multiple election addresses to reach a server. It is possible, that the
+                // one we are using is already dead and we need to clean-up, so when we will create a new connection
+                // then we will choose an other one, which is actually reachable
+                senderWorkerMap.get(sid).asyncValidateIfSocketIsStillReachable();
+            }
+            return;
+        }
+        synchronized (self.QV_LOCK) {
+            boolean knownId = false;
+            // Resolve hostname for the remote server before attempting to
+            // connect in case the underlying ip address has changed.
+            self.recreateSocketAddresses(sid);
+            Map<Long, QuorumPeer.QuorumServer> lastCommittedView = self.getView();
+            QuorumVerifier lastSeenQV = self.getLastSeenQuorumVerifier();
+            Map<Long, QuorumPeer.QuorumServer> lastProposedView = lastSeenQV.getAllMembers();
+            if (lastCommittedView.containsKey(sid)) {
+                knownId = true;
+                LOG.debug("Server {} knows {} already, it is in the lastCommittedView", self.getMyId(), sid);
+                if (connectOne(sid, lastCommittedView.get(sid).electionAddr)) {
+                    return;
+                }
+            }
+            if (lastSeenQV != null
+                && lastProposedView.containsKey(sid)
+                && (!knownId
+                    || !lastProposedView.get(sid).electionAddr.equals(lastCommittedView.get(sid).electionAddr))) {
+                knownId = true;
+                LOG.debug("Server {} knows {} already, it is in the lastProposedView", self.getMyId(), sid);
+
+                if (connectOne(sid, lastProposedView.get(sid).electionAddr)) {
+                    return;
+                }
+            }
+            if (!knownId) {
+                LOG.warn("Invalid server id: {} ", sid);
+            }
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, connectNewPeers(Lorg/apache/zookeeper/server/quorum/QuorumCnxManager;)V > Context: Everywhere, blocks=[BB[SSA:46..46]27 - org.apache.zookeeper.server.quorum.QuorumPeer.connectNewPeers(Lorg/apache/zookeeper/server/quorum/QuorumCnxManager;)V, BB[SSA:45..45]26 - org.apache.zookeeper.server.quorum.QuorumPeer.connectNewPeers(Lorg/apache/zookeeper/server/quorum/QuorumCnxManager;)V, BB[SSA:47..47]28 - org.apache.zookeeper.server.quorum.QuorumPeer.connectNewPeers(Lorg/apache/zookeeper/server/quorum/QuorumCnxManager;)V, BB[SSA:-1..-2]30 - org.apache.zookeeper.server.quorum.QuorumPeer.connectNewPeers(Lorg/apache/zookeeper/server/quorum/QuorumCnxManager;)V], numberOfBasicBlocks=4, firstLineNumber=1901, lastLineNumber=1903, firstMethodNumber=1896, lastMethodNumber=1905, isFirstLineValid=true, methodSrcCode=
+    private void connectNewPeers(QuorumCnxManager qcm) {
+        if (quorumVerifier != null && lastSeenQuorumVerifier != null) {
+            Map<Long, QuorumServer> committedView = quorumVerifier.getAllMembers();
+            for (Entry<Long, QuorumServer> e : lastSeenQuorumVerifier.getAllMembers().entrySet()) {
+                if (e.getKey() != getMyId() && !committedView.containsKey(e.getKey())) {
+                    qcm.connectOne(e.getKey());
+                }
+            }
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, toSend(Ljava/lang/Long;Ljava/nio/ByteBuffer;)V > Context: Everywhere, blocks=[BB[SSA:35..35]17 - org.apache.zookeeper.server.quorum.QuorumCnxManager.toSend(Ljava/lang/Long;Ljava/nio/ByteBuffer;)V, BB[SSA:32..34]16 - org.apache.zookeeper.server.quorum.QuorumCnxManager.toSend(Ljava/lang/Long;Ljava/nio/ByteBuffer;)V, BB[SSA:36..36]18 - org.apache.zookeeper.server.quorum.QuorumCnxManager.toSend(Ljava/lang/Long;Ljava/nio/ByteBuffer;)V, BB[SSA:-1..-2]19 - org.apache.zookeeper.server.quorum.QuorumCnxManager.toSend(Ljava/lang/Long;Ljava/nio/ByteBuffer;)V], numberOfBasicBlocks=4, firstLineNumber=705, lastLineNumber=707, firstMethodNumber=692, lastMethodNumber=707, isFirstLineValid=true, methodSrcCode=
+         */
+        if (this.mySid == sid) {
+            b.position(0);
+            addToRecvQueue(new Message(b.duplicate(), sid));
+            /*
+             * Otherwise send to the corresponding thread to send.
+             */
+        } else {
+            /*
+             * Start a new connection if doesn't have one already.
+             */
+            BlockingQueue<ByteBuffer> bq = queueSendMap.computeIfAbsent(sid, serverId -> new CircularBlockingQueue<>(SEND_CAPACITY));
+            addToSendQueue(bq, b);
+            connectOne(sid);
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, connectAll()V > Context: Everywhere, blocks=[BB[SSA:12..15]9 - org.apache.zookeeper.server.quorum.QuorumCnxManager.connectAll()V, BB[SSA:11..11]8 - org.apache.zookeeper.server.quorum.QuorumCnxManager.connectAll()V, BB[SSA:16..16]10 - org.apache.zookeeper.server.quorum.QuorumCnxManager.connectAll()V, BB[SSA:-1..-2]12 - org.apache.zookeeper.server.quorum.QuorumCnxManager.connectAll()V], numberOfBasicBlocks=4, firstLineNumber=793, lastLineNumber=794, firstMethodNumber=791, lastMethodNumber=796, isFirstLineValid=true, methodSrcCode=
+        long sid;
+        for (Enumeration<Long> en = queueSendMap.keys(); en.hasMoreElements(); ) {
+            sid = en.nextElement();
+            connectOne(sid);
+        }
+    }
+
+}

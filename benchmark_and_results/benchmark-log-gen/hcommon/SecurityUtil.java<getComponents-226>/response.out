@@ -1,0 +1,10 @@
+```java
+if (principalConfig == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'principalConfig' is null. Please ensure 'principalConfig' is properly set.");
+    // ConfLogger Inserted End
+    return null;
+}
+return principalConfig.split("[/@]");
+}
+```

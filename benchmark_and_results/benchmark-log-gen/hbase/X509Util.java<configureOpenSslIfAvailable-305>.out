@@ -1,0 +1,74 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	X509Util.java	methodSinagture:	org.apache.hadoop.hbase.io.crypto.tls.X509Util.configureOpenSslIfAvailable(Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContextBuilder;Lorg/apache/hadoop/conf/Configuration;)Z	methodLines:	305:316
+blockLines:	306:-1
+paras:	null
+TaintedStat:	NORMAL configureOpenSslIfAvailable:conditional branch(eq, to iindex=18) 10,6 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, configureOpenSslIfAvailable(Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContextBuilder;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, configureOpenSslIfAvailable(Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContextBuilder;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[6]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,7,8 @10 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, configureOpenSslIfAvailable(Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContextBuilder;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[6]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,7,8 @10 exception:9
+NORMAL configureOpenSslIfAvailable:conditional branch(eq, to iindex=18) 10,6 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, configureOpenSslIfAvailable(Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContextBuilder;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    Configuration conf) {
+    if (OpenSsl.isAvailable() && conf.getBoolean(TLS_USE_OPENSSL, true)) {
+      LOG.debug("Using netty-tcnative to accelerate SSL handling");
+      sslContextBuilder.sslProvider(SslProvider.OPENSSL);
+      return true;
+    } else {
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("Using default JDK SSL provider because netty-tcnative is not {}",
+          OpenSsl.isAvailable() ? "enabled" : "available");
+      }
+      sslContextBuilder.sslProvider(SslProvider.JDK);
+      return false;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere, blocks=[BB[SSA:1..4]2 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext;, BB[SSA:0..0]1 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext;, BB[SSA:5..9]3 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext;, BB[SSA:-1..-2]35 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext;], numberOfBasicBlocks=4, firstLineNumber=258, lastLineNumber=261, firstMethodNumber=257, lastMethodNumber=295, isFirstLineValid=true, methodSrcCode=
+
+    SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
+
+    boolean useOpenSsl = configureOpenSslIfAvailable(sslContextBuilder, config);
+    String keyStoreLocation = config.get(TLS_CONFIG_KEYSTORE_LOCATION, "");
+    char[] keyStorePassword = config.getPassword(TLS_CONFIG_KEYSTORE_PASSWORD);
+    String keyStoreType = config.get(TLS_CONFIG_KEYSTORE_TYPE, "");
+
+    if (keyStoreLocation.isEmpty()) {
+      LOG.warn(TLS_CONFIG_KEYSTORE_LOCATION + " not specified");
+    } else {
+      sslContextBuilder
+        .keyManager(createKeyManager(keyStoreLocation, keyStorePassword, keyStoreType));
+    }
+
+    String trustStoreLocation = config.get(TLS_CONFIG_TRUSTSTORE_LOCATION, "");
+    char[] trustStorePassword = config.getPassword(TLS_CONFIG_TRUSTSTORE_PASSWORD);
+    String trustStoreType = config.get(TLS_CONFIG_TRUSTSTORE_TYPE, "");
+
+    boolean sslCrlEnabled = config.getBoolean(TLS_CONFIG_CLR, false);
+    boolean sslOcspEnabled = config.getBoolean(TLS_CONFIG_OCSP, false);
+
+    boolean verifyServerHostname =
+      config.getBoolean(HBASE_CLIENT_NETTY_TLS_VERIFY_SERVER_HOSTNAME, true);
+    boolean allowReverseDnsLookup = config.getBoolean(TLS_CONFIG_REVERSE_DNS_LOOKUP_ENABLED, true);
+
+    if (trustStoreLocation.isEmpty()) {
+      LOG.warn(TLS_CONFIG_TRUSTSTORE_LOCATION + " not specified");
+    } else {
+      sslContextBuilder
+        .trustManager(createTrustManager(trustStoreLocation, trustStorePassword, trustStoreType,
+          sslCrlEnabled, sslOcspEnabled, verifyServerHostname, allowReverseDnsLookup));
+    }
+
+    sslContextBuilder.enableOcsp(sslOcspEnabled);
+    sslContextBuilder.protocols(getEnabledProtocols(config));
+    sslContextBuilder.ciphers(Arrays.asList(getCipherSuites(config, useOpenSsl)));
+
+    return sslContextBuilder.build();
+  }
+}

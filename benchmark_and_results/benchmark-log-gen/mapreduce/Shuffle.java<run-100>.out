@@ -1,0 +1,177 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Shuffle.java	methodSinagture:	org.apache.hadoop.mapreduce.task.reduce.Shuffle.run()Lorg/apache/hadoop/mapred/RawKeyValueIterator;	methodLines:	100:173
+blockLines:	122:-1
+paras:	mapreduce.reduce.shuffle.parallelcopies
+TaintedStat:	NORMAL run:conditional branch(ge, to iindex=116) 46,30 Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, run()Lorg/apache/hadoop/mapred/RawKeyValueIterator; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, run()Lorg/apache/hadoop/mapred/RawKeyValueIterator; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere][43]29 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 25,26,27 @80 exception:28
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, run()Lorg/apache/hadoop/mapred/RawKeyValueIterator; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere][43]29 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 25,26,27 @80 exception:28
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, run()Lorg/apache/hadoop/mapred/RawKeyValueIterator; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]:30 = phi  23,29
+NORMAL run:conditional branch(ge, to iindex=116) 46,30 Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, run()Lorg/apache/hadoop/mapred/RawKeyValueIterator; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // TODO: This should not be necessary after HADOOP-8942
+    int eventsPerReducer = Math.max(MIN_EVENTS_TO_FETCH,
+        MAX_RPC_OUTSTANDING_EVENTS / jobConf.getNumReduceTasks());
+    int maxEventsToFetch = Math.min(MAX_EVENTS_TO_FETCH, eventsPerReducer);
+
+    // Start the map-completion events fetcher thread
+    final EventFetcher<K, V> eventFetcher =
+        new EventFetcher<K, V>(reduceId, umbilical, scheduler, this,
+            maxEventsToFetch);
+    eventFetcher.start();
+    
+    // Start the map-output fetcher threads
+    boolean isLocal = localMapFiles != null;
+    final int numFetchers = isLocal ? 1 :
+        jobConf.getInt(MRJobConfig.SHUFFLE_PARALLEL_COPIES, 5);
+    Fetcher<K, V>[] fetchers = new Fetcher[numFetchers];
+    if (isLocal) {
+      fetchers[0] = new LocalFetcher<K, V>(jobConf, reduceId, scheduler,
+          merger, reporter, metrics, this, reduceTask.getShuffleSecret(),
+          localMapFiles);
+      fetchers[0].start();
+    } else {
+      for (int i=0; i < numFetchers; ++i) {
+        fetchers[i] = new Fetcher<K, V>(jobConf, reduceId, scheduler, merger,
+                                       reporter, metrics, this, 
+                                       reduceTask.getShuffleSecret());
+        fetchers[i].start();
+      }
+    }
+    
+    // Wait for shuffle to complete successfully
+    while (!scheduler.waitUntilDone(PROGRESS_FREQUENCY)) {
+      reporter.progress();
+      
+      synchronized (this) {
+        if (throwable != null) {
+          throw new ShuffleError("error in shuffle in " + throwingThreadName,
+                                 throwable);
+        }
+      }
+    }
+
+    // Stop the event-fetcher thread
+    eventFetcher.shutDown();
+    
+    // Stop the map-output fetcher threads
+    for (Fetcher<K, V> fetcher : fetchers) {
+      fetcher.shutDown();
+    }
+    
+    // stop the scheduler
+    scheduler.close();
+
+    copyPhase.complete(); // copy is already complete
+    taskStatus.setPhase(TaskStatus.Phase.SORT);
+    reduceTask.statusUpdate(umbilical);
+
+    // Finish the on-going merges...
+    RawKeyValueIterator kvIter = null;
+    try {
+      kvIter = merger.close();
+    } catch (Throwable e) {
+      throw new ShuffleError("Error while doing final merge ", e);
+    }
+
+    // Sanity check
+    synchronized (this) {
+      if (throwable != null) {
+        throw new ShuffleError("error in shuffle in " + throwingThreadName,
+                               throwable);
+      }
+    }
+    
+    return kvIter;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/ReduceTask, run(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/mapred/TaskUmbilicalProtocol;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=321, lastMethodNumber=399, isFirstLineValid=true, methodSrcCode=
+    throws IOException, InterruptedException, ClassNotFoundException {
+    job.setBoolean(JobContext.SKIP_RECORDS, isSkipping());
+
+    if (isMapOrReduce()) {
+      copyPhase = getProgress().addPhase("copy");
+      sortPhase  = getProgress().addPhase("sort");
+      reducePhase = getProgress().addPhase("reduce");
+    }
+    // start thread that will handle communication with parent
+    TaskReporter reporter = startReporter(umbilical);
+    
+    boolean useNewApi = job.getUseNewReducer();
+    initialize(job, getJobID(), reporter, useNewApi);
+
+    // check if it is a cleanupJobTask
+    if (jobCleanup) {
+      runJobCleanupTask(umbilical, reporter);
+      return;
+    }
+    if (jobSetup) {
+      runJobSetupTask(umbilical, reporter);
+      return;
+    }
+    if (taskCleanup) {
+      runTaskCleanupTask(umbilical, reporter);
+      return;
+    }
+    
+    // Initialize the codec
+    codec = initCodec();
+    RawKeyValueIterator rIter = null;
+    ShuffleConsumerPlugin shuffleConsumerPlugin = null;
+    
+    Class combinerClass = conf.getCombinerClass();
+    CombineOutputCollector combineCollector = 
+      (null != combinerClass) ? 
+     new CombineOutputCollector(reduceCombineOutputCounter, reporter, conf) : null;
+
+    Class<? extends ShuffleConsumerPlugin> clazz =
+          job.getClass(MRConfig.SHUFFLE_CONSUMER_PLUGIN, Shuffle.class, ShuffleConsumerPlugin.class);
+					
+    shuffleConsumerPlugin = ReflectionUtils.newInstance(clazz, job);
+    LOG.info("Using ShuffleConsumerPlugin: " + shuffleConsumerPlugin);
+
+    ShuffleConsumerPlugin.Context shuffleContext = 
+      new ShuffleConsumerPlugin.Context(getTaskID(), job, FileSystem.getLocal(job), umbilical, 
+                  super.lDirAlloc, reporter, codec, 
+                  combinerClass, combineCollector, 
+                  spilledRecordsCounter, reduceCombineInputCounter,
+                  shuffledMapsCounter,
+                  reduceShuffleBytes, failedShuffleCounter,
+                  mergedMapOutputsCounter,
+                  taskStatus, copyPhase, sortPhase, this,
+                  mapOutputFile, localMapFiles);
+    shuffleConsumerPlugin.init(shuffleContext);
+
+    rIter = shuffleConsumerPlugin.run();
+
+    // free up the data structures
+    mapOutputFilesOnDisk.clear();
+    
+    sortPhase.complete();                         // sort is complete
+    setPhase(TaskStatus.Phase.REDUCE); 
+    statusUpdate(umbilical);
+    Class keyClass = job.getMapOutputKeyClass();
+    Class valueClass = job.getMapOutputValueClass();
+    RawComparator comparator = job.getOutputValueGroupingComparator();
+
+    if (useNewApi) {
+      runNewReducer(job, umbilical, reporter, rIter, comparator, 
+                    keyClass, valueClass);
+    } else {
+      runOldReducer(job, umbilical, reporter, rIter, comparator, 
+                    keyClass, valueClass);
+    }
+
+    shuffleConsumerPlugin.close();
+    done(umbilical, reporter);
+  }
+
+}

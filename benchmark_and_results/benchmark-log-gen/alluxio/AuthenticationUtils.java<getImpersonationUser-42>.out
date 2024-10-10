@@ -1,0 +1,80 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AuthenticationUtils.java	methodSinagture:	alluxio.security.authentication.AuthenticationUtils.getImpersonationUser(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String;	methodLines:	42:75
+blockLines:	64:-1
+paras:	null
+TaintedStat:	NORMAL getImpersonationUser:conditional branch(eq, to iindex=62) 27,4 Node: < Application, Lalluxio/security/authentication/AuthenticationUtils, getImpersonationUser(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/security/authentication/AuthenticationUtils, getImpersonationUser(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere[32]27 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 2,25 @69 exception:26
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/security/authentication/AuthenticationUtils, getImpersonationUser(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere[32]27 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 2,25 @69 exception:26
+NORMAL getImpersonationUser:conditional branch(eq, to iindex=62) 27,4 Node: < Application, Lalluxio/security/authentication/AuthenticationUtils, getImpersonationUser(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // The user of the hdfs client
+    String hdfsUser = null;
+
+    if (subject != null) {
+      // The HDFS client uses the subject to pass in the user
+      Set<CurrentUser> user = subject.getPrincipals(CurrentUser.class);
+      LOG.debug("Impersonation: subject: {}", subject);
+      if (!user.isEmpty()) {
+        hdfsUser = user.iterator().next().getName();
+      }
+    }
+
+    // Determine the impersonation user
+    String impersonationUser = null;
+    if (conf.isSet(PropertyKey.SECURITY_LOGIN_IMPERSONATION_USERNAME)) {
+      impersonationUser = conf.getString(PropertyKey.SECURITY_LOGIN_IMPERSONATION_USERNAME);
+      LOG.debug("Impersonation: configured: {}", impersonationUser);
+      if (Constants.IMPERSONATION_HDFS_USER.equals(impersonationUser)) {
+        // Impersonate as the hdfs client user
+        impersonationUser = hdfsUser;
+      } else {
+        // do not use impersonation, for any value that is not _HDFS_USER_
+        if (impersonationUser != null && !impersonationUser.isEmpty()
+            && !Constants.IMPERSONATION_NONE.equals(impersonationUser)) {
+          LOG.warn("Impersonation ignored. Invalid configuration: {}", impersonationUser);
+        }
+        impersonationUser = null;
+      }
+      if (impersonationUser != null && impersonationUser.isEmpty()) {
+        impersonationUser = null;
+      }
+    }
+    LOG.debug("Impersonation: hdfsUser: {} impersonationUser: {}", hdfsUser, impersonationUser);
+    return impersonationUser;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/security/authentication/plain/SaslClientHandlerPlain, <init>(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)V > Context: Everywhere, blocks=[BB[SSA:48..50]25 - alluxio.security.authentication.plain.SaslClientHandlerPlain.<init>(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)V, BB[SSA:35..38]18 - alluxio.security.authentication.plain.SaslClientHandlerPlain.<init>(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)V, BB[SSA:41..42]20 - alluxio.security.authentication.plain.SaslClientHandlerPlain.<init>(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)V, BB[SSA:47..47]24 - alluxio.security.authentication.plain.SaslClientHandlerPlain.<init>(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)V, BB[SSA:51..57]26 - alluxio.security.authentication.plain.SaslClientHandlerPlain.<init>(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)V, BB[SSA:-1..-2]29 - alluxio.security.authentication.plain.SaslClientHandlerPlain.<init>(Ljavax/security/auth/Subject;Lalluxio/conf/AlluxioConfiguration;)V], numberOfBasicBlocks=6, firstLineNumber=59, lastLineNumber=67, firstMethodNumber=46, lastMethodNumber=68, isFirstLineValid=true, methodSrcCode=
+      throws UnauthenticatedException {
+    super(ChannelAuthenticationScheme.SIMPLE);
+    if (subject == null) {
+      throw new UnauthenticatedException("client subject not provided");
+    }
+    String connectionUser = null;
+    String password = "noPassword";
+
+    Set<User> users = subject.getPrincipals(User.class);
+    if (users != null && !users.isEmpty()) {
+      connectionUser = users.iterator().next().getName();
+    }
+
+    Set<String> credentials = subject.getPrivateCredentials(String.class);
+    if (credentials != null && !credentials.isEmpty()) {
+      password = credentials.iterator().next();
+    }
+
+    // Determine the impersonation user
+    String impersonationUser = AuthenticationUtils.getImpersonationUser(subject, conf);
+
+    mSaslClient = createSaslClient(connectionUser, password, impersonationUser);
+  }
+
+}

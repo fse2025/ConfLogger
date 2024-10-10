@@ -1,0 +1,18 @@
+```java
+if (null == o) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'o' is null. Returning default value: {}", defaultValue);
+    // ConfLogger Inserted End
+    return defaultValue;
+}
+if (o instanceof String) {
+    return (String) o;
+} else {
+    // ConfLogger Commented: Not Informative
+    // throw new IllegalArgumentException("Don't know how to convert " + o + " to String");
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter 'o' is of unknown type: {}. Expected type: String", o.getClass().getName());
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException("Invalid configuration parameter type for 'o'");
+}
+```

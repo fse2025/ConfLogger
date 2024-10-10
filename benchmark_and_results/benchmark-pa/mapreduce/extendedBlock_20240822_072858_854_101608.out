@@ -1,0 +1,71 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MRClientService.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.client.MRClientService.serviceStart()V	methodLines:	116:157
+blockLines:	140:-1
+paras:	yarn.app.mapreduce.am.webapp.https.enabled
+TaintedStat:	NORMAL serviceStart:conditional branch(eq, to iindex=72) 54,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/client/MRClientService, serviceStart()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/client/MRClientService, serviceStart()V > Context: Everywhere[67]54 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,52,8 @142 exception:53
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/client/MRClientService, serviceStart()V > Context: Everywhere[67]54 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,52,8 @142 exception:53
+NORMAL serviceStart:conditional branch(eq, to iindex=72) 54,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/client/MRClientService, serviceStart()V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	MRClientService.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.client.MRClientService.serviceStart()V	methodLines:	116:157
+blockLines:	129:-1
+paras:	null
+TaintedStat:	NORMAL serviceStart:conditional branch(eq, to iindex=40) 24,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/client/MRClientService, serviceStart()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/client/MRClientService, serviceStart()V > Context: Everywhere[31]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,22,8 @57 exception:23
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/client/MRClientService, serviceStart()V > Context: Everywhere[31]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,22,8 @57 exception:23
+NORMAL serviceStart:conditional branch(eq, to iindex=40) 24,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/client/MRClientService, serviceStart()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected void serviceStart() throws Exception {
+    Configuration conf = getConfig();
+    YarnRPC rpc = YarnRPC.create(conf);
+    InetSocketAddress address = new InetSocketAddress(0);
+
+    server =
+        rpc.getServer(MRClientProtocol.class, protocolHandler, address,
+            conf, appContext.getClientToAMTokenSecretManager(),
+            conf.getInt(MRJobConfig.MR_AM_JOB_CLIENT_THREAD_COUNT, 
+                MRJobConfig.DEFAULT_MR_AM_JOB_CLIENT_THREAD_COUNT),
+                MRJobConfig.MR_AM_JOB_CLIENT_PORT_RANGE);
+    
+    // Enable service authorization?
+    if (conf.getBoolean(
+        CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHORIZATION, 
+        false)) {
+      refreshServiceAcls(conf, new MRAMPolicyProvider());
+    }
+
+    server.start();
+    this.bindAddress = NetUtils.createSocketAddrForHost(appContext.getNMHostname(),
+        server.getListenerAddress().getPort());
+    LOG.info("Instantiated MRClientService at " + this.bindAddress);
+    try {
+      HttpConfig.Policy httpPolicy = conf.getBoolean(
+          MRJobConfig.MR_AM_WEBAPP_HTTPS_ENABLED,
+          MRJobConfig.DEFAULT_MR_AM_WEBAPP_HTTPS_ENABLED)
+          ? Policy.HTTPS_ONLY : Policy.HTTP_ONLY;
+      boolean needsClientAuth = conf.getBoolean(
+          MRJobConfig.MR_AM_WEBAPP_HTTPS_CLIENT_AUTH,
+          MRJobConfig.DEFAULT_MR_AM_WEBAPP_HTTPS_CLIENT_AUTH);
+      webApp =
+          WebApps.$for("mapreduce", AppContext.class, appContext, "ws")
+            .withHttpPolicy(conf, httpPolicy)
+            .withPortRange(conf, MRJobConfig.MR_AM_WEBAPP_PORT_RANGE)
+            .needsClientAuth(needsClientAuth)
+            .start(new AMWebApp());
+    } catch (Exception e) {
+      LOG.error("Webapps failed to start. Ignoring for now:", e);
+    }
+    super.serviceStart();
+  }
+
+
+
+====================ctx:=======================

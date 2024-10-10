@@ -1,0 +1,80 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DBInputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.db.DBInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;	methodLines:	251:296
+blockLines:	271:-1
+paras:	mapreduce.job.maps
+TaintedStat:	NORMAL getSplits:conditional branch(ge, to iindex=82) 45,21 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[24]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 18,19,14 @50 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[24]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 18,19,14 @50 exception:20
+NORMAL getSplits:conditional branch(ge, to iindex=82) 45,21 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    ResultSet results = null;  
+    Statement statement = null;
+    try {
+      statement = connection.createStatement();
+
+      results = statement.executeQuery(getCountQuery());
+      results.next();
+
+      long count = results.getLong(1);
+      int chunks = job.getConfiguration().getInt(MRJobConfig.NUM_MAPS, 1);
+      long chunkSize = (count / chunks);
+
+      results.close();
+      statement.close();
+
+      List<InputSplit> splits = new ArrayList<InputSplit>();
+
+      // Split the rows into n-number of chunks and adjust the last chunk
+      // accordingly
+      for (int i = 0; i < chunks; i++) {
+        DBInputSplit split;
+
+        if ((i + 1) == chunks)
+          split = new DBInputSplit(i * chunkSize, count);
+        else
+          split = new DBInputSplit(i * chunkSize, (i * chunkSize)
+              + chunkSize);
+
+        splits.add(split);
+      }
+
+      connection.commit();
+      return splits;
+    } catch (SQLException e) {
+      throw new IOException("Got SQLException", e);
+    } finally {
+      try {
+        if (results != null) { results.close(); }
+      } catch (SQLException e1) {}
+      try {
+        if (statement != null) { statement.close(); }
+      } catch (SQLException e1) {}
+
+      closeConnection();
+    }
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/lib/db/DBInputFormat, getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit; > Context: Everywhere, blocks=[BB[SSA:3..3]2 - org.apache.hadoop.mapred.lib.db.DBInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;, BB[SSA:0..2]1 - org.apache.hadoop.mapred.lib.db.DBInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;, BB[SSA:4..6]3 - org.apache.hadoop.mapred.lib.db.DBInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;, BB[SSA:-1..-2]19 - org.apache.hadoop.mapred.lib.db.DBInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;], numberOfBasicBlocks=4, firstLineNumber=179, lastLineNumber=181, firstMethodNumber=178, lastMethodNumber=188, isFirstLineValid=true, methodSrcCode=
+  public InputSplit[] getSplits(JobConf job, int chunks) throws IOException {
+    List<org.apache.hadoop.mapreduce.InputSplit> newSplits = 
+      super.getSplits(Job.getInstance(job));
+    InputSplit[] ret = new InputSplit[newSplits.size()];
+    int i = 0;
+    for (org.apache.hadoop.mapreduce.InputSplit s : newSplits) {
+      org.apache.hadoop.mapreduce.lib.db.DBInputFormat.DBInputSplit split = 
+    	(org.apache.hadoop.mapreduce.lib.db.DBInputFormat.DBInputSplit)s;
+      ret[i++] = new DBInputSplit(split.getStart(), split.getEnd());
+    }
+    return ret;
+  }
+}

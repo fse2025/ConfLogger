@@ -1,0 +1,26 @@
+```java
+Configuration conf) {
+    if (OpenSsl.isAvailable() && conf.getBoolean(TLS_USE_OPENSSL, true)) {
+        // ConfLogger Skipped: The log message provides information about the configuration parameter and its effect.
+        LOG.debug("Using netty-tcnative to accelerate SSL handling");
+        sslContextBuilder.sslProvider(SslProvider.OPENSSL);
+        return true;
+    } else {
+        // ConfLogger Inserted Start
+        if (!OpenSsl.isAvailable()) {
+            logger.warn("OpenSSL is not available. Ensure that OpenSSL is installed and properly configured to use netty-tcnative for SSL handling.");
+        } else if (!conf.getBoolean(TLS_USE_OPENSSL, true)) {
+            logger.warn("TLS_USE_OPENSSL is set to false. Set it to true to use netty-tcnative for SSL handling.");
+        }
+        // ConfLogger Inserted End
+
+        // ConfLogger Skipped: The log message provides information about the configuration parameter and its effect.
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Using default JDK SSL provider because netty-tcnative is not {}",
+            OpenSsl.isAvailable() ? "enabled" : "available");
+        }
+        sslContextBuilder.sslProvider(SslProvider.JDK);
+        return false;
+    }
+}
+```

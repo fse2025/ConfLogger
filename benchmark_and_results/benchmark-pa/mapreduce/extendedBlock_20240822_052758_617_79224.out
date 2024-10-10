@@ -1,0 +1,64 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MRAppMaster.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.MRAppMaster.shutDownJob()V	methodLines:	649:692
+blockLines:	651:-1
+paras:	mapreduce.job.end-notification.url
+TaintedStat:	NORMAL shutDownJob:conditional branch(eq, to iindex=16) 8,3 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shutDownJob()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shutDownJob()V > Context: Everywhere[5]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @8 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shutDownJob()V > Context: Everywhere[5]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @8 exception:7
+NORMAL shutDownJob:conditional branch(eq, to iindex=16) 8,3 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shutDownJob()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    JobEndNotifier notifier = null;
+    if (getConfig().get(MRJobConfig.MR_JOB_END_NOTIFICATION_URL) != null) {
+      notifier = new JobEndNotifier();
+      notifier.setConf(getConfig());
+    }
+
+    try {
+      //if isLastAMRetry comes as true, should never set it to false
+      if ( !isLastAMRetry){
+        if (((JobImpl)job).getInternalState() != JobStateInternal.REBOOT) {
+          LOG.info("Job finished cleanly, recording last MRAppMaster retry");
+          isLastAMRetry = true;
+        }
+      }
+      notifyIsLastAMRetry(isLastAMRetry);
+      // Stop all services
+      // This will also send the final report to the ResourceManager
+      LOG.info("Calling stop for all the services");
+      MRAppMaster.this.stop();
+
+      if (isLastAMRetry && notifier != null) {
+        // Send job-end notification when it is safe to report termination to
+        // users and it is the last AM retry
+        sendJobEndNotify(notifier);
+        notifier = null;
+      }
+
+      try {
+        Thread.sleep(5000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      clientService.stop();
+    } catch (Throwable t) {
+      LOG.warn("Graceful stop failed. Exiting.. ", t);
+      exitMRAppMaster(1, t);
+    } finally {
+      if (isLastAMRetry && notifier != null) {
+        sendJobEndNotify(notifier);
+      }
+    }
+    exitMRAppMaster(0, null);
+  }
+
+
+
+====================ctx:=======================

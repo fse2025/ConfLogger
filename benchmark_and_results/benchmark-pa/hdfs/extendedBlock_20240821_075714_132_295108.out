@@ -1,0 +1,164 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	1260:1282
+blockLines:	1269:-1
+paras:	null
+TaintedStat:	NORMAL getHostName:conditional branch(ne, to iindex=29) 9,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @16 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @16 exception:8
+NORMAL getHostName:conditional branch(ne, to iindex=29) 9,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	1260:1282
+blockLines:	1262:-1
+paras:	dfs.datanode.hostname
+TaintedStat:	NORMAL getHostName:conditional branch(ne, to iindex=36) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @4 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @4 exception:4
+NORMAL getHostName:conditional branch(ne, to iindex=36) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws UnknownHostException {
+    String name = config.get(DFS_DATANODE_HOST_NAME_KEY);
+    if (name == null) {
+      String dnsInterface = config.get(
+          CommonConfigurationKeys.HADOOP_SECURITY_DNS_INTERFACE_KEY);
+      String nameServer = config.get(
+          CommonConfigurationKeys.HADOOP_SECURITY_DNS_NAMESERVER_KEY);
+      boolean fallbackToHosts = false;
+
+      if (dnsInterface == null) {
+        // Try the legacy configuration keys.
+        dnsInterface = config.get(DFS_DATANODE_DNS_INTERFACE_KEY);
+        nameServer = config.get(DFS_DATANODE_DNS_NAMESERVER_KEY);
+      } else {
+        // If HADOOP_SECURITY_DNS_* is set then also attempt hosts file
+        // resolution if DNS fails. We will not use hosts file resolution
+        // by default to avoid breaking existing clusters.
+        fallbackToHosts = true;
+      }
+
+      name = DNS.getDefaultHost(dnsInterface, nameServer, fallbackToHosts);
+    }
+    return name;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, instantiateDataNode([Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)Lorg/apache/hadoop/hdfs/server/datanode/DataNode; > Context: Everywhere, blocks=[BB[SSA:33..37]16 - org.apache.hadoop.hdfs.server.datanode.DataNode.instantiateDataNode([Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)Lorg/apache/hadoop/hdfs/server/datanode/DataNode;, BB[SSA:30..32]15 - org.apache.hadoop.hdfs.server.datanode.DataNode.instantiateDataNode([Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)Lorg/apache/hadoop/hdfs/server/datanode/DataNode;, BB[SSA:38..38]17 - org.apache.hadoop.hdfs.server.datanode.DataNode.instantiateDataNode([Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)Lorg/apache/hadoop/hdfs/server/datanode/DataNode;, BB[SSA:-1..-2]20 - org.apache.hadoop.hdfs.server.datanode.DataNode.instantiateDataNode([Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)Lorg/apache/hadoop/hdfs/server/datanode/DataNode;], numberOfBasicBlocks=4, firstLineNumber=3050, lastLineNumber=3052, firstMethodNumber=3036, lastMethodNumber=3054, isFirstLineValid=true, methodSrcCode=
+      SecureResources resources) throws IOException {
+    if (conf == null)
+      conf = new HdfsConfiguration();
+    
+    if (args != null) {
+      // parse generic hadoop options
+      GenericOptionsParser hParser = new GenericOptionsParser(conf, args);
+      args = hParser.getRemainingArgs();
+    }
+    
+    if (!parseArguments(args, conf)) {
+      printUsage(System.err);
+      return null;
+    }
+    Collection<StorageLocation> dataLocations = getStorageLocations(conf);
+    UserGroupInformation.setConfiguration(conf);
+    SecurityUtil.login(conf, DFS_DATANODE_KEYTAB_FILE_KEY,
+        DFS_DATANODE_KERBEROS_PRINCIPAL_KEY, getHostName(conf));
+    return makeInstance(dataLocations, conf, resources);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/checker/StorageLocationChecker;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V > Context: Everywhere, blocks=[BB[SSA:196..198]81 - org.apache.hadoop.hdfs.server.datanode.DataNode.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/checker/StorageLocationChecker;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:195..195]80 - org.apache.hadoop.hdfs.server.datanode.DataNode.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/checker/StorageLocationChecker;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:199..199]82 - org.apache.hadoop.hdfs.server.datanode.DataNode.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/checker/StorageLocationChecker;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:-1..-2]113 - org.apache.hadoop.hdfs.server.datanode.DataNode.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/checker/StorageLocationChecker;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V], numberOfBasicBlocks=4, firstLineNumber=559, lastLineNumber=562, firstMethodNumber=510, lastMethodNumber=596, isFirstLineValid=true, methodSrcCode=
+           final SecureResources resources) throws IOException {
+    super(conf);
+    this.tracer = createTracer(conf);
+    this.fileIoProvider = new FileIoProvider(conf, this);
+    this.blockScanner = new BlockScanner(this);
+    this.lastDiskErrorCheck = 0;
+    this.maxNumberOfBlocksToLog = conf.getLong(DFS_MAX_NUM_BLOCKS_TO_LOG_KEY,
+        DFS_MAX_NUM_BLOCKS_TO_LOG_DEFAULT);
+
+    this.usersWithLocalPathAccess = Arrays.asList(
+        conf.getTrimmedStrings(DFSConfigKeys.DFS_BLOCK_LOCAL_PATH_ACCESS_USER_KEY));
+    this.connectToDnViaHostname = conf.getBoolean(
+        DFSConfigKeys.DFS_DATANODE_USE_DN_HOSTNAME,
+        DFSConfigKeys.DFS_DATANODE_USE_DN_HOSTNAME_DEFAULT);
+    this.supergroup = conf.get(DFSConfigKeys.DFS_PERMISSIONS_SUPERUSERGROUP_KEY,
+        DFSConfigKeys.DFS_PERMISSIONS_SUPERUSERGROUP_DEFAULT);
+    this.isPermissionEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_PERMISSIONS_ENABLED_KEY,
+        DFSConfigKeys.DFS_PERMISSIONS_ENABLED_DEFAULT);
+    this.pipelineSupportECN = conf.getBoolean(
+        DFSConfigKeys.DFS_PIPELINE_ECN_ENABLED,
+        DFSConfigKeys.DFS_PIPELINE_ECN_ENABLED_DEFAULT);
+
+    confVersion = "core-" +
+        conf.get("hadoop.common.configuration.version", "UNSPECIFIED") +
+        ",hdfs-" +
+        conf.get("hadoop.hdfs.configuration.version", "UNSPECIFIED");
+
+    this.volumeChecker = new DatasetVolumeChecker(conf, new Timer());
+    this.xferService =
+        HadoopExecutors.newCachedThreadPool(new Daemon.DaemonFactory());
+
+    // Determine whether we should try to pass file descriptors to clients.
+    if (conf.getBoolean(HdfsClientConfigKeys.Read.ShortCircuit.KEY,
+              HdfsClientConfigKeys.Read.ShortCircuit.DEFAULT)) {
+      String reason = DomainSocket.getLoadingFailureReason();
+      if (reason != null) {
+        LOG.warn("File descriptor passing is disabled because {}", reason);
+        this.fileDescriptorPassingDisabledReason = reason;
+      } else {
+        LOG.info("File descriptor passing is enabled.");
+        this.fileDescriptorPassingDisabledReason = null;
+      }
+    } else {
+      this.fileDescriptorPassingDisabledReason =
+          "File descriptor passing was not configured.";
+      LOG.debug(this.fileDescriptorPassingDisabledReason);
+    }
+
+    this.socketFactory = NetUtils.getDefaultSocketFactory(conf);
+
+    try {
+      hostName = getHostName(conf);
+      LOG.info("Configured hostname is {}", hostName);
+      startDataNode(dataDirs, resources);
+    } catch (IOException ie) {
+      shutdown();
+      throw ie;
+    }
+    final int dncCacheMaxSize =
+        conf.getInt(DFS_DATANODE_NETWORK_COUNTS_CACHE_MAX_SIZE_KEY,
+            DFS_DATANODE_NETWORK_COUNTS_CACHE_MAX_SIZE_DEFAULT) ;
+    datanodeNetworkCounts =
+        CacheBuilder.newBuilder()
+            .maximumSize(dncCacheMaxSize)
+            .build(new CacheLoader<String, Map<String, Long>>() {
+              @Override
+              public Map<String, Long> load(String key) {
+                final Map<String, Long> ret = new ConcurrentHashMap<>();
+                ret.put(NETWORK_ERRORS, 0L);
+                return ret;
+              }
+            });
+
+    initOOBTimeout();
+    this.storageLocationChecker = storageLocationChecker;
+    long ecReconstuctReadBandwidth = conf.getLongBytes(
+        DFSConfigKeys.DFS_DATANODE_EC_RECONSTRUCT_READ_BANDWIDTHPERSEC_KEY,
+        DFSConfigKeys.DFS_DATANODE_EC_RECONSTRUCT_READ_BANDWIDTHPERSEC_DEFAULT);
+    long ecReconstuctWriteBandwidth = conf.getLongBytes(
+        DFSConfigKeys.DFS_DATANODE_EC_RECONSTRUCT_WRITE_BANDWIDTHPERSEC_KEY,
+        DFSConfigKeys.DFS_DATANODE_EC_RECONSTRUCT_WRITE_BANDWIDTHPERSEC_DEFAULT);
+    this.ecReconstuctReadThrottler = ecReconstuctReadBandwidth > 0 ?
+        new DataTransferThrottler(100, ecReconstuctReadBandwidth) : null;
+    this.ecReconstuctWriteThrottler = ecReconstuctWriteBandwidth > 0 ?
+        new DataTransferThrottler(100, ecReconstuctWriteBandwidth) : null;
+  }
+
+}

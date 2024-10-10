@@ -1,0 +1,415 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	829:879
+blockLines:	835:-1
+paras:	dfs.web.authentication.kerberos.keytab
+TaintedStat:	NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=22) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL getSpnegoKeytabKey:9 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 6 @12 exception:8 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[6]6 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 2 @7 exception:5
+NORMAL replacePattern:conditional branch(ne, to iindex=14) 6,7 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL replacePattern:10 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,8 @16 exception:9 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere[32]33 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 30,31 @67 exception:32
+NORMAL doRun:conditional branch(eq, to iindex=80) 33,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:conditional branch(ne, to iindex=103) 38,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:invokespecial < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > 1 @242 exception:59 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+NORMAL initHM:invokevirtual < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > 15 @53 exception:16 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+NORMAL start:invokevirtual < Extension, Lorg/apache/hadoop/util/Daemon, start()V > 3 @4 exception:4 Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[564]84 = invokespecial < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @1277 exception:83 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=22) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	829:879
+blockLines:	849:-1
+paras:	null
+TaintedStat:	NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=82) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/common/JspHelper, getDefaultWebUserName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,3,4 @5 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/common/JspHelper, getDefaultWebUserName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,3,4 @5 exception:5
+NORMAL getDefaultWebUserName:9 = invokevirtual < Application, Ljava/lang/String, length()I > 6 @14 exception:8 Node: < Application, Lorg/apache/hadoop/hdfs/server/common/JspHelper, getDefaultWebUserName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:6 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @6 exception:5 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL coder:return 7 Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere[13]8 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @20 exception:7
+NORMAL equals:conditional branch(ne, to iindex=33) 8,10 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 21 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere[32]33 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 30,31 @67 exception:32
+NORMAL doRun:conditional branch(eq, to iindex=80) 33,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:conditional branch(ne, to iindex=103) 38,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:invokespecial < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > 1 @242 exception:59 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+NORMAL initHM:invokevirtual < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > 15 @53 exception:16 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+NORMAL start:invokevirtual < Extension, Lorg/apache/hadoop/util/Daemon, start()V > 3 @4 exception:4 Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[564]84 = invokespecial < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @1277 exception:83 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=82) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	829:879
+blockLines:	865:-1
+paras:	dfs.journalnode.edits.dir
+TaintedStat:	NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=146) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getLogDir(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File; > Context: Everywhere[24]23 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 19,20,21 @45 exception:22
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getLogDir(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File; > Context: Everywhere[24]23 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 19,20,21 @45 exception:22
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getLogDir(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File; > Context: Everywhere:24 = phi  18,23
+NORMAL getLogDir:27 = invokevirtual < Application, Ljava/lang/String, trim()Ljava/lang/String; > 24 @54 exception:26 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getLogDir(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL trim:return 14 Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/authorize/AccessControlList, isWildCardACLValue(Ljava/lang/String;)Z > Context: Everywhere[6]9 = invokevirtual < Extension, Ljava/lang/String, trim()Ljava/lang/String; > 2 @10 exception:8
+NORMAL isWildCardACLValue:11 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 9,4 @15 exception:10 Node: < Extension, Lorg/apache/hadoop/security/authorize/AccessControlList, isWildCardACLValue(Ljava/lang/String;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere[32]33 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 30,31 @67 exception:32
+NORMAL doRun:conditional branch(eq, to iindex=80) 33,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:conditional branch(ne, to iindex=103) 38,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:invokespecial < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > 1 @242 exception:59 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+NORMAL initHM:invokevirtual < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > 15 @53 exception:16 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+NORMAL start:invokevirtual < Extension, Lorg/apache/hadoop/util/Daemon, start()V > 3 @4 exception:4 Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[564]84 = invokespecial < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @1277 exception:83 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=146) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	829:879
+blockLines:	860:-1
+paras:	null
+TaintedStat:	NORMAL reconfSlowDiskParameters:conditional branch(eq, to iindex=130) 62,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[13]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,10 @24 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[13]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,10 @24 exception:11
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere:22 = phi  20,12
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[34]25 = invokestatic < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > 21,22,23 @61 exception:24 v22
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere v2
+NORMAL getDefaultHost:11 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 6,2 @24 exception:10 Node: < Extension, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere[32]33 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 30,31 @67 exception:32
+NORMAL doRun:conditional branch(eq, to iindex=80) 33,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:conditional branch(ne, to iindex=103) 38,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:invokespecial < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > 1 @242 exception:59 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+NORMAL initHM:invokevirtual < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > 15 @53 exception:16 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+NORMAL start:invokevirtual < Extension, Lorg/apache/hadoop/util/Daemon, start()V > 3 @4 exception:4 Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[564]84 = invokespecial < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @1277 exception:83 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=82) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:51 = phi  12,50
+NORMAL reconfSlowDiskParameters:conditional branch(gt, to iindex=130) 51,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL reconfSlowDiskParameters:conditional branch(eq, to iindex=130) 62,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	829:879
+blockLines:	857:-1
+paras:	null
+TaintedStat:	NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=120) 61,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @16 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @16 exception:8
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere:21 = phi  17,9
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[34]25 = invokestatic < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > 21,22,23 @61 exception:24 v21
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere v1
+NORMAL getDefaultHost:8 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 6,1 @7 exception:7 Node: < Extension, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere[32]33 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 30,31 @67 exception:32
+NORMAL doRun:conditional branch(eq, to iindex=80) 33,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:conditional branch(ne, to iindex=103) 38,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:invokespecial < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > 1 @242 exception:59 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+NORMAL initHM:invokevirtual < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > 15 @53 exception:16 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+NORMAL start:invokevirtual < Extension, Lorg/apache/hadoop/util/Daemon, start()V > 3 @4 exception:4 Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[564]84 = invokespecial < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @1277 exception:83 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=82) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:51 = phi  12,50
+NORMAL reconfSlowDiskParameters:conditional branch(le, to iindex=120) 51,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=120) 61,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	829:879
+blockLines:	833:-1
+paras:	null
+TaintedStat:	NORMAL reconfSlowDiskParameters:conditional branch(eq, to iindex=67) 11,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[197]113 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 111,2 @413 exception:112
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[197]113 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 111,2 @413 exception:112
+NORMAL reconfSlowDiskParameters:invokespecial < Application, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > 109,2,3,113,107 @418 exception:114 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > Context: Everywhere
+NORMAL <init>:8 = invokestatic < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,3,4 @4 exception:7 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL constructMessage:13 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 11 @16 exception:12 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere[2]5 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 3 @4 exception:4
+NORMAL handleEndElement:77 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 75,5 @281 exception:76 Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[9]11 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,9 @17 exception:10
+NORMAL reconfSlowDiskParameters:conditional branch(eq, to iindex=67) 11,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	829:879
+blockLines:	871:-1
+paras:	dfs.ha.zkfc.nn.http.timeout.ms
+TaintedStat:	NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=172) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, getLocalNNThreadDump()V > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,5,6 @14 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, getLocalNNThreadDump()V > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,5,6 @14 exception:7
+NORMAL getLocalNNThreadDump:conditional branch(ne, to iindex=13) 8,3 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, getLocalNNThreadDump()V > Context: Everywhere
+NORMAL getLocalNNThreadDump:26 = invokevirtual < Application, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 24 @59 exception:25 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, getLocalNNThreadDump()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere[2]5 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 3 @4 exception:4
+NORMAL handleEndElement:77 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 75,5 @281 exception:76 Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere[32]33 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 30,31 @67 exception:32
+NORMAL doRun:conditional branch(eq, to iindex=80) 33,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:conditional branch(ne, to iindex=103) 38,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:invokespecial < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > 1 @242 exception:59 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+NORMAL initHM:invokevirtual < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > 15 @53 exception:16 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+NORMAL start:invokevirtual < Extension, Lorg/apache/hadoop/util/Daemon, start()V > 3 @4 exception:4 Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[564]84 = invokespecial < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @1277 exception:83 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=172) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws ReconfigurationException {
+    String result = null;
+    try {
+      LOG.info("Reconfiguring {} to {}", property, newVal);
+      if (property.equals(DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_KEY)) {
+        checkNotNull(dnConf, "DNConf has not been initialized.");
+        String reportInterval = (newVal == null ? DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_DEFAULT :
+            newVal);
+        result = reportInterval;
+        dnConf.setOutliersReportIntervalMs(reportInterval);
+        for (BPOfferService bpos : blockPoolManager.getAllNamenodeThreads()) {
+          if (bpos != null) {
+            for (BPServiceActor actor : bpos.getBPServiceActors()) {
+              actor.getScheduler().setOutliersReportIntervalMs(
+                  dnConf.outliersReportIntervalMs);
+            }
+          }
+        }
+      } else if (property.equals(DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY)) {
+        checkNotNull(dnConf, "DNConf has not been initialized.");
+        int samplingPercentage = (newVal == null ?
+            DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_DEFAULT :
+            Integer.parseInt(newVal));
+        result = Integer.toString(samplingPercentage);
+        dnConf.setFileIoProfilingSamplingPercentage(samplingPercentage);
+        if (fileIoProvider != null) {
+          fileIoProvider.getProfilingEventHook().setSampleRangeMax(samplingPercentage);
+        }
+        if (samplingPercentage > 0 && diskMetrics == null) {
+          diskMetrics = new DataNodeDiskMetrics(this,
+              dnConf.outliersReportIntervalMs, getConf());
+        } else if (samplingPercentage <= 0 && diskMetrics != null) {
+          diskMetrics.shutdownAndWait();
+        }
+      } else if (property.equals(DFS_DATANODE_MIN_OUTLIER_DETECTION_DISKS_KEY)) {
+        checkNotNull(diskMetrics, "DataNode disk stats may be disabled.");
+        long minDisks = (newVal == null ? DFS_DATANODE_MIN_OUTLIER_DETECTION_DISKS_DEFAULT :
+            Long.parseLong(newVal));
+        result = Long.toString(minDisks);
+        diskMetrics.setMinOutlierDetectionDisks(minDisks);
+      } else if (property.equals(DFS_DATANODE_SLOWDISK_LOW_THRESHOLD_MS_KEY)) {
+        checkNotNull(diskMetrics, "DataNode disk stats may be disabled.");
+        long threshold = (newVal == null ? DFS_DATANODE_SLOWDISK_LOW_THRESHOLD_MS_DEFAULT :
+            Long.parseLong(newVal));
+        result = Long.toString(threshold);
+        diskMetrics.setLowThresholdMs(threshold);
+      }
+      LOG.info("RECONFIGURE* changed {} to {}", property, newVal);
+      return result;
+    } catch (IllegalArgumentException e) {
+      throw new ReconfigurationException(property, newVal, getConf().get(property), e);
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:561..564]218 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:150..151]57 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:565..565]219 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]227 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=609, lastLineNumber=697, firstMethodNumber=608, lastMethodNumber=706, isFirstLineValid=true, methodSrcCode=
+      throws ReconfigurationException {
+    switch (property) {
+    case DFS_DATANODE_DATA_DIR_KEY: {
+      IOException rootException = null;
+      try {
+        LOG.info("Reconfiguring {} to {}", property, newVal);
+        this.refreshVolumes(newVal);
+        return getConf().get(DFS_DATANODE_DATA_DIR_KEY);
+      } catch (IOException e) {
+        rootException = e;
+      } finally {
+        // Send a full block report to let NN acknowledge the volume changes.
+        try {
+          triggerBlockReport(
+              new BlockReportOptions.Factory().setIncremental(false).build());
+        } catch (IOException e) {
+          LOG.warn("Exception while sending the block report after refreshing"
+              + " volumes {} to {}", property, newVal, e);
+          if (rootException == null) {
+            rootException = e;
+          }
+        } finally {
+          if (rootException != null) {
+            throw new ReconfigurationException(property, newVal,
+                getConf().get(property), rootException);
+          }
+        }
+      }
+      break;
+    }
+    case DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY: {
+      ReconfigurationException rootException = null;
+      try {
+        LOG.info("Reconfiguring {} to {}", property, newVal);
+        int movers;
+        if (newVal == null) {
+          // set to default
+          movers = DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT;
+        } else {
+          movers = Integer.parseInt(newVal);
+          if (movers <= 0) {
+            rootException = new ReconfigurationException(
+                property,
+                newVal,
+                getConf().get(property),
+                new IllegalArgumentException(
+                    "balancer max concurrent movers must be larger than 0"));
+          }
+        }
+        boolean success = xserver.updateBalancerMaxConcurrentMovers(movers);
+        if (!success) {
+          rootException = new ReconfigurationException(
+              property,
+              newVal,
+              getConf().get(property),
+              new IllegalArgumentException(
+                  "Could not modify concurrent moves thread count"));
+        }
+        return Integer.toString(movers);
+      } catch (NumberFormatException nfe) {
+        rootException = new ReconfigurationException(
+            property, newVal, getConf().get(property), nfe);
+      } finally {
+        if (rootException != null) {
+          LOG.warn(String.format(
+              "Exception in updating balancer max concurrent movers %s to %s",
+              property, newVal), rootException);
+          throw rootException;
+        }
+      }
+      break;
+    }
+    case DFS_BLOCKREPORT_INTERVAL_MSEC_KEY:
+    case DFS_BLOCKREPORT_SPLIT_THRESHOLD_KEY:
+    case DFS_BLOCKREPORT_INITIAL_DELAY_KEY:
+      return reconfBlockReportParameters(property, newVal);
+    case DFS_DATANODE_MAX_RECEIVER_THREADS_KEY:
+      return reconfDataXceiverParameters(property, newVal);
+    case DFS_CACHEREPORT_INTERVAL_MSEC_KEY:
+      return reconfCacheReportParameters(property, newVal);
+    case DFS_DATANODE_PEER_STATS_ENABLED_KEY:
+    case DFS_DATANODE_MIN_OUTLIER_DETECTION_NODES_KEY:
+    case DFS_DATANODE_SLOWPEER_LOW_THRESHOLD_MS_KEY:
+    case DFS_DATANODE_PEER_METRICS_MIN_OUTLIER_DETECTION_SAMPLES_KEY:
+      return reconfSlowPeerParameters(property, newVal);
+    case DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY:
+    case DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_KEY:
+    case DFS_DATANODE_MIN_OUTLIER_DETECTION_DISKS_KEY:
+    case DFS_DATANODE_SLOWDISK_LOW_THRESHOLD_MS_KEY:
+      return reconfSlowDiskParameters(property, newVal);
+    case FS_DU_INTERVAL_KEY:
+    case FS_GETSPACEUSED_JITTER_KEY:
+    case FS_GETSPACEUSED_CLASSNAME:
+      return reconfDfsUsageParameters(property, newVal);
+    default:
+      break;
+    }
+    throw new ReconfigurationException(
+        property, newVal, getConf().get(property));
+  }
+}

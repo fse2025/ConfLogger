@@ -1,0 +1,319 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DNConf.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DNConf.<init>(Lorg/apache/hadoop/conf/Configurable;)V	methodLines:	142:300
+blockLines:	227:-1
+paras:	dfs.datanode.lifeline.interval.seconds
+TaintedStat:	NORMAL <init>:conditional branch(gt, to iindex=227) 159,32 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere[191]157 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 147,148,155 @409 exception:156
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere[191]157 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 147,148,155 @409 exception:156
+NORMAL <init>:159 = compare 157,158 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere
+NORMAL <init>:conditional branch(gt, to iindex=227) 159,32 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DNConf.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DNConf.<init>(Lorg/apache/hadoop/conf/Configurable;)V	methodLines:	142:300
+blockLines:	289:-1
+paras:	dfs.heartbeat.interval
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=343) 258,259 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere[189]154 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTimeDuration(Ljava/lang/String;JLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/TimeUnit;)J > 150,140,141,151,152 @405 exception:153
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere[189]154 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTimeDuration(Ljava/lang/String;JLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/TimeUnit;)J > 150,140,141,151,152 @405 exception:153
+NORMAL <init>:155 = binaryop(mul) 141 , 154 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere
+NORMAL <init>:157 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 147,148,155 @409 exception:156 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > Context: Everywhere
+NORMAL getLong:6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmed:5 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5
+NORMAL getTrimmedStrings:9 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > 6 @14 exception:8 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmedStrings:conditional branch(eq, to iindex=8) 3,1 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmedStrings:return 14 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[5]7 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > 5 @7 exception:6
+NORMAL getTrimmedStrings:return 7 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere[335]258 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > 255,256 @697 exception:257
+NORMAL <init>:conditional branch(ne, to iindex=343) 258,259 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+  public DNConf(final Configurable dn) {
+    this.dn = dn;
+    socketTimeout = getConf().getInt(DFS_CLIENT_SOCKET_TIMEOUT_KEY,
+        HdfsConstants.READ_TIMEOUT);
+    socketWriteTimeout = getConf().getInt(DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY,
+        HdfsConstants.WRITE_TIMEOUT);
+    socketKeepaliveTimeout = getConf().getInt(
+        DFSConfigKeys.DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_KEY,
+        DFSConfigKeys.DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_DEFAULT);
+    ecChecksumSocketTimeout = getConf().getInt(
+        DFS_CHECKSUM_EC_SOCKET_TIMEOUT_KEY,
+        DFS_CHECKSUM_EC_SOCKET_TIMEOUT_DEFAULT);
+    this.transferSocketSendBufferSize = getConf().getInt(
+        DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_SEND_BUFFER_SIZE_KEY,
+        DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_SEND_BUFFER_SIZE_DEFAULT);
+    this.transferSocketRecvBufferSize = getConf().getInt(
+        DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_RECV_BUFFER_SIZE_KEY,
+        DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_RECV_BUFFER_SIZE_DEFAULT);
+    this.tcpNoDelay = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATA_TRANSFER_SERVER_TCPNODELAY,
+        DFSConfigKeys.DFS_DATA_TRANSFER_SERVER_TCPNODELAY_DEFAULT);
+
+    /* Based on results on different platforms, we might need set the default
+     * to false on some of them. */
+    transferToAllowed = getConf().getBoolean(
+        DFS_DATANODE_TRANSFERTO_ALLOWED_KEY,
+        DFS_DATANODE_TRANSFERTO_ALLOWED_DEFAULT);
+
+    readaheadLength = getConf().getLong(
+        HdfsClientConfigKeys.DFS_DATANODE_READAHEAD_BYTES_KEY,
+        HdfsClientConfigKeys.DFS_DATANODE_READAHEAD_BYTES_DEFAULT);
+    maxDataLength = getConf().getInt(DFSConfigKeys.IPC_MAXIMUM_DATA_LENGTH,
+        DFSConfigKeys.IPC_MAXIMUM_DATA_LENGTH_DEFAULT);
+    dropCacheBehindWrites = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_WRITES_KEY,
+        DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_WRITES_DEFAULT);
+    syncBehindWrites = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_KEY,
+        DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_DEFAULT);
+    syncBehindWritesInBackground = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_IN_BACKGROUND_KEY,
+        DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_IN_BACKGROUND_DEFAULT);
+    dropCacheBehindReads = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_READS_KEY,
+        DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_READS_DEFAULT);
+    connectToDnViaHostname = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_USE_DN_HOSTNAME,
+        DFSConfigKeys.DFS_DATANODE_USE_DN_HOSTNAME_DEFAULT);
+    this.blockReportInterval = getConf().getLong(
+        DFS_BLOCKREPORT_INTERVAL_MSEC_KEY,
+        DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT);
+    this.peerStatsEnabled = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_PEER_STATS_ENABLED_KEY,
+        DFSConfigKeys.DFS_DATANODE_PEER_STATS_ENABLED_DEFAULT);
+    this.diskStatsEnabled = Util.isDiskStatsEnabled(getConf().getInt(
+        DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY,
+        DFSConfigKeys.
+            DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_DEFAULT));
+    this.outliersReportIntervalMs = getConf().getTimeDuration(
+        DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_KEY,
+        DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_DEFAULT,
+        TimeUnit.MILLISECONDS);
+    this.ibrInterval = getConf().getLong(
+        DFSConfigKeys.DFS_BLOCKREPORT_INCREMENTAL_INTERVAL_MSEC_KEY,
+        DFSConfigKeys.DFS_BLOCKREPORT_INCREMENTAL_INTERVAL_MSEC_DEFAULT);
+    this.blockReportSplitThreshold = getConf().getLong(
+        DFS_BLOCKREPORT_SPLIT_THRESHOLD_KEY,
+        DFS_BLOCKREPORT_SPLIT_THRESHOLD_DEFAULT);
+    this.cacheReportInterval = getConf().getLong(
+        DFS_CACHEREPORT_INTERVAL_MSEC_KEY,
+        DFS_CACHEREPORT_INTERVAL_MSEC_DEFAULT);
+
+    this.datanodeSlowIoWarningThresholdMs = getConf().getLong(
+        DFSConfigKeys.DFS_DATANODE_SLOW_IO_WARNING_THRESHOLD_KEY,
+        DFSConfigKeys.DFS_DATANODE_SLOW_IO_WARNING_THRESHOLD_DEFAULT);
+    initBlockReportDelay();
+    heartBeatInterval = getConf().getTimeDuration(DFS_HEARTBEAT_INTERVAL_KEY,
+        DFS_HEARTBEAT_INTERVAL_DEFAULT, TimeUnit.SECONDS,
+        TimeUnit.MILLISECONDS);
+    long confLifelineIntervalMs =
+        getConf().getLong(DFS_DATANODE_LIFELINE_INTERVAL_SECONDS_KEY,
+        3 * getConf().getTimeDuration(DFS_HEARTBEAT_INTERVAL_KEY,
+        DFS_HEARTBEAT_INTERVAL_DEFAULT, TimeUnit.SECONDS,
+            TimeUnit.MILLISECONDS));
+    if (confLifelineIntervalMs <= heartBeatInterval) {
+      confLifelineIntervalMs = 3 * heartBeatInterval;
+      DataNode.LOG.warn(
+          String.format("%s must be set to a value greater than %s.  " +
+              "Resetting value to 3 * %s, which is %d milliseconds.",
+              DFS_DATANODE_LIFELINE_INTERVAL_SECONDS_KEY,
+              DFS_HEARTBEAT_INTERVAL_KEY, DFS_HEARTBEAT_INTERVAL_KEY,
+              confLifelineIntervalMs));
+    }
+    lifelineIntervalMs = confLifelineIntervalMs;
+    
+    // do we need to sync block file contents to disk when blockfile is closed?
+    this.syncOnClose = getConf().getBoolean(DFS_DATANODE_SYNCONCLOSE_KEY,
+        DFS_DATANODE_SYNCONCLOSE_DEFAULT);
+
+    this.minimumNameNodeVersion = getConf().get(
+        DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_KEY,
+        DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_DEFAULT);
+    
+    this.encryptDataTransfer = getConf().getBoolean(
+        DFS_ENCRYPT_DATA_TRANSFER_KEY,
+        DFS_ENCRYPT_DATA_TRANSFER_DEFAULT);
+    this.overwriteDownstreamDerivedQOP = getConf().getBoolean(
+        DFS_ENCRYPT_DATA_OVERWRITE_DOWNSTREAM_DERIVED_QOP_KEY,
+        DFS_ENCRYPT_DATA_OVERWRITE_DOWNSTREAM_DERIVED_QOP_DEFAULT);
+    this.encryptionAlgorithm = getConf().get(DFS_DATA_ENCRYPTION_ALGORITHM_KEY);
+    this.trustedChannelResolver = TrustedChannelResolver.getInstance(getConf());
+    this.saslPropsResolver = DataTransferSaslUtil.getSaslPropertiesResolver(
+      getConf());
+    this.ignoreSecurePortsForTesting = getConf().getBoolean(
+        IGNORE_SECURE_PORTS_FOR_TESTING_KEY,
+        IGNORE_SECURE_PORTS_FOR_TESTING_DEFAULT);
+    
+    this.xceiverStopTimeout = getConf().getLong(
+        DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY,
+        DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT);
+
+    this.maxLockedMemory = getConf().getLongBytes(
+        DFS_DATANODE_MAX_LOCKED_MEMORY_KEY,
+        DFS_DATANODE_MAX_LOCKED_MEMORY_DEFAULT);
+
+    this.pmemDirs = getConf().getTrimmedStrings(
+        DFS_DATANODE_PMEM_CACHE_DIRS_KEY);
+
+    this.restartReplicaExpiry = getConf().getLong(
+        DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY,
+        DFS_DATANODE_RESTART_REPLICA_EXPIRY_DEFAULT) * 1000L;
+
+    this.allowNonLocalLazyPersist = getConf().getBoolean(
+        DFS_DATANODE_NON_LOCAL_LAZY_PERSIST,
+        DFS_DATANODE_NON_LOCAL_LAZY_PERSIST_DEFAULT);
+
+    this.bpReadyTimeout = getConf().getTimeDuration(
+        DFS_DATANODE_BP_READY_TIMEOUT_KEY,
+        DFS_DATANODE_BP_READY_TIMEOUT_DEFAULT, TimeUnit.SECONDS);
+
+    this.volFailuresTolerated =
+        getConf().getInt(
+            DFSConfigKeys.DFS_DATANODE_FAILED_VOLUMES_TOLERATED_KEY,
+            DFSConfigKeys.DFS_DATANODE_FAILED_VOLUMES_TOLERATED_DEFAULT);
+    String[] dataDirs =
+        getConf().getTrimmedStrings(DFSConfigKeys.DFS_DATANODE_DATA_DIR_KEY);
+    this.volsConfigured = (dataDirs == null) ? 0 : dataDirs.length;
+
+    this.pmemCacheRecoveryEnabled = getConf().getBoolean(
+        DFS_DATANODE_PMEM_CACHE_RECOVERY_KEY,
+        DFS_DATANODE_PMEM_CACHE_RECOVERY_DEFAULT);
+
+    this.processCommandsThresholdMs = getConf().getTimeDuration(
+        DFS_DATANODE_PROCESS_COMMANDS_THRESHOLD_KEY,
+        DFS_DATANODE_PROCESS_COMMANDS_THRESHOLD_DEFAULT,
+        TimeUnit.MILLISECONDS
+    );
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:111..113]43 - org.apache.hadoop.hdfs.server.datanode.DataNode.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:109..110]42 - org.apache.hadoop.hdfs.server.datanode.DataNode.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:114..114]44 - org.apache.hadoop.hdfs.server.datanode.DataNode.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]57 - org.apache.hadoop.hdfs.server.datanode.DataNode.<init>(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=495, lastLineNumber=495, firstMethodNumber=483, lastMethodNumber=501, isFirstLineValid=true, methodSrcCode=
+  DataNode(final Configuration conf) throws DiskErrorException {
+    super(conf);
+    this.tracer = createTracer(conf);
+    this.fileIoProvider = new FileIoProvider(conf, this);
+    this.fileDescriptorPassingDisabledReason = null;
+    this.maxNumberOfBlocksToLog = 0;
+    this.confVersion = null;
+    this.usersWithLocalPathAccess = null;
+    this.connectToDnViaHostname = false;
+    this.blockScanner = new BlockScanner(this, this.getConf());
+    this.pipelineSupportECN = false;
+    this.socketFactory = NetUtils.getDefaultSocketFactory(conf);
+    this.dnConf = new DNConf(this);
+    initOOBTimeout();
+    storageLocationChecker = null;
+    volumeChecker = new DatasetVolumeChecker(conf, new Timer());
+    this.xferService =
+        HadoopExecutors.newCachedThreadPool(new Daemon.DaemonFactory());
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V > Context: Everywhere, blocks=[BB[SSA:20..22]9 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:18..19]8 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:23..23]10 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:-1..-2]151 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V], numberOfBasicBlocks=4, firstLineNumber=1689, lastLineNumber=1689, firstMethodNumber=1684, lastMethodNumber=1769, isFirstLineValid=true, methodSrcCode=
+    // settings global for all BPs in the Data Node
+    this.secureResources = resources;
+    synchronized (this) {
+      this.dataDirs = dataDirectories;
+    }
+    this.dnConf = new DNConf(this);
+    checkSecureConfig(dnConf, getConf(), resources);
+
+    if (dnConf.maxLockedMemory > 0) {
+      if (!NativeIO.POSIX.getCacheManipulator().verifyCanMlock()) {
+        throw new RuntimeException(String.format(
+            "Cannot start datanode because the configured max locked memory" +
+            " size (%s) is greater than zero and native code is not available.",
+            DFS_DATANODE_MAX_LOCKED_MEMORY_KEY));
+      }
+      if (Path.WINDOWS) {
+        NativeIO.Windows.extendWorkingSetSize(dnConf.maxLockedMemory);
+      } else {
+        long ulimit = NativeIO.POSIX.getCacheManipulator().getMemlockLimit();
+        if (dnConf.maxLockedMemory > ulimit) {
+          throw new RuntimeException(String.format(
+            "Cannot start datanode because the configured max locked memory" +
+            " size (%s) of %d bytes is more than the datanode's available" +
+            " RLIMIT_MEMLOCK ulimit of %d bytes.",
+            DFS_DATANODE_MAX_LOCKED_MEMORY_KEY,
+            dnConf.maxLockedMemory,
+            ulimit));
+        }
+      }
+    }
+    LOG.info("Starting DataNode with maxLockedMemory = {}",
+        dnConf.maxLockedMemory);
+
+    int volFailuresTolerated = dnConf.getVolFailuresTolerated();
+    int volsConfigured = dnConf.getVolsConfigured();
+    if (volFailuresTolerated < MAX_VOLUME_FAILURE_TOLERATED_LIMIT
+        || volFailuresTolerated >= volsConfigured) {
+      throw new HadoopIllegalArgumentException("Invalid value configured for "
+          + "dfs.datanode.failed.volumes.tolerated - " + volFailuresTolerated
+          + ". Value configured is either less than -1 or >= "
+          + "to the number of configured volumes (" + volsConfigured + ").");
+    }
+
+    storage = new DataStorage();
+    
+    // global DN settings
+    registerMXBean();
+    initDataXceiver();
+    startInfoServer();
+    pauseMonitor = new JvmPauseMonitor();
+    pauseMonitor.init(getConf());
+    pauseMonitor.start();
+  
+    // BlockPoolTokenSecretManager is required to create ipc server.
+    this.blockPoolTokenSecretManager = new BlockPoolTokenSecretManager();
+
+    // Login is done by now. Set the DN user name.
+    dnUserName = UserGroupInformation.getCurrentUser().getUserName();
+    LOG.info("dnUserName = {}", dnUserName);
+    LOG.info("supergroup = {}", supergroup);
+    initIpcServer();
+
+    metrics = DataNodeMetrics.create(getConf(), getDisplayName());
+    peerMetrics = dnConf.peerStatsEnabled ?
+        DataNodePeerMetrics.create(getDisplayName(), getConf()) : null;
+    metrics.getJvmMetrics().setPauseMonitor(pauseMonitor);
+
+    ecWorker = new ErasureCodingWorker(getConf(), this);
+    blockRecoveryWorker = new BlockRecoveryWorker(this);
+
+    blockPoolManager = new BlockPoolManager(this);
+    blockPoolManager.refreshNamenodes(getConf());
+
+    // Create the ReadaheadPool from the DataNode context so we can
+    // exit without having to explicitly shutdown its thread pool.
+    readaheadPool = ReadaheadPool.getInstance();
+    saslClient = new SaslDataTransferClient(dnConf.getConf(),
+        dnConf.saslPropsResolver, dnConf.trustedChannelResolver);
+    saslServer = new SaslDataTransferServer(dnConf, blockPoolTokenSecretManager);
+    startMetricsLogger();
+
+    if (dnConf.diskStatsEnabled) {
+      diskMetrics = new DataNodeDiskMetrics(this,
+          dnConf.outliersReportIntervalMs, getConf());
+    }
+  }
+
+}

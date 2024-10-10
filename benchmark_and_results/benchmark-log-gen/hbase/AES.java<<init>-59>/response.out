@@ -1,0 +1,28 @@
+```java
+super(provider);
+// The JCE mode for Ciphers
+cipherMode = provider.getConf().get(CIPHER_MODE_KEY, "AES/CTR/NoPadding");
+// The JCE provider, null if default
+cipherProvider = provider.getConf().get(CIPHER_PROVIDER_KEY);
+// RNG algorithm
+rngAlgorithm = provider.getConf().get(RNG_ALGORITHM_KEY, "SHA1PRNG");
+// RNG provider, null if default
+String rngProvider = provider.getConf().get(RNG_PROVIDER_KEY);
+try {
+    if (rngProvider != null) {
+        rng = SecureRandom.getInstance(rngAlgorithm, rngProvider);
+        // ConfLogger Inserted Start
+        logger.info("RNG instantiated with specified provider. RNG_ALGORITHM_KEY: {}, RNG_PROVIDER_KEY: {}", rngAlgorithm, rngProvider);
+        // ConfLogger Inserted End
+    } else {
+        rng = SecureRandom.getInstance(rngAlgorithm);
+        // ConfLogger Inserted Start
+        logger.info("RNG instantiated with default provider. RNG_ALGORITHM_KEY: {}", rngAlgorithm);
+        // ConfLogger Inserted End
+    }
+} catch (GeneralSecurityException e) {
+    LOG.warn("Could not instantiate specified RNG, falling back to default", e); // ConfLogger Skipped
+    rng = new SecureRandom();
+}
+}
+```

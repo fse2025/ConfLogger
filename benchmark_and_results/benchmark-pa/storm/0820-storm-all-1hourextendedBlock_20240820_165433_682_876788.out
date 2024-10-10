@@ -1,0 +1,80 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ServerConfigUtils.java	methodSinagture:	org.apache.storm.utils.ServerConfigUtils.absoluteHealthCheckDir(Ljava/util/Map;)Ljava/lang/String;	methodLines:	124:133
+blockLines:	127:-1
+paras:	storm.health.check.dir
+TaintedStat:	NORMAL absoluteHealthCheckDir:conditional branch(ne, to iindex=15) 9,10 Node: < Application, Lorg/apache/storm/utils/ServerConfigUtils, absoluteHealthCheckDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ServerConfigUtils, absoluteHealthCheckDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere[5]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,6 @9 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ServerConfigUtils, absoluteHealthCheckDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere[5]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,6 @9 exception:7
+NORMAL absoluteHealthCheckDir:9 = checkcast <Application,Ljava/lang/String>8 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/utils/ServerConfigUtils, absoluteHealthCheckDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere
+NORMAL absoluteHealthCheckDir:conditional branch(ne, to iindex=15) 9,10 Node: < Application, Lorg/apache/storm/utils/ServerConfigUtils, absoluteHealthCheckDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static String absoluteHealthCheckDir(Map<String, Object> conf) {
+        String stormHome = System.getProperty(ConfigUtils.STORM_HOME);
+        String healthCheckDir = (String) conf.get(DaemonConfig.STORM_HEALTH_CHECK_DIR);
+        if (healthCheckDir == null) {
+            return (stormHome + FILE_SEPARATOR + "healthchecks");
+        } else {
+            if (new File(healthCheckDir).isAbsolute()) {
+                return healthCheckDir;
+            } else {
+                return (stormHome + FILE_SEPARATOR + healthCheckDir);
+            }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/healthcheck/HealthChecker, healthCheck(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)I > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.healthcheck.HealthChecker.healthCheck(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)I, BB[SSA:-1..-2]0 - org.apache.storm.healthcheck.HealthChecker.healthCheck(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)I, BB[SSA:2..3]2 - org.apache.storm.healthcheck.HealthChecker.healthCheck(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)I, BB[SSA:-1..-2]56 - org.apache.storm.healthcheck.HealthChecker.healthCheck(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)I], numberOfBasicBlocks=4, firstLineNumber=49, lastLineNumber=51, firstMethodNumber=49, lastMethodNumber=94, isFirstLineValid=false, methodSrcCode=
+    public static int healthCheck(Map<String, Object> conf, StormMetricsRegistry metricRegistry) {
+        String healthDir = ServerConfigUtils.absoluteHealthCheckDir(conf);
+        List<String> results = new ArrayList<>();
+        if (healthDir != null) {
+            File parentFile = new File(healthDir);
+            List<String> healthScripts = new ArrayList<String>();
+            if (parentFile.exists()) {
+                File[] list = parentFile.listFiles();
+                for (File f : list) {
+                    if (!f.isDirectory() && f.canExecute()) {
+                        healthScripts.add(f.getAbsolutePath());
+                    }
+                }
+            }
+            for (String script : healthScripts) {
+                String result = processScript(conf, script);
+                results.add(result);
+                LOG.info("The healthcheck script [ {} ] exited with status: {}", script, result);
+            }
+        }
+
+        // failed_with_exit_code is OK. We're mimicing Hadoop's health checks.
+        // We treat non-zero exit codes as indicators that the scripts failed
+        // to execute properly, not that the system is unhealthy, in which case
+        // we don't want to start killing things.
+
+        if (results.contains(FAILED) || results.contains(FAILED_WITH_EXIT_CODE)) {
+            LOG.warn("The supervisor healthchecks failed!!!");
+            return 1;
+        } else if (results.contains(TIMEOUT)) {
+            LOG.warn("The supervisor healthchecks timedout!!!");
+            if (metricRegistry != null) {
+                Meter timeoutMeter = metricRegistry.getMeter(Constants.SUPERVISOR_HEALTH_CHECK_TIMEOUTS);
+                if (timeoutMeter != null) {
+                    timeoutMeter.mark();
+                }
+            }
+            Boolean failOnTimeouts = ObjectReader.getBoolean(conf.get(DaemonConfig.STORM_HEALTH_CHECK_FAIL_ON_TIMEOUTS), true);
+            if (failOnTimeouts) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            LOG.info("The supervisor healthchecks succeeded.");
+            return 0;
+        }
+}

@@ -1,0 +1,126 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtilClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtilClient.getConfValue(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;	methodLines:	543:555
+blockLines:	548:-1
+paras:	null
+TaintedStat:	NORMAL getConfValue:conditional branch(eq, to iindex=28) 13,6 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getConfValue(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getConfValue(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[22]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 3,11 @39 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getConfValue(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[22]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 3,11 @39 exception:12
+NORMAL getConfValue:conditional branch(eq, to iindex=28) 13,6 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getConfValue(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Configuration conf, String... keys) {
+    String value = null;
+    for (String key : keys) {
+      key = addSuffix(key, keySuffix);
+      value = conf.get(key);
+      if (value != null) {
+        break;
+      }
+    }
+    if (value == null) {
+      value = defaultValue;
+    }
+    return value;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, checkKeysAndProcess(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:27..27]7 - org.apache.hadoop.hdfs.DFSUtilClient.checkKeysAndProcess(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:23..26]6 - org.apache.hadoop.hdfs.DFSUtilClient.checkKeysAndProcess(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:28..31]8 - org.apache.hadoop.hdfs.DFSUtilClient.checkKeysAndProcess(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]19 - org.apache.hadoop.hdfs.DFSUtilClient.checkKeysAndProcess(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=472, lastLineNumber=473, firstMethodNumber=468, lastMethodNumber=486, isFirstLineValid=true, methodSrcCode=
+      Configuration conf, String... keys) {
+    String succeededKey = null;
+    String address = null;
+    for (String key : keys) {
+      address = getConfValue(null, suffix, conf, key);
+      if (address != null) {
+        succeededKey = key;
+        break;
+      }
+    }
+    String ret;
+    if (address == null) {
+      ret = defaultValue;
+    } else if(DFS_NAMENODE_RPC_ADDRESS_KEY.equals(succeededKey))  {
+      ret = checkRpcAuxiliary(conf, suffix, address);
+    } else {
+      ret = address;
+    }
+    return ret;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set; > Context: Everywhere, blocks=[BB[SSA:36..36]14 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:32..35]13 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:37..40]15 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:-1..-2]91 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:77..77]29 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:73..76]28 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:78..81]30 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:-1..-2]91 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;], numberOfBasicBlocks=8, firstLineNumber=479, lastLineNumber=481, firstMethodNumber=464, lastMethodNumber=531, isFirstLineValid=true, methodSrcCode=
+      Configuration conf) throws URISyntaxException, IOException {
+    Set<String> journalNodeList = new HashSet<>();
+    String journalsUri = "";
+    try {
+      journalsUri = conf.get(DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+      if (journalsUri == null) {
+        Collection<String> nameserviceIds = DFSUtilClient.
+            getNameServiceIds(conf);
+        for (String nsId : nameserviceIds) {
+          journalsUri = DFSUtilClient.getConfValue(
+              null, nsId, conf, DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+          if (journalsUri == null) {
+            Collection<String> nnIds = DFSUtilClient.getNameNodeIds(conf, nsId);
+            for (String nnId : nnIds) {
+              String suffix = DFSUtilClient.concatSuffixes(nsId, nnId);
+              journalsUri = DFSUtilClient.getConfValue(
+                  null, suffix, conf, DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+              if (journalsUri == null ||
+                  !journalsUri.startsWith("qjournal://")) {
+                return journalNodeList;
+              } else {
+                LOG.warn(DFS_NAMENODE_SHARED_EDITS_DIR_KEY +" is to be " +
+                    "configured as nameservice" +
+                    " specific key(append it with nameserviceId), no need" +
+                    " to append it with namenodeId");
+                URI uri = new URI(journalsUri);
+                List<InetSocketAddress> socketAddresses = Util.
+                    getAddressesList(uri);
+                for (InetSocketAddress is : socketAddresses) {
+                  journalNodeList.add(is.getHostName());
+                }
+              }
+            }
+          } else if (!journalsUri.startsWith("qjournal://")) {
+            return journalNodeList;
+          } else {
+            URI uri = new URI(journalsUri);
+            List<InetSocketAddress> socketAddresses = Util.
+                getAddressesList(uri);
+            for (InetSocketAddress is : socketAddresses) {
+              journalNodeList.add(is.getHostName());
+            }
+          }
+        }
+      } else {
+        if (!journalsUri.startsWith("qjournal://")) {
+          return journalNodeList;
+        } else {
+          URI uri = new URI(journalsUri);
+          List<InetSocketAddress> socketAddresses = Util.getAddressesList(uri);
+          for (InetSocketAddress is : socketAddresses) {
+            journalNodeList.add(is.getHostName());
+          }
+        }
+      }
+    } catch(UnknownHostException e) {
+      LOG.error("The conf property " + DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+          + " is not properly set with correct journal node hostnames");
+      throw new UnknownHostException(journalsUri);
+    } catch(URISyntaxException e)  {
+      LOG.error("The conf property " + DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+          + "is not set properly with correct journal node uri");
+      throw new URISyntaxException(journalsUri, "The conf property " +
+          DFS_NAMENODE_SHARED_EDITS_DIR_KEY + "is not" +
+          " properly set with correct journal node uri");
+    }
+
+    return journalNodeList;
+  }
+}

@@ -1,0 +1,17 @@
+```java
+String key = getEnabledConfigKey();
+boolean enabled = conf.getBoolean(key, false);
+if (enabled) {
+    // ConfLogger Inserted Start
+    logger.info("Cross Origin Filter is enabled. Configuration key: " + key + ", value: " + enabled);
+    // ConfLogger Inserted End
+    container.addGlobalFilter("Cross Origin Filter",
+    CrossOriginFilter.class.getName(),
+    getFilterParameters(conf, getPrefix()));
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Cross Origin Filter is disabled. To enable, set the configuration key: " + key + " to true.");
+    // ConfLogger Inserted End
+}
+}
+```

@@ -1,0 +1,54 @@
+```java
+String locationProperty =
+resolvePropertyName(mode, SSL_KEYSTORE_LOCATION_TPL_KEY);
+String keystoreLocation = conf.get(locationProperty, "");
+if (keystoreLocation.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration error: The property '{}' has not been set in the ssl configuration file. Please set the '{}' property correctly.", locationProperty, locationProperty);
+    // ConfLogger Inserted End
+    throw new GeneralSecurityException("The property '" + locationProperty +
+    "' has not been set in the ssl configuration file.");
+}
+String passwordProperty =
+resolvePropertyName(mode, SSL_KEYSTORE_PASSWORD_TPL_KEY);
+String keystorePassword = getPassword(conf, passwordProperty, "");
+if (keystorePassword.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration error: The property '{}' has not been set in the ssl configuration file. Please set the '{}' property correctly.", passwordProperty, passwordProperty);
+    // ConfLogger Inserted End
+    throw new GeneralSecurityException("The property '" + passwordProperty +
+    "' has not been set in the ssl configuration file.");
+}
+String keyPasswordProperty =
+resolvePropertyName(mode, SSL_KEYSTORE_KEYPASSWORD_TPL_KEY);
+// Key password defaults to the same value as store password for
+// compatibility with legacy configurations that did not use a separate
+// configuration property for key password.
+String keystoreKeyPassword = getPassword(
+conf, keyPasswordProperty, keystorePassword);
+if (LOG.isDebugEnabled()) {
+LOG.debug(mode.toString() + " KeyStore: " + keystoreLocation);
+}
+
+ReloadingX509KeystoreManager keystoreManager =  new ReloadingX509KeystoreManager(
+keystoreType,
+keystoreLocation,
+keystorePassword,
+keystoreKeyPassword);
+
+if (storesReloadInterval > 0) {
+    // ConfLogger Inserted Start
+    logger.info("File monitoring for keystore '{}' is enabled with a reload interval of {} ms.", keystoreLocation, storesReloadInterval);
+    // ConfLogger Inserted End
+    fileMonitoringTimer.schedule(
+    new FileMonitoringTimerTask(
+    Paths.get(keystoreLocation),
+    path -> keystoreManager.loadFrom(path),
+    exception -> LOG.error(ReloadingX509KeystoreManager.RELOAD_ERROR_MESSAGE, exception)),
+    storesReloadInterval,
+    storesReloadInterval);
+}
+
+keyManagers = new KeyManager[] { keystoreManager };
+}
+```

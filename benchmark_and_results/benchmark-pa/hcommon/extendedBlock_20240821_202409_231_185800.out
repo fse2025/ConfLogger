@@ -1,0 +1,257 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TFileDumper.java	methodSinagture:	org.apache.hadoop.io.file.tfile.TFileDumper.dumpInfo(Ljava/lang/String;Ljava/io/PrintStream;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	97:295
+blockLines:	224:-1
+paras:	null
+TaintedStat:	NORMAL dumpInfo:conditional branch(ge, to iindex=578) 378,370 Node: < Application, Lorg/apache/hadoop/io/file/tfile/TFileDumper, dumpInfo(Ljava/lang/String;Ljava/io/PrintStream;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/file/tfile/TFileDumper, dumpInfo(Ljava/lang/String;Ljava/io/PrintStream;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[775]496 = invokevirtual < Application, Lorg/apache/hadoop/io/file/tfile/Compression$Algorithm, getName()Ljava/lang/String; > 494 @1645 exception:495
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/file/tfile/TFileDumper, dumpInfo(Ljava/lang/String;Ljava/io/PrintStream;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[775]496 = invokevirtual < Application, Lorg/apache/hadoop/io/file/tfile/Compression$Algorithm, getName()Ljava/lang/String; > 494 @1645 exception:495
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/io/file/tfile/TFileDumper, dumpInfo(Ljava/lang/String;Ljava/io/PrintStream;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[817]518 = invokestatic < Application, Lorg/apache/hadoop/io/file/tfile/TFileDumper$Align, format(Ljava/lang/String;ILorg/apache/hadoop/io/file/tfile/TFileDumper$Align;)Ljava/lang/String; > 496,453,516 @1727 exception:517 v496
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/io/file/tfile/TFileDumper$Align, format(Ljava/lang/String;ILorg/apache/hadoop/io/file/tfile/TFileDumper$Align;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL format:6 = invokevirtual < Application, Ljava/lang/String, length()I > 1 @1 exception:5 Node: < Application, Lorg/apache/hadoop/io/file/tfile/TFileDumper$Align, format(Ljava/lang/String;ILorg/apache/hadoop/io/file/tfile/TFileDumper$Align;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:return 7 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/text/DecimalFormat, applyPattern(Ljava/lang/String;Z)V > Context: Everywhere[77]53 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @153 exception:52
+NORMAL applyPattern:conditional branch(ge, to iindex=776) 254,53 Node: < Primordial, Ljava/text/DecimalFormat, applyPattern(Ljava/lang/String;Z)V > Context: Everywhere
+NORMAL applyPattern:conditional branch(ne, to iindex=761) 257,51 Node: < Primordial, Ljava/text/DecimalFormat, applyPattern(Ljava/lang/String;Z)V > Context: Everywhere
+NORMAL applyPattern:invokevirtual < Primordial, Ljava/text/DecimalFormat, setMinimumIntegerDigits(I)V > 1,224 @1378 exception:225 Node: < Primordial, Ljava/text/DecimalFormat, applyPattern(Ljava/lang/String;Z)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/text/DecimalFormat, setMinimumIntegerDigits(I)V > Context: Everywhere
+NORMAL setMinimumIntegerDigits:9 = invokestatic < Primordial, Ljava/lang/Math, min(II)I > 6,7 @8 exception:8 Node: < Primordial, Ljava/text/DecimalFormat, setMinimumIntegerDigits(I)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL min:return 4 Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/file/tfile/TFileDumper, dumpInfo(Ljava/lang/String;Ljava/io/PrintStream;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[551]370 = invokestatic < Application, Ljava/lang/Math, min(II)I > 5,368 @1165 exception:369
+NORMAL dumpInfo:conditional branch(ge, to iindex=578) 378,370 Node: < Application, Lorg/apache/hadoop/io/file/tfile/TFileDumper, dumpInfo(Ljava/lang/String;Ljava/io/PrintStream;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    final int maxKeySampleLen = 16;
+    Path path = new Path(file);
+    FileSystem fs = path.getFileSystem(conf);
+    long length = fs.getFileStatus(path).getLen();
+    FSDataInputStream fsdis = fs.open(path);
+    TFile.Reader reader = new TFile.Reader(fsdis, length, conf);
+    try {
+      LinkedHashMap<String, String> properties =
+          new LinkedHashMap<String, String>();
+      int blockCnt = reader.readerBCF.getBlockCount();
+      int metaBlkCnt = reader.readerBCF.metaIndex.index.size();
+      properties.put("BCFile Version", reader.readerBCF.version.toString());
+      properties.put("TFile Version", reader.tfileMeta.version.toString());
+      properties.put("File Length", Long.toString(length));
+      properties.put("Data Compression", reader.readerBCF
+          .getDefaultCompressionName());
+      properties.put("Record Count", Long.toString(reader.getEntryCount()));
+      properties.put("Sorted", Boolean.toString(reader.isSorted()));
+      if (reader.isSorted()) {
+        properties.put("Comparator", reader.getComparatorName());
+      }
+      properties.put("Data Block Count", Integer.toString(blockCnt));
+      long dataSize = 0, dataSizeUncompressed = 0;
+      if (blockCnt > 0) {
+        for (int i = 0; i < blockCnt; ++i) {
+          BlockRegion region =
+              reader.readerBCF.dataIndex.getBlockRegionList().get(i);
+          dataSize += region.getCompressedSize();
+          dataSizeUncompressed += region.getRawSize();
+        }
+        properties.put("Data Block Bytes", Long.toString(dataSize));
+        if (!reader.readerBCF.getDefaultCompressionName().equals("none")) {
+          properties.put("Data Block Uncompressed Bytes", Long
+              .toString(dataSizeUncompressed));
+          properties.put("Data Block Compression Ratio", String.format(
+              "1:%.1f", (double) dataSizeUncompressed / dataSize));
+        }
+      }
+
+      properties.put("Meta Block Count", Integer.toString(metaBlkCnt));
+      long metaSize = 0, metaSizeUncompressed = 0;
+      if (metaBlkCnt > 0) {
+        Collection<MetaIndexEntry> metaBlks =
+            reader.readerBCF.metaIndex.index.values();
+        boolean calculateCompression = false;
+        for (Iterator<MetaIndexEntry> it = metaBlks.iterator(); it.hasNext();) {
+          MetaIndexEntry e = it.next();
+          metaSize += e.getRegion().getCompressedSize();
+          metaSizeUncompressed += e.getRegion().getRawSize();
+          if (e.getCompressionAlgorithm() != Compression.Algorithm.NONE) {
+            calculateCompression = true;
+          }
+        }
+        properties.put("Meta Block Bytes", Long.toString(metaSize));
+        if (calculateCompression) {
+          properties.put("Meta Block Uncompressed Bytes", Long
+              .toString(metaSizeUncompressed));
+          properties.put("Meta Block Compression Ratio", String.format(
+              "1:%.1f", (double) metaSizeUncompressed / metaSize));
+        }
+      }
+      properties.put("Meta-Data Size Ratio", String.format("1:%.1f",
+          (double) dataSize / metaSize));
+      long leftOverBytes = length - dataSize - metaSize;
+      long miscSize =
+          BCFile.Magic.size() * 2 + Long.SIZE / Byte.SIZE + Version.size();
+      long metaIndexSize = leftOverBytes - miscSize;
+      properties.put("Meta Block Index Bytes", Long.toString(metaIndexSize));
+      properties.put("Headers Etc Bytes", Long.toString(miscSize));
+      // Now output the properties table.
+      int maxKeyLength = 0;
+      Set<Map.Entry<String, String>> entrySet = properties.entrySet();
+      for (Iterator<Map.Entry<String, String>> it = entrySet.iterator(); it
+          .hasNext();) {
+        Map.Entry<String, String> e = it.next();
+        if (e.getKey().length() > maxKeyLength) {
+          maxKeyLength = e.getKey().length();
+        }
+      }
+      for (Iterator<Map.Entry<String, String>> it = entrySet.iterator(); it
+          .hasNext();) {
+        Map.Entry<String, String> e = it.next();
+        out.printf("%s : %s%n", Align.format(e.getKey(), maxKeyLength,
+            Align.LEFT), e.getValue());
+      }
+      out.println();
+      reader.checkTFileDataIndex();
+      if (blockCnt > 0) {
+        String blkID = "Data-Block";
+        int blkIDWidth = Align.calculateWidth(blkID, blockCnt);
+        int blkIDWidth2 = Align.calculateWidth("", blockCnt);
+        String offset = "Offset";
+        int offsetWidth = Align.calculateWidth(offset, length);
+        String blkLen = "Length";
+        int blkLenWidth =
+            Align.calculateWidth(blkLen, dataSize / blockCnt * 10);
+        String rawSize = "Raw-Size";
+        int rawSizeWidth =
+            Align.calculateWidth(rawSize, dataSizeUncompressed / blockCnt * 10);
+        String records = "Records";
+        int recordsWidth =
+            Align.calculateWidth(records, reader.getEntryCount() / blockCnt
+                * 10);
+        String endKey = "End-Key";
+        int endKeyWidth = Math.max(endKey.length(), maxKeySampleLen * 2 + 5);
+
+        out.printf("%s %s %s %s %s %s%n", Align.format(blkID, blkIDWidth,
+            Align.CENTER), Align.format(offset, offsetWidth, Align.CENTER),
+            Align.format(blkLen, blkLenWidth, Align.CENTER), Align.format(
+                rawSize, rawSizeWidth, Align.CENTER), Align.format(records,
+                recordsWidth, Align.CENTER), Align.format(endKey, endKeyWidth,
+                Align.LEFT));
+
+        for (int i = 0; i < blockCnt; ++i) {
+          BlockRegion region =
+              reader.readerBCF.dataIndex.getBlockRegionList().get(i);
+          TFileIndexEntry indexEntry = reader.tfileIndex.getEntry(i);
+          out.printf("%s %s %s %s %s ", Align.format(Align.format(i,
+              blkIDWidth2, Align.ZERO_PADDED), blkIDWidth, Align.LEFT), Align
+              .format(region.getOffset(), offsetWidth, Align.LEFT), Align
+              .format(region.getCompressedSize(), blkLenWidth, Align.LEFT),
+              Align.format(region.getRawSize(), rawSizeWidth, Align.LEFT),
+              Align.format(indexEntry.kvEntries, recordsWidth, Align.LEFT));
+          byte[] key = indexEntry.key;
+          boolean asAscii = true;
+          int sampleLen = Math.min(maxKeySampleLen, key.length);
+          for (int j = 0; j < sampleLen; ++j) {
+            byte b = key[j];
+            if ((b < 32 && b != 9) || (b == 127)) {
+              asAscii = false;
+            }
+          }
+          if (!asAscii) {
+            out.print("0X");
+            for (int j = 0; j < sampleLen; ++j) {
+              byte b = key[i];
+              out.printf("%X", b);
+            }
+          } else {
+            out.print(new String(key, 0, sampleLen, StandardCharsets.UTF_8));
+          }
+          if (sampleLen < key.length) {
+            out.print("...");
+          }
+          out.println();
+        }
+      }
+
+      out.println();
+      if (metaBlkCnt > 0) {
+        String name = "Meta-Block";
+        int maxNameLen = 0;
+        Set<Map.Entry<String, MetaIndexEntry>> metaBlkEntrySet =
+            reader.readerBCF.metaIndex.index.entrySet();
+        for (Iterator<Map.Entry<String, MetaIndexEntry>> it =
+            metaBlkEntrySet.iterator(); it.hasNext();) {
+          Map.Entry<String, MetaIndexEntry> e = it.next();
+          if (e.getKey().length() > maxNameLen) {
+            maxNameLen = e.getKey().length();
+          }
+        }
+        int nameWidth = Math.max(name.length(), maxNameLen);
+        String offset = "Offset";
+        int offsetWidth = Align.calculateWidth(offset, length);
+        String blkLen = "Length";
+        int blkLenWidth =
+            Align.calculateWidth(blkLen, metaSize / metaBlkCnt * 10);
+        String rawSize = "Raw-Size";
+        int rawSizeWidth =
+            Align.calculateWidth(rawSize, metaSizeUncompressed / metaBlkCnt
+                * 10);
+        String compression = "Compression";
+        int compressionWidth = compression.length();
+        out.printf("%s %s %s %s %s%n", Align.format(name, nameWidth,
+            Align.CENTER), Align.format(offset, offsetWidth, Align.CENTER),
+            Align.format(blkLen, blkLenWidth, Align.CENTER), Align.format(
+                rawSize, rawSizeWidth, Align.CENTER), Align.format(compression,
+                compressionWidth, Align.LEFT));
+
+        for (Iterator<Map.Entry<String, MetaIndexEntry>> it =
+            metaBlkEntrySet.iterator(); it.hasNext();) {
+          Map.Entry<String, MetaIndexEntry> e = it.next();
+          String blkName = e.getValue().getMetaName();
+          BlockRegion region = e.getValue().getRegion();
+          String blkCompression =
+              e.getValue().getCompressionAlgorithm().getName();
+          out.printf("%s %s %s %s %s%n", Align.format(blkName, nameWidth,
+              Align.LEFT), Align.format(region.getOffset(), offsetWidth,
+              Align.LEFT), Align.format(region.getCompressedSize(),
+              blkLenWidth, Align.LEFT), Align.format(region.getRawSize(),
+              rawSizeWidth, Align.LEFT), Align.format(blkCompression,
+              compressionWidth, Align.LEFT));
+        }
+      }
+    } finally {
+      IOUtils.cleanupWithLogger(LOG, reader, fsdis);
+    }
+  }
+}
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/io/file/tfile/TFile, main([Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:55..58]24 - org.apache.hadoop.io.file.tfile.TFile.main([Ljava/lang/String;)V, BB[SSA:54..54]23 - org.apache.hadoop.io.file.tfile.TFile.main([Ljava/lang/String;)V, BB[SSA:59..59]25 - org.apache.hadoop.io.file.tfile.TFile.main([Ljava/lang/String;)V, BB[SSA:-1..-2]29 - org.apache.hadoop.io.file.tfile.TFile.main([Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=2359, lastLineNumber=2364, firstMethodNumber=2348, lastMethodNumber=2366, isFirstLineValid=true, methodSrcCode=
+  public static void main(String[] args) {
+    System.out.printf("TFile Dumper (TFile %s, BCFile %s)%n", TFile.API_VERSION
+        .toString(), BCFile.API_VERSION.toString());
+    if (args.length == 0) {
+      System.out
+          .println("Usage: java ... org.apache.hadoop.io.file.tfile.TFile tfile-path [tfile-path ...]");
+      System.exit(0);
+    }
+    Configuration conf = new Configuration();
+
+    for (String file : args) {
+      System.out.println("===" + file + "===");
+      try {
+        TFileDumper.dumpInfo(file, System.out, conf);
+      } catch (IOException e) {
+        e.printStackTrace(System.err);
+      }
+    }
+  }
+}
+}

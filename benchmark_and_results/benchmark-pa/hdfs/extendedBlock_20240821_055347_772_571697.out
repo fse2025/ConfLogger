@@ -1,0 +1,60 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	IPCLoggerChannelMetrics.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.client.IPCLoggerChannelMetrics.<init>(Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannel;)V	methodLines:	60:83
+blockLines:	67:-1
+paras:	dfs.metrics.percentiles.intervals
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=91) 12,13 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannelMetrics, <init>(Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannel;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannelMetrics, <init>(Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannel;)V > Context: Everywhere[17]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInts(Ljava/lang/String;)[I > 8,10 @33 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannelMetrics, <init>(Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannel;)V > Context: Everywhere[17]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInts(Ljava/lang/String;)[I > 8,10 @33 exception:11
+NORMAL <init>:conditional branch(eq, to iindex=91) 12,13 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannelMetrics, <init>(Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannel;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  
+  private IPCLoggerChannelMetrics(IPCLoggerChannel ch) {
+    this.ch = ch;
+    
+    Configuration conf = new HdfsConfiguration();
+    int[] intervals = 
+        conf.getInts(DFSConfigKeys.DFS_METRICS_PERCENTILES_INTERVALS_KEY);
+    if (intervals != null) {
+      writeEndToEndLatencyQuantiles = new MutableQuantiles[intervals.length];
+      writeRpcLatencyQuantiles = new MutableQuantiles[intervals.length];
+      for (int i = 0; i < writeEndToEndLatencyQuantiles.length; i++) {
+        int interval = intervals[i];
+        writeEndToEndLatencyQuantiles[i] = registry.newQuantiles(
+            "writesE2E" + interval + "s",
+            "End-to-end time for write operations", "ops", "LatencyMicros", interval);
+        writeRpcLatencyQuantiles[i] = registry.newQuantiles(
+            "writesRpc" + interval + "s",
+            "RPC RTT for write operations", "ops", "LatencyMicros", interval);
+      }
+    } else {
+      writeEndToEndLatencyQuantiles = null;
+      writeRpcLatencyQuantiles = null;
+    }
+  }
+  
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannelMetrics, create(Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannel;)Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannelMetrics; > Context: Everywhere, blocks=[BB[SSA:20..22]9 - org.apache.hadoop.hdfs.qjournal.client.IPCLoggerChannelMetrics.create(Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannel;)Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannelMetrics;, BB[SSA:19..19]8 - org.apache.hadoop.hdfs.qjournal.client.IPCLoggerChannelMetrics.create(Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannel;)Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannelMetrics;, BB[SSA:23..24]10 - org.apache.hadoop.hdfs.qjournal.client.IPCLoggerChannelMetrics.create(Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannel;)Lorg/apache/hadoop/hdfs/qjournal/client/IPCLoggerChannelMetrics;], numberOfBasicBlocks=3, firstLineNumber=97, lastLineNumber=98, firstMethodNumber=90, lastMethodNumber=102, isFirstLineValid=true, methodSrcCode=
+  static IPCLoggerChannelMetrics create(IPCLoggerChannel ch) {
+    String name = getName(ch);
+    synchronized (REGISTRY) {
+      IPCLoggerChannelMetrics m = REGISTRY.get(name);
+      if (m != null) {
+        m.setChannel(ch);
+      } else {
+        m = new IPCLoggerChannelMetrics(ch);
+        DefaultMetricsSystem.instance().register(name, null, m);
+        REGISTRY.put(name, m);
+      }
+      return m;
+    }
+  }
+}

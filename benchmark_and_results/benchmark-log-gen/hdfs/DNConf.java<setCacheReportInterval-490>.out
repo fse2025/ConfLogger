@@ -1,0 +1,67 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DNConf.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DNConf.setCacheReportInterval(J)V	methodLines:	490:494
+blockLines:	491:-1
+paras:	dfs.namenode.checkpoint.txns
+TaintedStat:	NORMAL setCacheReportInterval:conditional branch(le, to iindex=7) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, setCacheReportInterval(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere[130]62 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 58,59,60 @303 exception:61
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere[130]62 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 58,59,60 @303 exception:61
+NORMAL run:76 = compare 75,62 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere
+NORMAL run:conditional branch(ge, to iindex=196) 76,28 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=231) 81,82 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere
+NORMAL run:87 = invokestatic < Application, Lorg/apache/hadoop/util/Time, monotonicNow()J > @532 exception:86 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/Time, monotonicNow()J > Context: Everywhere
+NORMAL monotonicNow:return 5 Node: < Extension, Lorg/apache/hadoop/util/Time, monotonicNow()J > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/Time, monotonicNow()J > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/Shell, run()V > Context: Everywhere[5]7 = invokestatic < Extension, Lorg/apache/hadoop/util/Time, monotonicNow()J > @9 exception:6
+NORMAL run:8 = compare 5,7 opcode=cmp Node: < Extension, Lorg/apache/hadoop/util/Shell, run()V > Context: Everywhere
+NORMAL run:conditional branch(le, to iindex=10) 8,9 Node: < Extension, Lorg/apache/hadoop/util/Shell, run()V > Context: Everywhere
+NORMAL run:invokespecial < Extension, Lorg/apache/hadoop/util/Shell, runCommand()V > 1 @37 exception:15 Node: < Extension, Lorg/apache/hadoop/util/Shell, run()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/Shell, runCommand()V > Context: Everywhere
+NORMAL runCommand:invokevirtual < Extension, Ljava/lang/Thread, start()V > 71 @271 exception:73 Node: < Extension, Lorg/apache/hadoop/util/Shell, runCommand()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[554]88 = invokespecial < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfCacheReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @1263 exception:87 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfCacheReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfCacheReportParameters:conditional branch(ne, to iindex=15) 3,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfCacheReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfCacheReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:16 = phi  15,14
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfCacheReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[24]invokevirtual < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, setCacheReportInterval(J)V > 19,16 @50 exception:20 v16
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, setCacheReportInterval(J)V > Context: Everywhere v2
+NORMAL setCacheReportInterval:5 = compare 2,4 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, setCacheReportInterval(J)V > Context: Everywhere
+NORMAL setCacheReportInterval:conditional branch(le, to iindex=7) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, setCacheReportInterval(J)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  void setCacheReportInterval(long intervalMs) {
+    Preconditions.checkArgument(intervalMs > 0,
+        DFS_CACHEREPORT_INTERVAL_MSEC_KEY + " should be larger than 0");
+    cacheReportInterval = intervalMs;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfCacheReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:23..24]9 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfCacheReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:20..22]8 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfCacheReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:25..29]10 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfCacheReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]17 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfCacheReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=734, lastLineNumber=736, firstMethodNumber=729, lastMethodNumber=739, isFirstLineValid=true, methodSrcCode=
+    try {
+      LOG.info("Reconfiguring {} to {}", property, newVal);
+      Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+      long reportInterval = (newVal == null ? DFS_CACHEREPORT_INTERVAL_MSEC_DEFAULT :
+          Long.parseLong(newVal));
+      result = Long.toString(reportInterval);
+      dnConf.setCacheReportInterval(reportInterval);
+      LOG.info("RECONFIGURE* changed {} to {}", property, newVal);
+      return result;
+    } catch (IllegalArgumentException e) {
+      throw new ReconfigurationException(property, newVal, getConf().get(property), e);
+    }
+}

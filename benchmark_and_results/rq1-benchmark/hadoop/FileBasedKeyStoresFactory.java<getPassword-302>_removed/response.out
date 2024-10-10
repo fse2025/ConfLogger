@@ -1,0 +1,19 @@
+```java
+String getPassword(Configuration conf, String alias, String defaultPass) {
+    String password = defaultPass;
+    try {
+        char[] passchars = conf.getPassword(alias);
+        if (passchars != null) {
+            password = new String(passchars);
+        } 
+        // ConfLogger Inserted Start
+        else {
+            logger.warn("Password for alias '" + alias + "' is not set. Using default password: " + defaultPass);
+        }
+        // ConfLogger Inserted End
+    } catch (IOException ioe) {
+        ;
+    }
+    return password;
+}
+```

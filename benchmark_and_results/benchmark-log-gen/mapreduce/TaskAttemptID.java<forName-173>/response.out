@@ -1,0 +1,37 @@
+```java
+if(str == null)
+    return null;
+String exceptionMsg = null;
+try {
+    String[] parts = str.split(Character.toString(SEPARATOR));
+    if(parts.length == 6) {
+        if(parts[0].equals(ATTEMPT)) {
+            String type = parts[3];
+            TaskType t = TaskID.getTaskType(type.charAt(0));
+            if(t != null) {
+                return new org.apache.hadoop.mapred.TaskAttemptID
+                (parts[1],
+                Integer.parseInt(parts[2]),
+                t, Integer.parseInt(parts[4]),
+                Integer.parseInt(parts[5]));
+            } else {
+                // ConfLogger Commented: Not Informative
+                // exceptionMsg = "Bad TaskType identifier. TaskAttemptId string : " + str + " is not properly formed.";
+                // ConfLogger Inserted Start
+                logger.error("Bad TaskType identifier. TaskAttemptId string : {} is not properly formed. TaskType: {}", str, type);
+                // ConfLogger Inserted End
+            }
+        }
+    }
+} catch (Exception ex) {
+    //fall below
+}
+if (exceptionMsg == null) {
+    // ConfLogger Commented: Not Informative
+    // exceptionMsg = "TaskAttemptId string : " + str + " is not properly formed";
+    // ConfLogger Inserted Start
+    logger.error("TaskAttemptId string : {} is not properly formed. Expected format: <ATTEMPT><SEPARATOR><jobId><SEPARATOR><taskType><SEPARATOR><taskId><SEPARATOR><attemptId>", str);
+    // ConfLogger Inserted End
+}
+throw new IllegalArgumentException(exceptionMsg);
+```

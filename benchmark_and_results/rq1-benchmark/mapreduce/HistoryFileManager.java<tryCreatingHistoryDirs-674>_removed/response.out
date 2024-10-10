@@ -1,0 +1,51 @@
+```java
+boolean tryCreatingHistoryDirs(boolean logWait) throws IOException {
+    boolean succeeded = true;
+    String doneDirPrefix = JobHistoryUtils.getConfiguredHistoryServerDoneDirPrefix(conf);
+    try {
+        doneDirPrefixPath = FileContext.getFileContext(conf).makeQualified(new Path(doneDirPrefix));
+        doneDirFc = FileContext.getFileContext(doneDirPrefixPath.toUri(), conf);
+        doneDirFc.setUMask(JobHistoryUtils.HISTORY_DONE_DIR_UMASK);
+        mkdir(doneDirFc, doneDirPrefixPath, new FsPermission(JobHistoryUtils.HISTORY_DONE_DIR_PERMISSION));
+    } catch (ConnectException ex) {
+        if (logWait) {
+            // ConfLogger Inserted Start
+            logger.warn("Connection exception occurred while trying to create the done directory. The system will retry. Ensure the FileSystem is available. DoneDirPrefix: " + doneDirPrefix);
+            // ConfLogger Inserted End
+        }
+        succeeded = false;
+    } catch (IOException e) {
+        if (isNameNodeStillNotStarted(e)) {
+            succeeded = false;
+            if (logWait) {
+                LOG.info("Waiting for FileSystem at " + doneDirPrefixPath.toUri().getAuthority() + " to be out of safe mode");
+            }
+        } else {
+            throw new YarnRuntimeException("Error creating done directory: [" + doneDirPrefixPath + "]", e);
+        }
+    }
+    if (succeeded) {
+        String intermediateDoneDirPrefix = JobHistoryUtils.getConfiguredHistoryIntermediateDoneDirPrefix(conf);
+        try {
+            intermediateDoneDirPath = FileContext.getFileContext(conf).makeQualified(new Path(intermediateDoneDirPrefix));
+            intermediateDoneDirFc = FileContext.getFileContext(intermediateDoneDirPath.toUri(), conf);
+            mkdir(intermediateDoneDirFc, intermediateDoneDirPath, new FsPermission(JobHistoryUtils.HISTORY_INTERMEDIATE_DONE_DIR_PERMISSIONS.toShort()));
+        } catch (ConnectException ex) {
+            succeeded = false;
+            if (logWait) {
+                LOG.info("Waiting for FileSystem at " + intermediateDoneDirPath.toUri().getAuthority() + " to be available");
+            }
+        } catch (IOException e) {
+            if (isNameNodeStillNotStarted(e)) {
+                succeeded = false;
+                if (logWait) {
+                    LOG.info("Waiting for FileSystem at " + intermediateDoneDirPath.toUri().getAuthority() + " to be out of safe mode");
+                }
+            } else {
+                throw new YarnRuntimeException("Error creating intermediate done directory: [" + intermediateDoneDirPath + "]", e);
+            }
+        }
+    }
+    return succeeded;
+}
+```

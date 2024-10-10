@@ -1,0 +1,74 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NetUtils.java	methodSinagture:	org.apache.hadoop.net.NetUtils.createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress;	methodLines:	220:246
+blockLines:	225:-1
+paras:	null
+TaintedStat:	NORMAL createSocketAddr:conditional branch(ne, to iindex=31) 1,7 Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, getSocketAddr(Ljava/lang/String;Ljava/lang/String;I)Ljava/net/InetSocketAddress; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @3 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, getSocketAddr(Ljava/lang/String;Ljava/lang/String;I)Ljava/net/InetSocketAddress; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @3 exception:6
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, getSocketAddr(Ljava/lang/String;Ljava/lang/String;I)Ljava/net/InetSocketAddress; > Context: Everywhere[8]9 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress; > 7,4,2 @12 exception:8 v7
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere[4]7 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > 1,2,3,5 @4 exception:6 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > Context: Everywhere v1
+NORMAL createSocketAddr:conditional branch(ne, to iindex=31) 1,7 Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NetUtils.java	methodSinagture:	org.apache.hadoop.net.NetUtils.createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress;	methodLines:	220:246
+blockLines:	240:-1
+paras:	null
+TaintedStat:	NORMAL createSocketAddr:conditional branch(lt, to iindex=74) 33,36 Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getCanonicalServiceName()Ljava/lang/String; > Context: Everywhere[7]9 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getDefaultPort()I > 1 @12 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getCanonicalServiceName()Ljava/lang/String; > Context: Everywhere[7]9 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getDefaultPort()I > 1 @12 exception:8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getCanonicalServiceName()Ljava/lang/String; > Context: Everywhere[8]11 = invokestatic < Application, Lorg/apache/hadoop/security/SecurityUtil, buildDTServiceName(Ljava/net/URI;I)Ljava/lang/String; > 7,9 @15 exception:10 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, buildDTServiceName(Ljava/net/URI;I)Ljava/lang/String; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, buildDTServiceName(Ljava/net/URI;I)Ljava/lang/String; > Context: Everywhere[10]8 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;I)Ljava/net/InetSocketAddress; > 5,2 @13 exception:7 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;I)Ljava/net/InetSocketAddress; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;I)Ljava/net/InetSocketAddress; > Context: Everywhere[3]6 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress; > 1,2,4 @3 exception:5 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere[4]7 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > 1,2,3,5 @4 exception:6 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > Context: Everywhere v2
+PHI Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > Context: Everywhere:33 = phi  31,2
+NORMAL createSocketAddr:conditional branch(lt, to iindex=74) 33,36 Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                                   boolean useCacheIfPresent) {
+    String helpText = "";
+    if (configName != null) {
+      helpText = " (configuration property '" + configName + "')";
+    }
+    if (target == null) {
+      throw new IllegalArgumentException("Target address cannot be null." +
+          helpText);
+    }
+    target = target.trim();
+    boolean hasScheme = target.contains("://");
+    URI uri = createURI(target, hasScheme, helpText, useCacheIfPresent);
+
+    String host = uri.getHost();
+    int port = uri.getPort();
+    if (port == -1) {
+      port = defaultPort;
+    }
+    String path = uri.getPath();
+
+    if ((host == null) || (port < 0) ||
+        (!hasScheme && path != null && !path.isEmpty())) {
+      throw new IllegalArgumentException(
+          "Does not contain a valid host:port authority: " + target + helpText
+      );
+    }
+    return createSocketAddrForHost(host, port);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.net.NetUtils.createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress;, BB[SSA:-1..-2]0 - org.apache.hadoop.net.NetUtils.createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress;, BB[SSA:5..5]2 - org.apache.hadoop.net.NetUtils.createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress;, BB[SSA:-1..-2]3 - org.apache.hadoop.net.NetUtils.createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress;], numberOfBasicBlocks=4, firstLineNumber=197, lastLineNumber=198, firstMethodNumber=197, lastMethodNumber=198, isFirstLineValid=false, methodSrcCode=
+                                                   String configName) {
+    return createSocketAddr(target, defaultPort, configName, false);
+  }
+}

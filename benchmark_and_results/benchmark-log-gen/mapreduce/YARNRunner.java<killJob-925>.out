@@ -1,0 +1,67 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.killJob(Lorg/apache/hadoop/mapreduce/JobID;)V	methodLines:	925:969
+blockLines:	948:-1
+paras:	yarn.app.mapreduce.am.hard-kill-timeout-ms
+TaintedStat:	NORMAL killJob:conditional branch(ge, to iindex=76) 30,31 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, killJob(Lorg/apache/hadoop/mapreduce/JobID;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, killJob(Lorg/apache/hadoop/mapreduce/JobID;)V > Context: Everywhere[41]28 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 24,25,26 @79 exception:27
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, killJob(Lorg/apache/hadoop/mapreduce/JobID;)V > Context: Everywhere[41]28 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 24,25,26 @79 exception:27
+NORMAL killJob:29 = binaryop(add) 23 , 28 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, killJob(Lorg/apache/hadoop/mapreduce/JobID;)V > Context: Everywhere
+NORMAL killJob:30 = compare 44,29 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, killJob(Lorg/apache/hadoop/mapreduce/JobID;)V > Context: Everywhere
+NORMAL killJob:conditional branch(ge, to iindex=76) 30,31 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, killJob(Lorg/apache/hadoop/mapreduce/JobID;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    /* check if the status is not running, if not send kill to RM */
+    JobStatus status = clientCache.getClient(arg0).getJobStatus(arg0);
+    ApplicationId appId = TypeConverter.toYarn(arg0).getAppId();
+
+    // get status from RM and return
+    if (status == null) {
+      killUnFinishedApplication(appId);
+      return;
+    }
+
+    if (status.getState() != JobStatus.State.RUNNING) {
+      killApplication(appId);
+      return;
+    }
+
+    try {
+      /* send a kill to the AM */
+      clientCache.getClient(arg0).killJob(arg0);
+      long currentTimeMillis = System.currentTimeMillis();
+      long timeKillIssued = currentTimeMillis;
+      long killTimeOut =
+          conf.getLong(MRJobConfig.MR_AM_HARD_KILL_TIMEOUT_MS,
+                       MRJobConfig.DEFAULT_MR_AM_HARD_KILL_TIMEOUT_MS);
+      while ((currentTimeMillis < timeKillIssued + killTimeOut)
+          && !isJobInTerminalState(status)) {
+        try {
+          Thread.sleep(1000L);
+        } catch (InterruptedException ie) {
+          /** interrupted, just break */
+          break;
+        }
+        currentTimeMillis = System.currentTimeMillis();
+        status = clientCache.getClient(arg0).getJobStatus(arg0);
+        if (status == null) {
+          killUnFinishedApplication(appId);
+          return;
+        }
+      }
+    } catch(IOException io) {
+      LOG.debug("Error when checking for application status", io);
+    }
+    if (status != null && !isJobInTerminalState(status)) {
+      killApplication(appId);
+    }
+  }
+
+
+
+====================ctx:=======================

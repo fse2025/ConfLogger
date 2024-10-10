@@ -1,0 +1,67 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	LogAggregationFileController.java	methodSinagture:	org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.extractRemoteRootLogDir()V	methodLines:	279:289
+blockLines:	284:-1
+paras:	yarn.nodemanager.remote-app-log-dir
+TaintedStat:	NORMAL extractRemoteRootLogDir:conditional branch(eq, to iindex=28) 15,6 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDir()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDir()V > Context: Everywhere[26]20 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 16,17,18 @45 exception:19
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDir()V > Context: Everywhere[26]20 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 16,17,18 @45 exception:19
+PHI Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDir()V > Context: Everywhere:21 = phi  12,20
+NORMAL extractRemoteRootLogDir:invokespecial < Application, Lorg/apache/hadoop/fs/Path, <init>(Ljava/lang/String;)V > 22,21 @55 exception:23 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDir()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/fs/Path, <init>(Ljava/lang/String;)V > Context: Everywhere
+PHI Node: < Extension, Lorg/apache/hadoop/fs/Path, <init>(Ljava/lang/String;)V > Context: Everywhere:33 = phi  22,22,30
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/fs/Path, <init>(Ljava/lang/String;)V > Context: Everywhere[102]invokespecial < Extension, Lorg/apache/hadoop/fs/Path, initialize(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > 1,33,51,56,22 @185 exception:57 v33
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/fs/Path, initialize(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/fs/Path, initialize(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[7]9 = invokestatic < Extension, Lorg/apache/hadoop/fs/Path, normalizePath(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,4 @9 exception:8 v2
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/fs/Path, normalizePath(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL normalizePath:16 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 1 @31 exception:15 Node: < Extension, Lorg/apache/hadoop/fs/Path, normalizePath(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDir()V > Context: Everywhere[19]15 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 12 @31 exception:14
+NORMAL extractRemoteRootLogDir:conditional branch(eq, to iindex=28) 15,6 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDir()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void extractRemoteRootLogDir() {
+    String remoteDirStr = String.format(
+        YarnConfiguration.LOG_AGGREGATION_REMOTE_APP_LOG_DIR_FMT,
+        fileControllerName);
+    String remoteDir = conf.get(remoteDirStr);
+    if (remoteDir == null || remoteDir.isEmpty()) {
+      remoteDir = conf.get(YarnConfiguration.NM_REMOTE_APP_LOG_DIR,
+          YarnConfiguration.DEFAULT_NM_REMOTE_APP_LOG_DIR);
+    }
+    remoteRootLogDir = new Path(remoteDir);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:21..22]8 - org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:18..20]7 - org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:23..24]9 - org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:-1..-2]12 - org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=131, lastLineNumber=134, firstMethodNumber=118, lastMethodNumber=137, isFirstLineValid=true, methodSrcCode=
+  public void initialize(Configuration conf, String controllerName) {
+    this.conf = conf;
+    int configuredRetentionSize = conf.getInt(
+        YarnConfiguration.NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP,
+        YarnConfiguration
+            .DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP);
+    if (configuredRetentionSize <= 0) {
+      this.retentionSize =
+          YarnConfiguration
+              .DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP;
+    } else {
+      this.retentionSize = configuredRetentionSize;
+    }
+    this.fileControllerName = controllerName;
+
+    extractRemoteRootLogDir();
+    extractRemoteRootLogDirSuffix();
+
+    initInternal(conf);
+  }
+
+}

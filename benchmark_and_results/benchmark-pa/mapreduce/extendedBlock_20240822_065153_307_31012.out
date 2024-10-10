@@ -1,0 +1,56 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TokenCache.java	methodSinagture:	org.apache.hadoop.mapreduce.security.TokenCache.isTokenRenewalExcluded(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/conf/Configuration;)Z	methodLines:	106:117
+blockLines:	109:-1
+paras:	null
+TaintedStat:	NORMAL isTokenRenewalExcluded:conditional branch(eq, to iindex=31) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, isTokenRenewalExcluded(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, isTokenRenewalExcluded(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 2,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, isTokenRenewalExcluded(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 2,4 @3 exception:5
+NORMAL isTokenRenewalExcluded:conditional branch(eq, to iindex=31) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, isTokenRenewalExcluded(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static boolean isTokenRenewalExcluded(FileSystem fs, Configuration conf) {
+    String [] nns =
+        conf.getStrings(MRJobConfig.JOB_NAMENODES_TOKEN_RENEWAL_EXCLUDE);
+    if (nns != null) {
+      String host = fs.getUri().getHost();
+      for(int i=0; i< nns.length; i++) {
+        if (nns[i].equals(host)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:5..6]2 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:-1..-2]27 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=130, lastLineNumber=132, firstMethodNumber=130, lastMethodNumber=150, isFirstLineValid=false, methodSrcCode=
+    // RM skips renewing token with empty renewer
+    String delegTokenRenewer = "";
+    if (!isTokenRenewalExcluded(fs, conf)) {
+      if (StringUtils.isEmpty(renewer)) {
+        throw new IOException(
+            "Can't get Master Kerberos principal for use as renewer");
+      } else {
+        delegTokenRenewer = renewer;
+      }
+    }
+
+    mergeBinaryTokens(credentials, conf);
+
+    final Token<?> tokens[] = fs.addDelegationTokens(delegTokenRenewer,
+                                                     credentials);
+    if (tokens != null) {
+      for (Token<?> token : tokens) {
+        LOG.info("Got dt for " + fs.getUri() + "; "+token);
+      }
+    }
+  }
+
+}

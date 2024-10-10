@@ -1,0 +1,30 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DefaultStorageTierAssoc.java	methodSinagture:	alluxio.DefaultStorageTierAssoc.<init>(Lalluxio/conf/PropertyKey;Lalluxio/conf/PropertyKey$Template;)V	methodLines:	66:75
+blockLines:	70:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(ge, to iindex=36) 24,7 Node: < Application, Lalluxio/DefaultStorageTierAssoc, <init>(Lalluxio/conf/PropertyKey;Lalluxio/conf/PropertyKey$Template;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/DefaultStorageTierAssoc, <init>(Lalluxio/conf/PropertyKey;Lalluxio/conf/PropertyKey$Template;)V > Context: Everywhere[3]7 = invokestatic < Application, Lalluxio/conf/Configuration, getInt(Lalluxio/conf/PropertyKey;)I > 2 @5 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/DefaultStorageTierAssoc, <init>(Lalluxio/conf/PropertyKey;Lalluxio/conf/PropertyKey$Template;)V > Context: Everywhere[3]7 = invokestatic < Application, Lalluxio/conf/Configuration, getInt(Lalluxio/conf/PropertyKey;)I > 2 @5 exception:6
+NORMAL <init>:conditional branch(ge, to iindex=36) 24,7 Node: < Application, Lalluxio/DefaultStorageTierAssoc, <init>(Lalluxio/conf/PropertyKey;Lalluxio/conf/PropertyKey$Template;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+   */
+  public DefaultStorageTierAssoc(PropertyKey levelsProperty, PropertyKey.Template template) {
+    int levels = Configuration.getInt(levelsProperty);
+    ImmutableBiMap.Builder<String, Integer> builder = new ImmutableBiMap.Builder<>();
+    for (int i = 0; i < levels; i++) {
+      String alias = Configuration.getString(template.format(i));
+      builder.put(alias, i);
+    }
+    mAliasToOrdinal = builder.build();
+  }
+
+
+
+====================ctx:=======================

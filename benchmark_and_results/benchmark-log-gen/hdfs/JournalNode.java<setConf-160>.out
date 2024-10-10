@@ -1,0 +1,110 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JournalNode.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.server.JournalNode.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	160:195
+blockLines:	183:-1
+paras:	dfs.journalnode.edits.dir
+TaintedStat:	NORMAL setConf:conditional branch(ne, to iindex=52) 36,4 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[50]40 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,37,38 @107 exception:39
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[50]40 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,37,38 @107 exception:39
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere:41 = phi  36,40
+NORMAL setConf:45 = invokevirtual < Application, Ljava/lang/String, trim()Ljava/lang/String; > 41 @120 exception:44 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL trim:return 14 Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/authorize/AccessControlList, isWildCardACLValue(Ljava/lang/String;)Z > Context: Everywhere[6]9 = invokevirtual < Extension, Ljava/lang/String, trim()Ljava/lang/String; > 2 @10 exception:8
+NORMAL isWildCardACLValue:11 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 9,4 @15 exception:10 Node: < Extension, Lorg/apache/hadoop/security/authorize/AccessControlList, isWildCardACLValue(Ljava/lang/String;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[14]19 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 16,17 @31 exception:18
+NORMAL getCodecClasses:conditional branch(eq, to iindex=23) 19,20 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+NORMAL getCodecClasses:22 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,16 @52 exception:21 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[41]35 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,33 @91 exception:34
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere:36 = phi  35,4
+NORMAL setConf:conditional branch(ne, to iindex=52) 36,4 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JournalNode.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.server.JournalNode.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	160:195
+blockLines:	169:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(ne, to iindex=17) 9,10 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[41]35 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,33 @91 exception:34
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[41]35 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,33 @91 exception:34
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere:36 = phi  35,4
+NORMAL setConf:conditional branch(ne, to iindex=52) 36,4 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:40 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,37,38 @107 exception:39 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 23 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/http/HttpServer2$Builder, setEnabledProtocols(Lorg/eclipse/jetty/util/ssl/SslContextFactory;)V > Context: Everywhere[4]8 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 4,5,6 @8 exception:7
+NORMAL setEnabledProtocols:10 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 8,6 @15 exception:9 Node: < Extension, Lorg/apache/hadoop/http/HttpServer2$Builder, setEnabledProtocols(Lorg/eclipse/jetty/util/ssl/SslContextFactory;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere[88]38 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 36,8 @154 exception:37
+NORMAL runCmd:conditional branch(eq, to iindex=95) 38,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+NORMAL runCmd:66 = invokespecial < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > 1,25 @163 exception:65 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:conditional branch(eq, to iindex=18) 6,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:13 = invokevirtual < Extension, Lorg/apache/hadoop/ha/HAAdmin, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @40 exception:12 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL getConf:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[1]5 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:4
+NORMAL run:7 = invokestatic < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > 5,1,2 @8 exception:6 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, setConf(Lorg/apache/hadoop/conf/Configuration;)V > 2,17 @51 exception:20 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(ne, to iindex=17) 9,10 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setConf(Configuration conf) {
+    this.conf = conf;
+
+    String journalNodeDir = null;
+    Collection<String> nameserviceIds;
+
+    nameserviceIds = conf.getTrimmedStringCollection(
+        DFSConfigKeys.DFS_INTERNAL_NAMESERVICES_KEY);
+
+    if (nameserviceIds.size() == 0) {
+      nameserviceIds = conf.getTrimmedStringCollection(
+          DFSConfigKeys.DFS_NAMESERVICES);
+    }
+
+    //if nameservicesIds size is less than 2, it means it is not a federated
+    // setup
+    if (nameserviceIds.size() < 2) {
+      // Check in HA, if journal edit dir is set by appending with
+      // nameserviceId
+      for (String nameService : nameserviceIds) {
+        journalNodeDir = conf.get(DFSConfigKeys.DFS_JOURNALNODE_EDITS_DIR_KEY +
+        "." + nameService);
+      }
+      if (journalNodeDir == null) {
+        journalNodeDir = conf.get(DFSConfigKeys.DFS_JOURNALNODE_EDITS_DIR_KEY,
+            DFSConfigKeys.DFS_JOURNALNODE_EDITS_DIR_DEFAULT);
+      }
+      localDir.add(new File(journalNodeDir.trim()));
+    }
+
+    if (this.tracer == null) {
+      this.tracer = new Tracer.Builder("JournalNode").
+          conf(TraceUtils.wrapHadoopConf("journalnode.htrace", conf)).
+          build();
+    }
+  }
+
+
+
+====================ctx:=======================

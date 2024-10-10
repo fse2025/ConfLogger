@@ -1,0 +1,35 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CsiConfigUtils.java	methodSinagture:	org.apache.hadoop.yarn.util.csi.CsiConfigUtils.getCsiAdaptorAddressForDriver(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress;	methodLines:	62:76
+blockLines:	71:-1
+paras:	null
+TaintedStat:	NORMAL getCsiAdaptorAddressForDriver:conditional branch(ne, to iindex=40) 36,33 Node: < Application, Lorg/apache/hadoop/yarn/util/csi/CsiConfigUtils, getCsiAdaptorAddressForDriver(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/csi/CsiConfigUtils, getCsiAdaptorAddressForDriver(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress; > Context: Everywhere[30]36 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getSocketAddr(Ljava/lang/String;Ljava/lang/String;I)Ljava/net/InetSocketAddress; > 2,15,33,34 @63 exception:35
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/csi/CsiConfigUtils, getCsiAdaptorAddressForDriver(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress; > Context: Everywhere[30]36 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getSocketAddr(Ljava/lang/String;Ljava/lang/String;I)Ljava/net/InetSocketAddress; > 2,15,33,34 @63 exception:35
+NORMAL getCsiAdaptorAddressForDriver:conditional branch(ne, to iindex=40) 36,33 Node: < Application, Lorg/apache/hadoop/yarn/util/csi/CsiConfigUtils, getCsiAdaptorAddressForDriver(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String driverName, Configuration conf) throws YarnException {
+    String configName = YarnConfiguration.NM_CSI_ADAPTOR_PREFIX
+        + driverName + YarnConfiguration.NM_CSI_ADAPTOR_ADDRESS_SUFFIX;
+    String errorMessage = "Failed to load CSI adaptor address for driver "
+        + driverName + ", configuration property " + configName
+        + " is not defined or invalid.";
+    try {
+      InetSocketAddress address = conf
+          .getSocketAddr(configName, null, -1);
+      if (address == null) {
+        throw new YarnException(errorMessage);
+      }
+      return address;
+    } catch (IllegalArgumentException e) {
+      throw new YarnException(errorMessage);
+    }
+
+
+====================ctx:=======================

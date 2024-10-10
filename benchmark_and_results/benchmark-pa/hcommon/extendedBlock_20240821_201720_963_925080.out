@@ -1,0 +1,44 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StaticUserWebFilter.java	methodSinagture:	org.apache.hadoop.http.lib.StaticUserWebFilter.getUsernameFromConf(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	137:147
+blockLines:	139:-1
+paras:	null
+TaintedStat:	NORMAL getUsernameFromConf:conditional branch(eq, to iindex=18) 5,6 Node: < Application, Lorg/apache/hadoop/http/lib/StaticUserWebFilter, getUsernameFromConf(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/http/lib/StaticUserWebFilter, getUsernameFromConf(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/http/lib/StaticUserWebFilter, getUsernameFromConf(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+NORMAL getUsernameFromConf:conditional branch(eq, to iindex=18) 5,6 Node: < Application, Lorg/apache/hadoop/http/lib/StaticUserWebFilter, getUsernameFromConf(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static String getUsernameFromConf(Configuration conf) {
+    String oldStyleUgi = conf.get(DEPRECATED_UGI_KEY);
+    if (oldStyleUgi != null) {
+      // We can't use the normal configuration deprecation mechanism here
+      // since we need to split out the username from the configured UGI.
+      LOG.warn(DEPRECATED_UGI_KEY + " should not be used. Instead, use " + 
+          HADOOP_HTTP_STATIC_USER + ".");
+      String[] parts = oldStyleUgi.split(",");
+      return parts[0];
+    } else {
+      return conf.get(HADOOP_HTTP_STATIC_USER,
+        DEFAULT_HADOOP_HTTP_STATIC_USER);
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/http/lib/StaticUserWebFilter, initFilter(Lorg/apache/hadoop/http/FilterContainer;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:3..5]3 - org.apache.hadoop.http.lib.StaticUserWebFilter.initFilter(Lorg/apache/hadoop/http/FilterContainer;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:1..2]2 - org.apache.hadoop.http.lib.StaticUserWebFilter.initFilter(Lorg/apache/hadoop/http/FilterContainer;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:6..10]4 - org.apache.hadoop.http.lib.StaticUserWebFilter.initFilter(Lorg/apache/hadoop/http/FilterContainer;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]9 - org.apache.hadoop.http.lib.StaticUserWebFilter.initFilter(Lorg/apache/hadoop/http/FilterContainer;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=124, lastLineNumber=127, firstMethodNumber=123, lastMethodNumber=132, isFirstLineValid=true, methodSrcCode=
+  public void initFilter(FilterContainer container, Configuration conf) {
+    HashMap<String, String> options = new HashMap<String, String>();
+    
+    String username = getUsernameFromConf(conf);
+    options.put(HADOOP_HTTP_STATIC_USER, username);
+
+    container.addFilter("static_user_filter", 
+                        StaticUserFilter.class.getName(), 
+                        options);
+  }
+
+}

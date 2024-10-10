@@ -1,0 +1,20 @@
+```java
+Class<? extends CompressionCodec> codecClass = defaultValue;
+
+String name = conf.get(org.apache.hadoop.mapreduce.lib.output.
+FileOutputFormat.COMPRESS_CODEC);
+if (name != null) {
+    try {
+        codecClass =
+        conf.getClassByName(name).asSubclass(CompressionCodec.class);
+    } catch (ClassNotFoundException e) {
+        // ConfLogger Inserted Start
+        logger.error("Compression codec configuration error: The specified codec class '" + name + "' was not found. Please ensure the configuration parameter 'org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.COMPRESS_CODEC' is set to a valid codec class name.", e);
+        // ConfLogger Inserted End
+        throw new IllegalArgumentException("Compression codec " + name +
+        " was not found.", e);
+    }
+}
+return codecClass;
+}
+```

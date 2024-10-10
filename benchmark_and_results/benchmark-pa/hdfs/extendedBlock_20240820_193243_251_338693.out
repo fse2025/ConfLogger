@@ -1,0 +1,112 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	843:863
+blockLines:	848:-1
+paras:	dfs.namenode.metrics.logger.period.seconds
+TaintedStat:	NORMAL startMetricsLogger:conditional branch(gt, to iindex=12) 10,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,4,5 @6 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,4,5 @6 exception:6
+NORMAL startMetricsLogger:8 = conversion(J) 7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL startMetricsLogger:10 = compare 8,9 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL startMetricsLogger:conditional branch(gt, to iindex=12) 10,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected void startMetricsLogger(Configuration conf) {
+    long metricsLoggerPeriodSec =
+        conf.getInt(DFS_NAMENODE_METRICS_LOGGER_PERIOD_SECONDS_KEY,
+            DFS_NAMENODE_METRICS_LOGGER_PERIOD_SECONDS_DEFAULT);
+
+    if (metricsLoggerPeriodSec <= 0) {
+      return;
+    }
+
+    MetricsLoggerTask.makeMetricsLoggerAsync(MetricsLog);
+
+    // Schedule the periodic logging.
+    metricsLoggerTimer = new ScheduledThreadPoolExecutor(1);
+    metricsLoggerTimer.setExecuteExistingDelayedTasksAfterShutdownPolicy(
+        false);
+    metricsLoggerTimer.scheduleWithFixedDelay(new MetricsLoggerTask(MetricsLog,
+        "NameNode", (short) 128),
+        metricsLoggerPeriodSec,
+        metricsLoggerPeriodSec,
+        TimeUnit.SECONDS);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:149..151]72 - org.apache.hadoop.hdfs.server.namenode.NameNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:146..148]71 - org.apache.hadoop.hdfs.server.namenode.NameNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:152..152]73 - org.apache.hadoop.hdfs.server.namenode.NameNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]74 - org.apache.hadoop.hdfs.server.namenode.NameNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=804, lastLineNumber=806, firstMethodNumber=741, lastMethodNumber=806, isFirstLineValid=true, methodSrcCode=
+  protected void initialize(Configuration conf) throws IOException {
+    if (conf.get(HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS) == null) {
+      String intervals = conf.get(DFS_METRICS_PERCENTILES_INTERVALS_KEY);
+      if (intervals != null) {
+        conf.set(HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS,
+          intervals);
+      }
+    }
+
+    UserGroupInformation.setConfiguration(conf);
+    loginAsNameNodeUser(conf);
+
+    NameNode.initMetrics(conf, this.getRole());
+    StartupProgressMetrics.register(startupProgress);
+
+    pauseMonitor = new JvmPauseMonitor();
+    pauseMonitor.init(conf);
+    pauseMonitor.start();
+    metrics.getJvmMetrics().setPauseMonitor(pauseMonitor);
+
+    if (conf.getBoolean(DFS_NAMENODE_GC_TIME_MONITOR_ENABLE,
+        DFS_NAMENODE_GC_TIME_MONITOR_ENABLE_DEFAULT)) {
+      long observationWindow = conf.getTimeDuration(
+          DFS_NAMENODE_GC_TIME_MONITOR_OBSERVATION_WINDOW_MS,
+          DFS_NAMENODE_GC_TIME_MONITOR_OBSERVATION_WINDOW_MS_DEFAULT,
+          TimeUnit.MILLISECONDS);
+      long sleepInterval = conf.getTimeDuration(
+          DFS_NAMENODE_GC_TIME_MONITOR_SLEEP_INTERVAL_MS,
+          DFS_NAMENODE_GC_TIME_MONITOR_SLEEP_INTERVAL_MS_DEFAULT,
+          TimeUnit.MILLISECONDS);
+      gcTimeMonitor = new Builder().observationWindowMs(observationWindow)
+          .sleepIntervalMs(sleepInterval).build();
+      gcTimeMonitor.start();
+      metrics.getJvmMetrics().setGcTimeMonitor(gcTimeMonitor);
+    }
+
+    if (NamenodeRole.NAMENODE == role) {
+      startHttpServer(conf);
+    }
+
+    loadNamesystem(conf);
+    startAliasMapServerIfNecessary(conf);
+
+    rpcServer = createRpcServer(conf);
+
+    initReconfigurableBackoffKey();
+
+    if (clientNamenodeAddress == null) {
+      // This is expected for MiniDFSCluster. Set it now using 
+      // the RPC server's bind address.
+      clientNamenodeAddress = 
+          NetUtils.getHostPortString(getNameNodeAddress());
+      LOG.info("Clients are to use " + clientNamenodeAddress + " to access"
+          + " this namenode/service.");
+    }
+    if (NamenodeRole.NAMENODE == role) {
+      httpServer.setNameNodeAddress(getNameNodeAddress());
+      httpServer.setFSImage(getFSImage());
+      if (levelDBAliasMapServer != null) {
+        httpServer.setAliasMap(levelDBAliasMapServer.getAliasMap());
+      }
+    }
+
+    startCommonServices(conf);
+    startMetricsLogger(conf);
+  }
+
+}

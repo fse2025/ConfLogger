@@ -1,0 +1,186 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileInputFormat.java	methodSinagture:	org.apache.hadoop.mapred.FileInputFormat.listStatus(Lorg/apache/hadoop/mapred/JobConf;)[Lorg/apache/hadoop/fs/FileStatus;	methodLines:	214:267
+blockLines:	243:-1
+paras:	mapreduce.input.fileinputformat.list-status.num-threads
+TaintedStat:	NORMAL listStatus:conditional branch(ne, to iindex=73) 29,27 Node: < Application, Lorg/apache/hadoop/mapred/FileInputFormat, listStatus(Lorg/apache/hadoop/mapred/JobConf;)[Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/FileInputFormat, listStatus(Lorg/apache/hadoop/mapred/JobConf;)[Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[48]29 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 2,26,27 @93 exception:28
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/FileInputFormat, listStatus(Lorg/apache/hadoop/mapred/JobConf;)[Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere[48]29 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 2,26,27 @93 exception:28
+NORMAL listStatus:conditional branch(ne, to iindex=73) 29,27 Node: < Application, Lorg/apache/hadoop/mapred/FileInputFormat, listStatus(Lorg/apache/hadoop/mapred/JobConf;)[Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected FileStatus[] listStatus(JobConf job) throws IOException {
+    Path[] dirs = getInputPaths(job);
+    if (dirs.length == 0) {
+      throw new IOException("No input paths specified in job");
+    }
+
+    // get tokens for all the required FileSystems..
+    TokenCache.obtainTokensForNamenodes(job.getCredentials(), dirs, job);
+    
+    // Whether we need to recursive look into the directory structure
+    boolean recursive = job.getBoolean(INPUT_DIR_RECURSIVE, false);
+
+    // creates a MultiPathFilter with the hiddenFileFilter and the
+    // user provided one (if any).
+    List<PathFilter> filters = new ArrayList<PathFilter>();
+    filters.add(hiddenFileFilter);
+    PathFilter jobFilter = getInputPathFilter(job);
+    if (jobFilter != null) {
+      filters.add(jobFilter);
+    }
+    PathFilter inputFilter = new MultiPathFilter(filters);
+
+    FileStatus[] result;
+    int numThreads = job
+        .getInt(
+            org.apache.hadoop.mapreduce.lib.input.FileInputFormat.LIST_STATUS_NUM_THREADS,
+            org.apache.hadoop.mapreduce.lib.input.FileInputFormat.DEFAULT_LIST_STATUS_NUM_THREADS);
+    
+    StopWatch sw = new StopWatch().start();
+    if (numThreads == 1) {
+      List<FileStatus> locatedFiles = singleThreadedListStatus(job, dirs, inputFilter, recursive); 
+      result = locatedFiles.toArray(new FileStatus[locatedFiles.size()]);
+    } else {
+      Iterable<FileStatus> locatedFiles = null;
+      try {
+        
+        LocatedFileStatusFetcher locatedFileStatusFetcher = new LocatedFileStatusFetcher(
+            job, dirs, recursive, inputFilter, false);
+        locatedFiles = locatedFileStatusFetcher.getFileStatuses();
+      } catch (InterruptedException e) {
+        throw  (IOException)
+            new InterruptedIOException("Interrupted while getting file statuses")
+                .initCause(e);
+      }
+      result = Iterables.toArray(locatedFiles, FileStatus.class);
+    }
+
+    sw.stop();
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("Time taken to get FileStatuses: "
+          + sw.now(TimeUnit.MILLISECONDS));
+    }
+    LOG.info("Total input files to process : " + result.length);
+    return result;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/lib/NLineInputFormat, getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit; > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=79, lastMethodNumber=88, isFirstLineValid=true, methodSrcCode=
+  throws IOException {
+    ArrayList<FileSplit> splits = new ArrayList<FileSplit>();
+    for (FileStatus status : listStatus(job)) {
+      for (org.apache.hadoop.mapreduce.lib.input.FileSplit split : 
+          org.apache.hadoop.mapreduce.lib.input.
+          NLineInputFormat.getSplitsForFile(status, job, N)) {
+        splits.add(new FileSplit(split));
+      }
+    }
+    return splits.toArray(new FileSplit[splits.size()]);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/SequenceFileInputFormat, listStatus(Lorg/apache/hadoop/mapred/JobConf;)[Lorg/apache/hadoop/fs/FileStatus; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.mapred.SequenceFileInputFormat.listStatus(Lorg/apache/hadoop/mapred/JobConf;)[Lorg/apache/hadoop/fs/FileStatus;, BB[SSA:-1..-2]0 - org.apache.hadoop.mapred.SequenceFileInputFormat.listStatus(Lorg/apache/hadoop/mapred/JobConf;)[Lorg/apache/hadoop/fs/FileStatus;, BB[SSA:3..5]2 - org.apache.hadoop.mapred.SequenceFileInputFormat.listStatus(Lorg/apache/hadoop/mapred/JobConf;)[Lorg/apache/hadoop/fs/FileStatus;, BB[SSA:-1..-2]17 - org.apache.hadoop.mapred.SequenceFileInputFormat.listStatus(Lorg/apache/hadoop/mapred/JobConf;)[Lorg/apache/hadoop/fs/FileStatus;], numberOfBasicBlocks=4, firstLineNumber=44, lastLineNumber=46, firstMethodNumber=44, lastMethodNumber=55, isFirstLineValid=false, methodSrcCode=
+  protected FileStatus[] listStatus(JobConf job) throws IOException {
+    FileStatus[] files = super.listStatus(job);
+    for (int i = 0; i < files.length; i++) {
+      FileStatus file = files[i];
+      if (file.isDirectory()) {     // it's a MapFile
+        Path dataFile = new Path(file.getPath(), MapFile.DATA_FILE_NAME);
+        FileSystem fs = file.getPath().getFileSystem(job);
+        // use the data file
+        files[i] = fs.getFileStatus(dataFile);
+      }
+    }
+    return files;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/FileInputFormat, getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit; > Context: Everywhere, blocks=[BB[SSA:4..7]4 - org.apache.hadoop.mapred.FileInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;, BB[SSA:3..3]3 - org.apache.hadoop.mapred.FileInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;, BB[SSA:8..12]5 - org.apache.hadoop.mapred.FileInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;, BB[SSA:-1..-2]125 - org.apache.hadoop.mapred.FileInputFormat.getSplits(Lorg/apache/hadoop/mapred/JobConf;I)[Lorg/apache/hadoop/mapred/InputSplit;], numberOfBasicBlocks=4, firstLineNumber=331, lastLineNumber=335, firstMethodNumber=330, lastMethodNumber=410, isFirstLineValid=true, methodSrcCode=
+    throws IOException {
+    StopWatch sw = new StopWatch().start();
+    FileStatus[] stats = listStatus(job);
+
+    // Save the number of input files for metrics/loadgen
+    job.setLong(NUM_INPUT_FILES, stats.length);
+    long totalSize = 0;                           // compute total size
+    boolean ignoreDirs = !job.getBoolean(INPUT_DIR_RECURSIVE, false)
+      && job.getBoolean(INPUT_DIR_NONRECURSIVE_IGNORE_SUBDIRS, false);
+
+    List<FileStatus> files = new ArrayList<>(stats.length);
+    for (FileStatus file: stats) {                // check we have valid files
+      if (file.isDirectory()) {
+        if (!ignoreDirs) {
+          throw new IOException("Not a file: "+ file.getPath());
+        }
+      } else {
+        files.add(file);
+        totalSize += file.getLen();
+      }
+    }
+
+    long goalSize = totalSize / (numSplits == 0 ? 1 : numSplits);
+    long minSize = Math.max(job.getLong(org.apache.hadoop.mapreduce.lib.input.
+      FileInputFormat.SPLIT_MINSIZE, 1), minSplitSize);
+
+    // generate splits
+    ArrayList<FileSplit> splits = new ArrayList<FileSplit>(numSplits);
+    NetworkTopology clusterMap = new NetworkTopology();
+    for (FileStatus file: files) {
+      Path path = file.getPath();
+      long length = file.getLen();
+      if (length != 0) {
+        FileSystem fs = path.getFileSystem(job);
+        BlockLocation[] blkLocations;
+        if (file instanceof LocatedFileStatus) {
+          blkLocations = ((LocatedFileStatus) file).getBlockLocations();
+        } else {
+          blkLocations = fs.getFileBlockLocations(file, 0, length);
+        }
+        if (isSplitable(fs, path)) {
+          long blockSize = file.getBlockSize();
+          long splitSize = computeSplitSize(goalSize, minSize, blockSize);
+
+          long bytesRemaining = length;
+          while (((double) bytesRemaining)/splitSize > SPLIT_SLOP) {
+            String[][] splitHosts = getSplitHostsAndCachedHosts(blkLocations,
+                length-bytesRemaining, splitSize, clusterMap);
+            splits.add(makeSplit(path, length-bytesRemaining, splitSize,
+                splitHosts[0], splitHosts[1]));
+            bytesRemaining -= splitSize;
+          }
+
+          if (bytesRemaining != 0) {
+            String[][] splitHosts = getSplitHostsAndCachedHosts(blkLocations, length
+                - bytesRemaining, bytesRemaining, clusterMap);
+            splits.add(makeSplit(path, length - bytesRemaining, bytesRemaining,
+                splitHosts[0], splitHosts[1]));
+          }
+        } else {
+          if (LOG.isDebugEnabled()) {
+            // Log only if the file is big enough to be splitted
+            if (length > Math.min(file.getBlockSize(), minSize)) {
+              LOG.debug("File is not splittable so no parallelization "
+                  + "is possible: " + file.getPath());
+            }
+          }
+          String[][] splitHosts = getSplitHostsAndCachedHosts(blkLocations,0,length,clusterMap);
+          splits.add(makeSplit(path, 0, length, splitHosts[0], splitHosts[1]));
+        }
+      } else { 
+        //Create empty hosts array for zero length files
+        splits.add(makeSplit(path, 0, length, new String[0]));
+      }
+    }
+    sw.stop();
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("Total # of splits generated by getSplits: " + splits.size()
+          + ", TimeTaken: " + sw.now(TimeUnit.MILLISECONDS));
+    }
+    return splits.toArray(new FileSplit[splits.size()]);
+  }
+}

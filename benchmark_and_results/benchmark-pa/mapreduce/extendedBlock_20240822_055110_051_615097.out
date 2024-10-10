@@ -1,0 +1,65 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TextInputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.TextInputFormat.createRecordReader(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordReader;	methodLines:	47:53
+blockLines:	51:-1
+paras:	null
+TaintedStat:	NORMAL createRecordReader:conditional branch(eq, to iindex=14) 10,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/TextInputFormat, createRecordReader(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordReader; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/TextInputFormat, createRecordReader(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordReader; > Context: Everywhere[3]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 6,7 @8 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/TextInputFormat, createRecordReader(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordReader; > Context: Everywhere[3]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 6,7 @8 exception:8
+NORMAL createRecordReader:conditional branch(eq, to iindex=14) 10,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/TextInputFormat, createRecordReader(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordReader; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                       TaskAttemptContext context) {
+    String delimiter = context.getConfiguration().get(
+        "textinputformat.record.delimiter");
+    byte[] recordDelimiterBytes = null;
+    if (null != delimiter)
+      recordDelimiterBytes = delimiter.getBytes(Charsets.UTF_8);
+    return new LineRecordReader(recordDelimiterBytes);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/DelegatingRecordReader, <init>(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=49, lastMethodNumber=59, isFirstLineValid=true, methodSrcCode=
+  public DelegatingRecordReader(InputSplit split, TaskAttemptContext context)
+      throws IOException, InterruptedException {
+    // Find the InputFormat and then the RecordReader from the
+    // TaggedInputSplit.
+    TaggedInputSplit taggedInputSplit = (TaggedInputSplit) split;
+    InputFormat<K, V> inputFormat = (InputFormat<K, V>) ReflectionUtils
+        .newInstance(taggedInputSplit.getInputFormatClass(), context
+            .getConfiguration());
+    originalRR = inputFormat.createRecordReader(taggedInputSplit
+        .getInputSplit(), context);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, <init>(Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat;Lorg/apache/hadoop/mapreduce/lib/input/CombineFileSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Ljava/lang/Integer;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=53, lastMethodNumber=61, isFirstLineValid=true, methodSrcCode=
+    CombineFileSplit split, TaskAttemptContext context, Integer idx)
+    throws IOException, InterruptedException {
+    fileSplit = new FileSplit(split.getPath(idx),
+      split.getOffset(idx),
+      split.getLength(idx),
+      split.getLocations());
+
+    delegate = inputFormat.createRecordReader(fileSplit, context);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, <init>(Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat;Lorg/apache/hadoop/mapreduce/lib/input/CombineFileSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Ljava/lang/Integer;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper, <init>(Lorg/apache/hadoop/mapreduce/lib/input/CombineFileSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Ljava/lang/Integer;)V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReader.initNextRecordReader()Z@170 ]], B=Everywhere]}>, B=Everywhere], blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=53, lastMethodNumber=61, isFirstLineValid=true, methodSrcCode=
+    CombineFileSplit split, TaskAttemptContext context, Integer idx)
+    throws IOException, InterruptedException {
+    fileSplit = new FileSplit(split.getPath(idx),
+      split.getOffset(idx),
+      split.getLength(idx),
+      split.getLocations());
+
+    delegate = inputFormat.createRecordReader(fileSplit, context);
+  }
+
+}

@@ -1,0 +1,89 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SecureDataNodeStarter.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.SecureDataNodeStarter.getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;	methodLines:	113:181
+blockLines:	130:-1
+paras:	dfs.datanode.socket.write.timeout
+TaintedStat:	NORMAL getSecureResources:conditional branch(le, to iindex=42) 27,8 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter, getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter, getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources; > Context: Everywhere[29]27 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,24,25 @57 exception:26
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter, getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources; > Context: Everywhere[29]27 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,24,25 @57 exception:26
+NORMAL getSecureResources:conditional branch(le, to iindex=42) 27,8 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter, getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws Exception {
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    boolean isSaslEnabled =
+        DataTransferSaslUtil.getSaslPropertiesResolver(conf) != null;
+    boolean isRpcPrivileged;
+    boolean isHttpPrivileged = false;
+
+    System.err.println("isSaslEnabled:" + isSaslEnabled);
+    // Obtain secure port for data streaming to datanode
+    InetSocketAddress streamingAddr  = DataNode.getStreamingAddr(conf);
+    int socketWriteTimeout = conf.getInt(
+        DFSConfigKeys.DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY,
+        HdfsConstants.WRITE_TIMEOUT);
+    int backlogLength = conf.getInt(
+        CommonConfigurationKeysPublic.IPC_SERVER_LISTEN_QUEUE_SIZE_KEY,
+        CommonConfigurationKeysPublic.IPC_SERVER_LISTEN_QUEUE_SIZE_DEFAULT);
+
+    ServerSocket ss = (socketWriteTimeout > 0) ? 
+        ServerSocketChannel.open().socket() : new ServerSocket();
+    try {
+      ss.bind(streamingAddr, backlogLength);
+    } catch (BindException e) {
+      BindException newBe = appendMessageToBindException(e,
+          streamingAddr.toString());
+      throw newBe;
+    }
+
+    // Check that we got the port we need
+    if (ss.getLocalPort() != streamingAddr.getPort()) {
+      throw new RuntimeException(
+          "Unable to bind on specified streaming port in secure "
+              + "context. Needed " + streamingAddr.getPort() + ", got "
+              + ss.getLocalPort());
+    }
+    isRpcPrivileged = SecurityUtil.isPrivilegedPort(ss.getLocalPort());
+    System.err.println("Opened streaming server at " + streamingAddr);
+
+    // Bind a port for the web server. The code intends to bind HTTP server to
+    // privileged port only, as the client can authenticate the server using
+    // certificates if they are communicating through SSL.
+    final ServerSocketChannel httpChannel;
+    if (policy.isHttpEnabled()) {
+      httpChannel = ServerSocketChannel.open();
+      InetSocketAddress infoSocAddr = DataNode.getInfoAddr(conf);
+      try {
+        httpChannel.socket().bind(infoSocAddr);
+      } catch (BindException e) {
+        BindException newBe = appendMessageToBindException(e,
+            infoSocAddr.toString());
+        throw newBe;
+      }
+      InetSocketAddress localAddr = (InetSocketAddress) httpChannel.socket()
+        .getLocalSocketAddress();
+
+      if (localAddr.getPort() != infoSocAddr.getPort()) {
+        throw new RuntimeException("Unable to bind on specified info port in " +
+            "secure context. Needed " + infoSocAddr.getPort() + ", got " +
+             ss.getLocalPort());
+      }
+      System.err.println("Successfully obtained privileged resources (streaming port = "
+          + ss + " ) (http listener port = " + localAddr.getPort() +")");
+
+      isHttpPrivileged = SecurityUtil.isPrivilegedPort(localAddr.getPort());
+      System.err.println("Opened info server at " + infoSocAddr);
+    } else {
+      httpChannel = null;
+    }
+
+    return new SecureResources(ss, httpChannel, isSaslEnabled,
+        isRpcPrivileged, isHttpPrivileged);
+
+
+====================ctx:=======================

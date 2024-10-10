@@ -1,0 +1,16 @@
+```java
+GetChildrenRequest getChildrenRequest = (GetChildrenRequest) request;
+String path = getChildrenRequest.getPath();
+DataNode n = zks.getZKDatabase().getNode(path);
+if (n == null) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration Error: No node found for the given path. Configuration parameter: path = " + path);
+    // ConfLogger Inserted End
+    throw new KeeperException.NoNodeException();
+}
+zks.checkACL(cnxn, zks.getZKDatabase().aclForNode(n), ZooDefs.Perms.READ, authInfo, path, null);
+List<String> children = zks.getZKDatabase()
+    .getChildren(path, null, getChildrenRequest.getWatch() ? cnxn : null);
+return new GetChildrenResponse(children);
+}
+```

@@ -1,0 +1,56 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NetUtils.java	methodSinagture:	org.apache.hadoop.net.NetUtils.getDefaultSocketFactory(Lorg/apache/hadoop/conf/Configuration;)Ljavax/net/SocketFactory;	methodLines:	121:128
+blockLines:	125:-1
+paras:	hadoop.rpc.socket.factory.class.default
+TaintedStat:	NORMAL getDefaultSocketFactory:conditional branch(eq, to iindex=12) 6,7 Node: < Application, Lorg/apache/hadoop/net/NetUtils, getDefaultSocketFactory(Lorg/apache/hadoop/conf/Configuration;)Ljavax/net/SocketFactory; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/net/NetUtils, getDefaultSocketFactory(Lorg/apache/hadoop/conf/Configuration;)Ljavax/net/SocketFactory; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,3,4 @5 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/net/NetUtils, getDefaultSocketFactory(Lorg/apache/hadoop/conf/Configuration;)Ljavax/net/SocketFactory; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,3,4 @5 exception:5
+NORMAL getDefaultSocketFactory:conditional branch(eq, to iindex=12) 6,7 Node: < Application, Lorg/apache/hadoop/net/NetUtils, getDefaultSocketFactory(Lorg/apache/hadoop/conf/Configuration;)Ljavax/net/SocketFactory; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    String propValue = conf.get(
+        CommonConfigurationKeysPublic.HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_KEY,
+        CommonConfigurationKeysPublic.HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_DEFAULT);
+    if ((propValue == null) || (propValue.length() == 0))
+      return SocketFactory.getDefault();
+
+    return getSocketFactoryFromProperty(conf, propValue);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/net/NetUtils, getSocketFactory(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Ljavax/net/SocketFactory; > Context: Everywhere, blocks=[BB[SSA:28..29]14 - org.apache.hadoop.net.NetUtils.getSocketFactory(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Ljavax/net/SocketFactory;, BB[SSA:25..27]13 - org.apache.hadoop.net.NetUtils.getSocketFactory(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Ljavax/net/SocketFactory;, BB[SSA:30..30]15 - org.apache.hadoop.net.NetUtils.getSocketFactory(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Ljavax/net/SocketFactory;, BB[SSA:-1..-2]17 - org.apache.hadoop.net.NetUtils.getSocketFactory(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Ljavax/net/SocketFactory;], numberOfBasicBlocks=4, firstLineNumber=105, lastLineNumber=106, firstMethodNumber=97, lastMethodNumber=108, isFirstLineValid=true, methodSrcCode=
+
+    SocketFactory factory = null;
+
+    String propValue =
+        conf.get("hadoop.rpc.socket.factory.class." + clazz.getSimpleName());
+    if ((propValue != null) && (propValue.length() > 0))
+      factory = getSocketFactoryFromProperty(conf, propValue);
+
+    if (factory == null)
+      factory = getDefaultSocketFactory(conf);
+
+    return factory;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/ipc/RpcClientUtil, getProtocolMetaInfoProxy(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/ProtocolMetaInfoPB; > Context: Everywhere, blocks=[BB[SSA:9..11]6 - org.apache.hadoop.ipc.RpcClientUtil.getProtocolMetaInfoProxy(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/ProtocolMetaInfoPB;, BB[SSA:7..8]5 - org.apache.hadoop.ipc.RpcClientUtil.getProtocolMetaInfoProxy(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/ProtocolMetaInfoPB;, BB[SSA:12..12]7 - org.apache.hadoop.ipc.RpcClientUtil.getProtocolMetaInfoProxy(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/ProtocolMetaInfoPB;, BB[SSA:-1..-2]11 - org.apache.hadoop.ipc.RpcClientUtil.getProtocolMetaInfoProxy(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/ProtocolMetaInfoPB;], numberOfBasicBlocks=4, firstLineNumber=188, lastLineNumber=187, firstMethodNumber=184, lastMethodNumber=187, isFirstLineValid=true, methodSrcCode=
+      Configuration conf) throws IOException {
+    RpcInvocationHandler inv = (RpcInvocationHandler) Proxy
+        .getInvocationHandler(proxy);
+    return RPC
+        .getProtocolEngine(ProtocolMetaInfoPB.class, conf)
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/ipc/Client, <init>(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.ipc.Client.<init>(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.ipc.Client.<init>(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:5..5]2 - org.apache.hadoop.ipc.Client.<init>(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]4 - org.apache.hadoop.ipc.Client.<init>(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=1333, lastLineNumber=1334, firstMethodNumber=1333, lastMethodNumber=1335, isFirstLineValid=false, methodSrcCode=
+  public Client(Class<? extends Writable> valueClass, Configuration conf) {
+    this(valueClass, conf, NetUtils.getDefaultSocketFactory(conf));
+  }
+
+}

@@ -1,0 +1,92 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V	methodLines:	1086:1098
+blockLines:	1094:-1
+paras:	null
+TaintedStat:	NORMAL setGenericConf:conditional branch(eq, to iindex=55) 21,16 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere[46]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @78 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere[46]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @78 exception:20
+NORMAL setGenericConf:conditional branch(eq, to iindex=55) 21,16 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V	methodLines:	1086:1098
+blockLines:	1089:-1
+paras:	null
+TaintedStat:	NORMAL setGenericConf:conditional branch(eq, to iindex=37) 15,16 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere[27]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,13 @43 exception:14
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere[27]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,13 @43 exception:14
+NORMAL setGenericConf:conditional branch(eq, to iindex=37) 15,16 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String nameserviceId, String nnId, String... keys) {
+    for (String key : keys) {
+      String value = conf.get(addKeySuffixes(key, nameserviceId, nnId));
+      if (value != null) {
+        conf.set(key, value);
+        continue;
+      }
+      value = conf.get(addKeySuffixes(key, nameserviceId));
+      if (value != null) {
+        conf.set(key, value);
+      }
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController; > Context: Everywhere, blocks=[BB[SSA:34..38]14 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;, BB[SSA:30..33]13 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;, BB[SSA:39..39]15 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;, BB[SSA:-1..-2]20 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;], numberOfBasicBlocks=4, firstLineNumber=161, lastLineNumber=164, firstMethodNumber=147, lastMethodNumber=166, isFirstLineValid=true, methodSrcCode=
+  public static DFSZKFailoverController create(Configuration conf) {
+    Configuration localNNConf = DFSHAAdmin.addSecurityConfiguration(conf);
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+
+    if (!HAUtil.isHAEnabled(localNNConf, nsId)) {
+      throw new HadoopIllegalArgumentException(
+          "HA is not enabled for this namenode.");
+    }
+    String nnId = HAUtil.getNameNodeId(localNNConf, nsId);
+    if (nnId == null) {
+      String msg = "Could not get the namenode ID of this node. " +
+          "You may run zkfc on the node other than namenode.";
+      throw new HadoopIllegalArgumentException(msg);
+    }
+    NameNode.initializeGenericKeys(localNNConf, nsId, nnId);
+    DFSUtil.setGenericConf(localNNConf, nsId, nnId, ZKFC_CONF_KEYS);
+    
+    NNHAServiceTarget localTarget = new NNHAServiceTarget(
+        localNNConf, nsId, nnId);
+    return new DFSZKFailoverController(localNNConf, localTarget);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:28..32]11 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:21..23]9 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:24..27]10 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:33..37]12 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]26 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:33..37]12 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:28..32]11 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:38..40]13 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]26 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V], numberOfBasicBlocks=9, firstLineNumber=1815, lastLineNumber=1822, firstMethodNumber=1805, lastMethodNumber=1828, isFirstLineValid=true, methodSrcCode=
+      String nameserviceId, String namenodeId) {
+    if ((nameserviceId != null && !nameserviceId.isEmpty()) || 
+        (namenodeId != null && !namenodeId.isEmpty())) {
+      if (nameserviceId != null) {
+        conf.set(DFS_NAMESERVICE_ID, nameserviceId);
+      }
+      if (namenodeId != null) {
+        conf.set(DFS_HA_NAMENODE_ID_KEY, namenodeId);
+      }
+      
+      DFSUtil.setGenericConf(conf, nameserviceId, namenodeId,
+          NAMENODE_SPECIFIC_KEYS);
+      DFSUtil.setGenericConf(conf, nameserviceId, null,
+          NAMESERVICE_SPECIFIC_KEYS);
+    }
+    
+    // If the RPC address is set use it to (re-)configure the default FS
+    if (conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY) != null) {
+      URI defaultUri = URI.create(HdfsConstants.HDFS_URI_SCHEME + "://"
+          + conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY));
+      conf.set(FS_DEFAULT_NAME_KEY, defaultUri.toString());
+      LOG.debug("Setting {} to {}", FS_DEFAULT_NAME_KEY, defaultUri);
+    }
+  }
+    
+}

@@ -1,0 +1,16 @@
+```java
+GetDataRequest getDataRequest = (GetDataRequest) request;
+String path = getDataRequest.getPath();
+DataNode n = zks.getZKDatabase().getNode(path);
+if (n == null) {
+    // ConfLogger Inserted Start
+    logger.error("DataNode not found for the given path. Configuration parameter: path = " + path);
+    // ConfLogger Inserted End
+    throw new KeeperException.NoNodeException();
+}
+zks.checkACL(cnxn, zks.getZKDatabase().aclForNode(n), ZooDefs.Perms.READ, authInfo, path, null);
+Stat stat = new Stat();
+byte[] b = zks.getZKDatabase().getData(path, stat, getDataRequest.getWatch() ? cnxn : null);
+return new GetDataResponse(b, stat);
+}
+```

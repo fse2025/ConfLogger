@@ -1,0 +1,52 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ZKAuditProvider.java	methodSinagture:	org.apache.zookeeper.audit.ZKAuditProvider.getAuditLogger()Lorg/apache/zookeeper/audit/AuditLogger;	methodLines:	46:58
+blockLines:	48:-1
+paras:	zookeeper.audit.impl.class
+TaintedStat:	NORMAL getAuditLogger:conditional branch(ne, to iindex=9) 4,5 Node: < Application, Lorg/apache/zookeeper/audit/ZKAuditProvider, getAuditLogger()Lorg/apache/zookeeper/audit/AuditLogger; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/audit/ZKAuditProvider, getAuditLogger()Lorg/apache/zookeeper/audit/AuditLogger; > Context: Everywhere[1]4 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 2 @2 exception:3
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/audit/ZKAuditProvider, getAuditLogger()Lorg/apache/zookeeper/audit/AuditLogger; > Context: Everywhere[1]4 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 2 @2 exception:3
+NORMAL getAuditLogger:conditional branch(ne, to iindex=9) 4,5 Node: < Application, Lorg/apache/zookeeper/audit/ZKAuditProvider, getAuditLogger()Lorg/apache/zookeeper/audit/AuditLogger; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private static AuditLogger getAuditLogger() {
+        String auditLoggerClass = System.getProperty(AUDIT_IMPL_CLASS);
+        if (auditLoggerClass == null) {
+            auditLoggerClass = Slf4jAuditLogger.class.getName();
+        }
+        try {
+            Constructor<?> clientCxnConstructor = Class.forName(auditLoggerClass)
+                    .getDeclaredConstructor();
+            AuditLogger auditLogger = (AuditLogger) clientCxnConstructor.newInstance();
+            auditLogger.initialize();
+            return auditLogger;
+        } catch (Exception e) {
+            throw new RuntimeException("Couldn't instantiate " + auditLoggerClass, e);
+        }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/audit/ZKAuditProvider, <clinit>()V > Context: Everywhere, blocks=[BB[SSA:9..9]5 - org.apache.zookeeper.audit.ZKAuditProvider.<clinit>()V, BB[SSA:5..8]4 - org.apache.zookeeper.audit.ZKAuditProvider.<clinit>()V, BB[SSA:10..13]6 - org.apache.zookeeper.audit.ZKAuditProvider.<clinit>()V, BB[SSA:-1..-2]10 - org.apache.zookeeper.audit.ZKAuditProvider.<clinit>()V], numberOfBasicBlocks=4, firstLineNumber=36, lastLineNumber=40, firstMethodNumber=29, lastMethodNumber=44, isFirstLineValid=true, methodSrcCode=
+    static final String AUDIT_IMPL_CLASS = "zookeeper.audit.impl.class";
+    private static final Logger LOG = LoggerFactory.getLogger(ZKAuditProvider.class);
+    // By default audit logging is disabled
+    private static boolean auditEnabled;
+    private static AuditLogger auditLogger;
+
+    static {
+        auditEnabled = Boolean.getBoolean(AUDIT_ENABLE);
+        if (auditEnabled) {
+            //initialise only when audit logging is enabled
+            auditLogger = getAuditLogger();
+            LOG.info("ZooKeeper audit is enabled.");
+        } else {
+            LOG.info("ZooKeeper audit is disabled.");
+        }
+    }
+
+}

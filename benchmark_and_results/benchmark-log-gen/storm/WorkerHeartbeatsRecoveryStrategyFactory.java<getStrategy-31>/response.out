@@ -1,0 +1,24 @@
+```java
+if (conf.get(DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS) != null) {
+    Object targetObj = ReflectionUtils.newInstance((String)
+    conf.get(DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS));
+    Preconditions.checkState(targetObj instanceof IWorkerHeartbeatsRecoveryStrategy,
+    "{} must implements IWorkerHeartbeatsRecoveryStrategy",
+    DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS); // ConfLogger Commented: Not Informative
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is set to '{}'. Using the specified recovery strategy class.",
+                DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS,
+                conf.get(DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS));
+    // ConfLogger Inserted End
+    strategy = ((IWorkerHeartbeatsRecoveryStrategy) targetObj);
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is not set. Using the default TimeOutWorkerHeartbeatsRecoveryStrategy.",
+                DaemonConfig.NIMBUS_WORKER_HEARTBEATS_RECOVERY_STRATEGY_CLASS);
+    // ConfLogger Inserted End
+    strategy = new TimeOutWorkerHeartbeatsRecoveryStrategy();
+}
+
+strategy.prepare(conf);
+return strategy;
+```

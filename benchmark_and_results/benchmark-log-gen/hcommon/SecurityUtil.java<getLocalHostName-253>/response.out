@@ -1,0 +1,28 @@
+```java
+if (conf != null) {
+    String dnsInterface = conf.get(HADOOP_SECURITY_DNS_INTERFACE_KEY);
+    String nameServer = conf.get(HADOOP_SECURITY_DNS_NAMESERVER_KEY);
+
+    if (dnsInterface != null) {
+        // ConfLogger Inserted Start
+        logger.info("Configuration set: {} = {}, {} = {}", HADOOP_SECURITY_DNS_INTERFACE_KEY, dnsInterface, HADOOP_SECURITY_DNS_NAMESERVER_KEY, nameServer);
+        // ConfLogger Inserted End
+        return DNS.getDefaultHost(dnsInterface, nameServer, true);
+    } else if (nameServer != null) {
+        // ConfLogger Inserted Start
+        logger.error("Configuration error: {} requires {}. Current value: {} = {}", HADOOP_SECURITY_DNS_NAMESERVER_KEY, HADOOP_SECURITY_DNS_INTERFACE_KEY, HADOOP_SECURITY_DNS_NAMESERVER_KEY, nameServer);
+        // ConfLogger Inserted End
+        throw new IllegalArgumentException(HADOOP_SECURITY_DNS_NAMESERVER_KEY +
+                " requires " + HADOOP_SECURITY_DNS_INTERFACE_KEY + ". Check your" +
+                "configuration.");
+    }
+}
+
+// ConfLogger Inserted Start
+logger.warn("Configuration not set: {} and {} are null. Falling back to default hostname.", HADOOP_SECURITY_DNS_INTERFACE_KEY, HADOOP_SECURITY_DNS_NAMESERVER_KEY);
+// ConfLogger Inserted End
+
+// Fallback to querying the default hostname as we did before.
+return InetAddress.getLocalHost().getCanonicalHostName();
+}
+```

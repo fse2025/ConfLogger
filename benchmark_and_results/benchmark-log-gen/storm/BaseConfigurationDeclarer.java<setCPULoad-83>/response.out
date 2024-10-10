@@ -1,0 +1,10 @@
+```java
+if (amount != null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'Config.TOPOLOGY_COMPONENT_CPU_PCORE_PERCENT' is set with value: " + amount);
+    // ConfLogger Inserted End
+    addResource(Config.TOPOLOGY_COMPONENT_CPU_PCORE_PERCENT, amount);
+    return addConfiguration(Config.TOPOLOGY_COMPONENT_CPU_PCORE_PERCENT, amount);
+}
+return (T) this;
+```

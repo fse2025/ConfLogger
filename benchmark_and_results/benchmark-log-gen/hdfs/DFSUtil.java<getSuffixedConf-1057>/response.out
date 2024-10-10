@@ -1,0 +1,10 @@
+```java
+String ret = conf.get(DFSUtil.addKeySuffixes(key, suffixes));
+if (ret != null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter found with key: " + DFSUtil.addKeySuffixes(key, suffixes) + ", value: " + ret);
+    // ConfLogger Inserted End
+    return ret;
+}
+return conf.get(key, defaultVal);
+```

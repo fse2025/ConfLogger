@@ -1,0 +1,233 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ObjectReader.java	methodSinagture:	org.apache.storm.utils.ObjectReader.getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;	methodLines:	61:68
+blockLines:	62:-1
+paras:	blacklist.scheduler.strategy
+TaintedStat:	NORMAL getString:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/scheduler/blacklist/BlacklistScheduler, prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere[70]66 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 63,64 @169 exception:65
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/scheduler/blacklist/BlacklistScheduler, prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere[70]66 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 63,64 @169 exception:65
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/scheduler/blacklist/BlacklistScheduler, prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere[73]71 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String; > 66,69 @179 exception:70 v66
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL getString:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ObjectReader.java	methodSinagture:	org.apache.storm.utils.ObjectReader.getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;	methodLines:	61:68
+blockLines:	65:-1
+paras:	blacklist.scheduler.reporter
+TaintedStat:	NORMAL getString:conditional branch(eq, to iindex=12) 5,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/scheduler/blacklist/BlacklistScheduler, prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere[55]53 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 50,51 @135 exception:52
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/scheduler/blacklist/BlacklistScheduler, prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere[55]53 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 50,51 @135 exception:52
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/scheduler/blacklist/BlacklistScheduler, prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere[58]58 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String; > 53,56 @145 exception:57 v53
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL getString:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getString:conditional branch(eq, to iindex=12) 5,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getString(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static String getString(Object o, String defaultValue) {
+        if (null == o) {
+            return defaultValue;
+        }
+        if (o instanceof String) {
+            return (String) o;
+        } else {
+            throw new IllegalArgumentException("Don't know how to convert " + o + " to String");
+        }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/metrics2/reporters/CsvStormReporter, getCsvLogDir(Ljava/util/Map;Ljava/util/Map;)Ljava/io/File; > Context: Everywhere, blocks=[BB[SSA:3..4]2 - org.apache.storm.metrics2.reporters.CsvStormReporter.getCsvLogDir(Ljava/util/Map;Ljava/util/Map;)Ljava/io/File;, BB[SSA:0..2]1 - org.apache.storm.metrics2.reporters.CsvStormReporter.getCsvLogDir(Ljava/util/Map;Ljava/util/Map;)Ljava/io/File;, BB[SSA:5..8]3 - org.apache.storm.metrics2.reporters.CsvStormReporter.getCsvLogDir(Ljava/util/Map;Ljava/util/Map;)Ljava/io/File;, BB[SSA:-1..-2]11 - org.apache.storm.metrics2.reporters.CsvStormReporter.getCsvLogDir(Ljava/util/Map;Ljava/util/Map;)Ljava/io/File;], numberOfBasicBlocks=4, firstLineNumber=33, lastLineNumber=34, firstMethodNumber=32, lastMethodNumber=40, isFirstLineValid=true, methodSrcCode=
+    private static File getCsvLogDir(Map stormConf, Map reporterConf) {
+        String csvMetricsLogDirectory = ObjectReader.getString(reporterConf.get(CSV_LOG_DIR), null);
+        if (csvMetricsLogDirectory == null) {
+            csvMetricsLogDirectory = ConfigUtils.absoluteStormLocalDir(stormConf);
+            csvMetricsLogDirectory = csvMetricsLogDirectory + ConfigUtils.FILE_SEPARATOR + "csvmetrics";
+        }
+        File csvMetricsDir = new File(csvMetricsLogDirectory);
+        validateCreateOutputDir(csvMetricsDir);
+        return csvMetricsDir;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/metrics/ClientMetricsUtils, getMetricsReporterLocale(Ljava/util/Map;)Ljava/util/Locale; > Context: Everywhere, blocks=[BB[SSA:3..4]2 - org.apache.storm.daemon.metrics.ClientMetricsUtils.getMetricsReporterLocale(Ljava/util/Map;)Ljava/util/Locale;, BB[SSA:0..2]1 - org.apache.storm.daemon.metrics.ClientMetricsUtils.getMetricsReporterLocale(Ljava/util/Map;)Ljava/util/Locale;, BB[SSA:5..8]3 - org.apache.storm.daemon.metrics.ClientMetricsUtils.getMetricsReporterLocale(Ljava/util/Map;)Ljava/util/Locale;, BB[SSA:-1..-2]7 - org.apache.storm.daemon.metrics.ClientMetricsUtils.getMetricsReporterLocale(Ljava/util/Map;)Ljava/util/Locale;], numberOfBasicBlocks=4, firstLineNumber=37, lastLineNumber=38, firstMethodNumber=36, lastMethodNumber=41, isFirstLineValid=true, methodSrcCode=
+    public static Locale getMetricsReporterLocale(Map<String, Object> reporterConf) {
+        String languageTag = ObjectReader.getString(reporterConf.get(LOCALE), null);
+        if (languageTag != null) {
+            return Locale.forLanguageTag(languageTag);
+        }
+        return null;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/metrics2/reporters/GraphiteStormReporter, getMetricsPrefixedWith(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:3..4]2 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsPrefixedWith(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:0..2]1 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsPrefixedWith(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:5..5]3 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsPrefixedWith(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsPrefixedWith(Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=36, lastLineNumber=36, firstMethodNumber=35, lastMethodNumber=36, isFirstLineValid=true, methodSrcCode=
+    private static String getMetricsPrefixedWith(Map<String, Object> reporterConf) {
+        return ObjectReader.getString(reporterConf.get(GRAPHITE_PREFIXED_WITH), null);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/metrics2/reporters/GraphiteStormReporter, getMetricsTargetHost(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:3..4]2 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetHost(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:0..2]1 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetHost(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:5..5]3 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetHost(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetHost(Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=40, lastLineNumber=40, firstMethodNumber=39, lastMethodNumber=40, isFirstLineValid=true, methodSrcCode=
+    private static String getMetricsTargetHost(Map<String, Object> reporterConf) {
+        return ObjectReader.getString(reporterConf.get(GRAPHITE_HOST), null);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/metrics2/reporters/GraphiteStormReporter, getMetricsTargetTransport(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:3..4]2 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetTransport(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:0..2]1 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetTransport(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:5..5]3 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetTransport(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetTransport(Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=48, lastLineNumber=48, firstMethodNumber=47, lastMethodNumber=48, isFirstLineValid=true, methodSrcCode=
+    private static String getMetricsTargetTransport(Map<String, Object> reporterConf) {
+        return ObjectReader.getString(reporterConf.get(GRAPHITE_TRANSPORT), "tcp");
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/blacklist/BlacklistScheduler, prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere, blocks=[BB[SSA:58..58]32 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:57..57]31 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:59..64]33 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]75 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:73..73]40 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:72..72]39 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:74..79]41 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]75 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V], numberOfBasicBlocks=8, firstLineNumber=89, lastLineNumber=90, firstMethodNumber=69, lastMethodNumber=106, isFirstLineValid=true, methodSrcCode=
+    public void prepare(Map<String, Object> conf, StormMetricsRegistry metricsRegistry) {
+        LOG.info("Preparing black list scheduler");
+        underlyingScheduler.prepare(conf, metricsRegistry);
+        this.conf = conf;
+        this.metricsRegistry = metricsRegistry;
+
+        toleranceTime = ObjectReader.getInt(this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_TOLERANCE_TIME),
+                                            DEFAULT_BLACKLIST_SCHEDULER_TOLERANCE_TIME);
+        toleranceCount = ObjectReader.getInt(this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_TOLERANCE_COUNT),
+                                             DEFAULT_BLACKLIST_SCHEDULER_TOLERANCE_COUNT);
+        resumeTime = ObjectReader.getInt(this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_RESUME_TIME),
+                                         DEFAULT_BLACKLIST_SCHEDULER_RESUME_TIME);
+        blacklistSendAssignentFailures = ObjectReader.getBoolean(this.conf.get(
+                DaemonConfig.BLACKLIST_SCHEDULER_ENABLE_SEND_ASSIGNMENT_FAILURES), false);
+
+        String reporterClassName = ObjectReader.getString(this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_REPORTER),
+                                                          LogReporter.class.getName());
+        reporter = (IReporter) initializeInstance(reporterClassName, "blacklist reporter");
+
+        String strategyClassName = ObjectReader.getString(this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_STRATEGY),
+                                                          DefaultBlacklistStrategy.class.getName());
+        blacklistStrategy = (IBlacklistStrategy) initializeInstance(strategyClassName, "blacklist strategy");
+
+        nimbusMonitorFreqSecs = ObjectReader.getInt(this.conf.get(DaemonConfig.NIMBUS_MONITOR_FREQ_SECS));
+        blacklistStrategy.prepare(this.conf);
+
+        windowSize = toleranceTime / nimbusMonitorFreqSecs;
+        badSupervisorsToleranceSlidingWindow = EvictingQueue.create(windowSize);
+        sendAssignmentFailureCount = EvictingQueue.create(windowSize);
+        cachedSupervisors = new HashMap<>();
+        blacklistedSupervisorIds = new HashSet<>();
+        blacklistOnBadSlots = ObjectReader.getBoolean(
+                this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_ASSUME_SUPERVISOR_BAD_BASED_ON_BAD_SLOT),
+                true);
+
+        //nimbus:num-blacklisted-supervisor + non-blacklisted supervisor = nimbus:num-supervisors
+        metricsRegistry.registerGauge("nimbus:num-blacklisted-supervisor", () -> blacklistedSupervisorIds.size());
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/blacklist/strategies/DefaultBlacklistStrategy, prepare(Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:23..23]14 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V, BB[SSA:22..22]13 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V, BB[SSA:24..29]15 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V, BB[SSA:-1..-2]26 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=56, lastLineNumber=57, firstMethodNumber=50, lastMethodNumber=61, isFirstLineValid=true, methodSrcCode=
+    public void prepare(Map<String, Object> conf) {
+        toleranceCount = ObjectReader.getInt(conf.get(DaemonConfig.BLACKLIST_SCHEDULER_TOLERANCE_COUNT),
+                                             DEFAULT_BLACKLIST_SCHEDULER_TOLERANCE_COUNT);
+        resumeTime = ObjectReader.getInt(conf.get(DaemonConfig.BLACKLIST_SCHEDULER_RESUME_TIME), DEFAULT_BLACKLIST_SCHEDULER_RESUME_TIME);
+
+        String reporterClassName = ObjectReader.getString(conf.get(DaemonConfig.BLACKLIST_SCHEDULER_REPORTER),
+                                                          LogReporter.class.getName());
+        reporter = (IReporter) initializeInstance(reporterClassName, "blacklist reporter");
+
+        nimbusMonitorFreqSecs = ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_MONITOR_FREQ_SECS));
+        blacklist = new TreeMap<>();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/StormCommon, metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:122..123]54 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:118..121]53 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:124..125]55 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:-1..-2]78 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=392, lastLineNumber=396, firstMethodNumber=364, lastMethodNumber=416, isFirstLineValid=true, methodSrcCode=
+    public static Map<String, Bolt> metricsConsumerBoltSpecs(Map<String, Object> conf, StormTopology topology) {
+        Map<String, Bolt> metricsConsumerBolts = new HashMap<>();
+
+        Set<String> componentIdsEmitMetrics = new HashSet<>();
+        componentIdsEmitMetrics.addAll(allComponents(topology).keySet());
+        componentIdsEmitMetrics.add(Constants.SYSTEM_COMPONENT_ID);
+
+        Map<GlobalStreamId, Grouping> inputs = new HashMap<>();
+        for (String componentId : componentIdsEmitMetrics) {
+            inputs.put(Utils.getGlobalStreamId(componentId, Constants.METRICS_STREAM_ID), Thrift.prepareShuffleGrouping());
+        }
+
+        List<Map<String, Object>> registerInfo = (List<Map<String, Object>>) conf.get(Config.TOPOLOGY_METRICS_CONSUMER_REGISTER);
+        if (registerInfo != null) {
+            Map<String, Integer> classOccurrencesMap = new HashMap<>();
+            for (Map<String, Object> info : registerInfo) {
+                String className = (String) info.get(TOPOLOGY_METRICS_CONSUMER_CLASS);
+                Object argument = info.get(TOPOLOGY_METRICS_CONSUMER_ARGUMENT);
+                Integer maxRetainMetricTuples = ObjectReader.getInt(info.get(
+                    TOPOLOGY_METRICS_CONSUMER_MAX_RETAIN_METRIC_TUPLES), 100);
+                Integer phintNum = ObjectReader.getInt(info.get(TOPOLOGY_METRICS_CONSUMER_PARALLELISM_HINT), 1);
+                Map<String, Object> metricsConsumerConf = new HashMap<>();
+                metricsConsumerConf.put(Config.TOPOLOGY_TASKS, phintNum);
+                List<String> whitelist = (List<String>) info.get(
+                    TOPOLOGY_METRICS_CONSUMER_WHITELIST);
+                List<String> blacklist = (List<String>) info.get(
+                    TOPOLOGY_METRICS_CONSUMER_BLACKLIST);
+                FilterByMetricName filterPredicate = new FilterByMetricName(whitelist, blacklist);
+                Boolean expandMapType = ObjectReader.getBoolean(info.get(
+                    TOPOLOGY_METRICS_CONSUMER_EXPAND_MAP_TYPE), false);
+                String metricNameSeparator = ObjectReader.getString(info.get(
+                    TOPOLOGY_METRICS_CONSUMER_METRIC_NAME_SEPARATOR), ".");
+                DataPointExpander expander = new DataPointExpander(expandMapType, metricNameSeparator);
+                MetricsConsumerBolt boltInstance = new MetricsConsumerBolt(className, argument,
+                                                                           maxRetainMetricTuples, filterPredicate, expander);
+                Bolt metricsConsumerBolt = Thrift.prepareSerializedBoltDetails(inputs,
+                                                                               boltInstance, null, phintNum, metricsConsumerConf);
+
+                String id;
+                if (classOccurrencesMap.containsKey(className)) {
+                    // e.g. [\"a\", \"b\", \"a\"]) => [\"a\", \"b\", \"a#2\"]"
+                    int occurrenceNum = classOccurrencesMap.get(className);
+                    occurrenceNum++;
+                    classOccurrencesMap.put(className, occurrenceNum);
+                    id = Constants.METRICS_COMPONENT_ID_PREFIX + className + "#" + occurrenceNum;
+                } else {
+                    id = Constants.METRICS_COMPONENT_ID_PREFIX + className;
+                    classOccurrencesMap.put(className, 1);
+                }
+                metricsConsumerBolts.put(id, metricsConsumerBolt);
+            }
+        }
+        return metricsConsumerBolts;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/localizer/LocalizedResource, setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V > Context: Everywhere, blocks=[BB[SSA:11..12]6 - org.apache.storm.localizer.LocalizedResource.setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V, BB[SSA:8..10]5 - org.apache.storm.localizer.LocalizedResource.setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V, BB[SSA:13..15]7 - org.apache.storm.localizer.LocalizedResource.setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V, BB[SSA:-1..-2]44 - org.apache.storm.localizer.LocalizedResource.setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V], numberOfBasicBlocks=4, firstLineNumber=320, lastLineNumber=321, firstMethodNumber=316, lastMethodNumber=341, isFirstLineValid=true, methodSrcCode=
+
+        if (!ObjectReader.getBoolean(conf.get(Config.SUPERVISOR_RUN_WORKER_AS_USER), false)) {
+            return;
+        }
+        String wlCommand = ObjectReader.getString(conf.get(Config.SUPERVISOR_WORKER_LAUNCHER), "");
+        if (wlCommand.isEmpty()) {
+            String stormHome = System.getProperty(ConfigUtils.STORM_HOME);
+            wlCommand = stormHome + "/bin/worker-launcher";
+        }
+        List<String> command = new ArrayList<>(Arrays.asList(wlCommand, user, "blob", path.toString()));
+
+        String[] commandArray = command.toArray(new String[command.size()]);
+        ShellUtils.ShellCommandExecutor shExec = new ShellUtils.ShellCommandExecutor(commandArray);
+        LOG.debug("Setting blob permissions, command: {}", Arrays.toString(commandArray));
+
+        try {
+            shExec.execute();
+            LOG.debug("output: {}", shExec.getOutput());
+        } catch (ShellUtils.ExitCodeException e) {
+            int exitCode = shExec.getExitCode();
+            LOG.warn("Exit code from worker-launcher is: {}", exitCode, e);
+            LOG.debug("output: {}", shExec.getOutput());
+            throw new IOException("Setting blob permissions failed"
+                                  + " (exitCode=" + exitCode + ") with output: " + shExec.getOutput(), e);
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/metrics/ClientMetricsUtils, getTimeUnitForConfig(Ljava/util/Map;Ljava/lang/String;)Ljava/util/concurrent/TimeUnit; > Context: Everywhere, blocks=[BB[SSA:3..4]2 - org.apache.storm.daemon.metrics.ClientMetricsUtils.getTimeUnitForConfig(Ljava/util/Map;Ljava/lang/String;)Ljava/util/concurrent/TimeUnit;, BB[SSA:0..2]1 - org.apache.storm.daemon.metrics.ClientMetricsUtils.getTimeUnitForConfig(Ljava/util/Map;Ljava/lang/String;)Ljava/util/concurrent/TimeUnit;, BB[SSA:5..8]3 - org.apache.storm.daemon.metrics.ClientMetricsUtils.getTimeUnitForConfig(Ljava/util/Map;Ljava/lang/String;)Ljava/util/concurrent/TimeUnit;, BB[SSA:-1..-2]7 - org.apache.storm.daemon.metrics.ClientMetricsUtils.getTimeUnitForConfig(Ljava/util/Map;Ljava/lang/String;)Ljava/util/concurrent/TimeUnit;], numberOfBasicBlocks=4, firstLineNumber=45, lastLineNumber=46, firstMethodNumber=44, lastMethodNumber=49, isFirstLineValid=true, methodSrcCode=
+    public static TimeUnit getTimeUnitForConfig(Map<String, Object> reporterConf, String configName) {
+        String timeUnitString = ObjectReader.getString(reporterConf.get(configName), null);
+        if (timeUnitString != null) {
+            return TimeUnit.valueOf(timeUnitString);
+        }
+        return null;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/metrics2/reporters/JmxStormReporter, getMetricsJmxDomain(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:3..4]2 - org.apache.storm.metrics2.reporters.JmxStormReporter.getMetricsJmxDomain(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:0..2]1 - org.apache.storm.metrics2.reporters.JmxStormReporter.getMetricsJmxDomain(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:5..5]3 - org.apache.storm.metrics2.reporters.JmxStormReporter.getMetricsJmxDomain(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.storm.metrics2.reporters.JmxStormReporter.getMetricsJmxDomain(Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=31, lastLineNumber=31, firstMethodNumber=30, lastMethodNumber=31, isFirstLineValid=true, methodSrcCode=
+    public static String getMetricsJmxDomain(Map reporterConf) {
+        return ObjectReader.getString(reporterConf.get(JMX_DOMAIN), null);
+    }
+}

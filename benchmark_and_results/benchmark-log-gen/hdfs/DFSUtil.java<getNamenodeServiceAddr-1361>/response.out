@@ -1,0 +1,21 @@
+```java
+if (nsId == null) {
+    nsId = getOnlyNameServiceIdOrNull(conf);
+}
+
+String serviceAddrKey = DFSUtilClient.concatSuffixes(
+    DFSConfigKeys.DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY, nsId, nnId);
+
+String addrKey = DFSUtilClient.concatSuffixes(
+    DFSConfigKeys.DFS_NAMENODE_RPC_ADDRESS_KEY, nsId, nnId);
+
+String serviceRpcAddr = conf.get(serviceAddrKey);
+if (serviceRpcAddr == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Service RPC address not found for key: " + serviceAddrKey + ". Attempting to retrieve using key: " + addrKey);
+    // ConfLogger Inserted End
+    serviceRpcAddr = conf.get(addrKey);
+}
+return serviceRpcAddr;
+}
+```

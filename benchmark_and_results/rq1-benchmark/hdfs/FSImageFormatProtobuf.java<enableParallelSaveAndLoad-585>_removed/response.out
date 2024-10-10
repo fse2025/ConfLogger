@@ -1,0 +1,33 @@
+```java
+private static boolean enableParallelSaveAndLoad(Configuration conf) {
+    boolean loadInParallel = enableParallelLoad;
+    boolean compressionEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY,
+        DFSConfigKeys.DFS_IMAGE_COMPRESS_DEFAULT);
+
+    if (loadInParallel) {
+        if (compressionEnabled) {
+            loadInParallel = false;
+            // ConfLogger Inserted Start
+            logger.info("Parallel load is disabled due to compression being enabled. " +
+                        "Configuration parameter: " + DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY + 
+                        ", value: " + compressionEnabled + 
+                        ". To enable parallel load, set compression to false.");
+            // ConfLogger Inserted End
+        } else {
+            // ConfLogger Inserted Start
+            logger.info("Parallel load is enabled. " +
+                        "Configuration parameter: " + DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY + 
+                        ", value: " + compressionEnabled + 
+                        ". Compression is not enabled, allowing parallel load.");
+            // ConfLogger Inserted End
+        }
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("Parallel load is not enabled initially. " +
+                    "Check the enableParallelLoad setting to allow parallel operations.");
+        // ConfLogger Inserted End
+    }
+    return loadInParallel;
+}
+```

@@ -1,0 +1,52 @@
+```java
+public boolean clientTunneledAuthenticationInProgress() {
+    if (!isSASLConfigured) {
+        return false;
+    }
+    // TODO: Rather than checking a disjunction here, should be a single member
+    // variable or method in this class to determine whether the client is
+    // configured to use SASL. (see also ZOOKEEPER-1455).
+    try {
+        if ((clientConfig.getJaasConfKey() != null)
+                || ((Configuration.getConfiguration() != null)
+                && (Configuration.getConfiguration().getAppConfigurationEntry(
+                clientConfig.getProperty(
+                        ZKClientConfig.LOGIN_CONTEXT_NAME_KEY,
+                        ZKClientConfig.LOGIN_CONTEXT_NAME_KEY_DEFAULT)) != null))) {
+            // Client is configured to use a valid login Configuration, so
+            // authentication is either in progress, successful, or failed.
+
+            // 1. Authentication hasn't finished yet: we must wait for it to do so.
+            if (!isComplete() && !isFailed()) {
+                // ConfLogger Inserted Start
+                logger.info("Authentication is in progress. Waiting for completion. SASL Configured: {}, JaasConfKey: {}", isSASLConfigured, clientConfig.getJaasConfKey());
+                // ConfLogger Inserted End
+                return true;
+            }
+
+            // 2. SASL authentication has succeeded or failed..
+            //noinspection RedundantIfStatement
+            if (!gotLastPacket) {
+                // ..but still in progress, because there is a final SASL
+                // message from server which must be received.
+                // ConfLogger Inserted Start
+                logger.info("SASL authentication is in progress. Awaiting final SASL message from server. SASL Configured: {}, JaasConfKey: {}", isSASLConfigured, clientConfig.getJaasConfKey());
+                // ConfLogger Inserted End
+                return true;
+            }
+        }
+        // Either client is not configured to use a tunnelled authentication
+        // scheme, or tunnelled authentication has completed (successfully or
+        // not), and all server SASL messages have been received.
+        // ConfLogger Inserted Start
+        logger.info("Tunnelled authentication is not configured or has completed. SASL Configured: {}, JaasConfKey: {}", isSASLConfigured, clientConfig.getJaasConfKey());
+        // ConfLogger Inserted End
+        return false;
+    } catch (SecurityException e) {
+        // Thrown if the caller does not have permission to retrieve the Configuration.
+        // In this case, simply returning false is correct.
+        LOG.debug("Could not retrieve login configuration", e); // ConfLogger Skipped: Contains configuration-related exception information
+        return false;
+    }
+}
+```

@@ -1,0 +1,33 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Compression.java	methodSinagture:	org.apache.hadoop.hbase.io.compress.Compression.buildCodec(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hbase/io/compress/Compression$Algorithm;)Lorg/apache/hadoop/io/compress/CompressionCodec;	methodLines:	551:563
+blockLines:	553:-1
+paras:	null
+TaintedStat:	NORMAL buildCodec:conditional branch(ne, to iindex=23) 9,10 Node: < Application, Lorg/apache/hadoop/hbase/io/compress/Compression, buildCodec(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hbase/io/compress/Compression$Algorithm;)Lorg/apache/hadoop/io/compress/CompressionCodec; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/compress/Compression, buildCodec(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hbase/io/compress/Compression$Algorithm;)Lorg/apache/hadoop/io/compress/CompressionCodec; > Context: Everywhere[5]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,5,7 @9 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/compress/Compression, buildCodec(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hbase/io/compress/Compression$Algorithm;)Lorg/apache/hadoop/io/compress/CompressionCodec; > Context: Everywhere[5]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,5,7 @9 exception:8
+NORMAL buildCodec:conditional branch(ne, to iindex=23) 9,10 Node: < Application, Lorg/apache/hadoop/hbase/io/compress/Compression, buildCodec(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hbase/io/compress/Compression$Algorithm;)Lorg/apache/hadoop/io/compress/CompressionCodec; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    try {
+      String codecClassName = conf.get(algo.confKey, algo.confDefault);
+      if (codecClassName == null) {
+        throw new RuntimeException("No codec configured for " + algo.confKey);
+      }
+      Class<?> codecClass = getClassLoaderForCodec().loadClass(codecClassName);
+      CompressionCodec codec =
+        (CompressionCodec) ReflectionUtils.newInstance(codecClass, new Configuration(conf));
+      LOG.info("Loaded codec {} for compression algorithm {}", codec.getClass().getCanonicalName(),
+        algo.name());
+      return codec;
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+
+
+====================ctx:=======================

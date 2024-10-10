@@ -1,0 +1,26 @@
+```java
+ConfigurationProvider provider =
+ConfigurationProviderFactory.getConfigurationProvider(conf);
+try {
+    provider.init(conf);
+} catch (Exception e) {
+    throw new IOException(e);
+}
+
+InputStream ris = provider.getConfigurationInputStream(conf, resourceFile);
+if (ris == null) {
+    if (conf.getResource(resourceFile) == null) {
+        // ConfLogger Inserted Start
+        logger.error("Configuration parameter 'resourceFile' is not set properly. Unable to find resource: " + resourceFile);
+        // ConfLogger Inserted End
+        throw new FileNotFoundException("Unable to find " + resourceFile);
+    }
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter 'resourceFile' is not set properly. Unable to open resource types file: " + resourceFile + ". Using provider: " + provider);
+    // ConfLogger Inserted End
+    throw new IOException(
+        "Unable to open resource types file '" + resourceFile
+        + "'. Using provider " + provider);
+}
+return ris;
+```

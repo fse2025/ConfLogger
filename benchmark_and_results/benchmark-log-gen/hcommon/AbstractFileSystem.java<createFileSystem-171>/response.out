@@ -1,0 +1,15 @@
+```java
+final String fsImplConf = String.format("fs.AbstractFileSystem.%s.impl",
+uri.getScheme());
+
+Class<?> clazz = conf.getClass(fsImplConf, null);
+if (clazz == null) {
+    // ConfLogger Inserted Start
+    logger.error(String.format("Configuration error: %s is not set. Unable to find implementation for scheme: %s. Please ensure the configuration parameter %s is properly set.", fsImplConf, uri.getScheme(), fsImplConf));
+    // ConfLogger Inserted End
+    throw new UnsupportedFileSystemException(String.format(
+    "%s=null: %s: %s",
+    fsImplConf, NO_ABSTRACT_FS_ERROR, uri.getScheme()));
+}
+return (AbstractFileSystem) newInstance(clazz, uri, conf);
+```

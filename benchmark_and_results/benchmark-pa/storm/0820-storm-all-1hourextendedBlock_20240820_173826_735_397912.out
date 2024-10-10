@@ -1,0 +1,74 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StormCommon.java	methodSinagture:	org.apache.storm.daemon.StormCommon.validateBasic(Lorg/apache/storm/generated/StormTopology;)V	methodLines:	157:183
+blockLines:	178:-1
+paras:	topology.tasks
+TaintedStat:	NORMAL validateBasic:conditional branch(le, to iindex=95) 54,7 Node: < Application, Lorg/apache/storm/daemon/StormCommon, validateBasic(Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, validateBasic(Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[78]48 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 41,46 @162 exception:47
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, validateBasic(Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[78]48 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 41,46 @162 exception:47
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, validateBasic(Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[81]52 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 48,50 @171 exception:51 v48
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:30 = checkcast <Application,Ljava/lang/Number>1 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:32 = invokevirtual < Application, Ljava/lang/Number, intValue()I > 30 @32 exception:31 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL intValue:return 3 Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, validateBasic(Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[84]54 = invokevirtual < Application, Ljava/lang/Integer, intValue()I > 52 @178 exception:53
+NORMAL validateBasic:conditional branch(le, to iindex=95) 54,7 Node: < Application, Lorg/apache/storm/daemon/StormCommon, validateBasic(Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static void validateBasic(StormTopology topology) throws InvalidTopologyException {
+        validateIds(topology);
+
+        for (StormTopology._Fields field : Thrift.getSpoutFields()) {
+            Map<String, Object> spoutComponents = (Map<String, Object>) topology.getFieldValue(field);
+            if (spoutComponents != null) {
+                for (Object obj : spoutComponents.values()) {
+                    ComponentCommon common = getComponentCommon(obj);
+                    if (!isEmptyInputs(common)) {
+                        throw new WrappedInvalidTopologyException("May not declare inputs for a spout");
+                    }
+                }
+            }
+        }
+
+        Map<String, Object> componentMap = allComponents(topology);
+        for (Object componentObj : componentMap.values()) {
+            Map<String, Object> conf = componentConf(componentObj);
+            ComponentCommon common = getComponentCommon(componentObj);
+            int parallelismHintNum = Thrift.getParallelismHint(common);
+            Integer taskNum = ObjectReader.getInt(conf.get(Config.TOPOLOGY_TASKS), 0);
+            if (taskNum > 0 && parallelismHintNum <= 0) {
+                throw new WrappedInvalidTopologyException(
+                        "Number of executors must be greater than 0 when number of tasks is greater than 0");
+            }
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/StormCommon, systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:-1..-2]0 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:2..3]2 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:-1..-2]13 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;], numberOfBasicBlocks=4, firstLineNumber=533, lastLineNumber=536, firstMethodNumber=533, lastMethodNumber=548, isFirstLineValid=false, methodSrcCode=
+    protected StormTopology systemTopologyImpl(Map<String, Object> topoConf, StormTopology topology) throws InvalidTopologyException {
+        validateBasic(topology);
+
+        StormTopology ret = topology.deepCopy();
+        addAcker(topoConf, ret);
+        if (hasEventLoggers(topoConf)) {
+            addEventLogger(topoConf, ret);
+        }
+        addMetricComponents(topoConf, ret);
+        addSystemComponents(topoConf, ret);
+        addMetricStreams(ret);
+        addSystemStreams(ret);
+
+        validateStructure(ret);
+
+        return ret;
+    }
+}

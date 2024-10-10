@@ -1,0 +1,9 @@
+```java
+if (that != null) {
+    // ConfLogger Inserted Start
+    logger.debug("Configuration check: 'that' is not null. 'that.ordinal()' value: " + that.ordinal() + ", 'this.ordinal()' value: " + this.ordinal());
+    // ConfLogger Inserted End
+    return (ordinal() & that.ordinal()) == that.ordinal();
+}
+return false;
+```

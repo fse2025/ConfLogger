@@ -1,0 +1,18 @@
+```java
+if (o instanceof String) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter is a String. Converting to List. Parameter value: " + o);
+    // ConfLogger Inserted End
+    return Arrays.asList((String) o);
+} else if (o instanceof List) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter is a List. Returning as is. Parameter value: " + o);
+    // ConfLogger Inserted End
+    return (List<String>) o;
+}
+// ConfLogger Inserted Start
+logger.warn("Configuration parameter is neither a String nor a List. Returning an empty list. Parameter value: " + o);
+// ConfLogger Inserted End
+return Collections.EMPTY_LIST;
+}
+```

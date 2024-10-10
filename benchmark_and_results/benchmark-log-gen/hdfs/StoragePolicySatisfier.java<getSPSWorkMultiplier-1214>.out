@@ -1,0 +1,44 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StoragePolicySatisfier.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.sps.StoragePolicySatisfier.getSPSWorkMultiplier(Lorg/apache/hadoop/conf/Configuration;)I	methodLines:	1214:1224
+blockLines:	1219:-1
+paras:	dfs.storage.policy.satisfier.work.multiplier.per.iteration
+TaintedStat:	NORMAL getSPSWorkMultiplier:conditional branch(le, to iindex=10) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/StoragePolicySatisfier, getSPSWorkMultiplier(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/StoragePolicySatisfier, getSPSWorkMultiplier(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,3,4 @4 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/StoragePolicySatisfier, getSPSWorkMultiplier(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,3,4 @4 exception:5
+NORMAL getSPSWorkMultiplier:conditional branch(le, to iindex=10) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/StoragePolicySatisfier, getSPSWorkMultiplier(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static int getSPSWorkMultiplier(Configuration conf) {
+    int spsWorkMultiplier = conf
+        .getInt(
+            DFSConfigKeys.DFS_SPS_WORK_MULTIPLIER_PER_ITERATION,
+            DFSConfigKeys.DFS_SPS_WORK_MULTIPLIER_PER_ITERATION_DEFAULT);
+    Preconditions.checkArgument(
+        (spsWorkMultiplier > 0),
+        DFSConfigKeys.DFS_SPS_WORK_MULTIPLIER_PER_ITERATION +
+        " = '" + spsWorkMultiplier + "' is invalid. " +
+        "It should be a positive, non-zero integer value.");
+    return spsWorkMultiplier;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/StoragePolicySatisfier, init(Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V > Context: Everywhere, blocks=[BB[SSA:21..21]10 - org.apache.hadoop.hdfs.server.namenode.sps.StoragePolicySatisfier.init(Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V, BB[SSA:18..20]9 - org.apache.hadoop.hdfs.server.namenode.sps.StoragePolicySatisfier.init(Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V, BB[SSA:22..22]11 - org.apache.hadoop.hdfs.server.namenode.sps.StoragePolicySatisfier.init(Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V, BB[SSA:-1..-2]16 - org.apache.hadoop.hdfs.server.namenode.sps.StoragePolicySatisfier.init(Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V], numberOfBasicBlocks=4, firstLineNumber=142, lastLineNumber=142, firstMethodNumber=137, lastMethodNumber=146, isFirstLineValid=true, methodSrcCode=
+  public void init(final Context context) {
+    this.ctxt = context;
+    this.storageMovementNeeded = new BlockStorageMovementNeeded(context);
+    this.storageMovementsMonitor = new BlockStorageMovementAttemptedItems(
+        this, storageMovementNeeded, context);
+    this.spsWorkMultiplier = getSPSWorkMultiplier(getConf());
+    this.blockMovementMaxRetry = getConf().getInt(
+        DFSConfigKeys.DFS_STORAGE_POLICY_SATISFIER_MAX_RETRY_ATTEMPTS_KEY,
+        DFSConfigKeys.DFS_STORAGE_POLICY_SATISFIER_MAX_RETRY_ATTEMPTS_DEFAULT);
+  }
+
+}

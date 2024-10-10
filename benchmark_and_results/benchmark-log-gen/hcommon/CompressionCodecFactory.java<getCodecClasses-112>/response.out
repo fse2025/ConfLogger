@@ -1,0 +1,41 @@
+```java
+List<Class<? extends CompressionCodec>> result
+= new ArrayList<Class<? extends CompressionCodec>>();
+// Add codec classes discovered via service loading
+synchronized (CODEC_PROVIDERS) {
+// CODEC_PROVIDERS is a lazy collection. Synchronize so it is
+// thread-safe. See HADOOP-8406.
+for (CompressionCodec codec : CODEC_PROVIDERS) {
+result.add(codec.getClass());
+}
+}
+// Add codec classes from configuration
+String codecsString = conf.get(
+CommonConfigurationKeys.IO_COMPRESSION_CODECS_KEY);
+if (codecsString != null) {
+StringTokenizer codecSplit = new StringTokenizer(codecsString, ",");
+while (codecSplit.hasMoreElements()) {
+String codecSubstring = codecSplit.nextToken().trim();
+if (codecSubstring.length() != 0) {
+try {
+Class<?> cls = conf.getClassByName(codecSubstring);
+if (!CompressionCodec.class.isAssignableFrom(cls)) {
+logger.error("Class " + codecSubstring + " is not a CompressionCodec. Please ensure the configuration parameter " + CommonConfigurationKeys.IO_COMPRESSION_CODECS_KEY + " contains valid CompressionCodec classes."); // ConfLogger Inserted Start
+throw new IllegalArgumentException("Class " + codecSubstring +
+" is not a CompressionCodec");
+// ConfLogger Commented: Not Informative
+}
+result.add(cls.asSubclass(CompressionCodec.class));
+} catch (ClassNotFoundException ex) {
+logger.error("Compression codec " + codecSubstring + " not found. Please ensure the configuration parameter " + CommonConfigurationKeys.IO_COMPRESSION_CODECS_KEY + " contains valid class names.", ex); // ConfLogger Inserted Start
+throw new IllegalArgumentException("Compression codec " +
+codecSubstring + " not found.",
+ex);
+// ConfLogger Commented: Not Informative
+}
+}
+}
+}
+return result;
+}
+```

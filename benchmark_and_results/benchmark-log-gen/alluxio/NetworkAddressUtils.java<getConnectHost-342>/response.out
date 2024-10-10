@@ -1,0 +1,31 @@
+```java
+if (conf.isSet(service.getHostNameKey())) {
+    String connectHost = conf.getString(service.getHostNameKey());
+    if (!connectHost.isEmpty() && !connectHost.equals(WILDCARD_ADDRESS)) {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter '{}' is set to '{}'. Returning connectHost.", service.getHostNameKey(), connectHost);
+        // ConfLogger Inserted End
+        return connectHost;
+    }
+}
+if (conf.isSet(service.getBindHostKey())) {
+    String bindHost = conf.getString(service.getBindHostKey());
+    if (!bindHost.isEmpty() && !bindHost.equals(WILDCARD_ADDRESS)) {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter '{}' is set to '{}'. Returning bindHost.", service.getBindHostKey(), bindHost);
+        // ConfLogger Inserted End
+        return bindHost;
+    }
+}
+if (conf.getBoolean(PropertyKey.NETWORK_IP_ADDRESS_USED)) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is set to true. Returning local IP address.", PropertyKey.NETWORK_IP_ADDRESS_USED);
+    // ConfLogger Inserted End
+    return getLocalIpAddress((int) conf.getMs(PropertyKey.NETWORK_HOST_RESOLUTION_TIMEOUT_MS));
+}
+// ConfLogger Inserted Start
+logger.info("No specific host configuration found. Returning local host name.");
+// ConfLogger Inserted End
+return getLocalHostName((int) conf.getMs(PropertyKey.NETWORK_HOST_RESOLUTION_TIMEOUT_MS));
+}
+```

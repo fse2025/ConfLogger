@@ -1,0 +1,25 @@
+```java
+String jars = conf.get("tmpjars");
+if (jars == null || jars.trim().isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'tmpjars' is not set or is empty. Please provide a valid 'tmpjars' value.");
+    // ConfLogger Inserted End
+    return null;
+}
+String[] files = jars.split(",");
+List<URL> cp = new ArrayList<URL>();
+for (String file : files) {
+    Path tmp = new Path(file);
+    if (tmp.getFileSystem(conf).equals(FileSystem.getLocal(conf))) {
+        cp.add(FileSystem.getLocal(conf).pathToFile(tmp).toURI().toURL());
+    } else {
+        // ConfLogger Commented: Not Informative
+        // LOG.warn("The libjars file " + tmp + " is not on the local " +
+        // "filesystem. It will not be added to the local classpath.");
+        // ConfLogger Inserted Start
+        logger.warn("The libjars file '{}' is not on the local filesystem. It will not be added to the local classpath.", tmp);
+        // ConfLogger Inserted End
+    }
+}
+return cp.toArray(new URL[0]);
+```

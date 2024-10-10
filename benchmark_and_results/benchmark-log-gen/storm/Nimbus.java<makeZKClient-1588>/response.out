@@ -1,0 +1,23 @@
+```java
+List<String> servers = (List<String>) conf.get(Config.STORM_ZOOKEEPER_SERVERS);
+Object port = conf.get(Config.STORM_ZOOKEEPER_PORT);
+String root = (String) conf.get(Config.STORM_ZOOKEEPER_ROOT);
+CuratorFramework ret = null;
+if (servers != null && port != null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameters for Zookeeper client are set correctly: servers={}, port={}, root={}", servers, port, root);
+    // ConfLogger Inserted End
+    ret = ClientZookeeper.mkClient(conf, servers, port, root, new DefaultWatcherCallBack(), conf, DaemonType.NIMBUS);
+} else {
+    // ConfLogger Inserted Start
+    if (servers == null) {
+        logger.error("Configuration parameter 'Config.STORM_ZOOKEEPER_SERVERS' is not set or is null.");
+    }
+    if (port == null) {
+        logger.error("Configuration parameter 'Config.STORM_ZOOKEEPER_PORT' is not set or is null.");
+    }
+    // ConfLogger Inserted End
+}
+return ret;
+}
+```

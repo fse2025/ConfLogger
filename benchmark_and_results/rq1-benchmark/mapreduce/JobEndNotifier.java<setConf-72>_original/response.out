@@ -1,0 +1,75 @@
+```java
+public void setConf(Configuration conf) {
+    this.conf = conf;
+
+    numTries = Math.min(
+        conf.getInt(MRJobConfig.MR_JOB_END_RETRY_ATTEMPTS, 0) + 1,
+        conf.getInt(MRJobConfig.MR_JOB_END_NOTIFICATION_MAX_ATTEMPTS, 1)
+    );
+    waitInterval = Math.min(
+        conf.getInt(MRJobConfig.MR_JOB_END_RETRY_INTERVAL, 5000),
+        conf.getInt(MRJobConfig.MR_JOB_END_NOTIFICATION_MAX_RETRY_INTERVAL, 5000)
+    );
+    waitInterval = (waitInterval < 0) ? 5000 : waitInterval;
+
+    timeout = conf.getInt(JobContext.MR_JOB_END_NOTIFICATION_TIMEOUT,
+        JobContext.DEFAULT_MR_JOB_END_NOTIFICATION_TIMEOUT);
+
+    userUrl = conf.get(MRJobConfig.MR_JOB_END_NOTIFICATION_URL);
+
+    proxyConf = conf.get(MRJobConfig.MR_JOB_END_NOTIFICATION_PROXY);
+
+    customJobEndNotifierClassName = StringUtils.stripToNull(
+        conf.get(MRJobConfig.MR_JOB_END_NOTIFICATION_CUSTOM_NOTIFIER_CLASS)
+    );
+
+    // Configure the proxy to use if its set. It should be set like
+    // proxyType@proxyHostname:port
+    if (proxyConf != null && !proxyConf.equals("") &&
+        proxyConf.lastIndexOf(":") != -1) {
+        int typeIndex = proxyConf.indexOf("@");
+        Proxy.Type proxyType = Proxy.Type.HTTP;
+        if (typeIndex != -1 &&
+            proxyConf.substring(0, typeIndex).compareToIgnoreCase("socks") == 0) {
+            proxyType = Proxy.Type.SOCKS;
+        }
+        String hostname = proxyConf.substring(typeIndex + 1,
+            proxyConf.lastIndexOf(":"));
+        String portConf = proxyConf.substring(proxyConf.lastIndexOf(":") + 1);
+        try {
+            int port = Integer.parseInt(portConf);
+            proxyToUse = new Proxy(proxyType,
+                new InetSocketAddress(hostname, port));
+            // ConfLogger Skipped: The log contains configuration details about proxy settings.
+            Log.getLog().info("Job end notification using proxy type \""
+                + proxyType + "\" hostname \"" + hostname + "\" and port \"" + port
+                + "\"");
+        } catch (NumberFormatException nfe) {
+            // ConfLogger Inserted Start
+            logger.warn("Failed to parse the proxy port configuration. Proxy configuration: " + proxyConf + ". Ensure the port is a valid integer.");
+            // ConfLogger Inserted End
+            Log.getLog().warn("Job end notification couldn't parse configured"
+                + "proxy's port " + portConf + ". Not going to use a proxy");
+        }
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("Proxy configuration is not set or invalid. Proxy will not be used. Configuration: " + proxyConf);
+        // ConfLogger Inserted End
+    }
+}
+```
+
+### Explanation:
+
+1. **Task 1: Inspect Existing Outputs**
+   - The existing log statement inside the `try` block provides detailed information about the proxy configuration, including the proxy type, hostname, and port. This is sufficient for understanding the configuration, so it is skipped with a comment: `// ConfLogger Skipped: The log contains configuration details about proxy settings.`
+   - The existing warning log in the `catch` block is retained because it provides information about the failure to parse the proxy's port. However, an additional log is inserted before it to provide more context.
+
+2. **Task 2: Determine Log Insertion Position and Generate Logging Code**
+   - **Type Identification**: The code checks if a proxy configuration is set and valid, which falls under Type 1 (checking if a parameter is properly set).
+   - **Log Insertion**: 
+     - A new log statement is inserted in the `catch` block to provide more detailed information about the failure to parse the proxy port, including the entire proxy configuration string.
+     - Another log statement is inserted in the `else` block to inform that the proxy configuration is not set or invalid, and thus a proxy will not be used. This helps users understand why the proxy is not being used and guides them to set it correctly if needed.
+   - **Log Level**: 
+     - `warn` is used for the failure to parse the proxy port, as it indicates a potential issue that needs attention.
+     - `info` is used for the absence or invalidity of the proxy configuration, as it is informational and not necessarily an error.

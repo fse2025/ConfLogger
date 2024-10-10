@@ -1,0 +1,104 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TaskAttemptImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.job.impl.TaskAttemptImpl.configureJobJar(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Map;)V	methodLines:	988:1019
+blockLines:	990:-1
+paras:	null
+TaintedStat:	NORMAL configureJobJar:conditional branch(eq, to iindex=68) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, configureJobJar(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Map;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, configureJobJar(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Map;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, configureJobJar(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Map;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL configureJobJar:conditional branch(eq, to iindex=68) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, configureJobJar(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Map;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	TaskAttemptImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.job.impl.TaskAttemptImpl.configureJobJar(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Map;)V	methodLines:	988:1019
+blockLines:	996:-1
+paras:	null
+TaintedStat:	NORMAL configureJobJar:conditional branch(eq, to iindex=32) 26,24 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, configureJobJar(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Map;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, configureJobJar(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Map;)V > Context: Everywhere[27]26 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,23,24 @50 exception:25
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, configureJobJar(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Map;)V > Context: Everywhere[27]26 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,23,24 @50 exception:25
+NORMAL configureJobJar:conditional branch(eq, to iindex=32) 26,24 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, configureJobJar(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Map;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // Set up JobJar to be localized properly on the remote NM.
+    String jobJar = conf.get(MRJobConfig.JAR);
+    if (jobJar != null) {
+      final Path jobJarPath = new Path(jobJar);
+      final FileSystem jobJarFs = FileSystem.get(jobJarPath.toUri(), conf);
+      Path remoteJobJar = jobJarPath.makeQualified(jobJarFs.getUri(),
+          jobJarFs.getWorkingDirectory());
+      LocalResourceVisibility jobJarViz =
+          conf.getBoolean(MRJobConfig.JOBJAR_VISIBILITY,
+              MRJobConfig.JOBJAR_VISIBILITY_DEFAULT)
+                  ? LocalResourceVisibility.PUBLIC
+                  : LocalResourceVisibility.APPLICATION;
+      // We hard code the job.jar localized symlink in the container directory.
+      // This is because the mapreduce app expects the job.jar to be named
+      // accordingly. Additionally we set the shared cache upload policy to
+      // false. Resources are uploaded by the AM if necessary.
+      LocalResource rc =
+          createLocalResource(jobJarFs, remoteJobJar, MRJobConfig.JOB_JAR,
+              LocalResourceType.PATTERN, jobJarViz);
+      String pattern = conf.getPattern(JobContext.JAR_UNPACK_PATTERN,
+          JobConf.UNPACK_JAR_PATTERN_DEFAULT).pattern();
+      rc.setPattern(pattern);
+      localResources.put(MRJobConfig.JOB_JAR, rc);
+      LOG.info("The job-jar file on the remote FS is "
+          + remoteJobJar.toUri().toASCIIString());
+    } else {
+      // Job jar may be null. For e.g, for pipes, the job jar is the hadoop
+      // mapreduce jar itself which is already on the classpath.
+      LOG.info("Job jar is not present. "
+          + "Not adding any jar to the list of resources.");
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, createCommonContainerLaunchContext(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/token/Token;Lorg/apache/hadoop/mapred/JobID;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ContainerLaunchContext; > Context: Everywhere, blocks=[BB[SSA:11..14]7 - org.apache.hadoop.mapreduce.v2.app.job.impl.TaskAttemptImpl.createCommonContainerLaunchContext(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/token/Token;Lorg/apache/hadoop/mapred/JobID;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ContainerLaunchContext;, BB[SSA:10..10]6 - org.apache.hadoop.mapreduce.v2.app.job.impl.TaskAttemptImpl.createCommonContainerLaunchContext(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/token/Token;Lorg/apache/hadoop/mapred/JobID;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ContainerLaunchContext;, BB[SSA:15..18]8 - org.apache.hadoop.mapreduce.v2.app.job.impl.TaskAttemptImpl.createCommonContainerLaunchContext(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/token/Token;Lorg/apache/hadoop/mapred/JobID;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ContainerLaunchContext;, BB[SSA:-1..-2]19 - org.apache.hadoop.mapreduce.v2.app.job.impl.TaskAttemptImpl.createCommonContainerLaunchContext(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/token/Token;Lorg/apache/hadoop/mapred/JobID;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ContainerLaunchContext;], numberOfBasicBlocks=4, firstLineNumber=928, lastLineNumber=933, firstMethodNumber=917, lastMethodNumber=956, isFirstLineValid=true, methodSrcCode=
+    // Application resources
+    Map<String, LocalResource> localResources = 
+        new HashMap<String, LocalResource>();
+    
+    // Application environment
+    Map<String, String> environment;
+
+    // Service data
+    Map<String, ByteBuffer> serviceData = new HashMap<String, ByteBuffer>();
+
+    // Tokens
+    ByteBuffer taskCredentialsBuffer = ByteBuffer.wrap(new byte[]{});
+    try {
+
+      configureJobJar(conf, localResources);
+
+      configureJobConf(conf, localResources, oldJobId);
+
+      // Setup DistributedCache
+      MRApps.setupDistributedCache(conf, localResources);
+
+      taskCredentialsBuffer =
+          configureTokens(jobToken, credentials, serviceData);
+
+      addExternalShuffleProviders(conf, serviceData);
+
+      environment = configureEnv(conf);
+
+    } catch (IOException e) {
+      throw new YarnRuntimeException(e);
+    }
+
+    // Construct the actual Container
+    // The null fields are per-container and will be constructed for each
+    // container separately.
+    ContainerLaunchContext container =
+        ContainerLaunchContext.newInstance(localResources, environment, null,
+            serviceData, taskCredentialsBuffer, applicationACLs);
+
+    return container;
+  }
+}

@@ -1,0 +1,71 @@
+```java
+public X509AuthenticationProvider() throws X509Exception {
+    ZKConfig config = new ZKConfig();
+    try (X509Util x509Util = new ClientX509Util()) {
+        String keyStoreLocation = config.getProperty(x509Util.getSslKeystoreLocationProperty(), "");
+        String keyStorePassword = x509Util.getPasswordFromConfigPropertyOrFile(config,
+                x509Util.getSslKeystorePasswdProperty(),
+                x509Util.getSslKeystorePasswdPathProperty());
+        String keyStoreTypeProp = config.getProperty(x509Util.getSslKeystoreTypeProperty());
+
+        boolean crlEnabled = Boolean.parseBoolean(config.getProperty(x509Util.getSslCrlEnabledProperty()));
+        boolean ocspEnabled = Boolean.parseBoolean(config.getProperty(x509Util.getSslOcspEnabledProperty()));
+        boolean hostnameVerificationEnabled = Boolean.parseBoolean(config.getProperty(x509Util.getSslHostnameVerificationEnabledProperty()));
+
+        X509KeyManager km = null;
+        X509TrustManager tm = null;
+        if (keyStoreLocation.isEmpty()) {
+            // ConfLogger Commented: Not Informative
+            // LOG.warn("keystore not specified for client connection");
+            // ConfLogger Inserted Start
+            logger.warn("Keystore not specified for client connection. Please set the configuration parameter: " + x509Util.getSslKeystoreLocationProperty());
+            // ConfLogger Inserted End
+        } else {
+            try {
+                km = X509Util.createKeyManager(keyStoreLocation, keyStorePassword, keyStoreTypeProp);
+            } catch (KeyManagerException e) {
+                // ConfLogger Commented: Not Informative
+                // LOG.error("Failed to create key manager", e);
+                // ConfLogger Inserted Start
+                logger.error("Failed to create key manager with keystore location: " + keyStoreLocation + ", keystore type: " + keyStoreTypeProp, e);
+                // ConfLogger Inserted End
+            }
+        }
+
+        String trustStoreLocation = config.getProperty(x509Util.getSslTruststoreLocationProperty(), "");
+        String trustStorePassword = x509Util.getPasswordFromConfigPropertyOrFile(config,
+                x509Util.getSslTruststorePasswdProperty(),
+                x509Util.getSslTruststorePasswdPathProperty());
+        String trustStoreTypeProp = config.getProperty(x509Util.getSslTruststoreTypeProperty());
+        boolean fipsMode = x509Util.getFipsMode(config);
+
+        if (trustStoreLocation.isEmpty()) {
+            // ConfLogger Commented: Not Informative
+            // LOG.warn("Truststore not specified for client connection");
+            // ConfLogger Inserted Start
+            logger.warn("Truststore not specified for client connection. Please set the configuration parameter: " + x509Util.getSslTruststoreLocationProperty());
+            // ConfLogger Inserted End
+        } else {
+            try {
+                tm = X509Util.createTrustManager(
+                        trustStoreLocation,
+                        trustStorePassword,
+                        trustStoreTypeProp,
+                        crlEnabled,
+                        ocspEnabled,
+                        hostnameVerificationEnabled,
+                        false,
+                        fipsMode);
+            } catch (TrustManagerException e) {
+                // ConfLogger Commented: Not Informative
+                // LOG.error("Failed to create trust manager", e);
+                // ConfLogger Inserted Start
+                logger.error("Failed to create trust manager with truststore location: " + trustStoreLocation + ", truststore type: " + trustStoreTypeProp, e);
+                // ConfLogger Inserted End
+            }
+        }
+        this.keyManager = km;
+        this.trustManager = tm;
+    }
+}
+```

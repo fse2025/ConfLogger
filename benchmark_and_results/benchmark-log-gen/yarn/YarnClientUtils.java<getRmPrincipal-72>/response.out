@@ -1,0 +1,18 @@
+```java
+String principal = conf.get(YarnConfiguration.RM_PRINCIPAL);
+String prepared = null;
+
+if (principal != null) {
+    // ConfLogger Inserted Start
+    logger.info("RM Principal is set. Configuration parameter: YarnConfiguration.RM_PRINCIPAL, Value: " + principal);
+    // ConfLogger Inserted End
+    prepared = getRmPrincipal(principal, conf);
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("RM Principal is not set. Please ensure YarnConfiguration.RM_PRINCIPAL is properly configured.");
+    // ConfLogger Inserted End
+}
+
+return prepared;
+}
+```

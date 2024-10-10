@@ -1,0 +1,245 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	608:706
+blockLines:	609:-1
+paras:	null
+TaintedStat:	NORMAL reconfigurePropertyImpl:conditional branch(eq, to iindex=150) 79,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[493]132 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 130,2 @1158 exception:131
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[493]132 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 130,2 @1158 exception:131
+NORMAL reconfigurePropertyImpl:invokespecial < Application, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > 128,2,3,132,126 @1163 exception:133 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > Context: Everywhere
+NORMAL <init>:8 = invokestatic < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,3,4 @4 exception:7 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL constructMessage:13 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 11 @16 exception:12 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere[2]5 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 3 @4 exception:4
+NORMAL handleEndElement:77 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 75,5 @281 exception:76 Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[9]79 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,77 @167 exception:78
+NORMAL reconfigurePropertyImpl:conditional branch(eq, to iindex=150) 79,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	608:706
+blockLines:	648:-1
+paras:	dfs.web.authentication.kerberos.keytab
+TaintedStat:	NORMAL reconfigurePropertyImpl:conditional branch(gt, to iindex=438) 98,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL getSpnegoKeytabKey:9 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 6 @12 exception:8 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[6]6 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 2 @7 exception:5
+NORMAL replacePattern:conditional branch(ne, to iindex=14) 6,7 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL replacePattern:10 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,8 @16 exception:9 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere[32]33 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 30,31 @67 exception:32
+NORMAL doRun:conditional branch(eq, to iindex=80) 33,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:conditional branch(ne, to iindex=103) 38,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:invokespecial < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > 1 @242 exception:59 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+NORMAL initHM:invokevirtual < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > 15 @53 exception:16 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+NORMAL start:invokevirtual < Extension, Lorg/apache/hadoop/util/Daemon, start()V > 3 @4 exception:4 Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfigurePropertyImpl:conditional branch(ne, to iindex=418) 3,93 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL reconfigurePropertyImpl:conditional branch(gt, to iindex=438) 98,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	608:706
+blockLines:	671:-1
+paras:	dfs.namenode.kerberos.principal
+TaintedStat:	NORMAL reconfigurePropertyImpl:conditional branch(eq, to iindex=538) 135,93 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set; > Context: Everywhere[45]31 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 26,29 @101 exception:30
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set; > Context: Everywhere[45]31 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 26,29 @101 exception:30
+NORMAL getAllNnPrincipals:[null]: 37 = invokestatic < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 31,35 @112 exception:36 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getServerPrincipal:conditional branch(eq, to iindex=17) 5,6 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getServerPrincipal:conditional branch(ne, to iindex=17) 7,8 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getServerPrincipal:13 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 10,11 @20 exception:12 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere[32]33 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 30,31 @67 exception:32
+NORMAL doRun:conditional branch(eq, to iindex=80) 33,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:conditional branch(ne, to iindex=103) 38,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:invokespecial < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > 1 @242 exception:59 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+NORMAL initHM:invokevirtual < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > 15 @53 exception:16 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+NORMAL start:invokevirtual < Extension, Lorg/apache/hadoop/util/Daemon, start()V > 3 @4 exception:4 Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfigurePropertyImpl:conditional branch(ne, to iindex=418) 3,93 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:109 = phi  93,93,99
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:135 = phi  93,93,93,93,93,93,93,93,109,109,109,109,109,109,109,109,123,127,127,127,127
+NORMAL reconfigurePropertyImpl:conditional branch(eq, to iindex=538) 135,93 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	608:706
+blockLines:	643:-1
+paras:	null
+TaintedStat:	NORMAL reconfigurePropertyImpl:conditional branch(ne, to iindex=418) 3,93 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getLogDir(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File; > Context: Everywhere[15]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 6,15 @29 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getLogDir(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File; > Context: Everywhere[15]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 6,15 @29 exception:16
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getLogDir(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File; > Context: Everywhere:18 = phi  5,17
+NORMAL getLogDir:conditional branch(ne, to iindex=26) 18,5 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getLogDir(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File; > Context: Everywhere
+NORMAL getLogDir:23 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 19,20,21 @45 exception:22 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getLogDir(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 23 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/http/HttpServer2$Builder, setEnabledProtocols(Lorg/eclipse/jetty/util/ssl/SslContextFactory;)V > Context: Everywhere[4]8 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 4,5,6 @8 exception:7
+NORMAL setEnabledProtocols:10 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 8,6 @15 exception:9 Node: < Extension, Lorg/apache/hadoop/http/HttpServer2$Builder, setEnabledProtocols(Lorg/eclipse/jetty/util/ssl/SslContextFactory;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere[32]33 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 30,31 @67 exception:32
+NORMAL doRun:conditional branch(eq, to iindex=80) 33,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:conditional branch(ne, to iindex=103) 38,29 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+NORMAL doRun:invokespecial < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > 1 @242 exception:59 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, doRun([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+NORMAL initHM:invokevirtual < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > 15 @53 exception:16 Node: < Extension, Lorg/apache/hadoop/ha/ZKFailoverController, initHM()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+NORMAL start:invokevirtual < Extension, Lorg/apache/hadoop/util/Daemon, start()V > 3 @4 exception:4 Node: < Extension, Lorg/apache/hadoop/ha/HealthMonitor, start()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfigurePropertyImpl:conditional branch(ne, to iindex=418) 3,93 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws ReconfigurationException {
+    switch (property) {
+    case DFS_DATANODE_DATA_DIR_KEY: {
+      IOException rootException = null;
+      try {
+        LOG.info("Reconfiguring {} to {}", property, newVal);
+        this.refreshVolumes(newVal);
+        return getConf().get(DFS_DATANODE_DATA_DIR_KEY);
+      } catch (IOException e) {
+        rootException = e;
+      } finally {
+        // Send a full block report to let NN acknowledge the volume changes.
+        try {
+          triggerBlockReport(
+              new BlockReportOptions.Factory().setIncremental(false).build());
+        } catch (IOException e) {
+          LOG.warn("Exception while sending the block report after refreshing"
+              + " volumes {} to {}", property, newVal, e);
+          if (rootException == null) {
+            rootException = e;
+          }
+        } finally {
+          if (rootException != null) {
+            throw new ReconfigurationException(property, newVal,
+                getConf().get(property), rootException);
+          }
+        }
+      }
+      break;
+    }
+    case DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY: {
+      ReconfigurationException rootException = null;
+      try {
+        LOG.info("Reconfiguring {} to {}", property, newVal);
+        int movers;
+        if (newVal == null) {
+          // set to default
+          movers = DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT;
+        } else {
+          movers = Integer.parseInt(newVal);
+          if (movers <= 0) {
+            rootException = new ReconfigurationException(
+                property,
+                newVal,
+                getConf().get(property),
+                new IllegalArgumentException(
+                    "balancer max concurrent movers must be larger than 0"));
+          }
+        }
+        boolean success = xserver.updateBalancerMaxConcurrentMovers(movers);
+        if (!success) {
+          rootException = new ReconfigurationException(
+              property,
+              newVal,
+              getConf().get(property),
+              new IllegalArgumentException(
+                  "Could not modify concurrent moves thread count"));
+        }
+        return Integer.toString(movers);
+      } catch (NumberFormatException nfe) {
+        rootException = new ReconfigurationException(
+            property, newVal, getConf().get(property), nfe);
+      } finally {
+        if (rootException != null) {
+          LOG.warn(String.format(
+              "Exception in updating balancer max concurrent movers %s to %s",
+              property, newVal), rootException);
+          throw rootException;
+        }
+      }
+      break;
+    }
+    case DFS_BLOCKREPORT_INTERVAL_MSEC_KEY:
+    case DFS_BLOCKREPORT_SPLIT_THRESHOLD_KEY:
+    case DFS_BLOCKREPORT_INITIAL_DELAY_KEY:
+      return reconfBlockReportParameters(property, newVal);
+    case DFS_DATANODE_MAX_RECEIVER_THREADS_KEY:
+      return reconfDataXceiverParameters(property, newVal);
+    case DFS_CACHEREPORT_INTERVAL_MSEC_KEY:
+      return reconfCacheReportParameters(property, newVal);
+    case DFS_DATANODE_PEER_STATS_ENABLED_KEY:
+    case DFS_DATANODE_MIN_OUTLIER_DETECTION_NODES_KEY:
+    case DFS_DATANODE_SLOWPEER_LOW_THRESHOLD_MS_KEY:
+    case DFS_DATANODE_PEER_METRICS_MIN_OUTLIER_DETECTION_SAMPLES_KEY:
+      return reconfSlowPeerParameters(property, newVal);
+    case DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY:
+    case DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_KEY:
+    case DFS_DATANODE_MIN_OUTLIER_DETECTION_DISKS_KEY:
+    case DFS_DATANODE_SLOWDISK_LOW_THRESHOLD_MS_KEY:
+      return reconfSlowDiskParameters(property, newVal);
+    case FS_DU_INTERVAL_KEY:
+    case FS_GETSPACEUSED_JITTER_KEY:
+    case FS_GETSPACEUSED_CLASSNAME:
+      return reconfDfsUsageParameters(property, newVal);
+    default:
+      break;
+    }
+    throw new ReconfigurationException(
+        property, newVal, getConf().get(property));
+  }
+
+
+====================ctx:=======================

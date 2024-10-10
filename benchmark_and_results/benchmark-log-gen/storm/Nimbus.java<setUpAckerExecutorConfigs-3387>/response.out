@@ -1,0 +1,34 @@
+```java
+if (totalConf.get(Config.TOPOLOGY_ACKER_EXECUTORS) == null) {
+    numAckerExecsPerWorker = ObjectReader.getInt(
+        totalConf.get(Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER));
+    numAckerExecs = estimatedNumWorker * numAckerExecsPerWorker;
+    // ConfLogger Inserted Start
+    logger.info("Config {} is null. Using {}: {}. Calculated numAckerExecs: {} (estimatedNumWorker: {}, numAckerExecsPerWorker: {})",
+        Config.TOPOLOGY_ACKER_EXECUTORS, Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER, numAckerExecsPerWorker, numAckerExecs, estimatedNumWorker, numAckerExecsPerWorker);
+    // ConfLogger Inserted End
+} else {
+    numAckerExecs = ObjectReader.getInt(totalConf.get(Config.TOPOLOGY_ACKER_EXECUTORS));
+    if (estimatedNumWorker == 0) {
+        numAckerExecsPerWorker = 0;
+        // ConfLogger Inserted Start
+        logger.warn("Config {} is set to {}. Estimated number of workers is 0, setting numAckerExecsPerWorker to 0.",
+            Config.TOPOLOGY_ACKER_EXECUTORS, numAckerExecs);
+        // ConfLogger Inserted End
+    } else {
+        numAckerExecsPerWorker = (int) Math.ceil((double) numAckerExecs / (double) estimatedNumWorker);
+        // ConfLogger Inserted Start
+        logger.info("Config {} is set to {}. Calculated numAckerExecsPerWorker: {} (numAckerExecs: {}, estimatedNumWorker: {}).",
+            Config.TOPOLOGY_ACKER_EXECUTORS, numAckerExecs, numAckerExecsPerWorker, numAckerExecs, estimatedNumWorker);
+        // ConfLogger Inserted End
+    }
+}
+
+totalConfToSave.put(Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER, numAckerExecsPerWorker);
+totalConfToSave.put(Config.TOPOLOGY_ACKER_EXECUTORS, numAckerExecs);
+
+LOG.info("Config {} set to: {} for topology: {}",
+    Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER, numAckerExecsPerWorker, topoName);
+LOG.info("Config {} set to: {} for topology: {}",
+    Config.TOPOLOGY_ACKER_EXECUTORS, numAckerExecs, topoName);
+```

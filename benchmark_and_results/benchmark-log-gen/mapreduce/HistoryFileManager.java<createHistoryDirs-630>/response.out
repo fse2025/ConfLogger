@@ -1,0 +1,26 @@
+```java
+long start = clock.getTime();
+boolean done = false;
+int counter = 0;
+while (!done &&
+((timeOutMillis == -1) || (clock.getTime() - start < timeOutMillis))) {
+done = tryCreatingHistoryDirs(counter++ % 3 == 0); // log every 3 attempts, 30sec
+if (done) {
+    // ConfLogger Skipped
+    break;
+}
+try {
+Thread.sleep(intervalCheckMillis);
+} catch (InterruptedException ex) {
+throw new YarnRuntimeException(ex);
+}
+}
+if (!done) {
+    // ConfLogger Inserted Start
+    logger.error("Timed out after waiting for " + timeOutMillis + "ms for FileSystem to become available. Configuration parameter: timeOutMillis=" + timeOutMillis);
+    // ConfLogger Inserted End
+throw new YarnRuntimeException("Timed out '" + timeOutMillis+
+"ms' waiting for FileSystem to become available");
+}
+}
+```

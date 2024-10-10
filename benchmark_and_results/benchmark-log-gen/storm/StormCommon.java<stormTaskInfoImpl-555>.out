@@ -1,0 +1,58 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StormCommon.java	methodSinagture:	org.apache.storm.daemon.StormCommon.stormTaskInfoImpl(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map;	methodLines:	555:577
+blockLines:	571:-1
+paras:	topology.tasks
+TaintedStat:	NORMAL stormTaskInfoImpl:conditional branch(le, to iindex=91) 54,19 Node: < Application, Lorg/apache/storm/daemon/StormCommon, stormTaskInfoImpl(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, stormTaskInfoImpl(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map; > Context: Everywhere[33]29 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 26,27 @83 exception:28
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, stormTaskInfoImpl(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map; > Context: Everywhere[33]29 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 26,27 @83 exception:28
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, stormTaskInfoImpl(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map; > Context: Everywhere[40]34 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > 29 @104 exception:33 v29
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:30 = checkcast <Application,Ljava/lang/Number>1 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:32 = invokevirtual < Application, Ljava/lang/Number, intValue()I > 30 @32 exception:31 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL intValue:return 3 Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, stormTaskInfoImpl(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map; > Context: Everywhere[67]54 = invokevirtual < Application, Ljava/lang/Integer, intValue()I > 66 @181 exception:53
+NORMAL stormTaskInfoImpl:conditional branch(le, to iindex=91) 54,19 Node: < Application, Lorg/apache/storm/daemon/StormCommon, stormTaskInfoImpl(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        InvalidTopologyException {
+        Map<Integer, String> taskIdToComponentId = new HashMap<>();
+
+        StormTopology systemTopology = systemTopology(topoConf, userTopology);
+        Map<String, Object> components = allComponents(systemTopology);
+        Map<String, Integer> componentIdToTaskNum = new TreeMap<>();
+        for (Map.Entry<String, Object> entry : components.entrySet()) {
+            Map<String, Object> conf = componentConf(entry.getValue());
+            Object taskNum = conf.get(Config.TOPOLOGY_TASKS);
+            componentIdToTaskNum.put(entry.getKey(), ObjectReader.getInt(taskNum));
+        }
+
+        int taskId = 1;
+        for (Map.Entry<String, Integer> entry : componentIdToTaskNum.entrySet()) {
+            String componentId = entry.getKey();
+            Integer taskNum = entry.getValue();
+            while (taskNum > 0) {
+                taskIdToComponentId.put(taskId, componentId);
+                taskNum--;
+                taskId++;
+            }
+        }
+        return taskIdToComponentId;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/StormCommon, stormTaskInfo(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.storm.daemon.StormCommon.stormTaskInfo(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map;, BB[SSA:-1..-2]0 - org.apache.storm.daemon.StormCommon.stormTaskInfo(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map;, BB[SSA:4..4]2 - org.apache.storm.daemon.StormCommon.stormTaskInfo(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map;, BB[SSA:-1..-2]3 - org.apache.storm.daemon.StormCommon.stormTaskInfo(Lorg/apache/storm/generated/StormTopology;Ljava/util/Map;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=473, lastLineNumber=474, firstMethodNumber=473, lastMethodNumber=474, isFirstLineValid=false, methodSrcCode=
+        InvalidTopologyException {
+        return _instance.stormTaskInfoImpl(userTopology, topoConf);
+    }
+}

@@ -1,0 +1,31 @@
+```java
+private IPCLoggerChannelMetrics(IPCLoggerChannel ch) {
+    this.ch = ch;
+
+    Configuration conf = new HdfsConfiguration();
+    int[] intervals =
+    conf.getInts(DFSConfigKeys.DFS_METRICS_PERCENTILES_INTERVALS_KEY);
+    if (intervals != null) {
+        writeEndToEndLatencyQuantiles = new MutableQuantiles[intervals.length];
+        writeRpcLatencyQuantiles = new MutableQuantiles[intervals.length];
+        for (int i = 0; i < writeEndToEndLatencyQuantiles.length; i++) {
+            int interval = intervals[i];
+            writeEndToEndLatencyQuantiles[i] = registry.newQuantiles(
+                "writesE2E" + interval + "s",
+                "End-to-end time for write operations", "ops", "LatencyMicros", interval);
+            writeRpcLatencyQuantiles[i] = registry.newQuantiles(
+                "writesRpc" + interval + "s",
+                "RPC RTT for write operations", "ops", "LatencyMicros", interval);
+        }
+        // ConfLogger Inserted Start
+        logger.info("Configured write latency quantiles with intervals: {} for key: {}", Arrays.toString(intervals), DFSConfigKeys.DFS_METRICS_PERCENTILES_INTERVALS_KEY);
+        // ConfLogger Inserted End
+    } else {
+        writeEndToEndLatencyQuantiles = null;
+        writeRpcLatencyQuantiles = null;
+        // ConfLogger Inserted Start
+        logger.warn("No intervals configured for key: {}. Write latency quantiles are disabled.", DFSConfigKeys.DFS_METRICS_PERCENTILES_INTERVALS_KEY);
+        // ConfLogger Inserted End
+    }
+}
+```

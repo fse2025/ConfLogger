@@ -1,0 +1,35 @@
+<code-whole>
+if (conf.isSet(service.getHostNameKey())) {
+String connectHost = conf.getString(service.getHostNameKey());
+if (!connectHost.isEmpty() && !connectHost.equals(WILDCARD_ADDRESS)) {
+return connectHost;
+}
+}
+if (conf.isSet(service.getBindHostKey())) {
+String bindHost = conf.getString(service.getBindHostKey());
+if (!bindHost.isEmpty() && !bindHost.equals(WILDCARD_ADDRESS)) {
+return bindHost;
+}
+}
+if (conf.getBoolean(PropertyKey.NETWORK_IP_ADDRESS_USED)) {
+return getLocalIpAddress((int) conf.getMs(PropertyKey.NETWORK_HOST_RESOLUTION_TIMEOUT_MS));
+}
+return getLocalHostName((int) conf.getMs(PropertyKey.NETWORK_HOST_RESOLUTION_TIMEOUT_MS));
+}
+</code-whole>
+
+<code-specified>
+if (!connectHost.isEmpty() && !connectHost.equals(WILDCARD_ADDRESS)) {
+return connectHost;
+}
+</code-specified>
+<code-specified>
+if (conf.getBoolean(PropertyKey.NETWORK_IP_ADDRESS_USED)) {
+return getLocalIpAddress((int) conf.getMs(PropertyKey.NETWORK_HOST_RESOLUTION_TIMEOUT_MS));
+}
+</code-specified>
+<code-specified>
+if (!bindHost.isEmpty() && !bindHost.equals(WILDCARD_ADDRESS)) {
+return bindHost;
+}
+</code-specified>

@@ -1,0 +1,8 @@
+```java
+if (tags != null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'tags' is set with value: " + tags);
+    // ConfLogger Inserted End
+    this.tags = tags;
+}
+```

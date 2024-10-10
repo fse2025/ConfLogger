@@ -1,0 +1,54 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	PBHelperClient.java	methodSinagture:	org.apache.hadoop.hdfs.protocolPB.PBHelperClient.convertCipherOptions(Ljava/util/List;)Ljava/util/List;	methodLines:	605:614
+blockLines:	606:-1
+paras:	dfs.encrypt.data.transfer.cipher.suites
+TaintedStat:	NORMAL convertCipherOptions:conditional branch(eq, to iindex=26) 1,3 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/PBHelperClient, convertCipherOptions(Ljava/util/List;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/SaslDataTransferClient, doSaslHandshake(Ljava/net/InetAddress;Ljava/io/OutputStream;Ljava/io/InputStream;Ljava/lang/String;Ljava/util/Map;Ljavax/security/auth/callback/CallbackHandler;Lorg/apache/hadoop/security/token/Token;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/IOStreamPair; > Context: Everywhere[93]63 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 60,61 @211 exception:62
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/SaslDataTransferClient, doSaslHandshake(Ljava/net/InetAddress;Ljava/io/OutputStream;Ljava/io/InputStream;Ljava/lang/String;Ljava/util/Map;Ljavax/security/auth/callback/CallbackHandler;Lorg/apache/hadoop/security/token/Token;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/IOStreamPair; > Context: Everywhere[93]63 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 60,61 @211 exception:62
+NORMAL doSaslHandshake:conditional branch(eq, to iindex=140) 63,22 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/SaslDataTransferClient, doSaslHandshake(Ljava/net/InetAddress;Ljava/io/OutputStream;Ljava/io/InputStream;Ljava/lang/String;Ljava/util/Map;Ljavax/security/auth/callback/CallbackHandler;Lorg/apache/hadoop/security/token/Token;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/IOStreamPair; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/SaslDataTransferClient, doSaslHandshake(Ljava/net/InetAddress;Ljava/io/OutputStream;Ljava/io/InputStream;Ljava/lang/String;Ljava/util/Map;Ljavax/security/auth/callback/CallbackHandler;Lorg/apache/hadoop/security/token/Token;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/IOStreamPair; > Context: Everywhere:81 = phi  22,22,22,78
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/SaslDataTransferClient, doSaslHandshake(Ljava/net/InetAddress;Ljava/io/OutputStream;Ljava/io/InputStream;Ljava/lang/String;Ljava/util/Map;Ljavax/security/auth/callback/CallbackHandler;Lorg/apache/hadoop/security/token/Token;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/IOStreamPair; > Context: Everywhere[143]invokestatic < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, sendSaslMessageAndNegotiationCipherOptions(Ljava/io/OutputStream;[BLjava/util/List;)V > 10,59,81 @312 exception:82 v81
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, sendSaslMessageAndNegotiationCipherOptions(Ljava/io/OutputStream;[BLjava/util/List;)V > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, sendSaslMessageAndNegotiationCipherOptions(Ljava/io/OutputStream;[BLjava/util/List;)V > Context: Everywhere[19]16 = invokestatic < Application, Lorg/apache/hadoop/hdfs/protocolPB/PBHelperClient, convertCipherOptions(Ljava/util/List;)Ljava/util/List; > 3 @31 exception:15 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/PBHelperClient, convertCipherOptions(Ljava/util/List;)Ljava/util/List; > Context: Everywhere v1
+NORMAL convertCipherOptions:conditional branch(eq, to iindex=26) 1,3 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/PBHelperClient, convertCipherOptions(Ljava/util/List;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      List<CipherOption> options) {
+    if (options != null) {
+      List<HdfsProtos.CipherOptionProto> protos =
+          Lists.newArrayListWithCapacity(options.size());
+      for (CipherOption option : options) {
+        protos.add(convert(option));
+      }
+      return protos;
+    }
+    return null;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, sendSaslMessageAndNegotiationCipherOptions(Ljava/io/OutputStream;[BLjava/util/List;)V > Context: Everywhere, blocks=[BB[SSA:17..19]8 - org.apache.hadoop.hdfs.protocol.datatransfer.sasl.DataTransferSaslUtil.sendSaslMessageAndNegotiationCipherOptions(Ljava/io/OutputStream;[BLjava/util/List;)V, BB[SSA:14..16]7 - org.apache.hadoop.hdfs.protocol.datatransfer.sasl.DataTransferSaslUtil.sendSaslMessageAndNegotiationCipherOptions(Ljava/io/OutputStream;[BLjava/util/List;)V, BB[SSA:20..20]9 - org.apache.hadoop.hdfs.protocol.datatransfer.sasl.DataTransferSaslUtil.sendSaslMessageAndNegotiationCipherOptions(Ljava/io/OutputStream;[BLjava/util/List;)V, BB[SSA:-1..-2]15 - org.apache.hadoop.hdfs.protocol.datatransfer.sasl.DataTransferSaslUtil.sendSaslMessageAndNegotiationCipherOptions(Ljava/io/OutputStream;[BLjava/util/List;)V], numberOfBasicBlocks=4, firstLineNumber=450, lastLineNumber=451, firstMethodNumber=443, lastMethodNumber=457, isFirstLineValid=true, methodSrcCode=
+    DataTransferEncryptorMessageProto.Builder builder =
+        DataTransferEncryptorMessageProto.newBuilder();
+
+    builder.setStatus(DataTransferEncryptorStatus.SUCCESS);
+    if (payload != null) {
+      builder.setPayload(ByteString.copyFrom(payload));
+    }
+    if (options != null) {
+      builder.addAllCipherOption(PBHelperClient.convertCipherOptions(options));
+    }
+
+    DataTransferEncryptorMessageProto proto = builder.build();
+    proto.writeDelimitedTo(out);
+    out.flush();
+  }
+
+}

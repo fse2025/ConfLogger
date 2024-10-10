@@ -1,0 +1,13 @@
+```java
+public UniqValueCount(long maxNum) {
+    uniqItems = new TreeMap<Object, Object>();
+    this.numItems = 0;
+    maxNumItems = Long.MAX_VALUE;
+    if (maxNum > 0 ) {
+        // ConfLogger Inserted Start
+        logger.info("Setting maxNumItems with provided maxNum: " + maxNum);
+        // ConfLogger Inserted End
+        this.maxNumItems = maxNum;
+    }
+}
+```

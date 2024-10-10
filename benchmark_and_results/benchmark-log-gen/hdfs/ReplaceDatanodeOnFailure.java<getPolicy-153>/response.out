@@ -1,0 +1,35 @@
+```java
+final boolean enabled = conf.getBoolean(
+HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.ENABLE_KEY,
+HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.ENABLE_DEFAULT);
+if (!enabled) {
+    // ConfLogger Inserted Start
+    logger.info("Service disabled due to configuration: {} = {}", 
+                HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.ENABLE_KEY, enabled);
+    // ConfLogger Inserted End
+    return Policy.DISABLE;
+}
+
+final String policy = conf.get(
+HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_KEY,
+HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_DEFAULT);
+for(int i = 1; i < Policy.values().length; i++) {
+    final Policy p = Policy.values()[i];
+    if (p.name().equalsIgnoreCase(policy)) {
+        // ConfLogger Inserted Start
+        logger.info("Policy set to: {} = {}", 
+                    HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_KEY, policy);
+        // ConfLogger Inserted End
+        return p;
+    }
+}
+// ConfLogger Commented: Not Informative
+// throw new HadoopIllegalArgumentException("Illegal configuration value for "
+// + HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_KEY
+// ConfLogger Inserted Start
+logger.error("Illegal configuration value for {}: {}", 
+             HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_KEY, policy);
+throw new HadoopIllegalArgumentException("Illegal configuration value for "
+    + HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_KEY);
+// ConfLogger Inserted End
+```

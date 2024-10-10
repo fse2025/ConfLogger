@@ -1,0 +1,190 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;	methodLines:	569:665
+blockLines:	640:-1
+paras:	null
+TaintedStat:	NORMAL createApplicationSubmissionContext:conditional branch(eq, to iindex=186) 128,16 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[86]60 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,48 @181 exception:59
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[86]60 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,48 @181 exception:59
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[87]62 = invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 58,60 @184 exception:61 v60
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere v2
+PARAM_CALLER:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere[2]5 = invokespecial < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > 1,2 @2 exception:4 v2
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > Context: Everywhere v2
+NORMAL append:6 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @10 exception:5 Node: < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:return 7 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[167]128 = invokevirtual < Application, Ljava/lang/String, length()I > 126 @373 exception:127
+NORMAL createApplicationSubmissionContext:conditional branch(eq, to iindex=186) 128,16 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;	methodLines:	569:665
+blockLines:	588:-1
+paras:	mapreduce.job.send-token-conf
+TaintedStat:	NORMAL createApplicationSubmissionContext:conditional branch(eq, to iindex=52) 28,29 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[37]28 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 25,26 @74 exception:27
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[37]28 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 25,26 @74 exception:27
+NORMAL createApplicationSubmissionContext:conditional branch(eq, to iindex=52) 28,29 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;	methodLines:	569:665
+blockLines:	655:-1
+paras:	null
+TaintedStat:	NORMAL createApplicationSubmissionContext:conditional branch(eq, to iindex=226) 152,29 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[209]152 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,150 @474 exception:151
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[209]152 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,150 @474 exception:151
+NORMAL createApplicationSubmissionContext:conditional branch(eq, to iindex=226) 152,29 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;	methodLines:	569:665
+blockLines:	639:-1
+paras:	mapreduce.job.am.node-label-expression
+TaintedStat:	NORMAL createApplicationSubmissionContext:conditional branch(eq, to iindex=186) 29,124 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[160]124 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 121,122 @357 exception:123
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[160]124 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 121,122 @357 exception:123
+NORMAL createApplicationSubmissionContext:conditional branch(eq, to iindex=186) 29,124 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;	methodLines:	569:665
+blockLines:	650:-1
+paras:	mapreduce.job.tags
+TaintedStat:	NORMAL createApplicationSubmissionContext:conditional branch(eq, to iindex=207) 36,29 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[54]36 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > 2,34 @107 exception:35
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere[54]36 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > 2,34 @107 exception:35
+NORMAL createApplicationSubmissionContext:conditional branch(eq, to iindex=207) 36,29 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    ApplicationId applicationId = resMgrDelegate.getApplicationId();
+
+    // Setup LocalResources
+    Map<String, LocalResource> localResources =
+        setupLocalResources(jobConf, jobSubmitDir);
+
+    // Setup security tokens
+    DataOutputBuffer dob = new DataOutputBuffer();
+    ts.writeTokenStorageToStream(dob);
+    ByteBuffer securityTokens =
+        ByteBuffer.wrap(dob.getData(), 0, dob.getLength());
+
+    // Setup ContainerLaunchContext for AM container
+    List<String> vargs = setupAMCommand(jobConf);
+    ContainerLaunchContext amContainer = setupContainerLaunchContextForAM(
+        jobConf, localResources, securityTokens, vargs);
+
+    String regex = conf.get(MRJobConfig.MR_JOB_SEND_TOKEN_CONF);
+    if (regex != null && !regex.isEmpty()) {
+      setTokenRenewerConf(amContainer, conf, regex);
+    }
+
+
+    Collection<String> tagsFromConf =
+        jobConf.getTrimmedStringCollection(MRJobConfig.JOB_TAGS);
+
+    // Set up the ApplicationSubmissionContext
+    ApplicationSubmissionContext appContext =
+        recordFactory.newRecordInstance(ApplicationSubmissionContext.class);
+    appContext.setApplicationId(applicationId);                // ApplicationId
+    appContext.setQueue(                                       // Queue name
+        jobConf.get(JobContext.QUEUE_NAME,
+        YarnConfiguration.DEFAULT_QUEUE_NAME));
+    // add reservationID if present
+    ReservationId reservationID = null;
+    try {
+      reservationID =
+          ReservationId.parseReservationId(jobConf
+              .get(JobContext.RESERVATION_ID));
+    } catch (NumberFormatException e) {
+      // throw exception as reservationid as is invalid
+      String errMsg =
+          "Invalid reservationId: " + jobConf.get(JobContext.RESERVATION_ID)
+              + " specified for the app: " + applicationId;
+      LOG.warn(errMsg);
+      throw new IOException(errMsg);
+    }
+    if (reservationID != null) {
+      appContext.setReservationID(reservationID);
+      LOG.info("SUBMITTING ApplicationSubmissionContext app:" + applicationId
+          + " to queue:" + appContext.getQueue() + " with reservationId:"
+          + appContext.getReservationID());
+    }
+    appContext.setApplicationName(                             // Job name
+        jobConf.get(JobContext.JOB_NAME,
+        YarnConfiguration.DEFAULT_APPLICATION_NAME));
+    appContext.setCancelTokensWhenComplete(
+        conf.getBoolean(MRJobConfig.JOB_CANCEL_DELEGATION_TOKEN, true));
+    appContext.setAMContainerSpec(amContainer);         // AM Container
+    appContext.setMaxAppAttempts(
+        conf.getInt(MRJobConfig.MR_AM_MAX_ATTEMPTS,
+            MRJobConfig.DEFAULT_MR_AM_MAX_ATTEMPTS));
+
+    // Setup the AM ResourceRequests
+    List<ResourceRequest> amResourceRequests = generateResourceRequests();
+    appContext.setAMContainerResourceRequests(amResourceRequests);
+
+    // set labels for the AM container requests if present
+    String amNodelabelExpression = conf.get(MRJobConfig.AM_NODE_LABEL_EXP);
+    if (null != amNodelabelExpression
+        && amNodelabelExpression.trim().length() != 0) {
+      for (ResourceRequest amResourceRequest : amResourceRequests) {
+        amResourceRequest.setNodeLabelExpression(amNodelabelExpression.trim());
+      }
+    }
+    // set labels for the Job containers
+    appContext.setNodeLabelExpression(jobConf
+        .get(JobContext.JOB_NODE_LABEL_EXP));
+
+    appContext.setApplicationType(MRJobConfig.MR_APPLICATION_TYPE);
+    if (tagsFromConf != null && !tagsFromConf.isEmpty()) {
+      appContext.setApplicationTags(new HashSet<>(tagsFromConf));
+    }
+
+    String jobPriority = jobConf.get(MRJobConfig.PRIORITY);
+    if (jobPriority != null) {
+      int iPriority;
+      try {
+        iPriority = TypeConverter.toYarnApplicationPriority(jobPriority);
+      } catch (IllegalArgumentException e) {
+        iPriority = Integer.parseInt(jobPriority);
+      }
+      appContext.setPriority(Priority.newInstance(iPriority));
+    }
+
+    return appContext;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, submitJob(Lorg/apache/hadoop/mapreduce/JobID;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere, blocks=[BB[SSA:6..8]3 - org.apache.hadoop.mapred.YARNRunner.submitJob(Lorg/apache/hadoop/mapreduce/JobID;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/mapreduce/JobStatus;, BB[SSA:3..5]2 - org.apache.hadoop.mapred.YARNRunner.submitJob(Lorg/apache/hadoop/mapreduce/JobID;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/mapreduce/JobStatus;, BB[SSA:9..11]4 - org.apache.hadoop.mapred.YARNRunner.submitJob(Lorg/apache/hadoop/mapreduce/JobID;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/mapreduce/JobStatus;, BB[SSA:-1..-2]31 - org.apache.hadoop.mapred.YARNRunner.submitJob(Lorg/apache/hadoop/mapreduce/JobID;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/mapreduce/JobStatus;], numberOfBasicBlocks=4, firstLineNumber=325, lastLineNumber=330, firstMethodNumber=322, lastMethodNumber=346, isFirstLineValid=true, methodSrcCode=
+    
+    addHistoryToken(ts);
+
+    ApplicationSubmissionContext appContext =
+      createApplicationSubmissionContext(conf, jobSubmitDir, ts);
+
+    // Submit to ResourceManager
+    try {
+      ApplicationId applicationId =
+          resMgrDelegate.submitApplication(appContext);
+
+      ApplicationReport appMaster = resMgrDelegate
+          .getApplicationReport(applicationId);
+      String diagnostics =
+          (appMaster == null ?
+              "application report is null" : appMaster.getDiagnostics());
+      if (appMaster == null
+          || appMaster.getYarnApplicationState() == YarnApplicationState.FAILED
+          || appMaster.getYarnApplicationState() == YarnApplicationState.KILLED) {
+        throw new IOException("Failed to run job : " +
+            diagnostics);
+      }
+      return clientCache.getClient(jobId).getJobStatus(jobId);
+    } catch (YarnException e) {
+      throw new IOException(e);
+    }
+}

@@ -1,0 +1,1 @@
+fs.viewfs.trash.force-inside-mount-point	<missing>	INFO	Localized trash flag is not enabled. Initializing Trash with fully resolved FileSystem object. Configuration parameter: CONFIG_VIEWFS_TRASH_FORCE_INSIDE_MOUNT_POINT, Value: false	30

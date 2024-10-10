@@ -1,0 +1,19 @@
+```java
+final boolean enabled =
+conf.getBoolean(retryPolicyEnabledKey, defaultRetryPolicyEnabled);
+if (!enabled) {
+    // ConfLogger Inserted Start
+    logger.info("Retry policy is disabled. Configuration parameter: " + retryPolicyEnabledKey + " = " + enabled);
+    // ConfLogger Inserted End
+    return null;
+}
+
+final String policy = conf.get(retryPolicySpecKey, defaultRetryPolicySpec);
+
+final RetryPolicy r =
+RetryPolicies.MultipleLinearRandomRetry.parseCommaSeparatedString(
+policy);
+return (r != null) ?
+r :
+</code-whole>
+```

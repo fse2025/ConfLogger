@@ -1,0 +1,48 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CredentialPropertyKeys.java	methodSinagture:	alluxio.conf.CredentialPropertyKeys.findCredentialPropertyKeys(Ljava/lang/String;)Ljava/util/Set;	methodLines:	34:51
+blockLines:	42:-1
+paras:	null
+TaintedStat:	NORMAL findCredentialPropertyKeys:conditional branch(ne, to iindex=47) 24,25 Node: < Application, Lalluxio/conf/CredentialPropertyKeys, findCredentialPropertyKeys(Ljava/lang/String;)Ljava/util/Set; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/conf/CredentialPropertyKeys, findCredentialPropertyKeys(Ljava/lang/String;)Ljava/util/Set; > Context: Everywhere[39]24 = invokevirtual < Application, Lalluxio/conf/PropertyKey, getDisplayType()Lalluxio/conf/PropertyKey$DisplayType; > 22 @77 exception:23
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/conf/CredentialPropertyKeys, findCredentialPropertyKeys(Ljava/lang/String;)Ljava/util/Set; > Context: Everywhere[39]24 = invokevirtual < Application, Lalluxio/conf/PropertyKey, getDisplayType()Lalluxio/conf/PropertyKey$DisplayType; > 22 @77 exception:23
+NORMAL findCredentialPropertyKeys:conditional branch(ne, to iindex=47) 24,25 Node: < Application, Lalluxio/conf/CredentialPropertyKeys, findCredentialPropertyKeys(Ljava/lang/String;)Ljava/util/Set; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected static Set<String> findCredentialPropertyKeys(String propertyClass) {
+    Set<String> credentials = new HashSet<>();
+    try {
+      Class clazz = Class.forName(propertyClass);
+      Field[] fields = clazz.getFields();
+      for (Field field : fields) {
+        if (field.getType() == PropertyKey.class && Modifier.isStatic(field.getModifiers())) {
+          PropertyKey tmp = (PropertyKey) field.get(null);
+          if (tmp.getDisplayType() == PropertyKey.DisplayType.CREDENTIALS) {
+            credentials.add(tmp.getName());
+          }
+        }
+      }
+    } catch (ClassNotFoundException | IllegalAccessException e) {
+      LOG.error("Failed to parse class alluxio.conf.PropertyKey", e);
+    }
+
+    return Collections.unmodifiableSet(credentials);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/conf/CredentialPropertyKeys, <clinit>()V > Context: Everywhere, blocks=[BB[SSA:2..4]3 - alluxio.conf.CredentialPropertyKeys.<clinit>()V, BB[SSA:1..1]2 - alluxio.conf.CredentialPropertyKeys.<clinit>()V, BB[SSA:5..6]4 - alluxio.conf.CredentialPropertyKeys.<clinit>()V, BB[SSA:-1..-2]5 - alluxio.conf.CredentialPropertyKeys.<clinit>()V], numberOfBasicBlocks=4, firstLineNumber=27, lastLineNumber=32, firstMethodNumber=26, lastMethodNumber=32, isFirstLineValid=true, methodSrcCode=
+public final class CredentialPropertyKeys {
+  private static final Logger LOG = LoggerFactory.getLogger(CredentialPropertyKeys.class);
+  private static final Set<String> CREDENTIALS;
+
+  static {
+    CREDENTIALS = findCredentialPropertyKeys("alluxio.conf.PropertyKey");
+  }
+
+}

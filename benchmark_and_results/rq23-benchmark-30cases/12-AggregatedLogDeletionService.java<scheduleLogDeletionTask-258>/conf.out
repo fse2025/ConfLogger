@@ -1,0 +1,6 @@
+    conf.set(YarnConfiguration.LOG_AGGREGATION_RETAIN_SECONDS, "1800");
+    conf.set(YarnConfiguration.NM_REMOTE_APP_LOG_DIR_SUFFIX, suffix);
+    conf.set(YarnConfiguration.LOG_AGGREGATION_FILE_FORMATS, "TFile");
+    conf.set(String.format(LOG_AGGREGATION_FILE_CONTROLLER_FMT, "TFile"),
+         LogAggregationTFileController.class.getName());
+Yarn

@@ -1,0 +1,30 @@
+```java
+String clientCnxnSocketName = getClientConfig().getProperty(ZKClientConfig.ZOOKEEPER_CLIENT_CNXN_SOCKET);
+if (clientCnxnSocketName == null || clientCnxnSocketName.equals(ClientCnxnSocketNIO.class.getSimpleName())) {
+    clientCnxnSocketName = ClientCnxnSocketNIO.class.getName();
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter ZOOKEEPER_CLIENT_CNXN_SOCKET is either null or set to default NIO. Setting clientCnxnSocketName to {}", clientCnxnSocketName);
+    // ConfLogger Inserted End
+} else if (clientCnxnSocketName.equals(ClientCnxnSocketNetty.class.getSimpleName())) {
+    clientCnxnSocketName = ClientCnxnSocketNetty.class.getName();
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter ZOOKEEPER_CLIENT_CNXN_SOCKET is set to Netty. Setting clientCnxnSocketName to {}", clientCnxnSocketName);
+    // ConfLogger Inserted End
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter ZOOKEEPER_CLIENT_CNXN_SOCKET is set to an unrecognized value: {}. Proceeding with the provided value.", clientCnxnSocketName);
+    // ConfLogger Inserted End
+}
+
+try {
+    Constructor<?> clientCxnConstructor = Class.forName(clientCnxnSocketName)
+            .getDeclaredConstructor(ZKClientConfig.class);
+    ClientCnxnSocket clientCxnSocket = (ClientCnxnSocket) clientCxnConstructor.newInstance(getClientConfig());
+    return clientCxnSocket;
+} catch (Exception e) {
+    // ConfLogger Inserted Start
+    logger.error("Failed to instantiate client connection socket with class name: {}", clientCnxnSocketName, e);
+    // ConfLogger Inserted End
+    throw new IOException("Couldn't instantiate " + clientCnxnSocketName, e);
+}
+```

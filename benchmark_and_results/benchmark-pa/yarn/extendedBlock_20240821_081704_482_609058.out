@@ -1,0 +1,41 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Apps.java	methodSinagture:	org.apache.hadoop.yarn.util.Apps.getEnvVarsFromInputString(Ljava/lang/String;)Ljava/util/Set;	methodLines:	198:207
+blockLines:	200:-1
+paras:	null
+TaintedStat:	NORMAL getEnvVarsFromInputString:conditional branch(eq, to iindex=28) 1,5 Node: < Application, Lorg/apache/hadoop/yarn/util/Apps, getEnvVarsFromInputString(Ljava/lang/String;)Ljava/util/Set; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/Apps, getEnvVarsFromInputProperty(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 3,1,2 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/Apps, getEnvVarsFromInputProperty(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 3,1,2 @3 exception:5
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/Apps, getEnvVarsFromInputProperty(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set; > Context: Everywhere[6]8 = invokestatic < Application, Lorg/apache/hadoop/yarn/util/Apps, getEnvVarsFromInputString(Ljava/lang/String;)Ljava/util/Set; > 6 @8 exception:7 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/util/Apps, getEnvVarsFromInputString(Ljava/lang/String;)Ljava/util/Set; > Context: Everywhere v1
+NORMAL getEnvVarsFromInputString:conditional branch(eq, to iindex=28) 1,5 Node: < Application, Lorg/apache/hadoop/yarn/util/Apps, getEnvVarsFromInputString(Ljava/lang/String;)Ljava/util/Set; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static Set<String> getEnvVarsFromInputString(String envString) {
+    Set<String> envSet = new HashSet<>();
+    if (envString != null && envString.length() > 0) {
+      Matcher varValMatcher = VARVAL_SPLITTER.matcher(envString);
+      while (varValMatcher.find()) {
+        String envVar = varValMatcher.group(1);
+        envSet.add(envVar);
+      }
+    }
+    return envSet;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/util/Apps, getEnvVarsFromInputProperty(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set; > Context: Everywhere, blocks=[BB[SSA:4..6]2 - org.apache.hadoop.yarn.util.Apps.getEnvVarsFromInputProperty(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:0..3]1 - org.apache.hadoop.yarn.util.Apps.getEnvVarsFromInputProperty(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:7..9]3 - org.apache.hadoop.yarn.util.Apps.getEnvVarsFromInputProperty(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:-1..-2]12 - org.apache.hadoop.yarn.util.Apps.getEnvVarsFromInputProperty(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;], numberOfBasicBlocks=4, firstLineNumber=221, lastLineNumber=223, firstMethodNumber=220, lastMethodNumber=225, isFirstLineValid=true, methodSrcCode=
+      String propName, String defaultPropValue, Configuration conf) {
+    String envString = conf.get(propName, defaultPropValue);
+    Set<String> varSet = getEnvVarsFromInputString(envString);
+    Map<String, String> propMap = conf.getPropsWithPrefix(propName + ".");
+    varSet.addAll(propMap.keySet());
+    return varSet;
+  }
+}

@@ -1,0 +1,80 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileSnap.java	methodSinagture:	org.apache.zookeeper.server.persistence.FileSnap.serialize(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;Ljava/io/File;Z)V	methodLines:	246:276
+blockLines:	272:-1
+paras:	null
+TaintedStat:	NORMAL serialize:conditional branch(eq, to iindex=75) 13,41 Node: < Application, Lorg/apache/zookeeper/server/persistence/FileSnap, serialize(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;Ljava/io/File;Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FileSnap, serialize(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;Ljava/io/File;Z)V > Context: Everywhere[6]13 = invokestatic < Application, Lorg/apache/zookeeper/server/persistence/SnapStream, getOutputStream(Ljava/io/File;Z)Ljava/util/zip/CheckedOutputStream; > 4,5 @10 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FileSnap, serialize(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;Ljava/io/File;Z)V > Context: Everywhere[6]13 = invokestatic < Application, Lorg/apache/zookeeper/server/persistence/SnapStream, getOutputStream(Ljava/io/File;Z)Ljava/util/zip/CheckedOutputStream; > 4,5 @10 exception:12
+NORMAL serialize:conditional branch(eq, to iindex=75) 13,41 Node: < Application, Lorg/apache/zookeeper/server/persistence/FileSnap, serialize(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;Ljava/io/File;Z)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        boolean fsync) throws IOException {
+        if (!close) {
+            try (CheckedOutputStream snapOS = SnapStream.getOutputStream(snapShot, fsync)) {
+                OutputArchive oa = BinaryOutputArchive.getArchive(snapOS);
+                FileHeader header = new FileHeader(SNAP_MAGIC, VERSION, dbId);
+                serialize(dt, sessions, oa, header);
+                SnapStream.sealStream(snapOS, oa);
+
+                // Digest feature was added after the CRC to make it backward
+                // compatible, the older code cal still read snapshots which
+                // includes digest.
+                //
+                // To check the intact, after adding digest we added another
+                // CRC check.
+                if (dt.serializeZxidDigest(oa)) {
+                    SnapStream.sealStream(snapOS, oa);
+                }
+
+                // serialize the last processed zxid and add another CRC check
+                if (dt.serializeLastProcessedZxid(oa)) {
+                    SnapStream.sealStream(snapOS, oa);
+                }
+
+                lastSnapshotInfo = new SnapshotInfo(
+                    Util.getZxidFromName(snapShot.getName(), SNAPSHOT_FILE_PREFIX),
+                    snapShot.lastModified() / 1000);
+            }
+        } else {
+            throw new IOException("FileSnap has already been closed");
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnSnapLog, save(Lorg/apache/zookeeper/server/DataTree;Ljava/util/concurrent/ConcurrentHashMap;Z)Ljava/io/File; > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=477, lastMethodNumber=502, isFirstLineValid=true, methodSrcCode=
+        boolean syncSnap) throws IOException {
+        long lastZxid = dataTree.lastProcessedZxid;
+        File snapshotFile = new File(snapDir, Util.makeSnapshotName(lastZxid));
+        LOG.info("Snapshotting: 0x{} to {}", Long.toHexString(lastZxid), snapshotFile);
+        try {
+            snapLog.serialize(dataTree, sessionsWithTimeouts, snapshotFile, syncSnap);
+            return snapshotFile;
+        } catch (IOException e) {
+            if (snapshotFile.length() == 0) {
+                /* This may be caused by a full disk. In such a case, the server
+                 * will get stuck in a loop where it tries to write a snapshot
+                 * out to disk, and ends up creating an empty file instead.
+                 * Doing so will eventually result in valid snapshots being
+                 * removed during cleanup. */
+                if (snapshotFile.delete()) {
+                    LOG.info("Deleted empty snapshot file: {}", snapshotFile.getAbsolutePath());
+                } else {
+                    LOG.warn("Could not delete empty snapshot file: {}", snapshotFile.getAbsolutePath());
+                }
+            } else {
+                /* Something else went wrong when writing the snapshot out to
+                 * disk. If this snapshot file is invalid, when restarting,
+                 * ZooKeeper will skip it, and find the last known good snapshot
+                 * instead. */
+            }
+            throw e;
+        }
+}

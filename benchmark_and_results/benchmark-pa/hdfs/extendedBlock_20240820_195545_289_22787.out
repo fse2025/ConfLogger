@@ -1,0 +1,159 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String;	methodLines:	1522:1525
+blockLines:	1525:-1
+paras:	dfs.web.authentication.kerberos.keytab
+TaintedStat:	NORMAL getSpnegoKeytabKey:conditional branch(eq, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL getSpnegoKeytabKey:conditional branch(eq, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static String getSpnegoKeytabKey(Configuration conf, String defaultKey) {
+    String value = 
+        conf.get(DFSConfigKeys.DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY);
+    return (value == null || value.isEmpty()) ?
+        defaultKey : DFSConfigKeys.DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY;
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere, blocks=[BB[SSA:103..105]47 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:101..102]46 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:106..106]48 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]108 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;], numberOfBasicBlocks=4, firstLineNumber=1699, lastLineNumber=1701, firstMethodNumber=1672, lastMethodNumber=1732, isFirstLineValid=true, methodSrcCode=
+      String spnegoKeytabFileKey) throws IOException {
+    HttpConfig.Policy policy = getHttpPolicy(conf);
+
+    String filterInitializerConfKey = "hadoop.http.filter.initializers";
+    String initializers = conf.get(filterInitializerConfKey, "");
+
+    String[] parts = initializers.split(",");
+    Set<String> target = new LinkedHashSet<String>();
+    for (String filterInitializer : parts) {
+      filterInitializer = filterInitializer.trim();
+      if (filterInitializer.equals(
+          AuthenticationFilterInitializer.class.getName()) ||
+          filterInitializer.equals(
+          ProxyUserAuthenticationFilterInitializer.class.getName()) ||
+          filterInitializer.isEmpty()) {
+        continue;
+      }
+      target.add(filterInitializer);
+    }
+    target.add(AuthFilterInitializer.class.getName());
+    initializers = StringUtils.join(target, ",");
+    conf.set(filterInitializerConfKey, initializers);
+
+    LOG.info("Filter initializers set : " + initializers);
+
+    HttpServer2.Builder builder = new HttpServer2.Builder().setName(name)
+        .setConf(conf).setACL(new AccessControlList(conf.get(DFS_ADMIN, " ")))
+        .setSecurityEnabled(UserGroupInformation.isSecurityEnabled())
+        .setUsernameConfKey(spnegoUserNameKey)
+        .setKeytabConfKey(getSpnegoKeytabKey(conf, spnegoKeytabFileKey));
+
+    // initialize the webserver for uploading/downloading files.
+    if (UserGroupInformation.isSecurityEnabled()) {
+      LOG.info("Starting web server as: "
+          + SecurityUtil.getServerPrincipal(conf.get(spnegoUserNameKey),
+              httpAddr.getHostName()));
+    }
+
+    if (policy.isHttpEnabled()) {
+      if (httpAddr.getPort() == 0) {
+        builder.setFindPort(true);
+      }
+
+      URI uri = URI.create("http://" + NetUtils.getHostPortString(httpAddr));
+      builder.addEndpoint(uri);
+      LOG.info("Starting Web-server for " + name + " at: " + uri);
+    }
+
+    if (policy.isHttpsEnabled() && httpsAddr != null) {
+      Configuration sslConf = loadSslConfiguration(conf);
+      loadSslConfToHttpServerBuilder(builder, sslConf);
+
+      if (httpsAddr.getPort() == 0) {
+        builder.setFindPort(true);
+      }
+
+      URI uri = URI.create("https://" + NetUtils.getHostPortString(httpsAddr));
+      builder.addEndpoint(uri);
+      LOG.info("Starting Web-server for " + name + " at: " + uri);
+    }
+    return builder;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere, blocks=[BB[SSA:104..105]46 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:102..103]45 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:106..106]47 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:-1..-2]85 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V], numberOfBasicBlocks=4, firstLineNumber=162, lastLineNumber=162, firstMethodNumber=117, lastMethodNumber=184, isFirstLineValid=true, methodSrcCode=
+  void start() throws IOException {
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    final String infoHost = bindAddress.getHostName();
+
+    final InetSocketAddress httpAddr = bindAddress;
+    final String httpsAddrString = conf.getTrimmed(
+        DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_DEFAULT);
+    InetSocketAddress httpsAddr = NetUtils.createSocketAddr(httpsAddrString);
+
+    if (httpsAddr != null) {
+      // If DFS_NAMENODE_HTTPS_BIND_HOST_KEY exists then it overrides the
+      // host name portion of DFS_NAMENODE_HTTPS_ADDRESS_KEY.
+      final String bindHost =
+          conf.getTrimmed(DFSConfigKeys.DFS_NAMENODE_HTTPS_BIND_HOST_KEY);
+      if (bindHost != null && !bindHost.isEmpty()) {
+        httpsAddr = new InetSocketAddress(bindHost, httpsAddr.getPort());
+      }
+    }
+
+    HttpServer2.Builder builder = DFSUtil.httpServerTemplateForNNAndJN(conf,
+        httpAddr, httpsAddr, "hdfs",
+        DFSConfigKeys.DFS_NAMENODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY,
+        DFSConfigKeys.DFS_NAMENODE_KEYTAB_FILE_KEY);
+
+    final boolean xFrameEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED,
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED_DEFAULT);
+
+    final String xFrameOptionValue = conf.getTrimmed(
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE,
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE_DEFAULT);
+
+    builder.configureXFrame(xFrameEnabled).setXFrameOption(xFrameOptionValue);
+
+    httpServer = builder.build();
+
+    if (policy.isHttpsEnabled()) {
+      // assume same ssl port for all datanodes
+      InetSocketAddress datanodeSslPort = NetUtils.createSocketAddr(conf.getTrimmed(
+          DFSConfigKeys.DFS_DATANODE_HTTPS_ADDRESS_KEY, infoHost + ":"
+              + DFSConfigKeys.DFS_DATANODE_HTTPS_DEFAULT_PORT));
+      httpServer.setAttribute(DFSConfigKeys.DFS_DATANODE_HTTPS_PORT_KEY,
+          datanodeSslPort.getPort());
+    }
+    String httpKeytab = conf.get(DFSUtil.getSpnegoKeytabKey(conf,
+        DFSConfigKeys.DFS_NAMENODE_KEYTAB_FILE_KEY));
+    initWebHdfs(conf, bindAddress.getHostName(), httpKeytab, httpServer,
+        NamenodeWebHdfsMethods.class.getPackage().getName());
+
+    httpServer.setAttribute(NAMENODE_ATTRIBUTE_KEY, nn);
+    httpServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    setupServlets(httpServer);
+    httpServer.start();
+
+    int connIdx = 0;
+    if (policy.isHttpEnabled()) {
+      httpAddress = httpServer.getConnectorAddress(connIdx++);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_HTTP_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpAddress));
+    }
+
+    if (policy.isHttpsEnabled()) {
+      httpsAddress = httpServer.getConnectorAddress(connIdx);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpsAddress));
+    }
+  }
+
+}

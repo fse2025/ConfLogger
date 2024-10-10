@@ -1,0 +1,96 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ZooKeeperServerController.java	methodSinagture:	org.apache.zookeeper.server.controller.ZooKeeperServerController.isReady()Z	methodLines:	85:86
+blockLines:	89:-1
+paras:	null
+TaintedStat:	NORMAL isReady:conditional branch(eq, to iindex=20) 12,4 Node: < Application, Lorg/apache/zookeeper/server/controller/ZooKeeperServerController, isReady()Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/controller/ZooKeeperServerController, isReady()Z > Context: Everywhere[15]12 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getActiveServer()Lorg/apache/zookeeper/server/ZooKeeperServer; > 10 @28 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/controller/ZooKeeperServerController, isReady()Z > Context: Everywhere[15]12 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getActiveServer()Lorg/apache/zookeeper/server/ZooKeeperServer; > 10 @28 exception:11
+NORMAL isReady:conditional branch(eq, to iindex=20) 12,4 Node: < Application, Lorg/apache/zookeeper/server/controller/ZooKeeperServerController, isReady()Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public synchronized boolean isReady() {
+        return this.cnxnFactory != null
+                && this.quorumPeer != null
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/controller/ZooKeeperServerController, processCommand(Lorg/apache/zookeeper/server/controller/ControlCommand;)V > Context: Everywhere, blocks=[BB[SSA:30..31]17 - org.apache.zookeeper.server.controller.ZooKeeperServerController.processCommand(Lorg/apache/zookeeper/server/controller/ControlCommand;)V, BB[SSA:29..29]16 - org.apache.zookeeper.server.controller.ZooKeeperServerController.processCommand(Lorg/apache/zookeeper/server/controller/ControlCommand;)V, BB[SSA:32..33]18 - org.apache.zookeeper.server.controller.ZooKeeperServerController.processCommand(Lorg/apache/zookeeper/server/controller/ControlCommand;)V, BB[SSA:-1..-2]96 - org.apache.zookeeper.server.controller.ZooKeeperServerController.processCommand(Lorg/apache/zookeeper/server/controller/ControlCommand;)V], numberOfBasicBlocks=4, firstLineNumber=100, lastLineNumber=104, firstMethodNumber=95, lastMethodNumber=165, isFirstLineValid=true, methodSrcCode=
+    public void processCommand(ControlCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException("Invalid command parameter!");
+        }
+
+        LOG.info("processing command {}{}", command.getAction(),
+                command.getParameter() == null ? "" : "[" + command.getParameter() + "]");
+
+        // Don't process command if we are shutting down or still initializing.
+        if (!isReady()) {
+            throw new IllegalStateException("Service is not ready. It has already been shutdown or is still initializing.");
+        }
+
+        switch (command.getAction()) {
+            case PING:
+                // NO-OP
+                break;
+            case SHUTDOWN:
+                shutdown();
+                break;
+            case CLOSECONNECTION:
+                if (command.getParameter() == null) {
+                    cnxnFactory.closeAll(ServerCnxn.DisconnectReason.CLOSE_ALL_CONNECTIONS_FORCED);
+                } else {
+                    // A single parameter should be a session id as long.
+                    // Parse failure exceptions will be sent to the caller.
+                    cnxnFactory.closeSession(Long.decode(command.getParameter()),
+                            ServerCnxn.DisconnectReason.CONNECTION_CLOSE_FORCED);
+                }
+                break;
+            case EXPIRESESSION:
+                if (command.getParameter() == null) {
+                    expireAllSessions();
+                } else {
+                    // A single parameter should be a session id as long.
+                    // Parse failure exceptions will be sent to the caller
+                    expireSession(Long.decode(command.getParameter()));
+                }
+                break;
+            case REJECTCONNECTIONS:
+                // TODO: (hanm) implement once dependent feature is ready.
+                //cnxnFactory.rejectNewConnections();
+                break;
+            case ADDDELAY:
+                cnxnFactory.delayResponses(command.getParameter() == null
+                        ? DEFAULT_DELAY_MS : Long.decode(command.getParameter()));
+                break;
+            case NORESPONSE:
+                if (command.getParameter() == null) {
+                    cnxnFactory.holdAllFutureResponses();
+                } else {
+                    cnxnFactory.holdFutureResponses(Long.decode(command.getParameter()));
+                }
+                break;
+            case FAILREQUESTS:
+                if (command.getParameter() == null) {
+                    cnxnFactory.failAllFutureRequests();
+                } else {
+                    cnxnFactory.failFutureRequests(Long.decode(command.getParameter()));
+                }
+                break;
+            case RESET:
+                cnxnFactory.resetBadBehavior();
+                break;
+            case ELECTNEWLEADER:
+                quorumPeer.startLeaderElection();
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown command: " + command);
+        }
+    }
+
+}

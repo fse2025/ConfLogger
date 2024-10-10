@@ -1,0 +1,27 @@
+```java
+private void scheduleLogDeletionTask() throws IOException {
+    Configuration conf = getConfig();
+    if (!conf.getBoolean(YarnConfiguration.LOG_AGGREGATION_ENABLED,
+            YarnConfiguration.DEFAULT_LOG_AGGREGATION_ENABLED)) {
+        // ConfLogger Inserted Start
+        logger.info("Log aggregation is not enabled. To enable, set '{}' to true.", YarnConfiguration.LOG_AGGREGATION_ENABLED);
+        // ConfLogger Inserted End
+        // Log aggregation is not enabled so don't bother
+        return;
+    }
+    long retentionSecs = conf.getLong(
+            YarnConfiguration.LOG_AGGREGATION_RETAIN_SECONDS,
+            YarnConfiguration.DEFAULT_LOG_AGGREGATION_RETAIN_SECONDS);
+    if (retentionSecs < 0) {
+        // ConfLogger Inserted Start
+        logger.warn("Invalid retention period: {} seconds for '{}'. It must be non-negative. Using default value: {} seconds.", 
+                    retentionSecs, YarnConfiguration.LOG_AGGREGATION_RETAIN_SECONDS, YarnConfiguration.DEFAULT_LOG_AGGREGATION_RETAIN_SECONDS);
+        // ConfLogger Inserted End
+        return;
+    }
+    setLogAggCheckIntervalMsecs(retentionSecs);
+    task = new LogDeletionTask(conf, retentionSecs, createRMClient());
+    timer = new Timer();
+    timer.scheduleAtFixedRate(task, 0, checkIntervalMsecs);
+}
+```

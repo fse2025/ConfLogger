@@ -1,0 +1,25 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DistributedCache.java	methodSinagture:	org.apache.hadoop.filecache.DistributedCache.addLocalArchives(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V	methodLines:	221:225
+blockLines:	223:-1
+paras:	null
+TaintedStat:	NORMAL addLocalArchives:conditional branch(ne, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/filecache/DistributedCache, addLocalArchives(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/filecache/DistributedCache, addLocalArchives(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/filecache/DistributedCache, addLocalArchives(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL addLocalArchives:conditional branch(ne, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/filecache/DistributedCache, addLocalArchives(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void addLocalArchives(Configuration conf, String str) {
+    String archives = conf.get(CACHE_LOCALARCHIVES);
+    conf.set(CACHE_LOCALARCHIVES, archives == null ? str
+        : archives + "," + str);
+  }
+
+
+
+====================ctx:=======================

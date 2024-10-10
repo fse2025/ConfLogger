@@ -1,0 +1,40 @@
+```java
+if (conf != null && conf.get(
+        DeprecatedQueueConfigurationParser.MAPRED_QUEUE_NAMES_KEY) != null) {
+    if (reloadConf) {
+        conf.reloadConfiguration();
+    }
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is set. Reload configuration: {}", 
+                DeprecatedQueueConfigurationParser.MAPRED_QUEUE_NAMES_KEY, reloadConf);
+    // ConfLogger Inserted End
+    return new DeprecatedQueueConfigurationParser(conf);
+} else {
+    URL xmlInUrl =
+            Thread.currentThread().getContextClassLoader()
+                    .getResource(QUEUE_CONF_FILE_NAME);
+    if (xmlInUrl == null) {
+        xmlInUrl = Thread.currentThread().getContextClassLoader()
+                .getResource(QUEUE_CONF_DEFAULT_FILE_NAME);
+        assert xmlInUrl != null; // this should be in our jar
+    }
+    InputStream stream = null;
+    try {
+        stream = xmlInUrl.openStream();
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter '{}' is not set. Using default configuration file: {}", 
+                    DeprecatedQueueConfigurationParser.MAPRED_QUEUE_NAMES_KEY, xmlInUrl);
+        // ConfLogger Inserted End
+        return new QueueConfigurationParser(new BufferedInputStream(stream),
+                areAclsEnabled);
+    } catch (IOException ioe) {
+        // ConfLogger Inserted Start
+        logger.error("Failed to open queue configuration at '{}'. Exception: {}", xmlInUrl, ioe.getMessage());
+        // ConfLogger Inserted End
+        throw new RuntimeException("Couldn't open queue configuration at " +
+                xmlInUrl, ioe);
+    } finally {
+        IOUtils.closeStream(stream);
+    }
+}
+```

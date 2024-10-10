@@ -1,0 +1,56 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AbstractFileSystem.java	methodSinagture:	org.apache.hadoop.fs.AbstractFileSystem.getUri(Ljava/net/URI;Ljava/lang/String;ZI)Ljava/net/URI;	methodLines:	318:341
+blockLines:	322:-1
+paras:	null
+TaintedStat:	NORMAL getUri:conditional branch(ge, to iindex=24) 5,8 Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, getUri(Ljava/net/URI;Ljava/lang/String;ZI)Ljava/net/URI; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/DelegateToFileSystem, <init>(Ljava/net/URI;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Z)V > Context: Everywhere[5]9 = invokestatic < Application, Lorg/apache/hadoop/fs/DelegateToFileSystem, getDefaultPortIfDefined(Lorg/apache/hadoop/fs/FileSystem;)I > 3 @7 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/DelegateToFileSystem, <init>(Ljava/net/URI;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Z)V > Context: Everywhere[5]9 = invokestatic < Application, Lorg/apache/hadoop/fs/DelegateToFileSystem, getDefaultPortIfDefined(Lorg/apache/hadoop/fs/FileSystem;)I > 3 @7 exception:8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/DelegateToFileSystem, <init>(Ljava/net/URI;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Z)V > Context: Everywhere[6]invokespecial < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, <init>(Ljava/net/URI;Ljava/lang/String;ZI)V > 1,2,5,6,9 @10 exception:10 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, <init>(Ljava/net/URI;Ljava/lang/String;ZI)V > Context: Everywhere v5
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, <init>(Ljava/net/URI;Ljava/lang/String;ZI)V > Context: Everywhere[8]9 = invokespecial < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, getUri(Ljava/net/URI;Ljava/lang/String;ZI)Ljava/net/URI; > 1,2,3,4,5 @11 exception:8 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, getUri(Ljava/net/URI;Ljava/lang/String;ZI)Ljava/net/URI; > Context: Everywhere v5
+NORMAL getUri:conditional branch(ge, to iindex=24) 5,8 Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, getUri(Ljava/net/URI;Ljava/lang/String;ZI)Ljava/net/URI; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      boolean authorityNeeded, int defaultPort) throws URISyntaxException {
+    checkScheme(uri, supportedScheme);
+    // A file system implementation that requires authority must always
+    // specify default port
+    if (defaultPort < 0 && authorityNeeded) {
+      throw new HadoopIllegalArgumentException(
+          "FileSystem implementation error -  default port " + defaultPort
+              + " is not valid");
+    }
+    String authority = uri.getAuthority();
+    if (authority == null) {
+       if (authorityNeeded) {
+         throw new HadoopIllegalArgumentException("Uri without authority: " + uri);
+       } else {
+         return new URI(supportedScheme + ":///");
+       }   
+    }
+    // authority is non null  - AuthorityNeeded may be true or false.
+    int port = uri.getPort();
+    port = (port == -1 ? defaultPort : port);
+    if (port == -1) { // no port supplied and default port is not specified
+      return new URI(supportedScheme, authority, "/", null);
+    }
+    return new URI(supportedScheme + "://" + uri.getHost() + ":" + port);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, <init>(Ljava/net/URI;Ljava/lang/String;ZI)V > Context: Everywhere, blocks=[BB[SSA:2..8]2 - org.apache.hadoop.fs.AbstractFileSystem.<init>(Ljava/net/URI;Ljava/lang/String;ZI)V, BB[SSA:0..1]1 - org.apache.hadoop.fs.AbstractFileSystem.<init>(Ljava/net/URI;Ljava/lang/String;ZI)V, BB[SSA:9..9]3 - org.apache.hadoop.fs.AbstractFileSystem.<init>(Ljava/net/URI;Ljava/lang/String;ZI)V, BB[SSA:-1..-2]7 - org.apache.hadoop.fs.AbstractFileSystem.<init>(Ljava/net/URI;Ljava/lang/String;ZI)V], numberOfBasicBlocks=4, firstLineNumber=281, lastLineNumber=282, firstMethodNumber=280, lastMethodNumber=284, isFirstLineValid=true, methodSrcCode=
+      final boolean authorityNeeded, final int defaultPort)
+      throws URISyntaxException {
+    myUri = getUri(uri, supportedScheme, authorityNeeded, defaultPort);
+    statistics = getStatistics(uri); 
+  }
+
+}

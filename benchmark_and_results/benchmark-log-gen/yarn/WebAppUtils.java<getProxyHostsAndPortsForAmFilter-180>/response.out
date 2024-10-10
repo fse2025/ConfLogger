@@ -1,0 +1,41 @@
+```java
+List<String> addrs = new ArrayList<String>();
+String proxyAddr = conf.get(YarnConfiguration.PROXY_ADDRESS);
+// If PROXY_ADDRESS isn't set, fallback to RM_WEBAPP(_HTTPS)_ADDRESS
+// There could be multiple if using RM HA
+if (proxyAddr == null || proxyAddr.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.warn("PROXY_ADDRESS is not set or empty. Fallback to RM_WEBAPP(_HTTPS)_ADDRESS. Configuration parameter: YarnConfiguration.PROXY_ADDRESS, Value: " + proxyAddr);
+    // ConfLogger Inserted End
+
+    // If RM HA is enabled, try getting those addresses
+    if (HAUtil.isHAEnabled(conf)) {
+        List<String> haAddrs = RMHAUtils.getRMHAWebappAddresses(new YarnConfiguration(conf));
+        for (String addr : haAddrs) {
+            try {
+                InetSocketAddress socketAddr = NetUtils.createSocketAddr(addr);
+                addrs.add(getResolvedAddress(socketAddr));
+            } catch(IllegalArgumentException e) {
+                // ConfLogger Commented: Not Informative
+                // skip if can't resolve
+                // ConfLogger Inserted Start
+                logger.warn("Failed to resolve address: " + addr + ". Skipping this address.");
+                // ConfLogger Inserted End
+            }
+        }
+    }
+    // If couldn't resolve any of the addresses or not using RM HA, fallback
+    if (addrs.isEmpty()) {
+        // ConfLogger Inserted Start
+        logger.warn("No addresses resolved from RM HA. Falling back to getResolvedRMWebAppURLWithoutScheme.");
+        // ConfLogger Inserted End
+        addrs.add(getResolvedRMWebAppURLWithoutScheme(conf));
+    }
+} else {
+    addrs.add(proxyAddr);
+    // ConfLogger Inserted Start
+    logger.info("Using configured PROXY_ADDRESS: " + proxyAddr);
+    // ConfLogger Inserted End
+}
+return addrs;
+```

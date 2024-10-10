@@ -1,0 +1,19 @@
+```java
+if (strInterface == null || "default".equals(strInterface)) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration check: strInterface is either null or set to 'default'. Returning cachedHostname. strInterface: {}", strInterface);
+    // ConfLogger Inserted End
+    return cachedHostname;
+}
+
+if (nameserver != null && "default".equals(nameserver)) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration check: nameserver is set to 'default'. Resetting nameserver to null. nameserver: {}", nameserver);
+    // ConfLogger Inserted End
+    nameserver = null;
+}
+
+String[] hosts = getHosts(strInterface, nameserver, tryfallbackResolution);
+return hosts[0];
+}
+```

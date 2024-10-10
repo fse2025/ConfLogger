@@ -1,0 +1,71 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AggregatedLogDeletionService.java	methodSinagture:	org.apache.hadoop.yarn.logaggregation.AggregatedLogDeletionService.scheduleLogDeletionTask()V	methodLines:	258:277
+blockLines:	268:-1
+paras:	yarn.log-aggregation.retain-seconds
+TaintedStat:	NORMAL scheduleLogDeletionTask:conditional branch(ge, to iindex=33) 14,6 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, scheduleLogDeletionTask()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, scheduleLogDeletionTask()V > Context: Everywhere[13]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 4,9,10 @22 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, scheduleLogDeletionTask()V > Context: Everywhere[13]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 4,9,10 @22 exception:11
+NORMAL scheduleLogDeletionTask:14 = compare 12,13 opcode=cmp Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, scheduleLogDeletionTask()V > Context: Everywhere
+NORMAL scheduleLogDeletionTask:conditional branch(ge, to iindex=33) 14,6 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, scheduleLogDeletionTask()V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	AggregatedLogDeletionService.java	methodSinagture:	org.apache.hadoop.yarn.logaggregation.AggregatedLogDeletionService.scheduleLogDeletionTask()V	methodLines:	258:277
+blockLines:	260:-1
+paras:	yarn.log-aggregation-enable
+TaintedStat:	NORMAL scheduleLogDeletionTask:conditional branch(ne, to iindex=10) 8,6 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, scheduleLogDeletionTask()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, scheduleLogDeletionTask()V > Context: Everywhere[6]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,5,6 @9 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, scheduleLogDeletionTask()V > Context: Everywhere[6]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,5,6 @9 exception:7
+NORMAL scheduleLogDeletionTask:conditional branch(ne, to iindex=10) 8,6 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, scheduleLogDeletionTask()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void scheduleLogDeletionTask() throws IOException {
+    Configuration conf = getConfig();
+    if (!conf.getBoolean(YarnConfiguration.LOG_AGGREGATION_ENABLED,
+        YarnConfiguration.DEFAULT_LOG_AGGREGATION_ENABLED)) {
+      // Log aggregation is not enabled so don't bother
+      return;
+    }
+    long retentionSecs = conf.getLong(
+        YarnConfiguration.LOG_AGGREGATION_RETAIN_SECONDS,
+        YarnConfiguration.DEFAULT_LOG_AGGREGATION_RETAIN_SECONDS);
+    if (retentionSecs < 0) {
+      LOG.info("Log Aggregation deletion is disabled because retention is"
+          + " too small (" + retentionSecs + ")");
+      return;
+    }
+    setLogAggCheckIntervalMsecs(retentionSecs);
+    task = new LogDeletionTask(conf, retentionSecs, createRMClient());
+    timer = new Timer();
+    timer.scheduleAtFixedRate(task, 0, checkIntervalMsecs);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, refreshLogRetentionSettings()V > Context: Everywhere, blocks=[BB[SSA:14..15]7 - org.apache.hadoop.yarn.logaggregation.AggregatedLogDeletionService.refreshLogRetentionSettings()V, BB[SSA:12..13]6 - org.apache.hadoop.yarn.logaggregation.AggregatedLogDeletionService.refreshLogRetentionSettings()V, BB[SSA:16..16]8 - org.apache.hadoop.yarn.logaggregation.AggregatedLogDeletionService.refreshLogRetentionSettings()V, BB[SSA:-1..-2]11 - org.apache.hadoop.yarn.logaggregation.AggregatedLogDeletionService.refreshLogRetentionSettings()V], numberOfBasicBlocks=4, firstLineNumber=251, lastLineNumber=253, firstMethodNumber=246, lastMethodNumber=256, isFirstLineValid=true, methodSrcCode=
+  public void refreshLogRetentionSettings() throws IOException {
+    if (getServiceState() == STATE.STARTED) {
+      Configuration conf = createConf();
+      setConfig(conf);
+      stopRMClient();
+      stopTimer();
+      scheduleLogDeletionTask();
+    } else {
+      LOG.warn("Failed to execute refreshLogRetentionSettings : Aggregated Log Deletion Service is not started");
+    }
+  }
+  
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/AggregatedLogDeletionService, serviceStart()V > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.yarn.logaggregation.AggregatedLogDeletionService.serviceStart()V, BB[SSA:-1..-2]0 - org.apache.hadoop.yarn.logaggregation.AggregatedLogDeletionService.serviceStart()V, BB[SSA:2..3]2 - org.apache.hadoop.yarn.logaggregation.AggregatedLogDeletionService.serviceStart()V, BB[SSA:-1..-2]4 - org.apache.hadoop.yarn.logaggregation.AggregatedLogDeletionService.serviceStart()V], numberOfBasicBlocks=4, firstLineNumber=222, lastLineNumber=224, firstMethodNumber=222, lastMethodNumber=225, isFirstLineValid=false, methodSrcCode=
+  protected void serviceStart() throws Exception {
+    scheduleLogDeletionTask();
+    super.serviceStart();
+  }
+
+}

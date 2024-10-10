@@ -1,0 +1,65 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String;	methodLines:	1148:1159
+blockLines:	1154:-1
+paras:	dfs.ha.namenode.id
+TaintedStat:	NORMAL getNameServiceId:conditional branch(ne, to iindex=24) 10,12 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[26]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,13 @47 exception:14
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[26]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,13 @47 exception:14
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[33]18 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String; > 1,2,7,15,16 @60 exception:17 v15
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String; > Context: Everywhere v4
+NORMAL getSuffixIDs:conditional branch(eq, to iindex=77) 4,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getSuffixIDs:51 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,49 @188 exception:50 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL getNameServiceId:conditional branch(eq, to iindex=9) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getNameServiceId:conditional branch(ne, to iindex=24) 10,12 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String;	methodLines:	1148:1159
+blockLines:	1150:-1
+paras:	dfs.nameservice.id
+TaintedStat:	NORMAL getNameServiceId:conditional branch(eq, to iindex=9) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL getNameServiceId:conditional branch(eq, to iindex=9) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static String getNameServiceId(Configuration conf, String addressKey) {
+    String nameserviceId = conf.get(DFS_NAMESERVICE_ID);
+    if (nameserviceId != null) {
+      return nameserviceId;
+    }
+    Collection<String> nsIds = DFSUtilClient.getNameServiceIds(conf);
+    if (1 == nsIds.size()) {
+      return nsIds.toArray(new String[1])[0];
+    }
+    String nnId = conf.get(DFS_HA_NAMENODE_ID_KEY);
+    
+    return getSuffixIDs(conf, addressKey, null, nnId, LOCAL_ADDRESS_MATCHER)[0];
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSecondaryNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.hdfs.DFSUtil.getSecondaryNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.DFSUtil.getSecondaryNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:3..3]2 - org.apache.hadoop.hdfs.DFSUtil.getSecondaryNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]3 - org.apache.hadoop.hdfs.DFSUtil.getSecondaryNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=1129, lastLineNumber=1130, firstMethodNumber=1129, lastMethodNumber=1130, isFirstLineValid=false, methodSrcCode=
+  public static String getSecondaryNameServiceId(Configuration conf) {
+    return getNameServiceId(conf, DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNamenodeNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:3..3]2 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]3 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=1113, lastLineNumber=1114, firstMethodNumber=1113, lastMethodNumber=1114, isFirstLineValid=false, methodSrcCode=
+  public static String getNamenodeNameServiceId(Configuration conf) {
+    return getNameServiceId(conf, DFS_NAMENODE_RPC_ADDRESS_KEY);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getBackupNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.hdfs.DFSUtil.getBackupNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.DFSUtil.getBackupNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:3..3]2 - org.apache.hadoop.hdfs.DFSUtil.getBackupNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]3 - org.apache.hadoop.hdfs.DFSUtil.getBackupNameServiceId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=1121, lastLineNumber=1122, firstMethodNumber=1121, lastMethodNumber=1122, isFirstLineValid=false, methodSrcCode=
+  public static String getBackupNameServiceId(Configuration conf) {
+    return getNameServiceId(conf, DFS_NAMENODE_BACKUP_ADDRESS_KEY);
+  }
+}

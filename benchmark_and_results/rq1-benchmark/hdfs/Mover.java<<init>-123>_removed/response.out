@@ -1,0 +1,43 @@
+```java
+Mover(NameNodeConnector nnc, Configuration conf, AtomicInteger retryCount,
+Map<Long, Set<DatanodeInfo>> excludedPinnedBlocks) {
+    final long movedWinWidth = conf.getLong(
+        DFSConfigKeys.DFS_MOVER_MOVEDWINWIDTH_KEY,
+        DFSConfigKeys.DFS_MOVER_MOVEDWINWIDTH_DEFAULT);
+    final int moverThreads = conf.getInt(
+        DFSConfigKeys.DFS_MOVER_MOVERTHREADS_KEY,
+        DFSConfigKeys.DFS_MOVER_MOVERTHREADS_DEFAULT);
+    final int maxConcurrentMovesPerNode = conf.getInt(
+        DFSConfigKeys.DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY,
+        DFSConfigKeys.DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT);
+    final int maxNoMoveInterval = conf.getInt(
+        DFSConfigKeys.DFS_MOVER_MAX_NO_MOVE_INTERVAL_KEY,
+        DFSConfigKeys.DFS_MOVER_MAX_NO_MOVE_INTERVAL_DEFAULT);
+    final int maxAttempts = conf.getInt(
+        DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_KEY,
+        DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_DEFAULT);
+    
+    <code-specific>
+    if (maxAttempts >= 0) {
+        this.retryMaxAttempts = maxAttempts;
+    } else {
+        this.retryMaxAttempts = DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_DEFAULT;
+        // ConfLogger Inserted Start
+        logger.warn("Configuration parameter 'dfs.mover.retry.max.attempts' is set to a negative value. "
+                    + "Using default value: " + DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_DEFAULT 
+                    + ". Ensure 'dfs.mover.retry.max.attempts' is set to a non-negative integer to control retry attempts.");
+        // ConfLogger Inserted End
+    }
+    </code-specific>
+    
+    this.retryCount = retryCount;
+    this.dispatcher = new Dispatcher(nnc, Collections.<String> emptySet(),
+        Collections.<String> emptySet(), movedWinWidth, moverThreads, 0,
+        maxConcurrentMovesPerNode, maxNoMoveInterval, conf);
+    this.storages = new StorageMap();
+    this.targetPaths = nnc.getTargetPaths();
+    this.blockStoragePolicies = new BlockStoragePolicy[1 <<
+        BlockStoragePolicySuite.ID_BIT_LENGTH];
+    this.excludedPinnedBlocks = excludedPinnedBlocks;
+}
+```

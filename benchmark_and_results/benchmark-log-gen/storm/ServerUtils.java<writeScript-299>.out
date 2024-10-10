@@ -1,0 +1,279 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ServerUtils.java	methodSinagture:	org.apache.storm.utils.ServerUtils.writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)Ljava/lang/String;	methodLines:	299:324
+blockLines:	304:-1
+paras:	topology.environment
+TaintedStat:	NORMAL writeScript:conditional branch(eq, to iindex=63) 3,15 Node: < Application, Lorg/apache/storm/utils/ServerUtils, writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, runProfiling(Lorg/apache/storm/generated/ProfileRequest;Z)Z > Context: Everywhere[15]17 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 14,15 @33 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, runProfiling(Lorg/apache/storm/generated/ProfileRequest;Z)Z > Context: Everywhere[15]17 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 14,15 @33 exception:16
+NORMAL runProfiling:18 = checkcast <Application,Ljava/util/Map>17 <Application,Ljava/util/Map> Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, runProfiling(Lorg/apache/storm/generated/ProfileRequest;Z)Z > Context: Everywhere
+PHI Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, runProfiling(Lorg/apache/storm/generated/ProfileRequest;Z)Z > Context: Everywhere:22 = phi  18,20
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, runProfiling(Lorg/apache/storm/generated/ProfileRequest;Z)Z > Context: Everywhere[79]59 = invokeinterface < Application, Lorg/apache/storm/container/ResourceIsolationInterface, runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z > 54,56,57,44,22,42,45 @173 exception:58 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/container/DefaultResourceIsolationManager, runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z > Context: Everywhere v5
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/container/DefaultResourceIsolationManager, runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z > Context: Everywhere[39]36 = invokestatic < Application, Lorg/apache/storm/utils/ServerUtils, writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;)Ljava/lang/String; > 19,4,5 @83 exception:35 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ServerUtils, writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ServerUtils, writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere[4]7 = invokestatic < Application, Lorg/apache/storm/utils/ServerUtils, writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)Ljava/lang/String; > 1,2,3,5 @4 exception:6 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ServerUtils, writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL writeScript:conditional branch(eq, to iindex=63) 3,15 Node: < Application, Lorg/apache/storm/utils/ServerUtils, writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                     Map<String, String> environment, String umask) throws IOException {
+        String path = scriptFilePath(dir);
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(path))) {
+            out.write("#!/bin/bash");
+            out.newLine();
+            if (environment != null) {
+                for (String k : environment.keySet()) {
+                    String v = environment.get(k);
+                    if (v == null) {
+                        v = "";
+                    }
+                    out.write(shellCmd(
+                        Arrays.asList(
+                            "export", k + "=" + v)));
+                    out.write(";");
+                    out.newLine();
+                }
+            }
+            out.newLine();
+            if (umask != null) {
+                out.write("umask " + umask);
+                out.newLine();
+            }
+            out.write("exec " + shellCmd(command) + ";");
+        }
+        return path;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/container/docker/DockerManager, launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V > Context: Everywhere, blocks=[BB[SSA:209..215]92 - org.apache.storm.container.docker.DockerManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:205..208]91 - org.apache.storm.container.docker.DockerManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:216..216]93 - org.apache.storm.container.docker.DockerManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:-1..-2]104 - org.apache.storm.container.docker.DockerManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V], numberOfBasicBlocks=4, firstLineNumber=155, lastLineNumber=178, firstMethodNumber=80, lastMethodNumber=178, isFirstLineValid=true, methodSrcCode=
+                                    File targetDir) throws IOException {
+        String dockerImage = getImageName(topoConf);
+        if (dockerImage == null) {
+            LOG.error("Image name for {} is not configured properly; will not continue to launch the worker", topologyId);
+            return;
+        }
+
+        String workerDir = targetDir.getAbsolutePath();
+
+        String uid = getUserIdInfo(user);
+        String[] groups = getGroupIdInfo(user);
+        String gid = groups[0];
+        String dockerUser = uid + ":" + gid;
+
+        DockerRunCommand dockerRunCommand = new DockerRunCommand(workerId, dockerUser, dockerImage);
+
+        //set of locations to be bind mounted
+        String workerRootDir = ConfigUtils.workerRoot(conf, workerId);
+        String workerArtifactsRoot = ConfigUtils.workerArtifactsRoot(conf, topologyId, port);
+        String workerUserFile = ConfigUtils.workerUserFile(conf, workerId);
+        String sharedByTopologyDir = ConfigUtils.sharedByTopologyDir(conf, topologyId);
+
+        // Theoretically we only need to mount ConfigUtils.supervisorStormDistRoot directory.
+        // But if supervisorLocalDir is not mounted, the worker will try to create it and fail.
+        String supervisorLocalDir = ConfigUtils.supervisorLocalDir(conf);
+        String workerTmpRoot = ConfigUtils.workerTmpRoot(conf, workerId);
+
+        dockerRunCommand.detachOnRun()
+            .setNetworkType("host")
+            //The whole file system of the container will be read-only except specific read-write bind mounts
+            .setReadonly()
+            .addReadOnlyMountLocation(cgroupRootPath, cgroupRootPath, false)
+            .addReadOnlyMountLocation(stormHome, stormHome, false)
+            .addReadOnlyMountLocation(supervisorLocalDir, supervisorLocalDir, false)
+            .addReadWriteMountLocation(workerRootDir, workerRootDir, false)
+            .addReadWriteMountLocation(workerArtifactsRoot, workerArtifactsRoot, false)
+            .addReadWriteMountLocation(workerUserFile, workerUserFile, false)
+            //nscd must be running so that profiling can work properly
+            .addReadWriteMountLocation(nscdPath, nscdPath, false)
+            .addReadWriteMountLocation(sharedByTopologyDir, sharedByTopologyDir, false)
+            //This is to make /tmp directory in container writable. This is very important.
+            // For example
+            // 1. jvm needs to write to /tmp/hsperfdata_<user> directory so that jps can work
+            // 2. jstack needs to create a socket under /tmp directory.
+            //Otherwise profiling will not work properly.
+            .addReadWriteMountLocation(workerTmpRoot, TMP_DIR, false)
+            //a list of read-only bind mount locations
+            .addAllReadOnlyMountLocations(readonlyBindmounts, false)
+            .addAllReadWriteMountLocations(readwriteBindmounts, false);
+
+        if (workerToCores.containsKey(workerId)) {
+            dockerRunCommand.addCpuSetBindings(
+                    workerToCores.get(workerId), workerToMemoryZone.get(workerId)
+            );
+        }
+
+        dockerRunCommand.setCGroupParent(cgroupParent)
+            .groupAdd(groups)
+            .setContainerWorkDir(workerDir)
+            .setCidFile(dockerCidFilePath(workerId))
+            .setCapabilities(Collections.emptySet())
+            .setNoNewPrivileges();
+
+        if (seccompJsonFile != null) {
+            dockerRunCommand.setSeccompProfile(seccompJsonFile);
+        }
+
+        if (workerToCpu.containsKey(workerId)) {
+            dockerRunCommand.setCpus(workerToCpu.get(workerId) / 100.0);
+        }
+
+        if (workerToMemoryMb.containsKey(workerId)) {
+            dockerRunCommand.setMemoryMb(workerToMemoryMb.get(workerId));
+        }
+
+        dockerRunCommand.setOverrideCommandWithArgs(Arrays.asList("bash", ServerUtils.writeScript(workerDir, command, env, "0027")));
+
+        //run docker-run command and launch container in background (-d option).
+        runDockerCommandWaitFor(conf, user, CmdType.LAUNCH_DOCKER_CONTAINER,
+            dockerRunCommand.getCommandWithArguments(), null, logPrefix, null, targetDir, "docker-run");
+
+        //docker-wait for the container in another thread. processExitCallback will get the container's exit code.
+        String threadName = "DockerWait_SLOT_" + port;
+        Utils.asyncLoop(new Callable<Long>() {
+            @Override
+            public Long call() throws IOException {
+                DockerWaitCommand dockerWaitCommand = new DockerWaitCommand(workerId);
+                try {
+                    runDockerCommandWaitFor(conf, user,  CmdType.RUN_DOCKER_CMD,
+                        dockerWaitCommand.getCommandWithArguments(), null, logPrefix, processExitCallback, targetDir, "docker-wait");
+                } catch (IOException e) {
+                    LOG.error("IOException on running docker wait command:", e);
+                    throw e;
+                }
+                return null; // Run only once.
+            }
+        }, threadName, null);
+
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/container/oci/RuncLibContainerManager, launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V > Context: Everywhere, blocks=[BB[SSA:251..256]100 - org.apache.storm.container.oci.RuncLibContainerManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:249..250]99 - org.apache.storm.container.oci.RuncLibContainerManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:257..260]101 - org.apache.storm.container.oci.RuncLibContainerManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:-1..-2]140 - org.apache.storm.container.oci.RuncLibContainerManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V], numberOfBasicBlocks=4, firstLineNumber=243, lastLineNumber=246, firstMethodNumber=169, lastMethodNumber=283, isFirstLineValid=true, methodSrcCode=
+
+        String imageName = getImageName(topoConf);
+        if (imageName == null) {
+            LOG.error("Image name for {} is not configured properly; will not continue to launch the worker", topologyId);
+            return;
+        }
+
+        //set container ID to port + worker ID
+        String containerId = getContainerId(workerId, port);
+
+        //get manifest
+        ImageManifest manifest = imageTagToManifestPlugin.getManifestFromImageTag(imageName);
+        LOG.debug("workerId {}: Got manifest: {}", workerId, manifest.toString());
+
+        //get layers metadata
+        OciResource configResource = manifestToResourcesPlugin.getConfigResource(manifest);
+        LOG.info("workerId {}: Got config metadata: {}", workerId, configResource.toString());
+
+        saveRuncYaml(topologyId, port, containerId, imageName, configResource);
+
+        List<OciResource> layersResource = manifestToResourcesPlugin.getLayerResources(manifest);
+        LOG.info("workerId {}: Got layers metadata: {}", workerId, layersResource.toString());
+
+        //localize resource
+        String configLocalPath = ociResourcesLocalizer.localize(configResource);
+
+        List<String> ociEnv = new ArrayList<>();
+        List<String> args = new ArrayList<>();
+
+        ArrayList<OciLayer> layers = new ArrayList<>();
+
+        File file = new File(configLocalPath);
+        //extract env
+        List<String> imageEnv = extractImageEnv(file);
+        if (imageEnv != null && !imageEnv.isEmpty()) {
+            ociEnv.addAll(imageEnv);
+        }
+        for (Map.Entry<String, String> entry : env.entrySet()) {
+            ociEnv.add(entry.getKey() + "=" + entry.getValue());
+        }
+        LOG.debug("workerId {}: ociEnv: {}", workerId, ociEnv);
+
+        //extract entrypoint
+        List<String> entrypoint = extractImageEntrypoint(file);
+        if (entrypoint != null && !entrypoint.isEmpty()) {
+            args.addAll(entrypoint);
+        }
+        LOG.debug("workerId {}: args: {}", workerId, args);
+
+        //localize layers
+        List<String> layersLocalPath = ociResourcesLocalizer.localize((layersResource));
+        //compose layers
+        for (String layerLocalPath : layersLocalPath) {
+            OciLayer layer = new OciLayer(SQUASHFS_MEDIA_TYPE, layerLocalPath);
+            layers.add(layer);
+        }
+        LOG.debug("workerId {}: layers: {}", workerId, layers);
+        ArrayList<OciMount> mounts = new ArrayList<>();
+        setContainerMounts(mounts, topologyId, workerId, port);
+        LOG.debug("workerId {}: mounts: {}", workerId, mounts);
+
+        //calculate the cpusQuotas based on CPU_CFS_PERIOD and assigned CPU
+        Long cpusQuotas = null;
+        if (workerToCpu.containsKey(workerId)) {
+            cpusQuotas = workerToCpu.get(workerId) * CPU_CFS_PERIOD_US / 100;
+        }
+
+        Long memoryInBytes = null;
+        if (workerToMemoryMb.containsKey(workerId)) {
+            memoryInBytes = workerToMemoryMb.get(workerId) * 1024L * 1024L;
+        }
+        LOG.info("workerId {}: memoryInBytes set to {}; cpusQuotas set to {}", workerId, memoryInBytes, cpusQuotas);
+
+        //<workerRoot>/<workerId>
+        String workerDir = targetDir.getAbsolutePath();
+        String workerScriptPath = ServerUtils.writeScript(workerDir, command, env, "0027");
+
+        args.add("bash");
+        args.add(workerScriptPath);
+
+        //The container PID (on the host) will be written to this file.
+        String containerPidFilePath = containerPidFile(workerId);
+
+        OciProcessConfig processConfig = createOciProcessConfig(workerDir, ociEnv, args);
+
+        OciLinuxConfig linuxConfig =
+            createOciLinuxConfig(cpusQuotas, memoryInBytes, cgroupParent + "/" + containerId, seccomp, workerId);
+
+        OciRuntimeConfig ociRuntimeConfig = new OciRuntimeConfig(null, mounts, processConfig, null,
+                                                          null, null, linuxConfig);
+
+        OciContainerExecutorConfig ociContainerExecutorConfig =
+            createOciContainerExecutorConfig(user, containerId, containerPidFilePath,
+                                             workerScriptPath, layers, ociRuntimeConfig);
+
+        //launch the container using worker-launcher
+        String executorConfigToJsonFile = writeOciExecutorConfigToJsonFile(mapper, ociContainerExecutorConfig, workerDir);
+        LOG.info("workerId {}: oci-config.json file path: {}", workerId, executorConfigToJsonFile);
+
+        List<String> cmdArgs = Arrays.asList(CmdType.RUN_OCI_CONTAINER.toString(), workerDir, executorConfigToJsonFile,
+                                             ConfigUtils.workerArtifactsSymlink(conf, workerId));
+
+        // launch the oci container. waiting prevents possible race condition that could prevent cleanup of container
+        int exitCode = ClientSupervisorUtils.processLauncherAndWait(conf, user, cmdArgs, env, logPrefix, targetDir);
+        if (exitCode != 0) {
+            LOG.error("launchWorkerProcess RuncCommand {} exited with code: {}", "LaunchWorker-" + containerId, exitCode);
+            throw new RuntimeException("launchWorkerProcess Failed to create Runc Container. ContainerId: " + containerId);
+        }
+
+        //Add to the watched list
+        LOG.debug("Adding {} to the watched workers list", workerId);
+        workerToExitCallback.put(workerId, processExitCallback);
+        workerToUser.put(workerId, user);
+
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ServerUtils, writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.storm.utils.ServerUtils.writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ServerUtils.writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;)Ljava/lang/String;, BB[SSA:5..5]2 - org.apache.storm.utils.ServerUtils.writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]3 - org.apache.storm.utils.ServerUtils.writeScript(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=285, lastLineNumber=286, firstMethodNumber=285, lastMethodNumber=286, isFirstLineValid=false, methodSrcCode=
+                                     Map<String, String> environment) throws IOException {
+        return writeScript(dir, command, environment, null);
+    }
+}

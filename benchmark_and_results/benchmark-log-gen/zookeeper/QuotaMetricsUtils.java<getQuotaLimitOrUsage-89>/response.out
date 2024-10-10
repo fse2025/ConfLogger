@@ -1,0 +1,15 @@
+```java
+final Map<String, Number> metricsMap = new ConcurrentHashMap<>();
+if (dataTree != null) {
+    // ConfLogger Inserted Start
+    logger.debug("dataTree is not null. Proceeding with getQuotaLimitOrUsage. Configuration parameter: dataTree=" + dataTree);
+    // ConfLogger Inserted End
+    getQuotaLimitOrUsage(Quotas.quotaZookeeper, metricsMap, type, dataTree);
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("dataTree is null. Skipping getQuotaLimitOrUsage. Configuration parameter: dataTree=" + dataTree);
+    // ConfLogger Inserted End
+}
+return metricsMap;
+}
+```

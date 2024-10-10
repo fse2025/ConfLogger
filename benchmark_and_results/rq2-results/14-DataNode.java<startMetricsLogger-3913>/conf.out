@@ -1,0 +1,3 @@
+     String param = DFSConfigKeys.DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_KEY;
+conf.set(param,"-100");
+HDFS

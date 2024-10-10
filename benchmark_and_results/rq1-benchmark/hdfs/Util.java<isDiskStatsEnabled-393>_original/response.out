@@ -1,0 +1,19 @@
+```java
+final boolean isEnabled;
+if (fileIOSamplingPercentage <= 0) {
+// ConfLogger Skipped: The log message contains configuration parameter key and value, indicating the condition for disabling file IO profiling.
+LOG.info(DFSConfigKeys
+.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY + " set to "
++ fileIOSamplingPercentage + ". Disabling file IO profiling");
+isEnabled = false;
+} else {
+// ConfLogger Skipped: The log message contains configuration parameter key and value, indicating the condition for enabling file IO profiling.
+LOG.info(DFSConfigKeys
+.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY + " set to "
++ fileIOSamplingPercentage + ". Enabling file IO profiling");
+isEnabled = true;
+}
+
+return isEnabled;
+}
+```

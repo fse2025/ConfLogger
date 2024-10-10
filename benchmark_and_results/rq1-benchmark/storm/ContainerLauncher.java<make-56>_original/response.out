@@ -1,0 +1,36 @@
+```java
+org.apache.storm.generated.Supervisor.Iface localSupervisor) throws IOException {
+    if (ConfigUtils.isLocalMode(conf)) {
+        return new LocalContainerLauncher(conf, supervisorId, supervisorPort, sharedContext, metricsRegistry, containerMemoryTracker,
+                localSupervisor);
+    }
+
+    ResourceIsolationInterface resourceIsolationManager;
+    // ConfLogger Inserted Start
+    if (ObjectReader.getBoolean(conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN_ENABLE), false)) {
+        resourceIsolationManager = ReflectionUtils.newInstance((String) conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN));
+        LOG.info("Using resource isolation plugin {}: {}", conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN),
+                resourceIsolationManager);
+    } else {
+        resourceIsolationManager = new DefaultResourceIsolationManager();
+        LOG.info("{} is false. Using default resource isolation plugin: {}", DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN_ENABLE,
+                resourceIsolationManager);
+    }
+    // ConfLogger Inserted End
+
+    resourceIsolationManager.prepare(conf);
+
+    return new BasicContainerLauncher(conf, supervisorId, supervisorPort, resourceIsolationManager, metricsRegistry,
+            containerMemoryTracker);
+}
+```
+
+### Explanation:
+
+1. **Task 1: Inspect Existing Outputs**
+   - The existing `LOG.info` statements already provide information about the configuration parameter `storm.resource.isolation.plugin.enable` and the chosen resource isolation plugin. Therefore, these outputs are sufficient and should be skipped. They are not commented out because they already fulfill the requirement of providing configuration-related information.
+
+2. **Task 2: Determine Log Insertion Position and Generate Logging Code**
+   - The code snippet is of type 2, as it checks whether a service (resource isolation plugin) should be enabled or not.
+   - The log positions are both in the `if` and `else` blocks, as they represent the paths for enabling and disabling the resource isolation plugin.
+   - The existing `LOG.info` statements are already in the correct positions and provide sufficient information, so no additional logging code is needed. The comments "ConfLogger Inserted Start" and "ConfLogger Inserted End" are added to indicate the log positions.

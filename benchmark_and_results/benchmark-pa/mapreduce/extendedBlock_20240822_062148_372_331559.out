@@ -1,0 +1,71 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobHistory.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.JobHistory.scheduleHistoryCleaner()V	methodLines:	310:322
+blockLines:	313:-1
+paras:	mapreduce.jobhistory.cleaner.enable
+TaintedStat:	NORMAL scheduleHistoryCleaner:conditional branch(eq, to iindex=34) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/JobHistory, scheduleHistoryCleaner()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/JobHistory, scheduleHistoryCleaner()V > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 3,4,5 @7 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/JobHistory, scheduleHistoryCleaner()V > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 3,4,5 @7 exception:6
+NORMAL scheduleHistoryCleaner:conditional branch(eq, to iindex=34) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/JobHistory, scheduleHistoryCleaner()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void scheduleHistoryCleaner() {
+    boolean startCleanerService = conf.getBoolean(
+        JHAdminConfig.MR_HISTORY_CLEANER_ENABLE, true);
+    if (startCleanerService) {
+      cleanerInterval = conf.getLong(
+          JHAdminConfig.MR_HISTORY_CLEANER_INTERVAL_MS,
+          JHAdminConfig.DEFAULT_MR_HISTORY_CLEANER_INTERVAL_MS);
+
+      futureHistoryCleaner = scheduledExecutor.scheduleAtFixedRate(
+          new HistoryCleaner(), getInitDelaySecs() * 1000l, cleanerInterval,
+          TimeUnit.MILLISECONDS);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/JobHistory, serviceStart()V > Context: Everywhere, blocks=[BB[SSA:37..39]21 - org.apache.hadoop.mapreduce.v2.hs.JobHistory.serviceStart()V, BB[SSA:35..36]20 - org.apache.hadoop.mapreduce.v2.hs.JobHistory.serviceStart()V, BB[SSA:40..41]22 - org.apache.hadoop.mapreduce.v2.hs.JobHistory.serviceStart()V, BB[SSA:-1..-2]24 - org.apache.hadoop.mapreduce.v2.hs.JobHistory.serviceStart()V], numberOfBasicBlocks=4, firstLineNumber=135, lastLineNumber=140, firstMethodNumber=125, lastMethodNumber=141, isFirstLineValid=true, methodSrcCode=
+  protected void serviceStart() throws Exception {
+    hsManager.start();
+    if (storage instanceof Service) {
+      ((Service) storage).start();
+    }
+
+    scheduledExecutor = new HadoopScheduledThreadPoolExecutor(2,
+        new ThreadFactoryBuilder().setNameFormat("Log Scanner/Cleaner #%d")
+            .build());
+
+    scheduledExecutor.scheduleAtFixedRate(new MoveIntermediateToDoneRunnable(),
+        moveThreadInterval, moveThreadInterval, TimeUnit.MILLISECONDS);
+
+    // Start historyCleaner
+    scheduleHistoryCleaner();
+    super.serviceStart();
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/JobHistory, refreshJobRetentionSettings()V > Context: Everywhere, blocks=[BB[SSA:30..31]15 - org.apache.hadoop.mapreduce.v2.hs.JobHistory.refreshJobRetentionSettings()V, BB[SSA:27..29]14 - org.apache.hadoop.mapreduce.v2.hs.JobHistory.refreshJobRetentionSettings()V, BB[SSA:32..32]16 - org.apache.hadoop.mapreduce.v2.hs.JobHistory.refreshJobRetentionSettings()V, BB[SSA:-1..-2]19 - org.apache.hadoop.mapreduce.v2.hs.JobHistory.refreshJobRetentionSettings()V], numberOfBasicBlocks=4, firstLineNumber=303, lastLineNumber=305, firstMethodNumber=294, lastMethodNumber=308, isFirstLineValid=true, methodSrcCode=
+  public void refreshJobRetentionSettings() {
+    if (getServiceState() == STATE.STARTED) {
+      conf = createConf();
+      long maxHistoryAge = conf.getLong(JHAdminConfig.MR_HISTORY_MAX_AGE_MS,
+          JHAdminConfig.DEFAULT_MR_HISTORY_MAX_AGE);
+      hsManager.setMaxHistoryAge(maxHistoryAge);
+      if (futureHistoryCleaner != null) {
+        futureHistoryCleaner.cancel(false);
+      }
+      futureHistoryCleaner = null;
+      scheduleHistoryCleaner();
+    } else {
+      LOG.warn("Failed to execute refreshJobRetentionSettings : Job History service is not started");
+    }
+  }
+
+}

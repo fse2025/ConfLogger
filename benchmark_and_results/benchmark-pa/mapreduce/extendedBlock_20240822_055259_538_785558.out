@@ -1,0 +1,63 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Parser.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.join.Parser.parse(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/join/Parser$Node;	methodLines:	540:563
+blockLines:	558:-1
+paras:	null
+TaintedStat:	NORMAL parse:conditional branch(eq, to iindex=70) 8,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser, parse(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/join/Parser$Node; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser, parse(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/join/Parser$Node; > Context: Everywhere[12]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,5,4,6 @21 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser, parse(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/join/Parser$Node; > Context: Everywhere[12]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,5,4,6 @21 exception:7
+NORMAL parse:conditional branch(eq, to iindex=70) 8,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser, parse(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/join/Parser$Node; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	Parser.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.join.Parser.parse(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/join/Parser$Node;	methodLines:	540:563
+blockLines:	541:-1
+paras:	null
+TaintedStat:	NORMAL parse:conditional branch(ne, to iindex=8) 4,1 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser, parse(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/join/Parser$Node; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/CompositeInputFormat, setFormat(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,6,7 @14 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/CompositeInputFormat, setFormat(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,6,7 @14 exception:8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/CompositeInputFormat, setFormat(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[11]11 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser, parse(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/join/Parser$Node; > 9,2 @18 exception:10 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser, parse(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/join/Parser$Node; > Context: Everywhere v1
+NORMAL parse:conditional branch(ne, to iindex=8) 4,1 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser, parse(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/join/Parser$Node; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static Node parse(String expr, Configuration conf) throws IOException {
+    if (null == expr) {
+      throw new IOException("Expression is null");
+    }
+    Class<? extends WritableComparator> cmpcl = conf.getClass(
+      CompositeInputFormat.JOIN_COMPARATOR, null, WritableComparator.class);
+    Lexer lex = new Lexer(expr);
+    Stack<Token> st = new Stack<Token>();
+    Token tok;
+    while ((tok = lex.next()) != null) {
+      if (TType.RPAREN.equals(tok.getType())) {
+        st.push(reduce(st, conf));
+      } else {
+        st.push(tok);
+      }
+    }
+    if (st.size() == 1 && TType.CIF.equals(st.peek().getType())) {
+      Node ret = st.pop().getNode();
+      if (cmpcl != null) {
+        ret.setKeyComparator(cmpcl);
+      }
+      return ret;
+    }
+    throw new IOException("Missing ')'");
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/CompositeInputFormat, setFormat(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:10..11]4 - org.apache.hadoop.mapreduce.lib.join.CompositeInputFormat.setFormat(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:5..9]3 - org.apache.hadoop.mapreduce.lib.join.CompositeInputFormat.setFormat(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:12..12]5 - org.apache.hadoop.mapreduce.lib.join.CompositeInputFormat.setFormat(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]7 - org.apache.hadoop.mapreduce.lib.join.CompositeInputFormat.setFormat(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=85, lastLineNumber=85, firstMethodNumber=82, lastMethodNumber=86, isFirstLineValid=true, methodSrcCode=
+  public void setFormat(Configuration conf) throws IOException {
+    addDefaults();
+    addUserIdentifiers(conf);
+    root = Parser.parse(conf.get(JOIN_EXPR, null), conf);
+  }
+
+}

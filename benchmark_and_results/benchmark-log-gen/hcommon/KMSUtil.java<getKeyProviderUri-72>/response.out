@@ -1,0 +1,12 @@
+```java
+final String providerUriStr = conf.getTrimmed(configKeyName);
+// No provider set in conf
+if (providerUriStr == null || providerUriStr.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter '{}' is not set or is empty. Please provide a valid URI.", configKeyName);
+    // ConfLogger Inserted End
+    return null;
+}
+return URI.create(providerUriStr);
+}
+```

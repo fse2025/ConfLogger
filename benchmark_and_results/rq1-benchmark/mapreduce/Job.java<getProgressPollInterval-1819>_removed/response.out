@@ -1,0 +1,16 @@
+```java
+// Read progress monitor poll interval from config. Default is 1 second.
+int progMonitorPollIntervalMillis = conf.getInt(
+PROGRESS_MONITOR_POLL_INTERVAL_KEY, DEFAULT_MONITOR_POLL_INTERVAL);
+if (progMonitorPollIntervalMillis < 1) {
+    // ConfLogger Inserted Start
+    logger.warn("The configuration parameter 'mapreduce.client.progressmonitor.pollinterval' is set to a value less than 1. "
+                + "This is invalid as the poll interval must be at least 1 millisecond. "
+                + "Reverting to default value: " + DEFAULT_MONITOR_POLL_INTERVAL + " milliseconds. "
+                + "Please ensure 'mapreduce.client.progressmonitor.pollinterval' is set to a valid positive integer.");
+    // ConfLogger Inserted End
+    progMonitorPollIntervalMillis = DEFAULT_MONITOR_POLL_INTERVAL;
+}
+return progMonitorPollIntervalMillis;
+}
+```

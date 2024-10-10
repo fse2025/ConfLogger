@@ -1,0 +1,32 @@
+```java
+throws ReconfigurationException {
+    namesystem.writeLock();
+    try {
+        if (newVal == null) {
+            // ConfLogger Inserted Start
+            logger.warn("Configuration parameter 'dfs.web.authentication.kerberos.keytab' is not set. Setting heartbeat interval to default value: " + DFS_HEARTBEAT_INTERVAL_DEFAULT);
+            // ConfLogger Inserted End
+            // set to default
+            datanodeManager.setHeartbeatInterval(DFS_HEARTBEAT_INTERVAL_DEFAULT);
+            return String.valueOf(DFS_HEARTBEAT_INTERVAL_DEFAULT);
+        } else {
+            long newInterval = getConf()
+                .getTimeDurationHelper(DFS_HEARTBEAT_INTERVAL_KEY,
+                newVal, TimeUnit.SECONDS);
+            datanodeManager.setHeartbeatInterval(newInterval);
+            // ConfLogger Inserted Start
+            logger.info("Configuration parameter 'dfs.web.authentication.kerberos.keytab' is set. Heartbeat interval updated to: " + newInterval);
+            // ConfLogger Inserted End
+            return String.valueOf(datanodeManager.getHeartbeatInterval());
+        }
+    } catch (NumberFormatException nfe) {
+        throw new ReconfigurationException(property, newVal, getConf().get(
+            property), nfe);
+    } finally {
+        namesystem.writeUnlock();
+        // ConfLogger Skipped: Existing log already provides configuration-related information
+        LOG.info("RECONFIGURE* changed heartbeatInterval to "
+            + datanodeManager.getHeartbeatInterval());
+    }
+}
+```

@@ -1,0 +1,191 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BasicContainer.java	methodSinagture:	org.apache.storm.daemon.supervisor.BasicContainer.substituteChildopts(Ljava/lang/Object;II)Ljava/util/List;	methodLines:	467:489
+blockLines:	482:-1
+paras:	topology.worker.logwriter.childopts
+TaintedStat:	NORMAL substituteChildopts:conditional branch(eq, to iindex=84) 15,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[92]68 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 65,66 @211 exception:67
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[92]68 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 65,66 @211 exception:67
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[93]70 = invokevirtual < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;)Ljava/util/List; > 1,68 @216 exception:69 v68
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;)Ljava/util/List; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;)Ljava/util/List; > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > 1,2,4,4 @4 exception:5 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere v2
+NORMAL substituteChildopts:10 = instanceof 2 <Application,Ljava/util/List> Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+NORMAL substituteChildopts:conditional branch(eq, to iindex=84) 10,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+NORMAL substituteChildopts:conditional branch(eq, to iindex=84) 15,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	BasicContainer.java	methodSinagture:	org.apache.storm.daemon.supervisor.BasicContainer.substituteChildopts(Ljava/lang/Object;II)Ljava/util/List;	methodLines:	467:489
+blockLines:	473:-1
+paras:	worker.profiler.childopts
+TaintedStat:	NORMAL substituteChildopts:conditional branch(ge, to iindex=50) 41,33 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerProfilerChildOpts(II)Ljava/util/List; > Context: Everywhere[16]17 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 14,15 @35 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerProfilerChildOpts(II)Ljava/util/List; > Context: Everywhere[16]17 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 14,15 @35 exception:16
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerProfilerChildOpts(II)Ljava/util/List; > Context: Everywhere[19]19 = invokevirtual < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > 1,17,2,3 @42 exception:18 v17
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere v2
+NORMAL substituteChildopts:8 = instanceof 2 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+NORMAL substituteChildopts:conditional branch(eq, to iindex=51) 8,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+NORMAL substituteChildopts:conditional branch(eq, to iindex=50) 29,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+NORMAL substituteChildopts:conditional branch(ge, to iindex=50) 41,33 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	BasicContainer.java	methodSinagture:	org.apache.storm.daemon.supervisor.BasicContainer.substituteChildopts(Ljava/lang/Object;II)Ljava/util/List;	methodLines:	467:489
+blockLines:	471:-1
+paras:	worker.gc.childopts
+TaintedStat:	NORMAL substituteChildopts:conditional branch(eq, to iindex=50) 29,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[157]115 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 112,113 @380 exception:114
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[157]115 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 112,113 @380 exception:114
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[158]117 = invokestatic < Application, Lorg/apache/storm/utils/Utils, OR(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; > 111,115 @385 exception:116 v115
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/Utils, OR(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; > Context: Everywhere v2
+PHI Node: < Application, Lorg/apache/storm/utils/Utils, OR(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; > Context: Everywhere:5 = phi  2,1
+NORMAL OR:return 5 Node: < Application, Lorg/apache/storm/utils/Utils, OR(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/Utils, OR(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[158]117 = invokestatic < Application, Lorg/apache/storm/utils/Utils, OR(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; > 111,115 @385 exception:116
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[161]119 = invokevirtual < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > 1,117,2,3 @390 exception:118 v117
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere v2
+NORMAL substituteChildopts:8 = instanceof 2 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+NORMAL substituteChildopts:conditional branch(eq, to iindex=51) 8,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+NORMAL substituteChildopts:conditional branch(eq, to iindex=50) 29,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	BasicContainer.java	methodSinagture:	org.apache.storm.daemon.supervisor.BasicContainer.substituteChildopts(Ljava/lang/Object;II)Ljava/util/List;	methodLines:	467:489
+blockLines:	469:-1
+paras:	worker.childopts
+TaintedStat:	NORMAL substituteChildopts:conditional branch(eq, to iindex=51) 8,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[131]95 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 92,93 @316 exception:94
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[131]95 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 92,93 @316 exception:94
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[134]97 = invokevirtual < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > 1,95,2,3 @323 exception:96 v95
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere v2
+NORMAL substituteChildopts:8 = instanceof 2 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+NORMAL substituteChildopts:conditional branch(eq, to iindex=51) 8,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	BasicContainer.java	methodSinagture:	org.apache.storm.daemon.supervisor.BasicContainer.substituteChildopts(Ljava/lang/Object;II)Ljava/util/List;	methodLines:	467:489
+blockLines:	479:-1
+paras:	topology.worker.childopts
+TaintedStat:	NORMAL substituteChildopts:conditional branch(eq, to iindex=84) 10,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[142]103 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 100,101 @342 exception:102
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[142]103 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 100,101 @342 exception:102
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[145]105 = invokevirtual < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > 1,103,2,3 @349 exception:104 v103
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere v2
+NORMAL substituteChildopts:10 = instanceof 2 <Application,Ljava/util/List> Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+NORMAL substituteChildopts:conditional branch(eq, to iindex=84) 10,9 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    protected List<String> substituteChildopts(Object value, int memOnheap, int memOffHeap) {
+        List<String> rets = new ArrayList<>();
+        if (value instanceof String) {
+            String string = substituteChildOptsInternal((String) value, memOnheap, memOffHeap);
+            if (StringUtils.isNotBlank(string)) {
+                String[] strings = string.split("\\s+");
+                for (String s : strings) {
+                    if (StringUtils.isNotBlank(s)) {
+                        rets.add(s);
+                    }
+                }
+            }
+        } else if (value instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<String> objects = (List<String>) value;
+            for (String object : objects) {
+                String str = substituteChildOptsInternal(object, memOnheap, memOffHeap);
+                if (StringUtils.isNotBlank(str)) {
+                    rets.add(str);
+                }
+            }
+        }
+        return rets;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.storm.daemon.supervisor.BasicContainer.substituteChildopts(Ljava/lang/Object;)Ljava/util/List;, BB[SSA:-1..-2]0 - org.apache.storm.daemon.supervisor.BasicContainer.substituteChildopts(Ljava/lang/Object;)Ljava/util/List;, BB[SSA:5..5]2 - org.apache.storm.daemon.supervisor.BasicContainer.substituteChildopts(Ljava/lang/Object;)Ljava/util/List;, BB[SSA:-1..-2]3 - org.apache.storm.daemon.supervisor.BasicContainer.substituteChildopts(Ljava/lang/Object;)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=463, lastLineNumber=464, firstMethodNumber=463, lastMethodNumber=464, isFirstLineValid=false, methodSrcCode=
+    protected List<String> substituteChildopts(Object value) {
+        return substituteChildopts(value, -1, -1);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerProfilerChildOpts(II)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:17..19]9 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerProfilerChildOpts(II)Ljava/util/List;, BB[SSA:15..16]8 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerProfilerChildOpts(II)Ljava/util/List;, BB[SSA:20..20]10 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerProfilerChildOpts(II)Ljava/util/List;, BB[SSA:-1..-2]12 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerProfilerChildOpts(II)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=579, lastLineNumber=579, firstMethodNumber=576, lastMethodNumber=583, isFirstLineValid=true, methodSrcCode=
+    private List<String> getWorkerProfilerChildOpts(int memOnheap, int memOffheap) {
+        List<String> workerProfilerChildopts = new ArrayList<>();
+        if (ObjectReader.getBoolean(conf.get(DaemonConfig.WORKER_PROFILER_ENABLED), false)) {
+            workerProfilerChildopts = substituteChildopts(
+                    conf.get(DaemonConfig.WORKER_PROFILER_CHILDOPTS), memOnheap, memOffheap
+            );
+        }
+        return workerProfilerChildopts;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:132..134]53 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:130..131]52 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:135..135]54 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:-1..-2]102 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:143..145]57 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:141..142]56 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:146..146]58 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:-1..-2]102 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:159..161]64 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:158..158]63 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:162..162]65 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:-1..-2]102 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;], numberOfBasicBlocks=12, firstLineNumber=647, lastLineNumber=647, firstMethodNumber=608, lastMethodNumber=673, isFirstLineValid=true, methodSrcCode=
+                                         final String jlp, final String numaId) throws IOException {
+        final String javaCmd = javaCmd("java");
+        final String stormOptions = ConfigUtils.concatIfNotNull(System.getProperty("storm.options"));
+        final String topoConfFile = ConfigUtils.concatIfNotNull(System.getProperty("storm.conf.file"));
+        final String workerTmpDir = ConfigUtils.workerTmpRoot(conf, workerId);
+        String topoVersionString = getStormVersionFor(conf, topologyId, ops, stormRoot);
+        if (topoVersionString == null) {
+            topoVersionString = (String) conf.getOrDefault(Config.SUPERVISOR_WORKER_DEFAULT_VERSION, VersionInfo.getVersion());
+        }
+        final SimpleVersion topoVersion = new SimpleVersion(topoVersionString);
+
+        List<String> classPathParams = getClassPathParams(stormRoot, topoVersion);
+        List<String> commonParams = getCommonParams();
+
+        String log4jConfigurationFile = getWorkerLoggingConfigFile();
+        String workerLog4jConfig = log4jConfigurationFile;
+        if (topoConf.get(Config.TOPOLOGY_LOGGING_CONFIG_FILE) != null) {
+            workerLog4jConfig = workerLog4jConfig + "," + topoConf.get(Config.TOPOLOGY_LOGGING_CONFIG_FILE);
+        }
+
+        List<String> commandList = new ArrayList<>();
+        String logWriter = getWorkerLogWriter(topoVersion);
+        if (logWriter != null) {
+            //Log Writer Command...
+            commandList.add(javaCmd);
+            commandList.addAll(classPathParams);
+            commandList.addAll(substituteChildopts(topoConf.get(Config.TOPOLOGY_WORKER_LOGWRITER_CHILDOPTS)));
+            commandList.addAll(commonParams);
+            commandList.add("-Dlog4j.configurationFile=" + log4jConfigurationFile);
+            commandList.add(logWriter); //The LogWriter in turn launches the actual worker.
+        }
+
+        //Worker Command...
+        commandList.add(javaCmd);
+        commandList.add("-server");
+        commandList.addAll(commonParams);
+        commandList.add("-Dlog4j.configurationFile=" + workerLog4jConfig);
+        commandList.addAll(substituteChildopts(conf.get(Config.WORKER_CHILDOPTS), memOnheap, memOffheap));
+        commandList.addAll(substituteChildopts(topoConf.get(Config.TOPOLOGY_WORKER_CHILDOPTS), memOnheap, memOffheap));
+        commandList.addAll(substituteChildopts(Utils.OR(
+            topoConf.get(Config.TOPOLOGY_WORKER_GC_CHILDOPTS),
+            conf.get(Config.WORKER_GC_CHILDOPTS)), memOnheap, memOffheap));
+        commandList.addAll(getWorkerProfilerChildOpts(memOnheap, memOffheap));
+        commandList.add("-Djava.library.path=" + jlp);
+        commandList.add("-Dstorm.conf.file=" + topoConfFile);
+        commandList.add("-Dstorm.options=" + stormOptions);
+        commandList.add("-Djava.io.tmpdir=" + workerTmpDir);
+        commandList.addAll(classPathParams);
+        commandList.add(getWorkerMain(topoVersion));
+        commandList.add(topologyId);
+        String supervisorId = this.supervisorId;
+        if (numaId != null) {
+            supervisorId += ServerConstants.NUMA_ID_SEPARATOR + numaId;
+        }
+        commandList.add(supervisorId);
+        // supervisor port should be only presented to worker which supports RPC heartbeat
+        // unknown version should be treated as "current version", which supports RPC heartbeat
+        if ((topoVersion.getMajor() == -1 && topoVersion.getMinor() == -1)
+                || topoVersion.compareTo(MIN_VERSION_SUPPORT_RPC_HEARTBEAT) >= 0) {
+            commandList.add(String.valueOf(supervisorPort));
+        }
+
+        commandList.add(String.valueOf(port));
+        commandList.add(workerId);
+
+        return commandList;
+    }
+}

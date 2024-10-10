@@ -1,0 +1,86 @@
+```java
+boolean needClientAuth) throws IOException, GeneralSecurityException {
+
+this.port = port;
+this.idleTimeout = timeout;
+this.commandUrl = commandUrl;
+this.address = address;
+
+server = new Server();
+ServerConnector connector = null;
+
+if (!portUnification && !forceHttps) {
+    connector = new ServerConnector(server);
+} else {
+    SecureRequestCustomizer customizer = new SecureRequestCustomizer();
+    customizer.setStsMaxAge(DEFAULT_STS_MAX_AGE);
+    customizer.setStsIncludeSubDomains(true);
+
+    HttpConfiguration config = new HttpConfiguration();
+    config.setSecureScheme("https");
+    config.addCustomizer(customizer);
+
+    try (QuorumX509Util x509Util = new QuorumX509Util()) {
+        String privateKeyType = System.getProperty(x509Util.getSslKeystoreTypeProperty(), "");
+        String privateKeyPath = System.getProperty(x509Util.getSslKeystoreLocationProperty(), "");
+        String privateKeyPassword = getPasswordFromSystemPropertyOrFile(
+            x509Util.getSslKeystorePasswdProperty(),
+            x509Util.getSslKeystorePasswdPathProperty());
+
+        String certAuthType = System.getProperty(x509Util.getSslTruststoreTypeProperty(), "");
+        String certAuthPath = System.getProperty(x509Util.getSslTruststoreLocationProperty(), "");
+        String certAuthPassword = getPasswordFromSystemPropertyOrFile(
+            x509Util.getSslTruststorePasswdProperty(),
+            x509Util.getSslTruststorePasswdPathProperty());
+        KeyStore keyStore = null, trustStore = null;
+
+        try {
+            keyStore = X509Util.loadKeyStore(privateKeyPath, privateKeyPassword, privateKeyType);
+            trustStore = X509Util.loadTrustStore(certAuthPath, certAuthPassword, certAuthType);
+            LOG.info("Successfully loaded private key from {}", privateKeyPath); // ConfLogger Skipped
+            LOG.info("Successfully loaded certificate authority from {}", certAuthPath); // ConfLogger Skipped
+        } catch (Exception e) {
+            LOG.error("Failed to load authentication certificates for admin server.", e); // ConfLogger Skipped
+            throw e;
+        }
+
+        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+        sslContextFactory.setKeyStore(keyStore);
+        sslContextFactory.setKeyStorePassword(privateKeyPassword);
+        sslContextFactory.setTrustStore(trustStore);
+        sslContextFactory.setTrustStorePassword(certAuthPassword);
+        sslContextFactory.setNeedClientAuth(needClientAuth);
+
+        if (forceHttps) {
+            connector = new ServerConnector(server,
+                new SslConnectionFactory(sslContextFactory, HttpVersion.fromVersion(httpVersion).asString()),
+                new HttpConnectionFactory(config));
+            // ConfLogger Inserted Start
+            logger.info("HTTPS is forced. Connector configured with SSL. [forceHttps: {}, httpVersion: {}, privateKeyPath: {}, certAuthPath: {}]", forceHttps, HttpVersion.fromVersion(httpVersion).asString(), privateKeyPath, certAuthPath);
+            // ConfLogger Inserted End
+        } else {
+            connector = new ServerConnector(
+                server,
+                new UnifiedConnectionFactory(sslContextFactory, HttpVersion.fromVersion(httpVersion).asString()),
+                new HttpConnectionFactory(config));
+            // ConfLogger Inserted Start
+            logger.info("Port unification is enabled. Connector configured with UnifiedConnectionFactory. [portUnification: {}, httpVersion: {}, privateKeyPath: {}, certAuthPath: {}]", portUnification, HttpVersion.fromVersion(httpVersion).asString(), privateKeyPath, certAuthPath);
+            // ConfLogger Inserted End
+        }
+    }
+}
+
+connector.setHost(address);
+connector.setPort(port);
+connector.setIdleTimeout(idleTimeout);
+
+server.addConnector(connector);
+
+ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+context.setContextPath("/*");
+constrainTraceMethod(context);
+server.setHandler(context);
+
+context.addServlet(new ServletHolder(new CommandServlet()), commandUrl + "/*");
+}
+```

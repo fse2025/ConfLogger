@@ -1,0 +1,19 @@
+<code-whole>
+if (mExclusiveOnlyDeadlineMs == -1) {
+long exclusiveOnlyDurationMs =
+Configuration.getMs(PropertyKey.MASTER_BACKUP_STATE_LOCK_EXCLUSIVE_DURATION);
+mExclusiveOnlyDeadlineMs = System.currentTimeMillis() + exclusiveOnlyDurationMs;
+if (exclusiveOnlyDurationMs > 0) {
+LOG.info("State-lock will remain in exclusive-only mode for {}ms until {}",
+exclusiveOnlyDurationMs, new Date(mExclusiveOnlyDeadlineMs).toString());
+}
+}
+}
+</code-whole>
+
+<code-specified>
+if (exclusiveOnlyDurationMs > 0) {
+LOG.info("State-lock will remain in exclusive-only mode for {}ms until {}",
+exclusiveOnlyDurationMs, new Date(mExclusiveOnlyDeadlineMs).toString());
+}
+</code-specified>

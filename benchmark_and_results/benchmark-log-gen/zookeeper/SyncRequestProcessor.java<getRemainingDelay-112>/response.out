@@ -1,0 +1,12 @@
+```java
+long flushDelay = zks.getFlushDelay();
+long duration = Time.currentElapsedTime() - lastFlushTime;
+if (duration < flushDelay) {
+// ConfLogger Inserted Start
+logger.debug("Flush delay not yet reached. Configuration parameter 'flushDelay': " + flushDelay + ", elapsed duration: " + duration + ". Remaining time: " + (flushDelay - duration));
+// ConfLogger Inserted End
+return flushDelay - duration;
+}
+return 0;
+}
+```

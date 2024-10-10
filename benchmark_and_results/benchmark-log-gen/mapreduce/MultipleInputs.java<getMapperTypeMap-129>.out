@@ -1,0 +1,113 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MultipleInputs.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.MultipleInputs.getMapperTypeMap(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/Map;	methodLines:	129:148
+blockLines:	131:-1
+paras:	null
+TaintedStat:	NORMAL getMapperTypeMap:conditional branch(ne, to iindex=10) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, getMapperTypeMap(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/Map; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, getMapperTypeMap(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/Map; > Context: Everywhere[5]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,5 @10 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, getMapperTypeMap(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/Map; > Context: Everywhere[5]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,5 @10 exception:6
+NORMAL getMapperTypeMap:conditional branch(ne, to iindex=10) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, getMapperTypeMap(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/Map; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      getMapperTypeMap(JobContext job) {
+    Configuration conf = job.getConfiguration();
+    if (conf.get(DIR_MAPPERS) == null) {
+      return Collections.emptyMap();
+    }
+    Map<Path, Class<? extends Mapper>> m = 
+      new HashMap<Path, Class<? extends Mapper>>();
+    String[] pathMappings = conf.get(DIR_MAPPERS).split(",");
+    for (String pathMapping : pathMappings) {
+      String[] split = pathMapping.split(";");
+      Class<? extends Mapper> mapClass;
+      try {
+       mapClass = 
+         (Class<? extends Mapper>) conf.getClassByName(split[1]);
+      } catch (ClassNotFoundException e) {
+       throw new RuntimeException(e);
+      }
+      m.put(new Path(split[0]), mapClass);
+    }
+    return m;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/DelegatingInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:12..14]6 - org.apache.hadoop.mapreduce.lib.input.DelegatingInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;, BB[SSA:9..11]5 - org.apache.hadoop.mapreduce.lib.input.DelegatingInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;, BB[SSA:15..16]7 - org.apache.hadoop.mapreduce.lib.input.DelegatingInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;, BB[SSA:-1..-2]106 - org.apache.hadoop.mapreduce.lib.input.DelegatingInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=57, lastLineNumber=62, firstMethodNumber=54, lastMethodNumber=123, isFirstLineValid=true, methodSrcCode=
+      throws IOException, InterruptedException {
+    Configuration conf = job.getConfiguration();
+    Job jobCopy = Job.getInstance(conf);
+    List<InputSplit> splits = new ArrayList<InputSplit>();
+    Map<Path, InputFormat> formatMap = 
+      MultipleInputs.getInputFormatMap(job);
+    Map<Path, Class<? extends Mapper>> mapperMap = MultipleInputs
+       .getMapperTypeMap(job);
+    Map<Class<? extends InputFormat>, List<Path>> formatPaths
+        = new HashMap<Class<? extends InputFormat>, List<Path>>();
+
+    // First, build a map of InputFormats to Paths
+    for (Entry<Path, InputFormat> entry : formatMap.entrySet()) {
+      if (!formatPaths.containsKey(entry.getValue().getClass())) {
+       formatPaths.put(entry.getValue().getClass(), new LinkedList<Path>());
+      }
+
+      formatPaths.get(entry.getValue().getClass()).add(entry.getKey());
+    }
+
+    for (Entry<Class<? extends InputFormat>, List<Path>> formatEntry : 
+        formatPaths.entrySet()) {
+      Class<? extends InputFormat> formatClass = formatEntry.getKey();
+      InputFormat format = (InputFormat) ReflectionUtils.newInstance(
+         formatClass, conf);
+      List<Path> paths = formatEntry.getValue();
+
+      Map<Class<? extends Mapper>, List<Path>> mapperPaths
+          = new HashMap<Class<? extends Mapper>, List<Path>>();
+
+      // Now, for each set of paths that have a common InputFormat, build
+      // a map of Mappers to the paths they're used for
+      for (Path path : paths) {
+       Class<? extends Mapper> mapperClass = mapperMap.get(path);
+       if (!mapperPaths.containsKey(mapperClass)) {
+         mapperPaths.put(mapperClass, new LinkedList<Path>());
+       }
+
+       mapperPaths.get(mapperClass).add(path);
+      }
+
+      // Now each set of paths that has a common InputFormat and Mapper can
+      // be added to the same job, and split together.
+      for (Entry<Class<? extends Mapper>, List<Path>> mapEntry :
+          mapperPaths.entrySet()) {
+       paths = mapEntry.getValue();
+       Class<? extends Mapper> mapperClass = mapEntry.getKey();
+
+       if (mapperClass == null) {
+         try {
+           mapperClass = job.getMapperClass();
+         } catch (ClassNotFoundException e) {
+           throw new IOException("Mapper class is not found", e);
+         }
+       }
+
+       FileInputFormat.setInputPaths(jobCopy, paths.toArray(new Path[paths
+           .size()]));
+
+       // Get splits for each input path and tag with InputFormat
+       // and Mapper types by wrapping in a TaggedInputSplit.
+       List<InputSplit> pathSplits = format.getSplits(jobCopy);
+       for (InputSplit pathSplit : pathSplits) {
+         splits.add(new TaggedInputSplit(pathSplit, conf, format.getClass(),
+             mapperClass));
+       }
+      }
+    }
+
+    return splits;
+  }
+}

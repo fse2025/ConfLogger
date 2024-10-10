@@ -1,0 +1,36 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NettyRpcClient.java	methodSinagture:	org.apache.hadoop.hbase.ipc.NettyRpcClient.getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext;	methodLines:	108:123
+blockLines:	117:-1
+paras:	null
+TaintedStat:	NORMAL getSslContext:conditional branch(eq, to iindex=51) 24,14 Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcClient, getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcClient, getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[39]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 21,22,14 @76 exception:23
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcClient, getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[39]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 21,22,14 @76 exception:23
+NORMAL getSslContext:conditional branch(eq, to iindex=51) 24,14 Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcClient, getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  SslContext getSslContext() throws X509Exception, IOException {
+    SslContext result = sslContextForClient.get();
+    if (result == null) {
+      result = X509Util.createSslContextForClient(conf);
+      if (!sslContextForClient.compareAndSet(null, result)) {
+        // lost the race, another thread already set the value
+        result = sslContextForClient.get();
+      } else if (
+        keyStoreWatcher.get() == null && trustStoreWatcher.get() == null
+          && conf.getBoolean(X509Util.TLS_CERT_RELOAD, false)
+      ) {
+        X509Util.enableCertFileReloading(conf, keyStoreWatcher, trustStoreWatcher,
+          () -> sslContextForClient.set(null));
+      }
+    }
+    return result;
+  }
+
+
+====================ctx:=======================

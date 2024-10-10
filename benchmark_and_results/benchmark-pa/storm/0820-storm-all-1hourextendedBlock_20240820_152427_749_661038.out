@@ -1,0 +1,92 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BasicContainer.java	methodSinagture:	org.apache.storm.daemon.supervisor.BasicContainer.launch()V	methodLines:	811:860
+blockLines:	833:-1
+paras:	topology.environment
+TaintedStat:	NORMAL launch:conditional branch(eq, to iindex=119) 60,11 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, launch()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, launch()V > Context: Everywhere[110]59 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 56,57 @202 exception:58
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, launch()V > Context: Everywhere[110]59 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 56,57 @202 exception:58
+NORMAL launch:60 = checkcast <Application,Ljava/util/Map>59 <Application,Ljava/util/Map> Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, launch()V > Context: Everywhere
+NORMAL launch:conditional branch(eq, to iindex=119) 60,11 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, launch()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public void launch() throws IOException {
+        type.assertFull();
+        String numaId = SupervisorUtils.getNumaIdForPort(port, conf);
+        if (numaId == null) {
+            LOG.info("Launching worker with assignment {} for this supervisor {} on port {} with id {}",
+                    assignment, supervisorId, port, workerId);
+        } else {
+            LOG.info("Launching worker with assignment {} for this supervisor {} on port {} with id {}  bound to numa zone {}",
+                    assignment, supervisorId, port, workerId, numaId);
+        }
+        exitedEarly = false;
+
+        final WorkerResources resources = assignment.get_resources();
+        final int memOnHeap = getMemOnHeap(resources);
+        final int memOffHeap = getMemOffHeap(resources);
+        memoryLimitMb = calculateMemoryLimit(resources, memOnHeap);
+        final String stormRoot = ConfigUtils.supervisorStormDistRoot(conf, topologyId);
+        String jlp = javaLibraryPath(stormRoot, conf);
+
+        Map<String, String> topEnvironment = new HashMap<String, String>();
+        @SuppressWarnings("unchecked")
+        Map<String, String> environment = (Map<String, String>) topoConf.get(Config.TOPOLOGY_ENVIRONMENT);
+        if (environment != null) {
+            topEnvironment.putAll(environment);
+        }
+
+        String ldLibraryPath = topEnvironment.get("LD_LIBRARY_PATH");
+        if (ldLibraryPath != null) {
+            jlp = jlp + System.getProperty("path.separator") + ldLibraryPath;
+        }
+
+        topEnvironment.put("LD_LIBRARY_PATH", jlp);
+
+        if (resourceIsolationManager.isResourceManaged()) {
+            final int cpu = (int) Math.ceil(resources.get_cpu());
+            //Save the memory limit so we can enforce it less strictly
+            resourceIsolationManager.reserveResourcesForWorker(workerId, (int) memoryLimitMb, cpu, numaId);
+        }
+
+        List<String> commandList = mkLaunchCommand(memOnHeap, memOffHeap, stormRoot, jlp, numaId);
+
+        LOG.info("Launching worker with command: {}. ", ServerUtils.shellCmd(commandList));
+
+        String workerDir = ConfigUtils.workerRoot(conf, workerId);
+
+        String logPrefix = "Worker Process " + workerId;
+        ProcessExitCallback processExitCallback = new ProcessExitCallback(logPrefix);
+        resourceIsolationManager.launchWorkerProcess(getWorkerUser(), topologyId, topoConf, port, workerId,
+            commandList, topEnvironment, logPrefix, processExitCallback, new File(workerDir));
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, relaunch()V > Context: Everywhere, blocks=[BB[SSA:10..11]6 - org.apache.storm.daemon.supervisor.BasicContainer.relaunch()V, BB[SSA:8..9]5 - org.apache.storm.daemon.supervisor.BasicContainer.relaunch()V, BB[SSA:12..12]7 - org.apache.storm.daemon.supervisor.BasicContainer.relaunch()V, BB[SSA:-1..-2]8 - org.apache.storm.daemon.supervisor.BasicContainer.relaunch()V], numberOfBasicBlocks=4, firstLineNumber=255, lastLineNumber=257, firstMethodNumber=250, lastMethodNumber=257, isFirstLineValid=true, methodSrcCode=
+    public void relaunch() throws IOException {
+        type.assertFull();
+        //We are launching it now...
+        type = ContainerType.LAUNCH;
+        createNewWorkerId();
+        setup();
+        launch();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainerLauncher, launchContainer(ILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/utils/LocalState;)Lorg/apache/storm/daemon/supervisor/Container; > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=46, lastMethodNumber=52, isFirstLineValid=true, methodSrcCode=
+    public Container launchContainer(int port, LocalAssignment assignment, LocalState state) throws IOException {
+        Container container = new BasicContainer(ContainerType.LAUNCH, conf, supervisorId, supervisorPort, port,
+            assignment, resourceIsolationManager, state, null, metricsRegistry,
+            containerMemoryTracker);
+        container.setup();
+        container.launch();
+        return container;
+    }
+}

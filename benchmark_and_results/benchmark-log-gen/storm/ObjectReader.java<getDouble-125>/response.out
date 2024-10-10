@@ -1,0 +1,18 @@
+```java
+if (null == o) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'o' is null. Returning default value: " + defaultValue);
+    // ConfLogger Inserted End
+    return defaultValue;
+}
+if (o instanceof Number) {
+    return ((Number) o).doubleValue();
+} else {
+    // ConfLogger Commented: Not Informative
+    // throw new IllegalArgumentException("Don't know how to convert (" + o + ") to double");
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter 'o' is not a Number. Cannot convert to double. Parameter value: " + o);
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException("Invalid configuration parameter 'o'. Expected a Number but got: " + o);
+}
+```

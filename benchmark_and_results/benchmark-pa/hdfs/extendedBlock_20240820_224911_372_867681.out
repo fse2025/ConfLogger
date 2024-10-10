@@ -1,0 +1,62 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AvailableSpaceRackFaultTolerantBlockPlacementPolicy.java	methodSinagture:	org.apache.hadoop.hdfs.server.blockmanagement.AvailableSpaceRackFaultTolerantBlockPlacementPolicy.initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/blockmanagement/FSClusterStats;Lorg/apache/hadoop/net/NetworkTopology;Lorg/apache/hadoop/hdfs/server/blockmanagement/Host2NodesMap;)V	methodLines:	54:93
+blockLines:	69:-1
+paras:	dfs.namenode.available-space-rack-fault-tolerant-block-placement-policy.balanced-space-preference-fraction
+TaintedStat:	NORMAL initialize:conditional branch(le, to iindex=36) 29,30 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/AvailableSpaceRackFaultTolerantBlockPlacementPolicy, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/blockmanagement/FSClusterStats;Lorg/apache/hadoop/net/NetworkTopology;Lorg/apache/hadoop/hdfs/server/blockmanagement/Host2NodesMap;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/AvailableSpaceRackFaultTolerantBlockPlacementPolicy, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/blockmanagement/FSClusterStats;Lorg/apache/hadoop/net/NetworkTopology;Lorg/apache/hadoop/hdfs/server/blockmanagement/Host2NodesMap;)V > Context: Everywhere[9]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getFloat(Ljava/lang/String;F)F > 2,8,9 @14 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/AvailableSpaceRackFaultTolerantBlockPlacementPolicy, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/blockmanagement/FSClusterStats;Lorg/apache/hadoop/net/NetworkTopology;Lorg/apache/hadoop/hdfs/server/blockmanagement/Host2NodesMap;)V > Context: Everywhere[9]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getFloat(Ljava/lang/String;F)F > 2,8,9 @14 exception:10
+NORMAL initialize:27 = conversion(D) 11 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/AvailableSpaceRackFaultTolerantBlockPlacementPolicy, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/blockmanagement/FSClusterStats;Lorg/apache/hadoop/net/NetworkTopology;Lorg/apache/hadoop/hdfs/server/blockmanagement/Host2NodesMap;)V > Context: Everywhere
+NORMAL initialize:29 = compare 27,28 opcode=cmpl Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/AvailableSpaceRackFaultTolerantBlockPlacementPolicy, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/blockmanagement/FSClusterStats;Lorg/apache/hadoop/net/NetworkTopology;Lorg/apache/hadoop/hdfs/server/blockmanagement/Host2NodesMap;)V > Context: Everywhere
+NORMAL initialize:conditional branch(le, to iindex=36) 29,30 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/AvailableSpaceRackFaultTolerantBlockPlacementPolicy, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/blockmanagement/FSClusterStats;Lorg/apache/hadoop/net/NetworkTopology;Lorg/apache/hadoop/hdfs/server/blockmanagement/Host2NodesMap;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      NetworkTopology clusterMap, Host2NodesMap host2datanodeMap) {
+    super.initialize(conf, stats, clusterMap, host2datanodeMap);
+    float balancedPreferencePercent = conf.getFloat(
+        DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_KEY,
+        DFS_NAMENODE_AVAILABLE_SPACE_BLOCK_RACK_FAULT_TOLERANT_PLACEMENT_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_DEFAULT);
+
+    balancedSpaceTolerance = conf.getInt(
+            DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_KEY,
+            DFS_NAMENODE_AVAILABLE_SPACE_BLOCK_RACK_FAULT_TOLERANT_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_DEFAULT);
+
+    LOG.info("Available space rack fault tolerant block placement policy "
+        + "initialized: "
+        + DFSConfigKeys.DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_KEY
+        + " = " + balancedPreferencePercent);
+
+    if (balancedPreferencePercent > 1.0) {
+      LOG.warn("The value of "
+          + DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_KEY
+          + " is greater than 1.0 but should be in the range 0.0 - 1.0");
+    }
+    if (balancedPreferencePercent < 0.5) {
+      LOG.warn("The value of "
+          + DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_KEY
+          + " is less than 0.5 so datanodes with more used percent will"
+          + " receive  more block allocations.");
+    }
+
+
+    if (balancedSpaceTolerance > 20 || balancedSpaceTolerance < 0) {
+      LOG.warn("The value of "
+          + DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_KEY
+          + " is invalid, Current value is " + balancedSpaceTolerance + ", Default value " +
+            DFS_NAMENODE_AVAILABLE_SPACE_BLOCK_RACK_FAULT_TOLERANT_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_DEFAULT
+          + " will be used instead.");
+      balancedSpaceTolerance =
+            DFS_NAMENODE_AVAILABLE_SPACE_BLOCK_RACK_FAULT_TOLERANT_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_DEFAULT;
+    }
+
+    balancedPreference = (int) (100 * balancedPreferencePercent);
+  }
+
+
+
+====================ctx:=======================

@@ -1,0 +1,129 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.startMetricsLogger()V	methodLines:	3913:3930
+blockLines:	3918:-1
+paras:	dfs.datanode.metrics.logger.period.seconds
+TaintedStat:	NORMAL startMetricsLogger:conditional branch(gt, to iindex=13) 11,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere[4]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,5,6 @10 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere[4]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,5,6 @10 exception:7
+NORMAL startMetricsLogger:9 = conversion(J) 8 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere
+NORMAL startMetricsLogger:11 = compare 9,10 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere
+NORMAL startMetricsLogger:conditional branch(gt, to iindex=13) 11,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected void startMetricsLogger() {
+    long metricsLoggerPeriodSec = getConf().getInt(
+        DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_KEY,
+        DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_DEFAULT);
+
+    if (metricsLoggerPeriodSec <= 0) {
+      return;
+    }
+
+    MetricsLoggerTask.makeMetricsLoggerAsync(METRICS_LOG);
+
+    // Schedule the periodic logging.
+    metricsLoggerTimer = new ScheduledThreadPoolExecutor(1);
+    metricsLoggerTimer.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+    metricsLoggerTimer.scheduleWithFixedDelay(new MetricsLoggerTask(METRICS_LOG,
+        "DataNode", (short) 0), metricsLoggerPeriodSec, metricsLoggerPeriodSec,
+        TimeUnit.SECONDS);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V > Context: Everywhere, blocks=[BB[SSA:257..258]140 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:256..256]139 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:259..260]141 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:-1..-2]151 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V], numberOfBasicBlocks=4, firstLineNumber=1762, lastLineNumber=1765, firstMethodNumber=1684, lastMethodNumber=1769, isFirstLineValid=true, methodSrcCode=
+    // settings global for all BPs in the Data Node
+    this.secureResources = resources;
+    synchronized (this) {
+      this.dataDirs = dataDirectories;
+    }
+    this.dnConf = new DNConf(this);
+    checkSecureConfig(dnConf, getConf(), resources);
+
+    if (dnConf.maxLockedMemory > 0) {
+      if (!NativeIO.POSIX.getCacheManipulator().verifyCanMlock()) {
+        throw new RuntimeException(String.format(
+            "Cannot start datanode because the configured max locked memory" +
+            " size (%s) is greater than zero and native code is not available.",
+            DFS_DATANODE_MAX_LOCKED_MEMORY_KEY));
+      }
+      if (Path.WINDOWS) {
+        NativeIO.Windows.extendWorkingSetSize(dnConf.maxLockedMemory);
+      } else {
+        long ulimit = NativeIO.POSIX.getCacheManipulator().getMemlockLimit();
+        if (dnConf.maxLockedMemory > ulimit) {
+          throw new RuntimeException(String.format(
+            "Cannot start datanode because the configured max locked memory" +
+            " size (%s) of %d bytes is more than the datanode's available" +
+            " RLIMIT_MEMLOCK ulimit of %d bytes.",
+            DFS_DATANODE_MAX_LOCKED_MEMORY_KEY,
+            dnConf.maxLockedMemory,
+            ulimit));
+        }
+      }
+    }
+    LOG.info("Starting DataNode with maxLockedMemory = {}",
+        dnConf.maxLockedMemory);
+
+    int volFailuresTolerated = dnConf.getVolFailuresTolerated();
+    int volsConfigured = dnConf.getVolsConfigured();
+    if (volFailuresTolerated < MAX_VOLUME_FAILURE_TOLERATED_LIMIT
+        || volFailuresTolerated >= volsConfigured) {
+      throw new HadoopIllegalArgumentException("Invalid value configured for "
+          + "dfs.datanode.failed.volumes.tolerated - " + volFailuresTolerated
+          + ". Value configured is either less than -1 or >= "
+          + "to the number of configured volumes (" + volsConfigured + ").");
+    }
+
+    storage = new DataStorage();
+    
+    // global DN settings
+    registerMXBean();
+    initDataXceiver();
+    startInfoServer();
+    pauseMonitor = new JvmPauseMonitor();
+    pauseMonitor.init(getConf());
+    pauseMonitor.start();
+  
+    // BlockPoolTokenSecretManager is required to create ipc server.
+    this.blockPoolTokenSecretManager = new BlockPoolTokenSecretManager();
+
+    // Login is done by now. Set the DN user name.
+    dnUserName = UserGroupInformation.getCurrentUser().getUserName();
+    LOG.info("dnUserName = {}", dnUserName);
+    LOG.info("supergroup = {}", supergroup);
+    initIpcServer();
+
+    metrics = DataNodeMetrics.create(getConf(), getDisplayName());
+    peerMetrics = dnConf.peerStatsEnabled ?
+        DataNodePeerMetrics.create(getDisplayName(), getConf()) : null;
+    metrics.getJvmMetrics().setPauseMonitor(pauseMonitor);
+
+    ecWorker = new ErasureCodingWorker(getConf(), this);
+    blockRecoveryWorker = new BlockRecoveryWorker(this);
+
+    blockPoolManager = new BlockPoolManager(this);
+    blockPoolManager.refreshNamenodes(getConf());
+
+    // Create the ReadaheadPool from the DataNode context so we can
+    // exit without having to explicitly shutdown its thread pool.
+    readaheadPool = ReadaheadPool.getInstance();
+    saslClient = new SaslDataTransferClient(dnConf.getConf(),
+        dnConf.saslPropsResolver, dnConf.trustedChannelResolver);
+    saslServer = new SaslDataTransferServer(dnConf, blockPoolTokenSecretManager);
+    startMetricsLogger();
+
+    if (dnConf.diskStatsEnabled) {
+      diskMetrics = new DataNodeDiskMetrics(this,
+          dnConf.outliersReportIntervalMs, getConf());
+    }
+  }
+
+}

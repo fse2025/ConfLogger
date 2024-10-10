@@ -1,0 +1,12 @@
+```java
+String ret = "";
+// we do this since to concat a null String will actually concat a "null", which is not the expected: ""
+if (dir != null) {
+    // ConfLogger Inserted Start
+    logger.debug("Configuration parameter 'dir' is set to: " + dir);
+    // ConfLogger Inserted End
+    ret = dir;
+}
+return ret;
+}
+```

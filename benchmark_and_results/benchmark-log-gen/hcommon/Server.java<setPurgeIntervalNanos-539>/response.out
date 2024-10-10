@@ -1,0 +1,13 @@
+```java
+int tmpPurgeInterval = CommonConfigurationKeysPublic.
+IPC_SERVER_PURGE_INTERVAL_MINUTES_DEFAULT;
+if (purgeInterval > 0) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'purgeInterval' is set to a positive value: " + purgeInterval);
+    // ConfLogger Inserted End
+    tmpPurgeInterval = purgeInterval;
+}
+this.purgeIntervalNanos = TimeUnit.NANOSECONDS.convert(
+    tmpPurgeInterval, TimeUnit.MINUTES);
+}
+```

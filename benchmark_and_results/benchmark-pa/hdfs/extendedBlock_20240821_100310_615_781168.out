@@ -1,0 +1,126 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DatanodeAdminManager.java	methodSinagture:	org.apache.hadoop.hdfs.server.blockmanagement.DatanodeAdminManager.activate(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	103:158
+blockLines:	118:-1
+paras:	dfs.namenode.decommission.monitor.class
+TaintedStat:	NORMAL activate:conditional branch(eq, to iindex=37) 21,22 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[63]42 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > 2,39,40 @125 exception:41
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[63]42 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > 2,39,40 @125 exception:41
+NORMAL activate:44 = invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 42,2 @134 exception:43 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+NORMAL newInstance:invokestatic < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > 21,2 @65 exception:25 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=14) 2,4 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=11) 5,6 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:invokeinterface < Extension, Lorg/apache/hadoop/conf/Configurable, setConf(Lorg/apache/hadoop/conf/Configuration;)V > 7,2 @16 exception:8 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/SaslPropertiesResolver in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL setConf:14 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > 2,6,8 @32 exception:13 Node: < Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/SaslPropertiesResolver in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmedStrings:6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[24]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,19 @44 exception:20
+NORMAL activate:conditional branch(eq, to iindex=37) 21,22 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DatanodeAdminManager.java	methodSinagture:	org.apache.hadoop.hdfs.server.blockmanagement.DatanodeAdminManager.activate(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	103:158
+blockLines:	108:-1
+paras:	dfs.namenode.decommission.interval
+TaintedStat:	NORMAL activate:conditional branch(lt, to iindex=12) 9,10 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[4]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTimeDuration(Ljava/lang/String;JLjava/util/concurrent/TimeUnit;)J > 2,4,5,6 @9 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[4]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTimeDuration(Ljava/lang/String;JLjava/util/concurrent/TimeUnit;)J > 2,4,5,6 @9 exception:7
+NORMAL activate:9 = conversion(I) 8 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL activate:conditional branch(lt, to iindex=12) 9,10 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DatanodeAdminManager.java	methodSinagture:	org.apache.hadoop.hdfs.server.blockmanagement.DatanodeAdminManager.activate(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	103:158
+blockLines:	125:-1
+paras:	dfs.namenode.decommission.blocks.per.interval
+TaintedStat:	NORMAL activate:conditional branch(le, to iindex=42) 18,10 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[18]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,15,16 @33 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[18]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,15,16 @33 exception:17
+NORMAL activate:conditional branch(le, to iindex=42) 18,10 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DatanodeAdminManager.java	methodSinagture:	org.apache.hadoop.hdfs.server.blockmanagement.DatanodeAdminManager.activate(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	103:158
+blockLines:	133:-1
+paras:	dfs.namenode.decommission.max.concurrent.tracked.nodes
+TaintedStat:	NORMAL activate:conditional branch(lt, to iindex=55) 35,10 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[48]35 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,32,33 @97 exception:34
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[48]35 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,32,33 @97 exception:34
+NORMAL activate:conditional branch(lt, to iindex=55) 35,10 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeAdminManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  void activate(Configuration conf) {
+    final int intervalSecs = (int) conf.getTimeDuration(
+        DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_INTERVAL_KEY,
+        DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_INTERVAL_DEFAULT,
+        TimeUnit.SECONDS);
+    checkArgument(intervalSecs >= 0, "Cannot set a negative " +
+        "value for " + DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_INTERVAL_KEY);
+
+    int blocksPerInterval = conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_BLOCKS_PER_INTERVAL_KEY,
+        DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_BLOCKS_PER_INTERVAL_DEFAULT);
+
+    final String deprecatedKey =
+        "dfs.namenode.decommission.nodes.per.interval";
+    final String strNodes = conf.get(deprecatedKey);
+    if (strNodes != null) {
+      LOG.warn("Deprecated configuration key {} will be ignored.",
+          deprecatedKey);
+      LOG.warn("Please update your configuration to use {} instead.",
+          DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_BLOCKS_PER_INTERVAL_KEY);
+    }
+
+    checkArgument(blocksPerInterval > 0,
+        "Must set a positive value for "
+        + DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_BLOCKS_PER_INTERVAL_KEY);
+
+    final int maxConcurrentTrackedNodes = conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_MAX_CONCURRENT_TRACKED_NODES,
+        DFSConfigKeys
+            .DFS_NAMENODE_DECOMMISSION_MAX_CONCURRENT_TRACKED_NODES_DEFAULT);
+    checkArgument(maxConcurrentTrackedNodes >= 0, "Cannot set a negative " +
+        "value for "
+        + DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_MAX_CONCURRENT_TRACKED_NODES);
+
+    Class cls = null;
+    try {
+      cls = conf.getClass(
+          DFSConfigKeys.DFS_NAMENODE_DECOMMISSION_MONITOR_CLASS,
+          DatanodeAdminDefaultMonitor.class);
+      monitor =
+          (DatanodeAdminMonitorInterface)ReflectionUtils.newInstance(cls, conf);
+      monitor.setBlockManager(blockManager);
+      monitor.setNameSystem(namesystem);
+      monitor.setDatanodeAdminManager(this);
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to create the Decommission monitor " +
+          "from "+cls, e);
+    }
+    executor.scheduleWithFixedDelay(monitor, intervalSecs, intervalSecs,
+        TimeUnit.SECONDS);
+
+    LOG.debug("Activating DatanodeAdminManager with interval {} seconds, " +
+            "{} max blocks per interval, " +
+            "{} max concurrently tracked nodes.", intervalSecs,
+        blocksPerInterval, maxConcurrentTrackedNodes);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeManager, activate(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:2..3]2 - org.apache.hadoop.hdfs.server.blockmanagement.DatanodeManager.activate(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..1]1 - org.apache.hadoop.hdfs.server.blockmanagement.DatanodeManager.activate(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:4..5]3 - org.apache.hadoop.hdfs.server.blockmanagement.DatanodeManager.activate(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]6 - org.apache.hadoop.hdfs.server.blockmanagement.DatanodeManager.activate(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=456, lastLineNumber=457, firstMethodNumber=455, lastMethodNumber=458, isFirstLineValid=true, methodSrcCode=
+  void activate(final Configuration conf) {
+    datanodeAdminManager.activate(conf);
+    heartbeatManager.activate();
+  }
+
+}

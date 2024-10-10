@@ -1,0 +1,32 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StateLockManager.java	methodSinagture:	alluxio.master.StateLockManager.mastersStartedCallback()V	methodLines:	126:136
+blockLines:	131:-1
+paras:	null
+TaintedStat:	NORMAL mastersStartedCallback:conditional branch(le, to iindex=30) 14,6 Node: < Application, Lalluxio/master/StateLockManager, mastersStartedCallback()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/StateLockManager, mastersStartedCallback()V > Context: Everywhere[7]9 = invokestatic < Application, Lalluxio/conf/Configuration, getMs(Lalluxio/conf/PropertyKey;)J > 7 @14 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/StateLockManager, mastersStartedCallback()V > Context: Everywhere[7]9 = invokestatic < Application, Lalluxio/conf/Configuration, getMs(Lalluxio/conf/PropertyKey;)J > 7 @14 exception:8
+NORMAL mastersStartedCallback:14 = compare 9,13 opcode=cmp Node: < Application, Lalluxio/master/StateLockManager, mastersStartedCallback()V > Context: Everywhere
+NORMAL mastersStartedCallback:conditional branch(le, to iindex=30) 14,6 Node: < Application, Lalluxio/master/StateLockManager, mastersStartedCallback()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void mastersStartedCallback() {
+    if (mExclusiveOnlyDeadlineMs == -1) {
+      long exclusiveOnlyDurationMs =
+          Configuration.getMs(PropertyKey.MASTER_BACKUP_STATE_LOCK_EXCLUSIVE_DURATION);
+      mExclusiveOnlyDeadlineMs = System.currentTimeMillis() + exclusiveOnlyDurationMs;
+      if (exclusiveOnlyDurationMs > 0) {
+        LOG.info("State-lock will remain in exclusive-only mode for {}ms until {}",
+            exclusiveOnlyDurationMs, new Date(mExclusiveOnlyDeadlineMs).toString());
+      }
+    }
+  }
+
+
+
+====================ctx:=======================

@@ -1,0 +1,75 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MRAppMaster.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.MRAppMaster.callWithJobClassLoader(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster$ExceptionAction;)Ljava/lang/Object;	methodLines:	1831:1852
+blockLines:	1833:-1
+paras:	null
+TaintedStat:	NORMAL callWithJobClassLoader:conditional branch(eq, to iindex=13) 6,9 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, callWithJobClassLoader(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster$ExceptionAction;)Ljava/lang/Object; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, callWithJobClassLoader(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster$ExceptionAction;)Ljava/lang/Object; > Context: Everywhere[1]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClassLoader()Ljava/lang/ClassLoader; > 2 @1 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, callWithJobClassLoader(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster$ExceptionAction;)Ljava/lang/Object; > Context: Everywhere[1]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClassLoader()Ljava/lang/ClassLoader; > 2 @1 exception:5
+NORMAL callWithJobClassLoader:conditional branch(eq, to iindex=13) 6,9 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, callWithJobClassLoader(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster$ExceptionAction;)Ljava/lang/Object; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // done
+    ClassLoader currentClassLoader = conf.getClassLoader();
+    boolean setJobClassLoader =
+        jobClassLoader != null && currentClassLoader != jobClassLoader;
+    if (setJobClassLoader) {
+      MRApps.setClassLoader(jobClassLoader, conf);
+    }
+    try {
+      return action.call(conf);
+    } catch (IOException e) {
+      throw e;
+    } catch (YarnRuntimeException e) {
+      throw e;
+    } catch (Exception e) {
+      // wrap it with a YarnRuntimeException
+      throw new YarnRuntimeException(e);
+    } finally {
+      if (setJobClassLoader) {
+        // restore the original classloader
+        MRApps.setClassLoader(currentClassLoader, conf);
+      }
+    }
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, isRecoverySupported()Z > Context: Everywhere, blocks=[BB[SSA:20..20]7 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.isRecoverySupported()Z, BB[SSA:16..19]6 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.isRecoverySupported()Z, BB[SSA:21..21]8 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.isRecoverySupported()Z, BB[SSA:-1..-2]12 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.isRecoverySupported()Z], numberOfBasicBlocks=4, firstLineNumber=1317, lastLineNumber=1317, firstMethodNumber=1312, lastMethodNumber=1324, isFirstLineValid=true, methodSrcCode=
+  private boolean isRecoverySupported() throws IOException {
+    boolean isSupported = false;
+    Configuration conf = getConfig();
+    if (committer != null) {
+      final JobContext _jobContext = getJobContextFromConf(conf);
+      isSupported = callWithJobClassLoader(conf,
+          new ExceptionAction<Boolean>() {
+            public Boolean call(Configuration conf) throws IOException {
+              return committer.isRecoverySupported(_jobContext);
+            }
+      });
+    }
+    return isSupported;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, isCommitJobRepeatable()Z > Context: Everywhere, blocks=[BB[SSA:20..20]7 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.isCommitJobRepeatable()Z, BB[SSA:16..19]6 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.isCommitJobRepeatable()Z, BB[SSA:21..21]8 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.isCommitJobRepeatable()Z, BB[SSA:-1..-2]12 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.isCommitJobRepeatable()Z], numberOfBasicBlocks=4, firstLineNumber=507, lastLineNumber=507, firstMethodNumber=501, lastMethodNumber=514, isFirstLineValid=true, methodSrcCode=
+  private boolean isCommitJobRepeatable() throws IOException {
+    boolean isRepeatable = false;
+    Configuration conf = getConfig();
+    if (committer != null) {
+      final JobContext jobContext = getJobContextFromConf(conf);
+
+      isRepeatable = callWithJobClassLoader(conf,
+          new ExceptionAction<Boolean>() {
+            public Boolean call(Configuration conf) throws IOException {
+              return committer.isCommitJobRepeatable(jobContext);
+            }
+          });
+    }
+    return isRepeatable;
+  }
+}

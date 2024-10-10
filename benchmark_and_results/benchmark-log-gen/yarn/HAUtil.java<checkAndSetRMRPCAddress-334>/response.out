@@ -1,0 +1,33 @@
+```java
+String rpcAddressConfKey = null;
+try {
+    rpcAddressConfKey = addSuffix(prefix, RMId);
+    if (conf.getTrimmed(rpcAddressConfKey) == null) {
+        String hostNameConfKey = addSuffix(YarnConfiguration.RM_HOSTNAME, RMId);
+        String confVal = conf.getTrimmed(hostNameConfKey);
+        if (confVal == null) {
+            // ConfLogger Inserted Start
+            logger.error("Configuration error: {} or {} must be set. Current value: null", hostNameConfKey, addSuffix(prefix, RMId));
+            // ConfLogger Inserted End
+            throwBadConfigurationException(getNeedToSetValueMessage(
+                hostNameConfKey + " or " + addSuffix(prefix, RMId)));
+        } else {
+            // ConfLogger Inserted Start
+            logger.info("Setting configuration for {}: {}:{}", addSuffix(prefix, RMId), confVal, YarnConfiguration.getRMDefaultPortNumber(prefix, conf));
+            // ConfLogger Inserted End
+            conf.set(addSuffix(prefix, RMId), confVal + ":"
+                + YarnConfiguration.getRMDefaultPortNumber(prefix, conf));
+        }
+    }
+} catch (IllegalArgumentException iae) {
+    String errmsg = iae.getMessage();
+    if (rpcAddressConfKey == null) {
+        // ConfLogger Commented: Not Informative
+        // errmsg = getInvalidValueMessage(YarnConfiguration.RM_HA_ID, RMId);
+        // ConfLogger Inserted Start
+        logger.error("Invalid configuration value for {}: {}", YarnConfiguration.RM_HA_ID, RMId);
+        // ConfLogger Inserted End
+    }
+    throwBadConfigurationException(errmsg);
+}
+```

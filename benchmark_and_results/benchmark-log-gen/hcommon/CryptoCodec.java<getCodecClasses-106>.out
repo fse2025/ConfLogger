@@ -1,0 +1,93 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CryptoCodec.java	methodSinagture:	org.apache.hadoop.crypto.CryptoCodec.getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List;	methodLines:	106:135
+blockLines:	123:-1
+paras:	null
+TaintedStat:	NORMAL getCodecClasses:conditional branch(eq, to iindex=74) 40,20 Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[25]22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,16 @52 exception:21
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[25]22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,16 @52 exception:21
+PHI Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere:26 = phi  25,22
+NORMAL getCodecClasses:conditional branch(ne, to iindex=35) 26,27 Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+NORMAL getCodecClasses:conditional branch(eq, to iindex=74) 40,20 Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	CryptoCodec.java	methodSinagture:	org.apache.hadoop.crypto.CryptoCodec.getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List;	methodLines:	106:135
+blockLines:	118:-1
+paras:	null
+TaintedStat:	NORMAL getCodecClasses:conditional branch(ne, to iindex=35) 26,27 Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[20]25 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,16,23 @42 exception:24
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[20]25 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,16,23 @42 exception:24
+PHI Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere:26 = phi  25,22
+NORMAL getCodecClasses:conditional branch(ne, to iindex=35) 26,27 Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Configuration conf, CipherSuite cipherSuite) {
+    List<Class<? extends CryptoCodec>> result = Lists.newArrayList();
+    String configName = HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX + 
+        cipherSuite.getConfigSuffix();
+    String codecString;
+    if (configName.equals(CommonConfigurationKeysPublic
+        .HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_KEY)) {
+      codecString = conf.get(configName, CommonConfigurationKeysPublic
+          .HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_DEFAULT);
+    } else {
+      codecString = conf.get(configName);
+    }
+    if (codecString == null) {
+      PerformanceAdvisory.LOG.debug(
+          "No crypto codec classes with cipher suite configured.");
+      return null;
+    }
+    for (String c : Splitter.on(',').trimResults().omitEmptyStrings().
+        split(codecString)) {
+      try {
+        Class<?> cls = conf.getClassByName(c);
+        result.add(cls.asSubclass(CryptoCodec.class));
+      } catch (ClassCastException e) {
+        PerformanceAdvisory.LOG.debug("Class {} is not a CryptoCodec.", c);
+      } catch (ClassNotFoundException e) {
+        PerformanceAdvisory.LOG.debug("Crypto codec {} not found.", c);
+      }
+    }
+    
+    return result;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/crypto/CryptoCodec, getInstance(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Lorg/apache/hadoop/crypto/CryptoCodec; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.crypto.CryptoCodec.getInstance(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Lorg/apache/hadoop/crypto/CryptoCodec;, BB[SSA:-1..-2]0 - org.apache.hadoop.crypto.CryptoCodec.getInstance(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Lorg/apache/hadoop/crypto/CryptoCodec;, BB[SSA:3..6]2 - org.apache.hadoop.crypto.CryptoCodec.getInstance(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Lorg/apache/hadoop/crypto/CryptoCodec;, BB[SSA:-1..-2]29 - org.apache.hadoop.crypto.CryptoCodec.getInstance(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Lorg/apache/hadoop/crypto/CryptoCodec;], numberOfBasicBlocks=4, firstLineNumber=60, lastLineNumber=63, firstMethodNumber=60, lastMethodNumber=87, isFirstLineValid=false, methodSrcCode=
+      CipherSuite cipherSuite) {
+    List<Class<? extends CryptoCodec>> klasses = getCodecClasses(
+        conf, cipherSuite);
+    if (klasses == null) {
+      return null;
+    }
+    CryptoCodec codec = null;
+    for (Class<? extends CryptoCodec> klass : klasses) {
+      try {
+        CryptoCodec c = ReflectionUtils.newInstance(klass, conf);
+        if (c.getCipherSuite().getName().equals(cipherSuite.getName())) {
+          if (codec == null) {
+            PerformanceAdvisory.LOG.debug("Using crypto codec {}.",
+                klass.getName());
+            codec = c;
+          }
+        } else {
+          PerformanceAdvisory.LOG.debug(
+              "Crypto codec {} doesn't meet the cipher suite {}.",
+              klass.getName(), cipherSuite.getName());
+        }
+      } catch (Exception e) {
+        PerformanceAdvisory.LOG.debug("Crypto codec {} is not available.",
+            klass.getName());
+      }
+    }
+    
+    return codec;
+  }
+}

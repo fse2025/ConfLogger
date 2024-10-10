@@ -1,0 +1,65 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ValueAggregatorJobBase.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJobBase.getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor;	methodLines:	51:60
+blockLines:	52:-1
+paras:	null
+TaintedStat:	NORMAL getValueAggregatorDescriptor:conditional branch(ne, to iindex=5) 1,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,3,4 @4 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,3,4 @4 exception:5
+NORMAL getAggregatorDescriptors:conditional branch(ge, to iindex=42) 27,6 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList; > Context: Everywhere
+NORMAL getAggregatorDescriptors:[null]: 19 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,17 @44 exception:18 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList; > Context: Everywhere[24]19 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,17 @44 exception:18
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList; > Context: Everywhere[28]21 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor; > 19,1 @52 exception:20 v19
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor; > Context: Everywhere v1
+NORMAL getValueAggregatorDescriptor:conditional branch(ne, to iindex=5) 1,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ValueAggregatorJobBase.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJobBase.getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor;	methodLines:	51:60
+blockLines:	56:-1
+paras:	null
+TaintedStat:	NORMAL getValueAggregatorDescriptor:conditional branch(ne, to iindex=29) 13,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList; > Context: Everywhere[24]19 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,17 @44 exception:18
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList; > Context: Everywhere[24]19 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,17 @44 exception:18
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList; > Context: Everywhere[28]21 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor; > 19,1 @52 exception:20 v19
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor; > Context: Everywhere v1
+NORMAL getValueAggregatorDescriptor:conditional branch(ne, to iindex=5) 1,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor; > Context: Everywhere
+NORMAL getValueAggregatorDescriptor:conditional branch(ne, to iindex=29) 13,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getValueAggregatorDescriptor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorDescriptor; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String spec, Configuration conf) {
+    if (spec == null)
+      return null;
+    String[] segments = spec.split(",", -1);
+    String type = segments[0];
+    if (type.compareToIgnoreCase("UserDefined") == 0) {
+      String className = segments[1];
+      return new UserDefinedValueAggregatorDescriptor(className, conf);
+    }
+    return null;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJobBase, getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList; > Context: Everywhere, blocks=[BB[SSA:25..28]12 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJobBase.getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList;, BB[SSA:24..24]11 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJobBase.getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList;, BB[SSA:29..32]13 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJobBase.getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList;, BB[SSA:-1..-2]18 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJobBase.getAggregatorDescriptors(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/ArrayList;], numberOfBasicBlocks=4, firstLineNumber=69, lastLineNumber=71, firstMethodNumber=64, lastMethodNumber=75, isFirstLineValid=true, methodSrcCode=
+      Configuration conf) {
+    int num = conf.getInt(DESCRIPTOR_NUM, 0);
+    ArrayList<ValueAggregatorDescriptor> retv = 
+      new ArrayList<ValueAggregatorDescriptor>(num);
+    for (int i = 0; i < num; i++) {
+      String spec = conf.get(DESCRIPTOR + "." + i);
+      ValueAggregatorDescriptor ad = getValueAggregatorDescriptor(spec, conf);
+      if (ad != null) {
+        retv.add(ad);
+      }
+    }
+    return retv;
+  }
+}

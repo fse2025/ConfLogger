@@ -1,0 +1,21 @@
+```java
+DataTransferEncryptorMessageProto.newBuilder();
+
+builder.setStatus(DataTransferEncryptorStatus.SUCCESS);
+if (payload != null) {
+    builder.setPayload(ByteString.copyFrom(payload));
+}
+// ConfLogger Inserted Start
+if (options != null) {
+    builder.addAllCipherOption(PBHelperClient.convertCipherOptions(options));
+    logger.info("Cipher options set successfully. Configuration parameter: options, Value: " + options);
+} else {
+    logger.warn("Cipher options are null. Ensure the configuration parameter 'options' is set correctly.");
+}
+// ConfLogger Inserted End
+
+DataTransferEncryptorMessageProto proto = builder.build();
+proto.writeDelimitedTo(out);
+out.flush();
+}
+```

@@ -1,0 +1,30 @@
+```java
+List<ACL> acl = Lists.newArrayList();
+if (aclString == null) {
+    // ConfLogger Inserted Start
+    logger.info("ACL string is null. Returning empty ACL list.");
+    // ConfLogger Inserted End
+    return acl;
+}
+
+List<String> aclComps = Lists.newArrayList(
+Splitter.on(',').omitEmptyStrings().trimResults()
+.split(aclString));
+for (String a : aclComps) {
+// from ZooKeeperMain private method
+int firstColon = a.indexOf(':');
+int lastColon = a.lastIndexOf(':');
+if (firstColon == -1 || lastColon == -1 || firstColon == lastColon) {
+    throw new BadAclFormatException(
+    "ACL '" + a + "' not of expected form scheme:id:perm"); // ConfLogger Skipped
+}
+
+ACL newAcl = new ACL();
+newAcl.setId(new Id(a.substring(0, firstColon), a.substring(
+firstColon + 1, lastColon)));
+newAcl.setPerms(getPermFromString(a.substring(lastColon + 1)));
+acl.add(newAcl);
+}
+
+return acl;
+```

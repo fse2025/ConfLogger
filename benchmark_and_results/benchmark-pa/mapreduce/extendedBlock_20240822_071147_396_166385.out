@@ -1,0 +1,203 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ClientServiceDelegate.java	methodSinagture:	org.apache.hadoop.mapred.ClientServiceDelegate.getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob;	methodLines:	128:144
+blockLines:	135:-1
+paras:	null
+TaintedStat:	NORMAL getNotRunningJob:conditional branch(ne, to iindex=29) 2,10 Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere[131]79 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 76,77,27 @276 exception:78
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere[131]79 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 76,77,27 @276 exception:78
+NORMAL getProxy:conditional branch(ne, to iindex=181) 79,27 Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere
+NORMAL getProxy:109 = invokevirtual < Application, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 107 @350 exception:108 Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[10]16 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 14 @23 exception:15
+NORMAL getCodecClasses:19 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 16,17 @31 exception:18 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere[70]26 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 22,24 @134 exception:25
+NORMAL getProxy:conditional branch(eq, to iindex=96) 26,27 Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere:50 = phi  49,156,14
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere[125]75 = invokespecial < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob; > 1,50,73 @265 exception:74 v50
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob; > Context: Everywhere v2
+NORMAL getNotRunningJob:conditional branch(ne, to iindex=29) 2,10 Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getNotRunningJob(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapred/NotRunningJob; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      JobState state) {
+    synchronized (notRunningJobs) {
+      HashMap<String, NotRunningJob> map = notRunningJobs.get(state);
+      if (map == null) {
+        map = new HashMap<String, NotRunningJob>();
+        notRunningJobs.put(state, map);
+      }
+      String user =
+          (applicationReport == null) ?
+              UNKNOWN_USER : applicationReport.getUser();
+      NotRunningJob notRunningJob = map.get(user);
+      if (notRunningJob == null) {
+        notRunningJob = new NotRunningJob(applicationReport, state);
+        map.put(user, notRunningJob);
+      }
+      return notRunningJob;
+    }
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, checkAndGetHSProxy(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere, blocks=[BB[SSA:7..10]4 - org.apache.hadoop.mapred.ClientServiceDelegate.checkAndGetHSProxy(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:4..6]3 - org.apache.hadoop.mapred.ClientServiceDelegate.checkAndGetHSProxy(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:11..11]5 - org.apache.hadoop.mapred.ClientServiceDelegate.checkAndGetHSProxy(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:-1..-2]8 - org.apache.hadoop.mapred.ClientServiceDelegate.checkAndGetHSProxy(Lorg/apache/hadoop/yarn/api/records/ApplicationReport;Lorg/apache/hadoop/mapreduce/v2/api/records/JobState;)Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;], numberOfBasicBlocks=4, firstLineNumber=290, lastLineNumber=291, firstMethodNumber=288, lastMethodNumber=293, isFirstLineValid=true, methodSrcCode=
+      ApplicationReport applicationReport, JobState state) {
+    if (null == historyServerProxy) {
+      LOG.warn("Job History Server is not configured.");
+      return getNotRunningJob(applicationReport, state);
+    }
+    return historyServerProxy;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/ClientServiceDelegate, getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol; > Context: Everywhere, blocks=[BB[SSA:122..125]63 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:104..105]53 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:119..121]62 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:126..126]64 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:-1..-2]187 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:201..204]103 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:183..184]93 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:198..200]102 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:205..205]104 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:-1..-2]187 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:316..319]160 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:313..315]159 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:320..320]161 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:-1..-2]187 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:328..331]165 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:325..327]164 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:332..332]166 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:-1..-2]187 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:340..343]170 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:337..339]169 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:344..344]171 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;, BB[SSA:-1..-2]187 - org.apache.hadoop.mapred.ClientServiceDelegate.getProxy()Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;], numberOfBasicBlocks=22, firstLineNumber=272, lastLineNumber=284, firstMethodNumber=147, lastMethodNumber=284, isFirstLineValid=true, methodSrcCode=
+  private MRClientProtocol getProxy() throws IOException {
+    if (realProxy != null) {
+      return realProxy;
+    }
+    
+    // Possibly allow nulls through the PB tunnel, otherwise deal with an exception
+    // and redirect to the history server.
+    ApplicationReport application = null;
+    try {
+      application = rm.getApplicationReport(appId);
+    } catch (ApplicationNotFoundException e) {
+      application = null;
+    } catch (YarnException e2) {
+      throw new IOException(e2);
+    }
+    if (application != null) {
+      trackingUrl = application.getTrackingUrl();
+    }
+    InetSocketAddress serviceAddr = null;
+    while (application == null
+        || YarnApplicationState.RUNNING == application
+            .getYarnApplicationState()) {
+      if (application == null) {
+        LOG.info("Could not get Job info from RM for job " + jobId
+            + ". Redirecting to job history server.");
+        return checkAndGetHSProxy(null, JobState.NEW);
+      }
+      try {
+        if (application.getHost() == null || "".equals(application.getHost())) {
+          LOG.debug("AM not assigned to Job. Waiting to get the AM ...");
+          Thread.sleep(2000);
+
+          LOG.debug("Application state is " + application.getYarnApplicationState());
+          application = rm.getApplicationReport(appId);
+          continue;
+        } else if (UNAVAILABLE.equals(application.getHost())) {
+          if (!amAclDisabledStatusLogged) {
+            LOG.info("Job " + jobId + " is running, but the host is unknown."
+                + " Verify user has VIEW_JOB access.");
+            amAclDisabledStatusLogged = true;
+          }
+          return getNotRunningJob(application, JobState.RUNNING);
+        }
+        if(!conf.getBoolean(MRJobConfig.JOB_AM_ACCESS_DISABLED, false)) {
+          UserGroupInformation newUgi = UserGroupInformation.createRemoteUser(
+              UserGroupInformation.getCurrentUser().getUserName());
+          serviceAddr = NetUtils.createSocketAddrForHost(
+              application.getHost(), application.getRpcPort());
+          if (UserGroupInformation.isSecurityEnabled()) {
+            org.apache.hadoop.yarn.api.records.Token clientToAMToken =
+                application.getClientToAMToken();
+            Token<ClientToAMTokenIdentifier> token =
+                ConverterUtils.convertFromYarn(clientToAMToken, serviceAddr);
+            newUgi.addToken(token);
+          }
+          LOG.debug("Connecting to " + serviceAddr);
+          final InetSocketAddress finalServiceAddr = serviceAddr;
+          realProxy = newUgi.doAs(new PrivilegedExceptionAction<MRClientProtocol>() {
+            @Override
+            public MRClientProtocol run() throws IOException {
+              return instantiateAMProxy(finalServiceAddr);
+            }
+          });
+        } else {
+          if (!amAclDisabledStatusLogged) {
+            LOG.info("Network ACL closed to AM for job " + jobId
+                + ". Not going to try to reach the AM.");
+            amAclDisabledStatusLogged = true;
+          }
+          return getNotRunningJob(null, JobState.RUNNING);
+        }
+        return realProxy;
+      } catch (IOException e) {
+        //possibly the AM has crashed
+        //there may be some time before AM is restarted
+        //keep retrying by getting the address from RM
+        LOG.info("Could not connect to " + serviceAddr +
+        ". Waiting for getting the latest AM address...");
+        try {
+          Thread.sleep(2000);
+        } catch (InterruptedException e1) {
+          LOG.warn("getProxy() call interruped", e1);
+          throw new YarnRuntimeException(e1);
+        }
+        try {
+          application = rm.getApplicationReport(appId);
+        } catch (YarnException e1) {
+          throw new IOException(e1);
+        }
+        if (application == null) {
+          LOG.info("Could not get Job info from RM for job " + jobId
+              + ". Redirecting to job history server.");
+          return checkAndGetHSProxy(null, JobState.RUNNING);
+        }
+      } catch (InterruptedException e) {
+        LOG.warn("getProxy() call interruped", e);
+        throw new YarnRuntimeException(e);
+      } catch (YarnException e) {
+        throw new IOException(e);
+      }
+    }
+
+    /** we just want to return if its allocating, so that we don't
+     * block on it. This is to be able to return job status
+     * on an allocating Application.
+     */
+    String user = application.getUser();
+    if (user == null) {
+      throw new IOException("User is not set in the application report");
+    }
+    if (application.getYarnApplicationState() == YarnApplicationState.NEW
+        || application.getYarnApplicationState() ==
+            YarnApplicationState.NEW_SAVING
+        || application.getYarnApplicationState() == YarnApplicationState.SUBMITTED
+        || application.getYarnApplicationState() == YarnApplicationState.ACCEPTED) {
+      realProxy = null;
+      return getNotRunningJob(application, JobState.NEW);
+    }
+
+    if (application.getYarnApplicationState() == YarnApplicationState.FAILED) {
+      realProxy = null;
+      return getNotRunningJob(application, JobState.FAILED);
+    }
+
+    if (application.getYarnApplicationState() == YarnApplicationState.KILLED) {
+      realProxy = null;
+      return getNotRunningJob(application, JobState.KILLED);
+    }
+
+    //History server can serve a job only if application
+    //succeeded.
+    if (application.getYarnApplicationState() == YarnApplicationState.FINISHED) {
+      LOG.info("Application state is completed. FinalApplicationStatus="
+          + application.getFinalApplicationStatus().toString()
+          + ". Redirecting to job history server");
+      realProxy = checkAndGetHSProxy(application, JobState.SUCCEEDED);
+    }
+    return realProxy;
+  }
+}

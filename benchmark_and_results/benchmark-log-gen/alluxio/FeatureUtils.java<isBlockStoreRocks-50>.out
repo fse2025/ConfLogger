@@ -1,0 +1,34 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FeatureUtils.java	methodSinagture:	alluxio.util.FeatureUtils.isBlockStoreRocks()Z	methodLines:	50:54
+blockLines:	52:-1
+paras:	null
+TaintedStat:	NORMAL isBlockStoreRocks:conditional branch(ne, to iindex=10) 14,15 Node: < Application, Lalluxio/util/FeatureUtils, isBlockStoreRocks()Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/FeatureUtils, isBlockStoreRocks()Z > Context: Everywhere[5]14 = invokestatic < Application, Lalluxio/conf/Configuration, get(Lalluxio/conf/PropertyKey;)Ljava/lang/Object; > 12 @12 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/FeatureUtils, isBlockStoreRocks()Z > Context: Everywhere[5]14 = invokestatic < Application, Lalluxio/conf/Configuration, get(Lalluxio/conf/PropertyKey;)Ljava/lang/Object; > 12 @12 exception:13
+NORMAL isBlockStoreRocks:conditional branch(ne, to iindex=10) 14,15 Node: < Application, Lalluxio/util/FeatureUtils, isBlockStoreRocks()Z > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	FeatureUtils.java	methodSinagture:	alluxio.util.FeatureUtils.isBlockStoreRocks()Z	methodLines:	50:54
+blockLines:	54:-1
+paras:	null
+TaintedStat:	NORMAL isBlockStoreRocks:conditional branch(ne, to iindex=18) 8,9 Node: < Application, Lalluxio/util/FeatureUtils, isBlockStoreRocks()Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/FeatureUtils, isBlockStoreRocks()Z > Context: Everywhere[13]8 = invokestatic < Application, Lalluxio/conf/Configuration, get(Lalluxio/conf/PropertyKey;)Ljava/lang/Object; > 6 @30 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/FeatureUtils, isBlockStoreRocks()Z > Context: Everywhere[13]8 = invokestatic < Application, Lalluxio/conf/Configuration, get(Lalluxio/conf/PropertyKey;)Ljava/lang/Object; > 6 @30 exception:7
+NORMAL isBlockStoreRocks:conditional branch(ne, to iindex=18) 8,9 Node: < Application, Lalluxio/util/FeatureUtils, isBlockStoreRocks()Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static boolean isBlockStoreRocks() {
+    if (Configuration.isSetByUser(PropertyKey.MASTER_BLOCK_METASTORE)) {
+      return Configuration.get(PropertyKey.MASTER_BLOCK_METASTORE) == MetastoreType.ROCKS;
+    }
+    return Configuration.get(PropertyKey.MASTER_METASTORE) == MetastoreType.ROCKS;
+  }
+
+
+====================ctx:=======================

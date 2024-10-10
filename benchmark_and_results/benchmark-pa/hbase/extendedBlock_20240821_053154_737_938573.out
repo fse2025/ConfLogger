@@ -1,0 +1,104 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RpcConnection.java	methodSinagture:	org.apache.hadoop.hbase.ipc.RpcConnection.getConnectionHeader()Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$ConnectionHeader;	methodLines:	164:192
+blockLines:	168:-1
+paras:	null
+TaintedStat:	NORMAL getConnectionHeader:conditional branch(eq, to iindex=22) 14,15 Node: < Application, Lorg/apache/hadoop/hbase/ipc/RpcConnection, getConnectionHeader()Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$ConnectionHeader; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/RpcConnection, getConnectionHeader()Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$ConnectionHeader; > Context: Everywhere[13]14 = invokeinterface < Application, Lorg/apache/hadoop/hbase/security/provider/SaslClientAuthenticationProvider, getUserInfo(Lorg/apache/hadoop/hbase/security/User;)Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$UserInformation; > 10,12 @27 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/RpcConnection, getConnectionHeader()Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$ConnectionHeader; > Context: Everywhere[13]14 = invokeinterface < Application, Lorg/apache/hadoop/hbase/security/provider/SaslClientAuthenticationProvider, getUserInfo(Lorg/apache/hadoop/hbase/security/User;)Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$UserInformation; > 10,12 @27 exception:13
+NORMAL getConnectionHeader:conditional branch(eq, to iindex=22) 14,15 Node: < Application, Lorg/apache/hadoop/hbase/ipc/RpcConnection, getConnectionHeader()Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$ConnectionHeader; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	RpcConnection.java	methodSinagture:	org.apache.hadoop.hbase.ipc.RpcConnection.getConnectionHeader()Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$ConnectionHeader;	methodLines:	164:192
+blockLines:	188:-1
+paras:	null
+TaintedStat:	NORMAL getConnectionHeader:conditional branch(eq, to iindex=108) 75,38 Node: < Application, Lorg/apache/hadoop/hbase/ipc/RpcConnection, getConnectionHeader()Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$ConnectionHeader; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/RpcConnection, getConnectionHeader()Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$ConnectionHeader; > Context: Everywhere[95]75 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 71,72,73 @211 exception:74
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/RpcConnection, getConnectionHeader()Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$ConnectionHeader; > Context: Everywhere[95]75 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 71,72,73 @211 exception:74
+NORMAL getConnectionHeader:conditional branch(eq, to iindex=108) 75,38 Node: < Application, Lorg/apache/hadoop/hbase/ipc/RpcConnection, getConnectionHeader()Lorg/apache/hadoop/hbase/shaded/protobuf/generated/RPCProtos$ConnectionHeader; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected final ConnectionHeader getConnectionHeader() {
+    final ConnectionHeader.Builder builder = ConnectionHeader.newBuilder();
+    builder.setServiceName(remoteId.getServiceName());
+    final UserInformation userInfoPB = provider.getUserInfo(remoteId.ticket);
+    if (userInfoPB != null) {
+      builder.setUserInfo(userInfoPB);
+    }
+    if (this.codec != null) {
+      builder.setCellBlockCodecClass(this.codec.getClass().getCanonicalName());
+    }
+    if (this.compressor != null) {
+      builder.setCellBlockCompressorClass(this.compressor.getClass().getCanonicalName());
+    }
+    if (connectionAttributes != null && !connectionAttributes.isEmpty()) {
+      HBaseProtos.NameBytesPair.Builder attributeBuilder = HBaseProtos.NameBytesPair.newBuilder();
+      for (Map.Entry<String, byte[]> attribute : connectionAttributes.entrySet()) {
+        attributeBuilder.setName(attribute.getKey());
+        attributeBuilder.setValue(UnsafeByteOperations.unsafeWrap(attribute.getValue()));
+        builder.addAttribute(attributeBuilder.build());
+      }
+    }
+    builder.setVersionInfo(ProtobufUtil.getVersionInfo());
+    boolean isCryptoAESEnable = conf.getBoolean(CRYPTO_AES_ENABLED_KEY, CRYPTO_AES_ENABLED_DEFAULT);
+    // if Crypto AES enable, setup Cipher transformation
+    if (isCryptoAESEnable) {
+      builder.setRpcCryptoCipherTransformation(
+        conf.get("hbase.rpc.crypto.encryption.aes.cipher.transform", "AES/CTR/NoPadding"));
+    }
+    return builder.build();
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection, <init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=219, lastMethodNumber=244, isFirstLineValid=true, methodSrcCode=
+  BlockingRpcConnection(BlockingRpcClient rpcClient, ConnectionId remoteId) throws IOException {
+    super(rpcClient.conf, AbstractRpcClient.WHEEL_TIMER, remoteId, rpcClient.clusterId,
+      rpcClient.userProvider.isHBaseSecurityEnabled(), rpcClient.codec, rpcClient.compressor,
+      rpcClient.metrics, rpcClient.connectionAttributes);
+    this.rpcClient = rpcClient;
+    this.connectionHeaderPreamble = getConnectionHeaderPreamble();
+    ConnectionHeader header = getConnectionHeader();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream(4 + header.getSerializedSize());
+    DataOutputStream dos = new DataOutputStream(baos);
+    dos.writeInt(header.getSerializedSize());
+    header.writeTo(dos);
+    assert baos.size() == 4 + header.getSerializedSize();
+    this.connectionHeaderWithLength = baos.getBuffer();
+
+    UserGroupInformation ticket = remoteId.ticket.getUGI();
+    this.threadName = "BRPC Connection (" + this.rpcClient.socketFactory.hashCode() + ") to "
+      + remoteId.getAddress().toString()
+      + ((ticket == null) ? " from an unknown user" : (" from " + ticket.getUserName()));
+
+    if (this.rpcClient.conf.getBoolean(BlockingRpcClient.SPECIFIC_WRITE_THREAD, false)) {
+      callSender = new CallSender(threadName, this.rpcClient.conf);
+      callSender.start();
+    } else {
+      callSender = null;
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcConnection, <init>(Lorg/apache/hadoop/hbase/ipc/NettyRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=104, lastMethodNumber=117, isFirstLineValid=true, methodSrcCode=
+  NettyRpcConnection(NettyRpcClient rpcClient, ConnectionId remoteId) throws IOException {
+    super(rpcClient.conf, AbstractRpcClient.WHEEL_TIMER, remoteId, rpcClient.clusterId,
+      rpcClient.userProvider.isHBaseSecurityEnabled(), rpcClient.codec, rpcClient.compressor,
+      rpcClient.metrics, rpcClient.connectionAttributes);
+    this.rpcClient = rpcClient;
+    this.eventLoop = rpcClient.group.next();
+    byte[] connectionHeaderPreamble = getConnectionHeaderPreamble();
+    this.connectionHeaderPreamble =
+      Unpooled.directBuffer(connectionHeaderPreamble.length).writeBytes(connectionHeaderPreamble);
+    ConnectionHeader header = getConnectionHeader();
+    this.connectionHeaderWithLength = Unpooled.directBuffer(4 + header.getSerializedSize());
+    this.connectionHeaderWithLength.writeInt(header.getSerializedSize());
+    header.writeTo(new ByteBufOutputStream(this.connectionHeaderWithLength));
+  }
+
+}

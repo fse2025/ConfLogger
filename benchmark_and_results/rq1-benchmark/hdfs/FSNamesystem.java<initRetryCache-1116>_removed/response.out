@@ -1,0 +1,47 @@
+```java
+static RetryCache initRetryCache(Configuration conf) {
+    boolean enable = conf.getBoolean(DFS_NAMENODE_ENABLE_RETRY_CACHE_KEY,
+            DFS_NAMENODE_ENABLE_RETRY_CACHE_DEFAULT);
+    if (enable) {
+        float heapPercent = conf.getFloat(
+                DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_KEY,
+                DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_DEFAULT);
+        long entryExpiryMillis = conf.getLong(
+                DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_KEY,
+                DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_DEFAULT);
+        long entryExpiryNanos = entryExpiryMillis * 1000 * 1000;
+        
+        // ConfLogger Inserted Start
+        logger.info("RetryCache is enabled with heapPercent: " + heapPercent +
+                ", entryExpiryMillis: " + entryExpiryMillis +
+                ", entryExpiryNanos: " + entryExpiryNanos +
+                ". Configuration keys: " +
+                DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_KEY + " and " +
+                DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_KEY + ".");
+        // ConfLogger Inserted End
+        
+        return new RetryCache("NameNodeRetryCache", heapPercent,
+                entryExpiryNanos);
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("RetryCache is disabled. To enable, set " +
+                DFS_NAMENODE_ENABLE_RETRY_CACHE_KEY + " to true.");
+        // ConfLogger Inserted End
+    }
+    return null;
+}
+```
+
+### Explanation:
+
+1. **Type Identification**: The code snippet is of type 2, as it checks whether a service (RetryCache) should be enabled or not based on the configuration parameter `dfs.namenode.enable.retrycache`.
+
+2. **Log Insertion Position**: 
+   - For the `if (enable)` block, logging is inserted to capture the configuration values when the RetryCache is enabled.
+   - An `else` block is added to log when the RetryCache is disabled, providing guidance on how to enable it.
+
+3. **Logging Details**:
+   - **Enabled Path**: Logs the values of `heapPercent`, `entryExpiryMillis`, and `entryExpiryNanos`, along with the configuration keys used. This provides insight into how the configuration parameters affect the RetryCache setup.
+   - **Disabled Path**: Logs a message indicating that the RetryCache is disabled and suggests setting the appropriate configuration key to enable it.
+
+4. **Log Level**: The log level is set to `info` as it provides informational messages about the configuration state and guidance for enabling the service.

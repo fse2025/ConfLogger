@@ -1,0 +1,132 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MergeManagerImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl.<init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V	methodLines:	145:239
+blockLines:	168:-1
+paras:	mapreduce.reduce.shuffle.input.buffer.percent
+TaintedStat:	NORMAL <init>:conditional branch(gt, to iindex=88) 39,40 Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere[74]36 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getFloat(Ljava/lang/String;F)F > 3,33,34 @150 exception:35
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere[74]36 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getFloat(Ljava/lang/String;F)F > 3,33,34 @150 exception:35
+NORMAL <init>:37 = conversion(D) 36 Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere
+NORMAL <init>:39 = compare 37,38 opcode=cmpl Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere
+NORMAL <init>:conditional branch(gt, to iindex=88) 39,40 Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	MergeManagerImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl.<init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V	methodLines:	145:239
+blockLines:	185:-1
+paras:	mapreduce.reduce.shuffle.memory.limit.percent
+TaintedStat:	NORMAL <init>:conditional branch(lt, to iindex=132) 63,40 Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere[120]61 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getFloat(Ljava/lang/String;F)F > 3,58,59 @237 exception:60
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere[120]61 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getFloat(Ljava/lang/String;F)F > 3,58,59 @237 exception:60
+NORMAL <init>:63 = compare 61,62 opcode=cmpg Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere
+NORMAL <init>:conditional branch(lt, to iindex=132) 63,40 Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                      ExceptionReporter exceptionReporter,
+                      Progress mergePhase, MapOutputFile mapOutputFile) {
+    this.reduceId = reduceId;
+    this.jobConf = jobConf;
+    this.localDirAllocator = localDirAllocator;
+    this.exceptionReporter = exceptionReporter;
+    
+    this.reporter = reporter;
+    this.codec = codec;
+    this.combinerClass = combinerClass;
+    this.combineCollector = combineCollector;
+    this.reduceCombineInputCounter = reduceCombineInputCounter;
+    this.spilledRecordsCounter = spilledRecordsCounter;
+    this.mergedMapOutputsCounter = mergedMapOutputsCounter;
+    this.mapOutputFile = mapOutputFile;
+    this.mapOutputFile.setConf(jobConf);
+    
+    this.localFS = localFS;
+    this.rfs = ((LocalFileSystem)localFS).getRaw();
+    
+    final float maxInMemCopyUse =
+      jobConf.getFloat(MRJobConfig.SHUFFLE_INPUT_BUFFER_PERCENT,
+          MRJobConfig.DEFAULT_SHUFFLE_INPUT_BUFFER_PERCENT);
+    if (maxInMemCopyUse > 1.0 || maxInMemCopyUse < 0.0) {
+      throw new IllegalArgumentException("Invalid value for " +
+          MRJobConfig.SHUFFLE_INPUT_BUFFER_PERCENT + ": " +
+          maxInMemCopyUse);
+    }
+
+    // Allow unit tests to fix Runtime memory
+    this.memoryLimit = (long)(jobConf.getLong(
+        MRJobConfig.REDUCE_MEMORY_TOTAL_BYTES,
+        Runtime.getRuntime().maxMemory()) * maxInMemCopyUse);
+
+    this.ioSortFactor = jobConf.getInt(MRJobConfig.IO_SORT_FACTOR,
+        MRJobConfig.DEFAULT_IO_SORT_FACTOR);
+
+    final float singleShuffleMemoryLimitPercent =
+        jobConf.getFloat(MRJobConfig.SHUFFLE_MEMORY_LIMIT_PERCENT,
+            DEFAULT_SHUFFLE_MEMORY_LIMIT_PERCENT);
+    if (singleShuffleMemoryLimitPercent < 0.0f
+        || singleShuffleMemoryLimitPercent > 1.0f) {
+      throw new IllegalArgumentException("Invalid value for "
+          + MRJobConfig.SHUFFLE_MEMORY_LIMIT_PERCENT + ": "
+          + singleShuffleMemoryLimitPercent);
+    }
+
+    usedMemory = 0L;
+    commitMemory = 0L;
+    long maxSingleShuffleLimitConfiged =
+        (long)(memoryLimit * singleShuffleMemoryLimitPercent);
+    if(maxSingleShuffleLimitConfiged > Integer.MAX_VALUE) {
+      maxSingleShuffleLimitConfiged = Integer.MAX_VALUE;
+      LOG.info("The max number of bytes for a single in-memory shuffle cannot" +
+          " be larger than Integer.MAX_VALUE. Setting it to Integer.MAX_VALUE");
+    }
+    this.maxSingleShuffleLimit = maxSingleShuffleLimitConfiged;
+    this.memToMemMergeOutputsThreshold =
+        jobConf.getInt(MRJobConfig.REDUCE_MEMTOMEM_THRESHOLD, ioSortFactor);
+    this.mergeThreshold = (long)(this.memoryLimit * 
+                          jobConf.getFloat(
+                            MRJobConfig.SHUFFLE_MERGE_PERCENT,
+                            MRJobConfig.DEFAULT_SHUFFLE_MERGE_PERCENT));
+    LOG.info("MergerManager: memoryLimit=" + memoryLimit + ", " +
+             "maxSingleShuffleLimit=" + maxSingleShuffleLimit + ", " +
+             "mergeThreshold=" + mergeThreshold + ", " + 
+             "ioSortFactor=" + ioSortFactor + ", " +
+             "memToMemMergeOutputsThreshold=" + memToMemMergeOutputsThreshold);
+
+    if (this.maxSingleShuffleLimit >= this.mergeThreshold) {
+      throw new RuntimeException("Invalid configuration: "
+          + "maxSingleShuffleLimit should be less than mergeThreshold "
+          + "maxSingleShuffleLimit: " + this.maxSingleShuffleLimit
+          + "mergeThreshold: " + this.mergeThreshold);
+    }
+
+    boolean allowMemToMemMerge = 
+      jobConf.getBoolean(MRJobConfig.REDUCE_MEMTOMEM_ENABLED, false);
+    if (allowMemToMemMerge) {
+      this.memToMemMerger = 
+        new IntermediateMemoryToMemoryMerger(this,
+                                             memToMemMergeOutputsThreshold);
+      this.memToMemMerger.start();
+    } else {
+      this.memToMemMerger = null;
+    }
+    
+    this.inMemoryMerger = createInMemoryMerger();
+    this.inMemoryMerger.start();
+    
+    this.onDiskMerger = new OnDiskMerger(this);
+    this.onDiskMerger.start();
+    
+    this.mergePhase = mergePhase;
+  }
+  
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager; > Context: Everywhere, blocks=[BB[SSA:29..29]15 - org.apache.hadoop.mapreduce.task.reduce.Shuffle.createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager;, BB[SSA:27..28]14 - org.apache.hadoop.mapreduce.task.reduce.Shuffle.createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager;, BB[SSA:30..30]16 - org.apache.hadoop.mapreduce.task.reduce.Shuffle.createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager;, BB[SSA:-1..-2]17 - org.apache.hadoop.mapreduce.task.reduce.Shuffle.createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager;], numberOfBasicBlocks=4, firstLineNumber=92, lastLineNumber=87, firstMethodNumber=86, lastMethodNumber=87, isFirstLineValid=true, methodSrcCode=
+      ShuffleConsumerPlugin.Context context) {
+    return new MergeManagerImpl<K, V>(reduceId, jobConf, context.getLocalFS(),
+        context.getLocalDirAllocator(), reporter, context.getCodec(),
+}

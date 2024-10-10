@@ -1,0 +1,199 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Time.java	methodSinagture:	org.apache.storm.utils.Time.sleepSecs(J)V	methodLines:	115:119
+blockLines:	116:-1
+paras:	supervisor.worker.shutdown.sleep.secs
+TaintedStat:	NORMAL sleepSecs:conditional branch(le, to iindex=9) 4,5 Node: < Application, Lorg/apache/storm/utils/Time, sleepSecs(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere[45]35 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 32,33 @114 exception:34
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere[45]35 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 32,33 @114 exception:34
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere[46]37 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > 35 @119 exception:36 v35
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:30 = checkcast <Application,Ljava/lang/Number>1 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:32 = invokevirtual < Application, Ljava/lang/Number, intValue()I > 30 @32 exception:31 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL intValue:return 3 Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere[47]39 = invokevirtual < Application, Ljava/lang/Integer, intValue()I > 37 @122 exception:38
+NORMAL killWorkers:42 = conversion(J) 39 Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere[55]invokestatic < Application, Lorg/apache/storm/utils/Time, sleepSecs(J)V > 42 @137 exception:43 v42
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/Time, sleepSecs(J)V > Context: Everywhere v1
+NORMAL sleepSecs:4 = compare 1,3 opcode=cmp Node: < Application, Lorg/apache/storm/utils/Time, sleepSecs(J)V > Context: Everywhere
+NORMAL sleepSecs:conditional branch(le, to iindex=9) 4,5 Node: < Application, Lorg/apache/storm/utils/Time, sleepSecs(J)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static void sleepSecs(long secs) throws InterruptedException {
+        if (secs > 0) {
+            sleep(secs * 1000);
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, handleWaitingForBlobLocalization(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState; > Context: Everywhere, blocks=[BB[SSA:165..166]86 - org.apache.storm.daemon.supervisor.Slot.handleWaitingForBlobLocalization(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:164..164]85 - org.apache.storm.daemon.supervisor.Slot.handleWaitingForBlobLocalization(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:167..170]87 - org.apache.storm.daemon.supervisor.Slot.handleWaitingForBlobLocalization(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:-1..-2]90 - org.apache.storm.daemon.supervisor.Slot.handleWaitingForBlobLocalization(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;], numberOfBasicBlocks=4, firstLineNumber=477, lastLineNumber=482, firstMethodNumber=409, lastMethodNumber=482, isFirstLineValid=true, methodSrcCode=
+    private static DynamicState handleWaitingForBlobLocalization(DynamicState dynamicState, StaticState staticState) throws Exception {
+        if (dynamicState.pendingLocalization == null) {
+            throw new Exception("dynamicState.pendingLocalization is null");
+        }
+        if (dynamicState.pendingDownload == null) {
+            throw new Exception("dynamicState.pendingDownload is null");
+        }
+        if (dynamicState.container != null) {
+            throw new Exception("dynamicState.container is not null");
+        }
+        if (dynamicState.currentAssignment != null) {
+            throw new Exception("dynamicState.currentAssignment is not null");
+        }
+
+        //Ignore changes to scheduling while downloading the topology blobs
+        // We don't support canceling the download through the future yet,
+        // because pending blobs may be shared by multiple workers and cancel it
+        // may lead to race condition
+        // To keep everything in sync, just wait for all workers
+        try {
+            //Release things that don't need to wait for us to finish downloading.
+            dynamicState = filterChangingBlobsFor(dynamicState, dynamicState.pendingLocalization);
+            if (!dynamicState.changingBlobs.isEmpty()) {
+                //Unblock downloading by accepting the futures.
+                dynamicState = informChangedBlobs(dynamicState, dynamicState.pendingLocalization);
+            }
+
+            if (!EquivalenceUtils.areLocalAssignmentsEquivalent(dynamicState.newAssignment, dynamicState.pendingLocalization)) {
+                //Scheduling changed
+                dynamicState.cancelPendingBlobs();
+                staticState.localizer.releaseSlotFor(dynamicState.pendingLocalization, staticState.port);
+                // Switch to the new assignment even if localization hasn't completed, or go to empty state
+                // if no new assignment.
+                return prepareForNewAssignmentNoWorkersRunning(dynamicState
+                    .withPendingLocalization(null, null),
+                    staticState);
+            }
+
+            // Wait until time out
+            dynamicState.pendingDownload.get(1000, TimeUnit.MILLISECONDS);
+            //Downloading of all blobs finished. This is the precondition for all codes below.
+            if (!dynamicState.pendingChangingBlobs.isEmpty()) {
+                LOG.info("There are pending changes, waiting for them to finish before launching container...");
+                //We cannot launch the container yet the resources may still be updating
+                return dynamicState.withState(MachineState.WAITING_FOR_BLOB_UPDATE)
+                                   .withPendingLocalization(null, null);
+            }
+
+            staticState.slotMetrics.numWorkersLaunched.mark();
+            Container c =
+                staticState.containerLauncher.launchContainer(staticState.port, dynamicState.pendingLocalization, staticState.localState);
+            return dynamicState
+                .withCurrentAssignment(c, dynamicState.pendingLocalization).withState(MachineState.WAITING_FOR_WORKER_START)
+                .withPendingLocalization(null, null);
+        } catch (TimeoutException e) {
+            //We waited for 1 second loop around and try again....
+            return dynamicState;
+        } catch (ExecutionException e) {
+            if (e.getCause() instanceof AuthorizationException) {
+                LOG.error("{}", ((AuthorizationException) e.getCause()).get_msg());
+            } else if (e.getCause() instanceof KeyNotFoundException) {
+                LOG.error("{}", ((KeyNotFoundException) e.getCause()).get_msg());
+            } else {
+                LOG.error("{}", e.getCause().getMessage());
+            }
+
+            // release the reference on all blobs associated with this worker.
+            dynamicState.cancelPendingBlobs();
+            staticState.localizer.releaseSlotFor(dynamicState.pendingLocalization, staticState.port);
+            // we wait for 3 seconds
+            Time.sleepSecs(3);
+
+            //Try again, or go to empty if assignment has been nulled
+            return prepareForNewAssignmentNoWorkersRunning(dynamicState
+                .withPendingLocalization(null, null),
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, waitForDesiredCodeReplication(Ljava/util/Map;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:136..137]56 - org.apache.storm.daemon.nimbus.Nimbus.waitForDesiredCodeReplication(Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:135..135]55 - org.apache.storm.daemon.nimbus.Nimbus.waitForDesiredCodeReplication(Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:138..143]57 - org.apache.storm.daemon.nimbus.Nimbus.waitForDesiredCodeReplication(Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:-1..-2]82 - org.apache.storm.daemon.nimbus.Nimbus.waitForDesiredCodeReplication(Ljava/util/Map;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=1958, lastLineNumber=1961, firstMethodNumber=1934, lastMethodNumber=1971, isFirstLineValid=true, methodSrcCode=
+    private void waitForDesiredCodeReplication(Map<String, Object> topoConf, String topoId) throws Exception {
+        int minReplicationCount = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_MIN_REPLICATION_COUNT));
+        int maxWaitTime = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_MAX_REPLICATION_WAIT_TIME_SEC));
+        int jarCount = minReplicationCount;
+        if (!ConfigUtils.isLocalMode(topoConf)) {
+            jarCount = getBlobReplicationCount(ConfigUtils.masterStormJarKey(topoId));
+        }
+        int codeCount = getBlobReplicationCount(ConfigUtils.masterStormCodeKey(topoId));
+        int confCount = getBlobReplicationCount(ConfigUtils.masterStormConfKey(topoId));
+        long totalWaitTime = 0;
+        //When is this ever null?
+        if (blobStore != null) {
+            while (jarCount < minReplicationCount
+                   && codeCount < minReplicationCount
+                   && confCount < minReplicationCount) {
+                if (maxWaitTime > 0 && totalWaitTime > maxWaitTime) {
+                    LOG.info("desired replication count of {} not achieved for {} but we have hit the max wait time {}"
+                             + " so moving on with replication count for conf key = {} for code key = {} for jar key = ",
+                             minReplicationCount, topoId, maxWaitTime, confCount, codeCount, jarCount);
+                    return;
+                }
+                LOG.debug("Checking if I am still the leader");
+                assertIsLeader();
+                LOG.info("WAITING... storm-id {}, {} <? {} {} {}", topoId, minReplicationCount, jarCount, codeCount, confCount);
+                LOG.info("WAITING... {} <? {}", totalWaitTime, maxWaitTime);
+                Time.sleepSecs(1);
+                totalWaitTime++;
+                if (!ConfigUtils.isLocalMode(topoConf)) {
+                    jarCount = getBlobReplicationCount(ConfigUtils.masterStormJarKey(topoId));
+                }
+                codeCount = getBlobReplicationCount(ConfigUtils.masterStormCodeKey(topoId));
+                confCount = getBlobReplicationCount(ConfigUtils.masterStormConfKey(topoId));
+            }
+        }
+        LOG.info("desired replication count {} achieved for topology {}, current-replication-count for conf key = {},"
+                 + " current-replication-count for code key = {}, current-replication-count for jar key = {}",
+                 minReplicationCount, topoId, confCount, codeCount, jarCount);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere, blocks=[BB[SSA:53..55]26 - org.apache.storm.daemon.supervisor.Supervisor.killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V, BB[SSA:51..52]25 - org.apache.storm.daemon.supervisor.Supervisor.killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V, BB[SSA:56..57]27 - org.apache.storm.daemon.supervisor.Supervisor.killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V, BB[SSA:-1..-2]56 - org.apache.storm.daemon.supervisor.Supervisor.killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V], numberOfBasicBlocks=4, firstLineNumber=532, lastLineNumber=535, firstMethodNumber=516, lastMethodNumber=554, isFirstLineValid=true, methodSrcCode=
+    void killWorkers(Collection<String> workerIds, ContainerLauncher launcher) throws InterruptedException, IOException {
+        HashSet<Killable> containers = new HashSet<>();
+        for (String workerId : workerIds) {
+            try {
+                Killable k = launcher.recoverContainer(workerId, localState);
+                if (!k.areAllProcessesDead()) {
+                    k.kill();
+                    containers.add(k);
+                } else {
+                    k.cleanUp();
+                }
+            } catch (Exception e) {
+                LOG.error("Error trying to kill {}", workerId, e);
+            }
+        }
+        int shutdownSleepSecs = ObjectReader.getInt(conf.get(Config.SUPERVISOR_WORKER_SHUTDOWN_SLEEP_SECS));
+        if (!containers.isEmpty()) {
+            Time.sleepSecs(shutdownSleepSecs);
+        }
+        for (Killable k : containers) {
+            try {
+                long start = Time.currentTimeMillis();
+                while (!k.areAllProcessesDead()) {
+                    if ((Time.currentTimeMillis() - start) > 10_000) {
+                        if (killErrorMeter != null) {
+                            killErrorMeter.mark();
+                        }
+                        throw new RuntimeException("Giving up on killing " + k
+                                                   + " after " + (Time.currentTimeMillis() - start) + " ms");
+                    }
+                    k.forceKill();
+                    Time.sleep(100);
+                }
+                k.cleanUp();
+            } catch (Exception e) {
+                LOG.error("Error trying to clean up {}", k, e);
+            }
+        }
+    }
+
+}

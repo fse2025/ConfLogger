@@ -1,0 +1,18 @@
+```java
+for (int i = 0 ; i < blkLocations.length; i++) {
+    // is the offset inside this block?
+    if ((blkLocations[i].getOffset() <= offset) &&
+        (offset < blkLocations[i].getOffset() + blkLocations[i].getLength())){
+        return i;
+    }
+}
+BlockLocation last = blkLocations[blkLocations.length -1];
+long fileLength = last.getOffset() + last.getLength() -1;
+// ConfLogger Commented: Not Informative
+// throw new IllegalArgumentException("Offset " + offset + " is outside of file (0.." + fileLength + ")");
+
+// ConfLogger Inserted Start
+logger.error("Offset " + offset + " is outside of file (0.." + fileLength + "). Please ensure the offset is within the valid range.");
+// ConfLogger Inserted End
+throw new IllegalArgumentException("Offset " + offset + " is outside of file (0.." + fileLength + ")");
+```

@@ -1,0 +1,61 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TaskAttemptImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.job.impl.TaskAttemptImpl.createContainerLaunchContext(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/token/Token;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/mapred/JobID;Lorg/apache/hadoop/mapred/WrappedJvmID;Lorg/apache/hadoop/mapreduce/v2/app/TaskAttemptListener;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ContainerLaunchContext;	methodLines:	1122:1162
+blockLines:	1140:-1
+paras:	null
+TaintedStat:	NORMAL createContainerLaunchContext:conditional branch(eq, to iindex=48) 19,17 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, createContainerLaunchContext(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/token/Token;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/mapred/JobID;Lorg/apache/hadoop/mapred/WrappedJvmID;Lorg/apache/hadoop/mapreduce/v2/app/TaskAttemptListener;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ContainerLaunchContext; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, createContainerLaunchContext(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/token/Token;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/mapred/JobID;Lorg/apache/hadoop/mapred/WrappedJvmID;Lorg/apache/hadoop/mapreduce/v2/app/TaskAttemptListener;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ContainerLaunchContext; > Context: Everywhere[25]19 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,16,17 @45 exception:18
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, createContainerLaunchContext(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/token/Token;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/mapred/JobID;Lorg/apache/hadoop/mapred/WrappedJvmID;Lorg/apache/hadoop/mapreduce/v2/app/TaskAttemptListener;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ContainerLaunchContext; > Context: Everywhere[25]19 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,16,17 @45 exception:18
+NORMAL createContainerLaunchContext:conditional branch(eq, to iindex=48) 19,17 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/TaskAttemptImpl, createContainerLaunchContext(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/token/Token;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/mapred/JobID;Lorg/apache/hadoop/mapred/WrappedJvmID;Lorg/apache/hadoop/mapreduce/v2/app/TaskAttemptListener;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ContainerLaunchContext; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    synchronized (commonContainerSpecLock) {
+      if (commonContainerSpec == null) {
+        commonContainerSpec = createCommonContainerLaunchContext(
+            applicationACLs, conf, jobToken, oldJobId, credentials);
+      }
+    }
+
+    // Fill in the fields needed per-container that are missing in the common
+    // spec.
+
+    boolean userClassesTakesPrecedence =
+      conf.getBoolean(MRJobConfig.MAPREDUCE_JOB_USER_CLASSPATH_FIRST, false);
+
+    // Setup environment by cloning from common env.
+    Map<String, String> env = commonContainerSpec.getEnvironment();
+    Map<String, String> myEnv = new HashMap<String, String>(env.size());
+    myEnv.putAll(env);
+    if (userClassesTakesPrecedence) {
+      myEnv.put(Environment.CLASSPATH_PREPEND_DISTCACHE.name(), "true");
+    }
+    MapReduceChildJVM.setVMEnv(myEnv, remoteTask);
+
+    // Set up the launch command
+    List<String> commands = MapReduceChildJVM.getVMCommand(
+        taskAttemptListener.getAddress(), remoteTask, jvmID);
+
+    // Duplicate the ByteBuffers for access by multiple containers.
+    Map<String, ByteBuffer> myServiceData = new HashMap<String, ByteBuffer>();
+    for (Entry<String, ByteBuffer> entry : commonContainerSpec
+                .getServiceData().entrySet()) {
+      myServiceData.put(entry.getKey(), entry.getValue().duplicate());
+    }
+
+    // Construct the actual Container
+    ContainerLaunchContext container = ContainerLaunchContext.newInstance(
+        commonContainerSpec.getLocalResources(), myEnv, commands,
+        myServiceData, commonContainerSpec.getTokens().duplicate(),
+        applicationACLs);
+
+    return container;
+  }
+
+
+====================ctx:=======================

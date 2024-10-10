@@ -1,0 +1,108 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StringUtils.java	methodSinagture:	org.apache.hadoop.util.StringUtils.getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection;	methodLines:	432:440
+blockLines:	434:-1
+paras:	null
+TaintedStat:	NORMAL getStringCollection:conditional branch(ne, to iindex=9) 1,6 Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[5]7 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 5 @7 exception:6 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[4]5 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String; > 1,3 @5 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection; > 1,2 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere v1
+NORMAL getStringCollection:conditional branch(ne, to iindex=9) 1,6 Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	StringUtils.java	methodSinagture:	org.apache.hadoop.util.StringUtils.getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection;	methodLines:	432:440
+blockLines:	437:-1
+paras:	null
+TaintedStat:	NORMAL getStringCollection:conditional branch(eq, to iindex=25) 10,11 Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, getStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;Ljava/lang/String;)V >:Lorg/apache/hadoop/conf/Configuration in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider, init(Ljava/lang/String;)V >:Lorg/apache/hadoop/security/authorize/AccessControlList in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]}>, B=Everywhere][2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, getStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;Ljava/lang/String;)V >:Lorg/apache/hadoop/conf/Configuration in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider, init(Ljava/lang/String;)V >:Lorg/apache/hadoop/security/authorize/AccessControlList in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]}>, B=Everywhere][2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, getStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;Ljava/lang/String;)V >:Lorg/apache/hadoop/conf/Configuration in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider, init(Ljava/lang/String;)V >:Lorg/apache/hadoop/security/authorize/AccessControlList in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]}>, B=Everywhere][5]7 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;)Ljava/util/Collection; > 5 @7 exception:6 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere[4]5 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection; > 1,3 @5 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere v1
+NORMAL getStringCollection:conditional branch(ne, to iindex=9) 1,6 Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere
+NORMAL getStringCollection:conditional branch(eq, to iindex=25) 10,11 Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static Collection<String> getStringCollection(String str, String delim) {
+    List<String> values = new ArrayList<String>();
+    if (str == null)
+      return values;
+    StringTokenizer tokenizer = new StringTokenizer(str, delim);
+    while (tokenizer.hasMoreTokens()) {
+      values.add(tokenizer.nextToken());
+    }
+    return values;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.util.StringUtils.getStringCollection(Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:-1..-2]0 - org.apache.hadoop.util.StringUtils.getStringCollection(Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:5..5]2 - org.apache.hadoop.util.StringUtils.getStringCollection(Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:-1..-2]3 - org.apache.hadoop.util.StringUtils.getStringCollection(Ljava/lang/String;)Ljava/util/Collection;], numberOfBasicBlocks=4, firstLineNumber=418, lastLineNumber=420, firstMethodNumber=418, lastMethodNumber=420, isFirstLineValid=false, methodSrcCode=
+  public static Collection<String> getStringCollection(String str){
+    String delim = ",";
+    return getStringCollection(str, delim);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/Groups, parseStaticMapping(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:4..7]2 - org.apache.hadoop.security.Groups.parseStaticMapping(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..3]1 - org.apache.hadoop.security.Groups.parseStaticMapping(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:8..9]3 - org.apache.hadoop.security.Groups.parseStaticMapping(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]40 - org.apache.hadoop.security.Groups.parseStaticMapping(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:23..26]11 - org.apache.hadoop.security.Groups.parseStaticMapping(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:22..22]10 - org.apache.hadoop.security.Groups.parseStaticMapping(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:27..29]12 - org.apache.hadoop.security.Groups.parseStaticMapping(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]40 - org.apache.hadoop.security.Groups.parseStaticMapping(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=8, firstLineNumber=173, lastLineNumber=176, firstMethodNumber=165, lastMethodNumber=193, isFirstLineValid=true, methodSrcCode=
+  private void parseStaticMapping(Configuration conf) {
+    String staticMapping = conf.get(
+        CommonConfigurationKeys.HADOOP_USER_GROUP_STATIC_OVERRIDES,
+        CommonConfigurationKeys.HADOOP_USER_GROUP_STATIC_OVERRIDES_DEFAULT);
+    Collection<String> mappings = StringUtils.getStringCollection(
+        staticMapping, ";");
+    Map<String, List<String>> staticUserToGroupsMap =
+        new HashMap<String, List<String>>();
+    for (String users : mappings) {
+      Collection<String> userToGroups = StringUtils.getStringCollection(users,
+          "=");
+      if (userToGroups.size() < 1 || userToGroups.size() > 2) {
+        throw new HadoopIllegalArgumentException("Configuration "
+            + CommonConfigurationKeys.HADOOP_USER_GROUP_STATIC_OVERRIDES
+            + " is invalid");
+      }
+      String[] userToGroupsArray = userToGroups.toArray(new String[userToGroups
+          .size()]);
+      String user = userToGroupsArray[0];
+      List<String> groups = Collections.emptyList();
+      if (userToGroupsArray.length == 2) {
+        groups = (List<String>) StringUtils
+            .getStringCollection(userToGroupsArray[1]);
+      }
+      staticUserToGroupsMap.put(user, groups);
+    }
+    staticMapRef.set(
+        staticUserToGroupsMap.isEmpty() ? null : staticUserToGroupsMap);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.util.StringUtils.getStrings(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.util.StringUtils.getStrings(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:3..5]2 - org.apache.hadoop.util.StringUtils.getStrings(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:-1..-2]10 - org.apache.hadoop.util.StringUtils.getStrings(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=405, lastLineNumber=407, firstMethodNumber=405, lastMethodNumber=410, isFirstLineValid=false, methodSrcCode=
+  public static String[] getStrings(String str, String delim){
+    Collection<String> values = getStringCollection(str, delim);
+    if(values.size() == 0) {
+      return null;
+    }
+    return values.toArray(new String[values.size()]);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/permission/AclEntry, parseAclSpec(Ljava/lang/String;Z)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:3..6]3 - org.apache.hadoop.fs.permission.AclEntry.parseAclSpec(Ljava/lang/String;Z)Ljava/util/List;, BB[SSA:1..2]2 - org.apache.hadoop.fs.permission.AclEntry.parseAclSpec(Ljava/lang/String;Z)Ljava/util/List;, BB[SSA:7..9]4 - org.apache.hadoop.fs.permission.AclEntry.parseAclSpec(Ljava/lang/String;Z)Ljava/util/List;, BB[SSA:-1..-2]14 - org.apache.hadoop.fs.permission.AclEntry.parseAclSpec(Ljava/lang/String;Z)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=237, lastLineNumber=240, firstMethodNumber=236, lastMethodNumber=244, isFirstLineValid=true, methodSrcCode=
+      boolean includePermission) {
+    List<AclEntry> aclEntries = new ArrayList<AclEntry>();
+    Collection<String> aclStrings = StringUtils.getStringCollection(aclSpec,
+        ",");
+    for (String aclStr : aclStrings) {
+      AclEntry aclEntry = parseAclEntry(aclStr, includePermission);
+      aclEntries.add(aclEntry);
+    }
+    return aclEntries;
+  }
+}

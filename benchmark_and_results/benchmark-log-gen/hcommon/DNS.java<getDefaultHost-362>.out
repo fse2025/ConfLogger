@@ -1,0 +1,73 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DNS.java	methodSinagture:	org.apache.hadoop.net.DNS.getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;	methodLines:	362:372
+blockLines:	363:-1
+paras:	hadoop.security.dns.interface
+TaintedStat:	NORMAL getDefaultHost:conditional branch(eq, to iindex=8) 1,5 Node: < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[5]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @7 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[5]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @7 exception:5
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[17]19 = invokestatic < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > 6,9,17 @25 exception:18 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere v1
+NORMAL getDefaultHost:conditional branch(eq, to iindex=8) 1,5 Node: < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DNS.java	methodSinagture:	org.apache.hadoop.net.DNS.getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;	methodLines:	362:372
+blockLines:	367:-1
+paras:	hadoop.security.dns.nameserver
+TaintedStat:	NORMAL getDefaultHost:conditional branch(eq, to iindex=20) 2,5 Node: < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @14 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @14 exception:8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[17]19 = invokestatic < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > 6,9,17 @25 exception:18 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere v2
+NORMAL getDefaultHost:conditional branch(eq, to iindex=20) 2,5 Node: < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    throws UnknownHostException {
+    if (strInterface == null || "default".equals(strInterface)) {
+      return cachedHostname;
+    }
+
+    if (nameserver != null && "default".equals(nameserver)) {
+      nameserver = null;
+    }
+
+    String[] hosts = getHosts(strInterface, nameserver, tryfallbackResolution);
+    return hosts[0];
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.net.DNS.getDefaultHost(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.net.DNS.getDefaultHost(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:4..4]2 - org.apache.hadoop.net.DNS.getDefaultHost(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]3 - org.apache.hadoop.net.DNS.getDefaultHost(Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=388, lastLineNumber=389, firstMethodNumber=388, lastMethodNumber=389, isFirstLineValid=false, methodSrcCode=
+    throws UnknownHostException {
+    return getDefaultHost(strInterface, null, false);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:14..17]5 - org.apache.hadoop.security.SecurityUtil.getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:10..13]4 - org.apache.hadoop.security.SecurityUtil.getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:18..18]6 - org.apache.hadoop.security.SecurityUtil.getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]14 - org.apache.hadoop.security.SecurityUtil.getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=256, lastLineNumber=259, firstMethodNumber=253, lastMethodNumber=268, isFirstLineValid=true, methodSrcCode=
+      throws UnknownHostException {
+    if (conf != null) {
+      String dnsInterface = conf.get(HADOOP_SECURITY_DNS_INTERFACE_KEY);
+      String nameServer = conf.get(HADOOP_SECURITY_DNS_NAMESERVER_KEY);
+
+      if (dnsInterface != null) {
+        return DNS.getDefaultHost(dnsInterface, nameServer, true);
+      } else if (nameServer != null) {
+        throw new IllegalArgumentException(HADOOP_SECURITY_DNS_NAMESERVER_KEY +
+            " requires " + HADOOP_SECURITY_DNS_INTERFACE_KEY + ". Check your" +
+            "configuration.");
+      }
+    }
+
+    // Fallback to querying the default hostname as we did before.
+    return InetAddress.getLocalHost().getCanonicalHostName();
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.net.DNS.getDefaultHost(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.net.DNS.getDefaultHost(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:4..4]2 - org.apache.hadoop.net.DNS.getDefaultHost(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]3 - org.apache.hadoop.net.DNS.getDefaultHost(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=405, lastLineNumber=406, firstMethodNumber=405, lastMethodNumber=406, isFirstLineValid=false, methodSrcCode=
+      throws UnknownHostException {
+    return getDefaultHost(strInterface, nameserver, false);
+  }
+}

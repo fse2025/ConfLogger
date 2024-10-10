@@ -1,0 +1,21 @@
+```java
+String auditLoggerClass = System.getProperty(AUDIT_IMPL_CLASS);
+if (auditLoggerClass == null) {
+    auditLoggerClass = Slf4jAuditLogger.class.getName();
+    // ConfLogger Inserted Start
+    logger.info("Audit logger class not specified. Defaulting to Slf4jAuditLogger: {}", auditLoggerClass);
+    // ConfLogger Inserted End
+}
+try {
+    Constructor<?> clientCxnConstructor = Class.forName(auditLoggerClass)
+            .getDeclaredConstructor();
+    AuditLogger auditLogger = (AuditLogger) clientCxnConstructor.newInstance();
+    auditLogger.initialize();
+    return auditLogger;
+} catch (Exception e) {
+    // ConfLogger Inserted Start
+    logger.error("Failed to instantiate audit logger class: {}. Exception: {}", auditLoggerClass, e.getMessage());
+    // ConfLogger Inserted End
+    throw new RuntimeException("Couldn't instantiate " + auditLoggerClass, e);
+}
+```

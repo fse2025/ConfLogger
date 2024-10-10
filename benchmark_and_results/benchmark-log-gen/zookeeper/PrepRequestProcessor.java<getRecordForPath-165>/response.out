@@ -1,0 +1,30 @@
+```java
+ChangeRecord lastChange = null;
+synchronized (zks.outstandingChanges) {
+    lastChange = zks.outstandingChangesForPath.get(path);
+    if (lastChange == null) {
+        DataNode n = zks.getZKDatabase().getNode(path);
+        if (n != null) {
+            Set<String> children;
+            synchronized (n) {
+                children = n.getChildren();
+            }
+            lastChange = new ChangeRecord(-1, path, n.stat, children.size(), zks.getZKDatabase().aclForNode(n));
+
+            if (digestEnabled) {
+                lastChange.precalculatedDigest = new PrecalculatedDigest(
+                        digestCalculator.calculateDigest(path, n), 0);
+            }
+            lastChange.data = n.getData();
+            
+            // ConfLogger Inserted Start
+            logger.info("Configuration parameter 'digestEnabled' is set to: " + digestEnabled + ". PrecalculatedDigest is " + (digestEnabled ? "enabled" : "disabled") + " for path: " + path);
+            // ConfLogger Inserted End
+        }
+    }
+}
+if (lastChange == null || lastChange.stat == null) {
+    throw new KeeperException.NoNodeException(path);
+}
+return lastChange;
+```

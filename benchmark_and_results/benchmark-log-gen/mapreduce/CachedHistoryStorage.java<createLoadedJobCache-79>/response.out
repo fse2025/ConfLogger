@@ -1,0 +1,82 @@
+```java
+loadedJobCacheSize = conf.getInt(
+JHAdminConfig.MR_HISTORY_LOADED_JOB_CACHE_SIZE,
+JHAdminConfig.DEFAULT_MR_HISTORY_LOADED_JOB_CACHE_SIZE);
+
+// Check property for new "loaded tasks" cache perform sanity checking
+useLoadedTasksCache = false;
+try {
+String taskSizeString = conf
+.get(JHAdminConfig.MR_HISTORY_LOADED_TASKS_CACHE_SIZE);
+if (taskSizeString != null) {
+loadedTasksCacheSize = Math.max(Integer.parseInt(taskSizeString), 1);
+useLoadedTasksCache = true;
+
+// ConfLogger Inserted Start
+logger.info("Configuration parameter '{}' is set to '{}'. Calculated loadedTasksCacheSize: '{}'.", 
+    JHAdminConfig.MR_HISTORY_LOADED_TASKS_CACHE_SIZE, taskSizeString, loadedTasksCacheSize);
+// ConfLogger Inserted End
+
+}
+} catch (NumberFormatException nfe) {
+LOG.error("The property " +
+JHAdminConfig.MR_HISTORY_LOADED_TASKS_CACHE_SIZE +
+" is not an integer value.  Please set it to a positive" +
+" integer value.");
+}
+
+CacheLoader<JobId, Job> loader;
+loader = new CacheLoader<JobId, Job>() {
+@Override
+public Job load(JobId key) throws Exception {
+return loadJob(key);
+}
+};
+
+if (!useLoadedTasksCache) {
+loadedJobCache = CacheBuilder.newBuilder()
+.maximumSize(loadedJobCacheSize)
+.initialCapacity(loadedJobCacheSize)
+.concurrencyLevel(1)
+.build(loader);
+
+// ConfLogger Inserted Start
+logger.info("Loaded tasks cache is not used. Using default job cache with size '{}'.", loadedJobCacheSize);
+// ConfLogger Inserted End
+
+} else {
+Weigher<JobId, Job> weightByTasks;
+weightByTasks = new Weigher<JobId, Job>() {
+/**
+* Method for calculating Job weight by total task count.  If
+* the total task count is greater than the size of the tasks
+* cache, then cap it at the cache size.  This allows the cache
+* to always hold one large job.
+* @param key JobId object
+* @param value Job object
+* @return Weight of the job as calculated by total task count
+*/
+@Override
+public int weigh(JobId key, Job value) {
+int taskCount = Math.min(loadedTasksCacheSize,
+value.getTotalMaps() + value.getTotalReduces());
+return taskCount;
+}
+};
+// Keep concurrencyLevel at 1.  Otherwise, two problems:
+// 1) The largest job that can be initially loaded is
+//    cache size / 4.
+// 2) Unit tests are not deterministic.
+loadedJobCache = CacheBuilder.newBuilder()
+.maximumWeight(loadedTasksCacheSize)
+.weigher(weightByTasks)
+.concurrencyLevel(1)
+.build(loader);
+
+// ConfLogger Inserted Start
+logger.info("Loaded tasks cache is used. Using job cache with maximum weight '{}'.", loadedTasksCacheSize);
+// ConfLogger Inserted End
+
+}
+}
+```

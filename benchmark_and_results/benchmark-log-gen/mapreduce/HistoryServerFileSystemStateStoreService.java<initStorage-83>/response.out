@@ -1,0 +1,14 @@
+```java
+final String storeUri = conf.get(JHAdminConfig.MR_HS_FS_STATE_STORE_URI);
+if (storeUri == null) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration error: No store location URI configured in " + JHAdminConfig.MR_HS_FS_STATE_STORE_URI);
+    // ConfLogger Inserted End
+    throw new IOException("No store location URI configured in " + JHAdminConfig.MR_HS_FS_STATE_STORE_URI);
+}
+
+// ConfLogger Skipped
+LOG.info("Using " + storeUri + " for history server state storage");
+rootStatePath = new Path(storeUri, ROOT_STATE_DIR_NAME);
+}
+```

@@ -1,0 +1,108 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StormCommon.java	methodSinagture:	org.apache.storm.daemon.StormCommon.hasAckers(Ljava/util/Map;)Z	methodLines:	457:459
+blockLines:	459:-1
+paras:	topology.acker.executors
+TaintedStat:	NORMAL hasAckers:conditional branch(eq, to iindex=12) 5,6 Node: < Application, Lorg/apache/storm/daemon/StormCommon, hasAckers(Ljava/util/Map;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, hasAckers(Ljava/util/Map;)Z > Context: Everywhere[2]5 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,3 @4 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, hasAckers(Ljava/util/Map;)Z > Context: Everywhere[2]5 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,3 @4 exception:4
+NORMAL hasAckers:conditional branch(eq, to iindex=12) 5,6 Node: < Application, Lorg/apache/storm/daemon/StormCommon, hasAckers(Ljava/util/Map;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static boolean hasAckers(Map<String, Object> topoConf) {
+        Object ackerNum = topoConf.get(Config.TOPOLOGY_ACKER_EXECUTORS);
+        return ackerNum == null || ObjectReader.getInt(ackerNum) > 0;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/spout/SpoutExecutor, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:48..48]25 - org.apache.storm.executor.spout.SpoutExecutor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;)V, BB[SSA:45..47]24 - org.apache.storm.executor.spout.SpoutExecutor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;)V, BB[SSA:49..49]26 - org.apache.storm.executor.spout.SpoutExecutor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;)V, BB[SSA:-1..-2]67 - org.apache.storm.executor.spout.SpoutExecutor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=79, lastLineNumber=79, firstMethodNumber=71, lastMethodNumber=90, isFirstLineValid=true, methodSrcCode=
+    public SpoutExecutor(final WorkerState workerData, final List<Long> executorId, Map<String, String> credentials) {
+        super(workerData, executorId, credentials, ClientStatsUtil.SPOUT);
+        this.spoutWaitStrategy = ReflectionUtils.newInstance((String) topoConf.get(Config.TOPOLOGY_SPOUT_WAIT_STRATEGY));
+        this.spoutWaitStrategy.prepare(topoConf, WaitSituation.SPOUT_WAIT);
+        this.backPressureWaitStrategy = ReflectionUtils.newInstance((String) topoConf.get(Config.TOPOLOGY_BACKPRESSURE_WAIT_STRATEGY));
+        this.backPressureWaitStrategy.prepare(topoConf, WaitSituation.BACK_PRESSURE_WAIT);
+
+        this.lastActive = new AtomicBoolean(false);
+        this.hasAckers = StormCommon.hasAckers(topoConf);
+        this.emittedCount = new MutableLong(0);
+        this.emptyEmitStreak = new MutableLong(0);
+        this.stats = new SpoutExecutorStats(
+            ConfigUtils.samplingRate(this.getTopoConf()), ObjectReader.getInt(this.getTopoConf().get(Config.NUM_STAT_BUCKETS)));
+        this.skippedMaxSpoutMs = workerData.getMetricRegistry().rateCounter("__skipped-max-spout-ms", componentId,
+                taskIds.get(0));
+        this.skippedInactiveMs = workerData.getMetricRegistry().rateCounter("__skipped-inactive-ms", componentId,
+                taskIds.get(0));
+        this.skippedBackpressureMs = workerData.getMetricRegistry().rateCounter("__skipped-backpressure-ms", componentId,
+                taskIds.get(0));
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/Executor, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:218..218]120 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:215..217]119 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:219..219]121 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:-1..-2]147 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=179, lastLineNumber=192, firstMethodNumber=134, lastMethodNumber=192, isFirstLineValid=true, methodSrcCode=
+
+    protected Executor(WorkerState workerData, List<Long> executorId, Map<String, String> credentials, String type) {
+        this.workerData = workerData;
+        this.executorId = executorId;
+        this.type = type;
+        this.workerTopologyContext = workerData.getWorkerTopologyContext();
+        this.taskIds = StormCommon.executorIdToTasks(executorId);
+        this.componentId = workerTopologyContext.getComponentId(taskIds.get(0));
+        this.openOrPrepareWasCalled = new AtomicBoolean(false);
+        this.topoConf = normalizedComponentConf(workerData.getTopologyConf(), workerTopologyContext, componentId);
+        this.receiveQueue = (workerData.getExecutorReceiveQueueMap().get(executorId));
+        this.stormId = workerData.getTopologyId();
+        this.conf = workerData.getConf();
+        this.sharedExecutorData = new HashMap();
+        this.workerReady = workerData.getIsWorkerActive();
+        this.stormActive = workerData.getIsTopologyActive();
+        this.stormComponentDebug = workerData.getStormComponentToDebug();
+
+        this.executorTransfer = new ExecutorTransfer(workerData, topoConf);
+
+        this.suicideFn = workerData.getSuicideCallback();
+        try {
+            this.stormClusterState = ClusterUtils.mkStormClusterState(workerData.getStateStorage(),
+                                                                      new ClusterStateContext(DaemonType.WORKER, topoConf));
+        } catch (Exception e) {
+            throw Utils.wrapInRuntime(e);
+        }
+
+        this.intervalToTaskToMetricToRegistry = new HashMap<>();
+        this.taskToComponent = workerData.getTaskToComponent();
+        this.streamToComponentToGrouper = outboundComponents(workerTopologyContext, componentId, topoConf);
+        if (this.streamToComponentToGrouper != null) {
+            this.groupers = streamToComponentToGrouper.values().stream()
+                                                      .filter(Objects::nonNull)
+                                                      .flatMap(m -> m.values().stream()).collect(Collectors.toList());
+        } else {
+            this.groupers = Collections.emptyList();
+        }
+        this.reportError = new ReportError(topoConf, stormClusterState, stormId, componentId, workerTopologyContext);
+        this.reportErrorDie = new ReportErrorAndDie(reportError, suicideFn);
+        this.sampler = ConfigUtils.mkStatsSampler(topoConf);
+        this.isDebug = ObjectReader.getBoolean(topoConf.get(Config.TOPOLOGY_DEBUG), false);
+        this.rand = new Random(Utils.secureRandomLong());
+        this.credentials = credentials;
+        this.hasEventLoggers = StormCommon.hasEventLoggers(topoConf);
+        this.ackingEnabled = StormCommon.hasAckers(topoConf);
+
+        try {
+            this.hostname = Utils.hostname();
+        } catch (UnknownHostException ignored) {
+            this.hostname = "";
+        }
+        flushTuple = AddressedTuple.createFlushTuple(workerTopologyContext);
+        this.reportedErrorCount = workerData.getMetricRegistry().rateCounter("__reported-error-count", componentId,
+                taskIds.get(0));
+
+        enableV2MetricsDataPoints = ObjectReader.getBoolean(topoConf.get(Config.TOPOLOGY_ENABLE_V2_METRICS_TICK), false);
+        v2MetricsTickInterval = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_V2_METRICS_TICK_INTERVAL_SECONDS), 60);
+    }
+
+}

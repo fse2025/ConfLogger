@@ -1,0 +1,31 @@
+```java
+long trashInterval =
+conf.getLong(FS_TRASH_INTERVAL_KEY, FS_TRASH_INTERVAL_DEFAULT);
+if (trashInterval == 0) {
+    // ConfLogger Inserted Start
+    logger.info("Trash interval is set to 0. No trash emptier will be started. Configuration parameter: " + FS_TRASH_INTERVAL_KEY + ", Value: " + trashInterval);
+    // ConfLogger Inserted End
+    return;
+} else if (trashInterval < 0) {
+    // ConfLogger Inserted Start
+    logger.error("Cannot start trash emptier with negative interval. Set " + FS_TRASH_INTERVAL_KEY + " to a positive value. Configuration parameter: " + FS_TRASH_INTERVAL_KEY + ", Value: " + trashInterval);
+    // ConfLogger Inserted End
+    throw new IOException("Cannot start trash emptier with negative interval."
+        + " Set " + FS_TRASH_INTERVAL_KEY + " to a positive value.");
+}
+
+// This may be called from the transitionToActive code path, in which
+// case the current user is the administrator, not the NN. The trash
+// emptier needs to run as the NN. See HDFS-3972.
+FileSystem fs = SecurityUtil.doAsLoginUser(
+new PrivilegedExceptionAction<FileSystem>() {
+@Override
+public FileSystem run() throws IOException {
+    return FileSystem.get(conf);
+}
+});
+this.emptier = new Thread(new Trash(fs, conf).getEmptier(), "Trash Emptier");
+this.emptier.setDaemon(true);
+this.emptier.start();
+}
+```

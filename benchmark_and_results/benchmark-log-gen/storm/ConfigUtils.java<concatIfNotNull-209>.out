@@ -1,0 +1,165 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ConfigUtils.java	methodSinagture:	org.apache.storm.utils.ConfigUtils.concatIfNotNull(Ljava/lang/String;)Ljava/lang/String;	methodLines:	209:215
+blockLines:	212:-1
+paras:	worker.childopts
+TaintedStat:	NORMAL concatIfNotNull:conditional branch(eq, to iindex=7) 1,4 Node: < Application, Lorg/apache/storm/utils/ConfigUtils, concatIfNotNull(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[131]95 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 92,93 @316 exception:94
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[131]95 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 92,93 @316 exception:94
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[134]97 = invokevirtual < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > 1,95,2,3 @323 exception:96 v95
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere v2
+NORMAL substituteChildopts:25 = checkcast <Application,Ljava/lang/String>2 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildopts(Ljava/lang/Object;II)Ljava/util/List; > Context: Everywhere[13]27 = invokevirtual < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildOptsInternal(Ljava/lang/String;II)Ljava/lang/String; > 1,25,3,4 @23 exception:26 v25
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildOptsInternal(Ljava/lang/String;II)Ljava/lang/String; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, substituteChildOptsInternal(Ljava/lang/String;II)Ljava/lang/String; > Context: Everywhere[11]14 = invokevirtual < Application, Ljava/lang/String, replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String; > 2,12,11 @22 exception:13 v2
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/String, replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL replace:18 = invokevirtual < Primordial, Ljava/lang/String, length()I > 1 @44 exception:17 Node: < Primordial, Ljava/lang/String, replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:return 7 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String, equalsIgnoreCase(Ljava/lang/String;)Z > Context: Everywhere[9]6 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @14 exception:5
+NORMAL equalsIgnoreCase:conditional branch(ne, to iindex=25) 6,8 Node: < Primordial, Ljava/lang/String, equalsIgnoreCase(Ljava/lang/String;)Z > Context: Everywhere
+PHI Node: < Primordial, Ljava/lang/String, equalsIgnoreCase(Ljava/lang/String;)Z > Context: Everywhere:15 = phi  9,9,10
+NORMAL equalsIgnoreCase:return 15 Node: < Primordial, Ljava/lang/String, equalsIgnoreCase(Ljava/lang/String;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equalsIgnoreCase(Ljava/lang/String;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/security/Security, initialize()V > Context: Everywhere[109]73 = invokevirtual < Primordial, Ljava/lang/String, equalsIgnoreCase(Ljava/lang/String;)Z > 67,71 @229 exception:72
+NORMAL initialize:conditional branch(eq, to iindex=268) 73,4 Node: < Primordial, Ljava/security/Security, initialize()V > Context: Everywhere
+NORMAL initialize:76 = invokestatic < Primordial, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 74 @237 exception:75 Node: < Primordial, Ljava/security/Security, initialize()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getProperty:return 2 Node: synthetic < Primordial, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: synthetic < Primordial, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[5]13 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 11 @12 exception:12
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[6]15 = invokestatic < Application, Lorg/apache/storm/utils/ConfigUtils, concatIfNotNull(Ljava/lang/String;)Ljava/lang/String; > 13 @15 exception:14 v13
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ConfigUtils, concatIfNotNull(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL concatIfNotNull:conditional branch(eq, to iindex=7) 1,4 Node: < Application, Lorg/apache/storm/utils/ConfigUtils, concatIfNotNull(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static String concatIfNotNull(String dir) {
+        String ret = "";
+        // we do this since to concat a null String will actually concat a "null", which is not the expected: ""
+        if (dir != null) {
+            ret = dir;
+        }
+        return ret;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ConfigUtils, supervisorStormCodePath(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.utils.ConfigUtils.supervisorStormCodePath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ConfigUtils.supervisorStormCodePath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:2..3]2 - org.apache.storm.utils.ConfigUtils.supervisorStormCodePath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.storm.utils.ConfigUtils.supervisorStormCodePath(Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=205, lastLineNumber=206, firstMethodNumber=205, lastMethodNumber=206, isFirstLineValid=false, methodSrcCode=
+    public static String supervisorStormCodePath(String stormRoot) {
+        return (concatIfNotNull(stormRoot) + FILE_SEPARATOR + "stormcode.ser");
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/ClientSupervisorUtils, processLauncher(Ljava/util/Map;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process; > Context: Everywhere, blocks=[BB[SSA:16..16]9 - org.apache.storm.daemon.supervisor.ClientSupervisorUtils.processLauncher(Ljava/util/Map;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process;, BB[SSA:13..15]8 - org.apache.storm.daemon.supervisor.ClientSupervisorUtils.processLauncher(Ljava/util/Map;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process;, BB[SSA:17..19]10 - org.apache.storm.daemon.supervisor.ClientSupervisorUtils.processLauncher(Ljava/util/Map;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process;, BB[SSA:-1..-2]26 - org.apache.storm.daemon.supervisor.ClientSupervisorUtils.processLauncher(Ljava/util/Map;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process;], numberOfBasicBlocks=4, firstLineNumber=94, lastLineNumber=97, firstMethodNumber=90, lastMethodNumber=110, isFirstLineValid=true, methodSrcCode=
+                                   final ExitCodeCallback exitCodeCallback, File dir) throws IOException {
+        if (StringUtils.isBlank(user)) {
+            throw new IllegalArgumentException("User cannot be blank when calling processLauncher.");
+        }
+        String wlinitial = (String) (conf.get(Config.SUPERVISOR_WORKER_LAUNCHER));
+        String stormHome = ConfigUtils.concatIfNotNull(System.getProperty(ConfigUtils.STORM_HOME));
+        String wl;
+        if (StringUtils.isNotBlank(wlinitial)) {
+            wl = wlinitial;
+        } else {
+            wl = stormHome + "/bin/worker-launcher";
+        }
+        List<String> commands = new ArrayList<>();
+        if (commandPrefix != null) {
+            commands.addAll(commandPrefix);
+        }
+        commands.add(wl);
+        commands.add(user);
+        commands.addAll(args);
+        LOG.info("Running as user: {} command: {}", user, commands);
+        return launchProcess(commands, environment, logPreFix, exitCodeCallback, dir);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:6..6]3 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:3..5]2 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:7..9]4 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:-1..-2]102 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:10..10]5 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:7..9]4 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:11..13]6 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:-1..-2]102 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;], numberOfBasicBlocks=8, firstLineNumber=610, lastLineNumber=612, firstMethodNumber=608, lastMethodNumber=673, isFirstLineValid=true, methodSrcCode=
+                                         final String jlp, final String numaId) throws IOException {
+        final String javaCmd = javaCmd("java");
+        final String stormOptions = ConfigUtils.concatIfNotNull(System.getProperty("storm.options"));
+        final String topoConfFile = ConfigUtils.concatIfNotNull(System.getProperty("storm.conf.file"));
+        final String workerTmpDir = ConfigUtils.workerTmpRoot(conf, workerId);
+        String topoVersionString = getStormVersionFor(conf, topologyId, ops, stormRoot);
+        if (topoVersionString == null) {
+            topoVersionString = (String) conf.getOrDefault(Config.SUPERVISOR_WORKER_DEFAULT_VERSION, VersionInfo.getVersion());
+        }
+        final SimpleVersion topoVersion = new SimpleVersion(topoVersionString);
+
+        List<String> classPathParams = getClassPathParams(stormRoot, topoVersion);
+        List<String> commonParams = getCommonParams();
+
+        String log4jConfigurationFile = getWorkerLoggingConfigFile();
+        String workerLog4jConfig = log4jConfigurationFile;
+        if (topoConf.get(Config.TOPOLOGY_LOGGING_CONFIG_FILE) != null) {
+            workerLog4jConfig = workerLog4jConfig + "," + topoConf.get(Config.TOPOLOGY_LOGGING_CONFIG_FILE);
+        }
+
+        List<String> commandList = new ArrayList<>();
+        String logWriter = getWorkerLogWriter(topoVersion);
+        if (logWriter != null) {
+            //Log Writer Command...
+            commandList.add(javaCmd);
+            commandList.addAll(classPathParams);
+            commandList.addAll(substituteChildopts(topoConf.get(Config.TOPOLOGY_WORKER_LOGWRITER_CHILDOPTS)));
+            commandList.addAll(commonParams);
+            commandList.add("-Dlog4j.configurationFile=" + log4jConfigurationFile);
+            commandList.add(logWriter); //The LogWriter in turn launches the actual worker.
+        }
+
+        //Worker Command...
+        commandList.add(javaCmd);
+        commandList.add("-server");
+        commandList.addAll(commonParams);
+        commandList.add("-Dlog4j.configurationFile=" + workerLog4jConfig);
+        commandList.addAll(substituteChildopts(conf.get(Config.WORKER_CHILDOPTS), memOnheap, memOffheap));
+        commandList.addAll(substituteChildopts(topoConf.get(Config.TOPOLOGY_WORKER_CHILDOPTS), memOnheap, memOffheap));
+        commandList.addAll(substituteChildopts(Utils.OR(
+            topoConf.get(Config.TOPOLOGY_WORKER_GC_CHILDOPTS),
+            conf.get(Config.WORKER_GC_CHILDOPTS)), memOnheap, memOffheap));
+        commandList.addAll(getWorkerProfilerChildOpts(memOnheap, memOffheap));
+        commandList.add("-Djava.library.path=" + jlp);
+        commandList.add("-Dstorm.conf.file=" + topoConfFile);
+        commandList.add("-Dstorm.options=" + stormOptions);
+        commandList.add("-Djava.io.tmpdir=" + workerTmpDir);
+        commandList.addAll(classPathParams);
+        commandList.add(getWorkerMain(topoVersion));
+        commandList.add(topologyId);
+        String supervisorId = this.supervisorId;
+        if (numaId != null) {
+            supervisorId += ServerConstants.NUMA_ID_SEPARATOR + numaId;
+        }
+        commandList.add(supervisorId);
+        // supervisor port should be only presented to worker which supports RPC heartbeat
+        // unknown version should be treated as "current version", which supports RPC heartbeat
+        if ((topoVersion.getMajor() == -1 && topoVersion.getMinor() == -1)
+                || topoVersion.compareTo(MIN_VERSION_SUPPORT_RPC_HEARTBEAT) >= 0) {
+            commandList.add(String.valueOf(supervisorPort));
+        }
+
+        commandList.add(String.valueOf(port));
+        commandList.add(workerId);
+
+        return commandList;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ConfigUtils, supervisorStormConfPath(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.utils.ConfigUtils.supervisorStormConfPath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ConfigUtils.supervisorStormConfPath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:2..3]2 - org.apache.storm.utils.ConfigUtils.supervisorStormConfPath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.storm.utils.ConfigUtils.supervisorStormConfPath(Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=236, lastLineNumber=237, firstMethodNumber=236, lastMethodNumber=237, isFirstLineValid=false, methodSrcCode=
+    public static String supervisorStormConfPath(String stormRoot) {
+        return (concatIfNotNull(stormRoot) + FILE_SEPARATOR + "stormconf.ser");
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ConfigUtils, supervisorStormJarPath(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.utils.ConfigUtils.supervisorStormJarPath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ConfigUtils.supervisorStormJarPath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:2..3]2 - org.apache.storm.utils.ConfigUtils.supervisorStormJarPath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.storm.utils.ConfigUtils.supervisorStormJarPath(Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=232, lastLineNumber=233, firstMethodNumber=232, lastMethodNumber=233, isFirstLineValid=false, methodSrcCode=
+    public static String supervisorStormJarPath(String stormRoot) {
+        return (concatIfNotNull(stormRoot) + FILE_SEPARATOR + "stormjar.jar");
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ConfigUtils, supervisorStormResourcesPath(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.utils.ConfigUtils.supervisorStormResourcesPath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ConfigUtils.supervisorStormResourcesPath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:2..3]2 - org.apache.storm.utils.ConfigUtils.supervisorStormResourcesPath(Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.storm.utils.ConfigUtils.supervisorStormResourcesPath(Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=272, lastLineNumber=273, firstMethodNumber=272, lastMethodNumber=273, isFirstLineValid=false, methodSrcCode=
+    public static String supervisorStormResourcesPath(String stormRoot) {
+        return (concatIfNotNull(stormRoot) + FILE_SEPARATOR + RESOURCES_SUBDIR);
+    }
+}

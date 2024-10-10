@@ -1,0 +1,1 @@
+fs.s3a.retry.limit	7	[Time-limited	Parallel Image loading and saving is enabled as dfs.image.compress is set to false. Ensure th	30

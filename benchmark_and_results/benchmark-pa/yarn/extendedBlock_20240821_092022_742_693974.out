@@ -1,0 +1,47 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	WebAppUtils.java	methodSinagture:	org.apache.hadoop.yarn.webapp.util.WebAppUtils.getProxyHostsAndPortsForAmFilter(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;	methodLines:	180:206
+blockLines:	185:-1
+paras:	yarn.web-proxy.address
+TaintedStat:	NORMAL getProxyHostsAndPortsForAmFilter:conditional branch(eq, to iindex=15) 7,8 Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getProxyHostsAndPortsForAmFilter(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getProxyHostsAndPortsForAmFilter(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[6]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,5 @11 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getProxyHostsAndPortsForAmFilter(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[6]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,5 @11 exception:6
+NORMAL getProxyHostsAndPortsForAmFilter:conditional branch(eq, to iindex=15) 7,8 Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getProxyHostsAndPortsForAmFilter(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Configuration conf) {
+    List<String> addrs = new ArrayList<String>();
+    String proxyAddr = conf.get(YarnConfiguration.PROXY_ADDRESS);
+    // If PROXY_ADDRESS isn't set, fallback to RM_WEBAPP(_HTTPS)_ADDRESS
+    // There could be multiple if using RM HA
+    if (proxyAddr == null || proxyAddr.isEmpty()) {
+      // If RM HA is enabled, try getting those addresses
+      if (HAUtil.isHAEnabled(conf)) {
+        List<String> haAddrs =
+            RMHAUtils.getRMHAWebappAddresses(new YarnConfiguration(conf));
+        for (String addr : haAddrs) {
+          try {
+            InetSocketAddress socketAddr = NetUtils.createSocketAddr(addr);
+            addrs.add(getResolvedAddress(socketAddr));
+          } catch(IllegalArgumentException e) {
+            // skip if can't resolve
+          }
+        }
+      }
+      // If couldn't resolve any of the addresses or not using RM HA, fallback
+      if (addrs.isEmpty()) {
+        addrs.add(getResolvedRMWebAppURLWithoutScheme(conf));
+      }
+    } else {
+      addrs.add(proxyAddr);
+    }
+    return addrs;
+  }
+
+
+====================ctx:=======================

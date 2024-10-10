@@ -1,0 +1,14 @@
+```java
+if (null == stat) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration Error: 'stat' is null. Could not resolve handle.");
+    // ConfLogger Inserted End
+    throw new InvalidPathHandleException("Could not resolve handle");
+}
+if (mtime != null && mtime != stat.getModificationTime()) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration Error: 'mtime' is not null and does not match 'stat.getModificationTime()'. Content changed.");
+    // ConfLogger Inserted End
+    throw new InvalidPathHandleException("Content changed");
+}
+```

@@ -1,0 +1,40 @@
+```java
+final int depth = prefix.length;
+// We generate leaves for a single split point as well as for
+// no split points.
+if (depth >= maxDepth || lower >= upper - 1) {
+    // If we have two consecutive requests for an unsplit trie node, we
+    // can deliver the same one the second time.
+    if (lower == upper && ref.content != null) {
+        // ConfLogger Skipped
+        return ref.content;
+    }
+    TrieNode result = LeafTrieNodeFactory(depth, splits, lower, upper);
+    ref.content = lower == upper ? result : null;
+    // ConfLogger Inserted Start
+    logger.info("LeafTrieNodeFactory called with depth: " + depth + ", lower: " + lower + ", upper: " + upper + ". Result: " + result);
+    // ConfLogger Inserted End
+    return result;
+}
+InnerTrieNode result = new InnerTrieNode(depth);
+byte[] trial = Arrays.copyOf(prefix, prefix.length + 1);
+// append an extra byte on to the prefix
+int currentBound = lower;
+for (int ch = 0; ch < 0xFF; ++ch) {
+    trial[depth] = (byte) (ch + 1);
+    lower = currentBound;
+    while (currentBound < upper) {
+        if (splits[currentBound].compareTo(trial, 0, trial.length) >= 0) {
+            break;
+        }
+        currentBound += 1;
+    }
+    trial[depth] = (byte) ch;
+    result.child[0xFF & ch] = buildTrieRec(splits, lower, currentBound, trial, maxDepth, ref);
+}
+// pick up the rest
+trial[depth] = (byte) 0xFF;
+result.child[0xFF] = buildTrieRec(splits, lower, currentBound, trial, maxDepth, ref);
+
+return result;
+```

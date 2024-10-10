@@ -1,0 +1,30 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AbstractRpcClient.java	methodSinagture:	org.apache.hadoop.hbase.ipc.AbstractRpcClient.getCodec()Lorg/apache/hadoop/hbase/codec/Codec;	methodLines:	238:247
+blockLines:	240:-1
+paras:	null
+TaintedStat:	NORMAL getCodec:conditional branch(eq, to iindex=15) 9,10 Node: < Application, Lorg/apache/hadoop/hbase/ipc/AbstractRpcClient, getCodec()Lorg/apache/hadoop/hbase/codec/Codec; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/AbstractRpcClient, getCodec()Lorg/apache/hadoop/hbase/codec/Codec; > Context: Everywhere[6]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 3,4,7 @13 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/AbstractRpcClient, getCodec()Lorg/apache/hadoop/hbase/codec/Codec; > Context: Everywhere[6]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 3,4,7 @13 exception:8
+NORMAL getCodec:conditional branch(eq, to iindex=15) 9,10 Node: < Application, Lorg/apache/hadoop/hbase/ipc/AbstractRpcClient, getCodec()Lorg/apache/hadoop/hbase/codec/Codec; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // "hbase.client.default.rpc.codec" also -- because default is to do cell block encoding.
+    String className = conf.get(HConstants.RPC_CODEC_CONF_KEY, getDefaultCodec(this.conf));
+    if (className == null || className.length() == 0) {
+      return null;
+    }
+    try {
+      return Class.forName(className).asSubclass(Codec.class).getDeclaredConstructor()
+        .newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException("Failed getting codec " + className, e);
+    }
+
+
+====================ctx:=======================

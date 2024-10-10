@@ -1,0 +1,38 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Task.java	methodSinagture:	org.apache.hadoop.mapred.Task.normalizeStatus(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	635:644
+blockLines:	639:-1
+paras:	null
+TaintedStat:	NORMAL normalizeStatus:conditional branch(le, to iindex=30) 9,7 Node: < Application, Lorg/apache/hadoop/mapred/Task, normalizeStatus(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/Task, normalizeStatus(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,4,5 @6 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/Task, normalizeStatus(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,4,5 @6 exception:6
+NORMAL normalizeStatus:conditional branch(le, to iindex=30) 9,7 Node: < Application, Lorg/apache/hadoop/mapred/Task, normalizeStatus(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // and truncate it if needed.
+    int progressStatusLength = conf.getInt(
+        MRConfig.PROGRESS_STATUS_LEN_LIMIT_KEY,
+        MRConfig.PROGRESS_STATUS_LEN_LIMIT_DEFAULT);
+    if (status.length() > progressStatusLength) {
+      LOG.warn("Task status: \"" + status + "\" truncated to max limit ("
+          + progressStatusLength + " characters)");
+      status = status.substring(0, progressStatusLength);
+    }
+    return status;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/task/TaskAttemptContextImpl, setStatus(Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:3..3]2 - org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl.setStatus(Ljava/lang/String;)V, BB[SSA:0..2]1 - org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl.setStatus(Ljava/lang/String;)V, BB[SSA:4..7]3 - org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl.setStatus(Ljava/lang/String;)V, BB[SSA:-1..-2]7 - org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl.setStatus(Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=96, lastLineNumber=97, firstMethodNumber=95, lastMethodNumber=99, isFirstLineValid=true, methodSrcCode=
+  public void setStatus(String status) {
+    String normalizedStatus = Task.normalizeStatus(status, conf);
+    setStatusString(normalizedStatus);
+    reporter.setStatus(normalizedStatus);
+  }
+
+}

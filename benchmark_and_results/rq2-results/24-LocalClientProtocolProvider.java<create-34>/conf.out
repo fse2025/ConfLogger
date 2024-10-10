@@ -1,0 +1,2 @@
+conf.set(param1,"");
+ public String param1 = MRConfig.FRAMEWORK_NAME;

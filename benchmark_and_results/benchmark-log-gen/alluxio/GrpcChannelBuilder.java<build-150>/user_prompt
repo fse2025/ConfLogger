@@ -1,0 +1,30 @@
+<code-whole>
+GrpcChannel channel =
+GrpcChannelPool.INSTANCE.acquireChannel(mNetworkGroup, mAddress,
+mConfiguration, mAlwaysEnableTLS);
+try {
+channel.authenticate(mAuthType, mParentSubject, mConfiguration);
+} catch (Throwable t) {
+try {
+channel.close();
+} catch (Exception e) {
+throw new RuntimeException(
+String.format("Failed to release the connection: %s", channel.getChannelKey()), e);
+}
+if (t instanceof AlluxioStatusException) {
+throw t;
+}
+throw AlluxioStatusException.fromThrowable(t);
+}
+if (mConfiguration.getBoolean(PropertyKey.USER_CLIENT_REPORT_VERSION_ENABLED)) {
+channel.intercept(new ClientVersionClientInjector());
+}
+return channel;
+}
+</code-whole>
+
+<code-specified>
+if (mConfiguration.getBoolean(PropertyKey.USER_CLIENT_REPORT_VERSION_ENABLED)) {
+channel.intercept(new ClientVersionClientInjector());
+}
+</code-specified>

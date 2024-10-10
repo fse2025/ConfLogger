@@ -1,0 +1,29 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	YarnClientUtils.java	methodSinagture:	org.apache.hadoop.yarn.client.util.YarnClientUtils.getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	72:80
+blockLines:	76:-1
+paras:	yarn.resourcemanager.principal
+TaintedStat:	NORMAL getRmPrincipal:conditional branch(eq, to iindex=13) 5,6 Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+NORMAL getRmPrincipal:conditional branch(eq, to iindex=13) 5,6 Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static String getRmPrincipal(Configuration conf) throws IOException {
+    String principal = conf.get(YarnConfiguration.RM_PRINCIPAL);
+    String prepared = null;
+
+    if (principal != null) {
+      prepared = getRmPrincipal(principal, conf);
+    }
+
+    return prepared;
+  }
+
+
+====================ctx:=======================

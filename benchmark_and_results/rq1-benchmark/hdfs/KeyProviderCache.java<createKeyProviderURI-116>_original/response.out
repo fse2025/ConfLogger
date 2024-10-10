@@ -1,0 +1,24 @@
+```java
+private URI createKeyProviderURI(Configuration conf) {
+    final String providerUriStr = conf.getTrimmed(
+        CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH);
+    // No provider set in conf
+    if (providerUriStr == null || providerUriStr.isEmpty()) {
+        // ConfLogger Skipped: The existing log message already contains the configuration parameter key and explains the issue.
+        LOG.error("Could not find uri with key ["
+            + CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH
+            + "] to create a keyProvider !!");
+        return null;
+    }
+    final URI providerUri;
+    try {
+        providerUri = new URI(providerUriStr);
+    } catch (URISyntaxException e) {
+        // ConfLogger Skipped: The existing log message already contains the invalid URI string and the exception cause.
+        LOG.error("KeyProvider URI string is invalid [" + providerUriStr
+            + "]!!", e.getCause());
+        return null;
+    }
+    return providerUri;
+}
+```

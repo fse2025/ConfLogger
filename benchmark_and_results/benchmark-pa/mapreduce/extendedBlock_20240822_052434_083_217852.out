@@ -1,0 +1,31 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	YarnClientProtocolProvider.java	methodSinagture:	org.apache.hadoop.mapred.YarnClientProtocolProvider.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol;	methodLines:	32:36
+blockLines:	33:-1
+paras:	mapreduce.framework.name
+TaintedStat:	NORMAL create:conditional branch(eq, to iindex=12) 9,10 Node: < Application, Lorg/apache/hadoop/mapred/YarnClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YarnClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,5 @5 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YarnClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,5 @5 exception:6
+NORMAL create:9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 4,7 @8 exception:8 Node: < Application, Lorg/apache/hadoop/mapred/YarnClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YarnClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere[4]9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 4,7 @8 exception:8
+NORMAL create:conditional branch(eq, to iindex=12) 9,10 Node: < Application, Lorg/apache/hadoop/mapred/YarnClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public ClientProtocol create(Configuration conf) throws IOException {
+    if (MRConfig.YARN_FRAMEWORK_NAME.equals(conf.get(MRConfig.FRAMEWORK_NAME))) {
+      return new YARNRunner(conf);
+    }
+    return null;
+  }
+
+
+====================ctx:=======================

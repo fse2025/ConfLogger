@@ -1,0 +1,201 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobHistoryUtils.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.jobhistory.JobHistoryUtils.getConfiguredHistoryIntermediateUserDoneDirPermissions(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/permission/FsPermission;	methodLines:	216:233
+blockLines:	219:-1
+paras:	mapreduce.jobhistory.intermediate-user-done-dir.permissions
+TaintedStat:	NORMAL getConfiguredHistoryIntermediateUserDoneDirPermissions:conditional branch(ne, to iindex=12) 5,6 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobHistoryUtils, getConfiguredHistoryIntermediateUserDoneDirPermissions(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/permission/FsPermission; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobHistoryUtils, getConfiguredHistoryIntermediateUserDoneDirPermissions(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/permission/FsPermission; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobHistoryUtils, getConfiguredHistoryIntermediateUserDoneDirPermissions(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/permission/FsPermission; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+NORMAL getConfiguredHistoryIntermediateUserDoneDirPermissions:conditional branch(ne, to iindex=12) 5,6 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobHistoryUtils, getConfiguredHistoryIntermediateUserDoneDirPermissions(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/permission/FsPermission; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+            Configuration conf) {
+    String userDoneDirPermissions = conf.get(
+        JHAdminConfig.MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS);
+    if (userDoneDirPermissions == null) {
+      return new FsPermission(
+          JHAdminConfig.DEFAULT_MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS);
+    }
+    FsPermission permission = new FsPermission(userDoneDirPermissions);
+    if (permission.getUserAction() != FsAction.ALL ||
+        permission.getGroupAction() != FsAction.ALL) {
+      permission = new FsPermission(FsAction.ALL, FsAction.ALL,
+          permission.getOtherAction(), permission.getStickyBit());
+      LOG.warn("Unsupported permission configured in " +
+          JHAdminConfig.MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS +
+          ", the user and the group permission must be 7 (rwx). " +
+          "The permission was set to " + permission.toString());
+    }
+    return permission;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/JobHistoryEventHandler, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:187..188]95 - org.apache.hadoop.mapreduce.jobhistory.JobHistoryEventHandler.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:185..186]94 - org.apache.hadoop.mapreduce.jobhistory.JobHistoryEventHandler.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:189..189]96 - org.apache.hadoop.mapreduce.jobhistory.JobHistoryEventHandler.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]184 - org.apache.hadoop.mapreduce.jobhistory.JobHistoryEventHandler.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=239, lastLineNumber=239, firstMethodNumber=163, lastMethodNumber=322, isFirstLineValid=true, methodSrcCode=
+  protected void serviceInit(Configuration conf) throws Exception {
+    String jobId =
+      TypeConverter.fromYarn(context.getApplicationID()).toString();
+    
+    String stagingDirStr = null;
+    String doneDirStr = null;
+    String userDoneDirStr = null;
+    try {
+      stagingDirStr = JobHistoryUtils.getConfiguredHistoryStagingDirPrefix(conf,
+          jobId);
+      doneDirStr =
+          JobHistoryUtils.getConfiguredHistoryIntermediateDoneDirPrefix(conf);
+      userDoneDirStr =
+          JobHistoryUtils.getHistoryIntermediateDoneDirForUser(conf);
+    } catch (IOException e) {
+      LOG.error("Failed while getting the configured log directories", e);
+      throw new YarnRuntimeException(e);
+    }
+
+    //Check for the existence of the history staging dir. Maybe create it. 
+    try {
+      stagingDirPath =
+          FileContext.getFileContext(conf).makeQualified(new Path(stagingDirStr));
+      stagingDirFS = FileSystem.get(stagingDirPath.toUri(), conf);
+      mkdir(stagingDirFS, stagingDirPath, new FsPermission(
+          JobHistoryUtils.HISTORY_STAGING_DIR_PERMISSIONS));
+    } catch (IOException e) {
+      LOG.error("Failed while checking for/creating  history staging path: ["
+          + stagingDirPath + "]", e);
+      throw new YarnRuntimeException(e);
+    }
+
+    //Check for the existence of intermediate done dir.
+    Path doneDirPath = null;
+    try {
+      doneDirPath = FileContext.getFileContext(conf).makeQualified(new Path(doneDirStr));
+      doneDirFS = FileSystem.get(doneDirPath.toUri(), conf);
+      // This directory will be in a common location, or this may be a cluster
+      // meant for a single user. Creating based on the conf. Should ideally be
+      // created by the JobHistoryServer or as part of deployment.
+      if (!doneDirFS.exists(doneDirPath)) {
+      if (JobHistoryUtils.shouldCreateNonUserDirectory(conf)) {
+        LOG.info("Creating intermediate history logDir: ["
+            + doneDirPath
+            + "] + based on conf. Should ideally be created by the JobHistoryServer: "
+            + MRJobConfig.MR_AM_CREATE_JH_INTERMEDIATE_BASE_DIR);
+          mkdir(
+              doneDirFS,
+              doneDirPath,
+              new FsPermission(
+            JobHistoryUtils.HISTORY_INTERMEDIATE_DONE_DIR_PERMISSIONS
+                .toShort()));
+          // TODO Temporary toShort till new FsPermission(FsPermissions)
+          // respects
+        // sticky
+      } else {
+          String message = "Not creating intermediate history logDir: ["
+                + doneDirPath
+                + "] based on conf: "
+                + MRJobConfig.MR_AM_CREATE_JH_INTERMEDIATE_BASE_DIR
+                + ". Either set to true or pre-create this directory with" +
+                " appropriate permissions";
+        LOG.error(message);
+        throw new YarnRuntimeException(message);
+      }
+      }
+    } catch (IOException e) {
+      LOG.error("Failed checking for the existance of history intermediate " +
+      		"done directory: [" + doneDirPath + "]");
+      throw new YarnRuntimeException(e);
+    }
+
+    //Check/create user directory under intermediate done dir.
+    try {
+      doneDirPrefixPath =
+          FileContext.getFileContext(conf).makeQualified(new Path(userDoneDirStr));
+      mkdir(doneDirFS, doneDirPrefixPath, JobHistoryUtils.
+          getConfiguredHistoryIntermediateUserDoneDirPermissions(conf));
+    } catch (IOException e) {
+      LOG.error("Error creating user intermediate history done directory: [ "
+          + doneDirPrefixPath + "]", e);
+      throw new YarnRuntimeException(e);
+    }
+
+    // Maximum number of unflushed completion-events that can stay in the queue
+    // before flush kicks in.
+    maxUnflushedCompletionEvents =
+        conf.getInt(MRJobConfig.MR_AM_HISTORY_MAX_UNFLUSHED_COMPLETE_EVENTS,
+            MRJobConfig.DEFAULT_MR_AM_HISTORY_MAX_UNFLUSHED_COMPLETE_EVENTS);
+    // We want to cut down flushes after job completes so as to write quicker,
+    // so we increase maxUnflushedEvents post Job completion by using the
+    // following multiplier.
+    postJobCompletionMultiplier =
+        conf.getInt(
+            MRJobConfig.MR_AM_HISTORY_JOB_COMPLETE_UNFLUSHED_MULTIPLIER,
+            MRJobConfig.DEFAULT_MR_AM_HISTORY_JOB_COMPLETE_UNFLUSHED_MULTIPLIER);
+    // Max time until which flush doesn't take place.
+    flushTimeout =
+        conf.getLong(MRJobConfig.MR_AM_HISTORY_COMPLETE_EVENT_FLUSH_TIMEOUT_MS,
+            MRJobConfig.DEFAULT_MR_AM_HISTORY_COMPLETE_EVENT_FLUSH_TIMEOUT_MS);
+    minQueueSizeForBatchingFlushes =
+        conf.getInt(
+            MRJobConfig.MR_AM_HISTORY_USE_BATCHED_FLUSH_QUEUE_SIZE_THRESHOLD,
+            MRJobConfig.DEFAULT_MR_AM_HISTORY_USE_BATCHED_FLUSH_QUEUE_SIZE_THRESHOLD);
+
+    // TODO replace MR specific configurations on timeline service with getting
+    // configuration from RM through registerApplicationMaster() in
+    // ApplicationMasterProtocol with return value for timeline service
+    // configuration status: off, on_with_v1 or on_with_v2.
+    if (conf.getBoolean(MRJobConfig.MAPREDUCE_JOB_EMIT_TIMELINE_DATA,
+        MRJobConfig.DEFAULT_MAPREDUCE_JOB_EMIT_TIMELINE_DATA)) {
+      LOG.info("Emitting job history data to the timeline service is enabled");
+      if (YarnConfiguration.timelineServiceEnabled(conf)) {
+        boolean timelineServiceV2Enabled =
+            YarnConfiguration.timelineServiceV2Enabled(conf);
+        if(timelineServiceV2Enabled) {
+          timelineV2Client =
+              ((MRAppMaster.RunningAppContext)context).getTimelineV2Client();
+          timelineV2Client.init(conf);
+        } else {
+          timelineClient =
+              ((MRAppMaster.RunningAppContext) context).getTimelineClient();
+          timelineClient.init(conf);
+        }
+        handleTimelineEvent = true;
+        LOG.info("Timeline service is enabled; version: " +
+            YarnConfiguration.getTimelineServiceVersion(conf));
+      } else {
+        LOG.info("Timeline service is not enabled");
+      }
+    } else {
+      LOG.info("Emitting job history data to the timeline server is not " +
+          "enabled");
+    }
+
+    // Flag for setting
+    String jhistFormat = conf.get(JHAdminConfig.MR_HS_JHIST_FORMAT,
+        JHAdminConfig.DEFAULT_MR_HS_JHIST_FORMAT);
+    if (jhistFormat.equals("json")) {
+      jhistMode = EventWriter.WriteMode.JSON;
+    } else if (jhistFormat.equals("binary")) {
+      jhistMode = EventWriter.WriteMode.BINARY;
+    } else {
+      LOG.warn("Unrecognized value '" + jhistFormat + "' for property " +
+          JHAdminConfig.MR_HS_JHIST_FORMAT + ".  Valid values are " +
+          "'json' or 'binary'.  Falling back to default value '" +
+          JHAdminConfig.DEFAULT_MR_HS_JHIST_FORMAT + "'.");
+    }
+    // initiate the atsEventDispatcher for timeline event
+    // if timeline service is enabled.
+    if (handleTimelineEvent) {
+      atsEventDispatcher = createDispatcher();
+      EventHandler<JobHistoryEvent> timelineEventHandler =
+          new ForwardingEventHandler();
+      atsEventDispatcher.register(EventType.class, timelineEventHandler);
+      atsEventDispatcher.setDrainEventsOnStop();
+      atsEventDispatcher.init(conf);
+    }
+    super.serviceInit(conf);
+  }
+
+}

@@ -1,0 +1,21 @@
+```java
+String [] nns =
+conf.getStrings(MRJobConfig.JOB_NAMENODES_TOKEN_RENEWAL_EXCLUDE);
+if (nns != null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is set with values: {}", MRJobConfig.JOB_NAMENODES_TOKEN_RENEWAL_EXCLUDE, Arrays.toString(nns));
+    // ConfLogger Inserted End
+    String host = fs.getUri().getHost();
+    for(int i=0; i< nns.length; i++) {
+        if (nns[i].equals(host)) {
+            return true;
+        }
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter '{}' is not set. Default behavior will be applied.", MRJobConfig.JOB_NAMENODES_TOKEN_RENEWAL_EXCLUDE);
+    // ConfLogger Inserted End
+}
+return false;
+}
+```

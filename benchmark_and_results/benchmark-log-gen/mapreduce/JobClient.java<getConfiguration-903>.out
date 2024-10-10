@@ -1,0 +1,35 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobClient.java	methodSinagture:	org.apache.hadoop.mapred.JobClient.getConfiguration(Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration;	methodLines:	903:917
+blockLines:	911:-1
+paras:	null
+TaintedStat:	NORMAL getConfiguration:conditional branch(ne, to iindex=47) 23,5 Node: < Application, Lorg/apache/hadoop/mapred/JobClient, getConfiguration(Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/JobClient, getConfiguration(Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[30]23 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getResource(Ljava/lang/String;)Ljava/net/URL; > 3,21 @58 exception:22
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/JobClient, getConfiguration(Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[30]23 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getResource(Ljava/lang/String;)Ljava/net/URL; > 3,21 @58 exception:22
+NORMAL getConfiguration:conditional branch(ne, to iindex=47) 23,5 Node: < Application, Lorg/apache/hadoop/mapred/JobClient, getConfiguration(Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  {
+    Configuration conf = new Configuration();
+    if (jobTrackerSpec != null) {        
+      if (jobTrackerSpec.indexOf(":") >= 0) {
+        conf.set("mapred.job.tracker", jobTrackerSpec);
+      } else {
+        String classpathFile = "hadoop-" + jobTrackerSpec + ".xml";
+        URL validate = conf.getResource(classpathFile);
+        if (validate == null) {
+          throw new RuntimeException(classpathFile + " not found on CLASSPATH");
+        }
+        conf.addResource(classpathFile);
+      }
+    }
+    return conf;
+  }
+
+
+====================ctx:=======================

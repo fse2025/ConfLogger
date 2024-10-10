@@ -1,0 +1,124 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNodeUtils.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNodeUtils.getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String;	methodLines:	69:118
+blockLines:	74:-1
+paras:	null
+TaintedStat:	NORMAL getClientNamenodeAddress:conditional branch(ne, to iindex=12) 8,9 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeUtils, getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeUtils, getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[5]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,6 @8 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeUtils, getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[5]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,6 @8 exception:7
+NORMAL getClientNamenodeAddress:conditional branch(ne, to iindex=12) 8,9 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeUtils, getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNodeUtils.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNodeUtils.getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String;	methodLines:	69:118
+blockLines:	105:-1
+paras:	null
+TaintedStat:	NORMAL getClientNamenodeAddress:conditional branch(ne, to iindex=77) 45,9 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeUtils, getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeUtils, getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[69]44 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,42 @134 exception:43
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeUtils, getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[69]44 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,42 @134 exception:43
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeUtils, getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:45 = phi  9,44
+NORMAL getClientNamenodeAddress:conditional branch(ne, to iindex=77) 45,9 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeUtils, getClientNamenodeAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Configuration conf, @Nullable String nsId) {
+    final Collection<String> nameservices =
+        DFSUtilClient.getNameServiceIds(conf);
+
+    final String nnAddr = conf.get(FS_DEFAULT_NAME_KEY);
+    if (nnAddr == null) {
+      // default fs is not set.
+      return null;
+    }
+
+    LOG.info("{} is {}", FS_DEFAULT_NAME_KEY, nnAddr);
+    final URI nnUri = URI.create(nnAddr);
+
+    String defaultNnHost = nnUri.getHost();
+    if (defaultNnHost == null) {
+      return null;
+    }
+
+    // Current Nameservice is HA.
+    if (nsId != null && nameservices.contains(nsId)) {
+      final Collection<String> namenodes = conf.getTrimmedStringCollection(
+          DFS_HA_NAMENODES_KEY_PREFIX + "." + nsId);
+      if (namenodes.size() > 1) {
+        return nsId;
+      }
+    }
+
+    // Federation without HA. We must handle the case when the current NN
+    // is not in the default nameservice.
+    String currentNnAddress = null;
+    if (nsId != null) {
+      String hostNameKey = DFS_NAMENODE_RPC_ADDRESS_KEY + "." + nsId;
+      currentNnAddress = conf.get(hostNameKey);
+    }
+
+    // Fallback to the address in fs.defaultFS.
+    if (currentNnAddress == null) {
+      currentNnAddress = nnUri.getAuthority();
+    }
+
+    int port = 0;
+    if (currentNnAddress.contains(":")) {
+      port = Integer.parseInt(currentNnAddress.split(":")[1]);
+    }
+
+    if (port > 0) {
+       return currentNnAddress;
+    } else {
+      // the port is missing or 0. Figure out real bind address later.
+      return null;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V > Context: Everywhere, blocks=[BB[SSA:111..115]37 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V, BB[SSA:107..110]36 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V, BB[SSA:116..116]38 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V, BB[SSA:-1..-2]79 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V], numberOfBasicBlocks=4, firstLineNumber=1018, lastLineNumber=1020, firstMethodNumber=1012, lastMethodNumber=1052, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    super(conf);
+    this.tracer = new Tracer.Builder("NameNode").
+        conf(TraceUtils.wrapHadoopConf(NAMENODE_HTRACE_PREFIX, conf)).
+        build();
+    this.role = role;
+    String nsId = getNameServiceId(conf);
+    String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    clientNamenodeAddress = NameNodeUtils.getClientNamenodeAddress(
+        conf, nsId);
+
+    if (clientNamenodeAddress != null) {
+      LOG.info("Clients should use {} to access"
+          + " this namenode/service.", clientNamenodeAddress);
+    }
+    this.haEnabled = HAUtil.isHAEnabled(conf, nsId);
+    state = createHAState(getStartupOption(conf));
+    this.allowStaleStandbyReads = HAUtil.shouldAllowStandbyReads(conf);
+    this.haContext = createHAContext();
+    try {
+      initializeGenericKeys(conf, nsId, namenodeId);
+      initialize(getConf());
+      state.prepareToEnterState(haContext);
+      try {
+        haContext.writeLock();
+        state.enterState(haContext);
+      } finally {
+        haContext.writeUnlock();
+      }
+    } catch (IOException e) {
+      this.stopAtException(e);
+      throw e;
+    } catch (HadoopIllegalArgumentException e) {
+      this.stopAtException(e);
+      throw e;
+    }
+    notBecomeActiveInSafemode = conf.getBoolean(
+        DFS_HA_NN_NOT_BECOME_ACTIVE_IN_SAFEMODE,
+        DFS_HA_NN_NOT_BECOME_ACTIVE_IN_SAFEMODE_DEFAULT);
+    this.started.set(true);
+  }
+
+}

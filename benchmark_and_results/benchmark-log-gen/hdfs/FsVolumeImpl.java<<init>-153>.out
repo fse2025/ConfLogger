@@ -1,0 +1,93 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FsVolumeImpl.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.FsVolumeImpl.<init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/DF;)V	methodLines:	153:193
+blockLines:	174:-1
+paras:	dfs.datanode.fixed.volume.size
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=94) 45,43 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/DF;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/DF;)V > Context: Everywhere[84]45 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 6,42,43 @174 exception:44
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/DF;)V > Context: Everywhere[84]45 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 6,42,43 @174 exception:44
+NORMAL <init>:conditional branch(eq, to iindex=94) 45,43 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/DF;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      FileIoProvider fileIoProvider, Configuration conf, DF usage)
+      throws IOException {
+
+    if (sd.getStorageLocation() == null) {
+      throw new IOException("StorageLocation specified for storage directory " +
+          sd + " is null");
+    }
+    this.dataset = dataset;
+    this.storageID = storageID;
+    this.reservedForReplicas = new AtomicLong(0L);
+    this.storageLocation = sd.getStorageLocation();
+    this.currentDir = sd.getCurrentDir();
+    this.storageType = storageLocation.getStorageType();
+    this.configuredCapacity = -1;
+    this.usage = usage;
+    if (this.usage != null) {
+      reserved = new ReservedSpaceCalculator.Builder(conf)
+          .setUsage(this.usage).setStorageType(storageType).build();
+      boolean fixedSizeVolume = conf.getBoolean(
+          DFSConfigKeys.DFS_DATANODE_FIXED_VOLUME_SIZE_KEY,
+          DFSConfigKeys.DFS_DATANODE_FIXED_VOLUME_SIZE_DEFAULT);
+      if (fixedSizeVolume) {
+        cachedCapacity = this.usage.getCapacity();
+      }
+    } else {
+      reserved = null;
+      LOG.warn("Setting reserved to null as usage is null");
+      cachedCapacity = -1;
+    }
+    if (currentDir != null) {
+      File parent = currentDir.getParentFile();
+      cacheExecutor = initializeCacheExecutor(parent);
+      this.metrics = DataNodeVolumeMetrics.create(conf, parent.getPath());
+      this.baseURI = new File(currentDir.getParent()).toURI();
+    } else {
+      cacheExecutor = null;
+      this.metrics = null;
+    }
+    this.conf = conf;
+    this.fileIoProvider = fileIoProvider;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:0..7]1 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.FsVolumeImpl.<init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.FsVolumeImpl.<init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:8..8]2 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.FsVolumeImpl.<init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]3 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.FsVolumeImpl.<init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=148, lastLineNumber=150, firstMethodNumber=148, lastMethodNumber=150, isFirstLineValid=false, methodSrcCode=
+    // outside tests, usage created in ReservedSpaceCalculator.Builder
+    this(dataset, storageID, sd, fileIoProvider, conf, null);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/ProvidedVolumeImpl, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:0..7]1 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.ProvidedVolumeImpl.<init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.ProvidedVolumeImpl.<init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:8..9]2 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.ProvidedVolumeImpl.<init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]22 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.ProvidedVolumeImpl.<init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/Storage$StorageDirectory;Lorg/apache/hadoop/hdfs/server/datanode/FileIoProvider;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=270, lastLineNumber=261, firstMethodNumber=270, lastMethodNumber=278, isFirstLineValid=false, methodSrcCode=
+      Configuration conf) throws IOException {
+    super(dataset, storageID, sd, fileIoProvider, conf, null);
+    assert getStorageLocation().getStorageType() == StorageType.PROVIDED:
+      "Only provided storages must use ProvidedVolume";
+
+    baseURI = getStorageLocation().getUri();
+    df = new ProvidedVolumeDF();
+    remoteFS = FileSystem.get(baseURI, conf);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImplBuilder, build()Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl; > Context: Everywhere, blocks=[BB[SSA:69..69]39 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.FsVolumeImplBuilder.build()Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl;, BB[SSA:67..68]38 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.FsVolumeImplBuilder.build()Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl;, BB[SSA:70..70]40 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.FsVolumeImplBuilder.build()Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl;, BB[SSA:-1..-2]41 - org.apache.hadoop.hdfs.server.datanode.fsdataset.impl.FsVolumeImplBuilder.build()Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl;], numberOfBasicBlocks=4, firstLineNumber=90, lastLineNumber=90, firstMethodNumber=80, lastMethodNumber=90, isFirstLineValid=true, methodSrcCode=
+  FsVolumeImpl build() throws IOException {
+    if (sd.getStorageLocation().getStorageType() == StorageType.PROVIDED) {
+      return new ProvidedVolumeImpl(dataset, storageID, sd,
+          fileIoProvider != null ? fileIoProvider :
+            new FileIoProvider(null, null), conf);
+    }
+    if (null == usage) {
+      // set usage unless overridden by unit tests
+      usage = new DF(sd.getCurrentDir().getParentFile(), conf);
+    }
+    return new FsVolumeImpl(
+        dataset, storageID, sd,
+}

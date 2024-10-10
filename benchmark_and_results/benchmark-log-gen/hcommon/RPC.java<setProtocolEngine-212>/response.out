@@ -1,0 +1,8 @@
+```java
+if (conf.get(ENGINE_PROP+"."+protocol.getName()) == null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' for protocol '{}' is not set. Setting it to default engine class '{}'.", ENGINE_PROP + "." + protocol.getName(), protocol.getName(), engine.getName());
+    // ConfLogger Inserted End
+    conf.setClass(ENGINE_PROP+"."+protocol.getName(), engine, RpcEngine.class);
+}
+```

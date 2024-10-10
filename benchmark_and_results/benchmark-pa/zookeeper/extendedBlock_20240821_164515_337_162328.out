@@ -1,0 +1,110 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FourLetterCommands.java	methodSinagture:	org.apache.zookeeper.server.command.FourLetterCommands.isEnabled(Ljava/lang/String;)Z	methodLines:	194:225
+blockLines:	200:-1
+paras:	zookeeper.4lw.commands.whitelist
+TaintedStat:	NORMAL isEnabled:conditional branch(eq, to iindex=72) 7,8 Node: < Application, Lorg/apache/zookeeper/server/command/FourLetterCommands, isEnabled(Ljava/lang/String;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/command/FourLetterCommands, isEnabled(Ljava/lang/String;)Z > Context: Everywhere[8]7 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 5 @18 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/command/FourLetterCommands, isEnabled(Ljava/lang/String;)Z > Context: Everywhere[8]7 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 5 @18 exception:6
+NORMAL isEnabled:conditional branch(eq, to iindex=72) 7,8 Node: < Application, Lorg/apache/zookeeper/server/command/FourLetterCommands, isEnabled(Ljava/lang/String;)Z > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	FourLetterCommands.java	methodSinagture:	org.apache.zookeeper.server.command.FourLetterCommands.isEnabled(Ljava/lang/String;)Z	methodLines:	194:225
+blockLines:	203:-1
+paras:	readonlymode.enabled
+TaintedStat:	NORMAL isEnabled:conditional branch(eq, to iindex=57) 18,4 Node: < Application, Lorg/apache/zookeeper/server/command/FourLetterCommands, isEnabled(Ljava/lang/String;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/command/FourLetterCommands, isEnabled(Ljava/lang/String;)Z > Context: Everywhere[74]50 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 47,48 @165 exception:49
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/command/FourLetterCommands, isEnabled(Ljava/lang/String;)Z > Context: Everywhere[74]50 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 47,48 @165 exception:49
+NORMAL isEnabled:53 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 50,51 @170 exception:52 Node: < Application, Lorg/apache/zookeeper/server/command/FourLetterCommands, isEnabled(Ljava/lang/String;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/command/FourLetterCommands, isEnabled(Ljava/lang/String;)Z > Context: Everywhere[34]18 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 15,16 @62 exception:17
+NORMAL isEnabled:conditional branch(eq, to iindex=57) 18,4 Node: < Application, Lorg/apache/zookeeper/server/command/FourLetterCommands, isEnabled(Ljava/lang/String;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static synchronized boolean isEnabled(String command) {
+        if (whiteListInitialized) {
+            return whiteListedCommands.contains(command);
+        }
+
+        String commands = System.getProperty(ZOOKEEPER_4LW_COMMANDS_WHITELIST);
+        if (commands != null) {
+            String[] list = commands.split(",");
+            for (String cmd : list) {
+                if (cmd.trim().equals("*")) {
+                    for (Map.Entry<Integer, String> entry : cmd2String.entrySet()) {
+                        whiteListedCommands.add(entry.getValue());
+                    }
+                    break;
+                }
+                if (!cmd.trim().isEmpty()) {
+                    whiteListedCommands.add(cmd.trim());
+                }
+            }
+        }
+
+        // It is sad that isro and srvr are used by ZooKeeper itself. Need fix this
+        // before deprecating 4lw.
+        if (System.getProperty("readonlymode.enabled", "false").equals("true")) {
+            whiteListedCommands.add("isro");
+        }
+        // zkServer.sh depends on "srvr".
+        whiteListedCommands.add("srvr");
+        whiteListInitialized = true;
+        LOG.info("The list of known four letter word commands is : {}", Arrays.asList(cmd2String));
+        LOG.info("The list of enabled four letter word commands is : {}", Arrays.asList(whiteListedCommands));
+        return whiteListedCommands.contains(command);
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/NettyServerCnxn, checkFourLetterWord(Lio/netty/channel/Channel;Lio/netty/buffer/ByteBuf;I)Z > Context: Everywhere, blocks=[BB[SSA:28..30]14 - org.apache.zookeeper.server.NettyServerCnxn.checkFourLetterWord(Lio/netty/channel/Channel;Lio/netty/buffer/ByteBuf;I)Z, BB[SSA:27..27]13 - org.apache.zookeeper.server.NettyServerCnxn.checkFourLetterWord(Lio/netty/channel/Channel;Lio/netty/buffer/ByteBuf;I)Z, BB[SSA:31..32]15 - org.apache.zookeeper.server.NettyServerCnxn.checkFourLetterWord(Lio/netty/channel/Channel;Lio/netty/buffer/ByteBuf;I)Z, BB[SSA:-1..-2]44 - org.apache.zookeeper.server.NettyServerCnxn.checkFourLetterWord(Lio/netty/channel/Channel;Lio/netty/buffer/ByteBuf;I)Z], numberOfBasicBlocks=4, firstLineNumber=298, lastLineNumber=301, firstMethodNumber=285, lastMethodNumber=324, isFirstLineValid=true, methodSrcCode=
+        // for cmds. They are all 4-bytes which fits inside of an int
+        if (!FourLetterCommands.isKnown(len)) {
+            return false;
+        }
+
+        String cmd = FourLetterCommands.getCommandString(len);
+
+        // Stops automatic reads of incoming data on this channel. We don't
+        // expect any more traffic from the client when processing a 4LW
+        // so this shouldn't break anything.
+        channel.config().setAutoRead(false);
+        packetReceived(4);
+
+        final PrintWriter pwriter = new PrintWriter(new BufferedWriter(new SendBufferWriter()));
+
+        // ZOOKEEPER-2693: don't execute 4lw if it's not enabled.
+        if (!FourLetterCommands.isEnabled(cmd)) {
+            LOG.debug("Command {} is not executed because it is not in the whitelist.", cmd);
+            NopCommand nopCmd = new NopCommand(
+                pwriter,
+                this,
+                cmd + " is not executed because it is not in the whitelist.");
+            nopCmd.start();
+            return true;
+        }
+
+        LOG.info("Processing {} command from {}", cmd, channel.remoteAddress());
+
+        if (len == FourLetterCommands.setTraceMaskCmd) {
+            ByteBuffer mask = ByteBuffer.allocate(8);
+            message.readBytes(mask);
+            mask.flip();
+            long traceMask = mask.getLong();
+            ZooTrace.setTextTraceLevel(traceMask);
+            SetTraceMaskCommand setMask = new SetTraceMaskCommand(pwriter, this, traceMask);
+            setMask.start();
+            return true;
+        } else {
+            CommandExecutor commandExecutor = new CommandExecutor();
+            return commandExecutor.execute(this, pwriter, len, zkServer, factory);
+        }
+}

@@ -1,0 +1,200 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	741:806
+blockLines:	744:-1
+paras:	dfs.metrics.percentiles.intervals
+TaintedStat:	NORMAL initialize:conditional branch(eq, to iindex=16) 10,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[7]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,8 @12 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[7]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,8 @12 exception:9
+NORMAL initialize:conditional branch(eq, to iindex=16) 10,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	741:806
+blockLines:	742:-1
+paras:	hadoop.user.group.metrics.percentiles.intervals
+TaintedStat:	NORMAL initialize:conditional branch(ne, to iindex=16) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+NORMAL initialize:conditional branch(ne, to iindex=16) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	741:806
+blockLines:	761:-1
+paras:	dfs.namenode.gc.time.monitor.sleep.interval.ms
+TaintedStat:	NORMAL initialize:conditional branch(eq, to iindex=80) 33,34 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[60]44 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTimeDuration(Ljava/lang/String;JLjava/util/concurrent/TimeUnit;)J > 2,40,41,42 @121 exception:43
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[60]44 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTimeDuration(Ljava/lang/String;JLjava/util/concurrent/TimeUnit;)J > 2,40,41,42 @121 exception:43
+NORMAL initialize:50 = invokevirtual < Application, Lorg/apache/hadoop/util/GcTimeMonitor$Builder, sleepIntervalMs(J)Lorg/apache/hadoop/util/GcTimeMonitor$Builder; > 48,44 @140 exception:49 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/GcTimeMonitor$Builder, sleepIntervalMs(J)Lorg/apache/hadoop/util/GcTimeMonitor$Builder; > Context: Everywhere
+NORMAL sleepIntervalMs:return 1 Node: < Extension, Lorg/apache/hadoop/util/GcTimeMonitor$Builder, sleepIntervalMs(J)Lorg/apache/hadoop/util/GcTimeMonitor$Builder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/GcTimeMonitor$Builder, sleepIntervalMs(J)Lorg/apache/hadoop/util/GcTimeMonitor$Builder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[69]50 = invokevirtual < Application, Lorg/apache/hadoop/util/GcTimeMonitor$Builder, sleepIntervalMs(J)Lorg/apache/hadoop/util/GcTimeMonitor$Builder; > 48,44 @140 exception:49
+NORMAL initialize:52 = invokevirtual < Application, Lorg/apache/hadoop/util/GcTimeMonitor$Builder, build()Lorg/apache/hadoop/util/GcTimeMonitor; > 50 @143 exception:51 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/GcTimeMonitor$Builder, build()Lorg/apache/hadoop/util/GcTimeMonitor; > Context: Everywhere
+NORMAL build:invokespecial < Extension, Lorg/apache/hadoop/util/GcTimeMonitor, <init>(JJILorg/apache/hadoop/util/GcTimeMonitor$GcTimeAlertHandler;)V > 3,4,5,6,7 @20 exception:8 Node: < Extension, Lorg/apache/hadoop/util/GcTimeMonitor$Builder, build()Lorg/apache/hadoop/util/GcTimeMonitor; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/GcTimeMonitor, <init>(JJILorg/apache/hadoop/util/GcTimeMonitor$GcTimeAlertHandler;)V > Context: Everywhere
+NORMAL <init>:62 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 60 @218 exception:61 Node: < Extension, Lorg/apache/hadoop/util/GcTimeMonitor, <init>(JJILorg/apache/hadoop/util/GcTimeMonitor$GcTimeAlertHandler;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @21 exception:14
+NORMAL getClientBackoffEnable:18 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,15,16 @28 exception:17 Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:conditional branch(eq, to iindex=11) 7,6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[47]33 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,30,31 @93 exception:32
+NORMAL initialize:conditional branch(eq, to iindex=80) 33,34 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected void initialize(Configuration conf) throws IOException {
+    if (conf.get(HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS) == null) {
+      String intervals = conf.get(DFS_METRICS_PERCENTILES_INTERVALS_KEY);
+      if (intervals != null) {
+        conf.set(HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS,
+          intervals);
+      }
+    }
+
+    UserGroupInformation.setConfiguration(conf);
+    loginAsNameNodeUser(conf);
+
+    NameNode.initMetrics(conf, this.getRole());
+    StartupProgressMetrics.register(startupProgress);
+
+    pauseMonitor = new JvmPauseMonitor();
+    pauseMonitor.init(conf);
+    pauseMonitor.start();
+    metrics.getJvmMetrics().setPauseMonitor(pauseMonitor);
+
+    if (conf.getBoolean(DFS_NAMENODE_GC_TIME_MONITOR_ENABLE,
+        DFS_NAMENODE_GC_TIME_MONITOR_ENABLE_DEFAULT)) {
+      long observationWindow = conf.getTimeDuration(
+          DFS_NAMENODE_GC_TIME_MONITOR_OBSERVATION_WINDOW_MS,
+          DFS_NAMENODE_GC_TIME_MONITOR_OBSERVATION_WINDOW_MS_DEFAULT,
+          TimeUnit.MILLISECONDS);
+      long sleepInterval = conf.getTimeDuration(
+          DFS_NAMENODE_GC_TIME_MONITOR_SLEEP_INTERVAL_MS,
+          DFS_NAMENODE_GC_TIME_MONITOR_SLEEP_INTERVAL_MS_DEFAULT,
+          TimeUnit.MILLISECONDS);
+      gcTimeMonitor = new Builder().observationWindowMs(observationWindow)
+          .sleepIntervalMs(sleepInterval).build();
+      gcTimeMonitor.start();
+      metrics.getJvmMetrics().setGcTimeMonitor(gcTimeMonitor);
+    }
+
+    if (NamenodeRole.NAMENODE == role) {
+      startHttpServer(conf);
+    }
+
+    loadNamesystem(conf);
+    startAliasMapServerIfNecessary(conf);
+
+    rpcServer = createRpcServer(conf);
+
+    initReconfigurableBackoffKey();
+
+    if (clientNamenodeAddress == null) {
+      // This is expected for MiniDFSCluster. Set it now using 
+      // the RPC server's bind address.
+      clientNamenodeAddress = 
+          NetUtils.getHostPortString(getNameNodeAddress());
+      LOG.info("Clients are to use " + clientNamenodeAddress + " to access"
+          + " this namenode/service.");
+    }
+    if (NamenodeRole.NAMENODE == role) {
+      httpServer.setNameNodeAddress(getNameNodeAddress());
+      httpServer.setFSImage(getFSImage());
+      if (levelDBAliasMapServer != null) {
+        httpServer.setAliasMap(levelDBAliasMapServer.getAliasMap());
+      }
+    }
+
+    startCommonServices(conf);
+    startMetricsLogger(conf);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/BackupNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:11..14]4 - org.apache.hadoop.hdfs.server.namenode.BackupNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:8..10]3 - org.apache.hadoop.hdfs.server.namenode.BackupNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:15..16]5 - org.apache.hadoop.hdfs.server.namenode.BackupNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]25 - org.apache.hadoop.hdfs.server.namenode.BackupNode.initialize(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=153, lastLineNumber=155, firstMethodNumber=146, lastMethodNumber=174, isFirstLineValid=true, methodSrcCode=
+    // conditions resulting from laxer synchronization
+    conf.setBoolean(DFSConfigKeys.DFS_NAMENODE_EDITS_ASYNC_LOGGING, false);
+
+    // Trash is disabled in BackupNameNode,
+    // but should be turned back on if it ever becomes active.
+    conf.setLong(CommonConfigurationKeys.FS_TRASH_INTERVAL_KEY, 
+                 CommonConfigurationKeys.FS_TRASH_INTERVAL_DEFAULT);
+    NamespaceInfo nsInfo = handshake(conf);
+    super.initialize(conf);
+    namesystem.setBlockPoolId(nsInfo.getBlockPoolID());
+
+    if (false == namesystem.isInSafeMode()) {
+      namesystem.setSafeMode(SafeModeAction.SAFEMODE_ENTER);
+    }
+
+    // Backup node should never do lease recovery,
+    // therefore lease hard limit should never expire.
+    namesystem.leaseManager.setLeasePeriod(
+        HdfsConstants.LEASE_SOFTLIMIT_PERIOD, Long.MAX_VALUE);
+
+    // register with the active name-node 
+    registerWith(nsInfo);
+    // Checkpoint daemon should start after the rpc server started
+    runCheckpointDaemon(conf);
+    InetSocketAddress addr = getHttpAddress();
+    if (addr != null) {
+      conf.set(BN_HTTP_ADDRESS_NAME_KEY, NetUtils.getHostPortString(getHttpAddress()));
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V > Context: Everywhere, blocks=[BB[SSA:152..152]54 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V, BB[SSA:149..151]53 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V, BB[SSA:153..154]55 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V, BB[SSA:-1..-2]79 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V], numberOfBasicBlocks=4, firstLineNumber=1033, lastLineNumber=1034, firstMethodNumber=1012, lastMethodNumber=1052, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    super(conf);
+    this.tracer = new Tracer.Builder("NameNode").
+        conf(TraceUtils.wrapHadoopConf(NAMENODE_HTRACE_PREFIX, conf)).
+        build();
+    this.role = role;
+    String nsId = getNameServiceId(conf);
+    String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    clientNamenodeAddress = NameNodeUtils.getClientNamenodeAddress(
+        conf, nsId);
+
+    if (clientNamenodeAddress != null) {
+      LOG.info("Clients should use {} to access"
+          + " this namenode/service.", clientNamenodeAddress);
+    }
+    this.haEnabled = HAUtil.isHAEnabled(conf, nsId);
+    state = createHAState(getStartupOption(conf));
+    this.allowStaleStandbyReads = HAUtil.shouldAllowStandbyReads(conf);
+    this.haContext = createHAContext();
+    try {
+      initializeGenericKeys(conf, nsId, namenodeId);
+      initialize(getConf());
+      state.prepareToEnterState(haContext);
+      try {
+        haContext.writeLock();
+        state.enterState(haContext);
+      } finally {
+        haContext.writeUnlock();
+      }
+    } catch (IOException e) {
+      this.stopAtException(e);
+      throw e;
+    } catch (HadoopIllegalArgumentException e) {
+      this.stopAtException(e);
+      throw e;
+    }
+    notBecomeActiveInSafemode = conf.getBoolean(
+        DFS_HA_NN_NOT_BECOME_ACTIVE_IN_SAFEMODE,
+        DFS_HA_NN_NOT_BECOME_ACTIVE_IN_SAFEMODE_DEFAULT);
+    this.started.set(true);
+  }
+
+}

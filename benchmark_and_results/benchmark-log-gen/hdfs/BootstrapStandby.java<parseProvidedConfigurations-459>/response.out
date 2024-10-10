@@ -1,0 +1,29 @@
+```java
+boolean providedEnabled = configuration.getBoolean(
+    DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED,
+    DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED_DEFAULT);
+boolean inmemoryAliasmapConfigured = configuration.getBoolean(
+    DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED,
+    DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED_DEFAULT);
+
+if (providedEnabled && inmemoryAliasmapConfigured) {
+    inMemoryAliasMapEnabled = true;
+    aliasMapPath = configuration.get(
+        DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_LEVELDB_DIR);
+    // ConfLogger Inserted Start
+    logger.info("In-memory alias map enabled. Configuration parameters: " +
+                "DFS_NAMENODE_PROVIDED_ENABLED={}, DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED={}, " +
+                "DFS_PROVIDED_ALIASMAP_INMEMORY_LEVELDB_DIR={}", 
+                providedEnabled, inmemoryAliasmapConfigured, aliasMapPath);
+    // ConfLogger Inserted End
+} else {
+    inMemoryAliasMapEnabled = false;
+    aliasMapPath = null;
+    // ConfLogger Inserted Start
+    logger.warn("In-memory alias map not enabled. Configuration parameters: " +
+                "DFS_NAMENODE_PROVIDED_ENABLED={}, DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED={}. " +
+                "Ensure both parameters are set to true to enable the in-memory alias map.",
+                providedEnabled, inmemoryAliasmapConfigured);
+    // ConfLogger Inserted End
+}
+```

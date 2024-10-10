@@ -1,0 +1,79 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileOutputCommitter.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter.commitTask(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Lorg/apache/hadoop/fs/Path;)V	methodLines:	577:629
+blockLines:	612:-1
+paras:	mapreduce.fileoutputcommitter.task.cleanup.enabled
+TaintedStat:	NORMAL commitTask:conditional branch(eq, to iindex=170) 63,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter, commitTask(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Lorg/apache/hadoop/fs/Path;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapred/FileOutputCommitter, getWrapped(Lorg/apache/hadoop/mapred/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapred/FileOutputCommitter in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapred/FileOutputCommitter, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter, commitTask(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Lorg/apache/hadoop/fs/Path;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapred/FileOutputCommitter, getWrapped(Lorg/apache/hadoop/mapred/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapred/FileOutputCommitter in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapred/FileOutputCommitter, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere][126]63 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 60,61,9 @276 exception:62
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter, commitTask(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Lorg/apache/hadoop/fs/Path;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapred/FileOutputCommitter, getWrapped(Lorg/apache/hadoop/mapred/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapred/FileOutputCommitter in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapred/FileOutputCommitter, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere][126]63 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 60,61,9 @276 exception:62
+NORMAL commitTask:conditional branch(eq, to iindex=170) 63,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter, commitTask(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Lorg/apache/hadoop/fs/Path;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapred/FileOutputCommitter, getWrapped(Lorg/apache/hadoop/mapred/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapred/FileOutputCommitter in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapred/FileOutputCommitter, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    TaskAttemptID attemptId = context.getTaskAttemptID();
+    if (hasOutputPath()) {
+      context.progress();
+      if(taskAttemptPath == null) {
+        taskAttemptPath = getTaskAttemptPath(context);
+      }
+      FileSystem fs = taskAttemptPath.getFileSystem(context.getConfiguration());
+      FileStatus taskAttemptDirStatus;
+      try {
+        taskAttemptDirStatus = fs.getFileStatus(taskAttemptPath);
+      } catch (FileNotFoundException e) {
+        taskAttemptDirStatus = null;
+      }
+
+      if (taskAttemptDirStatus != null) {
+        if (algorithmVersion == 1) {
+          Path committedTaskPath = getCommittedTaskPath(context);
+          if (fs.exists(committedTaskPath)) {
+             if (!fs.delete(committedTaskPath, true)) {
+               throw new IOException("Could not delete " + committedTaskPath);
+             }
+          }
+          if (!fs.rename(taskAttemptPath, committedTaskPath)) {
+            throw new IOException("Could not rename " + taskAttemptPath + " to "
+                + committedTaskPath);
+          }
+          LOG.info("Saved output of task '" + attemptId + "' to " +
+              committedTaskPath);
+        } else {
+          // directly merge everything from taskAttemptPath to output directory
+          mergePaths(fs, taskAttemptDirStatus, outputPath, context);
+          LOG.info("Saved output of task '" + attemptId + "' to " +
+              outputPath);
+
+          if (context.getConfiguration().getBoolean(
+              FILEOUTPUTCOMMITTER_TASK_CLEANUP_ENABLED,
+              FILEOUTPUTCOMMITTER_TASK_CLEANUP_ENABLED_DEFAULT)) {
+            LOG.debug(String.format(
+                "Deleting the temporary directory of '%s': '%s'",
+                attemptId, taskAttemptPath));
+            if(!fs.delete(taskAttemptPath, true)) {
+              LOG.warn("Could not delete " + taskAttemptPath);
+            }
+          }
+        }
+      } else {
+        LOG.warn("No Output found for " + attemptId);
+      }
+    } else {
+      LOG.warn("Output Path is null in commitTask()");
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/FileOutputCommitter, commitTask(Lorg/apache/hadoop/mapred/TaskAttemptContext;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapred/FileOutputCommitter in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapred/FileOutputCommitter, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:7..7]3 - org.apache.hadoop.mapred.FileOutputCommitter.commitTask(Lorg/apache/hadoop/mapred/TaskAttemptContext;)V, BB[SSA:3..6]2 - org.apache.hadoop.mapred.FileOutputCommitter.commitTask(Lorg/apache/hadoop/mapred/TaskAttemptContext;)V, BB[SSA:8..8]4 - org.apache.hadoop.mapred.FileOutputCommitter.commitTask(Lorg/apache/hadoop/mapred/TaskAttemptContext;)V, BB[SSA:-1..-2]5 - org.apache.hadoop.mapred.FileOutputCommitter.commitTask(Lorg/apache/hadoop/mapred/TaskAttemptContext;)V], numberOfBasicBlocks=4, firstLineNumber=172, lastLineNumber=173, firstMethodNumber=171, lastMethodNumber=173, isFirstLineValid=true, methodSrcCode=
+  public void commitTask(TaskAttemptContext context) throws IOException {
+    getWrapped(context).commitTask(context, getTaskAttemptPath(context));
+  }
+
+}

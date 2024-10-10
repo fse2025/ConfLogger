@@ -1,0 +1,33 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	WebAppUtils.java	methodSinagture:	org.apache.hadoop.yarn.webapp.util.WebAppUtils.getWebAppBindURL(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	324:336
+blockLines:	326:-1
+paras:	null
+TaintedStat:	NORMAL getWebAppBindURL:conditional branch(eq, to iindex=44) 6,7 Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getWebAppBindURL(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getWebAppBindURL(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getWebAppBindURL(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5
+NORMAL getWebAppBindURL:conditional branch(eq, to iindex=44) 6,7 Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getWebAppBindURL(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // portion of the corresponding webAppURLWithoutScheme
+    String host = conf.getTrimmed(hostProperty);
+    if (host != null && !host.isEmpty()) {
+      if (webAppURLWithoutScheme.contains(":")) {
+        webAppURLWithoutScheme = host + ":" + webAppURLWithoutScheme.split(":")[1];
+      }
+      else {
+        throw new YarnRuntimeException("webAppURLWithoutScheme must include port specification but doesn't: " +
+                                       webAppURLWithoutScheme);
+      }
+    }
+
+    return webAppURLWithoutScheme;
+  }
+
+
+====================ctx:=======================

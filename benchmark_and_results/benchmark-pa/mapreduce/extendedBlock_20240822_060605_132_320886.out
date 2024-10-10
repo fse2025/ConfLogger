@@ -1,0 +1,83 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Chain.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.chain.Chain.setup(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	818:839
+blockLines:	822:-1
+paras:	null
+TaintedStat:	NORMAL setup:conditional branch(ge, to iindex=69) 58,18 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[14]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,15,16 @29 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[14]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,15,16 @29 exception:17
+NORMAL setup:conditional branch(ge, to iindex=69) 58,18 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	Chain.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.chain.Chain.setup(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	818:839
+blockLines:	835:-1
+paras:	null
+TaintedStat:	NORMAL setup:conditional branch(eq, to iindex=104) 70,30 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[34]33 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,29,30,31 @70 exception:32
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[34]33 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,29,30,31 @70 exception:32
+NORMAL setup:51 = invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 33,46 @121 exception:50 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+NORMAL newInstance:21 = invokevirtual < Extension, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; > 17,19 @46 exception:20 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+METHOD_ENTRY:Node: synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; > Context: DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]
+NORMAL newInstance:invokespecial < Extension, Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback, <init>()V > 3 @1 exception:4 Node: synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; > Context: DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback, <init>()V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL <init>:conditional branch(eq, to iindex=36) 16,6 Node: < Extension, Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback, <init>()V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL <init>:31 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 29 @84 exception:30 Node: < Extension, Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback, <init>()V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/JniBasedUnixGroupsMappingWithFallback, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[31]29 = invokevirtual < Application, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 27 @64 exception:28
+NORMAL setup:[null]: 33 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,29,30,31 @70 exception:32 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+NORMAL getClass:conditional branch(eq, to iindex=35) 7,8 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+NORMAL getClass:return 13 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[80]70 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,67,30,68 @170 exception:69
+NORMAL setup:conditional branch(eq, to iindex=104) 70,30 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  void setup(Configuration jobConf) {
+    String prefix = getPrefix(isMap);
+
+    int index = jobConf.getInt(prefix + CHAIN_MAPPER_SIZE, 0);
+    for (int i = 0; i < index; i++) {
+      Class<? extends Mapper> klass = jobConf.getClass(prefix
+          + CHAIN_MAPPER_CLASS + i, null, Mapper.class);
+      Configuration mConf = getChainElementConf(jobConf, prefix
+          + CHAIN_MAPPER_CONFIG + i);
+      confList.add(mConf);
+      Mapper mapper = ReflectionUtils.newInstance(klass, mConf);
+      mappers.add(mapper);
+
+    }
+
+    Class<? extends Reducer> klass = jobConf.getClass(prefix
+        + CHAIN_REDUCER_CLASS, null, Reducer.class);
+    if (klass != null) {
+      rConf = getChainElementConf(jobConf, prefix + CHAIN_REDUCER_CONFIG);
+      reducer = ReflectionUtils.newInstance(klass, rConf);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/ChainReducer, setup(Lorg/apache/hadoop/mapreduce/Reducer$Context;)V > Context: Everywhere, blocks=[BB[SSA:10..10]6 - org.apache.hadoop.mapreduce.lib.chain.ChainReducer.setup(Lorg/apache/hadoop/mapreduce/Reducer$Context;)V, BB[SSA:8..9]5 - org.apache.hadoop.mapreduce.lib.chain.ChainReducer.setup(Lorg/apache/hadoop/mapreduce/Reducer$Context;)V, BB[SSA:11..11]7 - org.apache.hadoop.mapreduce.lib.chain.ChainReducer.setup(Lorg/apache/hadoop/mapreduce/Reducer$Context;)V, BB[SSA:-1..-2]8 - org.apache.hadoop.mapreduce.lib.chain.ChainReducer.setup(Lorg/apache/hadoop/mapreduce/Reducer$Context;)V], numberOfBasicBlocks=4, firstLineNumber=182, lastLineNumber=183, firstMethodNumber=180, lastMethodNumber=183, isFirstLineValid=true, methodSrcCode=
+  protected void setup(Context context) {
+    chain = new Chain(false);
+    chain.setup(context.getConfiguration());
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/ChainMapper, setup(Lorg/apache/hadoop/mapreduce/Mapper$Context;)V > Context: Everywhere, blocks=[BB[SSA:10..10]6 - org.apache.hadoop.mapreduce.lib.chain.ChainMapper.setup(Lorg/apache/hadoop/mapreduce/Mapper$Context;)V, BB[SSA:8..9]5 - org.apache.hadoop.mapreduce.lib.chain.ChainMapper.setup(Lorg/apache/hadoop/mapreduce/Mapper$Context;)V, BB[SSA:11..11]7 - org.apache.hadoop.mapreduce.lib.chain.ChainMapper.setup(Lorg/apache/hadoop/mapreduce/Mapper$Context;)V, BB[SSA:-1..-2]8 - org.apache.hadoop.mapreduce.lib.chain.ChainMapper.setup(Lorg/apache/hadoop/mapreduce/Mapper$Context;)V], numberOfBasicBlocks=4, firstLineNumber=134, lastLineNumber=135, firstMethodNumber=132, lastMethodNumber=135, isFirstLineValid=true, methodSrcCode=
+  protected void setup(Context context) {
+    chain = new Chain(true);
+    chain.setup(context.getConfiguration());
+  }
+
+}

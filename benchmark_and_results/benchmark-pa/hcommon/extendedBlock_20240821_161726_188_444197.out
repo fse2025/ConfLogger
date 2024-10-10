@@ -1,0 +1,205 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NetUtils.java	methodSinagture:	org.apache.hadoop.net.NetUtils.wrapException(Ljava/lang/String;ILjava/lang/String;ILjava/io/IOException;)Ljava/io/IOException;	methodLines:	824:913
+blockLines:	838:-1
+paras:	fs.ftp.host
+TaintedStat:	NORMAL wrapException:conditional branch(eq, to iindex=50) 1,211 Node: < Application, Lorg/apache/hadoop/net/NetUtils, wrapException(Ljava/lang/String;ILjava/lang/String;ILjava/io/IOException;)Ljava/io/IOException; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, connect()Lorg/apache/commons/net/ftp/FTPClient; > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @10 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, connect()Lorg/apache/commons/net/ftp/FTPClient; > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @10 exception:7
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, connect()Lorg/apache/commons/net/ftp/FTPClient; > Context: Everywhere[66]93 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, wrapException(Ljava/lang/String;ILjava/lang/String;ILjava/io/IOException;)Ljava/io/IOException; > 8,12,80,42,81 @136 exception:92 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/net/NetUtils, wrapException(Ljava/lang/String;ILjava/lang/String;ILjava/io/IOException;)Ljava/io/IOException; > Context: Everywhere v1
+NORMAL wrapException:conditional branch(eq, to iindex=50) 1,211 Node: < Application, Lorg/apache/hadoop/net/NetUtils, wrapException(Ljava/lang/String;ILjava/lang/String;ILjava/io/IOException;)Ljava/io/IOException; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NetUtils.java	methodSinagture:	org.apache.hadoop.net.NetUtils.wrapException(Ljava/lang/String;ILjava/lang/String;ILjava/io/IOException;)Ljava/io/IOException;	methodLines:	824:913
+blockLines:	839:-1
+paras:	fs.ftp.host.port
+TaintedStat:	NORMAL wrapException:conditional branch(ne, to iindex=65) 2,8 Node: < Application, Lorg/apache/hadoop/net/NetUtils, wrapException(Ljava/lang/String;ILjava/lang/String;ILjava/io/IOException;)Ljava/io/IOException; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, connect()Lorg/apache/commons/net/ftp/FTPClient; > Context: Everywhere[12]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 5,9,10 @19 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, connect()Lorg/apache/commons/net/ftp/FTPClient; > Context: Everywhere[12]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 5,9,10 @19 exception:11
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, connect()Lorg/apache/commons/net/ftp/FTPClient; > Context: Everywhere[66]93 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, wrapException(Ljava/lang/String;ILjava/lang/String;ILjava/io/IOException;)Ljava/io/IOException; > 8,12,80,42,81 @136 exception:92 v12
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/net/NetUtils, wrapException(Ljava/lang/String;ILjava/lang/String;ILjava/io/IOException;)Ljava/io/IOException; > Context: Everywhere v2
+NORMAL wrapException:conditional branch(ne, to iindex=65) 2,8 Node: < Application, Lorg/apache/hadoop/net/NetUtils, wrapException(Ljava/lang/String;ILjava/lang/String;ILjava/io/IOException;)Ljava/io/IOException; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    try {
+      if (exception instanceof BindException) {
+        return wrapWithMessage(exception,
+            "Problem binding to ["
+                + localHost
+                + ":"
+                + localPort
+                + "] "
+                + exception
+                + ";"
+                + see("BindException"));
+      } else if (exception instanceof ConnectException) {
+        // Check if client was trying to connect to an unspecified IPv4 address
+        // (0.0.0.0) or IPv6 address(0:0:0:0:0:0:0:0 or ::)
+        if ((destHost != null && (destHost.equals("0.0.0.0") ||
+            destHost.equals("0:0:0:0:0:0:0:0") || destHost.equals("::")))
+            || destPort == 0) {
+          return wrapWithMessage(exception, "Your endpoint configuration" +
+              " is wrong;" + see("UnsetHostnameOrPort"));
+        } else {
+          // connection refused; include the host:port in the error
+          return wrapWithMessage(exception,
+              "Call From "
+                  + localHost
+                  + " to "
+                  + destHost
+                  + ":"
+                  + destPort
+                  + " failed on connection exception: "
+                  + exception
+                  + ";"
+                  + see("ConnectionRefused"));
+        }
+      } else if (exception instanceof UnknownHostException) {
+        return wrapWithMessage(exception,
+            "Invalid host name: "
+                + getHostDetailsAsString(destHost, destPort, localHost)
+                + exception
+                + ";"
+                + see("UnknownHost"));
+      } else if (exception instanceof SocketTimeoutException) {
+        return wrapWithMessage(exception,
+            "Call From "
+                + localHost + " to " + destHost + ":" + destPort
+                + " failed on socket timeout exception: " + exception
+                + ";"
+                + see("SocketTimeout"));
+      } else if (exception instanceof NoRouteToHostException) {
+        return wrapWithMessage(exception,
+            "No Route to Host from  "
+                + localHost + " to " + destHost + ":" + destPort
+                + " failed on socket timeout exception: " + exception
+                + ";"
+                + see("NoRouteToHost"));
+      } else if (exception instanceof EOFException) {
+        return wrapWithMessage(exception,
+            "End of File Exception between "
+                + getHostDetailsAsString(destHost, destPort, localHost)
+                + ": " + exception
+                + ";"
+                + see("EOFException"));
+      } else if (exception instanceof SocketException) {
+        // Many of the predecessor exceptions are subclasses of SocketException,
+        // so must be handled before this
+        return wrapWithMessage(exception,
+            "Call From "
+                + localHost + " to " + destHost + ":" + destPort
+                + " failed on socket exception: " + exception
+                + ";"
+                + see("SocketException"));
+      } else if (exception instanceof AccessControlException) {
+        return wrapWithMessage(exception,
+            "Call From "
+                + localHost + " to " + destHost + ":" + destPort
+                + " failed: " + exception.getMessage());
+      } else {
+        // 1. Return instance of same type with exception msg if Exception has a
+        // String constructor.
+        // 2. Return instance of same type if Exception doesn't have a String
+        // constructor.
+        // Related HADOOP-16453.
+        return wrapWithMessage(exception,
+            "DestHost:destPort " + destHost + ":" + destPort
+                + " , LocalHost:localPort " + localHost
+                + ":" + localPort + ". Failed on local exception: " +
+                exception);
+
+      }
+    } catch (IOException ex) {
+      return (IOException) new IOException("Failed on local exception: "
+          + exception + "; Host Details : "
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/token/delegation/web/DelegationTokenAuthenticator, authenticate(Ljava/net/URL;Lorg/apache/hadoop/security/authentication/client/AuthenticatedURL$Token;)V > Context: Everywhere, blocks=[BB[SSA:26..29]13 - org.apache.hadoop.security.token.delegation.web.DelegationTokenAuthenticator.authenticate(Ljava/net/URL;Lorg/apache/hadoop/security/authentication/client/AuthenticatedURL$Token;)V, BB[SSA:24..25]12 - org.apache.hadoop.security.token.delegation.web.DelegationTokenAuthenticator.authenticate(Ljava/net/URL;Lorg/apache/hadoop/security/authentication/client/AuthenticatedURL$Token;)V, BB[SSA:30..30]14 - org.apache.hadoop.security.token.delegation.web.DelegationTokenAuthenticator.authenticate(Ljava/net/URL;Lorg/apache/hadoop/security/authentication/client/AuthenticatedURL$Token;)V, BB[SSA:-1..-2]17 - org.apache.hadoop.security.token.delegation.web.DelegationTokenAuthenticator.authenticate(Ljava/net/URL;Lorg/apache/hadoop/security/authentication/client/AuthenticatedURL$Token;)V], numberOfBasicBlocks=4, firstLineNumber=145, lastLineNumber=145, firstMethodNumber=136, lastMethodNumber=153, isFirstLineValid=true, methodSrcCode=
+      throws IOException, AuthenticationException {
+    if (!hasDelegationToken(url, token)) {
+      try {
+        // check and renew TGT to handle potential expiration
+        UserGroupInformation.getCurrentUser().checkTGTAndReloginFromKeytab();
+        LOG.debug("No delegation token found for url={}, "
+            + "authenticating with {}", url, authenticator.getClass());
+        authenticator.authenticate(url, token);
+      } catch (IOException ex) {
+        throw NetUtils.wrapException(url.getHost(), url.getPort(),
+            null, 0, ex);
+      }
+
+    } else {
+      LOG.debug("Authenticated from delegation token. url={}, token={}",
+          url, token);
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/ipc/Server, bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:81..82]41 - org.apache.hadoop.ipc.Server.bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:79..80]40 - org.apache.hadoop.ipc.Server.bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:83..83]42 - org.apache.hadoop.ipc.Server.bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.ipc.Server.bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=678, lastLineNumber=676, firstMethodNumber=653, lastMethodNumber=681, isFirstLineValid=true, methodSrcCode=
+    try {
+      IntegerRanges range = null;
+      if (rangeConf != null) {
+        range = conf.getRange(rangeConf, "");
+      }
+      if (range == null || range.isEmpty() || (address.getPort() != 0)) {
+        socket.bind(address, backlog);
+      } else {
+        for (Integer port : range) {
+          if (socket.isBound()) break;
+          try {
+            InetSocketAddress temp = new InetSocketAddress(address.getAddress(),
+                port);
+            socket.bind(temp, backlog);
+          } catch(BindException e) {
+            //Ignored
+          }
+        }
+        if (!socket.isBound()) {
+          throw new BindException("Could not find a free port in "+range);
+        }
+      }
+    } catch (SocketException e) {
+      throw NetUtils.wrapException(null,
+          0,
+          address.getHostName(),
+          address.getPort(), e);
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, connect()Lorg/apache/commons/net/ftp/FTPClient; > Context: Everywhere, blocks=[BB[SSA:66..66]29 - org.apache.hadoop.fs.ftp.FTPFileSystem.connect()Lorg/apache/commons/net/ftp/FTPClient;, BB[SSA:65..65]28 - org.apache.hadoop.fs.ftp.FTPFileSystem.connect()Lorg/apache/commons/net/ftp/FTPClient;, BB[SSA:67..67]30 - org.apache.hadoop.fs.ftp.FTPFileSystem.connect()Lorg/apache/commons/net/ftp/FTPClient;, BB[SSA:-1..-2]54 - org.apache.hadoop.fs.ftp.FTPFileSystem.connect()Lorg/apache/commons/net/ftp/FTPClient;], numberOfBasicBlocks=4, firstLineNumber=152, lastLineNumber=152, firstMethodNumber=141, lastMethodNumber=166, isFirstLineValid=true, methodSrcCode=
+  private FTPClient connect() throws IOException {
+    FTPClient client = null;
+    Configuration conf = getConf();
+    String host = conf.get(FS_FTP_HOST);
+    int port = conf.getInt(FS_FTP_HOST_PORT, FTP.DEFAULT_PORT);
+    String user = conf.get(FS_FTP_USER_PREFIX + host);
+    String password = conf.get(FS_FTP_PASSWORD_PREFIX + host);
+    client = new FTPClient();
+    client.connect(host, port);
+    int reply = client.getReplyCode();
+    if (!FTPReply.isPositiveCompletion(reply)) {
+      throw NetUtils.wrapException(host, port,
+                   NetUtils.UNKNOWN_HOST, 0,
+                   new ConnectException("Server response " + reply));
+    } else if (client.login(user, password)) {
+      client.setFileTransferMode(getTransferMode(conf));
+      client.setFileType(FTP.BINARY_FILE_TYPE);
+      client.setBufferSize(DEFAULT_BUFFER_SIZE);
+      setTimeout(client, conf);
+      setDataConnectionMode(client, conf);
+    } else {
+      throw new IOException("Login failed on server - " + host + ", port - "
+          + port + " as user '" + user + "'");
+    }
+
+    return client;
+  }
+}

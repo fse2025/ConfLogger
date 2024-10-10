@@ -1,0 +1,106 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TimelineClientImpl.java	methodSinagture:	org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl.putTimelineDataInJSONFile(Ljava/lang/String;Ljava/lang/String;)V	methodLines:	326:392
+blockLines:	352:-1
+paras:	yarn.timeline-service.enabled
+TaintedStat:	NORMAL putTimelineDataInJSONFile:conditional branch(eq, to iindex=98) 56,8 Node: < Application, Lorg/apache/hadoop/yarn/client/api/impl/TimelineClientImpl, putTimelineDataInJSONFile(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/api/impl/TimelineClientImpl, putTimelineDataInJSONFile(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[86]56 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 46,54,8 @193 exception:55
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/api/impl/TimelineClientImpl, putTimelineDataInJSONFile(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[86]56 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 46,54,8 @193 exception:55
+NORMAL putTimelineDataInJSONFile:conditional branch(eq, to iindex=98) 56,8 Node: < Application, Lorg/apache/hadoop/yarn/client/api/impl/TimelineClientImpl, putTimelineDataInJSONFile(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static void putTimelineDataInJSONFile(String path, String type) {
+    File jsonFile = new File(path);
+    if (!jsonFile.exists()) {
+      LOG.error("File [" + jsonFile.getAbsolutePath() + "] doesn't exist");
+      return;
+    }
+    YarnJacksonJaxbJsonProvider.configObjectMapper(MAPPER);
+    TimelineEntities entities = null;
+    TimelineDomains domains = null;
+    try {
+      if (type.equals(ENTITY_DATA_TYPE)) {
+        entities = MAPPER.readValue(jsonFile, TimelineEntities.class);
+      } else if (type.equals(DOMAIN_DATA_TYPE)){
+        domains = MAPPER.readValue(jsonFile, TimelineDomains.class);
+      }
+    } catch (Exception e) {
+      LOG.error("Error when reading  " + e.getMessage());
+      e.printStackTrace(System.err);
+      return;
+    }
+    Configuration conf = new YarnConfiguration();
+    TimelineClient client = TimelineClient.createTimelineClient();
+    client.init(conf);
+    client.start();
+    try {
+      if (UserGroupInformation.isSecurityEnabled()
+          && conf.getBoolean(YarnConfiguration.TIMELINE_SERVICE_ENABLED, false)) {
+        Token<TimelineDelegationTokenIdentifier> token =
+            client.getDelegationToken(
+                UserGroupInformation.getCurrentUser().getUserName());
+        UserGroupInformation.getCurrentUser().addToken(token);
+      }
+      if (type.equals(ENTITY_DATA_TYPE)) {
+        TimelinePutResponse response = client.putEntities(
+            entities.getEntities().toArray(
+                new TimelineEntity[entities.getEntities().size()]));
+        if (response.getErrors().size() == 0) {
+          LOG.info("Timeline entities are successfully put");
+        } else {
+          for (TimelinePutResponse.TimelinePutError error : response.getErrors()) {
+            LOG.error("TimelineEntity [" + error.getEntityType() + ":" +
+                error.getEntityId() + "] is not successfully put. Error code: " +
+                error.getErrorCode());
+          }
+        }
+      } else if (type.equals(DOMAIN_DATA_TYPE) && domains != null) {
+        boolean hasError = false;
+        for (TimelineDomain domain : domains.getDomains()) {
+          try {
+            client.putDomain(domain);
+          } catch (Exception e) {
+            LOG.error("Error when putting domain " + domain.getId(), e);
+            hasError = true;
+          }
+        }
+        if (!hasError) {
+          LOG.info("Timeline domains are successfully put");
+        }
+      }
+    } catch(RuntimeException e) {
+      LOG.error("Error when putting the timeline data", e);
+    } catch (Exception e) {
+      LOG.error("Error when putting the timeline data", e);
+    } finally {
+      client.stop();
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/api/impl/TimelineClientImpl, main([Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:28..30]12 - org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl.main([Ljava/lang/String;)V, BB[SSA:26..27]11 - org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl.main([Ljava/lang/String;)V, BB[SSA:31..31]13 - org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl.main([Ljava/lang/String;)V, BB[SSA:-1..-2]20 - org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl.main([Ljava/lang/String;)V, BB[SSA:37..39]16 - org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl.main([Ljava/lang/String;)V, BB[SSA:35..36]15 - org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl.main([Ljava/lang/String;)V, BB[SSA:40..40]17 - org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl.main([Ljava/lang/String;)V, BB[SSA:-1..-2]20 - org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl.main([Ljava/lang/String;)V], numberOfBasicBlocks=8, firstLineNumber=309, lastLineNumber=311, firstMethodNumber=301, lastMethodNumber=316, isFirstLineValid=true, methodSrcCode=
+  public static void main(String[] argv) throws Exception {
+    CommandLine cliParser = new GnuParser().parse(opts, argv);
+    if (cliParser.hasOption("put")) {
+      String path = cliParser.getOptionValue("put");
+      if (path != null && path.length() > 0) {
+        if (cliParser.hasOption(ENTITY_DATA_TYPE)) {
+          putTimelineDataInJSONFile(path, ENTITY_DATA_TYPE);
+          return;
+        } else if (cliParser.hasOption(DOMAIN_DATA_TYPE)) {
+          putTimelineDataInJSONFile(path, DOMAIN_DATA_TYPE);
+          return;
+        }
+      }
+    }
+    printUsage();
+  }
+
+}

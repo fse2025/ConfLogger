@@ -1,0 +1,16 @@
+```java
+if ( path == null ) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration Error: 'path' parameter is null. Please provide a valid non-null string for 'path'.");
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException(
+        "Can not create a Path from a null string");
+}
+if( path.length() == 0 ) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration Error: 'path' parameter is an empty string. Please provide a valid non-empty string for 'path'.");
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException(
+        "Can not create a Path from an empty string");
+}
+```

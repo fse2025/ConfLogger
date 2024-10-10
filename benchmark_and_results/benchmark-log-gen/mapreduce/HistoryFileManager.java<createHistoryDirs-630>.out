@@ -1,0 +1,81 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HistoryFileManager.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V	methodLines:	630:650
+blockLines:	634:-1
+paras:	null
+TaintedStat:	NORMAL createHistoryDirs:conditional branch(eq, to iindex=23) 10,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[22]22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 2,19,20 @44 exception:21
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[22]22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 2,19,20 @44 exception:21
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[28]invokevirtual < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > 1,24,25,22 @56 exception:26 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > Context: Everywhere v4
+NORMAL createHistoryDirs:10 = compare 4,9 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > Context: Everywhere
+NORMAL createHistoryDirs:conditional branch(eq, to iindex=23) 10,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      long timeOutMillis) throws IOException {
+    long start = clock.getTime();
+    boolean done = false;
+    int counter = 0;
+    while (!done &&
+        ((timeOutMillis == -1) || (clock.getTime() - start < timeOutMillis))) {
+      done = tryCreatingHistoryDirs(counter++ % 3 == 0); // log every 3 attempts, 30sec
+      if (done) {
+        break;
+      }
+      try {
+        Thread.sleep(intervalCheckMillis);
+      } catch (InterruptedException ex) {
+        throw new YarnRuntimeException(ex);
+      }
+    }
+    if (!done) {
+      throw new YarnRuntimeException("Timed out '" + timeOutMillis+
+              "ms' waiting for FileSystem to become available");
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:26..28]11 - org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:23..25]10 - org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:29..33]12 - org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]30 - org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=594, lastLineNumber=599, firstMethodNumber=586, lastMethodNumber=619, isFirstLineValid=true, methodSrcCode=
+  protected void serviceInit(Configuration conf) throws Exception {
+    this.conf = conf;
+
+    int serialNumberLowDigits = 3;
+    serialNumberFormat = ("%0"
+        + (JobHistoryUtils.SERIAL_NUMBER_DIRECTORY_DIGITS + serialNumberLowDigits)
+        + "d");
+
+    long maxFSWaitTime = conf.getLong(
+        JHAdminConfig.MR_HISTORY_MAX_START_WAIT_TIME,
+        JHAdminConfig.DEFAULT_MR_HISTORY_MAX_START_WAIT_TIME);
+    createHistoryDirs(SystemClock.getInstance(), 10 * 1000, maxFSWaitTime);
+
+    maxTasksForLoadedJob = conf.getInt(
+        JHAdminConfig.MR_HS_LOADED_JOBS_TASKS_MAX,
+        JHAdminConfig.DEFAULT_MR_HS_LOADED_JOBS_TASKS_MAX);
+
+    this.aclsMgr = new JobACLsManager(conf);
+
+    maxHistoryAge = conf.getLong(JHAdminConfig.MR_HISTORY_MAX_AGE_MS,
+        JHAdminConfig.DEFAULT_MR_HISTORY_MAX_AGE);
+    
+    jobListCache = createJobListCache();
+
+    serialNumberIndex = new SerialNumberIndex(conf.getInt(
+        JHAdminConfig.MR_HISTORY_DATESTRING_CACHE_SIZE,
+        JHAdminConfig.DEFAULT_MR_HISTORY_DATESTRING_CACHE_SIZE));
+
+    int numMoveThreads = conf.getInt(
+        JHAdminConfig.MR_HISTORY_MOVE_THREAD_COUNT,
+        JHAdminConfig.DEFAULT_MR_HISTORY_MOVE_THREAD_COUNT);
+    moveToDoneExecutor = createMoveToDoneThreadPool(numMoveThreads);
+    super.serviceInit(conf);
+  }
+
+}

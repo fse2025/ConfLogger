@@ -1,0 +1,4 @@
+  String param = "dfs.image.compress";// DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY
+    String param2 = "dfs.image.parallel.load"
+ config.set(param2,"true"); 
+ HDFS

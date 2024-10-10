@@ -1,0 +1,28 @@
+```java
+public static IGroupMappingServiceProvider getGroupMappingServiceProviderPlugin(Map<String, Object> conf) {
+    IGroupMappingServiceProvider gmsp = null;
+    try {
+        String gmspClassName = (String) conf.get(Config.STORM_GROUP_MAPPING_SERVICE_PROVIDER_PLUGIN);
+        if (gmspClassName == null) {
+            // ConfLogger Inserted Start
+            logger.warn("The configuration parameter 'storm.group.mapping.service' is not set. The group mapping service provider will not be initialized. Please ensure that the configuration parameter is properly set to enable the service.");
+            // ConfLogger Inserted End
+        } else {
+            gmsp = ReflectionUtils.newInstance(gmspClassName);
+            if (gmsp != null) {
+                gmsp.prepare(conf);
+                // ConfLogger Inserted Start
+                logger.info("The group mapping service provider has been successfully initialized with the class: " + gmspClassName + ". Configuration parameter 'storm.group.mapping.service' is set correctly.");
+                // ConfLogger Inserted End
+            } else {
+                // ConfLogger Inserted Start
+                logger.error("Failed to instantiate the group mapping service provider with the class: " + gmspClassName + ". Please check if the class name is correct and the class is accessible.");
+                // ConfLogger Inserted End
+            }
+        }
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+    return gmsp;
+}
+```

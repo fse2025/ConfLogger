@@ -1,0 +1,114 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	InMemoryAliasMapProtocolClientSideTranslatorPB.java	methodSinagture:	org.apache.hadoop.hdfs.protocolPB.InMemoryAliasMapProtocolClientSideTranslatorPB.init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection;	methodLines:	79:128
+blockLines:	116:-1
+paras:	dfs.provided.aliasmap.inmemory.dnrpc-address
+TaintedStat:	NORMAL init:conditional branch(eq, to iindex=128) 70,15 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[99]70 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,20 @211 exception:69
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[99]70 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,20 @211 exception:69
+NORMAL init:conditional branch(eq, to iindex=128) 70,15 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	InMemoryAliasMapProtocolClientSideTranslatorPB.java	methodSinagture:	org.apache.hadoop.hdfs.protocolPB.InMemoryAliasMapProtocolClientSideTranslatorPB.init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection;	methodLines:	79:128
+blockLines:	98:-1
+paras:	dfs.provided.aliasmap.inmemory.dnrpc-address
+TaintedStat:	NORMAL init:conditional branch(eq, to iindex=74) 26,15 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[105]72 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,20 @222 exception:71
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[105]72 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,20 @222 exception:71
+NORMAL init:74 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > 72 @225 exception:73 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL createSocketAddr:return 5 Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, buildTokenService(Ljava/net/URI;)Lorg/apache/hadoop/io/Text; > Context: Everywhere[2]6 = invokestatic < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > 4 @4 exception:5
+NORMAL buildTokenService:8 = invokestatic < Extension, Lorg/apache/hadoop/security/SecurityUtil, buildTokenService(Ljava/net/InetSocketAddress;)Lorg/apache/hadoop/io/Text; > 6 @7 exception:7 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, buildTokenService(Ljava/net/URI;)Lorg/apache/hadoop/io/Text; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, buildTokenService(Ljava/net/InetSocketAddress;)Lorg/apache/hadoop/io/Text; > Context: Everywhere
+NORMAL buildTokenService:30 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 28 @80 exception:29 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, buildTokenService(Ljava/net/InetSocketAddress;)Lorg/apache/hadoop/io/Text; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @20 exception:14
+NORMAL setProtocolEngine:17 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16 Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[64]26 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,24 @129 exception:25
+NORMAL init:conditional branch(eq, to iindex=74) 26,15 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	InMemoryAliasMapProtocolClientSideTranslatorPB.java	methodSinagture:	org.apache.hadoop.hdfs.protocolPB.InMemoryAliasMapProtocolClientSideTranslatorPB.init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection;	methodLines:	79:128
+blockLines:	103:-1
+paras:	null
+TaintedStat:	NORMAL init:conditional branch(eq, to iindex=89) 50,15 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[64]26 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,24 @129 exception:25
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[64]26 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,24 @129 exception:25
+NORMAL init:conditional branch(eq, to iindex=74) 26,15 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere:50 = phi  34,15,49
+NORMAL init:conditional branch(eq, to iindex=89) 50,15 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static Collection<InMemoryAliasMapProtocol> init(Configuration conf) {
+    Collection<InMemoryAliasMapProtocol> aliasMaps = new ArrayList<>();
+    // Try to connect to all configured nameservices as it is not known which
+    // nameservice supports the AliasMap.
+    for (String nsId : getNameServiceIds(conf)) {
+      try {
+        URI namenodeURI = null;
+        Configuration newConf = new Configuration(conf);
+        if (HAUtil.isHAEnabled(conf, nsId)) {
+          // set the failover-proxy provider if HA is enabled.
+          newConf.setClass(
+              addKeySuffixes(PROXY_PROVIDER_KEY_PREFIX, nsId),
+              InMemoryAliasMapFailoverProxyProvider.class,
+              AbstractNNFailoverProxyProvider.class);
+          namenodeURI = new URI(HdfsConstants.HDFS_URI_SCHEME + "://" + nsId);
+        } else {
+          String key =
+              addKeySuffixes(DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS, nsId);
+          String addr = conf.get(key);
+          if (addr != null) {
+            namenodeURI = createUri(HdfsConstants.HDFS_URI_SCHEME,
+                NetUtils.createSocketAddr(addr));
+          }
+        }
+        if (namenodeURI != null) {
+          aliasMaps.add(NameNodeProxies
+              .createProxy(newConf, namenodeURI, InMemoryAliasMapProtocol.class)
+              .getProxy());
+          LOG.info("Connected to InMemoryAliasMap at {}", namenodeURI);
+        }
+      } catch (IOException | URISyntaxException e) {
+        LOG.warn("Exception in connecting to InMemoryAliasMap for nameservice "
+            + "{}: {}", nsId, e);
+      }
+    }
+    // if a separate AliasMap is configured using
+    // DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS, try to connect it.
+    if (conf.get(DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS) != null) {
+      URI uri = createUri("hdfs", NetUtils.createSocketAddr(
+          conf.get(DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS)));
+      try {
+        aliasMaps.add(NameNodeProxies
+            .createProxy(conf, uri, InMemoryAliasMapProtocol.class).getProxy());
+        LOG.info("Connected to InMemoryAliasMap at {}", uri);
+      } catch (IOException e) {
+        LOG.warn("Exception in connecting to InMemoryAliasMap at {}: {}", uri,
+            e);
+      }
+    }
+    return aliasMaps;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/common/blockaliasmap/impl/InMemoryLevelDBAliasMapClient, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:3..5]2 - org.apache.hadoop.hdfs.server.common.blockaliasmap.impl.InMemoryLevelDBAliasMapClient.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..2]1 - org.apache.hadoop.hdfs.server.common.blockaliasmap.impl.InMemoryLevelDBAliasMapClient.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:6..6]3 - org.apache.hadoop.hdfs.server.common.blockaliasmap.impl.InMemoryLevelDBAliasMapClient.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]5 - org.apache.hadoop.hdfs.server.common.blockaliasmap.impl.InMemoryLevelDBAliasMapClient.setConf(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=197, lastLineNumber=198, firstMethodNumber=196, lastMethodNumber=199, isFirstLineValid=true, methodSrcCode=
+  public void setConf(Configuration conf) {
+    this.conf = conf;
+    aliasMaps = InMemoryAliasMapProtocolClientSideTranslatorPB.init(conf);
+  }
+
+}

@@ -1,0 +1,58 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DirectoryScanner.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DirectoryScanner.<init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/FsDatasetSpi;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	285:320
+blockLines:	300:-1
+paras:	dfs.datanode.directoryscan.throttle.limit.ms.per.sec
+TaintedStat:	NORMAL <init>:conditional branch(lt, to iindex=70) 38,8 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DirectoryScanner, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/FsDatasetSpi;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DirectoryScanner, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/FsDatasetSpi;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[52]32 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 3,29,30 @103 exception:31
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DirectoryScanner, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/FsDatasetSpi;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[52]32 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 3,29,30 @103 exception:31
+NORMAL <init>:33 = conversion(J) 32 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DirectoryScanner, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/FsDatasetSpi;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL <init>:38 = compare 33,37 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DirectoryScanner, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/FsDatasetSpi;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL <init>:conditional branch(lt, to iindex=70) 38,8 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DirectoryScanner, <init>(Lorg/apache/hadoop/hdfs/server/datanode/fsdataset/FsDatasetSpi;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+   */
+  public DirectoryScanner(FsDatasetSpi<?> dataset, Configuration conf) {
+    this.dataset = dataset;
+    this.stats = new HashMap<>(DEFAULT_MAP_SIZE);
+    int interval = (int) conf.getTimeDuration(
+        DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_INTERVAL_KEY,
+        DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_INTERVAL_DEFAULT,
+        TimeUnit.SECONDS);
+
+    scanPeriodMsecs = TimeUnit.SECONDS.toMillis(interval);
+
+    int throttle = conf.getInt(
+        DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_KEY,
+        DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT);
+
+    if (throttle >= TimeUnit.SECONDS.toMillis(1)) {
+      LOG.warn(
+          "{} set to value above 1000 ms/sec. Assuming default value of {}",
+          DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_KEY,
+          DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT);
+      throttle =
+          DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT;
+    }
+
+    throttleLimitMsPerSec = throttle;
+
+    int threads =
+        conf.getInt(DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THREADS_KEY,
+            DFSConfigKeys.DFS_DATANODE_DIRECTORYSCAN_THREADS_DEFAULT);
+
+    reportCompileThreadPool =
+        Executors.newFixedThreadPool(threads, new Daemon.DaemonFactory());
+
+    masterThread =
+        new ScheduledThreadPoolExecutor(1, new Daemon.DaemonFactory());
+  }
+
+
+
+====================ctx:=======================

@@ -1,0 +1,12 @@
+```java
+PreparableReporter reporter = null;
+LOG.info("Using statistics reporter plugin:" + clazz); // ConfLogger Commented: Not Informative
+// ConfLogger Inserted Start
+logger.info("Using statistics reporter plugin with class: " + clazz);
+// ConfLogger Inserted End
+if (clazz != null) {
+    reporter = (PreparableReporter) ReflectionUtils.newInstance(clazz);
+}
+return reporter;
+}
+```

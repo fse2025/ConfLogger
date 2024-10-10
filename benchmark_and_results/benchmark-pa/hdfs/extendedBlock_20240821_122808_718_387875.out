@@ -1,0 +1,436 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNodeRpcServer.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V	methodLines:	277:563
+blockLines:	498:-1
+paras:	dfs.namenode.lifeline.handler.ratio
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=542) 331,115 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[304]186 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getFloat(Ljava/lang/String;F)F > 2,183,184 @638 exception:185
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[304]186 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getFloat(Ljava/lang/String;F)F > 2,183,184 @638 exception:185
+NORMAL <init>:188 = binaryop(mul) 187 , 186 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+NORMAL <init>:189 = conversion(I) 188 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+NORMAL <init>:192 = invokestatic < Application, Ljava/lang/Math, max(II)I > 189,190 @650 exception:191 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Math, max(II)I > Context: Everywhere
+NORMAL max:return 4 Node: < Primordial, Ljava/lang/Math, max(II)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Math, max(II)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/Integer$IntegerCache, <clinit>()V > Context: Everywhere[21]16 = invokestatic < Primordial, Ljava/lang/Math, max(II)I > 14,8 @37 exception:15
+NORMAL <clinit>:19 = invokestatic < Primordial, Ljava/lang/Math, min(II)I > 16,17 @44 exception:18 Node: < Primordial, Ljava/lang/Integer$IntegerCache, <clinit>()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL min:return 4 Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/io/UTF8, readChars(Ljava/io/DataInput;Ljava/lang/StringBuilder;I)V > Context: Everywhere[224]94 = invokestatic < Extension, Ljava/lang/Math, min(II)I > 92,3 @386 exception:93
+NORMAL readChars:103 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > 13,101,94 @415 exception:102 Node: < Extension, Lorg/apache/hadoop/io/UTF8, readChars(Ljava/io/DataInput;Ljava/lang/StringBuilder;I)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > Context: Everywhere
+NORMAL byteToHexString:22 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 6 @62 exception:21 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @21 exception:14
+NORMAL getClientBackoffEnable:18 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,15,16 @28 exception:17 Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:conditional branch(eq, to iindex=11) 7,6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[508]331 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,329,115 @1075 exception:330
+NORMAL <init>:conditional branch(eq, to iindex=542) 331,115 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNodeRpcServer.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V	methodLines:	277:563
+blockLines:	558:-1
+paras:	dfs.namenode.rpc-address.auxiliary-ports
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=731) 426,73 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[699]426 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInts(Ljava/lang/String;)[I > 2,424 @1410 exception:425
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[699]426 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInts(Ljava/lang/String;)[I > 2,424 @1410 exception:425
+NORMAL <init>:conditional branch(eq, to iindex=731) 426,73 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNodeRpcServer.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V	methodLines:	277:563
+blockLines:	460:-1
+paras:	dfs.namenode.state.context.enabled
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=424) 260,115 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[401]260 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,258,115 @847 exception:259
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[401]260 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,258,115 @847 exception:259
+NORMAL <init>:conditional branch(eq, to iindex=424) 260,115 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNodeRpcServer.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V	methodLines:	277:563
+blockLines:	504:-1
+paras:	dfs.namenode.handler.count
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=542) 341,73 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[20]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,13,14 @40 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[20]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,13,14 @40 exception:15
+NORMAL <init>:187 = conversion(F) 16 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+NORMAL <init>:188 = binaryop(mul) 187 , 186 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+NORMAL <init>:189 = conversion(I) 188 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+NORMAL <init>:192 = invokestatic < Application, Ljava/lang/Math, max(II)I > 189,190 @650 exception:191 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Math, max(II)I > Context: Everywhere
+NORMAL max:return 4 Node: < Primordial, Ljava/lang/Math, max(II)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Math, max(II)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/Integer$IntegerCache, <clinit>()V > Context: Everywhere[21]16 = invokestatic < Primordial, Ljava/lang/Math, max(II)I > 14,8 @37 exception:15
+NORMAL <clinit>:19 = invokestatic < Primordial, Ljava/lang/Math, min(II)I > 16,17 @44 exception:18 Node: < Primordial, Ljava/lang/Integer$IntegerCache, <clinit>()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL min:return 4 Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/io/UTF8, readChars(Ljava/io/DataInput;Ljava/lang/StringBuilder;I)V > Context: Everywhere[224]94 = invokestatic < Extension, Ljava/lang/Math, min(II)I > 92,3 @386 exception:93
+NORMAL readChars:103 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > 13,101,94 @415 exception:102 Node: < Extension, Lorg/apache/hadoop/io/UTF8, readChars(Ljava/io/DataInput;Ljava/lang/StringBuilder;I)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > Context: Everywhere
+NORMAL byteToHexString:22 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 6 @62 exception:21 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @21 exception:14
+NORMAL getClientBackoffEnable:18 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,15,16 @28 exception:17 Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:conditional branch(eq, to iindex=11) 7,6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[508]331 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,329,115 @1075 exception:330
+NORMAL <init>:conditional branch(eq, to iindex=542) 331,115 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+NORMAL <init>:conditional branch(eq, to iindex=542) 341,73 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNodeRpcServer.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V	methodLines:	277:563
+blockLines:	417:-1
+paras:	dfs.namenode.lifeline.handler.count
+TaintedStat:	NORMAL <init>:conditional branch(gt, to iindex=314) 182,115 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[296]182 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,180,115 @623 exception:181
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[296]182 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,180,115 @623 exception:181
+NORMAL <init>:conditional branch(gt, to iindex=314) 182,115 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNodeRpcServer.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V	methodLines:	277:563
+blockLines:	501:-1
+paras:	dfs.namenode.service.handler.count
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=531) 336,73 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[160]99 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,97,14 @338 exception:98
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[160]99 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,97,14 @338 exception:98
+NORMAL <init>:114 = invokevirtual < Application, Lorg/apache/hadoop/ipc/RPC$Builder, setNumHandlers(I)Lorg/apache/hadoop/ipc/RPC$Builder; > 112,99 @377 exception:113 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ipc/RPC$Builder, setNumHandlers(I)Lorg/apache/hadoop/ipc/RPC$Builder; > Context: Everywhere
+NORMAL setNumHandlers:return 1 Node: < Extension, Lorg/apache/hadoop/ipc/RPC$Builder, setNumHandlers(I)Lorg/apache/hadoop/ipc/RPC$Builder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/ipc/RPC$Builder, setNumHandlers(I)Lorg/apache/hadoop/ipc/RPC$Builder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[177]114 = invokevirtual < Application, Lorg/apache/hadoop/ipc/RPC$Builder, setNumHandlers(I)Lorg/apache/hadoop/ipc/RPC$Builder; > 112,99 @377 exception:113
+NORMAL <init>:117 = invokevirtual < Application, Lorg/apache/hadoop/ipc/RPC$Builder, setVerbose(Z)Lorg/apache/hadoop/ipc/RPC$Builder; > 114,115 @381 exception:116 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ipc/RPC$Builder, setVerbose(Z)Lorg/apache/hadoop/ipc/RPC$Builder; > Context: Everywhere
+NORMAL setVerbose:return 1 Node: < Extension, Lorg/apache/hadoop/ipc/RPC$Builder, setVerbose(Z)Lorg/apache/hadoop/ipc/RPC$Builder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/ipc/RPC$Builder, setVerbose(Z)Lorg/apache/hadoop/ipc/RPC$Builder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/ZKFCRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Lorg/apache/hadoop/ha/ZKFailoverController;Lorg/apache/hadoop/security/authorize/PolicyProvider;)V > Context: Everywhere[35]35 = invokevirtual < Extension, Lorg/apache/hadoop/ipc/RPC$Builder, setVerbose(Z)Lorg/apache/hadoop/ipc/RPC$Builder; > 32,33 @72 exception:34
+NORMAL <init>:37 = invokevirtual < Extension, Lorg/apache/hadoop/ipc/RPC$Builder, build()Lorg/apache/hadoop/ipc/RPC$Server; > 35 @75 exception:36 Node: < Extension, Lorg/apache/hadoop/ha/ZKFCRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Lorg/apache/hadoop/ha/ZKFailoverController;Lorg/apache/hadoop/security/authorize/PolicyProvider;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ipc/RPC$Builder, build()Lorg/apache/hadoop/ipc/RPC$Server; > Context: Everywhere
+NORMAL build:10 = invokestatic < Extension, Lorg/apache/hadoop/ipc/RPC, getProtocolEngine(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/RpcEngine; > 7,8 @59 exception:9 Node: < Extension, Lorg/apache/hadoop/ipc/RPC$Builder, build()Lorg/apache/hadoop/ipc/RPC$Server; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ipc/RPC, getProtocolEngine(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/RpcEngine; > Context: Everywhere
+NORMAL getProtocolEngine:conditional branch(ne, to iindex=31) 7,8 Node: < Extension, Lorg/apache/hadoop/ipc/RPC, getProtocolEngine(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/RpcEngine; > Context: Everywhere
+NORMAL getProtocolEngine:19 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 17 @37 exception:18 Node: < Extension, Lorg/apache/hadoop/ipc/RPC, getProtocolEngine(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/RpcEngine; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @21 exception:14
+NORMAL getClientBackoffEnable:18 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,15,16 @28 exception:17 Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:conditional branch(eq, to iindex=11) 7,6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere[508]331 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,329,115 @1075 exception:330
+NORMAL <init>:conditional branch(eq, to iindex=542) 331,115 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+NORMAL <init>:conditional branch(eq, to iindex=531) 336,73 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/NameNode;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public NameNodeRpcServer(Configuration conf, NameNode nn)
+      throws IOException {
+    this.nn = nn;
+    this.namesystem = nn.getNamesystem();
+    this.retryCache = namesystem.getRetryCache();
+    this.metrics = NameNode.getNameNodeMetrics();
+
+    int handlerCount = 
+      conf.getInt(DFS_NAMENODE_HANDLER_COUNT_KEY, 
+                  DFS_NAMENODE_HANDLER_COUNT_DEFAULT);
+    ipProxyUsers = conf.getStrings(DFS_NAMENODE_IP_PROXY_USERS);
+
+    RPC.setProtocolEngine(conf, ClientNamenodeProtocolPB.class,
+        ProtobufRpcEngine2.class);
+
+    ClientNamenodeProtocolServerSideTranslatorPB 
+       clientProtocolServerTranslator = 
+         new ClientNamenodeProtocolServerSideTranslatorPB(this);
+     BlockingService clientNNPbService = ClientNamenodeProtocol.
+         newReflectiveBlockingService(clientProtocolServerTranslator);
+
+    int maxDataLength = conf.getInt(IPC_MAXIMUM_DATA_LENGTH,
+        IPC_MAXIMUM_DATA_LENGTH_DEFAULT);
+    DatanodeProtocolServerSideTranslatorPB dnProtoPbTranslator = 
+        new DatanodeProtocolServerSideTranslatorPB(this, maxDataLength);
+    BlockingService dnProtoPbService = DatanodeProtocolService
+        .newReflectiveBlockingService(dnProtoPbTranslator);
+
+    DatanodeLifelineProtocolServerSideTranslatorPB lifelineProtoPbTranslator =
+        new DatanodeLifelineProtocolServerSideTranslatorPB(this);
+    BlockingService lifelineProtoPbService = DatanodeLifelineProtocolService
+        .newReflectiveBlockingService(lifelineProtoPbTranslator);
+
+    NamenodeProtocolServerSideTranslatorPB namenodeProtocolXlator = 
+        new NamenodeProtocolServerSideTranslatorPB(this);
+    BlockingService NNPbService = NamenodeProtocolService
+          .newReflectiveBlockingService(namenodeProtocolXlator);
+    
+    RefreshAuthorizationPolicyProtocolServerSideTranslatorPB refreshAuthPolicyXlator = 
+        new RefreshAuthorizationPolicyProtocolServerSideTranslatorPB(this);
+    BlockingService refreshAuthService = RefreshAuthorizationPolicyProtocolService
+        .newReflectiveBlockingService(refreshAuthPolicyXlator);
+
+    RefreshUserMappingsProtocolServerSideTranslatorPB refreshUserMappingXlator = 
+        new RefreshUserMappingsProtocolServerSideTranslatorPB(this);
+    BlockingService refreshUserMappingService = RefreshUserMappingsProtocolService
+        .newReflectiveBlockingService(refreshUserMappingXlator);
+
+    RefreshCallQueueProtocolServerSideTranslatorPB refreshCallQueueXlator = 
+        new RefreshCallQueueProtocolServerSideTranslatorPB(this);
+    BlockingService refreshCallQueueService = RefreshCallQueueProtocolService
+        .newReflectiveBlockingService(refreshCallQueueXlator);
+
+    GenericRefreshProtocolServerSideTranslatorPB genericRefreshXlator =
+        new GenericRefreshProtocolServerSideTranslatorPB(this);
+    BlockingService genericRefreshService = GenericRefreshProtocolService
+        .newReflectiveBlockingService(genericRefreshXlator);
+
+    GetUserMappingsProtocolServerSideTranslatorPB getUserMappingXlator = 
+        new GetUserMappingsProtocolServerSideTranslatorPB(this);
+    BlockingService getUserMappingService = GetUserMappingsProtocolService
+        .newReflectiveBlockingService(getUserMappingXlator);
+    
+    HAServiceProtocolServerSideTranslatorPB haServiceProtocolXlator = 
+        new HAServiceProtocolServerSideTranslatorPB(this);
+    BlockingService haPbService = HAServiceProtocolService
+        .newReflectiveBlockingService(haServiceProtocolXlator);
+
+    ReconfigurationProtocolServerSideTranslatorPB reconfigurationProtocolXlator
+        = new ReconfigurationProtocolServerSideTranslatorPB(this);
+    BlockingService reconfigurationPbService = ReconfigurationProtocolService
+        .newReflectiveBlockingService(reconfigurationProtocolXlator);
+
+    InetSocketAddress serviceRpcAddr = nn.getServiceRpcServerAddress(conf);
+    if (serviceRpcAddr != null) {
+      String bindHost = nn.getServiceRpcServerBindHost(conf);
+      if (bindHost == null) {
+        bindHost = serviceRpcAddr.getHostName();
+      }
+      LOG.info("Service RPC server is binding to " + bindHost + ":" +
+          serviceRpcAddr.getPort());
+
+      int serviceHandlerCount =
+        conf.getInt(DFS_NAMENODE_SERVICE_HANDLER_COUNT_KEY,
+                    DFS_NAMENODE_SERVICE_HANDLER_COUNT_DEFAULT);
+      serviceRpcServer = new RPC.Builder(conf)
+          .setProtocol(
+              org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolPB.class)
+          .setInstance(clientNNPbService)
+          .setBindAddress(bindHost)
+          .setPort(serviceRpcAddr.getPort())
+          .setNumHandlers(serviceHandlerCount)
+          .setVerbose(false)
+          .setSecretManager(namesystem.getDelegationTokenSecretManager())
+          .build();
+
+      // Add all the RPC protocols that the namenode implements
+      DFSUtil.addPBProtocol(conf, HAServiceProtocolPB.class, haPbService,
+          serviceRpcServer);
+      DFSUtil.addPBProtocol(conf, ReconfigurationProtocolPB.class,
+          reconfigurationPbService, serviceRpcServer);
+      DFSUtil.addPBProtocol(conf, NamenodeProtocolPB.class, NNPbService,
+          serviceRpcServer);
+      DFSUtil.addPBProtocol(conf, DatanodeProtocolPB.class, dnProtoPbService,
+          serviceRpcServer);
+      DFSUtil.addPBProtocol(conf, RefreshAuthorizationPolicyProtocolPB.class,
+          refreshAuthService, serviceRpcServer);
+      DFSUtil.addPBProtocol(conf, RefreshUserMappingsProtocolPB.class, 
+          refreshUserMappingService, serviceRpcServer);
+      // We support Refreshing call queue here in case the client RPC queue is full
+      DFSUtil.addPBProtocol(conf, RefreshCallQueueProtocolPB.class,
+          refreshCallQueueService, serviceRpcServer);
+      DFSUtil.addPBProtocol(conf, GenericRefreshProtocolPB.class,
+          genericRefreshService, serviceRpcServer);
+      DFSUtil.addPBProtocol(conf, GetUserMappingsProtocolPB.class, 
+          getUserMappingService, serviceRpcServer);
+
+      // Update the address with the correct port
+      InetSocketAddress listenAddr = serviceRpcServer.getListenerAddress();
+      serviceRPCAddress = new InetSocketAddress(
+            serviceRpcAddr.getHostName(), listenAddr.getPort());
+      nn.setRpcServiceServerAddress(conf, serviceRPCAddress);
+    } else {
+      serviceRpcServer = null;
+      serviceRPCAddress = null;
+    }
+
+    InetSocketAddress lifelineRpcAddr = nn.getLifelineRpcServerAddress(conf);
+    if (lifelineRpcAddr != null) {
+      RPC.setProtocolEngine(conf, HAServiceProtocolPB.class,
+          ProtobufRpcEngine2.class);
+      String bindHost = nn.getLifelineRpcServerBindHost(conf);
+      if (bindHost == null) {
+        bindHost = lifelineRpcAddr.getHostName();
+      }
+      LOG.info("Lifeline RPC server is binding to {}:{}", bindHost,
+          lifelineRpcAddr.getPort());
+
+      int lifelineHandlerCount = conf.getInt(
+          DFS_NAMENODE_LIFELINE_HANDLER_COUNT_KEY, 0);
+      if (lifelineHandlerCount <= 0) {
+        float lifelineHandlerRatio = conf.getFloat(
+            DFS_NAMENODE_LIFELINE_HANDLER_RATIO_KEY,
+            DFS_NAMENODE_LIFELINE_HANDLER_RATIO_DEFAULT);
+        lifelineHandlerCount = Math.max(
+            (int)(handlerCount * lifelineHandlerRatio), 1);
+      }
+      lifelineRpcServer = new RPC.Builder(conf)
+          .setProtocol(HAServiceProtocolPB.class)
+          .setInstance(haPbService)
+          .setBindAddress(bindHost)
+          .setPort(lifelineRpcAddr.getPort())
+          .setNumHandlers(lifelineHandlerCount)
+          .setVerbose(false)
+          .setSecretManager(namesystem.getDelegationTokenSecretManager())
+          .build();
+
+      DFSUtil.addPBProtocol(conf, DatanodeLifelineProtocolPB.class,
+          lifelineProtoPbService, lifelineRpcServer);
+
+      // Update the address with the correct port
+      InetSocketAddress listenAddr = lifelineRpcServer.getListenerAddress();
+      lifelineRPCAddress = new InetSocketAddress(lifelineRpcAddr.getHostName(),
+          listenAddr.getPort());
+      nn.setRpcLifelineServerAddress(conf, lifelineRPCAddress);
+    } else {
+      lifelineRpcServer = null;
+      lifelineRPCAddress = null;
+    }
+
+    InetSocketAddress rpcAddr = nn.getRpcServerAddress(conf);
+    String bindHost = nn.getRpcServerBindHost(conf);
+    if (bindHost == null) {
+      bindHost = rpcAddr.getHostName();
+    }
+    LOG.info("RPC server is binding to " + bindHost + ":" + rpcAddr.getPort());
+
+    boolean enableStateContext = conf.getBoolean(
+        DFS_NAMENODE_STATE_CONTEXT_ENABLED_KEY,
+        DFS_NAMENODE_STATE_CONTEXT_ENABLED_DEFAULT);
+    LOG.info("Enable NameNode state context:" + enableStateContext);
+
+    GlobalStateIdContext stateIdContext = null;
+    if (enableStateContext) {
+      stateIdContext = new GlobalStateIdContext((namesystem));
+    }
+
+    clientRpcServer = new RPC.Builder(conf)
+        .setProtocol(
+            org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolPB.class)
+        .setInstance(clientNNPbService)
+        .setBindAddress(bindHost)
+        .setPort(rpcAddr.getPort())
+        .setNumHandlers(handlerCount)
+        .setVerbose(false)
+        .setSecretManager(namesystem.getDelegationTokenSecretManager())
+        .setAlignmentContext(stateIdContext)
+        .build();
+
+    // Add all the RPC protocols that the namenode implements
+    DFSUtil.addPBProtocol(conf, HAServiceProtocolPB.class, haPbService,
+        clientRpcServer);
+    DFSUtil.addPBProtocol(conf, ReconfigurationProtocolPB.class,
+        reconfigurationPbService, clientRpcServer);
+    DFSUtil.addPBProtocol(conf, NamenodeProtocolPB.class, NNPbService,
+        clientRpcServer);
+    DFSUtil.addPBProtocol(conf, DatanodeProtocolPB.class, dnProtoPbService,
+        clientRpcServer);
+    DFSUtil.addPBProtocol(conf, RefreshAuthorizationPolicyProtocolPB.class, 
+        refreshAuthService, clientRpcServer);
+    DFSUtil.addPBProtocol(conf, RefreshUserMappingsProtocolPB.class, 
+        refreshUserMappingService, clientRpcServer);
+    DFSUtil.addPBProtocol(conf, RefreshCallQueueProtocolPB.class,
+        refreshCallQueueService, clientRpcServer);
+    DFSUtil.addPBProtocol(conf, GenericRefreshProtocolPB.class,
+        genericRefreshService, clientRpcServer);
+    DFSUtil.addPBProtocol(conf, GetUserMappingsProtocolPB.class, 
+        getUserMappingService, clientRpcServer);
+
+    // set service-level authorization security policy
+    if (serviceAuthEnabled =
+          conf.getBoolean(
+            CommonConfigurationKeys.HADOOP_SECURITY_AUTHORIZATION, false)) {
+      clientRpcServer.refreshServiceAcl(conf, new HDFSPolicyProvider());
+      if (serviceRpcServer != null) {
+        serviceRpcServer.refreshServiceAcl(conf, new HDFSPolicyProvider());
+      }
+      if (lifelineRpcServer != null) {
+        lifelineRpcServer.refreshServiceAcl(conf, new HDFSPolicyProvider());
+      }
+    }
+
+    // The rpc-server port can be ephemeral... ensure we have the correct info
+    InetSocketAddress listenAddr = clientRpcServer.getListenerAddress();
+    clientRpcAddress = new InetSocketAddress(
+        rpcAddr.getHostName(), listenAddr.getPort());
+    nn.setRpcServerAddress(conf, clientRpcAddress);
+    
+    minimumDataNodeVersion = conf.get(
+        DFSConfigKeys.DFS_NAMENODE_MIN_SUPPORTED_DATANODE_VERSION_KEY,
+        DFSConfigKeys.DFS_NAMENODE_MIN_SUPPORTED_DATANODE_VERSION_DEFAULT);
+
+    defaultECPolicyName = conf.getTrimmed(
+        DFSConfigKeys.DFS_NAMENODE_EC_SYSTEM_DEFAULT_POLICY,
+        DFSConfigKeys.DFS_NAMENODE_EC_SYSTEM_DEFAULT_POLICY_DEFAULT);
+
+    // Set terse exception whose stack trace won't be logged
+    clientRpcServer.addTerseExceptions(SafeModeException.class,
+        FileNotFoundException.class,
+        HadoopIllegalArgumentException.class,
+        FileAlreadyExistsException.class,
+        InvalidPathException.class,
+        ParentNotDirectoryException.class,
+        UnresolvedLinkException.class,
+        AlreadyBeingCreatedException.class,
+        QuotaExceededException.class,
+        RecoveryInProgressException.class,
+        AccessControlException.class,
+        InvalidToken.class,
+        LeaseExpiredException.class,
+        NSQuotaExceededException.class,
+        DSQuotaExceededException.class,
+        QuotaByStorageTypeExceededException.class,
+        AclException.class,
+        FSLimitException.PathComponentTooLongException.class,
+        FSLimitException.MaxDirectoryItemsExceededException.class,
+        DisallowedDatanodeException.class,
+        XAttrNotFoundException.class);
+
+    clientRpcServer.addSuppressedLoggingExceptions(StandbyException.class,
+        UnresolvedPathException.class);
+
+    clientRpcServer.setTracer(nn.tracer);
+    if (serviceRpcServer != null) {
+      serviceRpcServer.setTracer(nn.tracer);
+    }
+    if (lifelineRpcServer != null) {
+      lifelineRpcServer.setTracer(nn.tracer);
+    }
+    int[] auxiliaryPorts =
+        conf.getInts(DFS_NAMENODE_RPC_ADDRESS_AUXILIARY_KEY);
+    if (auxiliaryPorts != null && auxiliaryPorts.length != 0) {
+      for (int auxiliaryPort : auxiliaryPorts) {
+        this.clientRpcServer.addAuxiliaryListener(auxiliaryPort);
+      }
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, createRpcServer(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer; > Context: Everywhere, blocks=[BB[SSA:1..4]2 - org.apache.hadoop.hdfs.server.namenode.NameNode.createRpcServer(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer;, BB[SSA:0..0]1 - org.apache.hadoop.hdfs.server.namenode.NameNode.createRpcServer(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer;, BB[SSA:5..5]3 - org.apache.hadoop.hdfs.server.namenode.NameNode.createRpcServer(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer;, BB[SSA:-1..-2]4 - org.apache.hadoop.hdfs.server.namenode.NameNode.createRpcServer(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/namenode/NameNodeRpcServer;], numberOfBasicBlocks=4, firstLineNumber=878, lastLineNumber=878, firstMethodNumber=877, lastMethodNumber=878, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    return new NameNodeRpcServer(conf, this);
+  }
+}

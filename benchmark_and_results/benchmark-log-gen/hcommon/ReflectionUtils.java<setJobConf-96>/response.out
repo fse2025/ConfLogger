@@ -1,0 +1,32 @@
+```java
+Class<?> jobConfClass =
+conf.getClassByNameOrNull("org.apache.hadoop.mapred.JobConf");
+if (jobConfClass == null) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter 'org.apache.hadoop.mapred.JobConf' is not set or invalid. Please ensure the class name is correct.");
+    // ConfLogger Inserted End
+    return;
+}
+
+Class<?> jobConfigurableClass =
+conf.getClassByNameOrNull("org.apache.hadoop.mapred.JobConfigurable");
+if (jobConfigurableClass == null) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter 'org.apache.hadoop.mapred.JobConfigurable' is not set or invalid. Please ensure the class name is correct.");
+    // ConfLogger Inserted End
+    return;
+}
+if (jobConfClass.isAssignableFrom(conf.getClass()) &&
+jobConfigurableClass.isAssignableFrom(theObject.getClass())) {
+    Method configureMethod =
+    jobConfigurableClass.getMethod("configure", jobConfClass);
+    configureMethod.invoke(theObject, conf);
+}
+} catch (Exception e) {
+    // ConfLogger Inserted Start
+    logger.error("Error in configuring object with provided configuration parameters.", e);
+    // ConfLogger Inserted End
+    throw new RuntimeException("Error in configuring object", e);
+}
+}
+```

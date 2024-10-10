@@ -1,0 +1,60 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Lz4Compressor.java	methodSinagture:	org.apache.hadoop.io.compress.lz4.Lz4Compressor.<init>(IZ)V	methodLines:	61:81
+blockLines:	67:-1
+paras:	io.compression.codec.lz4.use.lz4hc
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=36) 3,7 Node: < Application, Lorg/apache/hadoop/io/compress/lz4/Lz4Compressor, <init>(IZ)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/compress/Lz4Codec, createCompressor()Lorg/apache/hadoop/io/compress/Compressor; > Context: Everywhere[10]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 8,9,10 @19 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/compress/Lz4Codec, createCompressor()Lorg/apache/hadoop/io/compress/Compressor; > Context: Everywhere[10]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 8,9,10 @19 exception:11
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/io/compress/Lz4Codec, createCompressor()Lorg/apache/hadoop/io/compress/Compressor; > Context: Everywhere[16]invokespecial < Application, Lorg/apache/hadoop/io/compress/lz4/Lz4Compressor, <init>(IZ)V > 13,7,12 @29 exception:14 v12
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/io/compress/lz4/Lz4Compressor, <init>(IZ)V > Context: Everywhere v3
+NORMAL <init>:conditional branch(eq, to iindex=36) 3,7 Node: < Application, Lorg/apache/hadoop/io/compress/lz4/Lz4Compressor, <init>(IZ)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+   */
+  public Lz4Compressor(int directBufferSize, boolean useLz4HC) {
+    this.directBufferSize = directBufferSize;
+
+    try {
+      LZ4Factory lz4Factory = LZ4Factory.fastestInstance();
+      if (useLz4HC) {
+        lz4Compressor = lz4Factory.highCompressor();
+      } else {
+        lz4Compressor = lz4Factory.fastCompressor();
+      }
+    } catch (AssertionError t) {
+      throw new RuntimeException("lz4-java library is not available: " +
+              "Lz4Compressor has not been loaded. You need to add " +
+              "lz4-java.jar to your CLASSPATH. " + t, t);
+    }
+
+    uncompressedDirectBuf = ByteBuffer.allocateDirect(directBufferSize);
+    compressedDirectBuf = ByteBuffer.allocateDirect(directBufferSize);
+    compressedDirectBuf.position(directBufferSize);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/io/compress/Lz4Codec, createCompressor()Lorg/apache/hadoop/io/compress/Compressor; > Context: Everywhere, blocks=[BB[SSA:13..16]6 - org.apache.hadoop.io.compress.Lz4Codec.createCompressor()Lorg/apache/hadoop/io/compress/Compressor;, BB[SSA:11..12]5 - org.apache.hadoop.io.compress.Lz4Codec.createCompressor()Lorg/apache/hadoop/io/compress/Compressor;, BB[SSA:17..17]7 - org.apache.hadoop.io.compress.Lz4Codec.createCompressor()Lorg/apache/hadoop/io/compress/Compressor;, BB[SSA:-1..-2]8 - org.apache.hadoop.io.compress.Lz4Codec.createCompressor()Lorg/apache/hadoop/io/compress/Compressor;], numberOfBasicBlocks=4, firstLineNumber=116, lastLineNumber=119, firstMethodNumber=112, lastMethodNumber=119, isFirstLineValid=true, methodSrcCode=
+  public Compressor createCompressor() {
+    int bufferSize = conf.getInt(
+        CommonConfigurationKeys.IO_COMPRESSION_CODEC_LZ4_BUFFERSIZE_KEY,
+        CommonConfigurationKeys.IO_COMPRESSION_CODEC_LZ4_BUFFERSIZE_DEFAULT);
+    boolean useLz4HC = conf.getBoolean(
+        CommonConfigurationKeys.IO_COMPRESSION_CODEC_LZ4_USELZ4HC_KEY,
+        CommonConfigurationKeys.IO_COMPRESSION_CODEC_LZ4_USELZ4HC_DEFAULT);
+    return new Lz4Compressor(bufferSize, useLz4HC);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/io/compress/lz4/Lz4Compressor, <init>(I)V > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.io.compress.lz4.Lz4Compressor.<init>(I)V, BB[SSA:-1..-2]0 - org.apache.hadoop.io.compress.lz4.Lz4Compressor.<init>(I)V, BB[SSA:4..4]2 - org.apache.hadoop.io.compress.lz4.Lz4Compressor.<init>(I)V, BB[SSA:-1..-2]3 - org.apache.hadoop.io.compress.lz4.Lz4Compressor.<init>(I)V], numberOfBasicBlocks=4, firstLineNumber=88, lastLineNumber=90, firstMethodNumber=88, lastMethodNumber=90, isFirstLineValid=false, methodSrcCode=
+  public Lz4Compressor(int directBufferSize) {
+    this(directBufferSize, false);
+  }
+
+}

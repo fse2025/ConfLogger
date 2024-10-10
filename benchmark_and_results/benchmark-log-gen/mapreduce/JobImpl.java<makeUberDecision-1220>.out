@@ -1,0 +1,180 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.makeUberDecision(J)V	methodLines:	1220:1314
+blockLines:	1241:-1
+paras:	mapreduce.job.ubertask.maxreduces
+TaintedStat:	NORMAL makeUberDecision:conditional branch(gt, to iindex=56) 40,13 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[10]13 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 9,10,11 @21 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[10]13 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 9,10,11 @21 exception:12
+NORMAL makeUberDecision:conditional branch(gt, to iindex=56) 40,13 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.makeUberDecision(J)V	methodLines:	1220:1314
+blockLines:	1258:-1
+paras:	mapreduce.map.memory.mb
+TaintedStat:	NORMAL makeUberDecision:conditional branch(ne, to iindex=119) 70,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[71]48 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getLong(Ljava/lang/String;J)J > 44,45,46 @145 exception:47
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[71]48 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getLong(Ljava/lang/String;J)J > 44,45,46 @145 exception:47
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere:66 = phi  54,48
+NORMAL makeUberDecision:68 = compare 66,27 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+NORMAL makeUberDecision:conditional branch(le, to iindex=117) 68,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+NORMAL makeUberDecision:conditional branch(ne, to iindex=119) 70,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.makeUberDecision(J)V	methodLines:	1220:1314
+blockLines:	1272:-1
+paras:	mapreduce.job.ubertask.enable
+TaintedStat:	NORMAL makeUberDecision:conditional branch(eq, to iindex=165) 37,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[40]37 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getBoolean(Ljava/lang/String;Z)Z > 33,34,35 @87 exception:36
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[40]37 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getBoolean(Ljava/lang/String;Z)Z > 33,34,35 @87 exception:36
+NORMAL makeUberDecision:conditional branch(eq, to iindex=165) 37,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.makeUberDecision(J)V	methodLines:	1220:1314
+blockLines:	1262:-1
+paras:	mapreduce.map.cpu.vcores
+TaintedStat:	NORMAL makeUberDecision:conditional branch(gt, to iindex=129) 73,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[87]58 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 55,56,11 @180 exception:57
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[87]58 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 55,56,11 @180 exception:57
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere:67 = phi  64,58
+NORMAL makeUberDecision:72 = conversion(J) 67 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+NORMAL makeUberDecision:73 = compare 72,32 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+NORMAL makeUberDecision:conditional branch(gt, to iindex=129) 73,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.makeUberDecision(J)V	methodLines:	1220:1314
+blockLines:	1242:-1
+paras:	mapreduce.job.ubertask.maxbytes
+TaintedStat:	NORMAL makeUberDecision:conditional branch(gt, to iindex=65) 42,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[20]21 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getLong(Ljava/lang/String;J)J > 14,15,19 @44 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[20]21 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getLong(Ljava/lang/String;J)J > 14,15,19 @44 exception:20
+NORMAL makeUberDecision:42 = compare 2,21 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+NORMAL makeUberDecision:conditional branch(gt, to iindex=65) 42,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.makeUberDecision(J)V	methodLines:	1220:1314
+blockLines:	1240:-1
+paras:	mapreduce.job.ubertask.maxmaps
+TaintedStat:	NORMAL makeUberDecision:conditional branch(gt, to iindex=48) 38,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[4]8 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 4,5,6 @9 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[4]8 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 4,5,6 @9 exception:7
+NORMAL makeUberDecision:conditional branch(gt, to iindex=48) 38,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.makeUberDecision(J)V	methodLines:	1220:1314
+blockLines:	1304:-1
+paras:	yarn.app.mapreduce.am.resource.cpu-vcores
+TaintedStat:	NORMAL makeUberDecision:conditional branch(ne, to iindex=272) 74,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[33]31 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 28,29,11 @73 exception:30
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere[33]31 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getInt(Ljava/lang/String;I)I > 28,29,11 @73 exception:30
+NORMAL makeUberDecision:32 = conversion(J) 31 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+NORMAL makeUberDecision:73 = compare 72,32 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+NORMAL makeUberDecision:conditional branch(gt, to iindex=129) 73,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere:74 = phi  11,35
+NORMAL makeUberDecision:conditional branch(ne, to iindex=272) 74,35 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, makeUberDecision(J)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // these are no longer "system" settings, necessarily; user may override
+    int sysMaxMaps = conf.getInt(MRJobConfig.JOB_UBERTASK_MAXMAPS, 9);
+
+    int sysMaxReduces = conf.getInt(MRJobConfig.JOB_UBERTASK_MAXREDUCES, 1);
+
+    long sysMaxBytes = conf.getLong(MRJobConfig.JOB_UBERTASK_MAXBYTES,
+        fs.getDefaultBlockSize(this.remoteJobSubmitDir)); // FIXME: this is wrong; get FS from
+                                   // [File?]InputFormat and default block size
+                                   // from that
+
+    long sysMemSizeForUberSlot =
+        conf.getInt(MRJobConfig.MR_AM_VMEM_MB,
+            MRJobConfig.DEFAULT_MR_AM_VMEM_MB);
+
+    long sysCPUSizeForUberSlot =
+        conf.getInt(MRJobConfig.MR_AM_CPU_VCORES,
+            MRJobConfig.DEFAULT_MR_AM_CPU_VCORES);
+
+    boolean uberEnabled =
+        conf.getBoolean(MRJobConfig.JOB_UBERTASK_ENABLE, false);
+    boolean smallNumMapTasks = (numMapTasks <= sysMaxMaps);
+    boolean smallNumReduceTasks = (numReduceTasks <= sysMaxReduces);
+    boolean smallInput = (dataInputLength <= sysMaxBytes);
+    // ignoring overhead due to UberAM and statics as negligible here:
+    long requiredMapMB = conf.getLong(MRJobConfig.MAP_MEMORY_MB, 0);
+    long requiredReduceMB = conf.getLong(MRJobConfig.REDUCE_MEMORY_MB, 0);
+    long requiredMB = Math.max(requiredMapMB, requiredReduceMB);
+    int requiredMapCores = conf.getInt(
+            MRJobConfig.MAP_CPU_VCORES, 
+            MRJobConfig.DEFAULT_MAP_CPU_VCORES);
+    int requiredReduceCores = conf.getInt(
+            MRJobConfig.REDUCE_CPU_VCORES, 
+            MRJobConfig.DEFAULT_REDUCE_CPU_VCORES);
+    int requiredCores = Math.max(requiredMapCores, requiredReduceCores);    
+    if (numReduceTasks == 0) {
+      requiredMB = requiredMapMB;
+      requiredCores = requiredMapCores;
+    }
+    boolean smallMemory =
+        (requiredMB <= sysMemSizeForUberSlot)
+        || (sysMemSizeForUberSlot == JobConf.DISABLED_MEMORY_LIMIT);
+    
+    boolean smallCpu = requiredCores <= sysCPUSizeForUberSlot;
+    boolean notChainJob = !isChainJob(conf);
+
+    // User has overall veto power over uberization, or user can modify
+    // limits (overriding system settings and potentially shooting
+    // themselves in the head).  Note that ChainMapper/Reducer are
+    // fundamentally incompatible with MR-1220; they employ a blocking
+    // queue between the maps/reduces and thus require parallel execution,
+    // while "uber-AM" (MR AM + LocalContainerLauncher) loops over tasks
+    // and thus requires sequential execution.
+    isUber = uberEnabled && smallNumMapTasks && smallNumReduceTasks
+        && smallInput && smallMemory && smallCpu 
+        && notChainJob;
+
+    if (isUber) {
+      LOG.info("Uberizing job " + jobId + ": " + numMapTasks + "m+"
+          + numReduceTasks + "r tasks (" + dataInputLength
+          + " input bytes) will run sequentially on single node.");
+
+      // make sure reduces are scheduled only after all map are completed
+      conf.setFloat(MRJobConfig.COMPLETED_MAPS_FOR_REDUCE_SLOWSTART,
+                        1.0f);
+      // uber-subtask attempts all get launched on same node; if one fails,
+      // probably should retry elsewhere, i.e., move entire uber-AM:  ergo,
+      // limit attempts to 1 (or at most 2?  probably not...)
+      conf.setInt(MRJobConfig.MAP_MAX_ATTEMPTS, 1);
+      conf.setInt(MRJobConfig.REDUCE_MAX_ATTEMPTS, 1);
+
+      // disable speculation
+      conf.setBoolean(MRJobConfig.MAP_SPECULATIVE, false);
+      conf.setBoolean(MRJobConfig.REDUCE_SPECULATIVE, false);
+    } else {
+      StringBuilder msg = new StringBuilder();
+      msg.append("Not uberizing ").append(jobId).append(" because:");
+      if (!uberEnabled)
+        msg.append(" not enabled;");
+      if (!smallNumMapTasks)
+        msg.append(" too many maps;");
+      if (!smallNumReduceTasks)
+        msg.append(" too many reduces;");
+      if (!smallInput)
+        msg.append(" too much input;");
+      if (!smallCpu)
+        msg.append(" too much CPU;");
+      if (!smallMemory)
+        msg.append(" too much RAM;");
+      if (!smallCpu)
+          msg.append(" too much CPU;");
+      if (!notChainJob)
+        msg.append(" chainjob;");
+      LOG.info(msg.toString());
+    }
+  }
+  
+
+
+====================ctx:=======================

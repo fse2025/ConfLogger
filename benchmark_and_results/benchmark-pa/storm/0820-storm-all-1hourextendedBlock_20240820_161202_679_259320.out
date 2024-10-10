@@ -1,0 +1,82 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StormCommon.java	methodSinagture:	org.apache.storm.daemon.StormCommon.addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V	methodLines:	344:361
+blockLines:	347:-1
+paras:	topology.message.timeout.secs
+TaintedStat:	NORMAL addEventLogger:conditional branch(eq, to iindex=16) 13,14 Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[30]26 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,24 @61 exception:25
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[30]26 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,24 @61 exception:25
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[31]28 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > 26 @66 exception:27 v26
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:return 2 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[7]13 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 6,11 @21 exception:12
+NORMAL addEventLogger:conditional branch(eq, to iindex=16) 13,14 Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	StormCommon.java	methodSinagture:	org.apache.storm.daemon.StormCommon.addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V	methodLines:	344:361
+blockLines:	356:-1
+paras:	topology.eventlogger.executors
+TaintedStat:	NORMAL addEventLogger:conditional branch(eq, to iindex=65) 44,17 Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[2]6 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,4 @4 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[2]6 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,4 @4 exception:5
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[7]13 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 6,11 @21 exception:12 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:return 2 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere[7]13 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 6,11 @21 exception:12
+NORMAL addEventLogger:conditional branch(eq, to iindex=16) 13,14 Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere
+NORMAL addEventLogger:conditional branch(ne, to iindex=17) 16,17 Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere
+NORMAL addEventLogger:conditional branch(eq, to iindex=65) 44,17 Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static void addEventLogger(Map<String, Object> conf, StormTopology topology) {
+        Integer numExecutors = ObjectReader.getInt(conf.get(Config.TOPOLOGY_EVENTLOGGER_EXECUTORS),
+                                                   ObjectReader.getInt(conf.get(Config.TOPOLOGY_WORKERS)));
+        if (numExecutors == null || numExecutors == 0) {
+            return;
+        }
+        HashMap<String, Object> componentConf = new HashMap<>();
+        componentConf.put(Config.TOPOLOGY_TASKS, numExecutors);
+        componentConf.put(Config.TOPOLOGY_TICK_TUPLE_FREQ_SECS, ObjectReader.getInt(conf.get(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS)));
+        Bolt eventLoggerBolt = Thrift.prepareSerializedBoltDetails(
+            eventLoggerInputs(topology), new EventLoggerBolt(), null, numExecutors, componentConf);
+
+        for (Object component : allComponents(topology).values()) {
+            ComponentCommon common = getComponentCommon(component);
+            common.put_to_streams(EVENTLOGGER_STREAM_ID, Thrift.outputFields(eventLoggerBoltFields()));
+        }
+        topology.put_to_bolts(EVENTLOGGER_COMPONENT_ID, eventLoggerBolt);
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/StormCommon, systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere, blocks=[BB[SSA:12..14]6 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:10..11]5 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:15..17]7 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:-1..-2]13 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;], numberOfBasicBlocks=4, firstLineNumber=538, lastLineNumber=541, firstMethodNumber=533, lastMethodNumber=548, isFirstLineValid=true, methodSrcCode=
+    protected StormTopology systemTopologyImpl(Map<String, Object> topoConf, StormTopology topology) throws InvalidTopologyException {
+        validateBasic(topology);
+
+        StormTopology ret = topology.deepCopy();
+        addAcker(topoConf, ret);
+        if (hasEventLoggers(topoConf)) {
+            addEventLogger(topoConf, ret);
+        }
+        addMetricComponents(topoConf, ret);
+        addSystemComponents(topoConf, ret);
+        addMetricStreams(ret);
+        addSystemStreams(ret);
+
+        validateStructure(ret);
+
+        return ret;
+    }
+}

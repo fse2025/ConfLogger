@@ -1,0 +1,138 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SaslRpcClient.java	methodSinagture:	org.apache.hadoop.security.SaslRpcClient.getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String;	methodLines:	297:348
+blockLines:	332:-1
+paras:	null
+TaintedStat:	NORMAL getServerPrincipal:conditional branch(eq, to iindex=150) 70,25 Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String; > Context: Everywhere[112]65 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 63,27 @239 exception:64
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String; > Context: Everywhere[112]65 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 63,27 @239 exception:64
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String; > Context: Everywhere[116]70 = invokestatic < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/net/InetAddress;)Ljava/lang/String; > 65,68 @249 exception:69 v65
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/net/InetAddress;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL getServerPrincipal:return 1 Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/net/InetAddress;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/net/InetAddress;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String; > Context: Everywhere[116]70 = invokestatic < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/net/InetAddress;)Ljava/lang/String; > 65,68 @249 exception:69
+NORMAL getServerPrincipal:conditional branch(eq, to iindex=150) 70,25 Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	SaslRpcClient.java	methodSinagture:	org.apache.hadoop.security.SaslRpcClient.getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String;	methodLines:	297:348
+blockLines:	316:-1
+paras:	null
+TaintedStat:	NORMAL getServerPrincipal:conditional branch(eq, to iindex=109) 59,25 Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String; > Context: Everywhere[74]59 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 48,57 @166 exception:58
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String; > Context: Everywhere[74]59 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 48,57 @166 exception:58
+NORMAL getServerPrincipal:conditional branch(eq, to iindex=109) 59,25 Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, getServerPrincipal(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  String getServerPrincipal(SaslAuth authType) throws IOException {
+    KerberosInfo krbInfo = SecurityUtil.getKerberosInfo(protocol, conf);
+    LOG.debug("Get kerberos info proto:" + protocol + " info:" + krbInfo);
+    if (krbInfo == null) { // protocol has no support for kerberos
+      return null;
+    }
+    String serverKey = krbInfo.serverPrincipal();
+    if (serverKey == null) {
+      throw new IllegalArgumentException(
+          "Can't obtain server Kerberos config key from protocol="
+              + protocol.getCanonicalName());
+    }
+    // construct server advertised principal for comparision
+    String serverPrincipal = new KerberosPrincipal(
+        authType.getProtocol() + "/" + authType.getServerId(),
+        KerberosPrincipal.KRB_NT_SRV_HST).getName();
+
+    // use the pattern if defined
+    String serverKeyPattern = conf.get(serverKey + ".pattern");
+    if (serverKeyPattern != null && !serverKeyPattern.isEmpty()) {
+      Pattern pattern = GlobPattern.compile(serverKeyPattern);
+      if (!pattern.matcher(serverPrincipal).matches()) {
+        throw new IllegalArgumentException(String.format(
+            "Server has invalid Kerberos principal: %s,"
+                + " doesn't match the pattern: %s",
+            serverPrincipal, serverKeyPattern));
+      }
+    } else {
+      // check that the server advertised principal matches our conf
+      String confPrincipal = SecurityUtil.getServerPrincipal(
+          conf.get(serverKey), serverAddr.getAddress());
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("getting serverKey: " + serverKey + " conf value: " + conf.get(serverKey)
+            + " principal: " + confPrincipal);
+      }
+      if (confPrincipal == null || confPrincipal.isEmpty()) {
+        throw new IllegalArgumentException(
+            "Failed to specify server's Kerberos principal name");
+      }
+      KerberosName name = new KerberosName(confPrincipal);
+      if (name.getHostName() == null) {
+        throw new IllegalArgumentException(
+            "Kerberos principal name does NOT have the expected hostname part: "
+                + confPrincipal);
+      }
+      if (!serverPrincipal.equals(confPrincipal)) {
+        throw new IllegalArgumentException(String.format(
+            "Server has invalid Kerberos principal: %s, expecting: %s",
+            serverPrincipal, confPrincipal));
+      }
+    }
+    return serverPrincipal;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/SaslRpcClient, createSaslClient(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljavax/security/sasl/SaslClient; > Context: Everywhere, blocks=[BB[SSA:55..57]25 - org.apache.hadoop.security.SaslRpcClient.createSaslClient(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljavax/security/sasl/SaslClient;, BB[SSA:48..49]22 - org.apache.hadoop.security.SaslRpcClient.createSaslClient(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljavax/security/sasl/SaslClient;, BB[SSA:58..61]26 - org.apache.hadoop.security.SaslRpcClient.createSaslClient(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljavax/security/sasl/SaslClient;, BB[SSA:-1..-2]67 - org.apache.hadoop.security.SaslRpcClient.createSaslClient(Lorg/apache/hadoop/ipc/protobuf/RpcHeaderProtos$RpcSaslProto$SaslAuth;)Ljavax/security/sasl/SaslClient;], numberOfBasicBlocks=4, firstLineNumber=235, lastLineNumber=241, firstMethodNumber=212, lastMethodNumber=260, isFirstLineValid=true, methodSrcCode=
+      throws SaslException, IOException {
+    String saslUser = null;
+    // SASL requires the client and server to use the same proto and serverId
+    // if necessary, auth types below will verify they are valid
+    final String saslProtocol = authType.getProtocol();
+    final String saslServerName = authType.getServerId();
+    Map<String, String> saslProperties =
+      saslPropsResolver.getClientProperties(serverAddr.getAddress());  
+    CallbackHandler saslCallback = null;
+    
+    final AuthMethod method = AuthMethod.valueOf(authType.getMethod());
+    switch (method) {
+      case TOKEN: {
+        Token<?> token = getServerToken(authType);
+        if (token == null) {
+          LOG.debug("tokens aren't supported for this protocol" +
+              " or user doesn't have one");
+          return null;
+        }
+        saslCallback = new SaslClientCallbackHandler(token);
+        break;
+      }
+      case KERBEROS: {
+        if (ugi.getRealAuthenticationMethod().getAuthMethod() !=
+            AuthMethod.KERBEROS) {
+          LOG.debug("client isn't using kerberos");
+          return null;
+        }
+        String serverPrincipal = getServerPrincipal(authType);
+        if (serverPrincipal == null) {
+          LOG.debug("protocol doesn't use kerberos");
+          return null;
+        }
+        if (LOG.isDebugEnabled()) {
+          LOG.debug("RPC Server's Kerberos principal name for protocol="
+              + protocol.getCanonicalName() + " is " + serverPrincipal);
+        }
+        break;
+      }
+      default:
+        throw new IOException("Unknown authentication method " + method);
+    }
+
+    String mechanism = method.getMechanismName();
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("Creating SASL " + mechanism + "(" + method + ") "
+          + " client to authenticate to service at " + saslServerName);
+    }
+    return saslFactory.createSaslClient(
+        new String[] {mechanism}, saslUser, saslProtocol, saslServerName,
+}

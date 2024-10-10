@@ -1,0 +1,360 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FSDirectory.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.FSDirectory.<init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	316:418
+blockLines:	366:-1
+paras:	dfs.namenode.name.cache.threshold
+TaintedStat:	NORMAL <init>:conditional branch(le, to iindex=151) 100,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSDirectory, <init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSDirectory, <init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[222]141 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 3,138,139 @461 exception:140
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSDirectory, <init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[222]141 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 3,138,139 @461 exception:140
+NORMAL <init>:149 = invokevirtual < Application, Ljava/lang/StringBuilder, append(I)Ljava/lang/StringBuilder; > 147,141 @483 exception:148 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSDirectory, <init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, append(I)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL append:return 1 Node: < Primordial, Ljava/lang/StringBuilder, append(I)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(I)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String, checkBoundsBeginEnd(III)V > Context: Everywhere[25]23 = invokevirtual < Primordial, Ljava/lang/StringBuilder, append(I)Ljava/lang/StringBuilder; > 21,3 @49 exception:22
+NORMAL checkBoundsBeginEnd:25 = invokevirtual < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 23 @52 exception:24 Node: < Primordial, Ljava/lang/String, checkBoundsBeginEnd(III)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[41]30 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 28 @70 exception:29
+PHI Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:31 = phi  22,30
+NORMAL getHexDigits:return 31 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere[11]9 = invokespecial < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > 1,6 @14 exception:8
+NORMAL getInt:conditional branch(eq, to iindex=20) 9,7 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL getInt:return 14 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSDirectory, <init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[143]100 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 3,97,98 @305 exception:99
+NORMAL <init>:conditional branch(le, to iindex=151) 100,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSDirectory, <init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+  FSDirectory(FSNamesystem ns, Configuration conf) throws IOException {
+    this.inodeId = new INodeId();
+    rootDir = createRoot(ns);
+    inodeMap = INodeMap.newInstance(rootDir);
+    this.isPermissionEnabled = conf.getBoolean(
+      DFSConfigKeys.DFS_PERMISSIONS_ENABLED_KEY,
+      DFSConfigKeys.DFS_PERMISSIONS_ENABLED_DEFAULT);
+    this.isPermissionContentSummarySubAccess = conf.getBoolean(
+        DFSConfigKeys.DFS_PERMISSIONS_CONTENT_SUMMARY_SUBACCESS_KEY,
+        DFSConfigKeys.DFS_PERMISSIONS_CONTENT_SUMMARY_SUBACCESS_DEFAULT);
+    this.fsOwnerShortUserName =
+      UserGroupInformation.getCurrentUser().getShortUserName();
+    this.supergroup = conf.get(
+      DFSConfigKeys.DFS_PERMISSIONS_SUPERUSERGROUP_KEY,
+      DFSConfigKeys.DFS_PERMISSIONS_SUPERUSERGROUP_DEFAULT);
+    this.aclsEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_NAMENODE_ACLS_ENABLED_KEY,
+        DFSConfigKeys.DFS_NAMENODE_ACLS_ENABLED_DEFAULT);
+    LOG.info("ACLs enabled? " + aclsEnabled);
+    this.posixAclInheritanceEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_NAMENODE_POSIX_ACL_INHERITANCE_ENABLED_KEY,
+        DFSConfigKeys.DFS_NAMENODE_POSIX_ACL_INHERITANCE_ENABLED_DEFAULT);
+    LOG.info("POSIX ACL inheritance enabled? " + posixAclInheritanceEnabled);
+    this.xattrsEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_NAMENODE_XATTRS_ENABLED_KEY,
+        DFSConfigKeys.DFS_NAMENODE_XATTRS_ENABLED_DEFAULT);
+    LOG.info("XAttrs enabled? " + xattrsEnabled);
+    this.xattrMaxSize = (int) conf.getLongBytes(
+        DFSConfigKeys.DFS_NAMENODE_MAX_XATTR_SIZE_KEY,
+        DFSConfigKeys.DFS_NAMENODE_MAX_XATTR_SIZE_DEFAULT);
+    Preconditions.checkArgument(xattrMaxSize > 0,
+        "The maximum size of an xattr should be > 0: (%s).",
+        DFSConfigKeys.DFS_NAMENODE_MAX_XATTR_SIZE_KEY);
+    Preconditions.checkArgument(xattrMaxSize <=
+        DFSConfigKeys.DFS_NAMENODE_MAX_XATTR_SIZE_HARD_LIMIT,
+        "The maximum size of an xattr should be <= maximum size"
+        + " hard limit " + DFSConfigKeys.DFS_NAMENODE_MAX_XATTR_SIZE_HARD_LIMIT
+        + ": (%s).", DFSConfigKeys.DFS_NAMENODE_MAX_XATTR_SIZE_KEY);
+
+    this.accessTimePrecision = conf.getLong(
+        DFS_NAMENODE_ACCESSTIME_PRECISION_KEY,
+        DFS_NAMENODE_ACCESSTIME_PRECISION_DEFAULT);
+
+    this.quotaByStorageTypeEnabled =
+        conf.getBoolean(DFS_QUOTA_BY_STORAGETYPE_ENABLED_KEY,
+                        DFS_QUOTA_BY_STORAGETYPE_ENABLED_DEFAULT);
+
+    int configuredLimit = conf.getInt(
+        DFSConfigKeys.DFS_LIST_LIMIT, DFSConfigKeys.DFS_LIST_LIMIT_DEFAULT);
+    this.lsLimit = configuredLimit>0 ?
+        configuredLimit : DFSConfigKeys.DFS_LIST_LIMIT_DEFAULT;
+    this.contentCountLimit = conf.getInt(
+        DFSConfigKeys.DFS_CONTENT_SUMMARY_LIMIT_KEY,
+        DFSConfigKeys.DFS_CONTENT_SUMMARY_LIMIT_DEFAULT);
+    this.contentSleepMicroSec = conf.getLong(
+        DFSConfigKeys.DFS_CONTENT_SUMMARY_SLEEP_MICROSEC_KEY,
+        DFSConfigKeys.DFS_CONTENT_SUMMARY_SLEEP_MICROSEC_DEFAULT);
+    
+    // filesystem limits
+    this.maxComponentLength = (int) conf.getLongBytes(
+        DFSConfigKeys.DFS_NAMENODE_MAX_COMPONENT_LENGTH_KEY,
+        DFSConfigKeys.DFS_NAMENODE_MAX_COMPONENT_LENGTH_DEFAULT);
+    this.maxDirItems = conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_MAX_DIRECTORY_ITEMS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_MAX_DIRECTORY_ITEMS_DEFAULT);
+    this.inodeXAttrsLimit = conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_MAX_XATTRS_PER_INODE_KEY,
+        DFSConfigKeys.DFS_NAMENODE_MAX_XATTRS_PER_INODE_DEFAULT);
+
+    this.protectedDirectories = parseProtectedDirectories(conf);
+    this.isProtectedSubDirectoriesEnable = conf.getBoolean(
+        DFS_PROTECTED_SUBDIRECTORIES_ENABLE,
+        DFS_PROTECTED_SUBDIRECTORIES_ENABLE_DEFAULT);
+
+    Preconditions.checkArgument(this.inodeXAttrsLimit >= 0,
+        "Cannot set a negative limit on the number of xattrs per inode (%s).",
+        DFSConfigKeys.DFS_NAMENODE_MAX_XATTRS_PER_INODE_KEY);
+    // We need a maximum maximum because by default, PB limits message sizes
+    // to 64MB. This means we can only store approximately 6.7 million entries
+    // per directory, but let's use 6.4 million for some safety.
+    final int MAX_DIR_ITEMS = 64 * 100 * 1000;
+    Preconditions.checkArgument(
+        maxDirItems > 0 && maxDirItems <= MAX_DIR_ITEMS, "Cannot set "
+            + DFSConfigKeys.DFS_NAMENODE_MAX_DIRECTORY_ITEMS_KEY
+            + " to a value less than 1 or greater than " + MAX_DIR_ITEMS);
+
+    int threshold = conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_NAME_CACHE_THRESHOLD_KEY,
+        DFSConfigKeys.DFS_NAMENODE_NAME_CACHE_THRESHOLD_DEFAULT);
+    NameNode.LOG.info("Caching file names occurring more than " + threshold
+        + " times");
+    nameCache = new NameCache<ByteArray>(threshold);
+    namesystem = ns;
+    this.editLog = ns.getEditLog();
+    ezManager = new EncryptionZoneManager(this, conf);
+
+    this.quotaInitThreads = conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_QUOTA_INIT_THREADS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_QUOTA_INIT_THREADS_DEFAULT);
+
+    initUsersToBypassExtProvider(conf);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/FSImage;Z)V > Context: Everywhere, blocks=[BB[SSA:507..510]229 - org.apache.hadoop.hdfs.server.namenode.FSNamesystem.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/FSImage;Z)V, BB[SSA:505..506]228 - org.apache.hadoop.hdfs.server.namenode.FSNamesystem.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/FSImage;Z)V, BB[SSA:511..511]230 - org.apache.hadoop.hdfs.server.namenode.FSNamesystem.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/FSImage;Z)V, BB[SSA:-1..-2]310 - org.apache.hadoop.hdfs.server.namenode.FSNamesystem.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/FSImage;Z)V], numberOfBasicBlocks=4, firstLineNumber=1012, lastLineNumber=1012, firstMethodNumber=840, lastMethodNumber=1055, isFirstLineValid=true, methodSrcCode=
+  FSNamesystem(Configuration conf, FSImage fsImage, boolean ignoreRetryCache)
+      throws IOException {
+    provider = DFSUtil.createKeyProviderCryptoExtension(conf);
+    LOG.info("KeyProvider: " + provider);
+    if (conf.getBoolean(DFS_NAMENODE_AUDIT_LOG_ASYNC_KEY,
+                        DFS_NAMENODE_AUDIT_LOG_ASYNC_DEFAULT)) {
+      LOG.info("Enabling async auditlog");
+      enableAsyncAuditLog(conf);
+    }
+    auditLogWithRemotePort =
+        conf.getBoolean(DFS_NAMENODE_AUDIT_LOG_WITH_REMOTE_PORT_KEY,
+            DFS_NAMENODE_AUDIT_LOG_WITH_REMOTE_PORT_DEFAULT);
+    this.contextFieldSeparator =
+        conf.get(HADOOP_CALLER_CONTEXT_SEPARATOR_KEY,
+            HADOOP_CALLER_CONTEXT_SEPARATOR_DEFAULT);
+    fsLock = new FSNamesystemLock(conf, detailedLockHoldTimeMetrics);
+    cond = fsLock.newWriteLockCondition();
+    cpLock = new ReentrantLock();
+
+    this.fsImage = fsImage;
+    try {
+      resourceRecheckInterval = conf.getLong(
+          DFS_NAMENODE_RESOURCE_CHECK_INTERVAL_KEY,
+          DFS_NAMENODE_RESOURCE_CHECK_INTERVAL_DEFAULT);
+
+      this.fsOwner = UserGroupInformation.getCurrentUser();
+      this.supergroup = conf.get(DFS_PERMISSIONS_SUPERUSERGROUP_KEY, 
+                                 DFS_PERMISSIONS_SUPERUSERGROUP_DEFAULT);
+      this.isPermissionEnabled = conf.getBoolean(DFS_PERMISSIONS_ENABLED_KEY,
+                                                 DFS_PERMISSIONS_ENABLED_DEFAULT);
+
+      this.isStoragePolicyEnabled =
+          conf.getBoolean(DFS_STORAGE_POLICY_ENABLED_KEY,
+              DFS_STORAGE_POLICY_ENABLED_DEFAULT);
+      this.isStoragePolicySuperuserOnly =
+          conf.getBoolean(DFS_STORAGE_POLICY_PERMISSIONS_SUPERUSER_ONLY_KEY,
+              DFS_STORAGE_POLICY_PERMISSIONS_SUPERUSER_ONLY_DEFAULT);
+
+      this.snapshotDiffReportLimit =
+          conf.getInt(DFS_NAMENODE_SNAPSHOT_DIFF_LISTING_LIMIT,
+              DFS_NAMENODE_SNAPSHOT_DIFF_LISTING_LIMIT_DEFAULT);
+
+      LOG.info("fsOwner                = " + fsOwner);
+      LOG.info("supergroup             = " + supergroup);
+      LOG.info("isPermissionEnabled    = " + isPermissionEnabled);
+      LOG.info("isStoragePolicyEnabled = " + isStoragePolicyEnabled);
+
+      // block allocation has to be persisted in HA using a shared edits directory
+      // so that the standby has up-to-date namespace information
+      nameserviceId = DFSUtil.getNamenodeNameServiceId(conf);
+      this.haEnabled = HAUtil.isHAEnabled(conf, nameserviceId);  
+      
+      // Sanity check the HA-related config.
+      if (nameserviceId != null) {
+        LOG.info("Determined nameservice ID: " + nameserviceId);
+      }
+      LOG.info("HA Enabled: " + haEnabled);
+      if (!haEnabled && HAUtil.usesSharedEditsDir(conf)) {
+        LOG.warn("Configured NNs:\n" + DFSUtil.nnAddressesAsString(conf));
+        throw new IOException("Invalid configuration: a shared edits dir " +
+            "must not be specified if HA is not enabled.");
+      }
+
+      // block manager needs the haEnabled initialized
+      this.blockManager = new BlockManager(this, haEnabled, conf);
+      this.datanodeStatistics = blockManager.getDatanodeManager().getDatanodeStatistics();
+
+      // Get the checksum type from config
+      String checksumTypeStr = conf.get(DFS_CHECKSUM_TYPE_KEY,
+          DFS_CHECKSUM_TYPE_DEFAULT);
+      DataChecksum.Type checksumType;
+      try {
+         checksumType = DataChecksum.Type.valueOf(checksumTypeStr);
+      } catch (IllegalArgumentException iae) {
+         throw new IOException("Invalid checksum type in "
+            + DFS_CHECKSUM_TYPE_KEY + ": " + checksumTypeStr);
+      }
+
+      try {
+        digest = MessageDigest.getInstance("MD5");
+      } catch (NoSuchAlgorithmException e) {
+        throw new IOException("Algorithm 'MD5' not found");
+      }
+
+      this.serverDefaults = new FsServerDefaults(
+          conf.getLongBytes(DFS_BLOCK_SIZE_KEY, DFS_BLOCK_SIZE_DEFAULT),
+          conf.getInt(DFS_BYTES_PER_CHECKSUM_KEY, DFS_BYTES_PER_CHECKSUM_DEFAULT),
+          conf.getInt(DFS_CLIENT_WRITE_PACKET_SIZE_KEY, DFS_CLIENT_WRITE_PACKET_SIZE_DEFAULT),
+          (short) conf.getInt(DFS_REPLICATION_KEY, DFS_REPLICATION_DEFAULT),
+          conf.getInt(IO_FILE_BUFFER_SIZE_KEY, IO_FILE_BUFFER_SIZE_DEFAULT),
+          conf.getBoolean(DFS_ENCRYPT_DATA_TRANSFER_KEY, DFS_ENCRYPT_DATA_TRANSFER_DEFAULT),
+          conf.getLong(FS_TRASH_INTERVAL_KEY, FS_TRASH_INTERVAL_DEFAULT),
+          checksumType,
+          conf.getTrimmed(
+              CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH,
+              ""),
+          blockManager.getStoragePolicySuite().getDefaultPolicy().getId());
+
+      this.maxFsObjects = conf.getLong(DFS_NAMENODE_MAX_OBJECTS_KEY, 
+                                       DFS_NAMENODE_MAX_OBJECTS_DEFAULT);
+
+      this.minBlockSize = conf.getLongBytes(
+          DFSConfigKeys.DFS_NAMENODE_MIN_BLOCK_SIZE_KEY,
+          DFSConfigKeys.DFS_NAMENODE_MIN_BLOCK_SIZE_DEFAULT);
+      this.maxBlocksPerFile = conf.getLong(DFSConfigKeys.DFS_NAMENODE_MAX_BLOCKS_PER_FILE_KEY,
+          DFSConfigKeys.DFS_NAMENODE_MAX_BLOCKS_PER_FILE_DEFAULT);
+      this.batchedListingLimit = conf.getInt(
+          DFSConfigKeys.DFS_NAMENODE_BATCHED_LISTING_LIMIT,
+          DFSConfigKeys.DFS_NAMENODE_BATCHED_LISTING_LIMIT_DEFAULT);
+      Preconditions.checkArgument(
+          batchedListingLimit > 0,
+          DFSConfigKeys.DFS_NAMENODE_BATCHED_LISTING_LIMIT +
+              " must be greater than zero");
+      this.numCommittedAllowed = conf.getInt(
+          DFSConfigKeys.DFS_NAMENODE_FILE_CLOSE_NUM_COMMITTED_ALLOWED_KEY,
+          DFSConfigKeys.DFS_NAMENODE_FILE_CLOSE_NUM_COMMITTED_ALLOWED_DEFAULT);
+
+      this.maxCorruptFileBlocksReturn = conf.getInt(
+          DFSConfigKeys.DFS_NAMENODE_MAX_CORRUPT_FILE_BLOCKS_RETURNED_KEY,
+          DFSConfigKeys.DFS_NAMENODE_MAX_CORRUPT_FILE_BLOCKS_RETURNED_DEFAULT);
+
+      this.dtpReplaceDatanodeOnFailure = ReplaceDatanodeOnFailure.get(conf);
+      
+      this.standbyShouldCheckpoint = conf.getBoolean(
+          DFS_HA_STANDBY_CHECKPOINTS_KEY, DFS_HA_STANDBY_CHECKPOINTS_DEFAULT);
+      // # edit autoroll threshold is a multiple of the checkpoint threshold 
+      this.editLogRollerThreshold = (long)
+          (conf.getFloat(
+              DFS_NAMENODE_EDIT_LOG_AUTOROLL_MULTIPLIER_THRESHOLD,
+              DFS_NAMENODE_EDIT_LOG_AUTOROLL_MULTIPLIER_THRESHOLD_DEFAULT) *
+          conf.getLong(
+              DFS_NAMENODE_CHECKPOINT_TXNS_KEY,
+              DFS_NAMENODE_CHECKPOINT_TXNS_DEFAULT));
+      this.editLogRollerInterval = conf.getInt(
+          DFS_NAMENODE_EDIT_LOG_AUTOROLL_CHECK_INTERVAL_MS,
+          DFS_NAMENODE_EDIT_LOG_AUTOROLL_CHECK_INTERVAL_MS_DEFAULT);
+
+      this.lazyPersistFileScrubIntervalSec = conf.getInt(
+          DFS_NAMENODE_LAZY_PERSIST_FILE_SCRUB_INTERVAL_SEC,
+          DFS_NAMENODE_LAZY_PERSIST_FILE_SCRUB_INTERVAL_SEC_DEFAULT);
+
+      if (this.lazyPersistFileScrubIntervalSec < 0) {
+        throw new IllegalArgumentException(
+            DFS_NAMENODE_LAZY_PERSIST_FILE_SCRUB_INTERVAL_SEC
+                + " must be zero (for disable) or greater than zero.");
+      }
+
+      this.edekCacheLoaderDelay = conf.getInt(
+          DFSConfigKeys.DFS_NAMENODE_EDEKCACHELOADER_INITIAL_DELAY_MS_KEY,
+          DFSConfigKeys.DFS_NAMENODE_EDEKCACHELOADER_INITIAL_DELAY_MS_DEFAULT);
+      this.edekCacheLoaderInterval = conf.getInt(
+          DFSConfigKeys.DFS_NAMENODE_EDEKCACHELOADER_INTERVAL_MS_KEY,
+          DFSConfigKeys.DFS_NAMENODE_EDEKCACHELOADER_INTERVAL_MS_DEFAULT);
+
+      this.leaseRecheckIntervalMs = conf.getLong(
+          DFS_NAMENODE_LEASE_RECHECK_INTERVAL_MS_KEY,
+          DFS_NAMENODE_LEASE_RECHECK_INTERVAL_MS_DEFAULT);
+      Preconditions.checkArgument(
+              leaseRecheckIntervalMs > 0,
+              DFSConfigKeys.DFS_NAMENODE_LEASE_RECHECK_INTERVAL_MS_KEY +
+                      " must be greater than zero");
+      this.maxLockHoldToReleaseLeaseMs = conf.getLong(
+          DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_KEY,
+          DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_DEFAULT);
+
+      // For testing purposes, allow the DT secret manager to be started regardless
+      // of whether security is enabled.
+      alwaysUseDelegationTokensForTests = conf.getBoolean(
+          DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_KEY,
+          DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_DEFAULT);
+
+      this.dtSecretManager = createDelegationTokenSecretManager(conf);
+      this.dir = new FSDirectory(this, conf);
+      this.snapshotManager = new SnapshotManager(conf, dir);
+      this.cacheManager = new CacheManager(this, conf, blockManager);
+      // Init ErasureCodingPolicyManager instance.
+      ErasureCodingPolicyManager.getInstance().init(conf);
+      this.topConf = new TopConf(conf);
+      this.auditLoggers = initAuditLoggers(conf);
+      this.isDefaultAuditLogger = auditLoggers.size() == 1 &&
+        auditLoggers.get(0) instanceof DefaultAuditLogger;
+      this.retryCache = ignoreRetryCache ? null : initRetryCache(conf);
+      Class<? extends INodeAttributeProvider> klass = conf.getClass(
+          DFS_NAMENODE_INODE_ATTRIBUTES_PROVIDER_KEY,
+          null, INodeAttributeProvider.class);
+      if (klass != null) {
+        inodeAttributeProvider = ReflectionUtils.newInstance(klass, conf);
+        LOG.info("Using INode attribute provider: " + klass.getName());
+      }
+      this.maxListOpenFilesResponses = conf.getInt(
+          DFSConfigKeys.DFS_NAMENODE_LIST_OPENFILES_NUM_RESPONSES,
+          DFSConfigKeys.DFS_NAMENODE_LIST_OPENFILES_NUM_RESPONSES_DEFAULT
+      );
+      Preconditions.checkArgument(maxListOpenFilesResponses > 0,
+          DFSConfigKeys.DFS_NAMENODE_LIST_OPENFILES_NUM_RESPONSES +
+              " must be a positive integer."
+      );
+      this.allowOwnerSetQuota = conf.getBoolean(
+          DFSConfigKeys.DFS_PERMISSIONS_ALLOW_OWNER_SET_QUOTA_KEY,
+          DFSConfigKeys.DFS_PERMISSIONS_ALLOW_OWNER_SET_QUOTA_DEFAULT);
+      this.blockDeletionIncrement = conf.getInt(
+          DFSConfigKeys.DFS_NAMENODE_BLOCK_DELETION_INCREMENT_KEY,
+          DFSConfigKeys.DFS_NAMENODE_BLOCK_DELETION_INCREMENT_DEFAULT);
+      Preconditions.checkArgument(blockDeletionIncrement > 0,
+          DFSConfigKeys.DFS_NAMENODE_BLOCK_DELETION_INCREMENT_KEY +
+              " must be a positive integer.");
+    } catch(IOException e) {
+      LOG.error(getClass().getSimpleName() + " initialization failed.", e);
+      close();
+      throw e;
+    } catch (RuntimeException re) {
+      LOG.error(getClass().getSimpleName() + " initialization failed.", re);
+      close();
+      throw re;
+    }
+  }
+
+}

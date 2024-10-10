@@ -1,0 +1,50 @@
+```java
+String nameserviceId, String namenodeId) {
+    if ((nameserviceId != null && !nameserviceId.isEmpty()) ||
+        (namenodeId != null && !namenodeId.isEmpty())) {
+        
+        if (nameserviceId != null) {
+            conf.set(DFS_NAMESERVICE_ID, nameserviceId);
+            // ConfLogger Inserted Start
+            logger.info("Set DFS_NAMESERVICE_ID to {} based on nameserviceId configuration.", nameserviceId);
+            // ConfLogger Inserted End
+        }
+        
+        if (namenodeId != null) {
+            conf.set(DFS_HA_NAMENODE_ID_KEY, namenodeId);
+            // ConfLogger Inserted Start
+            logger.info("Set DFS_HA_NAMENODE_ID_KEY to {} based on namenodeId configuration.", namenodeId);
+            // ConfLogger Inserted End
+        }
+
+        DFSUtil.setGenericConf(conf, nameserviceId, namenodeId, NAMENODE_SPECIFIC_KEYS);
+        DFSUtil.setGenericConf(conf, nameserviceId, null, NAMESERVICE_SPECIFIC_KEYS);
+    }
+
+    // If the RPC address is set use it to (re-)configure the default FS
+    if (conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY) != null) {
+        URI defaultUri = URI.create(HdfsConstants.HDFS_URI_SCHEME + "://" + conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY));
+        conf.set(FS_DEFAULT_NAME_KEY, defaultUri.toString());
+        // ConfLogger Skipped: Existing log already provides configuration parameter and value.
+        LOG.debug("Setting {} to {}", FS_DEFAULT_NAME_KEY, defaultUri);
+    } else {
+        // ConfLogger Inserted Start
+        logger.warn("DFS_NAMENODE_RPC_ADDRESS_KEY is not set. Unable to configure the default FS URI.");
+        // ConfLogger Inserted End
+    }
+}
+```
+
+### Explanation:
+
+1. **Task 1: Inspect Existing Outputs**
+   - The existing log statement `LOG.debug("Setting {} to {}", FS_DEFAULT_NAME_KEY, defaultUri);` is skipped because it already provides the necessary configuration parameter and value information.
+
+2. **Task 2: Determine Log Insertion Position and Generate Logging Code**
+   - **Type 1 Scope**: 
+     - For `nameserviceId` and `namenodeId`, logs are inserted after setting the configuration to inform about the configuration being set.
+   - **Type 2 Scope**:
+     - For the check on `DFS_NAMENODE_RPC_ADDRESS_KEY`, a warning log is inserted if the key is not set, indicating the inability to configure the default FS URI.
+   - The log levels are chosen based on the importance of the information:
+     - `info` for successful configuration settings.
+     - `warn` for potential misconfigurations or missing configurations.

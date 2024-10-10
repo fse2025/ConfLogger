@@ -1,0 +1,16 @@
+```java
+if (newVal == null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'newVal' is null. Setting 'callerContextEnabled' to default value: " + HADOOP_CALLER_CONTEXT_ENABLED_DEFAULT);
+    // ConfLogger Inserted End
+    callerContextEnabled = HADOOP_CALLER_CONTEXT_ENABLED_DEFAULT;
+} else {
+    callerContextEnabled = Boolean.parseBoolean(newVal);
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'newVal' is set. Parsed 'callerContextEnabled' to: " + callerContextEnabled + " from 'newVal': " + newVal);
+    // ConfLogger Inserted End
+}
+namesystem.setCallerContextEnabled(callerContextEnabled);
+return Boolean.toString(callerContextEnabled);
+}
+```

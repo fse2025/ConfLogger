@@ -1,0 +1,40 @@
+<code-whole>
+String hdfsUser = null;
+
+if (subject != null) {
+// The HDFS client uses the subject to pass in the user
+Set<CurrentUser> user = subject.getPrincipals(CurrentUser.class);
+LOG.debug("Impersonation: subject: {}", subject);
+if (!user.isEmpty()) {
+hdfsUser = user.iterator().next().getName();
+}
+}
+
+// Determine the impersonation user
+String impersonationUser = null;
+if (conf.isSet(PropertyKey.SECURITY_LOGIN_IMPERSONATION_USERNAME)) {
+impersonationUser = conf.getString(PropertyKey.SECURITY_LOGIN_IMPERSONATION_USERNAME);
+LOG.debug("Impersonation: configured: {}", impersonationUser);
+if (Constants.IMPERSONATION_HDFS_USER.equals(impersonationUser)) {
+// Impersonate as the hdfs client user
+impersonationUser = hdfsUser;
+} else {
+// do not use impersonation, for any value that is not _HDFS_USER_
+if (impersonationUser != null && !impersonationUser.isEmpty()
+&& !Constants.IMPERSONATION_NONE.equals(impersonationUser)) {
+LOG.warn("Impersonation ignored. Invalid configuration: {}", impersonationUser);
+}
+impersonationUser = null;
+}
+if (impersonationUser != null && impersonationUser.isEmpty()) {
+impersonationUser = null;
+}
+}
+LOG.debug("Impersonation: hdfsUser: {} impersonationUser: {}", hdfsUser, impersonationUser);
+return impersonationUser;
+}
+</code-whole>
+
+<code-specified>
+if (impersonationUser != null && !impersonationUser.isEmpty()
+</code-specified>

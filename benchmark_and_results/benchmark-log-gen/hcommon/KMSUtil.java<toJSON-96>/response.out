@@ -1,0 +1,21 @@
+```java
+Map json = new HashMap();
+if (keyVersion != null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'keyVersion' is set. Name: " + keyVersion.getName() + ", Version Name: " + keyVersion.getVersionName());
+    // ConfLogger Inserted End
+    json.put(KMSRESTConstants.NAME_FIELD,
+    keyVersion.getName());
+    json.put(KMSRESTConstants.VERSION_NAME_FIELD,
+    keyVersion.getVersionName());
+    json.put(KMSRESTConstants.MATERIAL_FIELD,
+    Base64.encodeBase64URLSafeString(
+    keyVersion.getMaterial()));
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'keyVersion' is not set. Ensure 'keyVersion' is properly configured.");
+    // ConfLogger Inserted End
+}
+return json;
+}
+```

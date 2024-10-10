@@ -1,0 +1,221 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobEndNotifier.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.JobEndNotifier.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	72:121
+blockLines:	97:-1
+paras:	mapreduce.job.end-notification.retry.interval
+TaintedStat:	NORMAL setConf:conditional branch(ne, to iindex=169) 46,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[20]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,15,16 @35 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[20]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,15,16 @35 exception:17
+NORMAL setConf:23 = invokestatic < Application, Ljava/lang/Math, min(II)I > 18,21 @47 exception:22 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL min:return 4 Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/io/UTF8, readChars(Ljava/io/DataInput;Ljava/lang/StringBuilder;I)V > Context: Everywhere[224]94 = invokestatic < Extension, Ljava/lang/Math, min(II)I > 92,3 @386 exception:93
+NORMAL readChars:103 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > 13,101,94 @415 exception:102 Node: < Extension, Lorg/apache/hadoop/io/UTF8, readChars(Ljava/io/DataInput;Ljava/lang/StringBuilder;I)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > Context: Everywhere
+NORMAL byteToHexString:22 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 6 @62 exception:21 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[10]16 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 14 @23 exception:15
+NORMAL getCodecClasses:19 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 16,17 @31 exception:18 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[66]46 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 43,44 @133 exception:45
+NORMAL setConf:conditional branch(ne, to iindex=169) 46,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobEndNotifier.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.JobEndNotifier.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	72:121
+blockLines:	101:-1
+paras:	mapreduce.job.end-notification.retry.attempts
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=96) 55,51 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[7]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,4,5 @10 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[7]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,4,5 @10 exception:6
+NORMAL setConf:9 = binaryop(add) 7 , 8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:14 = invokestatic < Application, Ljava/lang/Math, min(II)I > 9,12 @22 exception:13 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL min:return 4 Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/io/UTF8, readChars(Ljava/io/DataInput;Ljava/lang/StringBuilder;I)V > Context: Everywhere[224]94 = invokestatic < Extension, Ljava/lang/Math, min(II)I > 92,3 @386 exception:93
+NORMAL readChars:103 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > 13,101,94 @415 exception:102 Node: < Extension, Lorg/apache/hadoop/io/UTF8, readChars(Ljava/io/DataInput;Ljava/lang/StringBuilder;I)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > Context: Everywhere
+NORMAL byteToHexString:22 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 6 @62 exception:21 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[10]16 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 14 @23 exception:15
+NORMAL getCodecClasses:19 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 16,17 @31 exception:18 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[66]46 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 43,44 @133 exception:45
+NORMAL setConf:conditional branch(ne, to iindex=169) 46,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=169) 50,51 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=96) 55,51 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobEndNotifier.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.JobEndNotifier.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	72:121
+blockLines:	98:-1
+paras:	mapreduce.job.end-notification.max.retry.interval
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=169) 50,51 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[24]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,19,16 @44 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[24]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,19,16 @44 exception:20
+NORMAL setConf:23 = invokestatic < Application, Ljava/lang/Math, min(II)I > 18,21 @47 exception:22 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL min:return 4 Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/io/UTF8, readChars(Ljava/io/DataInput;Ljava/lang/StringBuilder;I)V > Context: Everywhere[224]94 = invokestatic < Extension, Ljava/lang/Math, min(II)I > 92,3 @386 exception:93
+NORMAL readChars:103 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > 13,101,94 @415 exception:102 Node: < Extension, Lorg/apache/hadoop/io/UTF8, readChars(Ljava/io/DataInput;Ljava/lang/StringBuilder;I)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > Context: Everywhere
+NORMAL byteToHexString:22 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 6 @62 exception:21 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, byteToHexString([BII)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[10]16 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 14 @23 exception:15
+NORMAL getCodecClasses:19 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 16,17 @31 exception:18 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[66]46 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 43,44 @133 exception:45
+NORMAL setConf:conditional branch(ne, to iindex=169) 46,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=169) 50,51 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobEndNotifier.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.JobEndNotifier.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	72:121
+blockLines:	102:-1
+paras:	mapreduce.job.end-notification.max.attempts
+TaintedStat:	NORMAL setConf:conditional branch(ne, to iindex=96) 62,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[13]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,10,8 @19 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[13]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,10,8 @19 exception:11
+NORMAL setConf:14 = invokestatic < Application, Ljava/lang/Math, min(II)I > 9,12 @22 exception:13 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL min:return 4 Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Math, min(II)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/StringLatin1, compareToCI([B[B)I > Context: Everywhere[8]7 = invokestatic < Primordial, Ljava/lang/Math, min(II)I > 4,5 @8 exception:6
+NORMAL compareToCI:conditional branch(ge, to iindex=57) 29,7 Node: < Primordial, Ljava/lang/StringLatin1, compareToCI([B[B)I > Context: Everywhere
+NORMAL compareToCI:return 30 Node: < Primordial, Ljava/lang/StringLatin1, compareToCI([B[B)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringLatin1, compareToCI([B[B)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, compare(Ljava/lang/String;Ljava/lang/String;)I > Context: Everywhere[17]24 = invokestatic < Primordial, Ljava/lang/StringLatin1, compareToCI([B[B)I > 5,6 @32 exception:23
+PHI Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, compare(Ljava/lang/String;Ljava/lang/String;)I > Context: Everywhere:25 = phi  24,22
+NORMAL compare:return 25 Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, compare(Ljava/lang/String;Ljava/lang/String;)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, compare(Ljava/lang/String;Ljava/lang/String;)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, compare(Ljava/lang/Object;Ljava/lang/Object;)I > Context: Everywhere[5]8 = invokevirtual < Primordial, Ljava/lang/String$CaseInsensitiveComparator, compare(Ljava/lang/String;Ljava/lang/String;)I > 1,5,6 @9 exception:7
+NORMAL compare:return 8 Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, compare(Ljava/lang/Object;Ljava/lang/Object;)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, compare(Ljava/lang/Object;Ljava/lang/Object;)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String, compareToIgnoreCase(Ljava/lang/String;)I > Context: Everywhere[3]6 = invokeinterface < Primordial, Ljava/util/Comparator, compare(Ljava/lang/Object;Ljava/lang/Object;)I > 4,1,2 @5 exception:5
+NORMAL compareToIgnoreCase:return 6 Node: < Primordial, Ljava/lang/String, compareToIgnoreCase(Ljava/lang/String;)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, compareToIgnoreCase(Ljava/lang/String;)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[91]62 = invokevirtual < Application, Ljava/lang/String, compareToIgnoreCase(Ljava/lang/String;)I > 59,60 @182 exception:61
+NORMAL setConf:conditional branch(ne, to iindex=96) 62,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/JobEndNotifier, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setConf(Configuration conf) {
+    this.conf = conf;
+    
+    numTries = Math.min(
+      conf.getInt(MRJobConfig.MR_JOB_END_RETRY_ATTEMPTS, 0) + 1
+      , conf.getInt(MRJobConfig.MR_JOB_END_NOTIFICATION_MAX_ATTEMPTS, 1)
+    );
+    waitInterval = Math.min(
+    conf.getInt(MRJobConfig.MR_JOB_END_RETRY_INTERVAL, 5000)
+    , conf.getInt(MRJobConfig.MR_JOB_END_NOTIFICATION_MAX_RETRY_INTERVAL, 5000)
+    );
+    waitInterval = (waitInterval < 0) ? 5000 : waitInterval;
+
+    timeout = conf.getInt(JobContext.MR_JOB_END_NOTIFICATION_TIMEOUT,
+        JobContext.DEFAULT_MR_JOB_END_NOTIFICATION_TIMEOUT);
+
+    userUrl = conf.get(MRJobConfig.MR_JOB_END_NOTIFICATION_URL);
+
+    proxyConf = conf.get(MRJobConfig.MR_JOB_END_NOTIFICATION_PROXY);
+
+    customJobEndNotifierClassName = StringUtils.stripToNull(
+        conf.get(MRJobConfig.MR_JOB_END_NOTIFICATION_CUSTOM_NOTIFIER_CLASS));
+
+    //Configure the proxy to use if its set. It should be set like
+    //proxyType@proxyHostname:port
+    if(proxyConf != null && !proxyConf.equals("") &&
+         proxyConf.lastIndexOf(":") != -1) {
+      int typeIndex = proxyConf.indexOf("@");
+      Proxy.Type proxyType = Proxy.Type.HTTP;
+      if(typeIndex != -1 &&
+        proxyConf.substring(0, typeIndex).compareToIgnoreCase("socks") == 0) {
+        proxyType = Proxy.Type.SOCKS;
+      }
+      String hostname = proxyConf.substring(typeIndex + 1,
+        proxyConf.lastIndexOf(":"));
+      String portConf = proxyConf.substring(proxyConf.lastIndexOf(":") + 1);
+      try {
+        int port = Integer.parseInt(portConf);
+        proxyToUse = new Proxy(proxyType,
+          new InetSocketAddress(hostname, port));
+        Log.getLog().info("Job end notification using proxy type \""
+            + proxyType + "\" hostname \"" + hostname + "\" and port \"" + port
+            + "\"");
+      } catch(NumberFormatException nfe) {
+        Log.getLog().warn("Job end notification couldn't parse configured"
+            + "proxy's port " + portConf + ". Not going to use a proxy");
+      }
+    }
+
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shutDownJob()V > Context: Everywhere, blocks=[BB[SSA:15..15]7 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.shutDownJob()V, BB[SSA:11..14]6 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.shutDownJob()V, BB[SSA:16..17]8 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.shutDownJob()V, BB[SSA:-1..-2]49 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.shutDownJob()V], numberOfBasicBlocks=4, firstLineNumber=652, lastLineNumber=658, firstMethodNumber=649, lastMethodNumber=692, isFirstLineValid=true, methodSrcCode=
+
+    JobEndNotifier notifier = null;
+    if (getConfig().get(MRJobConfig.MR_JOB_END_NOTIFICATION_URL) != null) {
+      notifier = new JobEndNotifier();
+      notifier.setConf(getConfig());
+    }
+
+    try {
+      //if isLastAMRetry comes as true, should never set it to false
+      if ( !isLastAMRetry){
+        if (((JobImpl)job).getInternalState() != JobStateInternal.REBOOT) {
+          LOG.info("Job finished cleanly, recording last MRAppMaster retry");
+          isLastAMRetry = true;
+        }
+      }
+      notifyIsLastAMRetry(isLastAMRetry);
+      // Stop all services
+      // This will also send the final report to the ResourceManager
+      LOG.info("Calling stop for all the services");
+      MRAppMaster.this.stop();
+
+      if (isLastAMRetry && notifier != null) {
+        // Send job-end notification when it is safe to report termination to
+        // users and it is the last AM retry
+        sendJobEndNotify(notifier);
+        notifier = null;
+      }
+
+      try {
+        Thread.sleep(5000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      clientService.stop();
+    } catch (Throwable t) {
+      LOG.warn("Graceful stop failed. Exiting.. ", t);
+      exitMRAppMaster(1, t);
+    } finally {
+      if (isLastAMRetry && notifier != null) {
+        sendJobEndNotify(notifier);
+      }
+    }
+    exitMRAppMaster(0, null);
+  }
+
+}

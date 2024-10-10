@@ -1,0 +1,47 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	KeyProviderCache.java	methodSinagture:	org.apache.hadoop.hdfs.KeyProviderCache.createKeyProviderURI(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI;	methodLines:	116:134
+blockLines:	120:-1
+paras:	null
+TaintedStat:	NORMAL createKeyProviderURI:conditional branch(eq, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/KeyProviderCache, createKeyProviderURI(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/KeyProviderCache, createKeyProviderURI(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/KeyProviderCache, createKeyProviderURI(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+NORMAL createKeyProviderURI:conditional branch(eq, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/KeyProviderCache, createKeyProviderURI(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private URI createKeyProviderURI(Configuration conf) {
+    final String providerUriStr = conf.getTrimmed(
+        CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH);
+    // No provider set in conf
+    if (providerUriStr == null || providerUriStr.isEmpty()) {
+      LOG.error("Could not find uri with key ["
+          + CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH
+          + "] to create a keyProvider !!");
+      return null;
+    }
+    final URI providerUri;
+    try {
+      providerUri = new URI(providerUriStr);
+    } catch (URISyntaxException e) {
+      LOG.error("KeyProvider URI string is invalid [" + providerUriStr
+          + "]!!", e.getCause());
+      return null;
+    }
+    return providerUri;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/KeyProviderCache, setKeyProvider(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/key/KeyProvider;)V > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.hdfs.KeyProviderCache.setKeyProvider(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/key/KeyProvider;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.KeyProviderCache.setKeyProvider(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/key/KeyProvider;)V, BB[SSA:3..6]2 - org.apache.hadoop.hdfs.KeyProviderCache.setKeyProvider(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/key/KeyProvider;)V, BB[SSA:-1..-2]10 - org.apache.hadoop.hdfs.KeyProviderCache.setKeyProvider(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/key/KeyProvider;)V], numberOfBasicBlocks=4, firstLineNumber=138, lastLineNumber=140, firstMethodNumber=138, lastMethodNumber=142, isFirstLineValid=false, methodSrcCode=
+  public void setKeyProvider(Configuration conf, KeyProvider keyProvider) {
+    URI uri = createKeyProviderURI(conf);
+    assert uri != null;
+    cache.put(uri, keyProvider);
+  }
+}
+}

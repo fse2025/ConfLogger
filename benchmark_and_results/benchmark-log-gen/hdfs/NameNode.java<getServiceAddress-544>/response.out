@@ -1,0 +1,15 @@
+```java
+String addr = conf.getTrimmed(DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY);
+if (addr == null || addr.isEmpty()) {
+    // ConfLogger Inserted Start
+    if (addr == null) {
+        logger.warn("Configuration parameter '{}' is null. Fallback: {}", DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY, fallback);
+    } else {
+        logger.warn("Configuration parameter '{}' is empty. Fallback: {}", DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY, fallback);
+    }
+    // ConfLogger Inserted End
+    return fallback ? DFSUtilClient.getNNAddress(conf) : null;
+}
+return DFSUtilClient.getNNAddress(addr);
+}
+```

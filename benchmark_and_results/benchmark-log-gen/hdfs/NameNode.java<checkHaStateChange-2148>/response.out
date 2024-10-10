@@ -1,0 +1,41 @@
+```java
+boolean autoHaEnabled = getConf().getBoolean(
+    DFS_HA_AUTO_FAILOVER_ENABLED_KEY, DFS_HA_AUTO_FAILOVER_ENABLED_DEFAULT);
+
+switch (req.getSource()) {
+    case REQUEST_BY_USER:
+        if (autoHaEnabled) {
+            // ConfLogger Inserted Start
+            logger.error("Manual HA control for this NameNode is disallowed because automatic HA is enabled. Configuration parameter: " + DFS_HA_AUTO_FAILOVER_ENABLED_KEY + ", value: " + autoHaEnabled);
+            // ConfLogger Inserted End
+            throw new AccessControlException(
+                "Manual HA control for this NameNode is disallowed, because " +
+                "automatic HA is enabled.");
+        }
+        break;
+    case REQUEST_BY_USER_FORCED:
+        if (autoHaEnabled) {
+            // ConfLogger Commented: Not Informative
+            // LOG.warn("Allowing manual HA control from " +
+            // Server.getRemoteAddress() +
+            // " even though automatic HA is enabled, because the user " +
+            // "specified the force flag");
+            // ConfLogger Inserted Start
+            logger.warn("Allowing manual HA control from " + Server.getRemoteAddress() + " even though automatic HA is enabled, because the user specified the force flag. Configuration parameter: " + DFS_HA_AUTO_FAILOVER_ENABLED_KEY + ", value: " + autoHaEnabled);
+            // ConfLogger Inserted End
+        }
+        break;
+    case REQUEST_BY_ZKFC:
+        if (!autoHaEnabled) {
+            // ConfLogger Inserted Start
+            logger.error("Request from ZK failover controller at " + Server.getRemoteAddress() + " denied since automatic HA is not enabled. Configuration parameter: " + DFS_HA_AUTO_FAILOVER_ENABLED_KEY + ", value: " + autoHaEnabled);
+            // ConfLogger Inserted End
+            throw new AccessControlException(
+                "Request from ZK failover controller at " +
+                Server.getRemoteAddress() + " denied since automatic HA " +
+                "is not enabled");
+        }
+        break;
+}
+}
+```

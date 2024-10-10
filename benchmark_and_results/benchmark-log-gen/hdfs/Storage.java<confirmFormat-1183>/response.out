@@ -1,0 +1,27 @@
+```java
+for (FormatConfirmable item : items) {
+    if (!item.hasSomeData())
+        continue;
+    if (force) { // Don't confirm, always format.
+        // ConfLogger Commented: Not Informative
+        // System.err.println("Data exists in " + item + ". Formatting anyway.");
+        // ConfLogger Inserted Start
+        logger.info("Data exists in " + item + ". Formatting anyway due to 'force' parameter being set to true.");
+        // ConfLogger Inserted End
+        continue;
+    }
+    if (!interactive) { // Don't ask - always don't format
+        System.err.println(
+            "Running in non-interactive mode, and data appears to exist in " +
+            item + ". Not formatting.");
+        return false;
+    }
+    if (!ToolRunner.confirmPrompt("Re-format filesystem in " + item + " ?")) {
+        System.err.println("Format aborted in " + item);
+        return false;
+    }
+}
+
+return true;
+}
+```

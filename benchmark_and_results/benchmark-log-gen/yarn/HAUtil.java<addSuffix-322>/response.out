@@ -1,0 +1,16 @@
+```java
+if (suffix == null || suffix.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'suffix' is either null or empty. Returning the original key: {}", key);
+    // ConfLogger Inserted End
+    return key;
+}
+if (suffix.startsWith(".")) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter 'suffix' should not already have '.' prepended. Provided suffix: {}", suffix);
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException("suffix '" + suffix + "' should not " +
+            "already have '.' prepended.");
+}
+return key + "." + suffix;
+```

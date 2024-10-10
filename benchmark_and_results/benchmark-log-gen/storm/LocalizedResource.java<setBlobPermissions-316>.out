@@ -1,0 +1,117 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	LocalizedResource.java	methodSinagture:	org.apache.storm.localizer.LocalizedResource.setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V	methodLines:	316:341
+blockLines:	317:-1
+paras:	supervisor.run.worker.as.user
+TaintedStat:	NORMAL setBlobPermissions:conditional branch(ne, to iindex=8) 11,9 Node: < Application, Lorg/apache/storm/localizer/LocalizedResource, setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/localizer/LocalizedResource, setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V > Context: Everywhere[2]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,6 @4 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/localizer/LocalizedResource, setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V > Context: Everywhere[2]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,6 @4 exception:7
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/localizer/LocalizedResource, setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V > Context: Everywhere[4]11 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > 8,9 @10 exception:10 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere v1
+NORMAL getBoolean:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 2 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/localizer/LocalizedResource, setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V > Context: Everywhere[4]11 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > 8,9 @10 exception:10
+NORMAL setBlobPermissions:conditional branch(ne, to iindex=8) 11,9 Node: < Application, Lorg/apache/storm/localizer/LocalizedResource, setBlobPermissions(Ljava/util/Map;Ljava/lang/String;Ljava/nio/file/Path;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+        if (!ObjectReader.getBoolean(conf.get(Config.SUPERVISOR_RUN_WORKER_AS_USER), false)) {
+            return;
+        }
+        String wlCommand = ObjectReader.getString(conf.get(Config.SUPERVISOR_WORKER_LAUNCHER), "");
+        if (wlCommand.isEmpty()) {
+            String stormHome = System.getProperty(ConfigUtils.STORM_HOME);
+            wlCommand = stormHome + "/bin/worker-launcher";
+        }
+        List<String> command = new ArrayList<>(Arrays.asList(wlCommand, user, "blob", path.toString()));
+
+        String[] commandArray = command.toArray(new String[command.size()]);
+        ShellUtils.ShellCommandExecutor shExec = new ShellUtils.ShellCommandExecutor(commandArray);
+        LOG.debug("Setting blob permissions, command: {}", Arrays.toString(commandArray));
+
+        try {
+            shExec.execute();
+            LOG.debug("output: {}", shExec.getOutput());
+        } catch (ShellUtils.ExitCodeException e) {
+            int exitCode = shExec.getExitCode();
+            LOG.warn("Exit code from worker-launcher is: {}", exitCode, e);
+            LOG.debug("output: {}", shExec.getOutput());
+            throw new IOException("Setting blob permissions failed"
+                                  + " (exitCode=" + exitCode + ") with output: " + shExec.getOutput(), e);
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/localizer/LocalizedResource, fetchUnzipToTemp(Lorg/apache/storm/blobstore/ClientBlobStore;)J > Context: Everywhere, blocks=[BB[SSA:65..66]29 - org.apache.storm.localizer.LocalizedResource.fetchUnzipToTemp(Lorg/apache/storm/blobstore/ClientBlobStore;)J, BB[SSA:63..64]28 - org.apache.storm.localizer.LocalizedResource.fetchUnzipToTemp(Lorg/apache/storm/blobstore/ClientBlobStore;)J, BB[SSA:67..68]30 - org.apache.storm.localizer.LocalizedResource.fetchUnzipToTemp(Lorg/apache/storm/blobstore/ClientBlobStore;)J, BB[SSA:-1..-2]32 - org.apache.storm.localizer.LocalizedResource.fetchUnzipToTemp(Lorg/apache/storm/blobstore/ClientBlobStore;)J], numberOfBasicBlocks=4, firstLineNumber=285, lastLineNumber=286, firstMethodNumber=251, lastMethodNumber=286, isFirstLineValid=true, methodSrcCode=
+    public long fetchUnzipToTemp(ClientBlobStore store) throws IOException, KeyNotFoundException, AuthorizationException {
+        String key = getKey();
+        ReadableBlobMeta meta = store.getBlobMeta(key);
+        if (!ServerUtils.canUserReadBlob(meta, user, conf)) {
+            throw new WrappedAuthorizationException(user + " does not have READ access to " + key);
+        }
+
+        DownloadMeta downloadMeta = fetch(store, key, v -> {
+                Path path = shouldUncompress ? tmpOutputLocation() : constructBlobWithVersionFileName(baseDir, getKey(), v);
+                // we need to download to temp file and then unpack into the one requested
+                Path parent = path.getParent();
+                if (!Files.exists(parent)) {
+                    //There is a race here that we can still lose
+                    try {
+                        Files.createDirectories(parent);
+                    } catch (FileAlreadyExistsException e) {
+                        //Ignored
+                    } catch (IOException e) {
+                        LOG.error("Failed to create parent directory {}", parent, e);
+                        throw e;
+                    }
+                }
+                return path;
+            },
+            FileOutputStream::new
+        );
+
+        Path finalLocation = downloadMeta.getDownloadPath();
+        if (shouldUncompress) {
+            Path downloadFile = finalLocation;
+            finalLocation = constructBlobWithVersionFileName(baseDir, getKey(), downloadMeta.getVersion());
+            ServerUtils.unpack(downloadFile.toFile(), finalLocation.toFile(), symLinksDisabled);
+            LOG.debug("Uncompressed {} to: {}", downloadFile, finalLocation);
+        }
+        setBlobPermissions(conf, user, finalLocation);
+        return downloadMeta.getVersion();
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/localizer/LocalizedResource, commitNewVersion(J)V > Context: Everywhere, blocks=[BB[SSA:60..61]27 - org.apache.storm.localizer.LocalizedResource.commitNewVersion(J)V, BB[SSA:58..59]26 - org.apache.storm.localizer.LocalizedResource.commitNewVersion(J)V, BB[SSA:62..63]28 - org.apache.storm.localizer.LocalizedResource.commitNewVersion(J)V, BB[SSA:-1..-2]41 - org.apache.storm.localizer.LocalizedResource.commitNewVersion(J)V], numberOfBasicBlocks=4, firstLineNumber=299, lastLineNumber=303, firstMethodNumber=290, lastMethodNumber=312, isFirstLineValid=true, methodSrcCode=
+    protected void commitNewVersion(long version) throws IOException {
+        String key = getKey();
+        LOG.info("Blob: {} updated to version {} from version {}", key, version, getLocalVersion());
+        Path localVersionFile = versionFilePath;
+        // The false parameter ensures overwriting the version file, not appending
+        try (PrintWriter writer = new PrintWriter(
+            new BufferedWriter(new FileWriter(localVersionFile.toFile(), false)))) {
+            writer.println(version);
+        }
+        setBlobPermissions(conf, user, localVersionFile);
+
+        // Update the key.current symlink. First create tmp symlink and do
+        // move of tmp to current so that the operation is atomic.
+        Path tmpSymlink = tmpSymlinkLocation();
+        Path targetOfSymlink = constructBlobWithVersionFileName(baseDir, getKey(), version);
+        LOG.debug("Creating a symlink @{} linking to: {}", tmpSymlink, targetOfSymlink);
+        Files.createSymbolicLink(tmpSymlink, targetOfSymlink);
+
+        Path currentSymLink = getCurrentSymlinkPath();
+        Files.move(tmpSymlink, currentSymLink, ATOMIC_MOVE);
+        //Update the size of the objects
+        setSize();
+    }
+
+}

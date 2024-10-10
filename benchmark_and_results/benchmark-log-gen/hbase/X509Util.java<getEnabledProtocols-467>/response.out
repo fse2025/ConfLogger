@@ -1,0 +1,11 @@
+```java
+String enabledProtocolsInput = config.get(TLS_ENABLED_PROTOCOLS);
+if (enabledProtocolsInput == null) {
+    // ConfLogger Inserted Start
+    logger.warn("TLS_ENABLED_PROTOCOLS is not set. Defaulting to TLS_CONFIG_PROTOCOL: " + config.get(TLS_CONFIG_PROTOCOL, DEFAULT_PROTOCOL));
+    // ConfLogger Inserted End
+    return new String[] { config.get(TLS_CONFIG_PROTOCOL, DEFAULT_PROTOCOL) };
+}
+return enabledProtocolsInput.split(",");
+}
+```

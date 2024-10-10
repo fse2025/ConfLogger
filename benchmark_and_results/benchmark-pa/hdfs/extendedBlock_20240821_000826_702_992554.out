@@ -1,0 +1,40 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String;	methodLines:	1570:1584
+blockLines:	1574:-1
+paras:	null
+TaintedStat:	NORMAL getPassword:conditional branch(eq, to iindex=14) 6,4 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPassword(Ljava/lang/String;)[C > 1,2 @4 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPassword(Ljava/lang/String;)[C > 1,2 @4 exception:5
+NORMAL getPassword:conditional branch(eq, to iindex=14) 6,4 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static String getPassword(Configuration conf, String alias) {
+    String password = null;
+    try {
+      char[] passchars = conf.getPassword(alias);
+      if (passchars != null) {
+        password = new String(passchars);
+      }
+    }
+    catch (IOException ioe) {
+      LOG.warn("Setting password to null since IOException is caught"
+          + " when getting password", ioe);
+
+      password = null;
+    }
+    return password;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere, blocks=[BB[SSA:6..8]3 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:5..5]2 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:9..9]4 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]16 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:13..15]6 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:10..12]5 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:16..19]7 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]16 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:24..26]10 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:21..23]9 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:27..30]11 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]16 - org.apache.hadoop.hdfs.DFSUtil.loadSslConfToHttpServerBuilder(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;], numberOfBasicBlocks=12, firstLineNumber=1552, lastLineNumber=1547, firstMethodNumber=1546, lastMethodNumber=1547, isFirstLineValid=true, methodSrcCode=
+      Configuration sslConf) {
+    return builder
+        .needsClientAuth(
+}

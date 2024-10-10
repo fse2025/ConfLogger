@@ -1,0 +1,53 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ShutdownHookManager.java	methodSinagture:	org.apache.hadoop.util.ShutdownHookManager.getShutdownTimeout(Lorg/apache/hadoop/conf/Configuration;)J	methodLines:	182:190
+blockLines:	187:-1
+paras:	hadoop.service.shutdown.timeout
+TaintedStat:	NORMAL getShutdownTimeout:conditional branch(ge, to iindex=13) 9,10 Node: < Application, Lorg/apache/hadoop/util/ShutdownHookManager, getShutdownTimeout(Lorg/apache/hadoop/conf/Configuration;)J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/ShutdownHookManager, getShutdownTimeout(Lorg/apache/hadoop/conf/Configuration;)J > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTimeDuration(Ljava/lang/String;JLjava/util/concurrent/TimeUnit;)J > 1,3,4,5 @9 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/ShutdownHookManager, getShutdownTimeout(Lorg/apache/hadoop/conf/Configuration;)J > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTimeDuration(Ljava/lang/String;JLjava/util/concurrent/TimeUnit;)J > 1,3,4,5 @9 exception:6
+NORMAL getShutdownTimeout:9 = compare 7,8 opcode=cmp Node: < Application, Lorg/apache/hadoop/util/ShutdownHookManager, getShutdownTimeout(Lorg/apache/hadoop/conf/Configuration;)J > Context: Everywhere
+NORMAL getShutdownTimeout:conditional branch(ge, to iindex=13) 9,10 Node: < Application, Lorg/apache/hadoop/util/ShutdownHookManager, getShutdownTimeout(Lorg/apache/hadoop/conf/Configuration;)J > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static long getShutdownTimeout(Configuration conf) {
+    long duration = conf.getTimeDuration(
+        SERVICE_SHUTDOWN_TIMEOUT,
+        SERVICE_SHUTDOWN_TIMEOUT_DEFAULT,
+        TIME_UNIT_DEFAULT);
+    if (duration < TIMEOUT_MINIMUM) {
+      duration = TIMEOUT_MINIMUM;
+    }
+    return duration;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/ShutdownHookManager, shutdownExecutor(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:2..3]2 - org.apache.hadoop.util.ShutdownHookManager.shutdownExecutor(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..1]1 - org.apache.hadoop.util.ShutdownHookManager.shutdownExecutor(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:4..8]3 - org.apache.hadoop.util.ShutdownHookManager.shutdownExecutor(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]16 - org.apache.hadoop.util.ShutdownHookManager.shutdownExecutor(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=144, lastLineNumber=146, firstMethodNumber=143, lastMethodNumber=162, isFirstLineValid=true, methodSrcCode=
+    try {
+      EXECUTOR.shutdown();
+      long shutdownTimeout = getShutdownTimeout(conf);
+      if (!EXECUTOR.awaitTermination(
+          shutdownTimeout,
+          TIME_UNIT_DEFAULT)) {
+        // timeout waiting for the
+        LOG.error("ShutdownHookManager shutdown forcefully after"
+            + " {} seconds.", shutdownTimeout);
+        EXECUTOR.shutdownNow();
+      }
+      LOG.debug("ShutdownHookManager completed shutdown.");
+    } catch (InterruptedException ex) {
+      // interrupted.
+      LOG.error("ShutdownHookManager interrupted while waiting for " +
+          "termination.", ex);
+      EXECUTOR.shutdownNow();
+      Thread.currentThread().interrupt();
+    }
+  }
+
+}

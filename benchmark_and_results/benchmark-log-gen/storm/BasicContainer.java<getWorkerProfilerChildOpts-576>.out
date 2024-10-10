@@ -1,0 +1,103 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BasicContainer.java	methodSinagture:	org.apache.storm.daemon.supervisor.BasicContainer.getWorkerProfilerChildOpts(II)Ljava/util/List;	methodLines:	576:583
+blockLines:	578:-1
+paras:	worker.profiler.enabled
+TaintedStat:	NORMAL getWorkerProfilerChildOpts:conditional branch(eq, to iindex=21) 13,11 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerProfilerChildOpts(II)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerProfilerChildOpts(II)Ljava/util/List; > Context: Everywhere[7]10 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 7,8 @15 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerProfilerChildOpts(II)Ljava/util/List; > Context: Everywhere[7]10 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 7,8 @15 exception:9
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerProfilerChildOpts(II)Ljava/util/List; > Context: Everywhere[9]13 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > 10,11 @21 exception:12 v10
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere v1
+NORMAL getBoolean:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 2 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerProfilerChildOpts(II)Ljava/util/List; > Context: Everywhere[9]13 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > 10,11 @21 exception:12
+NORMAL getWorkerProfilerChildOpts:conditional branch(eq, to iindex=21) 13,11 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerProfilerChildOpts(II)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private List<String> getWorkerProfilerChildOpts(int memOnheap, int memOffheap) {
+        List<String> workerProfilerChildopts = new ArrayList<>();
+        if (ObjectReader.getBoolean(conf.get(DaemonConfig.WORKER_PROFILER_ENABLED), false)) {
+            workerProfilerChildopts = substituteChildopts(
+                    conf.get(DaemonConfig.WORKER_PROFILER_CHILDOPTS), memOnheap, memOffheap
+            );
+        }
+        return workerProfilerChildopts;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:163..168]66 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:162..162]65 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:169..169]67 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;, BB[SSA:-1..-2]102 - org.apache.storm.daemon.supervisor.BasicContainer.mkLaunchCommand(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=647, lastLineNumber=650, firstMethodNumber=608, lastMethodNumber=673, isFirstLineValid=true, methodSrcCode=
+                                         final String jlp, final String numaId) throws IOException {
+        final String javaCmd = javaCmd("java");
+        final String stormOptions = ConfigUtils.concatIfNotNull(System.getProperty("storm.options"));
+        final String topoConfFile = ConfigUtils.concatIfNotNull(System.getProperty("storm.conf.file"));
+        final String workerTmpDir = ConfigUtils.workerTmpRoot(conf, workerId);
+        String topoVersionString = getStormVersionFor(conf, topologyId, ops, stormRoot);
+        if (topoVersionString == null) {
+            topoVersionString = (String) conf.getOrDefault(Config.SUPERVISOR_WORKER_DEFAULT_VERSION, VersionInfo.getVersion());
+        }
+        final SimpleVersion topoVersion = new SimpleVersion(topoVersionString);
+
+        List<String> classPathParams = getClassPathParams(stormRoot, topoVersion);
+        List<String> commonParams = getCommonParams();
+
+        String log4jConfigurationFile = getWorkerLoggingConfigFile();
+        String workerLog4jConfig = log4jConfigurationFile;
+        if (topoConf.get(Config.TOPOLOGY_LOGGING_CONFIG_FILE) != null) {
+            workerLog4jConfig = workerLog4jConfig + "," + topoConf.get(Config.TOPOLOGY_LOGGING_CONFIG_FILE);
+        }
+
+        List<String> commandList = new ArrayList<>();
+        String logWriter = getWorkerLogWriter(topoVersion);
+        if (logWriter != null) {
+            //Log Writer Command...
+            commandList.add(javaCmd);
+            commandList.addAll(classPathParams);
+            commandList.addAll(substituteChildopts(topoConf.get(Config.TOPOLOGY_WORKER_LOGWRITER_CHILDOPTS)));
+            commandList.addAll(commonParams);
+            commandList.add("-Dlog4j.configurationFile=" + log4jConfigurationFile);
+            commandList.add(logWriter); //The LogWriter in turn launches the actual worker.
+        }
+
+        //Worker Command...
+        commandList.add(javaCmd);
+        commandList.add("-server");
+        commandList.addAll(commonParams);
+        commandList.add("-Dlog4j.configurationFile=" + workerLog4jConfig);
+        commandList.addAll(substituteChildopts(conf.get(Config.WORKER_CHILDOPTS), memOnheap, memOffheap));
+        commandList.addAll(substituteChildopts(topoConf.get(Config.TOPOLOGY_WORKER_CHILDOPTS), memOnheap, memOffheap));
+        commandList.addAll(substituteChildopts(Utils.OR(
+            topoConf.get(Config.TOPOLOGY_WORKER_GC_CHILDOPTS),
+            conf.get(Config.WORKER_GC_CHILDOPTS)), memOnheap, memOffheap));
+        commandList.addAll(getWorkerProfilerChildOpts(memOnheap, memOffheap));
+        commandList.add("-Djava.library.path=" + jlp);
+        commandList.add("-Dstorm.conf.file=" + topoConfFile);
+        commandList.add("-Dstorm.options=" + stormOptions);
+        commandList.add("-Djava.io.tmpdir=" + workerTmpDir);
+        commandList.addAll(classPathParams);
+        commandList.add(getWorkerMain(topoVersion));
+        commandList.add(topologyId);
+        String supervisorId = this.supervisorId;
+        if (numaId != null) {
+            supervisorId += ServerConstants.NUMA_ID_SEPARATOR + numaId;
+        }
+        commandList.add(supervisorId);
+        // supervisor port should be only presented to worker which supports RPC heartbeat
+        // unknown version should be treated as "current version", which supports RPC heartbeat
+        if ((topoVersion.getMajor() == -1 && topoVersion.getMinor() == -1)
+                || topoVersion.compareTo(MIN_VERSION_SUPPORT_RPC_HEARTBEAT) >= 0) {
+            commandList.add(String.valueOf(supervisorPort));
+        }
+
+        commandList.add(String.valueOf(port));
+        commandList.add(workerId);
+
+        return commandList;
+    }
+}

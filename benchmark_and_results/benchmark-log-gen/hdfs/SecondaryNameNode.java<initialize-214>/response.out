@@ -1,0 +1,59 @@
+```java
+final InetSocketAddress infoSocAddr = getHttpAddress(conf);
+final String infoBindAddress = infoSocAddr.getHostName();
+UserGroupInformation.setConfiguration(conf);
+if (UserGroupInformation.isSecurityEnabled()) {
+    // ConfLogger Inserted Start
+    logger.info("Security is enabled. Attempting to login with keytab file key: " 
+                + DFSConfigKeys.DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY 
+                + " and Kerberos principal key: " 
+                + DFSConfigKeys.DFS_SECONDARY_NAMENODE_KERBEROS_PRINCIPAL_KEY 
+                + " for bind address: " + infoBindAddress);
+    // ConfLogger Inserted End
+    SecurityUtil.login(conf,
+    DFSConfigKeys.DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY,
+    DFSConfigKeys.DFS_SECONDARY_NAMENODE_KERBEROS_PRINCIPAL_KEY, infoBindAddress);
+}
+// initiate Java VM metrics
+DefaultMetricsSystem.initialize("SecondaryNameNode");
+JvmMetrics.create("SecondaryNameNode",
+conf.get(DFSConfigKeys.DFS_METRICS_SESSION_ID_KEY),
+DefaultMetricsSystem.instance());
+
+// Create connection to the namenode.
+shouldRun = true;
+nameNodeAddr = NameNode.getServiceAddress(conf, true);
+
+this.conf = conf;
+this.namenode = NameNodeProxies.createNonHAProxy(conf, nameNodeAddr,
+NamenodeProtocol.class, UserGroupInformation.getCurrentUser(),
+true).getProxy();
+
+// initialize checkpoint directories
+fsName = getInfoServer();
+checkpointDirs = FSImage.getCheckpointDirs(conf,
+"/tmp/hadoop/dfs/namesecondary");
+checkpointEditsDirs = FSImage.getCheckpointEditsDirs(conf,
+"/tmp/hadoop/dfs/namesecondary");
+checkpointImage = new CheckpointStorage(conf, checkpointDirs, checkpointEditsDirs);
+checkpointImage.recoverCreate(commandLineOpts.shouldFormat());
+checkpointImage.deleteTempEdits();
+
+namesystem = new FSNamesystem(conf, checkpointImage, true);
+
+// Disable quota checks
+namesystem.dir.disableQuotaChecks();
+
+// Initialize other scheduling parameters from the configuration
+checkpointConf = new CheckpointConf(conf);
+nameNodeStatusBeanName = MBeans.register("SecondaryNameNode",
+"SecondaryNameNodeInfo", this);
+
+legacyOivImageDir = conf.get(
+DFSConfigKeys.DFS_NAMENODE_LEGACY_OIV_IMAGE_DIR_KEY);
+
+LOG.info("Checkpoint Period   :" + checkpointConf.getPeriod() + " secs "
++ "(" + checkpointConf.getPeriod() / 60 + " min)");
+LOG.info("Log Size Trigger    :" + checkpointConf.getTxnCount() + " txns");
+}
+```

@@ -1,0 +1,60 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BlockingRpcConnection.java	methodSinagture:	org.apache.hadoop.hbase.ipc.BlockingRpcConnection.<init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V	methodLines:	219:244
+blockLines:	238:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=142) 88,19 Node: < Application, Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection, <init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection, <init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V > Context: Everywhere[124]88 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 85,86,19 @263 exception:87
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection, <init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V > Context: Everywhere[124]88 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 85,86,19 @263 exception:87
+NORMAL <init>:conditional branch(eq, to iindex=142) 88,19 Node: < Application, Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection, <init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	BlockingRpcConnection.java	methodSinagture:	org.apache.hadoop.hbase.ipc.BlockingRpcConnection.<init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V	methodLines:	219:244
+blockLines:	235:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=107) 46,16 Node: < Application, Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection, <init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection, <init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V > Context: Everywhere[83]46 = invokevirtual < Application, Lorg/apache/hadoop/hbase/security/User, getUGI()Lorg/apache/hadoop/security/UserGroupInformation; > 44 @165 exception:45
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection, <init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V > Context: Everywhere[83]46 = invokevirtual < Application, Lorg/apache/hadoop/hbase/security/User, getUGI()Lorg/apache/hadoop/security/UserGroupInformation; > 44 @165 exception:45
+NORMAL <init>:conditional branch(ne, to iindex=107) 46,16 Node: < Application, Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection, <init>(Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient;Lorg/apache/hadoop/hbase/ipc/ConnectionId;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  BlockingRpcConnection(BlockingRpcClient rpcClient, ConnectionId remoteId) throws IOException {
+    super(rpcClient.conf, AbstractRpcClient.WHEEL_TIMER, remoteId, rpcClient.clusterId,
+      rpcClient.userProvider.isHBaseSecurityEnabled(), rpcClient.codec, rpcClient.compressor,
+      rpcClient.metrics, rpcClient.connectionAttributes);
+    this.rpcClient = rpcClient;
+    this.connectionHeaderPreamble = getConnectionHeaderPreamble();
+    ConnectionHeader header = getConnectionHeader();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream(4 + header.getSerializedSize());
+    DataOutputStream dos = new DataOutputStream(baos);
+    dos.writeInt(header.getSerializedSize());
+    header.writeTo(dos);
+    assert baos.size() == 4 + header.getSerializedSize();
+    this.connectionHeaderWithLength = baos.getBuffer();
+
+    UserGroupInformation ticket = remoteId.ticket.getUGI();
+    this.threadName = "BRPC Connection (" + this.rpcClient.socketFactory.hashCode() + ") to "
+      + remoteId.getAddress().toString()
+      + ((ticket == null) ? " from an unknown user" : (" from " + ticket.getUserName()));
+
+    if (this.rpcClient.conf.getBoolean(BlockingRpcClient.SPECIFIC_WRITE_THREAD, false)) {
+      callSender = new CallSender(threadName, this.rpcClient.conf);
+      callSender.start();
+    } else {
+      callSender = null;
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/ipc/BlockingRpcClient, createConnection(Lorg/apache/hadoop/hbase/ipc/ConnectionId;)Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection; > Context: Everywhere, blocks=[BB[SSA:1..4]2 - org.apache.hadoop.hbase.ipc.BlockingRpcClient.createConnection(Lorg/apache/hadoop/hbase/ipc/ConnectionId;)Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection;, BB[SSA:0..0]1 - org.apache.hadoop.hbase.ipc.BlockingRpcClient.createConnection(Lorg/apache/hadoop/hbase/ipc/ConnectionId;)Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection;, BB[SSA:5..5]3 - org.apache.hadoop.hbase.ipc.BlockingRpcClient.createConnection(Lorg/apache/hadoop/hbase/ipc/ConnectionId;)Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection;, BB[SSA:-1..-2]4 - org.apache.hadoop.hbase.ipc.BlockingRpcClient.createConnection(Lorg/apache/hadoop/hbase/ipc/ConnectionId;)Lorg/apache/hadoop/hbase/ipc/BlockingRpcConnection;], numberOfBasicBlocks=4, firstLineNumber=69, lastLineNumber=69, firstMethodNumber=68, lastMethodNumber=69, isFirstLineValid=true, methodSrcCode=
+  protected BlockingRpcConnection createConnection(ConnectionId remoteId) throws IOException {
+    return new BlockingRpcConnection(this, remoteId);
+  }
+}

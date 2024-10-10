@@ -1,0 +1,146 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DataTransferSaslUtil.java	methodSinagture:	org.apache.hadoop.hdfs.protocol.datatransfer.sasl.DataTransferSaslUtil.negotiateCipherOption(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;)Lorg/apache/hadoop/crypto/CipherOption;	methodLines:	311:342
+blockLines:	313:-1
+paras:	dfs.encrypt.data.transfer.cipher.suites
+TaintedStat:	NORMAL negotiateCipherOption:conditional branch(eq, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, negotiateCipherOption(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;)Lorg/apache/hadoop/crypto/CipherOption; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, negotiateCipherOption(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;)Lorg/apache/hadoop/crypto/CipherOption; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, negotiateCipherOption(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;)Lorg/apache/hadoop/crypto/CipherOption; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL negotiateCipherOption:conditional branch(eq, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, negotiateCipherOption(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;)Lorg/apache/hadoop/crypto/CipherOption; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // values for future expansion.
+    String cipherSuites = conf.get(DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY);
+    if (cipherSuites == null || cipherSuites.isEmpty()) {
+      return null;
+    }
+    if (!cipherSuites.equals(CipherSuite.AES_CTR_NOPADDING.getName())) {
+      throw new IOException(String.format("Invalid cipher suite, %s=%s",
+          DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY, cipherSuites));
+    }
+    if (options != null) {
+      for (CipherOption option : options) {
+        CipherSuite suite = option.getCipherSuite();
+        if (suite == CipherSuite.AES_CTR_NOPADDING) {
+          int keyLen = conf.getInt(
+              DFS_ENCRYPT_DATA_TRANSFER_CIPHER_KEY_BITLENGTH_KEY,
+              DFS_ENCRYPT_DATA_TRANSFER_CIPHER_KEY_BITLENGTH_DEFAULT) / 8;
+          CryptoCodec codec = CryptoCodec.getInstance(conf, suite);
+          byte[] inKey = new byte[keyLen];
+          byte[] inIv = new byte[suite.getAlgorithmBlockSize()];
+          byte[] outKey = new byte[keyLen];
+          byte[] outIv = new byte[suite.getAlgorithmBlockSize()];
+          assert codec != null;
+          codec.generateSecureRandom(inKey);
+          codec.generateSecureRandom(inIv);
+          codec.generateSecureRandom(outKey);
+          codec.generateSecureRandom(outIv);
+          codec.close();
+          return new CipherOption(suite, inKey, inIv, outKey, outIv);
+        }
+      }
+    }
+    return null;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/SaslDataTransferServer, doSaslHandshake(Lorg/apache/hadoop/hdfs/net/Peer;Ljava/io/OutputStream;Ljava/io/InputStream;Ljava/util/Map;Ljavax/security/auth/callback/CallbackHandler;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/IOStreamPair; > Context: Everywhere, blocks=[BB[SSA:103..106]41 - org.apache.hadoop.hdfs.protocol.datatransfer.sasl.SaslDataTransferServer.doSaslHandshake(Lorg/apache/hadoop/hdfs/net/Peer;Ljava/io/OutputStream;Ljava/io/InputStream;Ljava/util/Map;Ljavax/security/auth/callback/CallbackHandler;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/IOStreamPair;, BB[SSA:102..102]40 - org.apache.hadoop.hdfs.protocol.datatransfer.sasl.SaslDataTransferServer.doSaslHandshake(Lorg/apache/hadoop/hdfs/net/Peer;Ljava/io/OutputStream;Ljava/io/InputStream;Ljava/util/Map;Ljavax/security/auth/callback/CallbackHandler;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/IOStreamPair;, BB[SSA:107..109]42 - org.apache.hadoop.hdfs.protocol.datatransfer.sasl.SaslDataTransferServer.doSaslHandshake(Lorg/apache/hadoop/hdfs/net/Peer;Ljava/io/OutputStream;Ljava/io/InputStream;Ljava/util/Map;Ljavax/security/auth/callback/CallbackHandler;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/IOStreamPair;, BB[SSA:-1..-2]88 - org.apache.hadoop.hdfs.protocol.datatransfer.sasl.SaslDataTransferServer.doSaslHandshake(Lorg/apache/hadoop/hdfs/net/Peer;Ljava/io/OutputStream;Ljava/io/InputStream;Ljava/util/Map;Ljavax/security/auth/callback/CallbackHandler;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/IOStreamPair;], numberOfBasicBlocks=4, firstLineNumber=407, lastLineNumber=409, firstMethodNumber=367, lastMethodNumber=457, isFirstLineValid=true, methodSrcCode=
+
+    DataInputStream in = new DataInputStream(underlyingIn);
+    DataOutputStream out = new DataOutputStream(underlyingOut);
+
+    int magicNumber = in.readInt();
+    if (magicNumber != SASL_TRANSFER_MAGIC_NUMBER) {
+      throw new InvalidMagicNumberException(magicNumber, 
+          dnConf.getEncryptDataTransfer());
+    }
+    try {
+      // step 1
+      SaslMessageWithHandshake message = readSaslMessageWithHandshakeSecret(in);
+      byte[] secret = message.getSecret();
+      String bpid = message.getBpid();
+      if (secret != null || bpid != null) {
+        // sanity check, if one is null, the other must also not be null
+        assert(secret != null && bpid != null);
+        String qop = new String(secret, Charsets.UTF_8);
+        saslProps.put(Sasl.QOP, qop);
+      }
+      SaslParticipant sasl = SaslParticipant.createServerSaslParticipant(
+          saslProps, callbackHandler);
+
+      byte[] remoteResponse = message.getPayload();
+      byte[] localResponse = sasl.evaluateChallengeOrResponse(remoteResponse);
+      sendSaslMessage(out, localResponse);
+
+      // step 2 (server-side only)
+      List<CipherOption> cipherOptions = Lists.newArrayList();
+      remoteResponse = readSaslMessageAndNegotiationCipherOptions(
+          in, cipherOptions);
+      localResponse = sasl.evaluateChallengeOrResponse(remoteResponse);
+
+      // SASL handshake is complete
+      checkSaslComplete(sasl, saslProps);
+
+      CipherOption cipherOption = null;
+      negotiatedQOP = sasl.getNegotiatedQop();
+      if (sasl.isNegotiatedQopPrivacy()) {
+        // Negotiate a cipher option
+        Configuration conf = dnConf.getConf();
+        cipherOption = negotiateCipherOption(conf, cipherOptions);
+        if (LOG.isDebugEnabled()) {
+          if (cipherOption == null) {
+            // No cipher suite is negotiated
+            String cipherSuites =
+                conf.get(DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY);
+            if (cipherSuites != null && !cipherSuites.isEmpty()) {
+              // the server accepts some cipher suites, but the client does not.
+              LOG.debug("Server accepts cipher suites {}, "
+                      + "but client {} does not accept any of them",
+                  cipherSuites, peer.getRemoteAddressString());
+            }
+          } else {
+            LOG.debug("Server using cipher suite {} with client {}",
+                cipherOption.getCipherSuite().getName(),
+                peer.getRemoteAddressString());
+          }
+        }
+      }
+
+      // If negotiated cipher option is not null, wrap it before sending.
+      sendSaslMessageAndNegotiatedCipherOption(out, localResponse, 
+          wrap(cipherOption, sasl));
+
+      // If negotiated cipher option is not null, we will use it to create 
+      // stream pair.
+      return cipherOption != null ? createStreamPair(
+          dnConf.getConf(), cipherOption, underlyingOut, underlyingIn, true) : 
+            sasl.createStreamPair(out, in);
+    } catch (IOException ioe) {
+      if (ioe instanceof SaslException &&
+          ioe.getCause() != null &&
+          ioe.getCause() instanceof InvalidEncryptionKeyException) {
+        // This could just be because the client is long-lived and hasn't gotten
+        // a new encryption key from the NN in a while. Upon receiving this
+        // error, the client will get a new encryption key from the NN and retry
+        // connecting to this DN.
+        sendInvalidKeySaslErrorMessage(out, ioe.getCause().getMessage());
+      } else if (ioe instanceof SaslException &&
+          ioe.getCause() != null &&
+          (ioe.getCause() instanceof InvalidBlockTokenException ||
+              ioe.getCause() instanceof SecretManager.InvalidToken)) {
+        // This could be because the client is long-lived and block token is expired
+        // The client will get new block token from the NN, upon receiving this error
+        // and retry connecting to this DN
+        sendInvalidTokenSaslErrorMessage(out, ioe.getCause().getMessage());
+      } else {
+        sendGenericSaslErrorMessage(out, ioe.getMessage());
+      }
+      throw ioe;
+    }
+}

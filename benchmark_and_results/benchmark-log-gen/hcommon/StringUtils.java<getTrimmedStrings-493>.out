@@ -1,0 +1,192 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StringUtils.java	methodSinagture:	org.apache.hadoop.util.StringUtils.getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String;	methodLines:	493:498
+blockLines:	494:-1
+paras:	null
+TaintedStat:	NORMAL getTrimmedStrings:conditional branch(eq, to iindex=8) 3,1 Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/authorize/ServiceAuthorizationManager, refreshWithLoadedConfiguration(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/authorize/PolicyProvider;)V > Context: Everywhere[109]71 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,68,20 @224 exception:70
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/authorize/ServiceAuthorizationManager, refreshWithLoadedConfiguration(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/authorize/PolicyProvider;)V > Context: Everywhere[109]71 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,68,20 @224 exception:70
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/authorize/ServiceAuthorizationManager, refreshWithLoadedConfiguration(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/authorize/PolicyProvider;)V > Context: Everywhere[110]invokespecial < Application, Lorg/apache/hadoop/util/MachineList, <init>(Ljava/lang/String;)V > 69,71 @227 exception:72 v71
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/MachineList, <init>(Ljava/lang/String;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/util/MachineList, <init>(Ljava/lang/String;)V > Context: Everywhere[3]invokespecial < Application, Lorg/apache/hadoop/util/MachineList, <init>(Ljava/lang/String;Lorg/apache/hadoop/util/MachineList$InetAddressFactory;)V > 1,2,4 @5 exception:5 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/MachineList, <init>(Ljava/lang/String;Lorg/apache/hadoop/util/MachineList$InetAddressFactory;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/util/MachineList, <init>(Ljava/lang/String;Lorg/apache/hadoop/util/MachineList$InetAddressFactory;)V > Context: Everywhere[2]6 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > 2 @2 exception:5 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere[3]5 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > 1 @5 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere v1
+NORMAL getTrimmedStrings:conditional branch(eq, to iindex=8) 3,1 Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static String[] getTrimmedStrings(String str){
+    if (null == str || str.trim().isEmpty()) {
+      return emptyStringArray;
+    }
+
+    return str.trim().split("\\s*[,\n]\\s*");
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/KDiag, validateHadoopTokenFiles(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:59..60]30 - org.apache.hadoop.security.KDiag.validateHadoopTokenFiles(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:56..58]29 - org.apache.hadoop.security.KDiag.validateHadoopTokenFiles(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:61..63]31 - org.apache.hadoop.security.KDiag.validateHadoopTokenFiles(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.security.KDiag.validateHadoopTokenFiles(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=543, lastLineNumber=545, firstMethodNumber=523, lastMethodNumber=553, isFirstLineValid=true, methodSrcCode=
+    SecurityException {
+    title("Locating Hadoop token files");
+
+    String tokenFileLocation = System.getProperty(HADOOP_TOKEN_FILES);
+    if(tokenFileLocation != null) {
+      println("Found " + HADOOP_TOKEN_FILES + " in system properties : "
+          + tokenFileLocation);
+    }
+
+    if(conf.get(HADOOP_TOKEN_FILES) != null) {
+      println("Found " + HADOOP_TOKEN_FILES + " in hadoop configuration : "
+          + conf.get(HADOOP_TOKEN_FILES));
+      if(System.getProperty(HADOOP_TOKEN_FILES) != null) {
+        println(HADOOP_TOKEN_FILES + " in the system properties overrides the"
+            + " one specified in hadoop configuration");
+      } else {
+        tokenFileLocation = conf.get(HADOOP_TOKEN_FILES);
+      }
+    }
+
+    if (tokenFileLocation != null) {
+      for (String tokenFileName:
+          StringUtils.getTrimmedStrings(tokenFileLocation)) {
+        if (tokenFileName.length() > 0) {
+          File tokenFile = new File(tokenFileName);
+          verifyFileIsValid(tokenFile, CAT_TOKEN, "token");
+          verify(tokenFile, conf, CAT_TOKEN, "token");
+        }
+      }
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:3..5]2 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:0..2]1 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:6..6]3 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=2331, lastLineNumber=2332, firstMethodNumber=2330, lastMethodNumber=2332, isFirstLineValid=true, methodSrcCode=
+  public String[] getTrimmedStrings(String name) {
+    String valueString = get(name);
+    return StringUtils.getTrimmedStrings(valueString);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/conf/ConfigRedactor, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:6..8]3 - org.apache.hadoop.conf.ConfigRedactor.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:2..5]2 - org.apache.hadoop.conf.ConfigRedactor.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:9..9]4 - org.apache.hadoop.conf.ConfigRedactor.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]19 - org.apache.hadoop.conf.ConfigRedactor.<init>(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=44, lastLineNumber=48, firstMethodNumber=42, lastMethodNumber=54, isFirstLineValid=true, methodSrcCode=
+
+  public ConfigRedactor(Configuration conf) {
+    String sensitiveRegexList = conf.get(
+        HADOOP_SECURITY_SENSITIVE_CONFIG_KEYS,
+        HADOOP_SECURITY_SENSITIVE_CONFIG_KEYS_DEFAULT);
+    List<String> sensitiveRegexes =
+        Arrays.asList(StringUtils.getTrimmedStrings(sensitiveRegexList));
+    compiledPatterns = new ArrayList<Pattern>();
+    for (String regex : sensitiveRegexes) {
+      Pattern p = Pattern.compile(regex);
+      compiledPatterns.add(p);
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/HostsFileReader, readXmlFileToMapWithFileInputStream(Ljava/lang/String;Ljava/lang/String;Ljava/io/InputStream;Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:36..38]14 - org.apache.hadoop.util.HostsFileReader.readXmlFileToMapWithFileInputStream(Ljava/lang/String;Ljava/lang/String;Ljava/io/InputStream;Ljava/util/Map;)V, BB[SSA:32..35]13 - org.apache.hadoop.util.HostsFileReader.readXmlFileToMapWithFileInputStream(Ljava/lang/String;Ljava/lang/String;Ljava/io/InputStream;Ljava/util/Map;)V, BB[SSA:39..42]15 - org.apache.hadoop.util.HostsFileReader.readXmlFileToMapWithFileInputStream(Ljava/lang/String;Ljava/lang/String;Ljava/io/InputStream;Ljava/util/Map;)V], numberOfBasicBlocks=3, firstLineNumber=164, lastLineNumber=168, firstMethodNumber=150, lastMethodNumber=183, isFirstLineValid=true, methodSrcCode=
+    try {
+      DocumentBuilderFactory builder = XMLUtils.newSecureDocumentBuilderFactory();
+      DocumentBuilder db = builder.newDocumentBuilder();
+      dom = db.parse(fileInputStream);
+      // Examples:
+      // <host><name>host1</name></host>
+      // <host><name>host2</name><timeout>123</timeout></host>
+      // <host><name>host3</name><timeout>-1</timeout></host>
+      // <host><name>host4, host5,host6</name><timeout>1800</timeout></host>
+      Element doc = dom.getDocumentElement();
+      NodeList nodes = doc.getElementsByTagName("host");
+      for (int i = 0; i < nodes.getLength(); i++) {
+        Node node = nodes.item(i);
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          Element e= (Element) node;
+          // Support both single host and comma-separated list of hosts.
+          String v = readFirstTagValue(e, "name");
+          String[] hosts = StringUtils.getTrimmedStrings(v);
+          String str = readFirstTagValue(e, "timeout");
+          Integer timeout = (str == null)? null : Integer.parseInt(str);
+          for (String host : hosts) {
+            map.put(host, timeout);
+            LOG.info("Adding a node \"" + host + "\" to the list of "
+                + type + " hosts from " + filename);
+          }
+        }
+      }
+    } catch (IOException|SAXException|ParserConfigurationException e) {
+      LOG.error("error parsing " + filename, e);
+      throw new RuntimeException(e);
+    } finally {
+      fileInputStream.close();
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/RunJar, createClassLoader(Ljava/io/File;Ljava/io/File;)Ljava/lang/ClassLoader; > Context: Everywhere, blocks=[BB[SSA:57..58]26 - org.apache.hadoop.util.RunJar.createClassLoader(Ljava/io/File;Ljava/io/File;)Ljava/lang/ClassLoader;, BB[SSA:51..54]24 - org.apache.hadoop.util.RunJar.createClassLoader(Ljava/io/File;Ljava/io/File;)Ljava/lang/ClassLoader;, BB[SSA:59..59]27 - org.apache.hadoop.util.RunJar.createClassLoader(Ljava/io/File;Ljava/io/File;)Ljava/lang/ClassLoader;, BB[SSA:-1..-2]73 - org.apache.hadoop.util.RunJar.createClassLoader(Ljava/io/File;Ljava/io/File;)Ljava/lang/ClassLoader;], numberOfBasicBlocks=4, firstLineNumber=359, lastLineNumber=362, firstMethodNumber=345, lastMethodNumber=380, isFirstLineValid=true, methodSrcCode=
+    // see if the client classloader is enabled
+    if (useClientClassLoader()) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(workDir).append("/").
+          append(File.pathSeparator).append(file).
+          append(File.pathSeparator).append(workDir).append("/classes/").
+          append(File.pathSeparator).append(workDir).append("/lib/*");
+      // HADOOP_CLASSPATH is added to the client classpath
+      String hadoopClasspath = getHadoopClasspath();
+      if (hadoopClasspath != null && !hadoopClasspath.isEmpty()) {
+        sb.append(File.pathSeparator).append(hadoopClasspath);
+      }
+      String clientClasspath = sb.toString();
+      // get the system classes
+      String systemClasses = getSystemClasses();
+      List<String> systemClassesList = systemClasses == null ?
+          null :
+          Arrays.asList(StringUtils.getTrimmedStrings(systemClasses));
+      // create an application classloader that isolates the user classes
+      loader = new ApplicationClassLoader(clientClasspath,
+          getClass().getClassLoader(), systemClassesList);
+    } else {
+      List<URL> classPath = new ArrayList<>();
+      classPath.add(new File(workDir + "/").toURI().toURL());
+      classPath.add(file.toURI().toURL());
+      classPath.add(new File(workDir, "classes/").toURI().toURL());
+      File[] libs = new File(workDir, "lib").listFiles();
+      if (libs != null) {
+        for (File lib : libs) {
+          classPath.add(lib.toURI().toURL());
+        }
+      }
+      // create a normal parent-delegating classloader
+      loader = new URLClassLoader(classPath.toArray(new URL[classPath.size()]));
+    }
+    return loader;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere, blocks=[BB[SSA:1..3]2 - org.apache.hadoop.util.StringUtils.getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:0..0]1 - org.apache.hadoop.util.StringUtils.getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:4..4]3 - org.apache.hadoop.util.StringUtils.getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:-1..-2]7 - org.apache.hadoop.util.StringUtils.getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection;], numberOfBasicBlocks=4, firstLineNumber=478, lastLineNumber=479, firstMethodNumber=477, lastMethodNumber=481, isFirstLineValid=true, methodSrcCode=
+  public static Collection<String> getTrimmedStringCollection(String str){
+    Set<String> set = new LinkedHashSet<String>(
+      Arrays.asList(getTrimmedStrings(str)));
+    set.remove("");
+    return set;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:9..10]4 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:3..6]2 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:11..11]5 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:-1..-2]6 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=2346, lastLineNumber=2350, firstMethodNumber=2345, lastMethodNumber=2350, isFirstLineValid=true, methodSrcCode=
+  public String[] getTrimmedStrings(String name, String... defaultValue) {
+    String valueString = get(name);
+    if (null == valueString) {
+      return defaultValue;
+    } else {
+      return StringUtils.getTrimmedStrings(valueString);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;Ljava/lang/String;)V >:Lorg/apache/hadoop/conf/Configuration in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider, init(Ljava/lang/String;)V >:Lorg/apache/hadoop/security/authorize/AccessControlList in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/security/authorize/DefaultImpersonationProvider, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:9..10]4 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:3..6]2 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:11..11]5 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String;, BB[SSA:-1..-2]6 - org.apache.hadoop.conf.Configuration.getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=2346, lastLineNumber=2350, firstMethodNumber=2345, lastMethodNumber=2350, isFirstLineValid=true, methodSrcCode=
+  public String[] getTrimmedStrings(String name, String... defaultValue) {
+    String valueString = get(name);
+    if (null == valueString) {
+      return defaultValue;
+    } else {
+      return StringUtils.getTrimmedStrings(valueString);
+    }
+}

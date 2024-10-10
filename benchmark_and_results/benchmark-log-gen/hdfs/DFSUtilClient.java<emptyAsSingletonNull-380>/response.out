@@ -1,0 +1,13 @@
+```java
+if (coll == null || coll.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'coll' is either null or empty. Returning a singleton list with null.");
+    // ConfLogger Inserted End
+    return Collections.singletonList(null);
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'coll' is properly set. Returning the collection as is.");
+    // ConfLogger Inserted End
+    return coll;
+}
+```

@@ -1,0 +1,851 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TaskAttemptID.java	methodSinagture:	org.apache.hadoop.mapreduce.TaskAttemptID.forName(Ljava/lang/String;)Lorg/apache/hadoop/mapreduce/TaskAttemptID;	methodLines:	173:201
+blockLines:	174:-1
+paras:	null
+TaintedStat:	NORMAL forName:conditional branch(ne, to iindex=5) 1,3 Node: < Application, Lorg/apache/hadoop/mapreduce/TaskAttemptID, forName(Ljava/lang/String;)Lorg/apache/hadoop/mapreduce/TaskAttemptID; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser$WNode, createRecordReader(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/join/ComposableRecordReader; > Context: Everywhere[29]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 13,15 @64 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser$WNode, createRecordReader(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/join/ComposableRecordReader; > Context: Everywhere[29]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 13,15 @64 exception:16
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/join/Parser$WNode, createRecordReader(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/join/ComposableRecordReader; > Context: Everywhere[30]19 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/TaskAttemptID, forName(Ljava/lang/String;)Lorg/apache/hadoop/mapreduce/TaskAttemptID; > 17 @67 exception:18 v17
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/TaskAttemptID, forName(Ljava/lang/String;)Lorg/apache/hadoop/mapreduce/TaskAttemptID; > Context: Everywhere v1
+NORMAL forName:conditional branch(ne, to iindex=5) 1,3 Node: < Application, Lorg/apache/hadoop/mapreduce/TaskAttemptID, forName(Ljava/lang/String;)Lorg/apache/hadoop/mapreduce/TaskAttemptID; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                      ) throws IllegalArgumentException {
+    if(str == null)
+      return null;
+    String exceptionMsg = null;
+    try {
+      String[] parts = str.split(Character.toString(SEPARATOR));
+      if(parts.length == 6) {
+        if(parts[0].equals(ATTEMPT)) {
+          String type = parts[3];
+          TaskType t = TaskID.getTaskType(type.charAt(0));
+          if(t != null) {
+            return new org.apache.hadoop.mapred.TaskAttemptID
+            (parts[1],
+             Integer.parseInt(parts[2]),
+             t, Integer.parseInt(parts[4]), 
+             Integer.parseInt(parts[5]));  
+          } else
+            exceptionMsg = "Bad TaskType identifier. TaskAttemptId string : "
+                + str + " is not properly formed.";
+        }
+      }
+    } catch (Exception ex) {
+      //fall below
+    }
+    if (exceptionMsg == null) {
+      exceptionMsg = "TaskAttemptId string : " + str
+          + " is not properly formed";
+    }
+    throw new IllegalArgumentException(exceptionMsg);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/Fetcher, copyMapOutput(Lorg/apache/hadoop/mapreduce/task/reduce/MapHost;Ljava/io/DataInputStream;Ljava/util/Set;Z)[Lorg/apache/hadoop/mapreduce/TaskAttemptID; > Context: Everywhere, blocks=[BB[SSA:21..21]6 - org.apache.hadoop.mapreduce.task.reduce.Fetcher.copyMapOutput(Lorg/apache/hadoop/mapreduce/task/reduce/MapHost;Ljava/io/DataInputStream;Ljava/util/Set;Z)[Lorg/apache/hadoop/mapreduce/TaskAttemptID;, BB[SSA:19..20]5 - org.apache.hadoop.mapreduce.task.reduce.Fetcher.copyMapOutput(Lorg/apache/hadoop/mapreduce/task/reduce/MapHost;Ljava/io/DataInputStream;Ljava/util/Set;Z)[Lorg/apache/hadoop/mapreduce/TaskAttemptID;, BB[SSA:22..24]7 - org.apache.hadoop.mapreduce.task.reduce.Fetcher.copyMapOutput(Lorg/apache/hadoop/mapreduce/task/reduce/MapHost;Ljava/io/DataInputStream;Ljava/util/Set;Z)[Lorg/apache/hadoop/mapreduce/TaskAttemptID;, BB[SSA:-1..-2]144 - org.apache.hadoop.mapreduce.task.reduce.Fetcher.copyMapOutput(Lorg/apache/hadoop/mapreduce/task/reduce/MapHost;Ljava/io/DataInputStream;Ljava/util/Set;Z)[Lorg/apache/hadoop/mapreduce/TaskAttemptID;], numberOfBasicBlocks=4, firstLineNumber=505, lastLineNumber=506, firstMethodNumber=492, lastMethodNumber=603, isFirstLineValid=true, methodSrcCode=
+                                boolean canRetry) throws IOException {
+    MapOutput<K,V> mapOutput = null;
+    TaskAttemptID mapId = null;
+    long decompressedLength = -1;
+    long compressedLength = -1;
+    
+    try {
+      long startTime = Time.monotonicNow();
+      int forReduce = -1;
+      //Read the shuffle header
+      try {
+        ShuffleHeader header = new ShuffleHeader();
+        header.readFields(input);
+        mapId = TaskAttemptID.forName(header.mapId);
+        compressedLength = header.compressedLength;
+        decompressedLength = header.uncompressedLength;
+        forReduce = header.forReduce;
+      } catch (IllegalArgumentException e) {
+        badIdErrs.increment(1);
+        LOG.warn("Invalid map id ", e);
+        //Don't know which one was bad, so consider all of them as bad
+        return remaining.toArray(new TaskAttemptID[remaining.size()]);
+      }
+
+      InputStream is = input;
+      is =
+          IntermediateEncryptedStream.wrapIfNecessary(jobConf, is,
+              compressedLength, null);
+      compressedLength -= CryptoUtils.cryptoPadding(jobConf);
+      decompressedLength -= CryptoUtils.cryptoPadding(jobConf);
+      
+      // Do some basic sanity verification
+      if (!verifySanity(compressedLength, decompressedLength, forReduce,
+          remaining, mapId)) {
+        return new TaskAttemptID[] {mapId};
+      }
+      
+      if(LOG.isDebugEnabled()) {
+        LOG.debug("header: " + mapId + ", len: " + compressedLength + 
+            ", decomp len: " + decompressedLength);
+      }
+      
+      // Get the location for the map output - either in-memory or on-disk
+      try {
+        mapOutput = merger.reserve(mapId, decompressedLength, id);
+      } catch (IOException ioe) {
+        // kill this reduce attempt
+        ioErrs.increment(1);
+        scheduler.reportLocalError(ioe);
+        return EMPTY_ATTEMPT_ID_ARRAY;
+      }
+      
+      // Check if we can shuffle *now* ...
+      if (mapOutput == null) {
+        LOG.info("fetcher#" + id + " - MergeManager returned status WAIT ...");
+        //Not an error but wait to process data.
+        return EMPTY_ATTEMPT_ID_ARRAY;
+      } 
+      
+      // The codec for lz0,lz4,snappy,bz2,etc. throw java.lang.InternalError
+      // on decompression failures. Catching and re-throwing as IOException
+      // to allow fetch failure logic to be processed
+      try {
+        // Go!
+        LOG.info("fetcher#" + id + " about to shuffle output of map "
+            + mapOutput.getMapId() + " decomp: " + decompressedLength
+            + " len: " + compressedLength + " to " + mapOutput.getDescription());
+        mapOutput.shuffle(host, is, compressedLength, decompressedLength,
+            metrics, reporter);
+      } catch (java.lang.InternalError | Exception e) {
+        LOG.warn("Failed to shuffle for fetcher#"+id, e);
+        throw new IOException(e);
+      }
+      
+      // Inform the shuffle scheduler
+      long endTime = Time.monotonicNow();
+      // Reset retryStartTime as map task make progress if retried before.
+      retryStartTime = 0;
+      
+      scheduler.copySucceeded(mapId, host, compressedLength, 
+                              startTime, endTime, mapOutput);
+      // Note successful shuffle
+      remaining.remove(mapId);
+      metrics.successFetch();
+      return null;
+    } catch (IOException ioe) {
+      if (mapOutput != null) {
+        mapOutput.abort();
+      }
+
+      if (canRetry) {
+        checkTimeoutOrRetry(host, ioe);
+      } 
+      
+      ioErrs.increment(1);
+      if (mapId == null || mapOutput == null) {
+        LOG.warn("fetcher#" + id + " failed to read map header" + 
+                 mapId + " decomp: " + 
+                 decompressedLength + ", " + compressedLength, ioe);
+        if(mapId == null) {
+          return remaining.toArray(new TaskAttemptID[remaining.size()]);
+        } else {
+          return new TaskAttemptID[] {mapId};
+        }
+      }
+        
+      LOG.warn("Failed to shuffle output of " + mapId + 
+               " from " + host.getHostName(), ioe); 
+
+      // Inform the shuffle-scheduler
+      metrics.failedFetch();
+      return new TaskAttemptID[] {mapId};
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/TaskFinishedEvent, setDatum(Ljava/lang/Object;)V > Context: Everywhere, blocks=[BB[SSA:21..21]14 - org.apache.hadoop.mapreduce.jobhistory.TaskFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:20..20]13 - org.apache.hadoop.mapreduce.jobhistory.TaskFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:22..22]15 - org.apache.hadoop.mapreduce.jobhistory.TaskFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:-1..-2]34 - org.apache.hadoop.mapreduce.jobhistory.TaskFinishedEvent.setDatum(Ljava/lang/Object;)V], numberOfBasicBlocks=4, firstLineNumber=106, lastLineNumber=106, firstMethodNumber=101, lastMethodNumber=112, isFirstLineValid=true, methodSrcCode=
+  public void setDatum(Object oDatum) {
+    this.datum = (TaskFinished)oDatum;
+    this.taskid = TaskID.forName(datum.getTaskid().toString());
+    if (datum.getSuccessfulAttemptId() != null) {
+      this.successfulAttemptId = TaskAttemptID
+          .forName(datum.getSuccessfulAttemptId().toString());
+    }
+    this.finishTime = datum.getFinishTime();
+    this.taskType = TaskType.valueOf(datum.getTaskType().toString());
+    this.status = datum.getStatus().toString();
+    this.counters = EventReader.fromAvro(datum.getCounters());
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/Fetcher, copyMapOutput(Lorg/apache/hadoop/mapreduce/task/reduce/MapHost;Ljava/io/DataInputStream;Ljava/util/Set;Z)[Lorg/apache/hadoop/mapreduce/TaskAttemptID; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, run()Lorg/apache/hadoop/mapred/RawKeyValueIterator; >:Lorg/apache/hadoop/mapreduce/task/reduce/Fetcher in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:21..21]6 - org.apache.hadoop.mapreduce.task.reduce.Fetcher.copyMapOutput(Lorg/apache/hadoop/mapreduce/task/reduce/MapHost;Ljava/io/DataInputStream;Ljava/util/Set;Z)[Lorg/apache/hadoop/mapreduce/TaskAttemptID;, BB[SSA:19..20]5 - org.apache.hadoop.mapreduce.task.reduce.Fetcher.copyMapOutput(Lorg/apache/hadoop/mapreduce/task/reduce/MapHost;Ljava/io/DataInputStream;Ljava/util/Set;Z)[Lorg/apache/hadoop/mapreduce/TaskAttemptID;, BB[SSA:22..24]7 - org.apache.hadoop.mapreduce.task.reduce.Fetcher.copyMapOutput(Lorg/apache/hadoop/mapreduce/task/reduce/MapHost;Ljava/io/DataInputStream;Ljava/util/Set;Z)[Lorg/apache/hadoop/mapreduce/TaskAttemptID;, BB[SSA:-1..-2]144 - org.apache.hadoop.mapreduce.task.reduce.Fetcher.copyMapOutput(Lorg/apache/hadoop/mapreduce/task/reduce/MapHost;Ljava/io/DataInputStream;Ljava/util/Set;Z)[Lorg/apache/hadoop/mapreduce/TaskAttemptID;], numberOfBasicBlocks=4, firstLineNumber=505, lastLineNumber=506, firstMethodNumber=492, lastMethodNumber=603, isFirstLineValid=true, methodSrcCode=
+                                boolean canRetry) throws IOException {
+    MapOutput<K,V> mapOutput = null;
+    TaskAttemptID mapId = null;
+    long decompressedLength = -1;
+    long compressedLength = -1;
+    
+    try {
+      long startTime = Time.monotonicNow();
+      int forReduce = -1;
+      //Read the shuffle header
+      try {
+        ShuffleHeader header = new ShuffleHeader();
+        header.readFields(input);
+        mapId = TaskAttemptID.forName(header.mapId);
+        compressedLength = header.compressedLength;
+        decompressedLength = header.uncompressedLength;
+        forReduce = header.forReduce;
+      } catch (IllegalArgumentException e) {
+        badIdErrs.increment(1);
+        LOG.warn("Invalid map id ", e);
+        //Don't know which one was bad, so consider all of them as bad
+        return remaining.toArray(new TaskAttemptID[remaining.size()]);
+      }
+
+      InputStream is = input;
+      is =
+          IntermediateEncryptedStream.wrapIfNecessary(jobConf, is,
+              compressedLength, null);
+      compressedLength -= CryptoUtils.cryptoPadding(jobConf);
+      decompressedLength -= CryptoUtils.cryptoPadding(jobConf);
+      
+      // Do some basic sanity verification
+      if (!verifySanity(compressedLength, decompressedLength, forReduce,
+          remaining, mapId)) {
+        return new TaskAttemptID[] {mapId};
+      }
+      
+      if(LOG.isDebugEnabled()) {
+        LOG.debug("header: " + mapId + ", len: " + compressedLength + 
+            ", decomp len: " + decompressedLength);
+      }
+      
+      // Get the location for the map output - either in-memory or on-disk
+      try {
+        mapOutput = merger.reserve(mapId, decompressedLength, id);
+      } catch (IOException ioe) {
+        // kill this reduce attempt
+        ioErrs.increment(1);
+        scheduler.reportLocalError(ioe);
+        return EMPTY_ATTEMPT_ID_ARRAY;
+      }
+      
+      // Check if we can shuffle *now* ...
+      if (mapOutput == null) {
+        LOG.info("fetcher#" + id + " - MergeManager returned status WAIT ...");
+        //Not an error but wait to process data.
+        return EMPTY_ATTEMPT_ID_ARRAY;
+      } 
+      
+      // The codec for lz0,lz4,snappy,bz2,etc. throw java.lang.InternalError
+      // on decompression failures. Catching and re-throwing as IOException
+      // to allow fetch failure logic to be processed
+      try {
+        // Go!
+        LOG.info("fetcher#" + id + " about to shuffle output of map "
+            + mapOutput.getMapId() + " decomp: " + decompressedLength
+            + " len: " + compressedLength + " to " + mapOutput.getDescription());
+        mapOutput.shuffle(host, is, compressedLength, decompressedLength,
+            metrics, reporter);
+      } catch (java.lang.InternalError | Exception e) {
+        LOG.warn("Failed to shuffle for fetcher#"+id, e);
+        throw new IOException(e);
+      }
+      
+      // Inform the shuffle scheduler
+      long endTime = Time.monotonicNow();
+      // Reset retryStartTime as map task make progress if retried before.
+      retryStartTime = 0;
+      
+      scheduler.copySucceeded(mapId, host, compressedLength, 
+                              startTime, endTime, mapOutput);
+      // Note successful shuffle
+      remaining.remove(mapId);
+      metrics.successFetch();
+      return null;
+    } catch (IOException ioe) {
+      if (mapOutput != null) {
+        mapOutput.abort();
+      }
+
+      if (canRetry) {
+        checkTimeoutOrRetry(host, ioe);
+      } 
+      
+      ioErrs.increment(1);
+      if (mapId == null || mapOutput == null) {
+        LOG.warn("fetcher#" + id + " failed to read map header" + 
+                 mapId + " decomp: " + 
+                 decompressedLength + ", " + compressedLength, ioe);
+        if(mapId == null) {
+          return remaining.toArray(new TaskAttemptID[remaining.size()]);
+        } else {
+          return new TaskAttemptID[] {mapId};
+        }
+      }
+        
+      LOG.warn("Failed to shuffle output of " + mapId + 
+               " from " + host.getHostName(), ioe); 
+
+      // Inform the shuffle-scheduler
+      metrics.failedFetch();
+      return new TaskAttemptID[] {mapId};
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/TaskAttemptUnsuccessfulCompletionEvent, setDatum(Ljava/lang/Object;)V > Context: Everywhere, blocks=[BB[SSA:9..9]6 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptUnsuccessfulCompletionEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:8..8]5 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptUnsuccessfulCompletionEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:10..10]7 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptUnsuccessfulCompletionEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:-1..-2]58 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptUnsuccessfulCompletionEvent.setDatum(Ljava/lang/Object;)V], numberOfBasicBlocks=4, firstLineNumber=184, lastLineNumber=184, firstMethodNumber=180, lastMethodNumber=203, isFirstLineValid=true, methodSrcCode=
+  public void setDatum(Object odatum) {
+    this.datum =
+        (TaskAttemptUnsuccessfulCompletion)odatum;
+    this.attemptId =
+        TaskAttemptID.forName(datum.getAttemptId().toString());
+    this.taskType =
+        TaskType.valueOf(datum.getTaskType().toString());
+    this.finishTime = datum.getFinishTime();
+    this.hostname = datum.getHostname().toString();
+    this.rackName = datum.getRackname().toString();
+    this.port = datum.getPort();
+    this.status = datum.getStatus().toString();
+    this.error = datum.getError().toString();
+    this.counters =
+        EventReader.fromAvro(datum.getCounters());
+    this.clockSplits =
+        AvroArrayUtils.fromAvro(datum.getClockSplits());
+    this.cpuUsages =
+        AvroArrayUtils.fromAvro(datum.getCpuUsages());
+    this.vMemKbytes =
+        AvroArrayUtils.fromAvro(datum.getVMemKbytes());
+    this.physMemKbytes =
+        AvroArrayUtils.fromAvro(datum.getPhysMemKbytes());
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/MapAttemptFinishedEvent, setDatum(Ljava/lang/Object;)V > Context: Everywhere, blocks=[BB[SSA:9..9]6 - org.apache.hadoop.mapreduce.jobhistory.MapAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:8..8]5 - org.apache.hadoop.mapreduce.jobhistory.MapAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:10..10]7 - org.apache.hadoop.mapreduce.jobhistory.MapAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:-1..-2]62 - org.apache.hadoop.mapreduce.jobhistory.MapAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V], numberOfBasicBlocks=4, firstLineNumber=173, lastLineNumber=173, firstMethodNumber=171, lastMethodNumber=187, isFirstLineValid=true, methodSrcCode=
+  public void setDatum(Object oDatum) {
+    this.datum = (MapAttemptFinished)oDatum;
+    this.attemptId = TaskAttemptID.forName(datum.getAttemptId().toString());
+    this.taskType = TaskType.valueOf(datum.getTaskType().toString());
+    this.taskStatus = datum.getTaskStatus().toString();
+    this.mapFinishTime = datum.getMapFinishTime();
+    this.finishTime = datum.getFinishTime();
+    this.hostname = datum.getHostname().toString();
+    this.rackName = datum.getRackname().toString();
+    this.port = datum.getPort();
+    this.state = datum.getState().toString();
+    this.counters = EventReader.fromAvro(datum.getCounters());
+    this.clockSplits = AvroArrayUtils.fromAvro(datum.getClockSplits());
+    this.cpuUsages = AvroArrayUtils.fromAvro(datum.getCpuUsages());
+    this.vMemKbytes = AvroArrayUtils.fromAvro(datum.getVMemKbytes());
+    this.physMemKbytes = AvroArrayUtils.fromAvro(datum.getPhysMemKbytes());
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/TaskAttemptStartedEvent, getTaskAttemptId()Lorg/apache/hadoop/mapreduce/TaskAttemptID; > Context: Everywhere, blocks=[BB[SSA:4..4]4 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptStartedEvent.getTaskAttemptId()Lorg/apache/hadoop/mapreduce/TaskAttemptID;, BB[SSA:3..3]3 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptStartedEvent.getTaskAttemptId()Lorg/apache/hadoop/mapreduce/TaskAttemptID;, BB[SSA:5..5]5 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptStartedEvent.getTaskAttemptId()Lorg/apache/hadoop/mapreduce/TaskAttemptID;, BB[SSA:-1..-2]6 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptStartedEvent.getTaskAttemptId()Lorg/apache/hadoop/mapreduce/TaskAttemptID;], numberOfBasicBlocks=4, firstLineNumber=111, lastLineNumber=111, firstMethodNumber=110, lastMethodNumber=111, isFirstLineValid=true, methodSrcCode=
+  public TaskAttemptID getTaskAttemptId() {
+    return TaskAttemptID.forName(datum.getAttemptId().toString());
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/tools/CLI, run([Ljava/lang/String;)I > Context: Everywhere, blocks=[BB[SSA:1041..1042]414 - org.apache.hadoop.mapreduce.tools.CLI.run([Ljava/lang/String;)I, BB[SSA:1038..1040]413 - org.apache.hadoop.mapreduce.tools.CLI.run([Ljava/lang/String;)I, BB[SSA:1043..1046]415 - org.apache.hadoop.mapreduce.tools.CLI.run([Ljava/lang/String;)I, BB[SSA:1098..1099]443 - org.apache.hadoop.mapreduce.tools.CLI.run([Ljava/lang/String;)I, BB[SSA:1095..1097]442 - org.apache.hadoop.mapreduce.tools.CLI.run([Ljava/lang/String;)I, BB[SSA:1100..1103]444 - org.apache.hadoop.mapreduce.tools.CLI.run([Ljava/lang/String;)I, BB[SSA:1176..1177]483 - org.apache.hadoop.mapreduce.tools.CLI.run([Ljava/lang/String;)I, BB[SSA:1163..1164]475 - org.apache.hadoop.mapreduce.tools.CLI.run([Ljava/lang/String;)I, BB[SSA:1178..1180]484 - org.apache.hadoop.mapreduce.tools.CLI.run([Ljava/lang/String;)I], numberOfBasicBlocks=9, firstLineNumber=470, lastLineNumber=515, firstMethodNumber=89, lastMethodNumber=515, isFirstLineValid=true, methodSrcCode=
+  public int run(String[] argv) throws Exception {
+    int exitCode = -1;
+    if (argv.length < 1) {
+      displayUsage("");
+      return exitCode;
+    }    
+    // process arguments
+    String cmd = argv[0];
+    String submitJobFile = null;
+    String jobid = null;
+    String taskid = null;
+    String historyFileOrJobId = null;
+    String historyOutFile = null;
+    String historyOutFormat = HistoryViewer.HUMAN_FORMAT;
+    String counterGroupName = null;
+    String counterName = null;
+    JobPriority jp = null;
+    String taskType = null;
+    String taskState = null;
+    int fromEvent = 0;
+    int nEvents = 0;
+    int jpvalue = 0;
+    String configOutFile = null;
+    boolean getStatus = false;
+    boolean getCounter = false;
+    boolean killJob = false;
+    boolean listEvents = false;
+    boolean viewHistory = false;
+    boolean viewAllHistory = false;
+    boolean listJobs = false;
+    boolean listAllJobs = false;
+    boolean listActiveTrackers = false;
+    boolean listBlacklistedTrackers = false;
+    boolean displayTasks = false;
+    boolean killTask = false;
+    boolean failTask = false;
+    boolean setJobPriority = false;
+    boolean logs = false;
+    boolean downloadConfig = false;
+
+    if ("-submit".equals(cmd)) {
+      if (argv.length != 2) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      submitJobFile = argv[1];
+    } else if ("-status".equals(cmd)) {
+      if (argv.length != 2) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      jobid = argv[1];
+      getStatus = true;
+    } else if("-counter".equals(cmd)) {
+      if (argv.length != 4) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      getCounter = true;
+      jobid = argv[1];
+      counterGroupName = argv[2];
+      counterName = argv[3];
+    } else if ("-kill".equals(cmd)) {
+      if (argv.length != 2) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      jobid = argv[1];
+      killJob = true;
+    } else if ("-set-priority".equals(cmd)) {
+      if (argv.length != 3) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      jobid = argv[1];
+      try {
+        jp = JobPriority.valueOf(argv[2]);
+      } catch (IllegalArgumentException iae) {
+        try {
+          jpvalue = Integer.parseInt(argv[2]);
+        } catch (NumberFormatException ne) {
+          LOG.info("Error number format: ", ne);
+          displayUsage(cmd);
+          return exitCode;
+        }
+      }
+      setJobPriority = true; 
+    } else if ("-events".equals(cmd)) {
+      if (argv.length != 4) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      jobid = argv[1];
+      fromEvent = Integer.parseInt(argv[2]);
+      nEvents = Integer.parseInt(argv[3]);
+      listEvents = true;
+    } else if ("-history".equals(cmd)) {
+      viewHistory = true;
+      if (argv.length < 2 || argv.length > 7) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+
+      // Some arguments are optional while others are not, and some require
+      // second arguments.  Due to this, the indexing can vary depending on
+      // what's specified and what's left out, as summarized in the below table:
+      // [all] <jobHistoryFile|jobId> [-outfile <file>] [-format <human|json>]
+      //   1                  2            3       4         5         6
+      //   1                  2            3       4
+      //   1                  2                              3         4
+      //   1                  2
+      //                      1            2       3         4         5
+      //                      1            2       3
+      //                      1                              2         3
+      //                      1
+
+      // "all" is optional, but comes first if specified
+      int index = 1;
+      if ("all".equals(argv[index])) {
+        index++;
+        viewAllHistory = true;
+        if (argv.length == 2) {
+          displayUsage(cmd);
+          return exitCode;
+        }
+      }
+      // Get the job history file or job id argument
+      historyFileOrJobId = argv[index++];
+      // "-outfile" is optional, but if specified requires a second argument
+      if (argv.length > index + 1 && "-outfile".equals(argv[index])) {
+        index++;
+        historyOutFile = argv[index++];
+      }
+      // "-format" is optional, but if specified required a second argument
+      if (argv.length > index + 1 && "-format".equals(argv[index])) {
+        index++;
+        historyOutFormat = argv[index++];
+      }
+      // Check for any extra arguments that don't belong here
+      if (argv.length > index) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-list".equals(cmd)) {
+      if (argv.length != 1 && !(argv.length == 2 && "all".equals(argv[1]))) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      if (argv.length == 2 && "all".equals(argv[1])) {
+        listAllJobs = true;
+      } else {
+        listJobs = true;
+      }
+    } else if("-kill-task".equals(cmd)) {
+      if (argv.length != 2) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      killTask = true;
+      taskid = argv[1];
+    } else if("-fail-task".equals(cmd)) {
+      if (argv.length != 2) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      failTask = true;
+      taskid = argv[1];
+    } else if ("-list-active-trackers".equals(cmd)) {
+      if (argv.length != 1) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      listActiveTrackers = true;
+    } else if ("-list-blacklisted-trackers".equals(cmd)) {
+      if (argv.length != 1) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      listBlacklistedTrackers = true;
+    } else if ("-list-attempt-ids".equals(cmd)) {
+      if (argv.length != 4) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      jobid = argv[1];
+      taskType = argv[2];
+      taskState = argv[3];
+      displayTasks = true;
+      if (!taskTypes.contains(
+          org.apache.hadoop.util.StringUtils.toUpperCase(taskType))) {
+        System.out.println("Error: Invalid task-type: " + taskType);
+        displayUsage(cmd);
+        return exitCode;
+      }
+      if (!taskStates.contains(
+          org.apache.hadoop.util.StringUtils.toLowerCase(taskState))) {
+        System.out.println("Error: Invalid task-state: " + taskState);
+        displayUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-logs".equals(cmd)) {
+      if (argv.length == 2 || argv.length ==3) {
+        logs = true;
+        jobid = argv[1];
+        if (argv.length == 3) {
+          taskid = argv[2];
+        }  else {
+          taskid = null;
+        }
+      } else {
+        displayUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-config".equals(cmd)) {
+      downloadConfig = true;
+      if (argv.length != 3) {
+        displayUsage(cmd);
+        return exitCode;
+      }
+      jobid = argv[1];
+      configOutFile = argv[2];
+    } else {
+      displayUsage(cmd);
+      return exitCode;
+    }
+
+    // initialize cluster
+    cluster = createCluster();
+        
+    // Submit the request
+    try {
+      if (submitJobFile != null) {
+        Job job = Job.getInstance(new JobConf(submitJobFile));
+        job.submit();
+        System.out.println("Created job " + job.getJobID());
+        exitCode = 0;
+      } else if (getStatus) {
+        Job job = getJob(JobID.forName(jobid));
+        if (job == null) {
+          System.out.println("Could not find job " + jobid);
+        } else {
+          Counters counters = job.getCounters();
+          System.out.println();
+          System.out.println(job);
+          if (counters != null) {
+            System.out.println(counters);
+          } else {
+            System.out.println("Counters not available. Job is retired.");
+          }
+          exitCode = 0;
+        }
+      } else if (getCounter) {
+        Job job = getJob(JobID.forName(jobid));
+        if (job == null) {
+          System.out.println("Could not find job " + jobid);
+        } else {
+          Counters counters = job.getCounters();
+          if (counters == null) {
+            System.out.println("Counters not available for retired job " + 
+            jobid);
+            exitCode = -1;
+          } else {
+            System.out.println(getCounter(counters,
+              counterGroupName, counterName));
+            exitCode = 0;
+          }
+        }
+      } else if (killJob) {
+        Job job = getJob(JobID.forName(jobid));
+        if (job == null) {
+          System.out.println("Could not find job " + jobid);
+        } else {
+          JobStatus jobStatus = job.getStatus();
+          if (jobStatus.getState() == JobStatus.State.FAILED) {
+            System.out.println("Could not mark the job " + jobid
+                + " as killed, as it has already failed.");
+            exitCode = -1;
+          } else if (jobStatus.getState() == JobStatus.State.KILLED) {
+            System.out
+                .println("The job " + jobid + " has already been killed.");
+            exitCode = -1;
+          } else if (jobStatus.getState() == JobStatus.State.SUCCEEDED) {
+            System.out.println("Could not kill the job " + jobid
+                + ", as it has already succeeded.");
+            exitCode = -1;
+          } else {
+            job.killJob();
+            System.out.println("Killed job " + jobid);
+            exitCode = 0;
+          }
+        }
+      } else if (setJobPriority) {
+        Job job = getJob(JobID.forName(jobid));
+        if (job == null) {
+          System.out.println("Could not find job " + jobid);
+        } else {
+          if (jp != null) {
+            job.setPriority(jp);
+          } else {
+            job.setPriorityAsInteger(jpvalue);
+          }
+          System.out.println("Changed job priority.");
+          exitCode = 0;
+        } 
+      } else if (viewHistory) {
+        // If it ends with .jhist, assume it's a jhist file; otherwise, assume
+        // it's a Job ID
+        if (historyFileOrJobId.endsWith(".jhist")) {
+          viewHistory(historyFileOrJobId, viewAllHistory, historyOutFile,
+              historyOutFormat);
+          exitCode = 0;
+        } else {
+          Job job = getJob(JobID.forName(historyFileOrJobId));
+          if (job == null) {
+            System.out.println("Could not find job " + jobid);
+          } else {
+            String historyUrl = job.getHistoryUrl();
+            if (historyUrl == null || historyUrl.isEmpty()) {
+              System.out.println("History file for job " + historyFileOrJobId +
+                  " is currently unavailable.");
+            } else {
+              viewHistory(historyUrl, viewAllHistory, historyOutFile,
+                  historyOutFormat);
+              exitCode = 0;
+            }
+          }
+        }
+      } else if (listEvents) {
+        Job job = getJob(JobID.forName(jobid));
+        if (job == null) {
+          System.out.println("Could not find job " + jobid);
+        } else {
+          listEvents(job, fromEvent, nEvents);
+          exitCode = 0;
+        }
+      } else if (listJobs) {
+        listJobs(cluster);
+        exitCode = 0;
+      } else if (listAllJobs) {
+        listAllJobs(cluster);
+        exitCode = 0;
+      } else if (listActiveTrackers) {
+        listActiveTrackers(cluster);
+        exitCode = 0;
+      } else if (listBlacklistedTrackers) {
+        listBlacklistedTrackers(cluster);
+        exitCode = 0;
+      } else if (displayTasks) {
+        Job job = getJob(JobID.forName(jobid));
+        if (job == null) {
+          System.out.println("Could not find job " + jobid);
+        } else {
+          displayTasks(getJob(JobID.forName(jobid)), taskType, taskState);
+          exitCode = 0;
+        }
+      } else if(killTask) {
+        TaskAttemptID taskID = TaskAttemptID.forName(taskid);
+        Job job = getJob(taskID.getJobID());
+        if (job == null) {
+          System.out.println("Could not find job " + jobid);
+        } else if (job.killTask(taskID, false)) {
+          System.out.println("Killed task " + taskid);
+          exitCode = 0;
+        } else {
+          System.out.println("Could not kill task " + taskid);
+          exitCode = -1;
+        }
+      } else if(failTask) {
+        TaskAttemptID taskID = TaskAttemptID.forName(taskid);
+        Job job = getJob(taskID.getJobID());
+        if (job == null) {
+            System.out.println("Could not find job " + jobid);
+        } else if(job.killTask(taskID, true)) {
+          System.out.println("Killed task " + taskID + " by failing it");
+          exitCode = 0;
+        } else {
+          System.out.println("Could not fail task " + taskid);
+          exitCode = -1;
+        }
+      } else if (logs) {
+        JobID jobID = JobID.forName(jobid);
+        if (getJob(jobID) == null) {
+          System.out.println("Could not find job " + jobid);
+        } else {
+          try {
+            TaskAttemptID taskAttemptID = TaskAttemptID.forName(taskid);
+            LogParams logParams = cluster.getLogParams(jobID, taskAttemptID);
+            LogCLIHelpers logDumper = new LogCLIHelpers();
+            logDumper.setConf(getConf());
+            exitCode = logDumper.dumpAContainersLogs(
+                    logParams.getApplicationId(), logParams.getContainerId(),
+                    logParams.getNodeId(), logParams.getOwner());
+          } catch (IOException e) {
+            if (e instanceof RemoteException) {
+              throw e;
+            }
+            System.out.println(e.getMessage());
+          }
+        }
+      } else if (downloadConfig) {
+        Job job = getJob(JobID.forName(jobid));
+        if (job == null) {
+          System.out.println("Could not find job " + jobid);
+        } else {
+          String jobFile = job.getJobFile();
+          if (jobFile == null || jobFile.isEmpty()) {
+            System.out.println("Config file for job " + jobFile +
+                " could not be found.");
+          } else {
+            Path configPath = new Path(jobFile);
+            FileSystem fs = FileSystem.get(getConf());
+            fs.copyToLocalFile(configPath, new Path(configOutFile));
+            exitCode = 0;
+          }
+        }
+      }
+    } catch (RemoteException re) {
+      IOException unwrappedException = re.unwrapRemoteException();
+      if (unwrappedException instanceof AccessControlException) {
+        System.out.println(unwrappedException.getMessage());
+      } else {
+        throw re;
+      }
+    } finally {
+      cluster.close();
+    }
+    return exitCode;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/TaskAttemptFinishedEvent, setDatum(Ljava/lang/Object;)V > Context: Everywhere, blocks=[BB[SSA:9..9]6 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:8..8]5 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:10..10]7 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.mapreduce.jobhistory.TaskAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V], numberOfBasicBlocks=4, firstLineNumber=111, lastLineNumber=111, firstMethodNumber=109, lastMethodNumber=119, isFirstLineValid=true, methodSrcCode=
+  public void setDatum(Object oDatum) {
+    this.datum = (TaskAttemptFinished)oDatum;
+    this.attemptId = TaskAttemptID.forName(datum.getAttemptId().toString());
+    this.taskType = TaskType.valueOf(datum.getTaskType().toString());
+    this.taskStatus = datum.getTaskStatus().toString();
+    this.finishTime = datum.getFinishTime();
+    this.rackName = datum.getRackname().toString();
+    this.hostname = datum.getHostname().toString();
+    this.state = datum.getState().toString();
+    this.counters = EventReader.fromAvro(datum.getCounters());
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/ReduceAttemptFinishedEvent, setDatum(Ljava/lang/Object;)V > Context: Everywhere, blocks=[BB[SSA:9..9]6 - org.apache.hadoop.mapreduce.jobhistory.ReduceAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:8..8]5 - org.apache.hadoop.mapreduce.jobhistory.ReduceAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:10..10]7 - org.apache.hadoop.mapreduce.jobhistory.ReduceAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:-1..-2]66 - org.apache.hadoop.mapreduce.jobhistory.ReduceAttemptFinishedEvent.setDatum(Ljava/lang/Object;)V], numberOfBasicBlocks=4, firstLineNumber=175, lastLineNumber=175, firstMethodNumber=173, lastMethodNumber=190, isFirstLineValid=true, methodSrcCode=
+  public void setDatum(Object oDatum) {
+    this.datum = (ReduceAttemptFinished)oDatum;
+    this.attemptId = TaskAttemptID.forName(datum.getAttemptId().toString());
+    this.taskType = TaskType.valueOf(datum.getTaskType().toString());
+    this.taskStatus = datum.getTaskStatus().toString();
+    this.shuffleFinishTime = datum.getShuffleFinishTime();
+    this.sortFinishTime = datum.getSortFinishTime();
+    this.finishTime = datum.getFinishTime();
+    this.hostname = datum.getHostname().toString();
+    this.rackName = datum.getRackname().toString();
+    this.port = datum.getPort();
+    this.state = datum.getState().toString();
+    this.counters = EventReader.fromAvro(datum.getCounters());
+    this.clockSplits = AvroArrayUtils.fromAvro(datum.getClockSplits());
+    this.cpuUsages = AvroArrayUtils.fromAvro(datum.getCpuUsages());
+    this.vMemKbytes = AvroArrayUtils.fromAvro(datum.getVMemKbytes());
+    this.physMemKbytes = AvroArrayUtils.fromAvro(datum.getPhysMemKbytes());
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/TaskAttemptID, forName(Ljava/lang/String;)Lorg/apache/hadoop/mapred/TaskAttemptID; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.mapred.TaskAttemptID.forName(Ljava/lang/String;)Lorg/apache/hadoop/mapred/TaskAttemptID;, BB[SSA:-1..-2]0 - org.apache.hadoop.mapred.TaskAttemptID.forName(Ljava/lang/String;)Lorg/apache/hadoop/mapred/TaskAttemptID;, BB[SSA:2..2]2 - org.apache.hadoop.mapred.TaskAttemptID.forName(Ljava/lang/String;)Lorg/apache/hadoop/mapred/TaskAttemptID;, BB[SSA:-1..-2]4 - org.apache.hadoop.mapred.TaskAttemptID.forName(Ljava/lang/String;)Lorg/apache/hadoop/mapred/TaskAttemptID;], numberOfBasicBlocks=4, firstLineNumber=128, lastLineNumber=129, firstMethodNumber=128, lastMethodNumber=129, isFirstLineValid=false, methodSrcCode=
+                                      ) throws IllegalArgumentException {
+    return (TaskAttemptID) 
+             org.apache.hadoop.mapreduce.TaskAttemptID.forName(str);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/lib/db/DBOutputFormat, getRecordWriter(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;Lorg/apache/hadoop/util/Progressable;)Lorg/apache/hadoop/mapred/RecordWriter; > Context: Everywhere, blocks=[BB[SSA:7..7]3 - org.apache.hadoop.mapred.lib.db.DBOutputFormat.getRecordWriter(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;Lorg/apache/hadoop/util/Progressable;)Lorg/apache/hadoop/mapred/RecordWriter;, BB[SSA:2..6]2 - org.apache.hadoop.mapred.lib.db.DBOutputFormat.getRecordWriter(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;Lorg/apache/hadoop/util/Progressable;)Lorg/apache/hadoop/mapred/RecordWriter;, BB[SSA:8..8]4 - org.apache.hadoop.mapred.lib.db.DBOutputFormat.getRecordWriter(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;Lorg/apache/hadoop/util/Progressable;)Lorg/apache/hadoop/mapred/RecordWriter;, BB[SSA:-1..-2]15 - org.apache.hadoop.mapred.lib.db.DBOutputFormat.getRecordWriter(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;Lorg/apache/hadoop/util/Progressable;)Lorg/apache/hadoop/mapred/RecordWriter;], numberOfBasicBlocks=4, firstLineNumber=71, lastLineNumber=73, firstMethodNumber=70, lastMethodNumber=79, isFirstLineValid=true, methodSrcCode=
+      JobConf job, String name, Progressable progress) throws IOException {
+    org.apache.hadoop.mapreduce.RecordWriter<K, V> w = super.getRecordWriter(
+      new TaskAttemptContextImpl(job, 
+            TaskAttemptID.forName(job.get(MRJobConfig.TASK_ATTEMPT_ID))));
+    org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.DBRecordWriter writer = 
+     (org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.DBRecordWriter) w;
+    try {
+      return new DBRecordWriter(writer.getConnection(), writer.getStatement());
+    } catch(SQLException se) {
+      throw new IOException(se);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/TaskFailedEvent, setDatum(Ljava/lang/Object;)V > Context: Everywhere, blocks=[BB[SSA:42..42]28 - org.apache.hadoop.mapreduce.jobhistory.TaskFailedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:41..41]27 - org.apache.hadoop.mapreduce.jobhistory.TaskFailedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:43..43]29 - org.apache.hadoop.mapreduce.jobhistory.TaskFailedEvent.setDatum(Ljava/lang/Object;)V, BB[SSA:-1..-2]39 - org.apache.hadoop.mapreduce.jobhistory.TaskFailedEvent.setDatum(Ljava/lang/Object;)V], numberOfBasicBlocks=4, firstLineNumber=126, lastLineNumber=125, firstMethodNumber=114, lastMethodNumber=130, isFirstLineValid=true, methodSrcCode=
+  public void setDatum(Object odatum) {
+    this.datum = (TaskFailed)odatum;
+    this.id =
+        TaskID.forName(datum.getTaskid().toString());
+    this.taskType =
+        TaskType.valueOf(datum.getTaskType().toString());
+    this.finishTime = datum.getFinishTime();
+    this.error = datum.getError().toString();
+    this.failedDueToAttempt =
+        datum.getFailedDueToAttempt() == null
+        ? null
+        : TaskAttemptID.forName(
+            datum.getFailedDueToAttempt().toString());
+    this.status = datum.getStatus().toString();
+    this.counters =
+        EventReader.fromAvro(datum.getCounters());
+  }
+
+}

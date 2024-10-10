@@ -1,0 +1,78 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BlockLocation.java	methodSinagture:	org.apache.hadoop.fs.BlockLocation.<init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Lorg/apache/hadoop/fs/StorageType;JJZ)V	methodLines:	162:197
+blockLines:	164:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=9) 2,13 Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Lorg/apache/hadoop/fs/StorageType;JJZ)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getFileBlockLocations(Lorg/apache/hadoop/fs/Path;JJ)[Lorg/apache/hadoop/fs/BlockLocation; > Context: Everywhere[9]8 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getFileStatus(Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > 1,2 @14 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getFileBlockLocations(Lorg/apache/hadoop/fs/Path;JJ)[Lorg/apache/hadoop/fs/BlockLocation; > Context: Everywhere[9]8 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getFileStatus(Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FileStatus; > 1,2 @14 exception:7
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getFileBlockLocations(Lorg/apache/hadoop/fs/Path;JJ)[Lorg/apache/hadoop/fs/BlockLocation; > Context: Everywhere[15]10 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getFileBlockLocations(Lorg/apache/hadoop/fs/FileStatus;JJ)[Lorg/apache/hadoop/fs/BlockLocation; > 1,8,3,4 @25 exception:9 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getFileBlockLocations(Lorg/apache/hadoop/fs/FileStatus;JJ)[Lorg/apache/hadoop/fs/BlockLocation; > Context: Everywhere v2
+NORMAL getFileBlockLocations:conditional branch(ne, to iindex=5) 2,6 Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getFileBlockLocations(Lorg/apache/hadoop/fs/FileStatus;JJ)[Lorg/apache/hadoop/fs/BlockLocation; > Context: Everywhere
+NORMAL getFileBlockLocations:conditional branch(gt, to iindex=29) 13,9 Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getFileBlockLocations(Lorg/apache/hadoop/fs/FileStatus;JJ)[Lorg/apache/hadoop/fs/BlockLocation; > Context: Everywhere
+NORMAL getFileBlockLocations:15 = new <Application,[Ljava/lang/String>@4414  Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getFileBlockLocations(Lorg/apache/hadoop/fs/FileStatus;JJ)[Lorg/apache/hadoop/fs/BlockLocation; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getFileBlockLocations(Lorg/apache/hadoop/fs/FileStatus;JJ)[Lorg/apache/hadoop/fs/BlockLocation; > Context: Everywhere[54]invokespecial < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;JJ)V > 20,15,17,7,22 @84 exception:23 v15
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;JJ)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;JJ)V > Context: Everywhere[6]invokespecial < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;JJZ)V > 1,2,3,4,5,7 @7 exception:8 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;JJZ)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;JJZ)V > Context: Everywhere[7]invokespecial < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V > 1,2,3,8,4,5,6 @9 exception:9 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V > Context: Everywhere[8]invokespecial < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V > 1,2,3,9,4,5,6,7 @11 exception:10 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V > Context: Everywhere[10]invokespecial < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Lorg/apache/hadoop/fs/StorageType;JJZ)V > 1,2,3,4,5,10,10,6,7,8 @14 exception:11 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Lorg/apache/hadoop/fs/StorageType;JJZ)V > Context: Everywhere v2
+NORMAL <init>:conditional branch(ne, to iindex=9) 2,13 Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Lorg/apache/hadoop/fs/StorageType;JJZ)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String[] topologyPaths, String[] storageIds, StorageType[] storageTypes,
+      long offset, long length, boolean corrupt) {
+    if (names == null) {
+      this.names = EMPTY_STR_ARRAY;
+    } else {
+      this.names = StringInterner.internStringsInArray(names);
+    }
+    if (hosts == null) {
+      this.hosts = EMPTY_STR_ARRAY;
+    } else {
+      this.hosts = StringInterner.internStringsInArray(hosts);
+    }
+    if (cachedHosts == null) {
+      this.cachedHosts = EMPTY_STR_ARRAY;
+    } else {
+      this.cachedHosts = StringInterner.internStringsInArray(cachedHosts);
+    }
+    if (topologyPaths == null) {
+      this.topologyPaths = EMPTY_STR_ARRAY;
+    } else {
+      this.topologyPaths = StringInterner.internStringsInArray(topologyPaths);
+    }
+    if (storageIds == null) {
+      this.storageIds = EMPTY_STR_ARRAY;
+    } else {
+      this.storageIds = StringInterner.internStringsInArray(storageIds);
+    }
+    if (storageTypes == null) {
+      this.storageTypes = EMPTY_STORAGE_TYPE_ARRAY;
+    } else {
+      this.storageTypes = storageTypes;
+    }
+    this.offset = offset;
+    this.length = length;
+    this.corrupt = corrupt;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/BlockLocation, <init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V > Context: Everywhere, blocks=[BB[SSA:0..10]1 - org.apache.hadoop.fs.BlockLocation.<init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V, BB[SSA:-1..-2]0 - org.apache.hadoop.fs.BlockLocation.<init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V, BB[SSA:11..11]2 - org.apache.hadoop.fs.BlockLocation.<init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V, BB[SSA:-1..-2]3 - org.apache.hadoop.fs.BlockLocation.<init>([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;JJZ)V], numberOfBasicBlocks=4, firstLineNumber=156, lastLineNumber=159, firstMethodNumber=156, lastMethodNumber=159, isFirstLineValid=false, methodSrcCode=
+      String[] topologyPaths, long offset, long length, boolean corrupt) {
+    this(names, hosts, cachedHosts, topologyPaths, null, null, offset, length,
+        corrupt);
+  }
+
+}

@@ -1,0 +1,97 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DecayRpcScheduler.java	methodSinagture:	org.apache.hadoop.ipc.DecayRpcScheduler.parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D	methodLines:	298:315
+blockLines:	301:-1
+paras:	null
+TaintedStat:	NORMAL parseDecayFactor:conditional branch(ne, to iindex=34) 19,20 Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere[12]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getDouble(Ljava/lang/String;D)D > 2,15,16 @26 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere[12]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getDouble(Ljava/lang/String;D)D > 2,15,16 @26 exception:17
+NORMAL parseDecayFactor:19 = compare 18,16 opcode=cmpl Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere
+NORMAL parseDecayFactor:conditional branch(ne, to iindex=34) 19,20 Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DecayRpcScheduler.java	methodSinagture:	org.apache.hadoop.ipc.DecayRpcScheduler.parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D	methodLines:	298:315
+blockLines:	310:-1
+paras:	null
+TaintedStat:	NORMAL parseDecayFactor:conditional branch(le, to iindex=57) 42,20 Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere[31]40 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getDouble(Ljava/lang/String;D)D > 2,37,38 @64 exception:39
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere[31]40 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getDouble(Ljava/lang/String;D)D > 2,37,38 @64 exception:39
+PHI Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere:41 = phi  40,18,18,18
+NORMAL parseDecayFactor:42 = compare 41,16 opcode=cmpg Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere
+NORMAL parseDecayFactor:conditional branch(le, to iindex=57) 42,20 Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, parseDecayFactor(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)D > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static double parseDecayFactor(String ns, Configuration conf) {
+    double factor = conf.getDouble(ns + "." +
+        IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY, 0.0);
+    if (factor == 0.0) {
+      factor = conf.getDouble(ns + "." +
+          IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY,
+          IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_DEFAULT);
+    } else if ((factor > 0.0) && (factor < 1)) {
+      LOG.warn(IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY +
+          " is deprecated. Please use " +
+          IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY + ".");
+    }
+    if (factor <= 0 || factor >= 1) {
+      throw new IllegalArgumentException("Decay Factor " +
+        "must be between 0 and 1");
+    }
+
+    return factor;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/ipc/DecayRpcScheduler, <init>(ILjava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:41..44]23 - org.apache.hadoop.ipc.DecayRpcScheduler.<init>(ILjava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:38..40]22 - org.apache.hadoop.ipc.DecayRpcScheduler.<init>(ILjava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:45..45]24 - org.apache.hadoop.ipc.DecayRpcScheduler.<init>(ILjava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]74 - org.apache.hadoop.ipc.DecayRpcScheduler.<init>(ILjava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=226, lastLineNumber=227, firstMethodNumber=219, lastMethodNumber=262, isFirstLineValid=true, methodSrcCode=
+   */
+  public DecayRpcScheduler(int numLevels, String ns, Configuration conf) {
+    if(numLevels < 1) {
+      throw new IllegalArgumentException("Number of Priority Levels must be " +
+          "at least 1");
+    }
+    this.numLevels = numLevels;
+    this.namespace = ns;
+    this.decayFactor = parseDecayFactor(ns, conf);
+    this.decayPeriodMillis = parseDecayPeriodMillis(ns, conf);
+    this.identityProvider = this.parseIdentityProvider(ns, conf);
+    this.costProvider = this.parseCostProvider(ns, conf);
+    this.thresholds = parseThresholds(ns, conf, numLevels);
+    this.backOffByResponseTimeEnabled = parseBackOffByResponseTimeEnabled(ns,
+        conf);
+    this.backOffResponseTimeThresholds =
+        parseBackOffResponseTimeThreshold(ns, conf, numLevels);
+
+    // Setup response time metrics
+    responseTimeTotalInCurrWindow = new AtomicLongArray(numLevels);
+    responseTimeCountInCurrWindow = new AtomicLongArray(numLevels);
+    responseTimeAvgInLastWindow = new AtomicDoubleArray(numLevels);
+    responseTimeCountInLastWindow = new AtomicLongArray(numLevels);
+
+    topUsersCount =
+        conf.getInt(DECAYSCHEDULER_METRICS_TOP_USER_COUNT,
+            DECAYSCHEDULER_METRICS_TOP_USER_COUNT_DEFAULT);
+    Preconditions.checkArgument(topUsersCount > 0,
+        "the number of top users for scheduler metrics must be at least 1");
+
+    decayRpcSchedulerDetailedMetrics =
+        DecayRpcSchedulerDetailedMetrics.create(ns);
+    decayRpcSchedulerDetailedMetrics.init(numLevels);
+
+    metricsTimeUnit = RpcMetrics.getMetricsTimeUnit(conf);
+
+    // Setup delay timer
+    Timer timer = new Timer(true);
+    DecayTask task = new DecayTask(this, timer);
+    timer.scheduleAtFixedRate(task, decayPeriodMillis, decayPeriodMillis);
+
+    metricsProxy = MetricsProxy.getInstance(ns, numLevels, this);
+    recomputeScheduleCache();
+  }
+
+}

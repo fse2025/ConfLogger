@@ -1,0 +1,33 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TimelineUtils.java	methodSinagture:	org.apache.hadoop.yarn.util.timeline.TimelineUtils.shortenFlowName(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	194:206
+blockLines:	203:-1
+paras:	yarn.timeline-service.flowname.max-size
+TaintedStat:	NORMAL shortenFlowName:conditional branch(gt, to iindex=18) 10,8 Node: < Application, Lorg/apache/hadoop/yarn/util/timeline/TimelineUtils, shortenFlowName(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/timeline/TimelineUtils, shortenFlowName(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[11]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,7,8 @15 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/timeline/TimelineUtils, shortenFlowName(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[11]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,7,8 @15 exception:9
+NORMAL shortenFlowName:conditional branch(gt, to iindex=18) 10,8 Node: < Application, Lorg/apache/hadoop/yarn/util/timeline/TimelineUtils, shortenFlowName(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static String shortenFlowName(String flowName, Configuration conf) {
+    if (flowName == null) {
+      return null;
+    }
+    // remove UUID inside flowname if present
+    flowName = removeUUID(flowName);
+    // resize flowname
+    int length = conf.getInt(YarnConfiguration.FLOW_NAME_MAX_SIZE,
+        YarnConfiguration.FLOW_NAME_DEFAULT_MAX_SIZE);
+    if (length <= 0) {
+      return flowName;
+    }
+    return StringUtils.substring(flowName, 0, length);
+  }
+
+
+====================ctx:=======================

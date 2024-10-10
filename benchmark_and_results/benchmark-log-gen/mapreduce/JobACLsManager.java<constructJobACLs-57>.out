@@ -1,0 +1,98 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobACLsManager.java	methodSinagture:	org.apache.hadoop.mapred.JobACLsManager.constructJobACLs(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map;	methodLines:	57:76
+blockLines:	69:-1
+paras:	null
+TaintedStat:	NORMAL constructJobACLs:conditional branch(ne, to iindex=36) 16,17 Node: < Application, Lorg/apache/hadoop/mapred/JobACLsManager, constructJobACLs(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/JobACLsManager, constructJobACLs(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[29]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,14 @51 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/JobACLsManager, constructJobACLs(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[29]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,14 @51 exception:15
+NORMAL constructJobACLs:conditional branch(ne, to iindex=36) 16,17 Node: < Application, Lorg/apache/hadoop/mapred/JobACLsManager, constructJobACLs(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    Map<JobACL, AccessControlList> acls =
+        new HashMap<JobACL, AccessControlList>();
+
+    // Don't construct anything if authorization is disabled.
+    if (!areACLsEnabled()) {
+      return acls;
+    }
+
+    for (JobACL aclName : JobACL.values()) {
+      String aclConfigName = aclName.getAclName();
+      String aclConfigured = conf.get(aclConfigName);
+      if (aclConfigured == null) {
+        // If ACLs are not configured at all, we grant no access to anyone. So
+        // jobOwner and cluster administrator _only_ can do 'stuff'
+        aclConfigured = " ";
+      }
+      acls.put(aclName, new AccessControlList(aclConfigured));
+    }
+    return acls;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/job/impl/JobImpl, <init>(Lorg/apache/hadoop/mapreduce/v2/api/records/JobId;Lorg/apache/hadoop/yarn/api/records/ApplicationAttemptId;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/event/EventHandler;Lorg/apache/hadoop/mapreduce/v2/app/TaskAttemptListener;Lorg/apache/hadoop/mapreduce/security/token/JobTokenSecretManager;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/yarn/util/Clock;Ljava/util/Map;Lorg/apache/hadoop/mapreduce/v2/app/metrics/MRAppMetrics;Lorg/apache/hadoop/mapreduce/OutputCommitter;ZLjava/lang/String;JLjava/util/List;Lorg/apache/hadoop/mapreduce/v2/app/AppContext;Lorg/apache/hadoop/mapreduce/v2/app/job/JobStateInternal;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:211..212]91 - org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.<init>(Lorg/apache/hadoop/mapreduce/v2/api/records/JobId;Lorg/apache/hadoop/yarn/api/records/ApplicationAttemptId;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/event/EventHandler;Lorg/apache/hadoop/mapreduce/v2/app/TaskAttemptListener;Lorg/apache/hadoop/mapreduce/security/token/JobTokenSecretManager;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/yarn/util/Clock;Ljava/util/Map;Lorg/apache/hadoop/mapreduce/v2/app/metrics/MRAppMetrics;Lorg/apache/hadoop/mapreduce/OutputCommitter;ZLjava/lang/String;JLjava/util/List;Lorg/apache/hadoop/mapreduce/v2/app/AppContext;Lorg/apache/hadoop/mapreduce/v2/app/job/JobStateInternal;Ljava/lang/String;)V, BB[SSA:208..210]90 - org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.<init>(Lorg/apache/hadoop/mapreduce/v2/api/records/JobId;Lorg/apache/hadoop/yarn/api/records/ApplicationAttemptId;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/event/EventHandler;Lorg/apache/hadoop/mapreduce/v2/app/TaskAttemptListener;Lorg/apache/hadoop/mapreduce/security/token/JobTokenSecretManager;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/yarn/util/Clock;Ljava/util/Map;Lorg/apache/hadoop/mapreduce/v2/app/metrics/MRAppMetrics;Lorg/apache/hadoop/mapreduce/OutputCommitter;ZLjava/lang/String;JLjava/util/List;Lorg/apache/hadoop/mapreduce/v2/app/AppContext;Lorg/apache/hadoop/mapreduce/v2/app/job/JobStateInternal;Ljava/lang/String;)V, BB[SSA:213..213]92 - org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.<init>(Lorg/apache/hadoop/mapreduce/v2/api/records/JobId;Lorg/apache/hadoop/yarn/api/records/ApplicationAttemptId;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/event/EventHandler;Lorg/apache/hadoop/mapreduce/v2/app/TaskAttemptListener;Lorg/apache/hadoop/mapreduce/security/token/JobTokenSecretManager;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/yarn/util/Clock;Ljava/util/Map;Lorg/apache/hadoop/mapreduce/v2/app/metrics/MRAppMetrics;Lorg/apache/hadoop/mapreduce/OutputCommitter;ZLjava/lang/String;JLjava/util/List;Lorg/apache/hadoop/mapreduce/v2/app/AppContext;Lorg/apache/hadoop/mapreduce/v2/app/job/JobStateInternal;Ljava/lang/String;)V, BB[SSA:-1..-2]115 - org.apache.hadoop.mapreduce.v2.app.job.impl.JobImpl.<init>(Lorg/apache/hadoop/mapreduce/v2/api/records/JobId;Lorg/apache/hadoop/yarn/api/records/ApplicationAttemptId;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/event/EventHandler;Lorg/apache/hadoop/mapreduce/v2/app/TaskAttemptListener;Lorg/apache/hadoop/mapreduce/security/token/JobTokenSecretManager;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/yarn/util/Clock;Ljava/util/Map;Lorg/apache/hadoop/mapreduce/v2/app/metrics/MRAppMetrics;Lorg/apache/hadoop/mapreduce/OutputCommitter;ZLjava/lang/String;JLjava/util/List;Lorg/apache/hadoop/mapreduce/v2/app/AppContext;Lorg/apache/hadoop/mapreduce/v2/app/job/JobStateInternal;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=703, lastLineNumber=703, firstMethodNumber=674, lastMethodNumber=728, isFirstLineValid=true, methodSrcCode=
+      long appSubmitTime, List<AMInfo> amInfos, AppContext appContext,
+      JobStateInternal forcedState, String forcedDiagnostic) {
+    this.applicationAttemptId = applicationAttemptId;
+    this.jobId = jobId;
+    this.jobName = conf.get(JobContext.JOB_NAME, "<missing job name>");
+    this.conf = new JobConf(conf);
+    this.metrics = metrics;
+    this.clock = clock;
+    this.completedTasksFromPreviousRun = completedTasksFromPreviousRun;
+    this.amInfos = amInfos;
+    this.appContext = appContext;
+    this.userName = userName;
+    this.queueName = conf.get(MRJobConfig.QUEUE_NAME, "default");
+    this.appSubmitTime = appSubmitTime;
+    this.oldJobId = TypeConverter.fromYarn(jobId);
+    this.committer = committer;
+    this.newApiCommitter = newApiCommitter;
+
+    this.taskAttemptListener = taskAttemptListener;
+    this.eventHandler = eventHandler;
+    ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    this.readLock = readWriteLock.readLock();
+    this.writeLock = readWriteLock.writeLock();
+
+    this.jobCredentials = jobCredentials;
+    this.jobTokenSecretManager = jobTokenSecretManager;
+
+    this.aclsManager = new JobACLsManager(conf);
+    this.reporterUserName = System.getProperty("user.name");
+    this.jobACLs = aclsManager.constructJobACLs(conf);
+
+    ThreadFactory threadFactory = new ThreadFactoryBuilder()
+      .setNameFormat("Job Fail Wait Timeout Monitor #%d")
+      .setDaemon(true)
+      .build();
+    this.executor = new HadoopScheduledThreadPoolExecutor(1, threadFactory);
+
+    // This "this leak" is okay because the retained pointer is in an
+    //  instance variable.
+    stateMachine = stateMachineFactory.make(this);
+    this.forcedState  = forcedState;
+    if(forcedDiagnostic != null) {
+      this.diagnostics.add(forcedDiagnostic);
+    }
+    
+    this.maxAllowedFetchFailuresFraction = conf.getFloat(
+        MRJobConfig.MAX_ALLOWED_FETCH_FAILURES_FRACTION,
+        MRJobConfig.DEFAULT_MAX_ALLOWED_FETCH_FAILURES_FRACTION);
+    this.maxFetchFailuresNotifications = conf.getInt(
+        MRJobConfig.MAX_FETCH_FAILURES_NOTIFICATIONS,
+        MRJobConfig.DEFAULT_MAX_FETCH_FAILURES_NOTIFICATIONS);
+    this.finishJobWhenReducersDone = conf.getBoolean(
+        MRJobConfig.FINISH_JOB_WHEN_REDUCERS_DONE,
+        MRJobConfig.DEFAULT_FINISH_JOB_WHEN_REDUCERS_DONE);
+  }
+
+}

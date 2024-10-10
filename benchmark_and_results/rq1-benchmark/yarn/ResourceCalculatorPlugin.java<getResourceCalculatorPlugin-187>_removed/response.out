@@ -1,0 +1,22 @@
+```java
+if (clazz != null) {
+    return ReflectionUtils.newInstance(clazz, conf);
+}
+// ConfLogger Inserted Start
+else {
+    logger.warn("The configuration parameter 'yarn.nodemanager.resource-calculator.class' is not set or is set to null. Defaulting to ResourceCalculatorPlugin. Ensure that 'yarn.nodemanager.resource-calculator.class' is properly configured to use a specific resource calculator.");
+}
+// ConfLogger Inserted End
+try {
+    return new ResourceCalculatorPlugin();
+} catch (UnsupportedOperationException ue) {
+    // ConfLogger Inserted Start
+    logger.error("UnsupportedOperationException encountered while creating ResourceCalculatorPlugin. This may indicate that the default resource calculator is not supported in the current environment.");
+    // ConfLogger Inserted End
+} catch (Throwable t) {
+    // ConfLogger Inserted Start
+    logger.error("Unexpected error occurred while creating ResourceCalculatorPlugin.", t);
+    // ConfLogger Inserted End
+}
+return null;
+```

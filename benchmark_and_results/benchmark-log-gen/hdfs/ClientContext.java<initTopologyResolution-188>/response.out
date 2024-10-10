@@ -1,0 +1,44 @@
+```java
+topologyResolutionEnabled = config.getBoolean(
+FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED,
+FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED_DEFAULT);
+if (!topologyResolutionEnabled) {
+    // ConfLogger Inserted Start
+    logger.info("Topology resolution is disabled. Configuration parameter: " + FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED + " = " + topologyResolutionEnabled);
+    // ConfLogger Inserted End
+    return;
+}
+DNSToSwitchMapping dnsToSwitchMapping = ReflectionUtils.newInstance(
+config.getClass(
+CommonConfigurationKeys.NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY,
+ScriptBasedMapping.class, DNSToSwitchMapping.class), config);
+String clientHostName = NetUtils.getLocalHostname();
+List<String> nodes = new ArrayList<>();
+nodes.add(clientHostName);
+List<String> resolvedHosts = dnsToSwitchMapping.resolve(nodes);
+if (resolvedHosts != null && !resolvedHosts.isEmpty() &&
+!resolvedHosts.get(0).equals(NetworkTopology.DEFAULT_RACK)) {
+    // ConfLogger Inserted Start
+    logger.info("Client machine resolved its own network location. Configuration parameter: " + CommonConfigurationKeys.NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY + " = " + dnsToSwitchMapping.getClass().getName() + ", Resolved Host: " + resolvedHosts.get(0));
+    // ConfLogger Inserted End
+    // The client machine is able to resolve its own network location.
+    this.clientNode = new NodeBase(clientHostName, resolvedHosts.get(0));
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Client machine failed to resolve its own network location. Configuration parameter: " + CommonConfigurationKeys.NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY + " = " + dnsToSwitchMapping.getClass().getName() + ", Resolved Hosts: " + resolvedHosts);
+    // ConfLogger Inserted End
+}
+```
+
+### Explanation:
+1. **Type Identification**: The code is of the second type, as it is about enabling a service (topology resolution) or not.
+2. **Path Constraints**:
+   - `if (!topologyResolutionEnabled)`: If topology resolution is disabled, the service is not enabled.
+   - `if (resolvedHosts != null && !resolvedHosts.isEmpty() && !resolvedHosts.get(0).equals(NetworkTopology.DEFAULT_RACK))`: If the client machine can resolve its own network location.
+3. **Log Position**:
+   - After checking if topology resolution is enabled or not.
+   - After checking if the client machine can resolve its own network location.
+   - Added an additional log for the case when the client machine fails to resolve its own network location.
+4. **Logging Statements**:
+   - Summarize the constraints and provide guidance on proper configuration settings.
+   - Include the related configuration parameter values and keys.

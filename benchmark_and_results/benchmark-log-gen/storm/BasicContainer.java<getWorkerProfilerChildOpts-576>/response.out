@@ -1,0 +1,17 @@
+```java
+List<String> workerProfilerChildopts = new ArrayList<>();
+if (ObjectReader.getBoolean(conf.get(DaemonConfig.WORKER_PROFILER_ENABLED), false)) {
+    workerProfilerChildopts = substituteChildopts(
+        conf.get(DaemonConfig.WORKER_PROFILER_CHILDOPTS), memOnheap, memOffheap
+    );
+    // ConfLogger Inserted Start
+    logger.info("Worker profiler enabled with child options: " + conf.get(DaemonConfig.WORKER_PROFILER_CHILDOPTS) + 
+                ", memOnheap: " + memOnheap + ", memOffheap: " + memOffheap);
+    // ConfLogger Inserted End
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Worker profiler not enabled. Configuration parameter " + DaemonConfig.WORKER_PROFILER_ENABLED + " is set to false or not set.");
+    // ConfLogger Inserted End
+}
+return workerProfilerChildopts;
+```

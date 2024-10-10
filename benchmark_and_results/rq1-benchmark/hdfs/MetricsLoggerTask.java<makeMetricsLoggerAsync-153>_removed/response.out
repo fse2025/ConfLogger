@@ -1,0 +1,28 @@
+```java
+public static void makeMetricsLoggerAsync(Log metricsLog) {
+    if (!(metricsLog instanceof Log4JLogger)) {
+        // ConfLogger Inserted Start
+        logger.warn("The provided metricsLog is not an instance of Log4JLogger. Ensure that the metrics logger is properly configured to use Log4JLogger for asynchronous logging. Current metricsLog class: " + metricsLog.getClass().getName());
+        // ConfLogger Inserted End
+        return;
+    }
+    org.apache.log4j.Logger logger = ((Log4JLogger) metricsLog).getLogger();
+    logger.setAdditivity(false); // Don't pollute actual logs with metrics dump
+
+    @SuppressWarnings("unchecked")
+    List<Appender> appenders = Collections.list(logger.getAllAppenders());
+    // failsafe against trying to async it more than once
+    if (!appenders.isEmpty() && !(appenders.get(0) instanceof AsyncAppender)) {
+        AsyncAppender asyncAppender = new AsyncAppender();
+        // change logger to have an async appender containing all the
+        // previously configured appenders
+        for (Appender appender : appenders) {
+            logger.removeAppender(appender);
+            asyncAppender.addAppender(appender);
+        }
+        logger.addAppender(asyncAppender);
+    }
+}
+```
+
+In this updated code, a warning log statement is inserted to handle the case where the `metricsLog` is not an instance of `Log4JLogger`. This provides guidance on ensuring the correct logger type is used for asynchronous logging. The log level is set to `warn` to indicate a potential misconfiguration that needs attention. The log message includes the class name of the provided `metricsLog` to aid in debugging.

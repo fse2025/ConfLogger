@@ -1,0 +1,26 @@
+```java
+super(provider);
+// The mode for Commons Crypto Ciphers
+cipherMode = provider.getConf().get(CIPHER_MODE_KEY, "AES/CTR/NoPadding");
+// Reads Commons Crypto properties from HBase conf
+props = readCryptoProps(provider.getConf());
+// RNG algorithm
+rngAlgorithm = provider.getConf().get(RNG_ALGORITHM_KEY, "SHA1PRNG");
+// RNG provider, null if default
+String rngProvider = provider.getConf().get(RNG_PROVIDER_KEY);
+try {
+    // ConfLogger Inserted Start
+    if (rngProvider != null) {
+        rng = SecureRandom.getInstance(rngAlgorithm, rngProvider);
+        logger.info("RNG instantiated with specified provider. RNG_ALGORITHM_KEY: {}, RNG_PROVIDER_KEY: {}", rngAlgorithm, rngProvider);
+    } else {
+        rng = SecureRandom.getInstance(rngAlgorithm);
+        logger.info("RNG instantiated with default provider. RNG_ALGORITHM_KEY: {}", rngAlgorithm);
+    }
+    // ConfLogger Inserted End
+} catch (GeneralSecurityException e) {
+    LOG.warn("Could not instantiate specified RNG, falling back to default", e); // ConfLogger Skipped
+    rng = new SecureRandom();
+}
+}
+```

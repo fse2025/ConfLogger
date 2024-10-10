@@ -1,0 +1,51 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RetryUtils.java	methodSinagture:	org.apache.hadoop.io.retry.RetryUtils.getMultipleLinearRandomRetry(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/io/retry/RetryPolicy;	methodLines:	185:197
+blockLines:	188:-1
+paras:	null
+TaintedStat:	NORMAL getMultipleLinearRandomRetry:conditional branch(ne, to iindex=10) 8,9 Node: < Application, Lorg/apache/hadoop/io/retry/RetryUtils, getMultipleLinearRandomRetry(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/io/retry/RetryPolicy; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/retry/RetryUtils, getMultipleLinearRandomRetry(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/io/retry/RetryPolicy; > Context: Everywhere[3]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,2,3 @3 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/retry/RetryUtils, getMultipleLinearRandomRetry(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/io/retry/RetryPolicy; > Context: Everywhere[3]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,2,3 @3 exception:7
+NORMAL getMultipleLinearRandomRetry:conditional branch(ne, to iindex=10) 8,9 Node: < Application, Lorg/apache/hadoop/io/retry/RetryUtils, getMultipleLinearRandomRetry(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/io/retry/RetryPolicy; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      ) {
+    final boolean enabled = 
+        conf.getBoolean(retryPolicyEnabledKey, defaultRetryPolicyEnabled);
+    if (!enabled) {
+      return null;
+    }
+
+    final String policy = conf.get(retryPolicySpecKey, defaultRetryPolicySpec);
+
+    final RetryPolicy r = 
+        RetryPolicies.MultipleLinearRandomRetry.parseCommaSeparatedString(
+            policy);
+    return (r != null) ? 
+        r : 
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/io/retry/RetryUtils, getDefaultRetryPolicy(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/io/retry/RetryPolicy; > Context: Everywhere, blocks=[BB[SSA:0..5]1 - org.apache.hadoop.io.retry.RetryUtils.getDefaultRetryPolicy(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/io/retry/RetryPolicy;, BB[SSA:-1..-2]0 - org.apache.hadoop.io.retry.RetryUtils.getDefaultRetryPolicy(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/io/retry/RetryPolicy;, BB[SSA:6..10]2 - org.apache.hadoop.io.retry.RetryUtils.getDefaultRetryPolicy(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/io/retry/RetryPolicy;, BB[SSA:-1..-2]9 - org.apache.hadoop.io.retry.RetryUtils.getDefaultRetryPolicy(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/io/retry/RetryPolicy;], numberOfBasicBlocks=4, firstLineNumber=67, lastLineNumber=75, firstMethodNumber=67, lastMethodNumber=81, isFirstLineValid=false, methodSrcCode=
+    
+    final RetryPolicy multipleLinearRandomRetry = 
+        getMultipleLinearRandomRetry(
+            conf, 
+            retryPolicyEnabledKey, defaultRetryPolicyEnabled, 
+            retryPolicySpecKey, defaultRetryPolicySpec
+            );
+    
+    LOG.debug("multipleLinearRandomRetry = {}", multipleLinearRandomRetry);
+
+    if (multipleLinearRandomRetry == null) {
+      //no retry
+      return RetryPolicies.TRY_ONCE_THEN_FAIL;
+    } else {
+      return new WrapperRetryPolicy(
+          (MultipleLinearRandomRetry) multipleLinearRandomRetry,
+}

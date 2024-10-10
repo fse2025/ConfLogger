@@ -1,0 +1,35 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FSImageFormatProtobuf.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.FSImageFormatProtobuf.enableParallelSaveAndLoad(Lorg/apache/hadoop/conf/Configuration;)Z	methodLines:	585:599
+blockLines:	592:-1
+paras:	dfs.image.compress
+TaintedStat:	NORMAL enableParallelSaveAndLoad:conditional branch(eq, to iindex=19) 7,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSImageFormatProtobuf, enableParallelSaveAndLoad(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSImageFormatProtobuf, enableParallelSaveAndLoad(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[5]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,4,5 @8 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSImageFormatProtobuf, enableParallelSaveAndLoad(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[5]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,4,5 @8 exception:6
+NORMAL enableParallelSaveAndLoad:conditional branch(eq, to iindex=19) 7,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSImageFormatProtobuf, enableParallelSaveAndLoad(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static boolean enableParallelSaveAndLoad(Configuration conf) {
+    boolean loadInParallel = enableParallelLoad;
+    boolean compressionEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY,
+        DFSConfigKeys.DFS_IMAGE_COMPRESS_DEFAULT);
+
+    if (loadInParallel) {
+      if (compressionEnabled) {
+        LOG.warn("Parallel Image loading and saving is not supported when {}" +
+                " is set to true. Parallel will be disabled.",
+            DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY);
+        loadInParallel = false;
+      }
+    }
+    return loadInParallel;
+  }
+
+
+====================ctx:=======================

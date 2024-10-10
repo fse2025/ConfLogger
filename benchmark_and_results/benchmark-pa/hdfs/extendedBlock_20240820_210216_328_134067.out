@@ -1,0 +1,116 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.checkAllowFormat(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	1306:1315
+blockLines:	1307:-1
+paras:	dfs.namenode.support.allow.format
+TaintedStat:	NORMAL checkAllowFormat:conditional branch(ne, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, checkAllowFormat(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, checkAllowFormat(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @5 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, checkAllowFormat(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @5 exception:5
+NORMAL checkAllowFormat:conditional branch(ne, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, checkAllowFormat(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void checkAllowFormat(Configuration conf) throws IOException {
+    if (!conf.getBoolean(DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY, 
+        DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_DEFAULT)) {
+      throw new IOException("The option " + DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY
+                + " is set to false for this filesystem, so it "
+                + "cannot be formatted. You will need to set "
+                + DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY +" parameter "
+                + "to true in order to format this filesystem");
+    }
+  }
+  
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/BootstrapStandby, run([Ljava/lang/String;)I > Context: Everywhere, blocks=[BB[SSA:12..12]6 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.run([Ljava/lang/String;)I, BB[SSA:10..11]5 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.run([Ljava/lang/String;)I, BB[SSA:13..14]7 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.run([Ljava/lang/String;)I, BB[SSA:-1..-2]18 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.run([Ljava/lang/String;)I], numberOfBasicBlocks=4, firstLineNumber=115, lastLineNumber=117, firstMethodNumber=109, lastMethodNumber=121, isFirstLineValid=true, methodSrcCode=
+  public int run(String[] args) throws Exception {
+    parseArgs(args);
+    // Disable using the RPC tailing mechanism for bootstrapping the standby
+    // since it is less efficient in this case; see HDFS-14806
+    conf.setBoolean(DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_KEY, false);
+    parseConfAndFindOtherNN();
+    NameNode.checkAllowFormat(conf);
+
+    InetSocketAddress myAddr = DFSUtilClient.getNNAddress(conf);
+    SecurityUtil.login(conf, DFS_NAMENODE_KEYTAB_FILE_KEY,
+        DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY, myAddr.getHostName());
+
+    return SecurityUtil.doAsLoginUserOrFatal(new PrivilegedAction<Integer>() {
+      @Override
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere, blocks=[BB[SSA:11..12]4 - org.apache.hadoop.hdfs.server.namenode.NameNode.format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z, BB[SSA:6..10]3 - org.apache.hadoop.hdfs.server.namenode.NameNode.format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z, BB[SSA:13..13]5 - org.apache.hadoop.hdfs.server.namenode.NameNode.format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z, BB[SSA:-1..-2]67 - org.apache.hadoop.hdfs.server.namenode.NameNode.format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z], numberOfBasicBlocks=4, firstLineNumber=1239, lastLineNumber=1243, firstMethodNumber=1237, lastMethodNumber=1303, isFirstLineValid=true, methodSrcCode=
+      boolean isInteractive) throws IOException {
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    initializeGenericKeys(conf, nsId, namenodeId);
+    checkAllowFormat(conf);
+
+    if (UserGroupInformation.isSecurityEnabled()) {
+      InetSocketAddress socAddr = DFSUtilClient.getNNAddress(conf);
+      SecurityUtil.login(conf, DFS_NAMENODE_KEYTAB_FILE_KEY,
+          DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY, socAddr.getHostName());
+    }
+    
+    Collection<URI> nameDirsToFormat = FSNamesystem.getNamespaceDirs(conf);
+    List<URI> sharedDirs = FSNamesystem.getSharedEditsDirs(conf);
+    List<URI> dirsToPrompt = new ArrayList<URI>();
+    dirsToPrompt.addAll(nameDirsToFormat);
+    dirsToPrompt.addAll(sharedDirs);
+    List<URI> editDirsToFormat = 
+                 FSNamesystem.getNamespaceEditsDirs(conf);
+
+    // if clusterID is not provided - see if you can find the current one
+    String clusterId = StartupOption.FORMAT.getClusterId();
+    if(clusterId == null || clusterId.equals("")) {
+      //Generate a new cluster id
+      clusterId = NNStorage.newClusterID();
+    }
+
+    LOG.info("Formatting using clusterid: {}", clusterId);
+    
+    FSImage fsImage = new FSImage(conf, nameDirsToFormat, editDirsToFormat);
+    FSNamesystem fsn = null;
+    try {
+      fsn = new FSNamesystem(conf, fsImage);
+      fsImage.getEditLog().initJournalsForWrite();
+
+      // Abort NameNode format if reformat is disabled and if
+      // meta-dir already exists
+      if (conf.getBoolean(DFSConfigKeys.DFS_REFORMAT_DISABLED,
+          DFSConfigKeys.DFS_REFORMAT_DISABLED_DEFAULT)) {
+        force = false;
+        isInteractive = false;
+        for (StorageDirectory sd : fsImage.storage.dirIterable(null)) {
+          if (sd.hasSomeData()) {
+            throw new NameNodeFormatException(
+                "NameNode format aborted as reformat is disabled for "
+                    + "this cluster.");
+          }
+        }
+      }
+
+      if (!fsImage.confirmFormat(force, isInteractive)) {
+        return true; // aborted
+      }
+
+      fsImage.format(fsn, clusterId, force);
+    } catch (IOException ioe) {
+      LOG.warn("Encountered exception during format", ioe);
+      throw ioe;
+    } finally {
+      if (fsImage != null) {
+        fsImage.close();
+      }
+      if (fsn != null) {
+        fsn.close();
+      }
+    }
+    return false;
+  }
+}

@@ -1,0 +1,295 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V	methodLines:	320:419
+blockLines:	399:-1
+paras:	dfs.client.cache.readahead
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=259) 179,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[234]165 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,163 @509 exception:164
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[234]165 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,163 @509 exception:164
+NORMAL <init>:conditional branch(ne, to iindex=239) 165,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+NORMAL <init>:168 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLongBytes(Ljava/lang/String;J)J > 4,163,166 @523 exception:167 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getLongBytes(Ljava/lang/String;J)J > Context: Everywhere
+NORMAL getLongBytes:6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getLongBytes(Ljava/lang/String;J)J > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmed:5 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[254]179 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,177 @550 exception:178
+NORMAL <init>:conditional branch(ne, to iindex=259) 179,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V	methodLines:	320:419
+blockLines:	390:-1
+paras:	dfs.client.cache.readahead
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=226) 157,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[242]168 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLongBytes(Ljava/lang/String;J)J > 4,163,166 @523 exception:167
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[242]168 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLongBytes(Ljava/lang/String;J)J > 4,163,166 @523 exception:167
+NORMAL <init>:170 = invokestatic < Application, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > 168 @526 exception:169 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL valueOf:conditional branch(lt, to iindex=19) 5,6 Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL valueOf:return 9 Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/invoke/BoundMethodHandle, arg(I)Ljava/lang/Object; > Context: Everywhere[34]61 = invokestatic < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > 59 @105 exception:60
+NORMAL arg:return 61 Node: < Primordial, Ljava/lang/invoke/BoundMethodHandle, arg(I)Ljava/lang/Object; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/invoke/BoundMethodHandle, arg(I)Ljava/lang/Object; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/invoke/BoundMethodHandle, internalValues()Ljava/lang/String; > Context: Everywhere[13]37 = invokevirtual < Primordial, Ljava/lang/invoke/BoundMethodHandle, arg(I)Ljava/lang/Object; > 1,9 @24 exception:36
+PARAM_CALLER:Node: < Primordial, Ljava/lang/invoke/BoundMethodHandle, internalValues()Ljava/lang/String; > Context: Everywhere[14]39 = invokevirtual < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/Object;)Ljava/lang/StringBuilder; > 35,37 @27 exception:38 v37
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/Object;)Ljava/lang/StringBuilder; > Context: Everywhere v2
+PARAM_CALLER:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/Object;)Ljava/lang/StringBuilder; > Context: Everywhere[2]5 = invokestatic < Primordial, Ljava/lang/String, valueOf(Ljava/lang/Object;)Ljava/lang/String; > 2 @2 exception:4 v2
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/String, valueOf(Ljava/lang/Object;)Ljava/lang/String; > Context: DelegatingContext [A=Caller: Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/Object;)Ljava/lang/StringBuilder; > Context: Everywhere@2, B=Everywhere] v1
+NORMAL valueOf:5 = invokevirtual < Primordial, Ljava/lang/Object, toString()Ljava/lang/String; > 1 @10 exception:4 Node: < Primordial, Ljava/lang/String, valueOf(Ljava/lang/Object;)Ljava/lang/String; > Context: DelegatingContext [A=Caller: Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/Object;)Ljava/lang/StringBuilder; > Context: Everywhere@2, B=Everywhere]
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @20 exception:14
+NORMAL setProtocolEngine:17 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16 Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[221]157 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,155 @484 exception:156
+NORMAL <init>:conditional branch(ne, to iindex=226) 157,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V	methodLines:	320:419
+blockLines:	366:-1
+paras:	dfs.client.test.drop.namenode.response.number
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=158) 3,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[97]77 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,75,25 @214 exception:76
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[97]77 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,75,25 @214 exception:76
+NORMAL <init>:conditional branch(le, to iindex=128) 77,25 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere:98 = phi  78,97
+NORMAL <init>:conditional branch(eq, to iindex=141) 98,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+NORMAL <init>:conditional branch(eq, to iindex=158) 3,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V	methodLines:	320:419
+blockLines:	363:-1
+paras:	dfs.client.cache.drop.behind.writes
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=141) 98,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[262]181 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,177,25 @564 exception:180
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[262]181 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,177,25 @564 exception:180
+NORMAL <init>:183 = invokestatic < Application, Ljava/lang/Boolean, valueOf(Z)Ljava/lang/Boolean; > 181 @567 exception:182 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Boolean, valueOf(Z)Ljava/lang/Boolean; > Context: Everywhere
+NORMAL valueOf:return 6 Node: < Primordial, Ljava/lang/Boolean, valueOf(Z)Ljava/lang/Boolean; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Boolean, valueOf(Z)Ljava/lang/Boolean; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/Thread, isCCLOverridden(Ljava/lang/Class;)Z > Context: Everywhere[24]18 = invokestatic < Primordial, Ljava/lang/Boolean, valueOf(Z)Ljava/lang/Boolean; > 16 @50 exception:17
+PHI Node: < Primordial, Ljava/lang/Thread, isCCLOverridden(Ljava/lang/Class;)Z > Context: Everywhere:22 = phi  13,18
+NORMAL isCCLOverridden:24 = invokevirtual < Primordial, Ljava/lang/Boolean, booleanValue()Z > 22 @66 exception:23 Node: < Primordial, Ljava/lang/Thread, isCCLOverridden(Ljava/lang/Class;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Boolean, booleanValue()Z > Context: Everywhere
+NORMAL booleanValue:return 3 Node: < Primordial, Ljava/lang/Boolean, booleanValue()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Boolean, booleanValue()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/fs/permission/FsPermission, toString()Ljava/lang/String; > Context: Everywhere[19]21 = invokevirtual < Extension, Ljava/lang/Boolean, booleanValue()Z > 19 @45 exception:20
+NORMAL toString:conditional branch(eq, to iindex=48) 21,22 Node: < Extension, Lorg/apache/hadoop/fs/permission/FsPermission, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:41 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 23 @96 exception:40 Node: < Extension, Lorg/apache/hadoop/fs/permission/FsPermission, toString()Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[41]30 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 28 @70 exception:29
+PHI Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:31 = phi  22,30
+NORMAL getHexDigits:return 31 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere[11]9 = invokespecial < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > 1,6 @14 exception:8
+NORMAL getInt:conditional branch(eq, to iindex=20) 9,7 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL getInt:return 14 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[97]77 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,75,25 @214 exception:76
+NORMAL <init>:conditional branch(le, to iindex=128) 77,25 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere:98 = phi  78,97
+NORMAL <init>:conditional branch(eq, to iindex=141) 98,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V	methodLines:	320:419
+blockLines:	368:-1
+paras:	dfs.client.cache.drop.behind.reads
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=149) 2,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[221]157 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,155 @484 exception:156
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[221]157 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,155 @484 exception:156
+NORMAL <init>:conditional branch(ne, to iindex=226) 157,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+NORMAL <init>:159 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,155,25 @498 exception:158 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmed:conditional branch(ne, to iindex=9) 6,5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmed:return 6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere[2]6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5
+NORMAL getInt:conditional branch(ne, to iindex=9) 6,7 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL getInt:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[97]77 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,75,25 @214 exception:76
+NORMAL <init>:conditional branch(le, to iindex=128) 77,25 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere:98 = phi  78,97
+NORMAL <init>:conditional branch(eq, to iindex=141) 98,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+NORMAL <init>:conditional branch(eq, to iindex=158) 3,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+NORMAL <init>:conditional branch(ne, to iindex=149) 2,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V	methodLines:	320:419
+blockLines:	392:-1
+paras:	dfs.client.cache.drop.behind.reads
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=239) 165,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[229]159 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,155,25 @498 exception:158
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[229]159 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,155,25 @498 exception:158
+NORMAL <init>:161 = invokestatic < Application, Ljava/lang/Boolean, valueOf(Z)Ljava/lang/Boolean; > 159 @501 exception:160 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Boolean, valueOf(Z)Ljava/lang/Boolean; > Context: Everywhere
+NORMAL valueOf:return 6 Node: < Primordial, Ljava/lang/Boolean, valueOf(Z)Ljava/lang/Boolean; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Boolean, valueOf(Z)Ljava/lang/Boolean; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/Thread, isCCLOverridden(Ljava/lang/Class;)Z > Context: Everywhere[24]18 = invokestatic < Primordial, Ljava/lang/Boolean, valueOf(Z)Ljava/lang/Boolean; > 16 @50 exception:17
+PHI Node: < Primordial, Ljava/lang/Thread, isCCLOverridden(Ljava/lang/Class;)Z > Context: Everywhere:22 = phi  13,18
+NORMAL isCCLOverridden:24 = invokevirtual < Primordial, Ljava/lang/Boolean, booleanValue()Z > 22 @66 exception:23 Node: < Primordial, Ljava/lang/Thread, isCCLOverridden(Ljava/lang/Class;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Boolean, booleanValue()Z > Context: Everywhere
+NORMAL booleanValue:return 3 Node: < Primordial, Ljava/lang/Boolean, booleanValue()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Boolean, booleanValue()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/fs/permission/FsPermission, toString()Ljava/lang/String; > Context: Everywhere[19]21 = invokevirtual < Extension, Ljava/lang/Boolean, booleanValue()Z > 19 @45 exception:20
+NORMAL toString:conditional branch(eq, to iindex=48) 21,22 Node: < Extension, Lorg/apache/hadoop/fs/permission/FsPermission, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:41 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 23 @96 exception:40 Node: < Extension, Lorg/apache/hadoop/fs/permission/FsPermission, toString()Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @20 exception:14
+NORMAL setProtocolEngine:17 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16 Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[234]165 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,163 @509 exception:164
+NORMAL <init>:conditional branch(ne, to iindex=239) 165,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V	methodLines:	320:419
+blockLines:	353:-1
+paras:	dfs.client.cache.drop.behind.writes
+TaintedStat:	NORMAL <init>:conditional branch(le, to iindex=128) 77,25 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[254]179 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,177 @550 exception:178
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[254]179 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,177 @550 exception:178
+NORMAL <init>:conditional branch(ne, to iindex=259) 179,78 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+NORMAL <init>:181 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,177,25 @564 exception:180 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmed:conditional branch(ne, to iindex=9) 6,5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmed:return 6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere[2]6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5
+NORMAL getInt:conditional branch(ne, to iindex=9) 6,7 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL getInt:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[97]77 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,75,25 @214 exception:76
+NORMAL <init>:conditional branch(le, to iindex=128) 77,25 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public DFSClient(URI nameNodeUri, ClientProtocol rpcNamenode,
+      Configuration conf, FileSystem.Statistics stats) throws IOException {
+    // Copy only the required DFSClient configuration
+    this.tracer = FsTracer.get(conf);
+    this.dfsClientConf = new DfsClientConf(conf);
+    this.conf = conf;
+    this.stats = stats;
+    this.socketFactory = NetUtils.getSocketFactory(conf, ClientProtocol.class);
+    this.dtpReplaceDatanodeOnFailure = ReplaceDatanodeOnFailure.get(conf);
+    this.smallBufferSize = DFSUtilClient.getSmallBufferSize(conf);
+    this.dtpReplaceDatanodeOnFailureReplication = (short) conf
+        .getInt(HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+                MIN_REPLICATION,
+            HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+                MIN_REPLICATION_DEFAULT);
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(
+          "Sets " + HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+              MIN_REPLICATION + " to "
+              + dtpReplaceDatanodeOnFailureReplication);
+    }
+    this.ugi = UserGroupInformation.getCurrentUser();
+
+    this.namenodeUri = nameNodeUri;
+    this.clientName = "DFSClient_" + dfsClientConf.getTaskId() + "_" +
+        ThreadLocalRandom.current().nextInt()  + "_" +
+        Thread.currentThread().getId();
+    int numResponseToDrop = conf.getInt(
+        DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY,
+        DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT);
+    ProxyAndInfo<ClientProtocol> proxyInfo = null;
+    AtomicBoolean nnFallbackToSimpleAuth = new AtomicBoolean(false);
+
+    if (numResponseToDrop > 0) {
+      // This case is used for testing.
+      LOG.warn(DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
+          + " is set to " + numResponseToDrop
+          + ", this hacked client will proactively drop responses");
+      proxyInfo = NameNodeProxiesClient.createProxyWithLossyRetryHandler(conf,
+          nameNodeUri, ClientProtocol.class, numResponseToDrop,
+          nnFallbackToSimpleAuth);
+    }
+
+    if (proxyInfo != null) {
+      this.dtService = proxyInfo.getDelegationTokenService();
+      this.namenode = proxyInfo.getProxy();
+    } else if (rpcNamenode != null) {
+      // This case is used for testing.
+      Preconditions.checkArgument(nameNodeUri == null);
+      this.namenode = rpcNamenode;
+      dtService = null;
+    } else {
+      Preconditions.checkArgument(nameNodeUri != null,
+          "null URI");
+      proxyInfo = NameNodeProxiesClient.createProxyWithClientProtocol(conf,
+          nameNodeUri, nnFallbackToSimpleAuth);
+      this.dtService = proxyInfo.getDelegationTokenService();
+      this.namenode = proxyInfo.getProxy();
+    }
+
+    String localInterfaces[] =
+        conf.getTrimmedStrings(DFS_CLIENT_LOCAL_INTERFACES);
+    localInterfaceAddrs = getLocalInterfaceAddrs(localInterfaces);
+    if (LOG.isDebugEnabled() && 0 != localInterfaces.length) {
+      LOG.debug("Using local interfaces [" +
+          Joiner.on(',').join(localInterfaces)+ "] with addresses [" +
+          Joiner.on(',').join(localInterfaceAddrs) + "]");
+    }
+
+    Boolean readDropBehind =
+        (conf.get(DFS_CLIENT_CACHE_DROP_BEHIND_READS) == null) ?
+            null : conf.getBoolean(DFS_CLIENT_CACHE_DROP_BEHIND_READS, false);
+    Long readahead = (conf.get(DFS_CLIENT_CACHE_READAHEAD) == null) ?
+        null : conf.getLongBytes(DFS_CLIENT_CACHE_READAHEAD, 0);
+    this.serverDefaultsValidityPeriod = conf.getTimeDuration(
+        DFS_CLIENT_SERVER_DEFAULTS_VALIDITY_PERIOD_MS_KEY,
+        DFS_CLIENT_SERVER_DEFAULTS_VALIDITY_PERIOD_MS_DEFAULT,
+        TimeUnit.MILLISECONDS);
+    Boolean writeDropBehind =
+        (conf.get(DFS_CLIENT_CACHE_DROP_BEHIND_WRITES) == null) ?
+            null : conf.getBoolean(DFS_CLIENT_CACHE_DROP_BEHIND_WRITES, false);
+    this.defaultReadCachingStrategy =
+        new CachingStrategy(readDropBehind, readahead);
+    this.defaultWriteCachingStrategy =
+        new CachingStrategy(writeDropBehind, readahead);
+    this.clientContext = ClientContext.get(
+        conf.get(DFS_CLIENT_CONTEXT, DFS_CLIENT_CONTEXT_DEFAULT),
+        dfsClientConf, conf);
+
+    if (dfsClientConf.getHedgedReadThreadpoolSize() > 0) {
+      this.initThreadsNumForHedgedReads(dfsClientConf.
+          getHedgedReadThreadpoolSize());
+    }
+
+    this.initThreadsNumForStripedReads(dfsClientConf.
+        getStripedReadThreadpoolSize());
+    this.saslClient = new SaslDataTransferClient(
+        conf, DataTransferSaslUtil.getSaslPropertiesResolver(conf),
+        TrustedChannelResolver.getInstance(conf), nnFallbackToSimpleAuth);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere, blocks=[BB[SSA:0..5]1 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V, BB[SSA:6..6]2 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V, BB[SSA:-1..-2]3 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V], numberOfBasicBlocks=4, firstLineNumber=307, lastLineNumber=309, firstMethodNumber=307, lastMethodNumber=309, isFirstLineValid=false, methodSrcCode=
+      FileSystem.Statistics stats) throws IOException {
+    this(nameNodeUri, null, conf, stats);
+  }
+
+}

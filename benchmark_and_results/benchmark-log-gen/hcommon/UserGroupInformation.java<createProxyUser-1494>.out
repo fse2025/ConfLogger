@@ -1,0 +1,183 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	UserGroupInformation.java	methodSinagture:	org.apache.hadoop.security.UserGroupInformation.createProxyUser(Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;)Lorg/apache/hadoop/security/UserGroupInformation;	methodLines:	1494:1505
+blockLines:	1495:-1
+paras:	hadoop.tokens
+TaintedStat:	NORMAL createProxyUser:conditional branch(eq, to iindex=7) 1,4 Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createProxyUser(Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere[111]81 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 79 @257 exception:80
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere[111]81 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 79 @257 exception:80
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere[112]83 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > 81 @260 exception:82 v81
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere[3]5 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > 1 @5 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere v1
+NORMAL getTrimmedStrings:conditional branch(eq, to iindex=8) 3,1 Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmedStrings:7 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 5 @9 exception:6 Node: < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/security/Policy, loadPolicyProvider()Ljava/security/Policy; > Context: Everywhere[10]9 = invokevirtual < Primordial, Ljava/lang/String, isEmpty()Z > 6 @19 exception:8
+NORMAL loadPolicyProvider:conditional branch(ne, to iindex=18) 9,10 Node: < Primordial, Ljava/security/Policy, loadPolicyProvider()Ljava/security/Policy; > Context: Everywhere
+NORMAL loadPolicyProvider:conditional branch(eq, to iindex=30) 13,10 Node: < Primordial, Ljava/security/Policy, loadPolicyProvider()Ljava/security/Policy; > Context: Everywhere
+NORMAL loadPolicyProvider:21 = invokestatic < Primordial, Ljava/security/AccessController, doPrivileged(Ljava/security/PrivilegedAction;)Ljava/lang/Object; > 18 @84 exception:20 Node: < Primordial, Ljava/security/Policy, loadPolicyProvider()Ljava/security/Policy; > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/security/AccessController, doPrivileged(Ljava/security/PrivilegedAction;)Ljava/lang/Object; > Context: Everywhere
+NORMAL doPrivileged:3 = invokeinterface < Primordial, Ljava/security/PrivilegedAction, run()Ljava/lang/Object; > 1 @0 exception:2 Node: synthetic < Primordial, Ljava/security/AccessController, doPrivileged(Ljava/security/PrivilegedAction;)Ljava/lang/Object; > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Lwala/lambda$java$lang$ProcessImpl$Platform$0, run()Ljava/lang/Object; > Context: Everywhere
+NORMAL run:3 = invokespecial < Application, Ljava/lang/ProcessImpl$Platform, lambda$launchMechanism$0()Ljava/lang/ProcessImpl$LaunchMechanism; > 2 @2 exception:4 Node: synthetic < Primordial, Lwala/lambda$java$lang$ProcessImpl$Platform$0, run()Ljava/lang/Object; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/ProcessImpl$Platform, lambda$launchMechanism$0()Ljava/lang/ProcessImpl$LaunchMechanism; > Context: Everywhere
+NORMAL lambda$launchMechanism$0:5 = invokestatic < Primordial, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 3 @2 exception:4 Node: < Primordial, Ljava/lang/ProcessImpl$Platform, lambda$launchMechanism$0()Ljava/lang/ProcessImpl$LaunchMechanism; > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getProperty:return 2 Node: synthetic < Primordial, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: synthetic < Primordial, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere[13]10 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 6 @20 exception:9
+PHI Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere:11 = phi  8,10
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere[22]13 = invokestatic < Application, Lorg/apache/hadoop/security/UserGroupInformation, createProxyUser(Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;)Lorg/apache/hadoop/security/UserGroupInformation; > 11,5 @34 exception:12 v11
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createProxyUser(Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere v1
+NORMAL createProxyUser:conditional branch(eq, to iindex=7) 1,4 Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createProxyUser(Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      UserGroupInformation realUser) {
+    if (user == null || user.isEmpty()) {
+      throw new IllegalArgumentException("Null user");
+    }
+    if (realUser == null) {
+      throw new IllegalArgumentException("Null real user");
+    }
+    Subject subject = new Subject();
+    Set<Principal> principals = subject.getPrincipals();
+    principals.add(new User(user, AuthenticationMethod.PROXY, null));
+    principals.add(new RealUser(realUser));
+    return new UserGroupInformation(subject);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createProxyUserForTesting(Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;[Ljava/lang/String;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere, blocks=[BB[SSA:1..3]2 - org.apache.hadoop.security.UserGroupInformation.createProxyUserForTesting(Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;[Ljava/lang/String;)Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:0..0]1 - org.apache.hadoop.security.UserGroupInformation.createProxyUserForTesting(Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;[Ljava/lang/String;)Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:4..8]3 - org.apache.hadoop.security.UserGroupInformation.createProxyUserForTesting(Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;[Ljava/lang/String;)Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:-1..-2]11 - org.apache.hadoop.security.UserGroupInformation.createProxyUserForTesting(Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;[Ljava/lang/String;)Lorg/apache/hadoop/security/UserGroupInformation;], numberOfBasicBlocks=4, firstLineNumber=1600, lastLineNumber=1603, firstMethodNumber=1599, lastMethodNumber=1608, isFirstLineValid=true, methodSrcCode=
+      UserGroupInformation realUser, String[] userGroups) {
+    ensureInitialized();
+    UserGroupInformation ugi = createProxyUser(user, realUser);
+    // make sure that the testing object is setup
+    if (!(groups instanceof TestingGroups)) {
+      groups = new TestingGroups(groups);
+    }
+    // add the user groups
+    ((TestingGroups) groups).setUserGroups(ugi.getShortUserName(), userGroups);
+    return ugi;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/ProtoUtil, getUgi(Lorg/apache/hadoop/ipc/protobuf/IpcConnectionContextProtos$UserInformationProto;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere, blocks=[BB[SSA:28..31]14 - org.apache.hadoop.util.ProtoUtil.getUgi(Lorg/apache/hadoop/ipc/protobuf/IpcConnectionContextProtos$UserInformationProto;)Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:26..27]13 - org.apache.hadoop.util.ProtoUtil.getUgi(Lorg/apache/hadoop/ipc/protobuf/IpcConnectionContextProtos$UserInformationProto;)Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:32..33]15 - org.apache.hadoop.util.ProtoUtil.getUgi(Lorg/apache/hadoop/ipc/protobuf/IpcConnectionContextProtos$UserInformationProto;)Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:-1..-2]19 - org.apache.hadoop.util.ProtoUtil.getUgi(Lorg/apache/hadoop/ipc/protobuf/IpcConnectionContextProtos$UserInformationProto;)Lorg/apache/hadoop/security/UserGroupInformation;], numberOfBasicBlocks=4, firstLineNumber=140, lastLineNumber=144, firstMethodNumber=133, lastMethodNumber=149, isFirstLineValid=true, methodSrcCode=
+  public static UserGroupInformation getUgi(UserInformationProto userInfo) {
+    UserGroupInformation ugi = null;
+    String effectiveUser = userInfo.hasEffectiveUser() ? userInfo
+        .getEffectiveUser() : null;
+    String realUser = userInfo.hasRealUser() ? userInfo.getRealUser() : null;
+    if (effectiveUser != null) {
+      if (realUser != null) {
+        UserGroupInformation realUserUgi = UserGroupInformation
+            .createRemoteUser(realUser);
+        ugi = UserGroupInformation
+            .createProxyUser(effectiveUser, realUserUgi);
+      } else {
+        ugi = org.apache.hadoop.security.UserGroupInformation
+            .createRemoteUser(effectiveUser);
+      }
+    }
+    return ugi;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere, blocks=[BB[SSA:20..22]8 - org.apache.hadoop.security.UserGroupInformation.createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:15..17]6 - org.apache.hadoop.security.UserGroupInformation.createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:23..24]9 - org.apache.hadoop.security.UserGroupInformation.createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:-1..-2]87 - org.apache.hadoop.security.UserGroupInformation.createLoginUser(Ljavax/security/auth/Subject;)Lorg/apache/hadoop/security/UserGroupInformation;], numberOfBasicBlocks=4, firstLineNumber=731, lastLineNumber=734, firstMethodNumber=721, lastMethodNumber=791, isFirstLineValid=true, methodSrcCode=
+  UserGroupInformation createLoginUser(Subject subject) throws IOException {
+    UserGroupInformation realUser = doSubjectLogin(subject, null);
+    UserGroupInformation loginUser = null;
+    try {
+      // If the HADOOP_PROXY_USER environment variable or property
+      // is specified, create a proxy user as the logged in user.
+      String proxyUser = System.getenv(HADOOP_PROXY_USER);
+      if (proxyUser == null) {
+        proxyUser = System.getProperty(HADOOP_PROXY_USER);
+      }
+      loginUser = proxyUser == null ? realUser : createProxyUser(proxyUser, realUser);
+
+      // Load tokens from files
+      final Collection<String> tokenFileLocations = new LinkedHashSet<>();
+      tokenFileLocations.addAll(getTrimmedStringCollection(
+          System.getProperty(HADOOP_TOKEN_FILES)));
+      tokenFileLocations.addAll(getTrimmedStringCollection(
+          conf.get(HADOOP_TOKEN_FILES)));
+      tokenFileLocations.addAll(getTrimmedStringCollection(
+          System.getenv(HADOOP_TOKEN_FILE_LOCATION)));
+      for (String tokenFileLocation : tokenFileLocations) {
+        if (tokenFileLocation != null && tokenFileLocation.length() > 0) {
+          File tokenFile = new File(tokenFileLocation);
+          LOG.debug("Reading credentials from location {}",
+              tokenFile.getCanonicalPath());
+          if (tokenFile.exists() && tokenFile.isFile()) {
+            Credentials cred = Credentials.readTokenStorageFile(
+                tokenFile, conf);
+            LOG.debug("Loaded {} tokens from {}", cred.numberOfTokens(),
+                tokenFile.getCanonicalPath());
+            loginUser.addCredentials(cred);
+          } else {
+            LOG.info("Token file {} does not exist",
+                tokenFile.getCanonicalPath());
+          }
+        }
+      }
+
+      // Load tokens from base64 encoding
+      final Collection<String> tokensBase64 = new LinkedHashSet<>();
+      tokensBase64.addAll(getTrimmedStringCollection(
+          System.getProperty(HADOOP_TOKENS)));
+      tokensBase64.addAll(getTrimmedStringCollection(
+          conf.get(HADOOP_TOKENS)));
+      tokensBase64.addAll(getTrimmedStringCollection(
+          System.getenv(HADOOP_TOKEN)));
+      int numTokenBase64 = 0;
+      for (String tokenBase64 : tokensBase64) {
+        if (tokenBase64 != null && tokenBase64.length() > 0) {
+          try {
+            Token<TokenIdentifier> token = new Token<>();
+            token.decodeFromUrlString(tokenBase64);
+            Credentials cred = new Credentials();
+            cred.addToken(token.getService(), token);
+            loginUser.addCredentials(cred);
+            numTokenBase64++;
+          } catch (IOException ioe) {
+            LOG.error("Cannot add token {}: {}",
+                tokenBase64, ioe.getMessage());
+          }
+        }
+      }
+      if (numTokenBase64 > 0) {
+        LOG.debug("Loaded {} base64 tokens", numTokenBase64);
+      }
+    } catch (IOException ioe) {
+      LOG.debug("Failure to load login credentials", ioe);
+      throw ioe;
+    }
+    LOG.debug("UGI loginUser: {}", loginUser);
+    return loginUser;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier, getUser()Lorg/apache/hadoop/security/UserGroupInformation; > Context: Everywhere, blocks=[BB[SSA:45..46]27 - org.apache.hadoop.security.token.delegation.AbstractDelegationTokenIdentifier.getUser()Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:44..44]26 - org.apache.hadoop.security.token.delegation.AbstractDelegationTokenIdentifier.getUser()Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:47..47]28 - org.apache.hadoop.security.token.delegation.AbstractDelegationTokenIdentifier.getUser()Lorg/apache/hadoop/security/UserGroupInformation;, BB[SSA:-1..-2]31 - org.apache.hadoop.security.token.delegation.AbstractDelegationTokenIdentifier.getUser()Lorg/apache/hadoop/security/UserGroupInformation;], numberOfBasicBlocks=4, firstLineNumber=83, lastLineNumber=83, firstMethodNumber=72, lastMethodNumber=86, isFirstLineValid=true, methodSrcCode=
+  public UserGroupInformation getUser() {
+    if ( (owner == null) || (owner.toString().isEmpty())) {
+      return null;
+    }
+    final UserGroupInformation realUgi;
+    final UserGroupInformation ugi;
+    if ((realUser == null) || (realUser.toString().isEmpty())
+        || realUser.equals(owner)) {
+      ugi = realUgi = UserGroupInformation.createRemoteUser(owner.toString());
+    } else {
+      realUgi = UserGroupInformation.createRemoteUser(realUser.toString());
+      ugi = UserGroupInformation.createProxyUser(owner.toString(), realUgi);
+    }
+    realUgi.setAuthenticationMethod(AuthenticationMethod.TOKEN);
+    return ugi;
+  }
+}

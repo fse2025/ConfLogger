@@ -1,0 +1,63 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RaftJournalSystem.java	methodSinagture:	alluxio.master.journal.raft.RaftJournalSystem.getQuorumServerInfoList()Ljava/util/List;	methodLines:	849:890
+blockLines:	877:-1
+paras:	null
+TaintedStat:	NORMAL getQuorumServerInfoList:conditional branch(le, to iindex=91) 59,20 Node: < Application, Lalluxio/master/journal/raft/RaftJournalSystem, getQuorumServerInfoList()Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/journal/raft/RaftJournalSystem, getQuorumServerInfoList()Ljava/util/List; > Context: Everywhere[71]44 = invokestatic < Application, Lalluxio/conf/Configuration, getMs(Lalluxio/conf/PropertyKey;)J > 42 @156 exception:43
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/journal/raft/RaftJournalSystem, getQuorumServerInfoList()Ljava/util/List; > Context: Everywhere[71]44 = invokestatic < Application, Lalluxio/conf/Configuration, getMs(Lalluxio/conf/PropertyKey;)J > 42 @156 exception:43
+NORMAL getQuorumServerInfoList:59 = compare 58,44 opcode=cmp Node: < Application, Lalluxio/master/journal/raft/RaftJournalSystem, getQuorumServerInfoList()Ljava/util/List; > Context: Everywhere
+NORMAL getQuorumServerInfoList:conditional branch(le, to iindex=91) 59,20 Node: < Application, Lalluxio/master/journal/raft/RaftJournalSystem, getQuorumServerInfoList()Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public synchronized List<QuorumServerInfo> getQuorumServerInfoList() throws IOException {
+    List<QuorumServerInfo> quorumMemberStateList = new LinkedList<>();
+    GroupInfoReply groupInfo = getGroupInfo();
+    if (groupInfo == null) {
+      throw new UnavailableException("Cannot get raft group info");
+    }
+    if (groupInfo.getException() != null) {
+      throw groupInfo.getException();
+    }
+    RaftProtos.RoleInfoProto roleInfo = groupInfo.getRoleInfoProto();
+    if (roleInfo == null) {
+      throw new UnavailableException("Cannot get server role info");
+    }
+    RaftProtos.LeaderInfoProto leaderInfo = roleInfo.getLeaderInfo();
+    if (leaderInfo == null) {
+      throw new UnavailableException("Cannot get server leader info");
+    }
+    for (RaftProtos.ServerRpcProto member : leaderInfo.getFollowerInfoList()) {
+      HostAndPort hp = HostAndPort.fromString(member.getId().getAddress());
+      NetAddress memberAddress = NetAddress.newBuilder().setHost(hp.getHost())
+          .setRpcPort(hp.getPort()).build();
+
+      long maxElectionTimeoutMs =
+          Configuration.getMs(PropertyKey.MASTER_EMBEDDED_JOURNAL_MAX_ELECTION_TIMEOUT);
+      quorumMemberStateList.add(QuorumServerInfo.newBuilder()
+              .setIsLeader(false)
+              .setPriority(member.getId().getPriority())
+              .setServerAddress(memberAddress)
+          .setServerState(member.getLastRpcElapsedTimeMs() > maxElectionTimeoutMs
+              ? QuorumServerState.UNAVAILABLE : QuorumServerState.AVAILABLE).build());
+    }
+    NetAddress self = NetAddress.newBuilder()
+        .setHost(mLocalAddress.getHostString())
+        .setRpcPort(mLocalAddress.getPort())
+        .build();
+    quorumMemberStateList.add(QuorumServerInfo.newBuilder()
+            .setIsLeader(true)
+            .setPriority(roleInfo.getSelf().getPriority())
+            .setServerAddress(self)
+        .setServerState(QuorumServerState.AVAILABLE).build());
+    quorumMemberStateList.sort(Comparator.comparing(info -> info.getServerAddress().toString()));
+    return quorumMemberStateList;
+  }
+
+
+====================ctx:=======================

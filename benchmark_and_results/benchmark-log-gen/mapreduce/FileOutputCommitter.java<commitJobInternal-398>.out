@@ -1,0 +1,92 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileOutputCommitter.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter.commitJobInternal(Lorg/apache/hadoop/mapreduce/JobContext;)V	methodLines:	398:446
+blockLines:	431:-1
+paras:	null
+TaintedStat:	NORMAL commitJobInternal:conditional branch(eq, to iindex=96) 39,6 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter, commitJobInternal(Lorg/apache/hadoop/mapreduce/JobContext;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/lib/output/PathOutputCommitterFactory, createFileOutputCommitter(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/output/PathOutputCommitter; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitterFactory in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitterFactory, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter, commitJobInternal(Lorg/apache/hadoop/mapreduce/JobContext;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/lib/output/PathOutputCommitterFactory, createFileOutputCommitter(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/output/PathOutputCommitter; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitterFactory in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitterFactory, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere][71]39 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 36,37,17 @139 exception:38
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter, commitJobInternal(Lorg/apache/hadoop/mapreduce/JobContext;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/lib/output/PathOutputCommitterFactory, createFileOutputCommitter(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/output/PathOutputCommitter; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitterFactory in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitterFactory, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere][71]39 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 36,37,17 @139 exception:38
+NORMAL commitJobInternal:conditional branch(eq, to iindex=96) 39,6 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter, commitJobInternal(Lorg/apache/hadoop/mapreduce/JobContext;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/lib/output/PathOutputCommitterFactory, createFileOutputCommitter(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/output/PathOutputCommitter; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitterFactory in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitterFactory, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected void commitJobInternal(JobContext context) throws IOException {
+    if (hasOutputPath()) {
+      Path finalOutput = getOutputPath();
+      FileSystem fs = finalOutput.getFileSystem(context.getConfiguration());
+
+      if (algorithmVersion == 1) {
+        for (FileStatus stat: getAllCommittedTaskPaths(context)) {
+          mergePaths(fs, stat, finalOutput, context);
+        }
+      }
+
+      if (skipCleanup) {
+        LOG.info("Skip cleanup the _temporary folders under job's output " +
+            "directory in commitJob.");
+      } else {
+        // delete the _temporary folder and create a _SUCCESS file in the o/p
+        // folder
+        try {
+          cleanupJob(context);
+        } catch (IOException e) {
+          if (ignoreCleanupFailures) {
+            // swallow exceptions in cleanup as user configure to make sure
+            // commitJob could be success even when cleanup get failure.
+            LOG.error("Error in cleanup job, manually cleanup is needed.", e);
+          } else {
+            // throw back exception to fail commitJob.
+            throw e;
+          }
+        }
+      }
+      // True if the job requires output.dir marked on successful job.
+      // Note that by default it is set to true.
+      // Create a _SUCCESS file in the o/p folder.
+      if (context.getConfiguration().getBoolean(
+          SUCCESSFUL_JOB_OUTPUT_DIR_MARKER, true)) {
+        Path markerPath = new Path(outputPath, SUCCEEDED_FILE_NAME);
+        // If job commit is repeatable and previous/another AM could write
+        // mark file already, we need to set overwritten to be true explicitly
+        // in case other FS implementations don't overwritten by default.
+        if (isCommitJobRepeatable(context)) {
+          fs.create(markerPath, true).close();
+        } else {
+          fs.create(markerPath).close();
+        }
+      }
+    } else {
+      LOG.warn("Output Path is null in commitJob()");
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter, commitJob(Lorg/apache/hadoop/mapreduce/JobContext;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/lib/output/PathOutputCommitterFactory, createFileOutputCommitter(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/lib/output/PathOutputCommitter; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitter in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitterFactory in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputCommitterFactory, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:20..22]9 - org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter.commitJob(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:17..19]8 - org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter.commitJob(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:23..25]10 - org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter.commitJob(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:-1..-2]22 - org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter.commitJob(Lorg/apache/hadoop/mapreduce/JobContext;)V], numberOfBasicBlocks=4, firstLineNumber=375, lastLineNumber=386, firstMethodNumber=369, lastMethodNumber=388, isFirstLineValid=true, methodSrcCode=
+  public void commitJob(JobContext context) throws IOException {
+    int maxAttemptsOnFailure = isCommitJobRepeatable(context) ?
+        context.getConfiguration().getInt(FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS,
+            FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS_DEFAULT) : 1;
+    int attempt = 0;
+    boolean jobCommitNotFinished = true;
+    while (jobCommitNotFinished) {
+      try {
+        commitJobInternal(context);
+        jobCommitNotFinished = false;
+      } catch (Exception e) {
+        if (++attempt >= maxAttemptsOnFailure) {
+          throw e;
+        } else {
+          LOG.warn("Exception get thrown in job commit, retry (" + attempt +
+              ") time.", e);
+        }
+      }
+    }
+  }
+
+}

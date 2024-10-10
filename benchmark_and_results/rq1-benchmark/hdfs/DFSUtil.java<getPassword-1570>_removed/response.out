@@ -1,0 +1,22 @@
+```java
+static String getPassword(Configuration conf, String alias) {
+    String password = null;
+    try {
+        char[] passchars = conf.getPassword(alias);
+        if (passchars != null) {
+            password = new String(passchars);
+        }
+        // ConfLogger Inserted Start
+        else {
+            logger.warn("Password retrieval failed: The password characters for alias '" + alias + "' are null. Ensure that the alias is correctly set and the password is available in the configuration.");
+        }
+        // ConfLogger Inserted End
+    } catch (IOException ioe) {
+        password = null;
+        // ConfLogger Inserted Start
+        logger.error("IOException occurred while retrieving password for alias '" + alias + "'. The password is set to null. Check the configuration source and ensure it is accessible.");
+        // ConfLogger Inserted End
+    }
+    return password;
+}
+```

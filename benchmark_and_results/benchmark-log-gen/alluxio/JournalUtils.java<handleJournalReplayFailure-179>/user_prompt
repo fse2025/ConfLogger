@@ -1,0 +1,17 @@
+<code-whole>
+String message = String.format("Journal replay error: " + format, args);
+if (t != null) {
+message += "\n" + Throwables.getStackTraceAsString(t);
+}
+logger.error(message);
+if (!Configuration.getBoolean(PropertyKey.MASTER_JOURNAL_TOLERATE_CORRUPTION)) {
+throw new RuntimeException(t);
+}
+}
+</code-whole>
+
+<code-specified>
+if (!Configuration.getBoolean(PropertyKey.MASTER_JOURNAL_TOLERATE_CORRUPTION)) {
+throw new RuntimeException(t);
+}
+</code-specified>

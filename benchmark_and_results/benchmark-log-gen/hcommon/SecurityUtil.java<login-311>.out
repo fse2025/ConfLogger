@@ -1,0 +1,41 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SecurityUtil.java	methodSinagture:	org.apache.hadoop.security.SecurityUtil.login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V	methodLines:	311:325
+blockLines:	316:-1
+paras:	null
+TaintedStat:	NORMAL login:conditional branch(eq, to iindex=15) 10,11 Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[6]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @9 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[6]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @9 exception:9
+NORMAL login:conditional branch(eq, to iindex=15) 10,11 Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    
+    if(! UserGroupInformation.isSecurityEnabled()) 
+      return;
+    
+    String keytabFilename = conf.get(keytabFileKey);
+    if (keytabFilename == null || keytabFilename.length() == 0) {
+      throw new IOException("Running in secure mode, but config doesn't have a keytab");
+    }
+
+    String principalConfig = conf.get(userNameKey, System
+        .getProperty("user.name"));
+    String principalName = SecurityUtil.getServerPrincipal(principalConfig,
+        hostname);
+    UserGroupInformation.loginUserFromKeytab(principalName, keytabFilename);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:5..5]2 - org.apache.hadoop.security.SecurityUtil.login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:0..4]1 - org.apache.hadoop.security.SecurityUtil.login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:6..6]3 - org.apache.hadoop.security.SecurityUtil.login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]4 - org.apache.hadoop.security.SecurityUtil.login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=288, lastLineNumber=289, firstMethodNumber=287, lastMethodNumber=289, isFirstLineValid=true, methodSrcCode=
+      final String keytabFileKey, final String userNameKey) throws IOException {
+    login(conf, keytabFileKey, userNameKey, getLocalHostName(conf));
+  }
+
+}

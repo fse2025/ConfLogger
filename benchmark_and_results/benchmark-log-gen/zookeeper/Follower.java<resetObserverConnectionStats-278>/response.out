@@ -1,0 +1,8 @@
+```java
+if (om != null && om.getNumActiveObservers() > 0) {
+    // ConfLogger Inserted Start
+    logger.info("ObserverManager is not null and has active observers. Number of active observers: " + om.getNumActiveObservers());
+    // ConfLogger Inserted End
+    om.resetObserverConnectionStats();
+}
+```

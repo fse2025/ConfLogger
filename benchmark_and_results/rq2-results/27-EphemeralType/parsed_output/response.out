@@ -1,0 +1,4 @@
+name:zookeeper.extendedTypesEnabled
+value:true
+relevant log:1-ERROR	Invalid ephemeralOwner detected. No matching ephemeral type found for extended feature bit. EphemeralOwner: ff00010000000000
+explanation: The error log indicates that there is an issue with the ephemeral type. The configuration option 'zookeeper.extendedTypesEnabled' is set to true, which means extended ephemeral types are enabled. This could be the root cause of the error as the system might be trying to use an extended ephemeral type that does not exist or is not properly configured.

@@ -1,0 +1,62 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ReflectionUtils.java	methodSinagture:	org.apache.hadoop.util.ReflectionUtils.setJobConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	96:117
+blockLines:	105:-1
+paras:	null
+TaintedStat:	NORMAL setJobConf:conditional branch(ne, to iindex=16) 10,7 Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setJobConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setJobConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[10]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClassByNameOrNull(Ljava/lang/String;)Ljava/lang/Class; > 2,8 @15 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setJobConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[10]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClassByNameOrNull(Ljava/lang/String;)Ljava/lang/Class; > 2,8 @15 exception:9
+NORMAL setJobConf:conditional branch(ne, to iindex=16) 10,7 Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setJobConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ReflectionUtils.java	methodSinagture:	org.apache.hadoop.util.ReflectionUtils.setJobConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	96:117
+blockLines:	99:-1
+paras:	null
+TaintedStat:	NORMAL setJobConf:conditional branch(ne, to iindex=8) 6,7 Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setJobConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setJobConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClassByNameOrNull(Ljava/lang/String;)Ljava/lang/Class; > 2,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setJobConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClassByNameOrNull(Ljava/lang/String;)Ljava/lang/Class; > 2,4 @3 exception:5
+NORMAL setJobConf:conditional branch(ne, to iindex=8) 6,7 Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setJobConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    try {
+      Class<?> jobConfClass = 
+        conf.getClassByNameOrNull("org.apache.hadoop.mapred.JobConf");
+      if (jobConfClass == null) {
+        return;
+      }
+      
+      Class<?> jobConfigurableClass = 
+        conf.getClassByNameOrNull("org.apache.hadoop.mapred.JobConfigurable");
+      if (jobConfigurableClass == null) {
+        return;
+      }
+      if (jobConfClass.isAssignableFrom(conf.getClass()) &&
+            jobConfigurableClass.isAssignableFrom(theObject.getClass())) {
+        Method configureMethod = 
+          jobConfigurableClass.getMethod("configure", jobConfClass);
+        configureMethod.invoke(theObject, conf);
+      }
+    } catch (Exception e) {
+      throw new RuntimeException("Error in configuring object", e);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:11..13]5 - org.apache.hadoop.util.ReflectionUtils.setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:3..6]2 - org.apache.hadoop.util.ReflectionUtils.setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:9..10]4 - org.apache.hadoop.util.ReflectionUtils.setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:14..14]6 - org.apache.hadoop.util.ReflectionUtils.setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]7 - org.apache.hadoop.util.ReflectionUtils.setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=5, firstLineNumber=78, lastLineNumber=83, firstMethodNumber=76, lastMethodNumber=83, isFirstLineValid=true, methodSrcCode=
+  public static void setConf(Object theObject, Configuration conf) {
+    if (conf != null) {
+      if (theObject instanceof Configurable) {
+        ((Configurable) theObject).setConf(conf);
+      }
+      setJobConf(theObject, conf);
+    }
+  }
+  
+}

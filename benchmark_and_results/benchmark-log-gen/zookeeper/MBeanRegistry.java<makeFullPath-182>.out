@@ -1,0 +1,59 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MBeanRegistry.java	methodSinagture:	org.apache.zookeeper.jmx.MBeanRegistry.makeFullPath(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)Ljava/lang/String;	methodLines:	182:183
+blockLines:	183:-1
+paras:	readonlymode.enabled
+TaintedStat:	NORMAL makeFullPath:conditional branch(ne, to iindex=11) 3,8 Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, makeFullPath(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, run()V > Context: Everywhere[121]84 = invokestatic < Application, Ljava/lang/Boolean, getBoolean(Ljava/lang/String;)Z > 82 @310 exception:83
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, run()V > Context: Everywhere[121]84 = invokestatic < Application, Ljava/lang/Boolean, getBoolean(Ljava/lang/String;)Z > 82 @310 exception:83
+NORMAL run:conditional branch(eq, to iindex=188) 84,22 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, run()V > Context: Everywhere
+NORMAL run:invokevirtual < Application, Ljava/lang/Thread, start()V > 92 @355 exception:94 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, run()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=85) 21,22 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=59) 29,22 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, run()V > Context: Everywhere
+NORMAL run:34 = getfield < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, jmxQuorumBean, <Application,Lorg/apache/zookeeper/server/quorum/QuorumBean> > 1 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, run()V > Context: Everywhere[48]invokevirtual < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, register(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > 33,30,34 @106 exception:35 v34
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, register(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, register(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere[34]15 = invokevirtual < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, makeFullPath(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)Ljava/lang/String; > 1,13,3 @59 exception:14 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, makeFullPath(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL makeFullPath:conditional branch(ne, to iindex=11) 3,8 Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, makeFullPath(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    protected String makeFullPath(String prefix, ZKMBeanInfo bean) {
+        return makeFullPath(prefix, bean == null ? null : bean.getName());
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, register(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere, blocks=[BB[SSA:31..34]15 - org.apache.zookeeper.jmx.MBeanRegistry.register(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V, BB[SSA:10..14]6 - org.apache.zookeeper.jmx.MBeanRegistry.register(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V, BB[SSA:20..23]10 - org.apache.zookeeper.jmx.MBeanRegistry.register(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V, BB[SSA:24..26]11 - org.apache.zookeeper.jmx.MBeanRegistry.register(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V, BB[SSA:35..37]16 - org.apache.zookeeper.jmx.MBeanRegistry.register(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V, BB[SSA:-1..-2]35 - org.apache.zookeeper.jmx.MBeanRegistry.register(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V], numberOfBasicBlocks=6, firstLineNumber=94, lastLineNumber=100, firstMethodNumber=92, lastMethodNumber=113, isFirstLineValid=true, methodSrcCode=
+    public void register(ZKMBeanInfo bean, ZKMBeanInfo parent) throws JMException {
+        assert bean != null;
+        String path = null;
+        if (parent != null) {
+            path = mapBean2Path.get(parent);
+            assert path != null;
+        }
+        path = makeFullPath(path, parent);
+        if (bean.isHidden()) {
+            return;
+        }
+        ObjectName oname = makeObjectName(path, bean);
+        try {
+            synchronized (LOCK) {
+                mBeanServer.registerMBean(bean, oname);
+                mapBean2Path.put(bean, path);
+            }
+        } catch (JMException e) {
+            LOG.warn("Failed to register MBean {}", bean.getName());
+            throw e;
+        }
+    }
+
+}

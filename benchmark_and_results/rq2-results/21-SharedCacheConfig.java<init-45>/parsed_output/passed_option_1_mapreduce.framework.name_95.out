@@ -1,0 +1,1 @@
+mapreduce.framework.name	local	WARN	The framework name is not set to YARN. Current value: local. Shared cache is only valid if the job runs on YARN. Please set 'mapreduce.framework.name' to 'yarn'.	95

@@ -1,0 +1,26 @@
+```java
+if (!ServerUtils.isRas(nimbusConf)) {
+    int workerCount = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_WORKERS), 1);
+    Integer allowedWorkers = ObjectReader.getInt(nimbusConf.get(DaemonConfig.NIMBUS_SLOTS_PER_TOPOLOGY), null);
+    if (allowedWorkers != null && workerCount > allowedWorkers) {
+        // ConfLogger Inserted Start
+        logger.error("Failed to submit topology. Configuration parameter '{}' has value '{}', but the topology requests '{}' workers, which exceeds the allowed limit.", DaemonConfig.NIMBUS_SLOTS_PER_TOPOLOGY, allowedWorkers, workerCount);
+        // ConfLogger Inserted End
+        throw new WrappedInvalidTopologyException("Failed to submit topology. Topology requests more than "
+                + allowedWorkers + " workers.");
+    }
+}
+int executorsCount = 0;
+for (Object comp : StormCommon.allComponents(topology).values()) {
+    executorsCount += StormCommon.numStartExecutors(comp);
+}
+Integer allowedExecutors = ObjectReader.getInt(nimbusConf.get(DaemonConfig.NIMBUS_EXECUTORS_PER_TOPOLOGY), null);
+if (allowedExecutors != null && executorsCount > allowedExecutors) {
+    // ConfLogger Inserted Start
+    logger.error("Failed to submit topology. Configuration parameter '{}' has value '{}', but the topology requests '{}' executors, which exceeds the allowed limit.", DaemonConfig.NIMBUS_EXECUTORS_PER_TOPOLOGY, allowedExecutors, executorsCount);
+    // ConfLogger Inserted End
+    throw new WrappedInvalidTopologyException("Failed to submit topology. Topology requests more than "
+            + allowedExecutors + " executors.");
+}
+}
+```

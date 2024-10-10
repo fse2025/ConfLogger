@@ -1,0 +1,70 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RpcMetrics.java	methodSinagture:	org.apache.hadoop.ipc.metrics.RpcMetrics.<init>(Lorg/apache/hadoop/ipc/Server;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	57:100
+blockLines:	67:-1
+paras:	rpc.metrics.quantile.enable
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=52) 41,38 Node: < Application, Lorg/apache/hadoop/ipc/metrics/RpcMetrics, <init>(Lorg/apache/hadoop/ipc/Server;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/metrics/RpcMetrics, <init>(Lorg/apache/hadoop/ipc/Server;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[47]41 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 3,39,38 @94 exception:40
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/metrics/RpcMetrics, <init>(Lorg/apache/hadoop/ipc/Server;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[47]41 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 3,39,38 @94 exception:40
+NORMAL <init>:conditional branch(eq, to iindex=52) 41,38 Node: < Application, Lorg/apache/hadoop/ipc/metrics/RpcMetrics, <init>(Lorg/apache/hadoop/ipc/Server;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+  RpcMetrics(Server server, Configuration conf) {
+    String port = String.valueOf(server.getListenerAddress().getPort());
+    name = "RpcActivityForPort" + port;
+    this.server = server;
+    registry = new MetricsRegistry("rpc")
+        .tag("port", "RPC port", port)
+        .tag("serverName", "Name of the RPC server", server.getServerName());
+    int[] intervals = conf.getInts(
+        CommonConfigurationKeys.RPC_METRICS_PERCENTILES_INTERVALS_KEY);
+    rpcQuantileEnable = (intervals.length > 0) && conf.getBoolean(
+        CommonConfigurationKeys.RPC_METRICS_QUANTILE_ENABLE,
+        CommonConfigurationKeys.RPC_METRICS_QUANTILE_ENABLE_DEFAULT);
+    metricsTimeUnit = getMetricsTimeUnit(conf);
+    if (rpcQuantileEnable) {
+      rpcQueueTimeQuantiles =
+          new MutableQuantiles[intervals.length];
+      rpcLockWaitTimeQuantiles =
+          new MutableQuantiles[intervals.length];
+      rpcProcessingTimeQuantiles =
+          new MutableQuantiles[intervals.length];
+      deferredRpcProcessingTimeQuantiles =
+          new MutableQuantiles[intervals.length];
+      for (int i = 0; i < intervals.length; i++) {
+        int interval = intervals[i];
+        rpcQueueTimeQuantiles[i] = registry.newQuantiles("rpcQueueTime"
+            + interval + "s", "rpc queue time in " + metricsTimeUnit, "ops",
+            "latency", interval);
+        rpcLockWaitTimeQuantiles[i] = registry.newQuantiles(
+            "rpcLockWaitTime" + interval + "s",
+            "rpc lock wait time in " + metricsTimeUnit, "ops",
+            "latency", interval);
+        rpcProcessingTimeQuantiles[i] = registry.newQuantiles(
+            "rpcProcessingTime" + interval + "s",
+            "rpc processing time in " + metricsTimeUnit, "ops",
+            "latency", interval);
+        deferredRpcProcessingTimeQuantiles[i] = registry.newQuantiles(
+            "deferredRpcProcessingTime" + interval + "s",
+            "deferred rpc processing time in " + metricsTimeUnit, "ops",
+            "latency", interval);
+      }
+    }
+    LOG.debug("Initialized " + registry);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/ipc/metrics/RpcMetrics, create(Lorg/apache/hadoop/ipc/Server;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/metrics/RpcMetrics; > Context: Everywhere, blocks=[BB[SSA:1..4]2 - org.apache.hadoop.ipc.metrics.RpcMetrics.create(Lorg/apache/hadoop/ipc/Server;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/metrics/RpcMetrics;, BB[SSA:0..0]1 - org.apache.hadoop.ipc.metrics.RpcMetrics.create(Lorg/apache/hadoop/ipc/Server;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/metrics/RpcMetrics;, BB[SSA:5..6]3 - org.apache.hadoop.ipc.metrics.RpcMetrics.create(Lorg/apache/hadoop/ipc/Server;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/metrics/RpcMetrics;, BB[SSA:-1..-2]8 - org.apache.hadoop.ipc.metrics.RpcMetrics.create(Lorg/apache/hadoop/ipc/Server;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/ipc/metrics/RpcMetrics;], numberOfBasicBlocks=4, firstLineNumber=105, lastLineNumber=106, firstMethodNumber=104, lastMethodNumber=106, isFirstLineValid=true, methodSrcCode=
+  public static RpcMetrics create(Server server, Configuration conf) {
+    RpcMetrics m = new RpcMetrics(server, conf);
+    return DefaultMetricsSystem.instance().register(m.name, null, m);
+  }
+}

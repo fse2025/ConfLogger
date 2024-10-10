@@ -1,0 +1,44 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SequenceFile.java	methodSinagture:	org.apache.hadoop.io.SequenceFile.getDefaultCompressionType(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/SequenceFile$CompressionType;	methodLines:	254:256
+blockLines:	256:-1
+paras:	null
+TaintedStat:	NORMAL getDefaultCompressionType:conditional branch(ne, to iindex=9) 5,6 Node: < Application, Lorg/apache/hadoop/io/SequenceFile, getDefaultCompressionType(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/SequenceFile$CompressionType; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/SequenceFile, getDefaultCompressionType(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/SequenceFile$CompressionType; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/SequenceFile, getDefaultCompressionType(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/SequenceFile$CompressionType; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+NORMAL getDefaultCompressionType:conditional branch(ne, to iindex=9) 5,6 Node: < Application, Lorg/apache/hadoop/io/SequenceFile, getDefaultCompressionType(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/SequenceFile$CompressionType; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static public CompressionType getDefaultCompressionType(Configuration job) {
+    String name = job.get("io.seqfile.compression.type");
+    return name == null ? CompressionType.RECORD : 
+      CompressionType.valueOf(name);
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/io/SequenceFile, createWriter(Lorg/apache/hadoop/conf/Configuration;[Lorg/apache/hadoop/io/SequenceFile$Writer$Option;)Lorg/apache/hadoop/io/SequenceFile$Writer; > Context: Everywhere, blocks=[BB[SSA:12..13]7 - org.apache.hadoop.io.SequenceFile.createWriter(Lorg/apache/hadoop/conf/Configuration;[Lorg/apache/hadoop/io/SequenceFile$Writer$Option;)Lorg/apache/hadoop/io/SequenceFile$Writer;, BB[SSA:4..7]4 - org.apache.hadoop.io.SequenceFile.createWriter(Lorg/apache/hadoop/conf/Configuration;[Lorg/apache/hadoop/io/SequenceFile$Writer$Option;)Lorg/apache/hadoop/io/SequenceFile$Writer;, BB[SSA:14..17]8 - org.apache.hadoop.io.SequenceFile.createWriter(Lorg/apache/hadoop/conf/Configuration;[Lorg/apache/hadoop/io/SequenceFile$Writer$Option;)Lorg/apache/hadoop/io/SequenceFile$Writer;, BB[SSA:-1..-2]26 - org.apache.hadoop.io.SequenceFile.createWriter(Lorg/apache/hadoop/conf/Configuration;[Lorg/apache/hadoop/io/SequenceFile$Writer$Option;)Lorg/apache/hadoop/io/SequenceFile$Writer;], numberOfBasicBlocks=4, firstLineNumber=280, lastLineNumber=286, firstMethodNumber=278, lastMethodNumber=295, isFirstLineValid=true, methodSrcCode=
+                                    ) throws IOException {
+    Writer.CompressionOption compressionOption = 
+      Options.getOption(Writer.CompressionOption.class, opts);
+    CompressionType kind;
+    if (compressionOption != null) {
+      kind = compressionOption.getValue();
+    } else {
+      kind = getDefaultCompressionType(conf);
+      opts = Options.prependOptions(opts, Writer.compression(kind));
+    }
+    switch (kind) {
+      default:
+      case NONE:
+        return new Writer(conf, opts);
+      case RECORD:
+        return new RecordCompressWriter(conf, opts);
+      case BLOCK:
+        return new BlockCompressWriter(conf, opts);
+    }
+}

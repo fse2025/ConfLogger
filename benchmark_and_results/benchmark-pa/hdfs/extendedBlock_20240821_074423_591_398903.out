@@ -1,0 +1,124 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtilClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtilClient.addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	219:225
+blockLines:	220:-1
+paras:	dfs.namenode.shared.edits.dir
+TaintedStat:	NORMAL addSuffix:conditional branch(eq, to iindex=9) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere[5]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 4,5 @9 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere[5]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 4,5 @9 exception:6
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere:26 = phi  7,7,25
+NORMAL getOtherJournalNodeAddrs:conditional branch(eq, to iindex=38) 26,8 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere
+NORMAL getOtherJournalNodeAddrs:conditional branch(eq, to iindex=112) 31,8 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere
+NORMAL getOtherJournalNodeAddrs:33 = getfield < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, nameServiceId, <Application,Ljava/lang/String> > 1 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere[48]35 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection; > 32,33 @91 exception:34 v33
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere[2]6 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 4,2 @3 exception:5 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v2
+NORMAL addSuffix:conditional branch(eq, to iindex=7) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL addSuffix:conditional branch(eq, to iindex=9) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSUtilClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtilClient.addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	219:225
+blockLines:	223:-1
+paras:	null
+TaintedStat:	NORMAL addSuffix:conditional branch(eq, to iindex=31) 11,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere[83]65 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 55,63 @178 exception:64
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere[83]65 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 55,63 @178 exception:64
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere:68 = phi  65,26
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere:91 = phi  26,26,68,8
+NORMAL getOtherJournalNodeAddrs:93 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 91 @248 exception:92 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere[35]28 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 26 @66 exception:27
+NORMAL getOtherJournalNodeAddrs:conditional branch(eq, to iindex=112) 28,11 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere
+NORMAL getOtherJournalNodeAddrs:conditional branch(eq, to iindex=112) 31,8 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere
+NORMAL getOtherJournalNodeAddrs:33 = getfield < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, nameServiceId, <Application,Ljava/lang/String> > 1 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getOtherJournalNodeAddrs()Ljava/util/List; > Context: Everywhere[48]35 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection; > 32,33 @91 exception:34 v33
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere[2]6 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 4,2 @3 exception:5 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v2
+NORMAL addSuffix:conditional branch(eq, to iindex=7) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL addSuffix:conditional branch(eq, to iindex=9) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL addSuffix:conditional branch(ne, to iindex=31) 8,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL addSuffix:conditional branch(eq, to iindex=31) 11,7 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, addSuffix(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static String addSuffix(String key, String suffix) {
+    if (suffix == null || suffix.isEmpty()) {
+      return key;
+    }
+    assert !suffix.startsWith(".") :
+      "suffix '" + suffix + "' should not already have '.' prepended.";
+    return key + "." + suffix;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.hdfs.DFSUtilClient.getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.DFSUtilClient.getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:3..6]2 - org.apache.hadoop.hdfs.DFSUtilClient.getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:-1..-2]4 - org.apache.hadoop.hdfs.DFSUtilClient.getNameNodeIds(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/Collection;], numberOfBasicBlocks=4, firstLineNumber=213, lastLineNumber=215, firstMethodNumber=213, lastMethodNumber=215, isFirstLineValid=false, methodSrcCode=
+  public static Collection<String> getNameNodeIds(Configuration conf, String nsId) {
+    String key = addSuffix(DFS_HA_NAMENODES_KEY_PREFIX, nsId);
+    return conf.getTrimmedStringCollection(key);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, checkRpcAuxiliary(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.hdfs.DFSUtilClient.checkRpcAuxiliary(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.DFSUtilClient.checkRpcAuxiliary(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:5..8]2 - org.apache.hadoop.hdfs.DFSUtilClient.checkRpcAuxiliary(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]36 - org.apache.hadoop.hdfs.DFSUtilClient.checkRpcAuxiliary(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=500, lastLineNumber=503, firstMethodNumber=500, lastMethodNumber=530, isFirstLineValid=false, methodSrcCode=
+      String address) {
+    String key = DFS_NAMENODE_RPC_ADDRESS_AUXILIARY_KEY;
+    key = addSuffix(key, suffix);
+    int[] ports = conf.getInts(key);
+    if (ports == null || ports.length == 0) {
+      return address;
+    }
+    LOG.info("Using server auxiliary ports " + Arrays.toString(ports));
+    URI uri;
+    try {
+      uri = new URI(address);
+    } catch (URISyntaxException e) {
+      // return the original address untouched if it is not a valid URI. This
+      // happens in unit test, as MiniDFSCluster sets the value to
+      // 127.0.0.1:0, without schema (i.e. "hdfs://"). While in practice, this
+      // should not be the case. So log a warning message here.
+      LOG.warn("NameNode address is not a valid uri:" + address);
+      return address;
+    }
+    // Ignore the port, only take the schema(e.g. hdfs) and host (e.g.
+    // localhost), then append port
+    // TODO : revisit if there is a better way
+    StringBuilder sb = new StringBuilder();
+    sb.append(uri.getScheme())
+        .append("://")
+        .append(uri.getHost())
+        .append(":");
+    // TODO : currently, only the very first auxiliary port is being used.
+    // But actually NN supports running multiple auxiliary
+    sb.append(ports[0]);
+    return sb.toString();
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getConfValue(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:15..18]5 - org.apache.hadoop.hdfs.DFSUtilClient.getConfValue(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:12..14]4 - org.apache.hadoop.hdfs.DFSUtilClient.getConfValue(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:19..22]6 - org.apache.hadoop.hdfs.DFSUtilClient.getConfValue(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]13 - org.apache.hadoop.hdfs.DFSUtilClient.getConfValue(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=545, lastLineNumber=547, firstMethodNumber=543, lastMethodNumber=555, isFirstLineValid=true, methodSrcCode=
+      Configuration conf, String... keys) {
+    String value = null;
+    for (String key : keys) {
+      key = addSuffix(key, keySuffix);
+      value = conf.get(key);
+      if (value != null) {
+        break;
+      }
+    }
+    if (value == null) {
+      value = defaultValue;
+    }
+    return value;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:2..5]2 - org.apache.hadoop.hdfs.DFSUtil.addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:0..1]1 - org.apache.hadoop.hdfs.DFSUtil.addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:6..6]3 - org.apache.hadoop.hdfs.DFSUtil.addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.hadoop.hdfs.DFSUtil.addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=408, lastLineNumber=409, firstMethodNumber=407, lastMethodNumber=409, isFirstLineValid=true, methodSrcCode=
+  public static String addKeySuffixes(String key, String... suffixes) {
+    String keySuffix = DFSUtilClient.concatSuffixes(suffixes);
+    return DFSUtilClient.addSuffix(key, keySuffix);
+  }
+}

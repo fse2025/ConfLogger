@@ -1,0 +1,13 @@
+```java
+if (MRConfig.YARN_FRAMEWORK_NAME.equals(conf.get(MRConfig.FRAMEWORK_NAME))) {
+    // ConfLogger Inserted Start
+    logger.info("YARN framework is enabled. Configuration parameter: " + MRConfig.FRAMEWORK_NAME + " = " + conf.get(MRConfig.FRAMEWORK_NAME));
+    // ConfLogger Inserted End
+    return new YARNRunner(conf);
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("YARN framework is not enabled. Configuration parameter: " + MRConfig.FRAMEWORK_NAME + " = " + conf.get(MRConfig.FRAMEWORK_NAME));
+    // ConfLogger Inserted End
+}
+return null;
+```

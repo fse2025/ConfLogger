@@ -1,0 +1,50 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CommonsCryptoAES.java	methodSinagture:	org.apache.hadoop.hbase.io.crypto.aes.CommonsCryptoAES.<init>(Lorg/apache/hadoop/hbase/io/crypto/CipherProvider;)V	methodLines:	60:80
+blockLines:	71:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=37) 25,26 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/aes/CommonsCryptoAES, <init>(Lorg/apache/hadoop/hbase/io/crypto/CipherProvider;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/aes/CommonsCryptoAES, <init>(Lorg/apache/hadoop/hbase/io/crypto/CipherProvider;)V > Context: Everywhere[25]25 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 22,23 @60 exception:24
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/aes/CommonsCryptoAES, <init>(Lorg/apache/hadoop/hbase/io/crypto/CipherProvider;)V > Context: Everywhere[25]25 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 22,23 @60 exception:24
+NORMAL <init>:conditional branch(eq, to iindex=37) 25,26 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/aes/CommonsCryptoAES, <init>(Lorg/apache/hadoop/hbase/io/crypto/CipherProvider;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public CommonsCryptoAES(CipherProvider provider) {
+    super(provider);
+    // The mode for Commons Crypto Ciphers
+    cipherMode = provider.getConf().get(CIPHER_MODE_KEY, "AES/CTR/NoPadding");
+    // Reads Commons Crypto properties from HBase conf
+    props = readCryptoProps(provider.getConf());
+    // RNG algorithm
+    rngAlgorithm = provider.getConf().get(RNG_ALGORITHM_KEY, "SHA1PRNG");
+    // RNG provider, null if default
+    String rngProvider = provider.getConf().get(RNG_PROVIDER_KEY);
+    try {
+      if (rngProvider != null) {
+        rng = SecureRandom.getInstance(rngAlgorithm, rngProvider);
+      } else {
+        rng = SecureRandom.getInstance(rngAlgorithm);
+      }
+    } catch (GeneralSecurityException e) {
+      LOG.warn("Could not instantiate specified RNG, falling back to default", e);
+      rng = new SecureRandom();
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/CryptoCipherProvider, getCipher(Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/Cipher; > Context: Everywhere, blocks=[BB[SSA:6..8]4 - org.apache.hadoop.hbase.io.crypto.CryptoCipherProvider.getCipher(Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/Cipher;, BB[SSA:5..5]3 - org.apache.hadoop.hbase.io.crypto.CryptoCipherProvider.getCipher(Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/Cipher;, BB[SSA:9..9]5 - org.apache.hadoop.hbase.io.crypto.CryptoCipherProvider.getCipher(Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/Cipher;, BB[SSA:-1..-2]18 - org.apache.hadoop.hbase.io.crypto.CryptoCipherProvider.getCipher(Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/Cipher;], numberOfBasicBlocks=4, firstLineNumber=67, lastLineNumber=67, firstMethodNumber=65, lastMethodNumber=70, isFirstLineValid=true, methodSrcCode=
+  public Cipher getCipher(String name) {
+    if (name.equalsIgnoreCase("AES")) {
+      return new CommonsCryptoAES(this);
+    }
+    throw new RuntimeException(
+      "Cipher '" + name + "' is not supported by provider '" + getName() + "'");
+  }
+}

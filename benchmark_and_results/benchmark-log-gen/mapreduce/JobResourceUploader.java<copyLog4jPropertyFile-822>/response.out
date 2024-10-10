@@ -1,0 +1,38 @@
+```java
+Configuration conf = job.getConfiguration();
+
+String file =
+validateFilePath(
+conf.get(MRJobConfig.MAPREDUCE_JOB_LOG4J_PROPERTIES_FILE), conf);
+LOG.debug("default FileSystem: " + jtFs.getUri());
+FsPermission mapredSysPerms =
+new FsPermission(JobSubmissionFiles.JOB_DIR_PERMISSION);
+try {
+jtFs.getFileStatus(submitJobDir);
+} catch (FileNotFoundException e) {
+throw new IOException("Cannot find job submission directory! "
++ "It should just be created, so something wrong here.", e);
+}
+
+Path fileDir = JobSubmissionFiles.getJobLog4jFile(submitJobDir);
+
+// first copy local log4j.properties file to HDFS under submitJobDir
+if (file != null) {
+FileSystem.mkdirs(jtFs, fileDir, mapredSysPerms);
+URI tmpURI = null;
+try {
+tmpURI = new URI(file);
+} catch (URISyntaxException e) {
+throw new IllegalArgumentException(e);
+}
+Path tmp = new Path(tmpURI);
+Path newPath = copyRemoteFiles(fileDir, tmp, conf, replication);
+Path path = new Path(newPath.toUri().getPath());
+Job.addFileToClassPath(path, conf, path.getFileSystem(conf));
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("The configuration parameter 'MAPREDUCE_JOB_LOG4J_PROPERTIES_FILE' is not set or invalid. The log4j properties file will not be copied to HDFS.");
+    // ConfLogger Inserted End
+}
+}
+```

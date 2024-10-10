@@ -1,0 +1,108 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SyncRequestProcessor.java	methodSinagture:	org.apache.zookeeper.server.SyncRequestProcessor.getRemainingDelay()J	methodLines:	112:118
+blockLines:	115:-1
+paras:	null
+TaintedStat:	NORMAL getRemainingDelay:conditional branch(ge, to iindex=18) 10,11 Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, getRemainingDelay()J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, getRemainingDelay()J > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getFlushDelay()J > 3 @4 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, getRemainingDelay()J > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getFlushDelay()J > 3 @4 exception:4
+NORMAL getRemainingDelay:10 = compare 9,5 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, getRemainingDelay()J > Context: Everywhere
+NORMAL getRemainingDelay:conditional branch(ge, to iindex=18) 10,11 Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, getRemainingDelay()J > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private long getRemainingDelay() {
+        long flushDelay = zks.getFlushDelay();
+        long duration = Time.currentElapsedTime() - lastFlushTime;
+        if (duration < flushDelay) {
+            return flushDelay - duration;
+        }
+        return 0;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, run()V > Context: Everywhere, blocks=[BB[SSA:15..16]11 - org.apache.zookeeper.server.SyncRequestProcessor.run()V, BB[SSA:14..14]10 - org.apache.zookeeper.server.SyncRequestProcessor.run()V, BB[SSA:17..17]12 - org.apache.zookeeper.server.SyncRequestProcessor.run()V], numberOfBasicBlocks=3, firstLineNumber=165, lastLineNumber=165, firstMethodNumber=159, lastMethodNumber=225, isFirstLineValid=true, methodSrcCode=
+            // in the ensemble take a snapshot at the same time
+            resetSnapshotStats();
+            lastFlushTime = Time.currentElapsedTime();
+            while (true) {
+                ServerMetrics.getMetrics().SYNC_PROCESSOR_QUEUE_SIZE.add(queuedRequests.size());
+
+                long pollTime = Math.min(zks.getMaxWriteQueuePollTime(), getRemainingDelay());
+                Request si = queuedRequests.poll(pollTime, TimeUnit.MILLISECONDS);
+                if (si == null) {
+                    /* We timed out looking for more writes to batch, go ahead and flush immediately */
+                    flush();
+                    si = queuedRequests.take();
+                }
+
+                if (si == REQUEST_OF_DEATH) {
+                    break;
+                }
+
+                long startProcessTime = Time.currentElapsedTime();
+                ServerMetrics.getMetrics().SYNC_PROCESSOR_QUEUE_TIME.add(startProcessTime - si.syncQueueStartTime);
+
+                // track the number of records written to the log
+                if (!si.isThrottled() && zks.getZKDatabase().append(si)) {
+                    if (shouldSnapshot()) {
+                        resetSnapshotStats();
+                        // roll the log
+                        zks.getZKDatabase().rollLog();
+                        // take a snapshot
+                        if (!snapThreadMutex.tryAcquire()) {
+                            LOG.warn("Too busy to snap, skipping");
+                        } else {
+                            new ZooKeeperThread("Snapshot Thread") {
+                                public void run() {
+                                    try {
+                                        zks.takeSnapshot();
+                                    } catch (Exception e) {
+                                        LOG.warn("Unexpected exception", e);
+                                    } finally {
+                                        snapThreadMutex.release();
+                                    }
+                                }
+                            }.start();
+                        }
+                    }
+                } else if (toFlush.isEmpty()) {
+                    // optimization for read heavy workloads
+                    // iff this is a read or a throttled request(which doesn't need to be written to the disk),
+                    // and there are no pending flushes (writes), then just pass this to the next processor
+                    if (nextProcessor != null) {
+                        nextProcessor.processRequest(si);
+                        if (nextProcessor instanceof Flushable) {
+                            ((Flushable) nextProcessor).flush();
+                        }
+                    }
+                    continue;
+                }
+                toFlush.add(si);
+                if (shouldFlush()) {
+                    flush();
+                }
+                ServerMetrics.getMetrics().SYNC_PROCESS_TIME.add(Time.currentElapsedTime() - startProcessTime);
+            }
+        } catch (Throwable t) {
+            handleException(this.getName(), t);
+        }
+        LOG.info("SyncRequestProcessor exited!");
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, shouldFlush()Z > Context: Everywhere, blocks=[BB[SSA:14..15]6 - org.apache.zookeeper.server.SyncRequestProcessor.shouldFlush()Z, BB[SSA:7..13]5 - org.apache.zookeeper.server.SyncRequestProcessor.shouldFlush()Z, BB[SSA:16..19]7 - org.apache.zookeeper.server.SyncRequestProcessor.shouldFlush()Z, BB[SSA:-1..-2]16 - org.apache.zookeeper.server.SyncRequestProcessor.shouldFlush()Z], numberOfBasicBlocks=4, firstLineNumber=127, lastLineNumber=128, firstMethodNumber=125, lastMethodNumber=131, isFirstLineValid=true, methodSrcCode=
+    private boolean shouldFlush() {
+        long flushDelay = zks.getFlushDelay();
+        long maxBatchSize = zks.getMaxBatchSize();
+        if ((flushDelay > 0) && (getRemainingDelay() == 0)) {
+            return true;
+        }
+        return (maxBatchSize > 0) && (toFlush.size() >= maxBatchSize);
+    }
+}

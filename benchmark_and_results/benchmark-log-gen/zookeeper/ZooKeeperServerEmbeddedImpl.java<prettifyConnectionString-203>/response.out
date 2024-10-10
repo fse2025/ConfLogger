@@ -1,0 +1,14 @@
+```java
+if (confAddress != null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'confAddress' is set. Host string: " + confAddress.getHostString() + ", Bound port: " + boundPort);
+    // ConfLogger Inserted End
+    return confAddress.getHostString()
+        .replace("0.0.0.0", "localhost")
+        .replace("0:0:0:0:0:0:0:0", "localhost")
+        + ":" + boundPort;
+}
+// ConfLogger Skipped
+throw new IllegalStateException("No client address is configured");
+}
+```

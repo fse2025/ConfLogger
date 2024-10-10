@@ -1,0 +1,66 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SecurityUtil.java	methodSinagture:	org.apache.hadoop.security.SecurityUtil.replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	233:238
+blockLines:	235:-1
+paras:	null
+TaintedStat:	NORMAL replacePattern:conditional branch(eq, to iindex=14) 2,4 Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/http/HttpServer2$Builder, build()Lorg/apache/hadoop/http/HttpServer2; > Context: Everywhere[57]41 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 29,39 @116 exception:40
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/http/HttpServer2$Builder, build()Lorg/apache/hadoop/http/HttpServer2; > Context: Everywhere[57]41 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 29,39 @116 exception:40
+NORMAL build:44 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 41,42 @121 exception:43 Node: < Application, Lorg/apache/hadoop/http/HttpServer2$Builder, build()Lorg/apache/hadoop/http/HttpServer2; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/http/HttpServer2$Builder, build()Lorg/apache/hadoop/http/HttpServer2; > Context: Everywhere[59]44 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 41,42 @121 exception:43
+NORMAL build:conditional branch(ne, to iindex=72) 44,10 Node: < Application, Lorg/apache/hadoop/http/HttpServer2$Builder, build()Lorg/apache/hadoop/http/HttpServer2; > Context: Everywhere
+NORMAL build:46 = getfield < Application, Lorg/apache/hadoop/http/HttpServer2$Builder, hostName, <Application,Ljava/lang/String> > 1 Node: < Application, Lorg/apache/hadoop/http/HttpServer2$Builder, build()Lorg/apache/hadoop/http/HttpServer2; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/http/HttpServer2$Builder, build()Lorg/apache/hadoop/http/HttpServer2; > Context: Everywhere[71]invokestatic < Application, Lorg/apache/hadoop/http/HttpServer2, access$200(Lorg/apache/hadoop/http/HttpServer2;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > 26,45,46,47,48 @144 exception:49 v46
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/http/HttpServer2, access$200(Lorg/apache/hadoop/http/HttpServer2;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/http/HttpServer2, access$200(Lorg/apache/hadoop/http/HttpServer2;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[5]invokespecial < Application, Lorg/apache/hadoop/http/HttpServer2, initSpnego(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > 1,2,3,4,5 @6 exception:7 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/http/HttpServer2, initSpnego(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/http/HttpServer2, initSpnego(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[19]17 = invokestatic < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 10,3 @37 exception:16 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[21]16 = invokestatic < Application, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 5,2 @30 exception:15 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v2
+NORMAL replacePattern:conditional branch(eq, to iindex=14) 2,4 Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    String fqdn = hostname;
+    if (fqdn == null || fqdn.isEmpty() || fqdn.equals("0.0.0.0")) {
+      fqdn = getLocalHostName(null);
+    }
+    return components[0] + "/" +
+        StringUtils.toLowerCase(fqdn) + "@" + components[2];
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/net/InetAddress;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:31..31]14 - org.apache.hadoop.security.SecurityUtil.getServerPrincipal(Ljava/lang/String;Ljava/net/InetAddress;)Ljava/lang/String;, BB[SSA:27..30]13 - org.apache.hadoop.security.SecurityUtil.getServerPrincipal(Ljava/lang/String;Ljava/net/InetAddress;)Ljava/lang/String;, BB[SSA:32..32]15 - org.apache.hadoop.security.SecurityUtil.getServerPrincipal(Ljava/lang/String;Ljava/net/InetAddress;)Ljava/lang/String;, BB[SSA:-1..-2]16 - org.apache.hadoop.security.SecurityUtil.getServerPrincipal(Ljava/lang/String;Ljava/net/InetAddress;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=222, lastLineNumber=222, firstMethodNumber=212, lastMethodNumber=222, isFirstLineValid=true, methodSrcCode=
+      InetAddress addr) throws IOException {
+    String[] components = getComponents(principalConfig);
+    if (components == null || components.length != 3
+        || !components[1].equals(HOSTNAME_PATTERN)) {
+      return principalConfig;
+    } else {
+      if (addr == null) {
+        throw new IOException("Can't replace " + HOSTNAME_PATTERN
+            + " pattern since client address is null");
+      }
+      return replacePattern(components, domainNameResolver.getHostnameByIP(addr));
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:19..21]9 - org.apache.hadoop.security.SecurityUtil.getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:15..16]7 - org.apache.hadoop.security.SecurityUtil.getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:22..22]10 - org.apache.hadoop.security.SecurityUtil.getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]11 - org.apache.hadoop.security.SecurityUtil.getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=188, lastLineNumber=191, firstMethodNumber=185, lastMethodNumber=191, isFirstLineValid=true, methodSrcCode=
+      String hostname) throws IOException {
+    String[] components = getComponents(principalConfig);
+    if (components == null || components.length != 3
+        || !components[1].equals(HOSTNAME_PATTERN)) {
+      return principalConfig;
+    } else {
+      return replacePattern(components, hostname);
+    }
+}

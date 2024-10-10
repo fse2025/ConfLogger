@@ -1,0 +1,21 @@
+```java
+String password = null;
+try {
+    char[] passchars = conf.getPassword(alias);
+    if (passchars != null) {
+        // ConfLogger Inserted Start
+        logger.debug("Password retrieved successfully for alias: " + alias);
+        // ConfLogger Inserted End
+        password = new String(passchars);
+    } else {
+        // ConfLogger Inserted Start
+        logger.warn("Password characters are null for alias: " + alias);
+        // ConfLogger Inserted End
+    }
+} catch (IOException ioe) {
+    // ConfLogger Skipped
+    password = null;
+}
+return password;
+}
+```

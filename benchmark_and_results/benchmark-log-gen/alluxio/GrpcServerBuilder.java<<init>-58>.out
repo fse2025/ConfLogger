@@ -1,0 +1,45 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	GrpcServerBuilder.java	methodSinagture:	alluxio.grpc.GrpcServerBuilder.<init>(Lalluxio/grpc/GrpcServerAddress;Lalluxio/security/authentication/AuthenticationServer;Lalluxio/conf/AlluxioConfiguration;)V	methodLines:	58:77
+blockLines:	64:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=35) 20,21 Node: < Application, Lalluxio/grpc/GrpcServerBuilder, <init>(Lalluxio/grpc/GrpcServerAddress;Lalluxio/security/authentication/AuthenticationServer;Lalluxio/conf/AlluxioConfiguration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/grpc/GrpcServerBuilder, <init>(Lalluxio/grpc/GrpcServerAddress;Lalluxio/security/authentication/AuthenticationServer;Lalluxio/conf/AlluxioConfiguration;)V > Context: Everywhere[25]20 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 4,18 @55 exception:19
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/grpc/GrpcServerBuilder, <init>(Lalluxio/grpc/GrpcServerAddress;Lalluxio/security/authentication/AuthenticationServer;Lalluxio/conf/AlluxioConfiguration;)V > Context: Everywhere[25]20 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 4,18 @55 exception:19
+NORMAL <init>:conditional branch(eq, to iindex=35) 20,21 Node: < Application, Lalluxio/grpc/GrpcServerBuilder, <init>(Lalluxio/grpc/GrpcServerAddress;Lalluxio/security/authentication/AuthenticationServer;Lalluxio/conf/AlluxioConfiguration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private GrpcServerBuilder(GrpcServerAddress serverAddress,
+      AuthenticationServer authenticationServer, AlluxioConfiguration conf) {
+    mNettyServerBuilder = NettyServerBuilder.forAddress(serverAddress.getSocketAddress());
+    mConfiguration = conf;
+    mGrpcReflectionEnabled = conf.getBoolean(PropertyKey.GRPC_REFLECTION_ENABLED);
+
+    if (conf.getBoolean(alluxio.conf.PropertyKey.NETWORK_TLS_ENABLED)) {
+      sslContext(SslContextProvider.Factory.create(mConfiguration).getServerSSLContext());
+    }
+
+    if (SecurityUtils.isAuthenticationEnabled(mConfiguration)) {
+      if (authenticationServer == null) {
+        authenticationServer =
+            new DefaultAuthenticationServer(serverAddress.getHostName(), mConfiguration);
+      }
+      addService(new GrpcService(authenticationServer).disableAuthentication()
+          .withCloseable(authenticationServer));
+    }
+    mAuthenticationServer = authenticationServer;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/grpc/GrpcServerBuilder, forAddress(Lalluxio/grpc/GrpcServerAddress;Lalluxio/conf/AlluxioConfiguration;)Lalluxio/grpc/GrpcServerBuilder; > Context: Everywhere, blocks=[BB[SSA:1..5]2 - alluxio.grpc.GrpcServerBuilder.forAddress(Lalluxio/grpc/GrpcServerAddress;Lalluxio/conf/AlluxioConfiguration;)Lalluxio/grpc/GrpcServerBuilder;, BB[SSA:0..0]1 - alluxio.grpc.GrpcServerBuilder.forAddress(Lalluxio/grpc/GrpcServerAddress;Lalluxio/conf/AlluxioConfiguration;)Lalluxio/grpc/GrpcServerBuilder;, BB[SSA:6..6]3 - alluxio.grpc.GrpcServerBuilder.forAddress(Lalluxio/grpc/GrpcServerAddress;Lalluxio/conf/AlluxioConfiguration;)Lalluxio/grpc/GrpcServerBuilder;, BB[SSA:-1..-2]4 - alluxio.grpc.GrpcServerBuilder.forAddress(Lalluxio/grpc/GrpcServerAddress;Lalluxio/conf/AlluxioConfiguration;)Lalluxio/grpc/GrpcServerBuilder;], numberOfBasicBlocks=4, firstLineNumber=88, lastLineNumber=88, firstMethodNumber=87, lastMethodNumber=88, isFirstLineValid=true, methodSrcCode=
+      AlluxioConfiguration conf) {
+    return new GrpcServerBuilder(serverAddress, null, conf);
+  }
+}

@@ -1,0 +1,51 @@
+<code-whole>
+if (!COLLECT_ON_EXIT.contains(CommonUtils.PROCESS_TYPE.get())) {
+LOG.info("Process type is {}, skip dumping metrics and thread stacks",
+CommonUtils.PROCESS_TYPE.get());
+return;
+}
+if (Configuration.getBoolean(PropertyKey.EXIT_COLLECT_INFO)) {
+synchronized (ProcessUtils.class) {
+if (!sInfoDumpOnExitCheck) {
+sInfoDumpOnExitCheck = true;
+LOG.info("Logging metrics and jstack on {} exit...", CommonUtils.PROCESS_TYPE.get());
+try {
+String logsDir = Configuration.getString(PropertyKey.LOGS_DIR);
+String outputFilePrefix = "alluxio-"
++ CommonUtils.PROCESS_TYPE.get().toString().toLowerCase() + "-exit";
+dumpMetrics(logsDir, outputFilePrefix);
+dumpStacks(logsDir, outputFilePrefix);
+} catch (Throwable t) {
+LOG.error("Failed to dump metrics and jstacks", t);
+}
+}
+}
+} else {
+LOG.info("Not logging metrics and jstack on exit, set {}=true to enable this feature",
+PropertyKey.EXIT_COLLECT_INFO.getName());
+}
+}
+</code-whole>
+
+<code-specified>
+if (Configuration.getBoolean(PropertyKey.EXIT_COLLECT_INFO)) {
+synchronized (ProcessUtils.class) {
+if (!sInfoDumpOnExitCheck) {
+sInfoDumpOnExitCheck = true;
+LOG.info("Logging metrics and jstack on {} exit...", CommonUtils.PROCESS_TYPE.get());
+try {
+String logsDir = Configuration.getString(PropertyKey.LOGS_DIR);
+String outputFilePrefix = "alluxio-"
++ CommonUtils.PROCESS_TYPE.get().toString().toLowerCase() + "-exit";
+dumpMetrics(logsDir, outputFilePrefix);
+dumpStacks(logsDir, outputFilePrefix);
+} catch (Throwable t) {
+LOG.error("Failed to dump metrics and jstacks", t);
+}
+}
+}
+} else {
+LOG.info("Not logging metrics and jstack on exit, set {}=true to enable this feature",
+PropertyKey.EXIT_COLLECT_INFO.getName());
+}
+</code-specified>

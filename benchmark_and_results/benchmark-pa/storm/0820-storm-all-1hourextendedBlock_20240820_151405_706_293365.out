@@ -1,0 +1,110 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	GrouperFactory.java	methodSinagture:	org.apache.storm.daemon.GrouperFactory.mkGrouper(Lorg/apache/storm/task/WorkerTopologyContext;Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/tuple/Fields;Lorg/apache/storm/generated/Grouping;Ljava/util/List;Ljava/util/Map;)Lorg/apache/storm/grouping/LoadAwareCustomStreamGrouping;	methodLines:	62:119
+blockLines:	64:-1
+paras:	topology.disable.loadaware.messaging
+TaintedStat:	NORMAL mkGrouper:conditional branch(eq, to iindex=18) 13,16 Node: < Application, Lorg/apache/storm/daemon/GrouperFactory, mkGrouper(Lorg/apache/storm/task/WorkerTopologyContext;Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/tuple/Fields;Lorg/apache/storm/generated/Grouping;Ljava/util/List;Ljava/util/Map;)Lorg/apache/storm/grouping/LoadAwareCustomStreamGrouping; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/GrouperFactory, mkGrouper(Lorg/apache/storm/task/WorkerTopologyContext;Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/tuple/Fields;Lorg/apache/storm/generated/Grouping;Ljava/util/List;Ljava/util/Map;)Lorg/apache/storm/grouping/LoadAwareCustomStreamGrouping; > Context: Everywhere[7]16 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 7,14 @15 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/GrouperFactory, mkGrouper(Lorg/apache/storm/task/WorkerTopologyContext;Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/tuple/Fields;Lorg/apache/storm/generated/Grouping;Ljava/util/List;Ljava/util/Map;)Lorg/apache/storm/grouping/LoadAwareCustomStreamGrouping; > Context: Everywhere[7]16 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 7,14 @15 exception:15
+NORMAL mkGrouper:conditional branch(eq, to iindex=18) 13,16 Node: < Application, Lorg/apache/storm/daemon/GrouperFactory, mkGrouper(Lorg/apache/storm/task/WorkerTopologyContext;Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/tuple/Fields;Lorg/apache/storm/generated/Grouping;Ljava/util/List;Ljava/util/Map;)Lorg/apache/storm/grouping/LoadAwareCustomStreamGrouping; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                                          Map<String, Object> topoConf) {
+        List<Integer> targetTasks = Ordering.natural().sortedCopy(unsortedTargetTasks);
+        final boolean isNotLoadAware = (null != topoConf.get(Config.TOPOLOGY_DISABLE_LOADAWARE_MESSAGING) && (boolean) topoConf
+            .get(Config.TOPOLOGY_DISABLE_LOADAWARE_MESSAGING));
+        CustomStreamGrouping result = null;
+        switch (Thrift.groupingType(thriftGrouping)) {
+            case FIELDS:
+                if (Thrift.isGlobalGrouping(thriftGrouping)) {
+                    result = new GlobalGrouper();
+                } else {
+                    result = new FieldsGrouper(outFields, thriftGrouping);
+                }
+                break;
+            case SHUFFLE:
+                if (isNotLoadAware) {
+                    result = new ShuffleGrouping();
+                } else {
+                    result = new LoadAwareShuffleGrouping();
+                }
+                break;
+            case ALL:
+                result = new AllGrouper();
+                break;
+            case LOCAL_OR_SHUFFLE:
+                // Prefer local tasks as target tasks if possible
+                Set<Integer> sameTasks = Sets.intersection(Sets.newHashSet(targetTasks), Sets.newHashSet(context.getThisWorkerTasks()));
+                targetTasks = (sameTasks.isEmpty()) ? targetTasks : new ArrayList<>(sameTasks);
+                if (isNotLoadAware) {
+                    result = new ShuffleGrouping();
+                } else {
+                    result = new LoadAwareShuffleGrouping();
+                }
+                break;
+            case NONE:
+                result = new NoneGrouper();
+                break;
+            case CUSTOM_OBJECT:
+                result = (CustomStreamGrouping) Thrift.instantiateJavaObject(thriftGrouping.get_custom_object());
+                break;
+            case CUSTOM_SERIALIZED:
+                result = Utils.javaDeserialize(thriftGrouping.get_custom_serialized(), CustomStreamGrouping.class);
+                break;
+            case DIRECT:
+                result = DIRECT;
+                break;
+            default:
+                result = null;
+                break;
+        }
+
+        if (null != result) {
+            result.prepare(context, new GlobalStreamId(componentId, streamId), targetTasks);
+        }
+
+        if (result instanceof LoadAwareCustomStreamGrouping) {
+            return (LoadAwareCustomStreamGrouping) result;
+        } else {
+            return new BasicLoadAwareCustomStreamGrouping(result);
+        }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/Executor, outboundComponents(Lorg/apache/storm/task/WorkerTopologyContext;Ljava/lang/String;Ljava/util/Map;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:60..68]30 - org.apache.storm.executor.Executor.outboundComponents(Lorg/apache/storm/task/WorkerTopologyContext;Ljava/lang/String;Ljava/util/Map;)Ljava/util/Map;, BB[SSA:56..59]29 - org.apache.storm.executor.Executor.outboundComponents(Lorg/apache/storm/task/WorkerTopologyContext;Ljava/lang/String;Ljava/util/Map;)Ljava/util/Map;, BB[SSA:69..73]31 - org.apache.storm.executor.Executor.outboundComponents(Lorg/apache/storm/task/WorkerTopologyContext;Ljava/lang/String;Ljava/util/Map;)Ljava/util/Map;, BB[SSA:-1..-2]53 - org.apache.storm.executor.Executor.outboundComponents(Lorg/apache/storm/task/WorkerTopologyContext;Ljava/lang/String;Ljava/util/Map;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=566, lastLineNumber=570, firstMethodNumber=555, lastMethodNumber=583, isFirstLineValid=true, methodSrcCode=
+        WorkerTopologyContext workerTopologyContext, String componentId, Map<String, Object> topoConf) {
+        Map<String, Map<String, LoadAwareCustomStreamGrouping>> ret = new HashMap<>();
+
+        Map<String, Map<String, Grouping>> outputGroupings = workerTopologyContext.getTargets(componentId);
+        for (Map.Entry<String, Map<String, Grouping>> entry : outputGroupings.entrySet()) {
+            String streamId = entry.getKey();
+            Map<String, Grouping> componentGrouping = entry.getValue();
+            Fields outFields = workerTopologyContext.getComponentOutputFields(componentId, streamId);
+            Map<String, LoadAwareCustomStreamGrouping> componentGrouper = new HashMap<String, LoadAwareCustomStreamGrouping>();
+            for (Map.Entry<String, Grouping> cg : componentGrouping.entrySet()) {
+                String component = cg.getKey();
+                Grouping grouping = cg.getValue();
+                List<Integer> outTasks = workerTopologyContext.getComponentTasks(component);
+                LoadAwareCustomStreamGrouping grouper = GrouperFactory.mkGrouper(
+                    workerTopologyContext, componentId, streamId, outFields, grouping, outTasks, topoConf);
+                componentGrouper.put(component, grouper);
+            }
+            if (componentGrouper.size() > 0) {
+                ret.put(streamId, componentGrouper);
+            }
+        }
+
+        for (String stream : workerTopologyContext.getComponentCommon(componentId).get_streams().keySet()) {
+            if (!ret.containsKey(stream)) {
+                ret.put(stream, null);
+            }
+        }
+
+        return ret;
+    }
+}

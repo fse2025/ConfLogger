@@ -1,0 +1,156 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Executor.java	methodSinagture:	org.apache.storm.executor.Executor.setupTicks(Z)V	methodLines:	502:532
+blockLines:	504:-1
+paras:	topology.tick.tuple.freq.secs
+TaintedStat:	NORMAL setupTicks:conditional branch(eq, to iindex=63) 10,8 Node: < Application, Lorg/apache/storm/executor/Executor, setupTicks(Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/executor/Executor, setupTicks(Z)V > Context: Everywhere[3]7 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 4,5 @7 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/executor/Executor, setupTicks(Z)V > Context: Everywhere[3]7 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 4,5 @7 exception:6
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/executor/Executor, setupTicks(Z)V > Context: Everywhere[5]10 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 7,8 @13 exception:9 v7
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:return 2 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/executor/Executor, setupTicks(Z)V > Context: Everywhere[5]10 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 7,8 @13 exception:9
+NORMAL setupTicks:conditional branch(eq, to iindex=63) 10,8 Node: < Application, Lorg/apache/storm/executor/Executor, setupTicks(Z)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    protected void setupTicks(boolean isSpout) {
+        final Integer tickTimeSecs = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_TICK_TUPLE_FREQ_SECS), null);
+        if (tickTimeSecs != null) {
+            boolean enableMessageTimeout = (Boolean) topoConf.get(Config.TOPOLOGY_ENABLE_MESSAGE_TIMEOUTS);
+            boolean isAcker = Acker.ACKER_COMPONENT_ID.equals(componentId);
+            if ((!isAcker && Utils.isSystemId(componentId))
+                || (!enableMessageTimeout && isSpout)
+                || (!enableMessageTimeout && isAcker)) {
+                LOG.info("Timeouts disabled for executor {}:{}", componentId, executorId);
+            } else {
+                StormTimer timerTask = workerData.getUserTimer();
+                timerTask.scheduleRecurring(tickTimeSecs, tickTimeSecs,
+                    () -> {
+                        TupleImpl tuple = new TupleImpl(workerTopologyContext, new Values(tickTimeSecs),
+                                                        Constants.SYSTEM_COMPONENT_ID,
+                                                        (int) Constants.SYSTEM_TASK_ID,
+                                                        Constants.SYSTEM_TICK_STREAM_ID);
+                        AddressedTuple tickTuple = new AddressedTuple(AddressedTuple.BROADCAST_DEST, tuple);
+                        try {
+                            receiveQueue.publish(tickTuple);
+                            receiveQueue.flush(); // avoid buffering
+                        } catch (InterruptedException e) {
+                            LOG.warn("Thread interrupted when emitting tick tuple. Setting interrupt flag.");
+                            Thread.currentThread().interrupt();
+                            return;
+                        }
+                    }
+                );
+            }
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/spout/SpoutExecutor, init(Ljava/util/ArrayList;I)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=97, lastMethodNumber=148, isFirstLineValid=true, methodSrcCode=
+    public void init(final ArrayList<Task> idToTask, int idToTaskBase) throws InterruptedException {
+        this.threadId = Thread.currentThread().getId();
+        executorTransfer.initLocalRecvQueues();
+        workerReady.await();
+        while (!stormActive.get()) {
+            //Topology may be deployed in deactivated mode, wait for activation
+            Utils.sleepNoSimulation(100);
+        }
+
+        LOG.info("Opening spout {}:{}", componentId, taskIds);
+        this.idToTask = idToTask;
+        this.maxSpoutPending = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_MAX_SPOUT_PENDING), 0) * idToTask.size();
+        this.spouts = new ArrayList<>();
+        for (Task task : idToTask) {
+            if (task != null) {
+                this.spouts.add((ISpout) task.getTaskObject());
+            }
+        }
+        this.pending = new RotatingMap<>(2, new RotatingMap.ExpiredCallback<Long, TupleInfo>() {
+            @Override
+            public void expire(Long key, TupleInfo tupleInfo) {
+                Long timeDelta = null;
+                if (tupleInfo.getTimestamp() != 0) {
+                    timeDelta = Time.deltaMs(tupleInfo.getTimestamp());
+                }
+                failSpoutMsg(SpoutExecutor.this, idToTask.get(tupleInfo.getTaskId() - idToTaskBase), timeDelta, tupleInfo, "TIMEOUT");
+            }
+        });
+
+        this.outputCollectors = new ArrayList<>();
+        for (int i = 0; i < idToTask.size(); ++i) {
+            Task taskData = idToTask.get(i);
+            if (taskData == null) {
+                continue;
+            }
+            ISpout spoutObject = (ISpout) taskData.getTaskObject();
+            spoutOutputCollector = new SpoutOutputCollectorImpl(
+                spoutObject, this, taskData, emittedCount,
+                hasAckers, rand, hasEventLoggers, isDebug, pending);
+            SpoutOutputCollector outputCollector = new SpoutOutputCollector(spoutOutputCollector);
+            this.outputCollectors.add(outputCollector);
+
+            if (spoutObject instanceof ICredentialsListener) {
+                ((ICredentialsListener) spoutObject).setCredentials(credentials);
+            }
+            spoutObject.open(topoConf, taskData.getUserContext(), outputCollector);
+        }
+        openOrPrepareWasCalled.set(true);
+        LOG.info("Opened spout {}:{}", componentId, taskIds);
+        setupTicks(true);
+        setupMetrics();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/bolt/BoltExecutor, init(Ljava/util/ArrayList;I)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=94, lastMethodNumber=134, isFirstLineValid=true, methodSrcCode=
+    public void init(ArrayList<Task> idToTask, int idToTaskBase) throws InterruptedException {
+        executorTransfer.initLocalRecvQueues();
+        workerReady.await();
+        while (!stormActive.get()) {
+            //Topology may be deployed in deactivated mode, wait for activation
+            Utils.sleepNoSimulation(100);
+        }
+
+        LOG.info("Preparing bolt {}:{}", componentId, getTaskIds());
+        for (Task taskData : idToTask) {
+            if (taskData == null) {
+                //This happens if the min id is too small
+                continue;
+            }
+            IBolt boltObject = (IBolt) taskData.getTaskObject();
+            TopologyContext userContext = taskData.getUserContext();
+            if (boltObject instanceof ICredentialsListener) {
+                ((ICredentialsListener) boltObject).setCredentials(credentials);
+            }
+            if (Constants.SYSTEM_COMPONENT_ID.equals(componentId)) {
+                BuiltinMetricsUtil.registerIconnectionServerMetric(workerData.getReceiver(), topoConf, userContext);
+
+                // add any autocredential expiry metrics from the worker
+                if (workerData.getAutoCredentials() != null) {
+                    for (IAutoCredentials autoCredential : workerData.getAutoCredentials()) {
+                        if (autoCredential instanceof IMetricsRegistrant) {
+                            IMetricsRegistrant registrant = (IMetricsRegistrant) autoCredential;
+                            registrant.registerMetrics(userContext, topoConf);
+                        }
+                    }
+                }
+            }
+
+            this.outputCollector = new BoltOutputCollectorImpl(this, taskData, rand, hasEventLoggers, ackingEnabled, isDebug);
+            boltObject.prepare(topoConf, userContext, new OutputCollector(outputCollector));
+        }
+        openOrPrepareWasCalled.set(true);
+        LOG.info("Prepared bolt {}:{}", componentId, taskIds);
+        setupTicks(false);
+        setupMetrics();
+    }
+
+}

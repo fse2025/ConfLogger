@@ -1,0 +1,28 @@
+```java
+if (!(metricsLog instanceof Log4JLogger)) {
+    // ConfLogger Skipped
+    LOG.warn("Metrics logging will not be async since " + "the logger is not log4j");
+    return;
+}
+org.apache.log4j.Logger logger = ((Log4JLogger) metricsLog).getLogger();
+logger.setAdditivity(false); // Don't pollute actual logs with metrics dump
+
+@SuppressWarnings("unchecked")
+List<Appender> appenders = Collections.list(logger.getAllAppenders());
+// failsafe against trying to async it more than once
+if (!appenders.isEmpty() && !(appenders.get(0) instanceof AsyncAppender)) {
+    AsyncAppender asyncAppender = new AsyncAppender();
+    // change logger to have an async appender containing all the
+    // previously configured appenders
+    for (Appender appender : appenders) {
+        logger.removeAppender(appender);
+        asyncAppender.addAppender(appender);
+    }
+    logger.addAppender(asyncAppender);
+    // ConfLogger Inserted Start
+    logger.info("AsyncAppender added to logger. Configuration: appenders size = " + appenders.size());
+    // ConfLogger Inserted End
+}
+}
+}
+```

@@ -1,0 +1,14 @@
+```java
+Configuration sslConf = new Configuration(false);
+
+sslConf.addResource(YarnConfiguration.YARN_SSL_SERVER_RESOURCE_DEFAULT);
+if (conf != null) {
+    // ConfLogger Inserted Start
+    logger.info("Adding resource from provided configuration: conf = " + conf);
+    // ConfLogger Inserted End
+    sslConf.addResource(conf);
+}
+boolean needsClientAuth = YarnConfiguration.YARN_SSL_CLIENT_HTTPS_NEED_AUTH_DEFAULT;
+return builder
+    .needsClientAuth(needsClientAuth);
+```

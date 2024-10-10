@@ -1,0 +1,17 @@
+```java
+if (flowName == null) {
+    return null;
+}
+// remove UUID inside flowname if present
+flowName = removeUUID(flowName);
+// resize flowname
+int length = conf.getInt(YarnConfiguration.FLOW_NAME_MAX_SIZE,
+YarnConfiguration.FLOW_NAME_DEFAULT_MAX_SIZE);
+if (length <= 0) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'YarnConfiguration.FLOW_NAME_MAX_SIZE' has a non-positive value: " + length + ". Using the original flowName: " + flowName);
+    // ConfLogger Inserted End
+    return flowName;
+}
+return StringUtils.substring(flowName, 0, length);
+```

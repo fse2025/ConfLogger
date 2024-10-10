@@ -1,0 +1,126 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ExtensionFactoryRegistry.java	methodSinagture:	alluxio.extensions.ExtensionFactoryRegistry.findAllWithRecorder(Ljava/lang/String;Lalluxio/conf/AlluxioConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List;	methodLines:	136:186
+blockLines:	137:-1
+paras:	null
+TaintedStat:	NORMAL findAllWithRecorder:conditional branch(eq, to iindex=5) 2,6 Node: < Application, Lalluxio/extensions/ExtensionFactoryRegistry, findAllWithRecorder(Ljava/lang/String;Lalluxio/conf/AlluxioConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/underfs/UnderFileSystem$Factory, createForRoot(Lalluxio/conf/AlluxioConfiguration;)Lalluxio/underfs/UnderFileSystem; > Context: Everywhere[2]5 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 1,3 @4 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/underfs/UnderFileSystem$Factory, createForRoot(Lalluxio/conf/AlluxioConfiguration;)Lalluxio/underfs/UnderFileSystem; > Context: Everywhere[2]5 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 1,3 @4 exception:4
+PARAM_CALLER:Node: < Application, Lalluxio/underfs/UnderFileSystem$Factory, createForRoot(Lalluxio/conf/AlluxioConfiguration;)Lalluxio/underfs/UnderFileSystem; > Context: Everywhere[20]17 = invokestatic < Application, Lalluxio/underfs/UnderFileSystem$Factory, create(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;)Lalluxio/underfs/UnderFileSystem; > 5,15 @44 exception:16 v5
+PARAM_CALLEE:Node: < Application, Lalluxio/underfs/UnderFileSystem$Factory, create(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;)Lalluxio/underfs/UnderFileSystem; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lalluxio/underfs/UnderFileSystem$Factory, create(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;)Lalluxio/underfs/UnderFileSystem; > Context: Everywhere[3]7 = invokestatic < Application, Lalluxio/underfs/UnderFileSystem$Factory, createWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Lalluxio/underfs/UnderFileSystem; > 1,2,5 @5 exception:6 v1
+PARAM_CALLEE:Node: < Application, Lalluxio/underfs/UnderFileSystem$Factory, createWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Lalluxio/underfs/UnderFileSystem; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lalluxio/underfs/UnderFileSystem$Factory, createWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Lalluxio/underfs/UnderFileSystem; > Context: Everywhere[3]6 = invokestatic < Application, Lalluxio/underfs/UnderFileSystemFactoryRegistry, findAllWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List; > 1,2,3 @3 exception:5 v1
+PARAM_CALLEE:Node: < Application, Lalluxio/underfs/UnderFileSystemFactoryRegistry, findAllWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lalluxio/underfs/UnderFileSystemFactoryRegistry, findAllWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List; > Context: Everywhere[4]7 = invokevirtual < Application, Lalluxio/extensions/ExtensionFactoryRegistry, findAllWithRecorder(Ljava/lang/String;Lalluxio/conf/AlluxioConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List; > 5,1,2,3 @6 exception:6 v1
+PARAM_CALLEE:Node: < Application, Lalluxio/extensions/ExtensionFactoryRegistry, findAllWithRecorder(Ljava/lang/String;Lalluxio/conf/AlluxioConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List; > Context: Everywhere v2
+NORMAL findAllWithRecorder:conditional branch(eq, to iindex=5) 2,6 Node: < Application, Lalluxio/extensions/ExtensionFactoryRegistry, findAllWithRecorder(Ljava/lang/String;Lalluxio/conf/AlluxioConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public List<T> findAllWithRecorder(String path, S conf, Recorder recorder) {
+    Preconditions.checkArgument(path != null, "path may not be null");
+
+    List<T> eligibleFactories = scanRegistered(path, conf);
+    if (!eligibleFactories.isEmpty()) {
+      LOG.debug("Find {} eligible items from registered factories for path {}",
+          eligibleFactories.size(), path);
+      return eligibleFactories;
+    }
+
+    List<T> factories = new ArrayList<>(mFactories);
+    String libDir = PathUtils.concatPath(conf.getString(PropertyKey.HOME), "lib");
+    String extensionDir = conf.getString(PropertyKey.EXTENSIONS_DIR);
+    scanLibs(factories, libDir);
+    recorder.record("Loaded {} factory core jars from {}", factories.size(), libDir);
+    scanExtensions(factories, extensionDir);
+    recorder.record("Loaded extension jars from {}.%n"
+        + "The total number of loaded factory core jars is {}", extensionDir, factories.size());
+
+    if (conf.isSetByUser(PropertyKey.UNDERFS_VERSION)) {
+      recorder.record("alluxio.underfs.version is set by user, target version is {}",
+          conf.getString(PropertyKey.UNDERFS_VERSION));
+    } else {
+      recorder.record("alluxio.underfs.version is not set by user");
+    }
+
+    for (T factory : factories) {
+      // if `getVersion` returns null set the version to "unknown"
+      String version = UNKNOWN_VERSION;
+      if (factory instanceof UnderFileSystemFactory) {
+        version = Optional.ofNullable(((UnderFileSystemFactory) factory)
+            .getVersion()).orElse(UNKNOWN_VERSION);
+      }
+      if (factory.supportsPath(path, conf)) {
+        String message =
+            String.format("Adding factory %s of version %s which supports path %s",
+                factory.getClass().getSimpleName(), version, path);
+        recorder.record(message);
+        LOG.debug(message);
+        eligibleFactories.add(factory);
+      } else {
+        recorder.record("Factory implementation {} of version {} "
+            + "isn't eligible for path {}", factory.getClass().getSimpleName(), version, path);
+      }
+    }
+    if (eligibleFactories.isEmpty()) {
+      String message = String.format("No factory implementation supports the path %s", path);
+      recorder.record(message);
+      LOG.warn(message);
+    }
+    return eligibleFactories;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/underfs/UnderFileSystemFactoryRegistry, getSupportedVersions(Ljava/lang/String;Lalluxio/conf/AlluxioConfiguration;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:16..16]8 - alluxio.underfs.UnderFileSystemFactoryRegistry.getSupportedVersions(Ljava/lang/String;Lalluxio/conf/AlluxioConfiguration;)Ljava/util/List;, BB[SSA:14..15]7 - alluxio.underfs.UnderFileSystemFactoryRegistry.getSupportedVersions(Ljava/lang/String;Lalluxio/conf/AlluxioConfiguration;)Ljava/util/List;, BB[SSA:17..18]9 - alluxio.underfs.UnderFileSystemFactoryRegistry.getSupportedVersions(Ljava/lang/String;Lalluxio/conf/AlluxioConfiguration;)Ljava/util/List;, BB[SSA:-1..-2]25 - alluxio.underfs.UnderFileSystemFactoryRegistry.getSupportedVersions(Ljava/lang/String;Lalluxio/conf/AlluxioConfiguration;)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=157, lastLineNumber=159, firstMethodNumber=151, lastMethodNumber=165, isFirstLineValid=true, methodSrcCode=
+    // copy properties to not modify the original conf.
+    InstancedConfiguration confCopy = new InstancedConfiguration(ufsConf.copyProperties());
+    // unset the configuration to make sure any supported factories for the path are returned.
+    confCopy.unset(PropertyKey.UNDERFS_VERSION);
+    // Check if any versioned factory supports the default configuration
+    List<UnderFileSystemFactory> factories = sRegistryInstance
+        .findAllWithRecorder(path, UnderFileSystemConfiguration.defaults(confCopy),
+             new Recorder());
+    List<String> supportedVersions = new ArrayList<>();
+    for (UnderFileSystemFactory factory : factories) {
+      if (!factory.getVersion().isEmpty()) {
+        supportedVersions.add(factory.getVersion());
+      }
+    }
+    return supportedVersions;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/underfs/UnderFileSystemFactoryRegistry, findAllWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - alluxio.underfs.UnderFileSystemFactoryRegistry.findAllWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List;, BB[SSA:-1..-2]0 - alluxio.underfs.UnderFileSystemFactoryRegistry.findAllWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List;, BB[SSA:5..7]2 - alluxio.underfs.UnderFileSystemFactoryRegistry.findAllWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List;, BB[SSA:-1..-2]38 - alluxio.underfs.UnderFileSystemFactoryRegistry.findAllWithRecorder(Ljava/lang/String;Lalluxio/underfs/UnderFileSystemConfiguration;Lalluxio/recorder/Recorder;)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=113, lastLineNumber=116, firstMethodNumber=113, lastMethodNumber=138, isFirstLineValid=false, methodSrcCode=
+      UnderFileSystemConfiguration ufsConf, Recorder recorder) {
+    List<UnderFileSystemFactory> eligibleFactories =
+        sRegistryInstance.findAllWithRecorder(path, ufsConf, recorder);
+    if (eligibleFactories.isEmpty() && ufsConf.isSet(PropertyKey.UNDERFS_VERSION)) {
+      String configuredVersion = ufsConf.getString(PropertyKey.UNDERFS_VERSION);
+      List<String> supportedVersions = getSupportedVersions(path, ufsConf);
+      if (!supportedVersions.isEmpty()) {
+        String message = String.format(
+            "Versions [%s] are supported for path %s but you have configured version: %s",
+            StringUtils.join(supportedVersions, ","), path,
+            configuredVersion);
+        recorder.record(message);
+        LOG.warn(message);
+      }
+    } else if (ufsConf.getBoolean(PropertyKey.UNDERFS_STRICT_VERSION_MATCH_ENABLED)
+        && !eligibleFactories.isEmpty()
+        && ufsConf.isSet(PropertyKey.UNDERFS_VERSION)) {
+      String configuredVersion = ufsConf.getString(PropertyKey.UNDERFS_VERSION);
+      Iterator<UnderFileSystemFactory> it = eligibleFactories.iterator();
+      while (it.hasNext()) {
+        if (!configuredVersion.equals(it.next().getVersion())) {
+          it.remove();
+        }
+      }
+    }
+    return eligibleFactories;
+  }
+}

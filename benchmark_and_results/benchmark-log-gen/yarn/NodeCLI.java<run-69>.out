@@ -1,0 +1,205 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NodeCLI.java	methodSinagture:	org.apache.hadoop.yarn.client.cli.NodeCLI.run([Ljava/lang/String;)I	methodLines:	69:158
+blockLines:	93:-1
+paras:	yarn.node-labels.configuration-type
+TaintedStat:	NORMAL run:conditional branch(lt, to iindex=108) 68,7 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, isDistributedNodeLabelConfiguration(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,4,5 @7 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, isDistributedNodeLabelConfiguration(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,4,5 @7 exception:6
+NORMAL isDistributedNodeLabelConfiguration:9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 3,7 @10 exception:8 Node: < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, isDistributedNodeLabelConfiguration(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere[88]38 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 36,8 @154 exception:37
+NORMAL runCmd:conditional branch(eq, to iindex=95) 38,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+NORMAL runCmd:66 = invokespecial < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > 1,25 @163 exception:65 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:conditional branch(eq, to iindex=18) 6,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:13 = invokevirtual < Extension, Lorg/apache/hadoop/ha/HAAdmin, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @40 exception:12 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL getConf:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[1]5 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:4
+NORMAL run:7 = invokestatic < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > 5,1,2 @8 exception:6 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL getRemainingArgs:return 10 Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[30]22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[34]24 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, run([Ljava/lang/String;)I > 2,22 @65 exception:23 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere v2
+NORMAL run:conditional branch(eq, to iindex=108) 2,58 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:conditional branch(le, to iindex=108) 59,7 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:conditional branch(lt, to iindex=108) 68,7 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NodeCLI.java	methodSinagture:	org.apache.hadoop.yarn.client.cli.NodeCLI.run([Ljava/lang/String;)I	methodLines:	69:158
+blockLines:	94:-1
+paras:	yarn.node-labels.configuration-type
+TaintedStat:	NORMAL run:conditional branch(eq, to iindex=103) 65,7 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, isCentralizedNodeLabelConfiguration(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,4,3 @7 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, isCentralizedNodeLabelConfiguration(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,4,3 @7 exception:5
+NORMAL isCentralizedNodeLabelConfiguration:8 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 3,6 @10 exception:7 Node: < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, isCentralizedNodeLabelConfiguration(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere[88]38 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 36,8 @154 exception:37
+NORMAL runCmd:conditional branch(eq, to iindex=95) 38,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+NORMAL runCmd:66 = invokespecial < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > 1,25 @163 exception:65 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:conditional branch(eq, to iindex=18) 6,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:13 = invokevirtual < Extension, Lorg/apache/hadoop/ha/HAAdmin, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @40 exception:12 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL getConf:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[1]5 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:4
+NORMAL run:7 = invokestatic < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > 5,1,2 @8 exception:6 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL getRemainingArgs:return 10 Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[30]22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[34]24 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, run([Ljava/lang/String;)I > 2,22 @65 exception:23 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere v2
+NORMAL run:conditional branch(eq, to iindex=108) 2,58 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:conditional branch(le, to iindex=108) 59,7 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:conditional branch(lt, to iindex=108) 68,7 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=103) 65,7 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NodeCLI.java	methodSinagture:	org.apache.hadoop.yarn.client.cli.NodeCLI.run([Ljava/lang/String;)I	methodLines:	69:158
+blockLines:	92:-1
+paras:	yarn.node-labels.configuration-type
+TaintedStat:	NORMAL run:conditional branch(eq, to iindex=108) 2,58 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, isDelegatedCentralizedNodeLabelConfiguration(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,4,5 @7 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, isDelegatedCentralizedNodeLabelConfiguration(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,4,5 @7 exception:6
+NORMAL isDelegatedCentralizedNodeLabelConfiguration:9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 3,7 @10 exception:8 Node: < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, isDelegatedCentralizedNodeLabelConfiguration(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere[88]38 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 36,8 @154 exception:37
+NORMAL runCmd:conditional branch(eq, to iindex=95) 38,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+NORMAL runCmd:66 = invokespecial < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > 1,25 @163 exception:65 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:conditional branch(eq, to iindex=18) 6,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:13 = invokevirtual < Extension, Lorg/apache/hadoop/ha/HAAdmin, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @40 exception:12 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL getConf:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[1]5 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:4
+NORMAL run:7 = invokestatic < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > 5,1,2 @8 exception:6 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL getRemainingArgs:return 10 Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[30]22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[34]24 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, run([Ljava/lang/String;)I > 2,22 @65 exception:23 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere v2
+NORMAL run:conditional branch(eq, to iindex=108) 2,58 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/NodeCLI, run([Ljava/lang/String;)I > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    Options opts = new Options();
+    opts.addOption(HELP_CMD, false, "Displays help for all commands.");
+    opts.addOption(STATUS_CMD, true, "Prints the status report of the node.");
+    opts.addOption(LIST_CMD, false, "List all running nodes. " +
+        "Supports optional use of -states to filter nodes " +
+        "based on node state, all -all to list all nodes, " +
+        "-showDetails to display more details about each node.");
+    Option nodeStateOpt = new Option(NODE_STATE_CMD, true,
+        "Works with -list to filter nodes based on input comma-separated " +
+        "list of node states. " + getAllValidNodeStates());
+    nodeStateOpt.setValueSeparator(',');
+    nodeStateOpt.setArgs(Option.UNLIMITED_VALUES);
+    nodeStateOpt.setArgName("States");
+    opts.addOption(nodeStateOpt);
+    Option allOpt = new Option(NODE_ALL, false,
+        "Works with -list to list all nodes.");
+    opts.addOption(allOpt);
+    Option showDetailsOpt = new Option(NODE_SHOW_DETAILS, false,
+        "Works with -list to show more details about each node.");
+    opts.addOption(showDetailsOpt);
+    opts.getOption(STATUS_CMD).setArgName("NodeId");
+
+    if (args != null && args.length > 0) {
+      for (int i = args.length - 1; i >= 0; i--) {
+        if (args[i].equalsIgnoreCase("-" + NODE_ALL)) {
+          args[i] = "-" + NODE_ALL;
+        }
+      }
+    }
+
+    int exitCode = -1;
+    CommandLine cliParser = null;
+    try {
+      cliParser = new GnuParser().parse(opts, args);
+    } catch (MissingArgumentException ex) {
+      sysout.println("Missing argument for options");
+      printUsage(opts);
+      return exitCode;
+    }
+
+    createAndStartYarnClient();
+
+    if (cliParser.hasOption("status")) {
+      if (args.length != 2) {
+        printUsage(opts);
+        return exitCode;
+      }
+      printNodeStatus(cliParser.getOptionValue("status"));
+    } else if (cliParser.hasOption("list")) {
+      Set<NodeState> nodeStates = new HashSet<NodeState>();
+      if (cliParser.hasOption(NODE_ALL)) {
+        for (NodeState state : NodeState.values()) {
+          nodeStates.add(state);
+        }
+      } else if (cliParser.hasOption(NODE_STATE_CMD)) {
+        String[] types = cliParser.getOptionValues(NODE_STATE_CMD);
+        if (types != null) {
+          for (String type : types) {
+            if (!type.trim().isEmpty()) {
+              try {
+                nodeStates.add(NodeState.valueOf(
+                    org.apache.hadoop.util.StringUtils.toUpperCase(
+                            type.trim())));
+              } catch (IllegalArgumentException ex) {
+                sysout.println("The node state " + type + " is invalid.");
+                sysout.println(getAllValidNodeStates());
+                return exitCode;
+              }
+            }
+          }
+        }
+      } else {
+        nodeStates.add(NodeState.RUNNING);
+      }
+
+      // List all node details with more information.
+      if (cliParser.hasOption(NODE_SHOW_DETAILS)) {
+        listDetailedClusterNodes(nodeStates);
+      } else {
+        listClusterNodes(nodeStates);
+      }
+    } else if (cliParser.hasOption(HELP_CMD)) {
+      printUsage(opts);
+      return 0;
+    } else {
+      syserr.println("Invalid Command Usage : ");
+      printUsage(opts);
+    }
+    return 0;
+  }
+
+
+====================ctx:=======================

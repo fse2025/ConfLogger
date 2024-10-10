@@ -1,0 +1,49 @@
+```java
+private void waitForDesiredCodeReplication(Map<String, Object> topoConf, String topoId) throws Exception {
+    int minReplicationCount = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_MIN_REPLICATION_COUNT));
+    int maxWaitTime = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_MAX_REPLICATION_WAIT_TIME_SEC));
+    int jarCount = minReplicationCount;
+    if (!ConfigUtils.isLocalMode(topoConf)) {
+        jarCount = getBlobReplicationCount(ConfigUtils.masterStormJarKey(topoId));
+    }
+    int codeCount = getBlobReplicationCount(ConfigUtils.masterStormCodeKey(topoId));
+    int confCount = getBlobReplicationCount(ConfigUtils.masterStormConfKey(topoId));
+    long totalWaitTime = 0;
+    //When is this ever null?
+    if (blobStore != null) {
+        while (jarCount < minReplicationCount
+                && codeCount < minReplicationCount
+                && confCount < minReplicationCount) {
+            if (maxWaitTime > 0 && totalWaitTime > maxWaitTime) {
+                // ConfLogger Skipped: The log message contains configuration parameter values and unsatisfied conditions.
+                LOG.info("desired replication count of {} not achieved for {} but we have hit the max wait time {}"
+                        + " so moving on with replication count for conf key = {} for code key = {} for jar key = ",
+                        minReplicationCount, topoId, maxWaitTime, confCount, codeCount, jarCount);
+                return;
+            }
+            // ConfLogger Commented: The log message lacks configuration parameter information.
+            // LOG.debug("Checking if I am still the leader");
+            assertIsLeader();
+            // ConfLogger Commented: The log message lacks configuration parameter information.
+            // LOG.info("WAITING... storm-id {}, {} <? {} {} {}", topoId, minReplicationCount, jarCount, codeCount, confCount);
+            // ConfLogger Commented: The log message lacks configuration parameter information.
+            // LOG.info("WAITING... {} <? {}", totalWaitTime, maxWaitTime);
+            Time.sleepSecs(1);
+            totalWaitTime++;
+            if (!ConfigUtils.isLocalMode(topoConf)) {
+                jarCount = getBlobReplicationCount(ConfigUtils.masterStormJarKey(topoId));
+            }
+            codeCount = getBlobReplicationCount(ConfigUtils.masterStormCodeKey(topoId));
+            confCount = getBlobReplicationCount(ConfigUtils.masterStormConfKey(topoId));
+        }
+        // ConfLogger Inserted Start
+        logger.info("Replication count achieved for topology {}. Minimum required: {}, Current counts - conf: {}, code: {}, jar: {}. Ensure that the 'topology.min.replication.count' is set appropriately to avoid unnecessary waiting.", 
+                    topoId, minReplicationCount, confCount, codeCount, jarCount);
+        // ConfLogger Inserted End
+    }
+    // ConfLogger Skipped: The log message contains configuration parameter values and unsatisfied conditions.
+    LOG.info("desired replication count {} achieved for topology {}, current-replication-count for conf key = {},"
+            + " current-replication-count for code key = {}, current-replication-count for jar key = {}",
+            minReplicationCount, topoId, confCount, codeCount, jarCount);
+}
+```

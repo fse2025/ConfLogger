@@ -1,0 +1,61 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DataXceiverServer.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataXceiverServer.setMaxXceiverCount(I)V	methodLines:	517:521
+blockLines:	518:-1
+paras:	null
+TaintedStat:	NORMAL setMaxXceiverCount:conditional branch(le, to iindex=5) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataXceiverServer, setMaxXceiverCount(I)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[40]31 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 29,2 @80 exception:30
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[40]31 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 29,2 @80 exception:30
+NORMAL reconfDataXceiverParameters:invokespecial < Application, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > 27,2,3,31,26 @85 exception:32 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > Context: Everywhere
+NORMAL <init>:8 = invokestatic < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,3,4 @4 exception:7 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL constructMessage:13 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 11 @16 exception:12 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[41]30 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 28 @70 exception:29
+PHI Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:31 = phi  22,30
+NORMAL getHexDigits:return 31 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere[11]9 = invokespecial < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > 1,6 @14 exception:8
+NORMAL getInt:conditional branch(eq, to iindex=20) 9,7 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL getInt:11 = invokestatic < Extension, Ljava/lang/Integer, parseInt(Ljava/lang/String;)I > 6 @33 exception:10 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Integer, parseInt(Ljava/lang/String;)I > Context: Everywhere
+NORMAL parseInt:return 5 Node: < Primordial, Ljava/lang/Integer, parseInt(Ljava/lang/String;)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, parseInt(Ljava/lang/String;)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[16]15 = invokestatic < Application, Ljava/lang/Integer, parseInt(Ljava/lang/String;)I > 3 @33 exception:14
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:17 = phi  16,15
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[24]invokevirtual < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataXceiverServer, setMaxXceiverCount(I)V > 21,17 @50 exception:22 v17
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataXceiverServer, setMaxXceiverCount(I)V > Context: Everywhere v2
+NORMAL setMaxXceiverCount:conditional branch(le, to iindex=5) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataXceiverServer, setMaxXceiverCount(I)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setMaxXceiverCount(int xceiverCount) {
+    Preconditions.checkArgument(xceiverCount > 0,
+        "dfs.datanode.max.transfer.threads should be larger than 0");
+    maxXceiverCount = xceiverCount;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:23..24]9 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:20..22]8 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:25..29]10 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]17 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfDataXceiverParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=717, lastLineNumber=719, firstMethodNumber=712, lastMethodNumber=722, isFirstLineValid=true, methodSrcCode=
+    try {
+      LOG.info("Reconfiguring {} to {}", property, newVal);
+      Preconditions.checkNotNull(getXferServer(), "DataXceiverServer has not been initialized.");
+      int threads = (newVal == null ? DFS_DATANODE_MAX_RECEIVER_THREADS_DEFAULT :
+          Integer.parseInt(newVal));
+      result = Integer.toString(threads);
+      getXferServer().setMaxXceiverCount(threads);
+      LOG.info("RECONFIGURE* changed {} to {}", property, newVal);
+      return result;
+    } catch (IllegalArgumentException e) {
+      throw new ReconfigurationException(property, newVal, getConf().get(property), e);
+    }
+}

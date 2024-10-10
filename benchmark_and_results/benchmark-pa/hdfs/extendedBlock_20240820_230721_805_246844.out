@@ -1,0 +1,70 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StripedReconstructor.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.erasurecode.StripedReconstructor.<init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;)V	methodLines:	130:159
+blockLines:	155:-1
+paras:	dfs.datanode.ec.reconstruction.validation
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=147) 78,28 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructor, <init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructor, <init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;)V > Context: Everywhere[137]78 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 75,76,28 @260 exception:77
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructor, <init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;)V > Context: Everywhere[137]78 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 75,76,28 @260 exception:77
+NORMAL <init>:conditional branch(eq, to iindex=147) 78,28 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructor, <init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  StripedReconstructor(ErasureCodingWorker worker,
+      StripedReconstructionInfo stripedReconInfo) {
+    this.erasureCodingWorker = worker;
+    this.datanode = worker.getDatanode();
+    this.conf = worker.getConf();
+    this.ecPolicy = stripedReconInfo.getEcPolicy();
+    liveBitSet = new BitSet(
+        ecPolicy.getNumDataUnits() + ecPolicy.getNumParityUnits());
+    for (int i = 0; i < stripedReconInfo.getLiveIndices().length; i++) {
+      liveBitSet.set(stripedReconInfo.getLiveIndices()[i]);
+    }
+    excludeBitSet = new BitSet(
+            ecPolicy.getNumDataUnits() + ecPolicy.getNumParityUnits());
+    for (int i = 0; i < stripedReconInfo.getExcludeReconstructedIndices().length; i++) {
+      excludeBitSet.set(stripedReconInfo.getExcludeReconstructedIndices()[i]);
+    }
+
+    blockGroup = stripedReconInfo.getBlockGroup();
+    stripedReader = new StripedReader(this, datanode, conf, stripedReconInfo);
+    cachingStrategy = CachingStrategy.newDefaultStrategy();
+
+    positionInBlock = 0L;
+
+    coderOptions = new ErasureCoderOptions(
+        ecPolicy.getNumDataUnits(), ecPolicy.getNumParityUnits());
+    isValidationEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_DN_EC_RECONSTRUCTION_VALIDATION_KEY,
+        DFSConfigKeys.DFS_DN_EC_RECONSTRUCTION_VALIDATION_VALUE)
+        && !coderOptions.allowChangeInputs();
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedBlockReconstructor, <init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;)V > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.hdfs.server.datanode.erasurecode.StripedBlockReconstructor.<init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.server.datanode.erasurecode.StripedBlockReconstructor.<init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;)V, BB[SSA:4..5]2 - org.apache.hadoop.hdfs.server.datanode.erasurecode.StripedBlockReconstructor.<init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;)V, BB[SSA:-1..-2]8 - org.apache.hadoop.hdfs.server.datanode.erasurecode.StripedBlockReconstructor.<init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;)V], numberOfBasicBlocks=4, firstLineNumber=41, lastLineNumber=44, firstMethodNumber=41, lastMethodNumber=46, isFirstLineValid=false, methodSrcCode=
+      StripedReconstructionInfo stripedReconInfo) {
+    super(worker, stripedReconInfo);
+
+    stripedWriter = new StripedWriter(this, getDatanode(),
+        getConf(), stripedReconInfo);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedBlockChecksumReconstructor, <init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;Lorg/apache/hadoop/io/DataOutputBuffer;J)V > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.hdfs.server.datanode.erasurecode.StripedBlockChecksumReconstructor.<init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;Lorg/apache/hadoop/io/DataOutputBuffer;J)V, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.server.datanode.erasurecode.StripedBlockChecksumReconstructor.<init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;Lorg/apache/hadoop/io/DataOutputBuffer;J)V, BB[SSA:4..6]2 - org.apache.hadoop.hdfs.server.datanode.erasurecode.StripedBlockChecksumReconstructor.<init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;Lorg/apache/hadoop/io/DataOutputBuffer;J)V, BB[SSA:-1..-2]14 - org.apache.hadoop.hdfs.server.datanode.erasurecode.StripedBlockChecksumReconstructor.<init>(Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/ErasureCodingWorker;Lorg/apache/hadoop/hdfs/server/datanode/erasurecode/StripedReconstructionInfo;Lorg/apache/hadoop/io/DataOutputBuffer;J)V], numberOfBasicBlocks=4, firstLineNumber=49, lastLineNumber=51, firstMethodNumber=49, lastMethodNumber=56, isFirstLineValid=false, methodSrcCode=
+      long requestedBlockLength) throws IOException {
+    super(worker, stripedReconInfo);
+    this.targetIndices = stripedReconInfo.getTargetIndices();
+    assert targetIndices != null;
+    this.checksumWriter = checksumWriter;
+    this.requestedLen = requestedBlockLength;
+    init();
+  }
+
+}

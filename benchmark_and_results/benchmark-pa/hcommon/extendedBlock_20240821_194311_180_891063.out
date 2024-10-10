@@ -1,0 +1,39 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	KMSUtil.java	methodSinagture:	org.apache.hadoop.util.KMSUtil.getKeyProviderUri(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI;	methodLines:	72:78
+blockLines:	75:-1
+paras:	null
+TaintedStat:	NORMAL getKeyProviderUri:conditional branch(eq, to iindex=11) 5,6 Node: < Application, Lorg/apache/hadoop/util/KMSUtil, getKeyProviderUri(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/KMSUtil, getKeyProviderUri(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/KMSUtil, getKeyProviderUri(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4
+NORMAL getKeyProviderUri:conditional branch(eq, to iindex=11) 5,6 Node: < Application, Lorg/apache/hadoop/util/KMSUtil, getKeyProviderUri(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                      final String configKeyName) {
+    final String providerUriStr = conf.getTrimmed(configKeyName);
+    // No provider set in conf
+    if (providerUriStr == null || providerUriStr.isEmpty()) {
+      return null;
+    }
+    return URI.create(providerUriStr);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/KMSUtil, getKeyProviderUri(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.util.KMSUtil.getKeyProviderUri(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI;, BB[SSA:-1..-2]0 - org.apache.hadoop.util.KMSUtil.getKeyProviderUri(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI;, BB[SSA:3..3]2 - org.apache.hadoop.util.KMSUtil.getKeyProviderUri(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI;, BB[SSA:-1..-2]3 - org.apache.hadoop.util.KMSUtil.getKeyProviderUri(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI;], numberOfBasicBlocks=4, firstLineNumber=66, lastLineNumber=67, firstMethodNumber=66, lastMethodNumber=67, isFirstLineValid=false, methodSrcCode=
+  public static URI getKeyProviderUri(final Configuration conf) {
+    return KMSUtil.getKeyProviderUri(
+        conf, KeyProviderFactory.KEY_PROVIDER_PATH);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/KMSUtil, createKeyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/crypto/key/KeyProvider; > Context: Everywhere, blocks=[BB[SSA:4..6]2 - org.apache.hadoop.util.KMSUtil.createKeyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/crypto/key/KeyProvider;, BB[SSA:0..3]1 - org.apache.hadoop.util.KMSUtil.createKeyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/crypto/key/KeyProvider;, BB[SSA:7..10]3 - org.apache.hadoop.util.KMSUtil.createKeyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/crypto/key/KeyProvider;, BB[SSA:-1..-2]8 - org.apache.hadoop.util.KMSUtil.createKeyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/crypto/key/KeyProvider;], numberOfBasicBlocks=4, firstLineNumber=61, lastLineNumber=63, firstMethodNumber=60, lastMethodNumber=63, isFirstLineValid=true, methodSrcCode=
+      final String configKeyName) throws IOException {
+    LOG.debug("Creating key provider with config key {}", configKeyName);
+    URI uri = getKeyProviderUri(conf, configKeyName);
+    return (uri != null) ? createKeyProviderFromUri(conf, uri) : null;
+  }
+}

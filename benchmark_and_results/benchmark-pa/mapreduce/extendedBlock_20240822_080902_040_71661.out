@@ -1,0 +1,60 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MRWebAppUtil.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.util.MRWebAppUtil.getAMWebappScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	181:182
+blockLines:	182:-1
+paras:	yarn.app.mapreduce.am.webapp.https.enabled
+TaintedStat:	NORMAL getAMWebappScheme:conditional branch(eq, to iindex=8) 6,4 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/util/MRWebAppUtil, getAMWebappScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/util/MRWebAppUtil, getAMWebappScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @4 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/util/MRWebAppUtil, getAMWebappScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @4 exception:5
+NORMAL getAMWebappScheme:conditional branch(eq, to iindex=8) 6,4 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/util/MRWebAppUtil, getAMWebappScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static String getAMWebappScheme(Configuration conf) {
+    return conf.getBoolean(
+        MRJobConfig.MR_AM_WEBAPP_HTTPS_ENABLED,
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/rm/RMCommunicator, register()V > Context: Everywhere, blocks=[BB[SSA:33..33]18 - org.apache.hadoop.mapreduce.v2.app.rm.RMCommunicator.register()V, BB[SSA:31..32]17 - org.apache.hadoop.mapreduce.v2.app.rm.RMCommunicator.register()V, BB[SSA:34..34]19 - org.apache.hadoop.mapreduce.v2.app.rm.RMCommunicator.register()V, BB[SSA:-1..-2]68 - org.apache.hadoop.mapreduce.v2.app.rm.RMCommunicator.register()V], numberOfBasicBlocks=4, firstLineNumber=157, lastLineNumber=158, firstMethodNumber=146, lastMethodNumber=180, isFirstLineValid=true, methodSrcCode=
+    //Register
+    InetSocketAddress serviceAddr = null;
+    if (clientService != null ) {
+      serviceAddr = clientService.getBindAddress();
+    }
+    try {
+      RegisterApplicationMasterRequest request =
+        recordFactory.newRecordInstance(RegisterApplicationMasterRequest.class);
+      if (serviceAddr != null) {
+        request.setHost(serviceAddr.getHostName());
+        request.setRpcPort(serviceAddr.getPort());
+        request.setTrackingUrl(MRWebAppUtil
+            .getAMWebappScheme(getConfig())
+            + serviceAddr.getHostName() + ":" + clientService.getHttpPort());
+      }
+      RegisterApplicationMasterResponse response =
+        scheduler.registerApplicationMaster(request);
+      isApplicationMasterRegistered = true;
+      maxContainerCapability = response.getMaximumResourceCapability();
+      this.context.getClusterInfo().setMaxContainerCapability(
+          maxContainerCapability);
+      if (UserGroupInformation.isSecurityEnabled()) {
+        setClientToAMToken(response.getClientToAMTokenMasterKey());        
+      }
+      this.applicationACLs = response.getApplicationACLs();
+      LOG.info("maxContainerCapability: " + maxContainerCapability);
+      String queue = response.getQueue();
+      LOG.info("queue: " + queue);
+      job.setQueueName(queue);
+      this.schedulerResourceTypes.addAll(response.getSchedulerResourceTypes());
+    } catch (Exception are) {
+      LOG.error("Exception while registering", are);
+      throw new YarnRuntimeException(are);
+    }
+  }
+
+}

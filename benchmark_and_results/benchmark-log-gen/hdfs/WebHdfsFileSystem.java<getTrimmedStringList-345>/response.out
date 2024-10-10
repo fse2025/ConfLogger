@@ -1,0 +1,11 @@
+```java
+String valueString = conf.get(name, defaultValue);
+if (valueString == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter '{}' is not set. Using default value '{}'.", name, defaultValue);
+    // ConfLogger Inserted End
+    return new ArrayList<>();
+}
+return new ArrayList<>(StringUtils.getTrimmedStringCollection(valueString));
+}
+```

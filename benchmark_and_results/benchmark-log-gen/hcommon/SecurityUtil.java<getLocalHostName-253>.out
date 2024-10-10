@@ -1,0 +1,60 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SecurityUtil.java	methodSinagture:	org.apache.hadoop.security.SecurityUtil.getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	253:268
+blockLines:	258:-1
+paras:	hadoop.security.dns.interface
+TaintedStat:	NORMAL getLocalHostName:conditional branch(eq, to iindex=19) 6,3 Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[5]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @7 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[5]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @7 exception:5
+NORMAL getLocalHostName:conditional branch(eq, to iindex=19) 6,3 Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	SecurityUtil.java	methodSinagture:	org.apache.hadoop.security.SecurityUtil.getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	253:268
+blockLines:	260:-1
+paras:	hadoop.security.dns.nameserver
+TaintedStat:	NORMAL getLocalHostName:conditional branch(eq, to iindex=27) 9,3 Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @14 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @14 exception:8
+NORMAL getLocalHostName:conditional branch(eq, to iindex=27) 9,3 Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getLocalHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws UnknownHostException {
+    if (conf != null) {
+      String dnsInterface = conf.get(HADOOP_SECURITY_DNS_INTERFACE_KEY);
+      String nameServer = conf.get(HADOOP_SECURITY_DNS_NAMESERVER_KEY);
+
+      if (dnsInterface != null) {
+        return DNS.getDefaultHost(dnsInterface, nameServer, true);
+      } else if (nameServer != null) {
+        throw new IllegalArgumentException(HADOOP_SECURITY_DNS_NAMESERVER_KEY +
+            " requires " + HADOOP_SECURITY_DNS_INTERFACE_KEY + ". Check your" +
+            "configuration.");
+      }
+    }
+
+    // Fallback to querying the default hostname as we did before.
+    return InetAddress.getLocalHost().getCanonicalHostName();
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.security.SecurityUtil.login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.security.SecurityUtil.login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:5..5]2 - org.apache.hadoop.security.SecurityUtil.login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]4 - org.apache.hadoop.security.SecurityUtil.login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=287, lastLineNumber=288, firstMethodNumber=287, lastMethodNumber=289, isFirstLineValid=false, methodSrcCode=
+      final String keytabFileKey, final String userNameKey) throws IOException {
+    login(conf, keytabFileKey, userNameKey, getLocalHostName(conf));
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:14..15]6 - org.apache.hadoop.security.SecurityUtil.replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:0..4]1 - org.apache.hadoop.security.SecurityUtil.replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:7..8]3 - org.apache.hadoop.security.SecurityUtil.replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:12..13]5 - org.apache.hadoop.security.SecurityUtil.replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:16..16]7 - org.apache.hadoop.security.SecurityUtil.replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]20 - org.apache.hadoop.security.SecurityUtil.replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=6, firstLineNumber=234, lastLineNumber=236, firstMethodNumber=233, lastMethodNumber=238, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    String fqdn = hostname;
+    if (fqdn == null || fqdn.isEmpty() || fqdn.equals("0.0.0.0")) {
+      fqdn = getLocalHostName(null);
+    }
+    return components[0] + "/" +
+        StringUtils.toLowerCase(fqdn) + "@" + components[2];
+}

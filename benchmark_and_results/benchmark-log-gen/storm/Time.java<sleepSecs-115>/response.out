@@ -1,0 +1,8 @@
+```java
+if (secs > 0) {
+    // ConfLogger Inserted Start
+    logger.info("Sleeping for " + (secs * 1000) + " milliseconds as configured by 'secs' parameter with value: " + secs);
+    // ConfLogger Inserted End
+    sleep(secs * 1000);
+}
+```

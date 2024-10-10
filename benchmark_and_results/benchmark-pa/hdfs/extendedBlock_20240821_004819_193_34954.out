@@ -1,0 +1,30 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ObserverReadProxyProviderWithIPFailover.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.ha.ObserverReadProxyProviderWithIPFailover.getFailoverVirtualIP(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI;	methodLines:	131:140
+blockLines:	136:-1
+paras:	null
+TaintedStat:	NORMAL getFailoverVirtualIP:conditional branch(ne, to iindex=35) 14,18 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/ObserverReadProxyProviderWithIPFailover, getFailoverVirtualIP(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/ObserverReadProxyProviderWithIPFailover, getFailoverVirtualIP(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI; > Context: Everywhere[11]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,12 @22 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/ObserverReadProxyProviderWithIPFailover, getFailoverVirtualIP(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI; > Context: Everywhere[11]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,12 @22 exception:13
+NORMAL getFailoverVirtualIP:conditional branch(ne, to iindex=35) 14,18 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/ObserverReadProxyProviderWithIPFailover, getFailoverVirtualIP(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Configuration conf, String nameServiceID) {
+    String configKey = IPFAILOVER_CONFIG_PREFIX + "." + nameServiceID;
+    String virtualIP = conf.get(configKey);
+    LOG.info("Name service ID {} will use virtual IP {} for failover",
+        nameServiceID, virtualIP);
+    if (virtualIP == null) {
+      throw new IllegalArgumentException("Virtual IP for failover not found,"
+          + "misconfigured " + configKey + "?");
+    }
+    return URI.create(virtualIP);
+  }
+
+
+====================ctx:=======================

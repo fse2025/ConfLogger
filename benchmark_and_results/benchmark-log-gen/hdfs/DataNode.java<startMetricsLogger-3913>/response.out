@@ -1,0 +1,21 @@
+```java
+long metricsLoggerPeriodSec = getConf().getInt(
+DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_KEY,
+DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_DEFAULT);
+
+if (metricsLoggerPeriodSec <= 0) {
+// ConfLogger Inserted Start
+logger.warn("Metrics logging period is set to a non-positive value: " + metricsLoggerPeriodSec + ". Please set " + DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_KEY + " to a positive value to enable metrics logging.");
+// ConfLogger Inserted End
+return;
+}
+
+MetricsLoggerTask.makeMetricsLoggerAsync(METRICS_LOG);
+
+// Schedule the periodic logging.
+metricsLoggerTimer = new ScheduledThreadPoolExecutor(1);
+metricsLoggerTimer.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+metricsLoggerTimer.scheduleWithFixedDelay(new MetricsLoggerTask(METRICS_LOG,
+"DataNode", (short) 0), metricsLoggerPeriodSec, metricsLoggerPeriodSec,
+TimeUnit.SECONDS);
+```

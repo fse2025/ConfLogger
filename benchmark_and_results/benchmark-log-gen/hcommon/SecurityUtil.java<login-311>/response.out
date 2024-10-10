@@ -1,0 +1,20 @@
+```java
+if(! UserGroupInformation.isSecurityEnabled())
+    return;
+
+String keytabFilename = conf.get(keytabFileKey);
+if (keytabFilename == null || keytabFilename.length() == 0) {
+    // ConfLogger Inserted Start
+    logger.error("Running in secure mode, but config doesn't have a keytab. Please set the configuration parameter '{}' with a valid keytab file path.", keytabFileKey);
+    // ConfLogger Inserted End
+    throw new IOException("Running in secure mode, but config doesn't have a keytab");
+}
+
+String principalConfig = conf.get(userNameKey, System.getProperty("user.name"));
+String principalName = SecurityUtil.getServerPrincipal(principalConfig, hostname);
+// ConfLogger Inserted Start
+logger.info("Attempting to login user from keytab with principal '{}' and keytab file '{}'.", principalName, keytabFilename);
+// ConfLogger Inserted End
+UserGroupInformation.loginUserFromKeytab(principalName, keytabFilename);
+}
+```

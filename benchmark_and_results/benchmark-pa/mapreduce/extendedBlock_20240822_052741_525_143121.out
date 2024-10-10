@@ -1,0 +1,82 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DeprecatedQueueConfigurationParser.java	methodSinagture:	org.apache.hadoop.mapred.DeprecatedQueueConfigurationParser.deprecatedConf(Lorg/apache/hadoop/conf/Configuration;)Z	methodLines:	91:126
+blockLines:	114:-1
+paras:	null
+TaintedStat:	NORMAL deprecatedConf:conditional branch(eq, to iindex=66) 25,4 Node: < Application, Lorg/apache/hadoop/mapred/DeprecatedQueueConfigurationParser, deprecatedConf(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/DeprecatedQueueConfigurationParser, deprecatedConf(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[56]25 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,23 @102 exception:24
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/DeprecatedQueueConfigurationParser, deprecatedConf(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[56]25 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,23 @102 exception:24
+NORMAL deprecatedConf:conditional branch(eq, to iindex=66) 25,4 Node: < Application, Lorg/apache/hadoop/mapred/DeprecatedQueueConfigurationParser, deprecatedConf(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DeprecatedQueueConfigurationParser.java	methodSinagture:	org.apache.hadoop.mapred.DeprecatedQueueConfigurationParser.deprecatedConf(Lorg/apache/hadoop/conf/Configuration;)Z	methodLines:	91:126
+blockLines:	109:-1
+paras:	null
+TaintedStat:	NORMAL deprecatedConf:conditional branch(eq, to iindex=76) 12,4 Node: < Application, Lorg/apache/hadoop/mapred/DeprecatedQueueConfigurationParser, deprecatedConf(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/DeprecatedQueueConfigurationParser, deprecatedConf(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[16]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 2,10 @27 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/DeprecatedQueueConfigurationParser, deprecatedConf(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[16]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 2,10 @27 exception:11
+NORMAL deprecatedConf:conditional branch(eq, to iindex=76) 12,4 Node: < Application, Lorg/apache/hadoop/mapred/DeprecatedQueueConfigurationParser, deprecatedConf(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private boolean deprecatedConf(Configuration conf) {
+    String[] queues = null;
+    String queueNameValues = getQueueNames(conf);
+    if (queueNameValues == null) {
+      return false;
+    } else {
+      LOG.warn(
+          "Configuring \"" + MAPRED_QUEUE_NAMES_KEY
+          + "\" in mapred-site.xml or "
+          + "hadoop-site.xml is deprecated and will overshadow "
+          + QUEUE_CONF_FILE_NAME + ". Remove this property and configure "
+          + "queue hierarchy in " + QUEUE_CONF_FILE_NAME);
+      // store queues so we can check if ACLs are also configured
+      // in the deprecated files.
+      queues = conf.getStrings(MAPRED_QUEUE_NAMES_KEY);
+    }
+
+    // check if acls are defined
+    if (queues != null) {
+      for (String queue : queues) {
+        for (QueueACL qAcl : QueueACL.values()) {
+          String key = toFullPropertyName(queue, qAcl.getAclName());
+          String aclString = conf.get(key);
+          if (aclString != null) {
+            LOG.warn(
+              "Configuring queue ACLs in mapred-site.xml or " +
+                "hadoop-site.xml is deprecated. Configure queue ACLs in " +
+                QUEUE_CONF_FILE_NAME);
+            // even if one string is configured, it is enough for printing
+            // the warning. so we can return from here.
+            return true;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/DeprecatedQueueConfigurationParser, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:2..4]2 - org.apache.hadoop.mapred.DeprecatedQueueConfigurationParser.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..1]1 - org.apache.hadoop.mapred.DeprecatedQueueConfigurationParser.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:5..6]3 - org.apache.hadoop.mapred.DeprecatedQueueConfigurationParser.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]23 - org.apache.hadoop.mapred.DeprecatedQueueConfigurationParser.<init>(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=44, lastLineNumber=46, firstMethodNumber=43, lastMethodNumber=56, isFirstLineValid=true, methodSrcCode=
+
+  DeprecatedQueueConfigurationParser(Configuration conf) {
+    //If not configuration done return immediately.
+    if(!deprecatedConf(conf)) {
+      return;
+    }
+    List<Queue> listq = createQueues(conf);
+    this.setAclsEnabled(conf.getBoolean(MRConfig.MR_ACLS_ENABLED, false));
+    root = new Queue();
+    root.setName("");
+    for (Queue q : listq) {
+      root.addChild(q);
+    }
+  }
+
+}

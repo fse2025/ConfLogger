@@ -1,0 +1,58 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HistoryServerLeveldbStateStoreService.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService.createStorageDir(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/Path;	methodLines:	301:310
+blockLines:	303:-1
+paras:	mapreduce.jobhistory.recovery.store.leveldb.path
+TaintedStat:	NORMAL createStorageDir:conditional branch(ne, to iindex=12) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerLeveldbStateStoreService, createStorageDir(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/Path; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerLeveldbStateStoreService, createStorageDir(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/Path; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerLeveldbStateStoreService, createStorageDir(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/Path; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+NORMAL createStorageDir:conditional branch(ne, to iindex=12) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerLeveldbStateStoreService, createStorageDir(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/Path; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private Path createStorageDir(Configuration conf) throws IOException {
+    String confPath = conf.get(JHAdminConfig.MR_HS_LEVELDB_STATE_STORE_PATH);
+    if (confPath == null) {
+      throw new IOException("No store location directory configured in " +
+          JHAdminConfig.MR_HS_LEVELDB_STATE_STORE_PATH);
+    }
+    Path root = new Path(confPath, DB_NAME);
+    FileSystem fs = FileSystem.getLocal(conf);
+    fs.mkdirs(root, new FsPermission((short)0700));
+    return root;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerLeveldbStateStoreService, startStorage()V > Context: Everywhere, blocks=[BB[SSA:3..3]2 - org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService.startStorage()V, BB[SSA:0..2]1 - org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService.startStorage()V, BB[SSA:4..5]3 - org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService.startStorage()V, BB[SSA:-1..-2]42 - org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService.startStorage()V], numberOfBasicBlocks=4, firstLineNumber=74, lastLineNumber=75, firstMethodNumber=73, lastMethodNumber=97, isFirstLineValid=true, methodSrcCode=
+  protected void startStorage() throws IOException {
+    Path storeRoot = createStorageDir(getConfig());
+    Options options = new Options();
+    options.createIfMissing(false);
+    LOG.info("Using state database at " + storeRoot + " for recovery");
+    File dbfile = new File(storeRoot.toString());
+    try {
+      db = JniDBFactory.factory.open(dbfile, options);
+    } catch (NativeDB.DBException e) {
+      if (e.isNotFound() || e.getMessage().contains(" does not exist ")) {
+        LOG.info("Creating state database at " + dbfile);
+        options.createIfMissing(true);
+        try {
+          db = JniDBFactory.factory.open(dbfile, options);
+          // store version
+          storeVersion();
+        } catch (DBException dbErr) {
+          throw new IOException(dbErr.getMessage(), dbErr);
+        }
+      } else {
+        throw e;
+      }
+    }
+    checkVersion();
+  }
+
+}

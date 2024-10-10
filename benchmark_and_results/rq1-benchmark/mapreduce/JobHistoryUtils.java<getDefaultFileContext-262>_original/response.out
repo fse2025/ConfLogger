@@ -1,0 +1,34 @@
+```java
+// case to exploit this functionality it should create core-site.xml
+FileContext fc = null;
+Configuration defaultConf = new Configuration();
+String[] sources;
+sources = defaultConf.getPropertySources(
+CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY);
+if (sources != null &&
+(!Arrays.asList(sources).contains("core-default.xml") ||
+sources.length > 1)) {
+    try {
+        fc = FileContext.getFileContext(defaultConf);
+        // ConfLogger Skipped: The log contains configuration parameter value and execution information.
+        LOG.info("Default file system [" +
+        fc.getDefaultFileSystem().getUri() + "]");
+    } catch (UnsupportedFileSystemException e) {
+        // ConfLogger Skipped: The log contains configuration parameter key and exception information.
+        LOG.error("Unable to create default file context [" +
+        defaultConf.get(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY) +
+        "]",
+        e);
+    }
+} else {
+    // ConfLogger Commented: The log lacks detailed configuration setting information and guidance.
+    // LOG.info("Default file system is set solely " +
+    // "by core-default.xml therefore -  ignoring");
+    // ConfLogger Inserted Start
+    logger.info("Default file system is set solely by core-default.xml. No additional sources found. Ensure that core-site.xml is created if additional configuration is needed.");
+    // ConfLogger Inserted End
+}
+
+return fc;
+}
+```

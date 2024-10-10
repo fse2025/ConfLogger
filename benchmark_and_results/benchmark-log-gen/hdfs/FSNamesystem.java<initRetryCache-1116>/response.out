@@ -1,0 +1,29 @@
+```java
+boolean enable = conf.getBoolean(DFS_NAMENODE_ENABLE_RETRY_CACHE_KEY,
+DFS_NAMENODE_ENABLE_RETRY_CACHE_DEFAULT);
+LOG.info("Retry cache on namenode is " + (enable ? "enabled" : "disabled"));
+if (enable) {
+    float heapPercent = conf.getFloat(
+    DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_KEY,
+    DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_DEFAULT);
+    long entryExpiryMillis = conf.getLong(
+    DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_KEY,
+    DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_DEFAULT);
+    // ConfLogger Commented: Not Informative
+    // LOG.info("Retry cache will use " + heapPercent
+    // + " of total heap and retry cache entry expiry time is "
+    // + entryExpiryMillis + " millis");
+    // ConfLogger Inserted Start
+    logger.info("Retry cache configuration: {} = {}, {} = {}, {} = {}. Calculated entry expiry in nanoseconds: {}",
+        DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_KEY, heapPercent,
+        DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_KEY, entryExpiryMillis,
+        "DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_DEFAULT", DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_DEFAULT,
+        entryExpiryMillis * 1000 * 1000);
+    // ConfLogger Inserted End
+    long entryExpiryNanos = entryExpiryMillis * 1000 * 1000;
+    return new RetryCache("NameNodeRetryCache", heapPercent,
+    entryExpiryNanos);
+}
+return null;
+}
+```

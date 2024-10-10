@@ -1,0 +1,17 @@
+```java
+Configuration conf = job.getConfiguration();
+String log4jPropertyFile =
+conf.get(MRJobConfig.MAPREDUCE_JOB_LOG4J_PROPERTIES_FILE, "");
+if (!log4jPropertyFile.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.info("log4jPropertyFile is set to: " + log4jPropertyFile + ". Proceeding to copy the log4j property file.");
+    short replication = (short) conf.getInt(Job.SUBMIT_REPLICATION, 10);
+    logger.info("Replication factor for log4j property file is set to: " + replication + " (Job.SUBMIT_REPLICATION).");
+    // ConfLogger Inserted End
+    copyLog4jPropertyFile(job, jobSubmitDir, replication);
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("log4jPropertyFile is not set. Skipping the copy of log4j property file.");
+    // ConfLogger Inserted End
+}
+```

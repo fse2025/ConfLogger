@@ -1,0 +1,2 @@
+2024-09-04 17:02:32,732 WARN  [main] ConfLogger (WebAppUtils.java:getProxyHostsAndPortsForAmFilter(191)) - Proxy address is not set or empty. Attempting to resolve using RM HA addresses or fallback to RM WebApp URL. Configuration parameter: yarn.web-proxy.address
+2024-09-04 17:02:32,734 WARN  [main] ConfLogger (WebAppUtils.java:getProxyHostsAndPortsForAmFilter(209)) - Failed to resolve any RM HA addresses. Falling back to RM WebApp URL without scheme. Configuration parameter: yarn.web-proxy.address

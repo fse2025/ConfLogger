@@ -1,0 +1,323 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Nimbus.java	methodSinagture:	org.apache.storm.daemon.nimbus.Nimbus.launchServer()V	methodLines:	1398:1547
+blockLines:	1464:-1
+paras:	logviewer.cleanup.age.mins
+TaintedStat:	NORMAL launchServer:conditional branch(eq, to iindex=140) 104,102 Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, launchServer()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, launchServer()V > Context: Everywhere[127]108 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 105,106 @315 exception:107
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, launchServer()V > Context: Everywhere[127]108 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 105,106 @315 exception:107
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, launchServer()V > Context: Everywhere[128]110 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > 108 @320 exception:109 v108
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:return 2 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, launchServer()V > Context: Everywhere[119]104 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 101,102 @298 exception:103
+NORMAL launchServer:conditional branch(eq, to iindex=140) 104,102 Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, launchServer()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        try {
+            IStormClusterState state = stormClusterState;
+            NimbusInfo hpi = nimbusHostPortInfo;
+
+            LOG.info("Starting Nimbus with conf {}", ConfigUtils.maskPasswords(conf));
+            validator.prepare(conf);
+
+            //add to nimbuses
+            state.addNimbusHost(hpi.getHost(),
+                    new NimbusSummary(hpi.getHost(), hpi.getPort(), Time.currentTimeSecs(), false, STORM_VERSION));
+            leaderElector.addToLeaderLockQueue();
+            this.blobStore.startSyncBlobs();
+
+            for (ClusterMetricsConsumerExecutor exec: clusterConsumerExceutors) {
+                exec.prepare();
+            }
+
+            // Leadership coordination may be incomplete when launchServer is called. Previous behavior did a one time check
+            // which could cause Nimbus to not process TopologyActions.GAIN_LEADERSHIP transitions. Similar problem exists for
+            // HA Nimbus on being newly elected as leader. Change to a recurring pattern addresses these problems.
+            timer.scheduleRecurring(3, 5,
+                () -> {
+                    try {
+                        boolean isLeader = isLeader();
+                        if (isLeader && !wasLeader) {
+                            for (String topoId : state.activeStorms()) {
+                                transition(topoId, TopologyActions.GAIN_LEADERSHIP, null);
+                            }
+                            clusterMetricSet.setActive(true);
+                        }
+                        wasLeader = isLeader;
+                    } catch (Exception e) {
+                        throw  new RuntimeException(e);
+                    }
+                });
+
+            final boolean doNotReassign = (Boolean) conf.getOrDefault(ServerConfigUtils.NIMBUS_DO_NOT_REASSIGN, false);
+            timer.scheduleRecurring(0, ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_MONITOR_FREQ_SECS)),
+                () -> {
+                    try {
+                        if (!doNotReassign) {
+                            mkAssignments();
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            // Schedule topology cleanup
+            cleanupTimer.scheduleRecurring(0, ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_MONITOR_FREQ_SECS)),
+                () -> {
+                    cleanupTimer.schedule(0, () -> doCleanup());
+                });
+            // Schedule Nimbus inbox cleaner
+            final int jarExpSecs = ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_INBOX_JAR_EXPIRATION_SECS));
+            timer.scheduleRecurring(0, ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_CLEANUP_INBOX_FREQ_SECS)),
+                () -> {
+                    try {
+                        cleanInbox(getInbox(), jarExpSecs);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+
+            // Schedule topology history cleaner
+            Integer interval = ObjectReader.getInt(conf.get(DaemonConfig.LOGVIEWER_CLEANUP_INTERVAL_SECS), null);
+            if (interval != null) {
+                final int lvCleanupAgeMins = ObjectReader.getInt(conf.get(DaemonConfig.LOGVIEWER_CLEANUP_AGE_MINS));
+                timer.scheduleRecurring(0, interval,
+                    () -> {
+                        try {
+                            cleanTopologyHistory(lvCleanupAgeMins);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+            }
+
+            timer.scheduleRecurring(0, ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_CREDENTIAL_RENEW_FREQ_SECS)),
+                () -> {
+                    try {
+                        renewCredentials();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+            // Periodically make sure the blobstore update time is up to date.  This could have failed if Nimbus encountered
+            // an exception updating the update time, or due to bugs causing a missed update of the blobstore mod time on a blob
+            // update.
+            timer.scheduleRecurring(30, ServerConfigUtils.getLocalizerUpdateBlobInterval(conf) * 5,
+                () -> {
+                    try {
+                        blobStore.validateBlobUpdateTime();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+            metricsRegistry.registerGauge("nimbus:total-available-memory-non-negative", () -> nodeIdToResources.get().values()
+                    .parallelStream()
+                    .mapToDouble(supervisorResources -> Math.max(supervisorResources.getAvailableMem(), 0))
+                    .sum());
+            metricsRegistry.registerGauge("nimbus:available-cpu-non-negative", () -> nodeIdToResources.get().values()
+                    .parallelStream()
+                    .mapToDouble(supervisorResources -> Math.max(supervisorResources.getAvailableCpu(), 0))
+                    .sum());
+            metricsRegistry.registerGauge("nimbus:total-memory", () -> nodeIdToResources.get().values()
+                    .parallelStream()
+                    .mapToDouble(SupervisorResources::getTotalMem)
+                    .sum());
+            metricsRegistry.registerGauge("nimbus:total-cpu", () -> nodeIdToResources.get().values()
+                    .parallelStream()
+                    .mapToDouble(SupervisorResources::getTotalCpu)
+                    .sum());
+            metricsRegistry.registerGauge("nimbus:longest-scheduling-time-ms", () -> {
+                //We want to update longest scheduling time in real time in case scheduler get stuck
+                // Get current time before startTime to avoid potential race with scheduler's Timer
+                Long currTime = Time.nanoTime();
+                Long startTime = schedulingStartTimeNs.get();
+                return TimeUnit.NANOSECONDS.toMillis(startTime == null
+                        ? longestSchedulingTime.get()
+                        : Math.max(currTime - startTime, longestSchedulingTime.get()));
+            });
+            metricsRegistry.registerMeter("nimbus:num-launched").mark();
+
+            timer.scheduleRecurring(0, ObjectReader.getInt(conf.get(DaemonConfig.STORM_CLUSTER_METRICS_CONSUMER_PUBLISH_INTERVAL_SECS)),
+                () -> {
+                    try {
+                        if (isLeader()) {
+                            sendClusterMetricsToExecutors();
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+            timer.scheduleRecurring(5, 5, clusterMetricSet);
+        } catch (Exception e) {
+            if (Utils.exceptionCauseIsInstanceOf(InterruptedException.class, e)) {
+                throw e;
+            }
+
+            if (Utils.exceptionCauseIsInstanceOf(InterruptedIOException.class, e)) {
+                throw e;
+            }
+            LOG.error("Error on initialization of nimbus", e);
+            Utils.exitProcess(13, "Error on initialization of nimbus");
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, launchServer(Ljava/util/Map;Lorg/apache/storm/scheduler/INimbus;)Lorg/apache/storm/daemon/nimbus/Nimbus; > Context: Everywhere, blocks=[BB[SSA:16..18]8 - org.apache.storm.daemon.nimbus.Nimbus.launchServer(Ljava/util/Map;Lorg/apache/storm/scheduler/INimbus;)Lorg/apache/storm/daemon/nimbus/Nimbus;, BB[SSA:11..15]7 - org.apache.storm.daemon.nimbus.Nimbus.launchServer(Ljava/util/Map;Lorg/apache/storm/scheduler/INimbus;)Lorg/apache/storm/daemon/nimbus/Nimbus;, BB[SSA:19..19]9 - org.apache.storm.daemon.nimbus.Nimbus.launchServer(Ljava/util/Map;Lorg/apache/storm/scheduler/INimbus;)Lorg/apache/storm/daemon/nimbus/Nimbus;, BB[SSA:-1..-2]22 - org.apache.storm.daemon.nimbus.Nimbus.launchServer(Ljava/util/Map;Lorg/apache/storm/scheduler/INimbus;)Lorg/apache/storm/daemon/nimbus/Nimbus;], numberOfBasicBlocks=4, firstLineNumber=1554, lastLineNumber=1556, firstMethodNumber=1549, lastMethodNumber=1568, isFirstLineValid=true, methodSrcCode=
+    private static Nimbus launchServer(Map<String, Object> conf, INimbus inimbus) throws Exception {
+        StormCommon.validateDistributedMode(conf);
+        validatePortAvailable(conf);
+        OciUtils.validateImageInDaemonConf(conf);
+        StormMetricsRegistry metricsRegistry = new StormMetricsRegistry();
+        final Nimbus nimbus = new Nimbus(conf, inimbus, metricsRegistry);
+        nimbus.launchServer();
+        final ThriftServer server = new ThriftServer(conf, new Processor<>(nimbus), ThriftConnectionType.NIMBUS);
+        metricsRegistry.startMetricsReporters(conf);
+        Utils.addShutdownHookWithDelayedForceKill(() -> {
+            metricsRegistry.stopMetricsReporters();
+            nimbus.shutdown();
+            server.stop();
+        }, 10);
+        if (ClientAuthUtils.areWorkerTokensEnabledServer(server, conf)) {
+            nimbus.initWorkerTokenManager();
+        }
+        LOG.info("Starting nimbus server for storm version '{}'", STORM_VERSION);
+        server.serve();
+        return nimbus;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/LocalCluster, <init>(Lorg/apache/storm/LocalCluster$Builder;)V > Context: Everywhere, blocks=[BB[SSA:304..304]143 - org.apache.storm.LocalCluster.<init>(Lorg/apache/storm/LocalCluster$Builder;)V, BB[SSA:302..303]142 - org.apache.storm.LocalCluster.<init>(Lorg/apache/storm/LocalCluster$Builder;)V, BB[SSA:305..306]144 - org.apache.storm.LocalCluster.<init>(Lorg/apache/storm/LocalCluster$Builder;)V], numberOfBasicBlocks=3, firstLineNumber=250, lastLineNumber=294, firstMethodNumber=176, lastMethodNumber=294, isFirstLineValid=true, methodSrcCode=
+    @SuppressWarnings("deprecation")
+    private LocalCluster(Builder builder) throws Exception {
+        if (builder.simulateTime) {
+            time = new SimulatedTime();
+        } else {
+            time = null;
+        }
+        boolean success = false;
+        try {
+            this.trackId = builder.trackId;
+            if (trackId != null) {
+                ConcurrentHashMap<String, AtomicInteger> metrics = new ConcurrentHashMap<>();
+                metrics.put("spout-emitted", new AtomicInteger(0));
+                metrics.put("transferred", new AtomicInteger(0));
+                metrics.put("processed", new AtomicInteger(0));
+                this.commonInstaller = new StormCommonInstaller(new TrackedStormCommon(this.trackId));
+                LOG.warn("Adding tracked metrics for ID {}", this.trackId);
+                RegisteredGlobalState.setState(this.trackId, metrics);
+                LocalExecutor.setTrackId(this.trackId);
+            } else {
+                this.commonInstaller = null;
+            }
+
+            this.tmpDirs = new ArrayList<>();
+            this.supervisors = new ArrayList<>();
+            TmpPath nimbusTmp = new TmpPath();
+            this.tmpDirs.add(nimbusTmp);
+            stormHomeBackup = System.getProperty(ConfigUtils.STORM_HOME);
+            TmpPath stormHome = new TmpPath();
+            if (!stormHome.getFile().mkdirs()) {
+                throw new IllegalStateException("Failed to create storm.home directory " + stormHome.getPath());
+            }
+            this.tmpDirs.add(stormHome);
+            System.setProperty(ConfigUtils.STORM_HOME, stormHome.getPath());
+            Map<String, Object> conf = ConfigUtils.readStormConfig();
+            conf.put(Config.TOPOLOGY_SKIP_MISSING_KRYO_REGISTRATIONS, true);
+            conf.put(Config.TOPOLOGY_ENABLE_MESSAGE_TIMEOUTS, false);
+            conf.put(Config.TOPOLOGY_TRIDENT_BATCH_EMIT_INTERVAL_MILLIS, 50);
+            conf.put(Config.STORM_CLUSTER_MODE, "local");
+            conf.put(Config.BLOBSTORE_DIR, nimbusTmp.getPath());
+            conf.put(Config.TOPOLOGY_MIN_REPLICATION_COUNT, 1);
+
+            InProcessZookeeper zookeeper = null;
+            if (!builder.daemonConf.containsKey(Config.STORM_ZOOKEEPER_SERVERS)) {
+                zookeeper = new InProcessZookeeper();
+                conf.put(Config.STORM_ZOOKEEPER_PORT, zookeeper.getPort());
+                conf.put(Config.STORM_ZOOKEEPER_SERVERS, Arrays.asList("localhost"));
+            }
+            this.zookeeper = zookeeper;
+            conf.putAll(builder.daemonConf);
+            this.daemonConf = new HashMap<>(conf);
+            this.metricRegistry = new StormMetricsRegistry();
+
+            this.portCounter = builder.supervisorSlotPortMin;
+            ClusterStateContext cs = new ClusterStateContext(DaemonType.NIMBUS, daemonConf);
+            this.state = ClusterUtils.mkStateStorage(this.daemonConf, null, cs);
+            if (builder.clusterState == null) {
+                clusterState = ClusterUtils.mkStormClusterState(this.daemonConf, cs);
+            } else {
+                this.clusterState = builder.clusterState;
+            }
+            if (!Time.isSimulating()) {
+                //Ensure Nimbus assigns topologies as quickly as possible
+                conf.put(DaemonConfig.NIMBUS_MONITOR_FREQ_SECS, 1);
+            }
+            //Set it for nimbus only
+            conf.put(Config.STORM_LOCAL_DIR, nimbusTmp.getPath());
+            Nimbus nimbus = new Nimbus(conf, builder.inimbus == null ? new StandaloneINimbus() : builder.inimbus,
+                                       this.getClusterState(), null, builder.store, builder.topoCache, builder.leaderElector,
+                                       builder.groupMapper, metricRegistry);
+            if (builder.nimbusWrapper != null) {
+                nimbus = builder.nimbusWrapper.apply(nimbus);
+            }
+            this.nimbus = nimbus;
+            this.nimbus.launchServer();
+            if (!this.nimbus.awaitLeadership(Testing.TEST_TIMEOUT_MS, TimeUnit.MILLISECONDS)) {
+                //Ensure Nimbus has leadership, otherwise topology submission will fail.
+                throw new RuntimeException("LocalCluster Nimbus failed to gain leadership.");
+            }
+            IContext context = null;
+            if (!ObjectReader.getBoolean(this.daemonConf.get(Config.STORM_LOCAL_MODE_ZMQ), false)) {
+                context = new Context();
+                context.prepare(this.daemonConf);
+            }
+            this.sharedContext = context;
+            this.thriftServer = builder.nimbusDaemon ? startNimbusDaemon(this.daemonConf, this.nimbus) : null;
+
+            for (int i = 0; i < builder.supervisors; i++) {
+                addSupervisor(builder.portsPerSupervisor, null, null);
+            }
+
+            //Wait for a leader to be elected (or topology submission can be rejected)
+            try {
+                long timeoutAfter = System.currentTimeMillis() + 10_000;
+                while (!hasLeader()) {
+                    if (timeoutAfter > System.currentTimeMillis()) {
+                        throw new IllegalStateException("Timed out waiting for nimbus to become the leader");
+                    }
+                    Thread.sleep(1);
+                }
+            } catch (Exception e) {
+                //Ignore any exceptions we might be doing a test for authentication
+            }
+            if (thriftServer == null) {
+                //We don't want to override the client if there is a thrift server up and running, or we would not test any
+                // Of the actual thrift code
+                this.nimbusOverride = new NimbusClient.LocalOverride(this);
+            } else {
+                this.nimbusOverride = null;
+            }
+            success = true;
+            
+            metricRegistry.startMetricsReporters(daemonConf);
+        } finally {
+            if (!success) {
+                close();
+            }
+        }
+    }
+
+}

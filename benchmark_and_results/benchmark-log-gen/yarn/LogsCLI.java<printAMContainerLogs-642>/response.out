@@ -1,0 +1,122 @@
+```java
+List<JSONObject> amContainersList = null;
+List<ContainerLogsRequest> requests =
+new ArrayList<ContainerLogsRequest>();
+boolean getAMContainerLists = false;
+String appId = request.getAppId().toString();
+StringBuilder errorMessage = new StringBuilder();
+// We will call RM webservice to get all AppAttempts information.
+// If we get nothing, we will try to call AHS webservice to get AppAttempts
+// which includes nodeAddress for the AM Containers.
+try {
+amContainersList = getAMContainerInfoForRMWebService(conf, appId);
+if (amContainersList != null && !amContainersList.isEmpty()) {
+getAMContainerLists = true;
+for (JSONObject amContainer : amContainersList) {
+ContainerLogsRequest amRequest = new ContainerLogsRequest(request);
+amRequest.setContainerId(amContainer.getString("containerId"));
+String httpAddress = amContainer.getString("nodeHttpAddress");
+if (httpAddress != null && !httpAddress.isEmpty()) {
+amRequest.setNodeHttpAddress(httpAddress);
+}
+amRequest.setNodeId(amContainer.getString("nodeId"));
+requests.add(amRequest);
+}
+}
+} catch (Exception ex) {
+errorMessage.append(ex.getMessage() + "\n");
+if (request.isAppFinished()) {
+if (!conf.getBoolean(YarnConfiguration.TIMELINE_SERVICE_ENABLED,
+YarnConfiguration.DEFAULT_TIMELINE_SERVICE_ENABLED)) {
+errorMessage.append("Please enable the timeline service "
++ "and make sure the timeline server is running.");
+// ConfLogger Skipped
+} else {
+try {
+if (YarnConfiguration.timelineServiceV2Enabled(conf)) {
+try {
+amContainersList =
+getAMContainerInfoFromTimelineReader(conf, appId);
+getAMContainerLists =
+createContainerLogsRequestForMasterContainer(requests,
+request, amContainersList,
+AppAttemptMetricsConstants.MASTER_CONTAINER_INFO);
+} catch (Exception e) {
+System.err.println(
+"Unable to get AM container informations from "
++ "TimelineReader for the application:" + appId);
+// ConfLogger Commented: Not Informative
+// ConfLogger Inserted Start
+logger.error("Unable to get AM container information from TimelineReader for the application: " + appId + ". Please check the configuration parameters: " +
+"YarnConfiguration.TIMELINE_SERVICE_ENABLED and YarnConfiguration.TIMELINE_SERVICE_V2_ENABLED.");
+// ConfLogger Inserted End
+if (YarnConfiguration.timelineServiceV1Enabled(conf)
+|| YarnConfiguration.timelineServiceV15Enabled(conf)) {
+getAMContainerLists =
+getAMContainerInfoForAHSWebService(conf, appId, requests,
+request);
+} else {
+throw e;
+}
+}
+} else {
+getAMContainerLists =
+getAMContainerInfoForAHSWebService(conf, appId, requests,
+request);
+}
+} catch (Exception e) {
+errorMessage.append(e.getMessage());
+}
+}
+}
+}
+
+if (!getAMContainerLists) {
+System.err.println("Unable to get AM container informations "
++ "for the application:" + appId);
+System.err.println(errorMessage);
+System.err.println("Can not get AMContainers logs for "
++ "the application:" + appId + " with the appOwner:"
++ request.getAppOwner());
+return -1;
+}
+
+List<ContainerLogsRequest> candidates = new ArrayList<>();
+if (amContainers.contains("ALL")) {
+candidates.addAll(requests);
+outStream.println();
+outStream.println("Specified ALL for -am option. "
++ "Printed logs for all am containers.");
+} else {
+for (String amContainer : amContainers) {
+int amContainerId = Integer.parseInt(amContainer.trim());
+if (amContainerId == -1) {
+candidates.add(requests.get(requests.size() - 1));
+} else {
+if (amContainerId <= requests.size()) {
+candidates.add(requests.get(amContainerId - 1));
+} else {
+System.err.println(String.format("ERROR: Specified AM containerId"
++ " (%s) exceeds the number of AM containers (%s).",
+amContainerId, requests.size()));
+return -1;
+}
+}
+}
+}
+Map<String, ContainerLogsRequest> newOptions = new HashMap<>();
+if (request.isAppFinished()) {
+newOptions = getMatchedLogTypesForFinishedApp(candidates,
+logCliHelper, useRegex, ignoreSizeLimit);
+} else {
+newOptions = getMatchedLogTypesForRunningApp(candidates, useRegex,
+ignoreSizeLimit);
+}
+for (Entry<String, ContainerLogsRequest> amRequest
+: newOptions.entrySet()) {
+outputAMContainerLogs(amRequest.getValue(), conf, logCliHelper,
+useRegex, ignoreSizeLimit);
+}
+return 0;
+}
+```

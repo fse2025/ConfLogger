@@ -1,0 +1,18 @@
+```java
+if (null == o) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'o' is null. Returning default value: {}", defaultValue);
+    // ConfLogger Inserted End
+    return defaultValue;
+}
+if (o instanceof Boolean) {
+    return (Boolean) o;
+} else {
+    // ConfLogger Commented: Not Informative
+    // throw new IllegalArgumentException("Don't know how to convert " + o + " to boolean");
+    // ConfLogger Inserted Start
+    logger.error("Invalid configuration parameter 'o': {}. Expected a Boolean value.", o);
+    throw new IllegalArgumentException("Invalid configuration parameter 'o': " + o + ". Expected a Boolean value.");
+    // ConfLogger Inserted End
+}
+```

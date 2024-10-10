@@ -1,0 +1,14 @@
+```java
+public static int getCompletionPollInterval(Configuration conf) {
+    int completionPollIntervalMillis = conf.getInt(
+        COMPLETION_POLL_INTERVAL_KEY, DEFAULT_COMPLETION_POLL_INTERVAL);
+    if (completionPollIntervalMillis < 1) {
+        // ConfLogger Inserted Start
+        logger.warn("The configuration parameter '{}' is set to a value less than 1: {}. Resetting to default value: {}. Ensure the value is a positive integer to properly configure the poll interval.",
+            COMPLETION_POLL_INTERVAL_KEY, completionPollIntervalMillis, DEFAULT_COMPLETION_POLL_INTERVAL);
+        // ConfLogger Inserted End
+        completionPollIntervalMillis = DEFAULT_COMPLETION_POLL_INTERVAL;
+    }
+    return completionPollIntervalMillis;
+}
+```

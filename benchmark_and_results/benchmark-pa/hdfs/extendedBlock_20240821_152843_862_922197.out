@@ -1,0 +1,284 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtilClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtilClient.concatSuffixes([Ljava/lang/String;)Ljava/lang/String;	methodLines:	389:393
+blockLines:	390:-1
+paras:	null
+TaintedStat:	NORMAL concatSuffixes:conditional branch(ne, to iindex=5) 1,3 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, concatSuffixes([Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere[46]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @78 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere[46]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @78 exception:20
+NORMAL setGenericConf:invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;)V > 1,8,21 @93 exception:23 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL set:invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > 1,2,3,5 @4 exception:6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL set:conditional branch(ne, to iindex=122) 39,7 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL set:57 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 55 @253 exception:56 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @20 exception:14
+NORMAL setProtocolEngine:17 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16 Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere[27]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,13 @43 exception:14
+NORMAL setGenericConf:conditional branch(eq, to iindex=37) 15,16 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere
+NORMAL setGenericConf:17 = new <Application,[Ljava/lang/String>@6811  Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, setGenericConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V > Context: Everywhere[45]19 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtil, addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String; > 8,17 @75 exception:18 v17
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[1]5 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, concatSuffixes([Ljava/lang/String;)Ljava/lang/String; > 2 @1 exception:4 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, concatSuffixes([Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL concatSuffixes:conditional branch(ne, to iindex=5) 1,3 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, concatSuffixes([Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static String concatSuffixes(String... suffixes) {
+    if (suffixes == null) {
+      return null;
+    }
+    return Joiner.on(".").skipNulls().join(suffixes);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNamenodeLifelineAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:20..20]8 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeLifelineAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:16..19]7 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeLifelineAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:21..24]9 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeLifelineAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]11 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeLifelineAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=715, lastLineNumber=718, firstMethodNumber=710, lastMethodNumber=718, isFirstLineValid=true, methodSrcCode=
+
+    if (nsId == null) {
+      nsId = getOnlyNameServiceIdOrNull(conf);
+    }
+
+    String lifelineAddrKey = DFSUtilClient.concatSuffixes(
+        DFSConfigKeys.DFS_NAMENODE_LIFELINE_RPC_ADDRESS_KEY, nsId, nnId);
+
+    return conf.get(lifelineAddrKey);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.hdfs.DFSUtil.addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.DFSUtil.addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:2..5]2 - org.apache.hadoop.hdfs.DFSUtil.addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.hadoop.hdfs.DFSUtil.addKeySuffixes(Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=407, lastLineNumber=409, firstMethodNumber=407, lastMethodNumber=409, isFirstLineValid=false, methodSrcCode=
+  public static String addKeySuffixes(String key, String... suffixes) {
+    String keySuffix = DFSUtilClient.concatSuffixes(suffixes);
+    return DFSUtilClient.addSuffix(key, keySuffix);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNamenodeServiceAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:20..20]8 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeServiceAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:16..19]7 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeServiceAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:21..23]9 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeServiceAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]19 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeServiceAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:36..36]13 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeServiceAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:32..35]12 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeServiceAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:37..40]14 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeServiceAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]19 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeServiceAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=8, firstLineNumber=1369, lastLineNumber=1372, firstMethodNumber=1361, lastMethodNumber=1376, isFirstLineValid=true, methodSrcCode=
+
+    if (nsId == null) {
+      nsId = getOnlyNameServiceIdOrNull(conf);
+    }
+
+    String serviceAddrKey = DFSUtilClient.concatSuffixes(
+        DFSConfigKeys.DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY, nsId, nnId);
+
+    String addrKey = DFSUtilClient.concatSuffixes(
+        DFSConfigKeys.DFS_NAMENODE_RPC_ADDRESS_KEY, nsId, nnId);
+
+    String serviceRpcAddr = conf.get(serviceAddrKey);
+    if (serviceRpcAddr == null) {
+      serviceRpcAddr = conf.get(addrKey);
+    }
+    return serviceRpcAddr;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNameServiceUris(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;[Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere, blocks=[BB[SSA:86..86]34 - org.apache.hadoop.hdfs.DFSUtil.getNameServiceUris(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;[Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:82..85]33 - org.apache.hadoop.hdfs.DFSUtil.getNameServiceUris(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;[Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:87..87]35 - org.apache.hadoop.hdfs.DFSUtil.getNameServiceUris(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;[Ljava/lang/String;)Ljava/util/Collection;, BB[SSA:-1..-2]80 - org.apache.hadoop.hdfs.DFSUtil.getNameServiceUris(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;[Ljava/lang/String;)Ljava/util/Collection;], numberOfBasicBlocks=4, firstLineNumber=873, lastLineNumber=873, firstMethodNumber=842, lastMethodNumber=930, isFirstLineValid=true, methodSrcCode=
+      Collection<String> nameServices, String... keys) {
+    Set<URI> ret = new HashSet<URI>();
+    
+    // We're passed multiple possible configuration keys for any given NN or HA
+    // nameservice, and search the config in order of these keys. In order to
+    // make sure that a later config lookup (e.g. fs.defaultFS) doesn't add a
+    // URI for a config key for which we've already found a preferred entry, we
+    // keep track of non-preferred keys here.
+    Set<URI> nonPreferredUris = new HashSet<URI>();
+    
+    for (String nsId : nameServices) {
+      URI nsUri = createUri(HdfsConstants.HDFS_URI_SCHEME, nsId, -1);
+      /**
+       * Determine whether the logical URI of the name service can be resolved
+       * by the configured failover proxy provider. If not, we should try to
+       * resolve the URI here
+       */
+      boolean useLogicalUri = false;
+      try {
+        useLogicalUri = HAUtil.useLogicalUri(conf, nsUri);
+      } catch (IOException e){
+        LOG.warn("Getting exception  while trying to determine if nameservice "
+            + nsId + " can use logical URI: " + e);
+      }
+      if (HAUtil.isHAEnabled(conf, nsId) && useLogicalUri) {
+        // Add the logical URI of the nameservice.
+        ret.add(nsUri);
+      } else {
+        // Add the URI corresponding to the address of the NN.
+        boolean uriFound = false;
+        for (String key : keys) {
+          String addr = conf.get(DFSUtilClient.concatSuffixes(key, nsId));
+          if (addr != null) {
+            URI uri = createUri(HdfsConstants.HDFS_URI_SCHEME,
+                NetUtils.createSocketAddr(addr));
+            if (!uriFound) {
+              uriFound = true;
+              ret.add(uri);
+            } else {
+              nonPreferredUris.add(uri);
+            }
+          }
+        }
+      }
+    }
+    
+    // Add the generic configuration keys.
+    boolean uriFound = false;
+    for (String key : keys) {
+      String addr = conf.get(key);
+      if (addr != null) {
+        URI uri = createUri(HdfsConstants.HDFS_URI_SCHEME,
+            NetUtils.createSocketAddr(addr));
+        if (!uriFound) {
+          uriFound = true;
+          ret.add(uri);
+        } else {
+          nonPreferredUris.add(uri);
+        }
+      }
+    }
+
+    // Add the default URI if it is an HDFS URI and we haven't come up with a
+    // valid non-nameservice NN address yet.  Consider the servicerpc-address
+    // and rpc-address to be the "unnamed" nameservice.  defaultFS is our
+    // fallback when rpc-address isn't given.  We therefore only want to add
+    // the defaultFS when neither the servicerpc-address (which is preferred)
+    // nor the rpc-address (which overrides defaultFS) is given.
+    if (!uriFound) {
+      URI defaultUri = FileSystem.getDefaultUri(conf);
+      if (defaultUri != null) {
+        // checks if defaultUri is ip:port format
+        // and convert it to hostname:port format
+        if (defaultUri.getPort() != -1) {
+          defaultUri = createUri(defaultUri.getScheme(),
+              NetUtils.createSocketAddr(defaultUri.getHost(),
+                  defaultUri.getPort()));
+        }
+
+        defaultUri = trimUri(defaultUri);
+
+        if (HdfsConstants.HDFS_URI_SCHEME.equals(defaultUri.getScheme()) &&
+            !nonPreferredUris.contains(defaultUri)) {
+          ret.add(defaultUri);
+        }
+      }
+    }
+    
+    return ret;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getAddressesForNameserviceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:28..28]13 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNameserviceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;, BB[SSA:24..27]12 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNameserviceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;, BB[SSA:29..34]14 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNameserviceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;, BB[SSA:-1..-2]24 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNameserviceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=438, lastLineNumber=439, firstMethodNumber=434, lastMethodNumber=450, isFirstLineValid=true, methodSrcCode=
+      Configuration conf, String nsId, String defaultValue, String... keys) {
+    Collection<String> nnIds = getNameNodeIds(conf, nsId);
+    Map<String, InetSocketAddress> ret = Maps.newLinkedHashMap();
+    for (String nnId : emptyAsSingletonNull(nnIds)) {
+      String suffix = concatSuffixes(nsId, nnId);
+      String address = checkKeysAndProcess(defaultValue, suffix, conf, keys);
+      if (address != null) {
+        InetSocketAddress isa = NetUtils.createSocketAddr(address);
+        if (isa.isUnresolved()) {
+          LOG.warn("Namenode for {} remains unresolved for ID {}. Check your "
+              + "hdfs-site.xml file to ensure namenodes are configured "
+              + "properly.", nsId, nnId);
+        }
+        ret.put(nnId, isa);
+      }
+    }
+    return ret;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set; > Context: Everywhere, blocks=[BB[SSA:66..66]26 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:62..65]25 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:67..72]27 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:-1..-2]91 - org.apache.hadoop.hdfs.DFSUtil.getJournalNodeAddresses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;], numberOfBasicBlocks=4, firstLineNumber=478, lastLineNumber=479, firstMethodNumber=464, lastMethodNumber=531, isFirstLineValid=true, methodSrcCode=
+      Configuration conf) throws URISyntaxException, IOException {
+    Set<String> journalNodeList = new HashSet<>();
+    String journalsUri = "";
+    try {
+      journalsUri = conf.get(DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+      if (journalsUri == null) {
+        Collection<String> nameserviceIds = DFSUtilClient.
+            getNameServiceIds(conf);
+        for (String nsId : nameserviceIds) {
+          journalsUri = DFSUtilClient.getConfValue(
+              null, nsId, conf, DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+          if (journalsUri == null) {
+            Collection<String> nnIds = DFSUtilClient.getNameNodeIds(conf, nsId);
+            for (String nnId : nnIds) {
+              String suffix = DFSUtilClient.concatSuffixes(nsId, nnId);
+              journalsUri = DFSUtilClient.getConfValue(
+                  null, suffix, conf, DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+              if (journalsUri == null ||
+                  !journalsUri.startsWith("qjournal://")) {
+                return journalNodeList;
+              } else {
+                LOG.warn(DFS_NAMENODE_SHARED_EDITS_DIR_KEY +" is to be " +
+                    "configured as nameservice" +
+                    " specific key(append it with nameserviceId), no need" +
+                    " to append it with namenodeId");
+                URI uri = new URI(journalsUri);
+                List<InetSocketAddress> socketAddresses = Util.
+                    getAddressesList(uri);
+                for (InetSocketAddress is : socketAddresses) {
+                  journalNodeList.add(is.getHostName());
+                }
+              }
+            }
+          } else if (!journalsUri.startsWith("qjournal://")) {
+            return journalNodeList;
+          } else {
+            URI uri = new URI(journalsUri);
+            List<InetSocketAddress> socketAddresses = Util.
+                getAddressesList(uri);
+            for (InetSocketAddress is : socketAddresses) {
+              journalNodeList.add(is.getHostName());
+            }
+          }
+        }
+      } else {
+        if (!journalsUri.startsWith("qjournal://")) {
+          return journalNodeList;
+        } else {
+          URI uri = new URI(journalsUri);
+          List<InetSocketAddress> socketAddresses = Util.getAddressesList(uri);
+          for (InetSocketAddress is : socketAddresses) {
+            journalNodeList.add(is.getHostName());
+          }
+        }
+      }
+    } catch(UnknownHostException e) {
+      LOG.error("The conf property " + DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+          + " is not properly set with correct journal node hostnames");
+      throw new UnknownHostException(journalsUri);
+    } catch(URISyntaxException e)  {
+      LOG.error("The conf property " + DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+          + "is not set properly with correct journal node uri");
+      throw new URISyntaxException(journalsUri, "The conf property " +
+          DFS_NAMENODE_SHARED_EDITS_DIR_KEY + "is not" +
+          " properly set with correct journal node uri");
+    }
+
+    return journalNodeList;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:32..32]11 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:28..31]10 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:33..37]12 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]14 - org.apache.hadoop.hdfs.DFSUtil.getNamenodeWebAddr(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=1401, lastLineNumber=1403, firstMethodNumber=1390, lastMethodNumber=1404, isFirstLineValid=true, methodSrcCode=
+
+    if (nsId == null) {
+      nsId = getOnlyNameServiceIdOrNull(conf);
+    }
+
+    String webAddrBaseKey = DFSConfigKeys.DFS_NAMENODE_HTTP_ADDRESS_KEY;
+    String webAddrDefault = DFSConfigKeys.DFS_NAMENODE_HTTP_ADDRESS_DEFAULT;
+    if (getHttpPolicy(conf) == HttpConfig.Policy.HTTPS_ONLY) {
+      webAddrBaseKey = DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY;
+      webAddrDefault = DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_DEFAULT;
+    }
+    String webAddrKey = DFSUtilClient.concatSuffixes(
+        webAddrBaseKey, nsId, nnId);
+    String webAddr = conf.get(webAddrKey, webAddrDefault);
+    return webAddr;
+  }
+}

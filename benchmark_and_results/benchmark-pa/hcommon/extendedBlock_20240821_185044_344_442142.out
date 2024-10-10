@@ -1,0 +1,50 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Server.java	methodSinagture:	org.apache.hadoop.ipc.Server.bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V	methodLines:	653:681
+blockLines:	658:-1
+paras:	null
+TaintedStat:	NORMAL bind:conditional branch(eq, to iindex=21) 11,7 Node: < Application, Lorg/apache/hadoop/ipc/Server, bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/Server, bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere[8]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getRange(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration$IntegerRanges; > 4,5,8 @13 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/Server, bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere[8]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getRange(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration$IntegerRanges; > 4,5,8 @13 exception:9
+PHI Node: < Application, Lorg/apache/hadoop/ipc/Server, bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere:11 = phi  7,10
+NORMAL bind:conditional branch(eq, to iindex=21) 11,7 Node: < Application, Lorg/apache/hadoop/ipc/Server, bind(Ljava/net/ServerSocket;Ljava/net/InetSocketAddress;ILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    try {
+      IntegerRanges range = null;
+      if (rangeConf != null) {
+        range = conf.getRange(rangeConf, "");
+      }
+      if (range == null || range.isEmpty() || (address.getPort() != 0)) {
+        socket.bind(address, backlog);
+      } else {
+        for (Integer port : range) {
+          if (socket.isBound()) break;
+          try {
+            InetSocketAddress temp = new InetSocketAddress(address.getAddress(),
+                port);
+            socket.bind(temp, backlog);
+          } catch(BindException e) {
+            //Ignored
+          }
+        }
+        if (!socket.isBound()) {
+          throw new BindException("Could not find a free port in "+range);
+        }
+      }
+    } catch (SocketException e) {
+      throw NetUtils.wrapException(null,
+          0,
+          address.getHostName(),
+          address.getPort(), e);
+    }
+  }
+
+
+
+====================ctx:=======================

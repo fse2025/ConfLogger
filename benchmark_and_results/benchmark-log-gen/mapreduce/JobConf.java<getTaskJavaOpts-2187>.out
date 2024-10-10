@@ -1,0 +1,50 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobConf.java	methodSinagture:	org.apache.hadoop.mapred.JobConf.getTaskJavaOpts(Lorg/apache/hadoop/mapreduce/TaskType;)Ljava/lang/String;	methodLines:	2187:2210
+blockLines:	2194:-1
+paras:	mapreduce.job.heap.memory-mb.ratio
+TaintedStat:	NORMAL getTaskJavaOpts:conditional branch(gt, to iindex=24) 15,9 Node: < Application, Lorg/apache/hadoop/mapred/JobConf, getTaskJavaOpts(Lorg/apache/hadoop/mapreduce/TaskType;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/JobConf, getTaskJavaOpts(Lorg/apache/hadoop/mapreduce/TaskType;)Ljava/lang/String; > Context: Everywhere[12]13 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getFloat(Ljava/lang/String;F)F > 1,10,11 @20 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/JobConf, getTaskJavaOpts(Lorg/apache/hadoop/mapreduce/TaskType;)Ljava/lang/String; > Context: Everywhere[12]13 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getFloat(Ljava/lang/String;F)F > 1,10,11 @20 exception:12
+NORMAL getTaskJavaOpts:15 = compare 13,14 opcode=cmpl Node: < Application, Lorg/apache/hadoop/mapred/JobConf, getTaskJavaOpts(Lorg/apache/hadoop/mapreduce/TaskType;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTaskJavaOpts:conditional branch(gt, to iindex=24) 15,9 Node: < Application, Lorg/apache/hadoop/mapred/JobConf, getTaskJavaOpts(Lorg/apache/hadoop/mapreduce/TaskType;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public String getTaskJavaOpts(TaskType taskType) {
+    String javaOpts = getConfiguredTaskJavaOpts(taskType);
+
+    if (!javaOpts.contains("-Xmx")) {
+      float heapRatio = getFloat(MRJobConfig.HEAP_MEMORY_MB_RATIO,
+          MRJobConfig.DEFAULT_HEAP_MEMORY_MB_RATIO);
+
+      if (heapRatio > 1.0f || heapRatio < 0) {
+        LOG.warn("Invalid value for " + MRJobConfig.HEAP_MEMORY_MB_RATIO
+            + ", using the default.");
+        heapRatio = MRJobConfig.DEFAULT_HEAP_MEMORY_MB_RATIO;
+      }
+
+      int taskContainerMb = getMemoryRequired(taskType);
+      int taskHeapSize = (int)Math.ceil(taskContainerMb * heapRatio);
+
+      String xmxArg = String.format("-Xmx%dm", taskHeapSize);
+      LOG.info("Task java-opts do not specify heap size. Setting task attempt" +
+          " jvm max heap size to " + xmxArg);
+
+      javaOpts += " " + xmxArg;
+    }
+
+    return javaOpts;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/MapReduceChildJVM, getChildJavaOpts(Lorg/apache/hadoop/mapred/JobConf;Z)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:7..7]4 - org.apache.hadoop.mapred.MapReduceChildJVM.getChildJavaOpts(Lorg/apache/hadoop/mapred/JobConf;Z)Ljava/lang/String;, BB[SSA:4..5]2 - org.apache.hadoop.mapred.MapReduceChildJVM.getChildJavaOpts(Lorg/apache/hadoop/mapred/JobConf;Z)Ljava/lang/String;, BB[SSA:6..6]3 - org.apache.hadoop.mapred.MapReduceChildJVM.getChildJavaOpts(Lorg/apache/hadoop/mapred/JobConf;Z)Ljava/lang/String;, BB[SSA:8..8]5 - org.apache.hadoop.mapred.MapReduceChildJVM.getChildJavaOpts(Lorg/apache/hadoop/mapred/JobConf;Z)Ljava/lang/String;, BB[SSA:-1..-2]6 - org.apache.hadoop.mapred.MapReduceChildJVM.getChildJavaOpts(Lorg/apache/hadoop/mapred/JobConf;Z)Ljava/lang/String;], numberOfBasicBlocks=5, firstLineNumber=104, lastLineNumber=104, firstMethodNumber=103, lastMethodNumber=104, isFirstLineValid=true, methodSrcCode=
+  private static String getChildJavaOpts(JobConf jobConf, boolean isMapTask) {
+    return jobConf.getTaskJavaOpts(isMapTask ? TaskType.MAP : TaskType.REDUCE);
+  }
+}

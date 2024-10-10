@@ -1,0 +1,34 @@
+```java
+QuorumJournalManager.checkJournalId(jid);
+
+Journal journal = journalsById.get(jid);
+if (journal == null) {
+    File logDir = getLogDir(jid, nameServiceId);
+    LOG.info("Initializing journal in directory " + logDir);
+    journal = new Journal(conf, logDir, jid, startOpt, new ErrorReporter());
+    journalsById.put(jid, journal);
+    // Start SyncJouranl thread, if JournalNode Sync is enabled
+    if (conf.getBoolean(
+        DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_KEY,
+        DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_DEFAULT)) {
+        // ConfLogger Inserted Start
+        logger.info("JournalNode Sync is enabled. Configuration parameter: " + DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_KEY + " = " + conf.getBoolean(DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_KEY, DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_DEFAULT));
+        // ConfLogger Inserted End
+        startSyncer(journal, jid, nameServiceId);
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("JournalNode Sync is disabled. Configuration parameter: " + DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_KEY + " = " + conf.getBoolean(DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_KEY, DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_DEFAULT));
+        // ConfLogger Inserted End
+    }
+} else if (journalSyncersById.get(jid) != null &&
+    !journalSyncersById.get(jid).isJournalSyncerStarted() &&
+    !journalsById.get(jid).getTriedJournalSyncerStartedwithnsId() &&
+    nameServiceId != null) {
+    // ConfLogger Inserted Start
+    logger.info("Starting Syncer for existing journal. Configuration parameter: " + DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_KEY + " = " + conf.getBoolean(DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_KEY, DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_DEFAULT));
+    // ConfLogger Inserted End
+    startSyncer(journal, jid, nameServiceId);
+}
+
+return journal;
+```

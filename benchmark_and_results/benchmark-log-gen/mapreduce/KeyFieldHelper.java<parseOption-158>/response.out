@@ -1,0 +1,43 @@
+```java
+if (option == null || option.equals("")) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'option' is null or empty. Default comparison will be used.");
+    // ConfLogger Inserted End
+    //we will have only default comparison
+    return;
+}
+StringTokenizer args = new StringTokenizer(option);
+KeyDescription global = new KeyDescription();
+while (args.hasMoreTokens()) {
+    String arg = args.nextToken();
+    if (arg.equals("-n")) {
+        global.numeric = true;
+    }
+    if (arg.equals("-r")) {
+        global.reverse = true;
+    }
+    if (arg.equals("-nr")) {
+        global.numeric = true;
+        global.reverse = true;
+    }
+    if (arg.startsWith("-k")) {
+        KeyDescription k = parseKey(arg, args);
+        if (k != null) {
+            allKeySpecs.add(k);
+            keySpecSeen = true;
+        }
+    }
+}
+for (KeyDescription key : allKeySpecs) {
+    if (!(key.reverse | key.numeric)) {
+        key.reverse = global.reverse;
+        key.numeric = global.numeric;
+    }
+}
+if (allKeySpecs.size() == 0) {
+    // ConfLogger Inserted Start
+    logger.info("No specific key descriptions found. Using global settings: numeric=" + global.numeric + ", reverse=" + global.reverse);
+    // ConfLogger Inserted End
+    allKeySpecs.add(global);
+}
+```

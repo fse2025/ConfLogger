@@ -1,0 +1,20 @@
+```java
+Configuration conf = new Configuration();
+if (jobTrackerSpec != null) {
+    if (jobTrackerSpec.indexOf(":") >= 0) {
+        conf.set("mapred.job.tracker", jobTrackerSpec);
+    } else {
+        String classpathFile = "hadoop-" + jobTrackerSpec + ".xml";
+        URL validate = conf.getResource(classpathFile);
+        if (validate == null) {
+            // ConfLogger Inserted Start
+            logger.error("Configuration error: {} not found on CLASSPATH. Please ensure the file exists and is correctly named.", classpathFile);
+            // ConfLogger Inserted End
+            throw new RuntimeException(classpathFile + " not found on CLASSPATH");
+        }
+        conf.addResource(classpathFile);
+    }
+}
+return conf;
+}
+```

@@ -1,0 +1,50 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SnapshotRecursiveSummary.java	methodSinagture:	org.apache.zookeeper.server.SnapshotRecursiveSummary.run(Ljava/lang/String;Ljava/lang/String;I)V	methodLines:	65:76
+blockLines:	75:-1
+paras:	null
+TaintedStat:	NORMAL run:conditional branch(eq, to iindex=47) 9,19 Node: < Application, Lorg/apache/zookeeper/server/SnapshotRecursiveSummary, run(Ljava/lang/String;Ljava/lang/String;I)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/SnapshotRecursiveSummary, run(Ljava/lang/String;Ljava/lang/String;I)V > Context: Everywhere[6]9 = invokestatic < Application, Lorg/apache/zookeeper/server/persistence/SnapStream, getInputStream(Ljava/io/File;)Ljava/util/zip/CheckedInputStream; > 6 @12 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/SnapshotRecursiveSummary, run(Ljava/lang/String;Ljava/lang/String;I)V > Context: Everywhere[6]9 = invokestatic < Application, Lorg/apache/zookeeper/server/persistence/SnapStream, getInputStream(Ljava/io/File;)Ljava/util/zip/CheckedInputStream; > 6 @12 exception:8
+NORMAL run:conditional branch(eq, to iindex=47) 9,19 Node: < Application, Lorg/apache/zookeeper/server/SnapshotRecursiveSummary, run(Ljava/lang/String;Ljava/lang/String;I)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void run(String snapshotFileName, String startingNode, int maxDepth) throws IOException {
+    File snapshotFile = new File(snapshotFileName);
+    try (InputStream is = SnapStream.getInputStream(snapshotFile)) {
+      InputArchive ia = BinaryInputArchive.getArchive(is);
+
+      DataTree dataTree = new DataTree();
+      Map<Long, Integer> sessions = new HashMap<>();
+      FileSnap.deserialize(dataTree, sessions, ia);
+
+      printZnodeDetails(dataTree, startingNode, maxDepth);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/SnapshotRecursiveSummary, main([Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:32..33]16 - org.apache.zookeeper.server.SnapshotRecursiveSummary.main([Ljava/lang/String;)V, BB[SSA:29..31]15 - org.apache.zookeeper.server.SnapshotRecursiveSummary.main([Ljava/lang/String;)V, BB[SSA:34..34]17 - org.apache.zookeeper.server.SnapshotRecursiveSummary.main([Ljava/lang/String;)V, BB[SSA:-1..-2]18 - org.apache.zookeeper.server.SnapshotRecursiveSummary.main([Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=62, lastLineNumber=63, firstMethodNumber=49, lastMethodNumber=63, isFirstLineValid=true, methodSrcCode=
+  public static void main(String[] args) throws Exception {
+    if (args.length != 3) {
+      System.err.println(getUsage());
+      System.exit(2);
+    }
+    int maxDepth = 0;
+    try {
+      maxDepth = Integer.parseInt(args[2]);
+    } catch (NumberFormatException e) {
+      System.err.println(getUsage());
+      System.exit(2);
+    }
+
+    new SnapshotRecursiveSummary().run(args[0], args[1], maxDepth);
+  }
+
+}

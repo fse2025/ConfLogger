@@ -1,0 +1,54 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	XAttrCodec.java	methodSinagture:	org.apache.hadoop.fs.XAttrCodec.encodeValue([BLorg/apache/hadoop/fs/XAttrCodec;)Ljava/lang/String;	methodLines:	111:118
+blockLines:	115:-1
+paras:	null
+TaintedStat:	NORMAL encodeValue:conditional branch(ne, to iindex=31) 2,8 Node: < Application, Lorg/apache/hadoop/fs/XAttrCodec, encodeValue([BLorg/apache/hadoop/fs/XAttrCodec;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, processPath(Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere[19]27 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getXAttrs(Lorg/apache/hadoop/fs/Path;)Ljava/util/Map; > 24,25 @41 exception:26
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, processPath(Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere[19]27 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getXAttrs(Lorg/apache/hadoop/fs/Path;)Ljava/util/Map; > 24,25 @41 exception:26
+NORMAL processPath:conditional branch(eq, to iindex=45) 27,28 Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, processPath(Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere
+NORMAL processPath:conditional branch(eq, to iindex=45) 34,16 Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, processPath(Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere
+NORMAL processPath:43 = checkcast <Primordial,[B>42 <Primordial,[B> Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, processPath(Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, processPath(Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere[43]invokespecial < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > 1,40,43 @102 exception:44 v43
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > Context: Everywhere v3
+NORMAL printXAttr:conditional branch(eq, to iindex=28) 3,5 Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > Context: Everywhere
+NORMAL printXAttr:conditional branch(eq, to iindex=24) 6,7 Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > Context: Everywhere
+NORMAL printXAttr:18 = getfield < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, encoding, <Application,Lorg/apache/hadoop/fs/XAttrCodec> > 1 Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > Context: Everywhere[19]20 = invokestatic < Application, Lorg/apache/hadoop/fs/XAttrCodec, encodeValue([BLorg/apache/hadoop/fs/XAttrCodec;)Ljava/lang/String; > 3,18 @34 exception:19 v18
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/XAttrCodec, encodeValue([BLorg/apache/hadoop/fs/XAttrCodec;)Ljava/lang/String; > Context: Everywhere v2
+NORMAL encodeValue:conditional branch(ne, to iindex=31) 2,8 Node: < Application, Lorg/apache/hadoop/fs/XAttrCodec, encodeValue([BLorg/apache/hadoop/fs/XAttrCodec;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	XAttrCodec.java	methodSinagture:	org.apache.hadoop.fs.XAttrCodec.encodeValue([BLorg/apache/hadoop/fs/XAttrCodec;)Ljava/lang/String;	methodLines:	111:118
+blockLines:	113:-1
+paras:	null
+TaintedStat:	NORMAL encodeValue:conditional branch(ne, to iindex=17) 2,7 Node: < Application, Lorg/apache/hadoop/fs/XAttrCodec, encodeValue([BLorg/apache/hadoop/fs/XAttrCodec;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, processPath(Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere[52]21 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getXAttr(Lorg/apache/hadoop/fs/Path;Ljava/lang/String;)[B > 17,18,19 @123 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, processPath(Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere[52]21 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getXAttr(Lorg/apache/hadoop/fs/Path;Ljava/lang/String;)[B > 17,18,19 @123 exception:20
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, processPath(Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere[58]invokespecial < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > 1,22,21 @133 exception:23 v21
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > Context: Everywhere v3
+NORMAL printXAttr:conditional branch(eq, to iindex=28) 3,5 Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > Context: Everywhere
+NORMAL printXAttr:conditional branch(eq, to iindex=24) 6,7 Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > Context: Everywhere
+NORMAL printXAttr:18 = getfield < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, encoding, <Application,Lorg/apache/hadoop/fs/XAttrCodec> > 1 Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/shell/XAttrCommands$GetfattrCommand, printXAttr(Ljava/lang/String;[B)V > Context: Everywhere[19]20 = invokestatic < Application, Lorg/apache/hadoop/fs/XAttrCodec, encodeValue([BLorg/apache/hadoop/fs/XAttrCodec;)Ljava/lang/String; > 3,18 @34 exception:19 v18
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/XAttrCodec, encodeValue([BLorg/apache/hadoop/fs/XAttrCodec;)Ljava/lang/String; > Context: Everywhere v2
+NORMAL encodeValue:conditional branch(ne, to iindex=17) 2,7 Node: < Application, Lorg/apache/hadoop/fs/XAttrCodec, encodeValue([BLorg/apache/hadoop/fs/XAttrCodec;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    Preconditions.checkNotNull(value, "Value can not be null.");
+    if (encoding == HEX) {
+      return HEX_PREFIX + Hex.encodeHexString(value);
+    } else if (encoding == BASE64) {
+      return BASE64_PREFIX + base64.encodeToString(value);
+    } else {
+      return "\"" + new String(value, "utf-8") + "\"";
+    }
+
+
+====================ctx:=======================

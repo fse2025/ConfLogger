@@ -1,0 +1,81 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Format.java	methodSinagture:	alluxio.cli.Format.format(Lalluxio/cli/Format$Mode;Lalluxio/conf/AlluxioConfiguration;)V	methodLines:	108:140
+blockLines:	125:-1
+paras:	null
+TaintedStat:	NORMAL format:conditional branch(ge, to iindex=120) 58,26 Node: < Application, Lalluxio/cli/Format, format(Lalluxio/cli/Format$Mode;Lalluxio/conf/AlluxioConfiguration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/cli/Format, format(Lalluxio/cli/Format$Mode;Lalluxio/conf/AlluxioConfiguration;)V > Context: Everywhere[54]26 = invokestatic < Application, Lalluxio/conf/Configuration, getInt(Lalluxio/conf/PropertyKey;)I > 24 @164 exception:25
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/cli/Format, format(Lalluxio/cli/Format$Mode;Lalluxio/conf/AlluxioConfiguration;)V > Context: Everywhere[54]26 = invokestatic < Application, Lalluxio/conf/Configuration, getInt(Lalluxio/conf/PropertyKey;)I > 24 @164 exception:25
+NORMAL format:conditional branch(ge, to iindex=120) 58,26 Node: < Application, Lalluxio/cli/Format, format(Lalluxio/cli/Format$Mode;Lalluxio/conf/AlluxioConfiguration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void format(Mode mode, AlluxioConfiguration alluxioConf) throws IOException {
+    NoopUfsManager noopUfsManager = new NoopUfsManager();
+    switch (mode) {
+      case MASTER:
+        URI journalLocation = JournalUtils.getJournalLocation();
+        LOG.info("Formatting master journal: {}", journalLocation);
+        JournalSystem journalSystem = new JournalSystem.Builder()
+            .setLocation(journalLocation).build(CommonUtils.ProcessType.MASTER);
+        for (String masterServiceName : ServiceUtils.getMasterServiceNames()) {
+          journalSystem.createJournal(new NoopMaster(masterServiceName, noopUfsManager));
+        }
+        journalSystem.format();
+        break;
+      case WORKER:
+        String workerDataFolder = Configuration.getString(PropertyKey.WORKER_DATA_FOLDER);
+        LOG.info("Formatting worker data folder: {}", workerDataFolder);
+        int storageLevels = Configuration.getInt(PropertyKey.WORKER_TIERED_STORE_LEVELS);
+        for (int level = 0; level < storageLevels; level++) {
+          PropertyKey tierLevelDirPath =
+              PropertyKey.Template.WORKER_TIERED_STORE_LEVEL_DIRS_PATH.format(level);
+          String[] dirPaths = Configuration.getString(tierLevelDirPath).split(",");
+          String name = "Data path for tier " + level;
+          for (String dirPath : dirPaths) {
+            String dirWorkerDataFolder = CommonUtils.getWorkerDataDirectory(dirPath, alluxioConf);
+            LOG.info("Formatting {}:{}", name, dirWorkerDataFolder);
+            formatWorkerDataFolder(dirWorkerDataFolder);
+          }
+        }
+        break;
+      default:
+        throw new RuntimeException(String.format("Unrecognized format mode: %s", mode));
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/cli/Format, main([Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:36..38]15 - alluxio.cli.Format.main([Ljava/lang/String;)V, BB[SSA:21..22]10 - alluxio.cli.Format.main([Ljava/lang/String;)V, BB[SSA:34..35]14 - alluxio.cli.Format.main([Ljava/lang/String;)V, BB[SSA:39..39]16 - alluxio.cli.Format.main([Ljava/lang/String;)V, BB[SSA:-1..-2]22 - alluxio.cli.Format.main([Ljava/lang/String;)V], numberOfBasicBlocks=5, firstLineNumber=86, lastLineNumber=97, firstMethodNumber=76, lastMethodNumber=100, isFirstLineValid=true, methodSrcCode=
+  public static void main(String[] args) {
+    if (args.length != 1) {
+      LOG.info(USAGE);
+      System.exit(-1);
+    }
+    AlluxioConfiguration conf = Configuration.global();
+    // Set the process type as "MASTER" since format needs to access the journal like the master.
+    CommonUtils.PROCESS_TYPE.set(CommonUtils.ProcessType.MASTER);
+    Mode mode = null;
+    try {
+      mode = Mode.valueOf(args[0].toUpperCase());
+    } catch (IllegalArgumentException e) {
+      LOG.error("Unrecognized format mode: {}", args[0]);
+      LOG.error("Usage: {}", USAGE);
+      System.exit(-1);
+    }
+    try {
+      format(mode, conf);
+    } catch (Exception e) {
+      LOG.error("Failed to format", e);
+      System.exit(-1);
+    }
+    LOG.info("Formatting complete");
+    System.exit(0);
+  }
+
+}

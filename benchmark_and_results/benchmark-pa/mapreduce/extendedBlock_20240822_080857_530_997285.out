@@ -1,0 +1,88 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Job.java	methodSinagture:	org.apache.hadoop.mapreduce.Job.getProgressPollInterval(Lorg/apache/hadoop/conf/Configuration;)I	methodLines:	1819:1828
+blockLines:	1822:-1
+paras:	mapreduce.client.progressmonitor.pollinterval
+TaintedStat:	NORMAL getProgressPollInterval:conditional branch(ge, to iindex=13) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/Job, getProgressPollInterval(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/Job, getProgressPollInterval(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,3,4 @7 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/Job, getProgressPollInterval(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,3,4 @7 exception:5
+NORMAL getProgressPollInterval:conditional branch(ge, to iindex=13) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/Job, getProgressPollInterval(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // Read progress monitor poll interval from config. Default is 1 second.
+    int progMonitorPollIntervalMillis = conf.getInt(
+      PROGRESS_MONITOR_POLL_INTERVAL_KEY, DEFAULT_MONITOR_POLL_INTERVAL);
+    if (progMonitorPollIntervalMillis < 1) {
+      LOG.warn(PROGRESS_MONITOR_POLL_INTERVAL_KEY + 
+        " has been set to an invalid value; "
+        + " replacing with " + DEFAULT_MONITOR_POLL_INTERVAL);
+      progMonitorPollIntervalMillis = DEFAULT_MONITOR_POLL_INTERVAL;
+    }
+    return progMonitorPollIntervalMillis;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/Job, monitorAndPrintJob()Z > Context: Everywhere, blocks=[BB[SSA:33..35]13 - org.apache.hadoop.mapreduce.Job.monitorAndPrintJob()Z, BB[SSA:29..32]12 - org.apache.hadoop.mapreduce.Job.monitorAndPrintJob()Z, BB[SSA:36..40]14 - org.apache.hadoop.mapreduce.Job.monitorAndPrintJob()Z, BB[SSA:-1..-2]84 - org.apache.hadoop.mapreduce.Job.monitorAndPrintJob()Z], numberOfBasicBlocks=4, firstLineNumber=1730, lastLineNumber=1736, firstMethodNumber=1721, lastMethodNumber=1775, isFirstLineValid=true, methodSrcCode=
+      throws IOException, InterruptedException {
+    String lastReport = null;
+    Job.TaskStatusFilter filter;
+    Configuration clientConf = getConfiguration();
+    filter = Job.getTaskOutputFilter(clientConf);
+    JobID jobId = getJobID();
+    LOG.info("Running job: " + jobId);
+    int eventCounter = 0;
+    boolean profiling = getProfileEnabled();
+    IntegerRanges mapRanges = getProfileTaskRange(true);
+    IntegerRanges reduceRanges = getProfileTaskRange(false);
+    int progMonitorPollIntervalMillis = 
+      Job.getProgressPollInterval(clientConf);
+    /* make sure to report full progress after the job is done */
+    boolean reportedAfterCompletion = false;
+    boolean reportedUberMode = false;
+    while (!isComplete() || !reportedAfterCompletion) {
+      if (isComplete()) {
+        reportedAfterCompletion = true;
+      } else {
+        Thread.sleep(progMonitorPollIntervalMillis);
+      }
+      if (status.getState() == JobStatus.State.PREP) {
+        continue;
+      }      
+      if (!reportedUberMode) {
+        reportedUberMode = true;
+        LOG.info("Job " + jobId + " running in uber mode : " + isUber());
+      }      
+      String report = 
+        (" map " + StringUtils.formatPercent(mapProgress(), 0)+
+            " reduce " + 
+            StringUtils.formatPercent(reduceProgress(), 0));
+      if (!report.equals(lastReport)) {
+        LOG.info(report);
+        lastReport = report;
+      }
+
+      TaskCompletionEvent[] events = 
+        getTaskCompletionEvents(eventCounter, 10); 
+      eventCounter += events.length;
+      printTaskEvents(events, filter, profiling, mapRanges, reduceRanges);
+    }
+    boolean success = isSuccessful();
+    if (success) {
+      LOG.info("Job " + jobId + " completed successfully");
+    } else {
+      LOG.info("Job " + jobId + " failed with state " + status.getState() + 
+          " due to: " + status.getFailureInfo());
+    }
+    Counters counters = getCounters();
+    if (counters != null) {
+      LOG.info(counters.toString());
+    }
+    return success;
+  }
+}

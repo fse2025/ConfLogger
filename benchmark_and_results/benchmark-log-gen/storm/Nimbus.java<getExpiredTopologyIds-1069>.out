@@ -1,0 +1,56 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Nimbus.java	methodSinagture:	org.apache.storm.daemon.nimbus.Nimbus.getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set;	methodLines:	1069:1081
+blockLines:	1074:-1
+paras:	nimbus.topology.blobstore.deletion.delay.ms
+TaintedStat:	NORMAL getExpiredTopologyIds:conditional branch(lt, to iindex=38) 33,21 Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set; > Context: Everywhere[6]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,6 @12 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set; > Context: Everywhere[6]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,6 @12 exception:7
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set; > Context: Everywhere[9]13 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 8,11 @23 exception:12 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:30 = checkcast <Application,Ljava/lang/Number>1 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:32 = invokevirtual < Application, Ljava/lang/Number, intValue()I > 30 @32 exception:31 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL intValue:return 3 Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set; > Context: Everywhere[10]15 = invokevirtual < Application, Ljava/lang/Integer, intValue()I > 13 @26 exception:14
+NORMAL getExpiredTopologyIds:16 = conversion(J) 15 Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set; > Context: Everywhere
+NORMAL getExpiredTopologyIds:33 = compare 32,16 opcode=cmp Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set; > Context: Everywhere
+NORMAL getExpiredTopologyIds:conditional branch(lt, to iindex=38) 33,21 Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    static Set<String> getExpiredTopologyIds(Set<String> toposToClean, Map<String, Object> conf) {
+        Set<String> idleTopologies = new HashSet<>();
+        long topologyDeletionDelay = ObjectReader.getInt(
+                conf.get(DaemonConfig.NIMBUS_TOPOLOGY_BLOBSTORE_DELETION_DELAY_MS), 5 * 60 * 1000);
+        for (String topologyId : toposToClean) {
+            if (Math.max(0, Time.currentTimeMillis() - getTopologyCleanupDetectedTime(topologyId)) >= topologyDeletionDelay) {
+                idleTopologies.add(topologyId);
+            }
+        }
+
+        rotateTopologyCleanupMap(topologyDeletionDelay);
+
+        return idleTopologies;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, topoIdsToClean(Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/blobstore/BlobStore;Ljava/util/Map;)Ljava/util/Set; > Context: Everywhere, blocks=[BB[SSA:43..46]23 - org.apache.storm.daemon.nimbus.Nimbus.topoIdsToClean(Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/blobstore/BlobStore;Ljava/util/Map;)Ljava/util/Set;, BB[SSA:42..42]22 - org.apache.storm.daemon.nimbus.Nimbus.topoIdsToClean(Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/blobstore/BlobStore;Ljava/util/Map;)Ljava/util/Set;, BB[SSA:47..50]24 - org.apache.storm.daemon.nimbus.Nimbus.topoIdsToClean(Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/blobstore/BlobStore;Ljava/util/Map;)Ljava/util/Set;, BB[SSA:-1..-2]29 - org.apache.storm.daemon.nimbus.Nimbus.topoIdsToClean(Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/blobstore/BlobStore;Ljava/util/Map;)Ljava/util/Set;], numberOfBasicBlocks=4, firstLineNumber=1091, lastLineNumber=1093, firstMethodNumber=1085, lastMethodNumber=1094, isFirstLineValid=true, methodSrcCode=
+    public static Set<String> topoIdsToClean(IStormClusterState state, BlobStore store, Map<String, Object> conf) {
+        Set<String> cleanable = new HashSet<>();
+        cleanable.addAll(Utils.OR(state.heartbeatStorms(), EMPTY_STRING_LIST));
+        cleanable.addAll(Utils.OR(state.errorTopologies(), EMPTY_STRING_LIST));
+        cleanable.addAll(Utils.OR(store.storedTopoIds(), EMPTY_STRING_SET));
+        cleanable.addAll(Utils.OR(state.backpressureTopologies(), EMPTY_STRING_LIST));
+        cleanable.addAll(Utils.OR(state.idsOfTopologiesWithPrivateWorkerKeys(), EMPTY_STRING_SET));
+        Set<String> delayedCleanable = getExpiredTopologyIds(cleanable, conf);
+        delayedCleanable.removeAll(Utils.OR(state.activeStorms(), EMPTY_STRING_LIST));
+        return delayedCleanable;
+    }
+}

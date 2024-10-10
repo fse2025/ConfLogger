@@ -1,0 +1,181 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobSubmitter.java	methodSinagture:	org.apache.hadoop.mapreduce.JobSubmitter.submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus;	methodLines:	142:265
+blockLines:	231:-1
+paras:	mapreduce.job.queuename
+TaintedStat:	NORMAL submitJobInternal:conditional branch(eq, to iindex=250) 164,68 Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere[203]139 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 7,136,137 @449 exception:138
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere[203]139 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 7,136,137 @449 exception:138
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere[214]147 = invokestatic < Application, Lorg/apache/hadoop/mapred/QueueManager, toFullPropertyName(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 139,145 @476 exception:146 v139
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapred/QueueManager, toFullPropertyName(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL toFullPropertyName:10 = invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 8,1 @13 exception:9 Node: < Application, Lorg/apache/hadoop/mapred/QueueManager, toFullPropertyName(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL append:return 1 Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere[24]25 = invokevirtual < Extension, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 21,23 @48 exception:24
+NORMAL getClass:27 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 25 @51 exception:26 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @21 exception:14
+NORMAL getClientBackoffEnable:18 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,15,16 @28 exception:17 Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:conditional branch(eq, to iindex=11) 7,6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere[223]154 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 7,152,68 @495 exception:153
+NORMAL submitJobInternal:conditional branch(eq, to iindex=259) 154,68 Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere
+NORMAL submitJobInternal:conditional branch(eq, to iindex=250) 164,68 Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobSubmitter.java	methodSinagture:	org.apache.hadoop.mapreduce.JobSubmitter.submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus;	methodLines:	142:265
+blockLines:	206:-1
+paras:	mapreduce.job.max.map
+TaintedStat:	NORMAL submitJobInternal:conditional branch(lt, to iindex=200) 135,68 Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere[176]135 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 7,132,133 @389 exception:134
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere[176]135 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 7,132,133 @389 exception:134
+NORMAL submitJobInternal:conditional branch(lt, to iindex=200) 135,68 Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobSubmitter.java	methodSinagture:	org.apache.hadoop.mapreduce.JobSubmitter.submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus;	methodLines:	142:265
+blockLines:	225:-1
+paras:	mapreduce.job.token.tracking.ids.enabled
+TaintedStat:	NORMAL submitJobInternal:conditional branch(eq, to iindex=259) 154,68 Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere[223]154 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 7,152,68 @495 exception:153
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere[223]154 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 7,152,68 @495 exception:153
+NORMAL submitJobInternal:conditional branch(eq, to iindex=259) 154,68 Node: < Application, Lorg/apache/hadoop/mapreduce/JobSubmitter, submitJobInternal(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/mapreduce/Cluster;)Lorg/apache/hadoop/mapreduce/JobStatus; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    //validate the jobs output specs 
+    checkSpecs(job);
+
+    Configuration conf = job.getConfiguration();
+    addMRFrameworkToDistributedCache(conf);
+
+    Path jobStagingArea = JobSubmissionFiles.getStagingDir(cluster, conf);
+    //configure the command line options correctly on the submitting dfs
+    InetAddress ip = InetAddress.getLocalHost();
+    if (ip != null) {
+      submitHostAddress = ip.getHostAddress();
+      submitHostName = ip.getHostName();
+      conf.set(MRJobConfig.JOB_SUBMITHOST,submitHostName);
+      conf.set(MRJobConfig.JOB_SUBMITHOSTADDR,submitHostAddress);
+    }
+    JobID jobId = submitClient.getNewJobID();
+    job.setJobID(jobId);
+    Path submitJobDir = new Path(jobStagingArea, jobId.toString());
+    JobStatus status = null;
+    try {
+      conf.set(MRJobConfig.USER_NAME,
+          UserGroupInformation.getCurrentUser().getShortUserName());
+      conf.set("hadoop.http.filter.initializers", 
+          "org.apache.hadoop.yarn.server.webproxy.amfilter.AmFilterInitializer");
+      conf.set(MRJobConfig.MAPREDUCE_JOB_DIR, submitJobDir.toString());
+      LOG.debug("Configuring job " + jobId + " with " + submitJobDir 
+          + " as the submit dir");
+      // get delegation token for the dir
+      TokenCache.obtainTokensForNamenodes(job.getCredentials(),
+          new Path[] { submitJobDir }, conf);
+      
+      populateTokenCache(conf, job.getCredentials());
+
+      // generate a secret to authenticate shuffle transfers
+      if (TokenCache.getShuffleSecretKey(job.getCredentials()) == null) {
+        KeyGenerator keyGen;
+        try {
+          keyGen = KeyGenerator.getInstance(SHUFFLE_KEYGEN_ALGORITHM);
+          keyGen.init(SHUFFLE_KEY_LENGTH);
+        } catch (NoSuchAlgorithmException e) {
+          throw new IOException("Error generating shuffle secret key", e);
+        }
+        SecretKey shuffleKey = keyGen.generateKey();
+        TokenCache.setShuffleSecretKey(shuffleKey.getEncoded(),
+            job.getCredentials());
+      }
+      if (CryptoUtils.isEncryptedSpillEnabled(conf)) {
+        conf.setInt(MRJobConfig.MR_AM_MAX_ATTEMPTS, 1);
+        LOG.warn("Max job attempts set to 1 since encrypted intermediate" +
+                "data spill is enabled");
+      }
+
+      copyAndConfigureFiles(job, submitJobDir);
+
+      Path submitJobFile = JobSubmissionFiles.getJobConfPath(submitJobDir);
+      
+      // Create the splits for the job
+      LOG.debug("Creating splits at " + jtFs.makeQualified(submitJobDir));
+      int maps = writeSplits(job, submitJobDir);
+      conf.setInt(MRJobConfig.NUM_MAPS, maps);
+      LOG.info("number of splits:" + maps);
+
+      int maxMaps = conf.getInt(MRJobConfig.JOB_MAX_MAP,
+          MRJobConfig.DEFAULT_JOB_MAX_MAP);
+      if (maxMaps >= 0 && maxMaps < maps) {
+        throw new IllegalArgumentException("The number of map tasks " + maps +
+            " exceeded limit " + maxMaps);
+      }
+
+      // write "queue admins of the queue to which job is being submitted"
+      // to job file.
+      String queue = conf.get(MRJobConfig.QUEUE_NAME,
+          JobConf.DEFAULT_QUEUE_NAME);
+      AccessControlList acl = submitClient.getQueueAdmins(queue);
+      conf.set(toFullPropertyName(queue,
+          QueueACL.ADMINISTER_JOBS.getAclName()), acl.getAclString());
+
+      // removing jobtoken referrals before copying the jobconf to HDFS
+      // as the tasks don't need this setting, actually they may break
+      // because of it if present as the referral will point to a
+      // different job.
+      TokenCache.cleanUpTokenReferral(conf);
+
+      if (conf.getBoolean(
+          MRJobConfig.JOB_TOKEN_TRACKING_IDS_ENABLED,
+          MRJobConfig.DEFAULT_JOB_TOKEN_TRACKING_IDS_ENABLED)) {
+        // Add HDFS tracking ids
+        ArrayList<String> trackingIds = new ArrayList<String>();
+        for (Token<? extends TokenIdentifier> t :
+            job.getCredentials().getAllTokens()) {
+          trackingIds.add(t.decodeIdentifier().getTrackingId());
+        }
+        conf.setStrings(MRJobConfig.JOB_TOKEN_TRACKING_IDS,
+            trackingIds.toArray(new String[trackingIds.size()]));
+      }
+
+      // Set reservation info if it exists
+      ReservationId reservationId = job.getReservationId();
+      if (reservationId != null) {
+        conf.set(MRJobConfig.RESERVATION_ID, reservationId.toString());
+      }
+
+      // Write job file to submit dir
+      writeConf(conf, submitJobFile);
+      
+      //
+      // Now, actually submit the job (using the submit name)
+      //
+      printTokens(jobId, job.getCredentials());
+      status = submitClient.submitJob(
+          jobId, submitJobDir.toString(), job.getCredentials());
+      if (status != null) {
+        return status;
+      } else {
+        throw new IOException("Could not launch job");
+      }
+    } finally {
+      if (status == null) {
+        LOG.info("Cleaning up the staging area " + submitJobDir);
+        if (jtFs != null && submitJobDir != null)
+          jtFs.delete(submitJobDir, true);
+
+      }
+    }
+  }
+
+
+====================ctx:=======================

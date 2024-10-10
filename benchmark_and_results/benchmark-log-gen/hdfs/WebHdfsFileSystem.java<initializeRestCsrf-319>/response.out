@@ -1,0 +1,22 @@
+```java
+if (conf.getBoolean(DFS_WEBHDFS_REST_CSRF_ENABLED_KEY,
+    DFS_WEBHDFS_REST_CSRF_ENABLED_DEFAULT)) {
+    this.restCsrfCustomHeader = conf.getTrimmed(
+        DFS_WEBHDFS_REST_CSRF_CUSTOM_HEADER_KEY,
+        DFS_WEBHDFS_REST_CSRF_CUSTOM_HEADER_DEFAULT);
+    this.restCsrfMethodsToIgnore = new HashSet<>();
+    this.restCsrfMethodsToIgnore.addAll(getTrimmedStringList(conf,
+        DFS_WEBHDFS_REST_CSRF_METHODS_TO_IGNORE_KEY,
+        DFS_WEBHDFS_REST_CSRF_METHODS_TO_IGNORE_DEFAULT));
+    // ConfLogger Inserted Start
+    logger.info("CSRF protection enabled. Custom header: {}, Methods to ignore: {}",
+        this.restCsrfCustomHeader, this.restCsrfMethodsToIgnore);
+    // ConfLogger Inserted End
+} else {
+    this.restCsrfCustomHeader = null;
+    this.restCsrfMethodsToIgnore = null;
+    // ConfLogger Inserted Start
+    logger.info("CSRF protection disabled. Custom header and methods to ignore are set to null.");
+    // ConfLogger Inserted End
+}
+```

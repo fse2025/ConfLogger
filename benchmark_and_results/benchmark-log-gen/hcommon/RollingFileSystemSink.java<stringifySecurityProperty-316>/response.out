@@ -1,0 +1,27 @@
+```java
+if (properties.containsKey(property)) {
+    String propertyValue = properties.getString(property);
+    String confValue = conf.get(properties.getString(property));
+
+    if (confValue != null) {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter '{}' is set with value '{}'.", properties.getString(property), confValue);
+        // ConfLogger Inserted End
+        securityProperty = property + "=" + propertyValue
+                + ", " + properties.getString(property) + "=" + confValue;
+    } else {
+        // ConfLogger Inserted Start
+        logger.warn("Configuration parameter '{}' is not set in the configuration. Defaulting to '<NOT SET>'.", properties.getString(property));
+        // ConfLogger Inserted End
+        securityProperty = property + "=" + propertyValue
+                + ", " + properties.getString(property) + "=<NOT SET>";
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Property '{}' is not found in properties. Defaulting to '<NOT SET>'.", property);
+    // ConfLogger Inserted End
+    securityProperty = property + "=<NOT SET>";
+}
+
+return securityProperty;
+```

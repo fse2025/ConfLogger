@@ -1,0 +1,29 @@
+```java
+throws ReconfigurationException {
+    namesystem.writeLock();
+    try {
+        if (newVal == null) {
+            // ConfLogger Inserted Start
+            logger.warn("Configuration parameter '{}' is not set. Defaulting to DFS_HEARTBEAT_INTERVAL_DEFAULT: {} seconds.", DFS_HEARTBEAT_INTERVAL_KEY, DFS_HEARTBEAT_INTERVAL_DEFAULT);
+            // ConfLogger Inserted End
+            // set to default
+            datanodeManager.setHeartbeatInterval(DFS_HEARTBEAT_INTERVAL_DEFAULT);
+            return String.valueOf(DFS_HEARTBEAT_INTERVAL_DEFAULT);
+        } else {
+            long newInterval = getConf()
+                .getTimeDurationHelper(DFS_HEARTBEAT_INTERVAL_KEY,
+                newVal, TimeUnit.SECONDS);
+            // ConfLogger Inserted Start
+            logger.info("Configuration parameter '{}' is set to '{}'. Setting heartbeat interval to {} seconds.", DFS_HEARTBEAT_INTERVAL_KEY, newVal, newInterval);
+            // ConfLogger Inserted End
+            datanodeManager.setHeartbeatInterval(newInterval);
+            return String.valueOf(datanodeManager.getHeartbeatInterval());
+        }
+    } catch (NumberFormatException nfe) {
+        throw new ReconfigurationException(property, newVal, getConf().get(
+            property), nfe);
+    } finally {
+        namesystem.writeUnlock();
+    }
+}
+```

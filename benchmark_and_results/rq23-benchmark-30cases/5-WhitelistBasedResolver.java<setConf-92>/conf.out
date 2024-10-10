@@ -1,0 +1,4 @@
+key:WhitelistBasedResolver.HADOOP_SECURITY_SASL_FIXEDWHITELIST_FILE
+WhitelistBasedResolver.HADOOP_SECURITY_SASL_VARIABLEWHITELIST_CACHE_SECS
+value:not-set
+component:HCommon

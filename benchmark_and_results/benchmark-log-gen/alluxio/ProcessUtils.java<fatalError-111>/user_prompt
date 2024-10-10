@@ -1,0 +1,21 @@
+<code-whole>
+String message = String.format("Fatal error: " + format, args);
+if (t != null) {
+message += "\n" + Throwables.getStackTraceAsString(t);
+}
+if (Configuration.getBoolean(PropertyKey.TEST_MODE)) {
+throw new RuntimeException(message);
+}
+logger.error(message);
+
+dumpInformationOnExit();
+
+System.exit(-1);
+}
+</code-whole>
+
+<code-specified>
+if (Configuration.getBoolean(PropertyKey.TEST_MODE)) {
+throw new RuntimeException(message);
+}
+</code-specified>

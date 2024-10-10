@@ -1,0 +1,42 @@
+```java
+public FsDatasetCache(FsDatasetImpl dataset) throws IOException {
+    this.dataset = dataset;
+    ThreadFactory workerFactory = new ThreadFactoryBuilder()
+        .setDaemon(true)
+        .setNameFormat("FsDatasetCache-%d-" + dataset.toString())
+        .build();
+    this.uncachingExecutor = new ThreadPoolExecutor(
+        0, 1,
+        60, TimeUnit.SECONDS,
+        new LinkedBlockingQueue<Runnable>(),
+        workerFactory);
+    this.uncachingExecutor.allowCoreThreadTimeOut(true);
+    this.deferredUncachingExecutor = new ScheduledThreadPoolExecutor(
+        1, workerFactory);
+    this.revocationMs = dataset.datanode.getConf().getLong(
+        DFS_DATANODE_CACHE_REVOCATION_TIMEOUT_MS,
+        DFS_DATANODE_CACHE_REVOCATION_TIMEOUT_MS_DEFAULT);
+    long confRevocationPollingMs = dataset.datanode.getConf().getLong(
+        DFS_DATANODE_CACHE_REVOCATION_POLLING_MS,
+        DFS_DATANODE_CACHE_REVOCATION_POLLING_MS_DEFAULT);
+    long minRevocationPollingMs = revocationMs / 2;
+    if (minRevocationPollingMs < confRevocationPollingMs) {
+        // ConfLogger Inserted Start
+        logger.error("Configuration error: {} for {} is too high. It must not be more than half of the value of {}. Reconfigure this to {}",
+            confRevocationPollingMs, DFS_DATANODE_CACHE_REVOCATION_POLLING_MS, DFS_DATANODE_CACHE_REVOCATION_TIMEOUT_MS, minRevocationPollingMs);
+        // ConfLogger Inserted End
+        throw new RuntimeException("configured value " +
+            confRevocationPollingMs + "for " +
+            DFS_DATANODE_CACHE_REVOCATION_POLLING_MS +
+            " is too high.  It must not be more than half of the " +
+            "value of " +  DFS_DATANODE_CACHE_REVOCATION_TIMEOUT_MS +
+            ".  Reconfigure this to " + minRevocationPollingMs);
+    }
+    this.revocationPollingMs = confRevocationPollingMs;
+
+    this.cacheLoader = MappableBlockLoaderFactory.createCacheLoader(
+        this.getDnConf());
+    // Both lazy writer and read cache are sharing this statistics.
+    this.memCacheStats = cacheLoader.initialize(this.getDnConf());
+}
+```

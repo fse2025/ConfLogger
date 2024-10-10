@@ -1,0 +1,46 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MetricsUtils.java	methodSinagture:	org.apache.storm.daemon.metrics.MetricsUtils.getPreparableReporters(Ljava/util/Map;)Ljava/util/List;	methodLines:	40:52
+blockLines:	44:-1
+paras:	storm.daemon.metrics.reporter.plugins
+TaintedStat:	NORMAL getPreparableReporters:conditional branch(eq, to iindex=29) 6,9 Node: < Application, Lorg/apache/storm/daemon/metrics/MetricsUtils, getPreparableReporters(Ljava/util/Map;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/metrics/MetricsUtils, getPreparableReporters(Ljava/util/Map;)Ljava/util/List; > Context: Everywhere[2]5 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/metrics/MetricsUtils, getPreparableReporters(Ljava/util/Map;)Ljava/util/List; > Context: Everywhere[2]5 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,3 @3 exception:4
+NORMAL getPreparableReporters:6 = checkcast <Application,Ljava/util/List>5 <Application,Ljava/util/List> Node: < Application, Lorg/apache/storm/daemon/metrics/MetricsUtils, getPreparableReporters(Ljava/util/Map;)Ljava/util/List; > Context: Everywhere
+NORMAL getPreparableReporters:conditional branch(eq, to iindex=29) 6,9 Node: < Application, Lorg/apache/storm/daemon/metrics/MetricsUtils, getPreparableReporters(Ljava/util/Map;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static List<PreparableReporter> getPreparableReporters(Map<String, Object> daemonConf) {
+        List<String> clazzes = (List<String>) daemonConf.get(DaemonConfig.STORM_DAEMON_METRICS_REPORTER_PLUGINS);
+        List<PreparableReporter> reporterList = new ArrayList<>();
+
+        if (clazzes != null) {
+            for (String clazz : clazzes) {
+                reporterList.add(getPreparableReporter(clazz));
+            }
+        }
+        if (reporterList.isEmpty()) {
+            reporterList.add(new JmxPreparableReporter());
+        }
+        return reporterList;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/metric/StormMetricsRegistry, startMetricsReporters(Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.storm.metric.StormMetricsRegistry.startMetricsReporters(Ljava/util/Map;)V, BB[SSA:-1..-2]0 - org.apache.storm.metric.StormMetricsRegistry.startMetricsReporters(Ljava/util/Map;)V, BB[SSA:3..3]2 - org.apache.storm.metric.StormMetricsRegistry.startMetricsReporters(Ljava/util/Map;)V, BB[SSA:-1..-2]17 - org.apache.storm.metric.StormMetricsRegistry.startMetricsReporters(Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=75, lastLineNumber=76, firstMethodNumber=75, lastMethodNumber=83, isFirstLineValid=false, methodSrcCode=
+    public void startMetricsReporters(Map<String, Object> daemonConf) {
+        reporters = MetricsUtils.getPreparableReporters(daemonConf);
+        for (PreparableReporter reporter : reporters) {
+            reporter.prepare(registry, daemonConf);
+            reporter.start();
+            LOG.info("Started statistics report plugin...");
+        }
+        reportersStarted = true;
+    }
+
+}

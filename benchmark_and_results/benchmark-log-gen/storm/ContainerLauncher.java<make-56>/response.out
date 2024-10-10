@@ -1,0 +1,28 @@
+```java
+if (ConfigUtils.isLocalMode(conf)) {
+    return new LocalContainerLauncher(conf, supervisorId, supervisorPort, sharedContext, metricsRegistry, containerMemoryTracker,
+            localSupervisor);
+}
+
+ResourceIsolationInterface resourceIsolationManager;
+if (ObjectReader.getBoolean(conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN_ENABLE), false)) {
+    resourceIsolationManager = ReflectionUtils.newInstance((String) conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN));
+    // ConfLogger Commented: Not Informative
+    // LOG.info("Using resource isolation plugin {}: {}", conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN), resourceIsolationManager);
+    // ConfLogger Inserted Start
+    logger.info("Resource isolation plugin enabled. Using plugin: {} with class: {}", conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN), resourceIsolationManager);
+    // ConfLogger Inserted End
+} else {
+    resourceIsolationManager = new DefaultResourceIsolationManager();
+    // ConfLogger Commented: Not Informative
+    // LOG.info("{} is false. Using default resource isolation plugin: {}", DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN_ENABLE, resourceIsolationManager);
+    // ConfLogger Inserted Start
+    logger.info("Resource isolation plugin disabled ({} is false). Using default resource isolation plugin: {}", DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN_ENABLE, resourceIsolationManager);
+    // ConfLogger Inserted End
+}
+
+resourceIsolationManager.prepare(conf);
+
+return new BasicContainerLauncher(conf, supervisorId, supervisorPort, resourceIsolationManager, metricsRegistry,
+        containerMemoryTracker);
+```

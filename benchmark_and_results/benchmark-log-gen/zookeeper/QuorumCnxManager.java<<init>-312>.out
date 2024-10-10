@@ -1,0 +1,56 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	QuorumCnxManager.java	methodSinagture:	org.apache.zookeeper.server.quorum.QuorumCnxManager.<init>(Lorg/apache/zookeeper/server/quorum/QuorumPeer;JLjava/util/Map;Lorg/apache/zookeeper/server/quorum/auth/QuorumAuthServer;Lorg/apache/zookeeper/server/quorum/auth/QuorumAuthLearner;IZIZ)V	methodLines:	312:340
+blockLines:	321:-1
+paras:	zookeeper.cnxTimeout
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=67) 40,41 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, <init>(Lorg/apache/zookeeper/server/quorum/QuorumPeer;JLjava/util/Map;Lorg/apache/zookeeper/server/quorum/auth/QuorumAuthServer;Lorg/apache/zookeeper/server/quorum/auth/QuorumAuthLearner;IZIZ)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, <init>(Lorg/apache/zookeeper/server/quorum/QuorumPeer;JLjava/util/Map;Lorg/apache/zookeeper/server/quorum/auth/QuorumAuthServer;Lorg/apache/zookeeper/server/quorum/auth/QuorumAuthLearner;IZIZ)V > Context: Everywhere[58]40 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 38 @125 exception:39
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, <init>(Lorg/apache/zookeeper/server/quorum/QuorumPeer;JLjava/util/Map;Lorg/apache/zookeeper/server/quorum/auth/QuorumAuthServer;Lorg/apache/zookeeper/server/quorum/auth/QuorumAuthLearner;IZIZ)V > Context: Everywhere[58]40 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 38 @125 exception:39
+NORMAL <init>:conditional branch(eq, to iindex=67) 40,41 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, <init>(Lorg/apache/zookeeper/server/quorum/QuorumPeer;JLjava/util/Map;Lorg/apache/zookeeper/server/quorum/auth/QuorumAuthServer;Lorg/apache/zookeeper/server/quorum/auth/QuorumAuthLearner;IZIZ)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        QuorumAuthServer authServer, QuorumAuthLearner authLearner, int socketTimeout, boolean listenOnAllIPs,
+        int quorumCnxnThreadsSize, boolean quorumSaslAuthEnabled) {
+
+        this.recvQueue = new CircularBlockingQueue<>(RECV_CAPACITY);
+        this.queueSendMap = new ConcurrentHashMap<>();
+        this.senderWorkerMap = new ConcurrentHashMap<>();
+        this.lastMessageSent = new ConcurrentHashMap<>();
+
+        String cnxToValue = System.getProperty("zookeeper.cnxTimeout");
+        if (cnxToValue != null) {
+            this.cnxTO = Integer.parseInt(cnxToValue);
+        }
+
+        this.self = self;
+
+        this.mySid = mySid;
+        this.socketTimeout = socketTimeout;
+        this.view = view;
+        this.listenOnAllIPs = listenOnAllIPs;
+        this.authServer = authServer;
+        this.authLearner = authLearner;
+        this.quorumSaslAuthEnabled = quorumSaslAuthEnabled;
+
+        initializeConnectionExecutor(mySid, quorumCnxnThreadsSize);
+
+        // Starts listener thread that waits for connection requests
+        listener = new Listener();
+        listener.setName("QuorumPeerListener");
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, createCnxnManager()Lorg/apache/zookeeper/server/quorum/QuorumCnxManager; > Context: Everywhere, blocks=[BB[SSA:34..34]16 - org.apache.zookeeper.server.quorum.QuorumPeer.createCnxnManager()Lorg/apache/zookeeper/server/quorum/QuorumCnxManager;, BB[SSA:32..33]15 - org.apache.zookeeper.server.quorum.QuorumPeer.createCnxnManager()Lorg/apache/zookeeper/server/quorum/QuorumCnxManager;, BB[SSA:35..35]17 - org.apache.zookeeper.server.quorum.QuorumPeer.createCnxnManager()Lorg/apache/zookeeper/server/quorum/QuorumCnxManager;, BB[SSA:-1..-2]18 - org.apache.zookeeper.server.quorum.QuorumPeer.createCnxnManager()Lorg/apache/zookeeper/server/quorum/QuorumCnxManager;], numberOfBasicBlocks=4, firstLineNumber=2623, lastLineNumber=2616, firstMethodNumber=2613, lastMethodNumber=2616, isFirstLineValid=true, methodSrcCode=
+    public QuorumCnxManager createCnxnManager() {
+        int timeout = quorumCnxnTimeoutMs > 0 ? quorumCnxnTimeoutMs : this.tickTime * this.syncLimit;
+        LOG.info("Using {}ms as the quorum cnxn socket timeout", timeout);
+        return new QuorumCnxManager(
+            this,
+}

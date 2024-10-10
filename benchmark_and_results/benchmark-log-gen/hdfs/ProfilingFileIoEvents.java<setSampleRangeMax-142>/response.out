@@ -1,0 +1,15 @@
+```java
+isEnabled = Util.isDiskStatsEnabled(fileIOSamplingPercentage);
+if (fileIOSamplingPercentage > 100) {
+    // ConfLogger Commented: Not Informative
+    // LOG.warn(DFSConfigKeys
+    // .DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY +
+    // " value cannot be more than 100. Setting value to 100");
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter '{}' value cannot be more than 100. Setting value to 100. Original value: {}", 
+                DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY, fileIOSamplingPercentage);
+    // ConfLogger Inserted End
+    fileIOSamplingPercentage = 100;
+}
+sampleRangeMax = (int) ((double) fileIOSamplingPercentage / 100 * Integer.MAX_VALUE);
+```

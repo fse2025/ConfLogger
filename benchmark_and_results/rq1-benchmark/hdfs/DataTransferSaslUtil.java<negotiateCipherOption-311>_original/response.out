@@ -1,0 +1,39 @@
+```java
+// values for future expansion.
+String cipherSuites = conf.get(DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY);
+if (cipherSuites == null || cipherSuites.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.warn("The configuration parameter '{}' is not set or empty. Data transfer encryption will not be enabled. Please set a valid cipher suite to enable encryption.", DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY);
+    // ConfLogger Inserted End
+    return null;
+}
+if (!cipherSuites.equals(CipherSuite.AES_CTR_NOPADDING.getName())) {
+    // ConfLogger Skipped: The exception message already contains configuration parameter key and value.
+    throw new IOException(String.format("Invalid cipher suite, %s=%s",
+        DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY, cipherSuites));
+}
+if (options != null) {
+    for (CipherOption option : options) {
+        CipherSuite suite = option.getCipherSuite();
+        if (suite == CipherSuite.AES_CTR_NOPADDING) {
+            int keyLen = conf.getInt(
+                DFS_ENCRYPT_DATA_TRANSFER_CIPHER_KEY_BITLENGTH_KEY,
+                DFS_ENCRYPT_DATA_TRANSFER_CIPHER_KEY_BITLENGTH_DEFAULT) / 8;
+            CryptoCodec codec = CryptoCodec.getInstance(conf, suite);
+            byte[] inKey = new byte[keyLen];
+            byte[] inIv = new byte[suite.getAlgorithmBlockSize()];
+            byte[] outKey = new byte[keyLen];
+            byte[] outIv = new byte[suite.getAlgorithmBlockSize()];
+            assert codec != null;
+            codec.generateSecureRandom(inKey);
+            codec.generateSecureRandom(inIv);
+            codec.generateSecureRandom(outKey);
+            codec.generateSecureRandom(outIv);
+            codec.close();
+            return new CipherOption(suite, inKey, inIv, outKey, outIv);
+        }
+    }
+}
+return null;
+}
+```

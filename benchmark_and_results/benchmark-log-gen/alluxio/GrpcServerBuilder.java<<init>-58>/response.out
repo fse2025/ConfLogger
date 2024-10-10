@@ -1,0 +1,24 @@
+```java
+AuthenticationServer authenticationServer, AlluxioConfiguration conf) {
+    mNettyServerBuilder = NettyServerBuilder.forAddress(serverAddress.getSocketAddress());
+    mConfiguration = conf;
+    mGrpcReflectionEnabled = conf.getBoolean(PropertyKey.GRPC_REFLECTION_ENABLED);
+
+    if (conf.getBoolean(alluxio.conf.PropertyKey.NETWORK_TLS_ENABLED)) {
+        // ConfLogger Inserted Start
+        logger.info("TLS is enabled. PropertyKey: NETWORK_TLS_ENABLED, Value: {}", conf.getBoolean(alluxio.conf.PropertyKey.NETWORK_TLS_ENABLED));
+        // ConfLogger Inserted End
+        sslContext(SslContextProvider.Factory.create(mConfiguration).getServerSSLContext());
+    }
+
+    if (SecurityUtils.isAuthenticationEnabled(mConfiguration)) {
+        if (authenticationServer == null) {
+            authenticationServer =
+                new DefaultAuthenticationServer(serverAddress.getHostName(), mConfiguration);
+        }
+        addService(new GrpcService(authenticationServer).disableAuthentication()
+            .withCloseable(authenticationServer));
+    }
+    mAuthenticationServer = authenticationServer;
+}
+```

@@ -1,0 +1,58 @@
+```java
+if (killed) {
+    break;
+}
+
+Request request = submittedRequests.take();
+if (Request.requestOfDeath == request) {
+    break;
+}
+
+if (request.mustDrop()) {
+    continue;
+}
+
+// Throttling is disabled when maxRequests = 0
+if (maxRequests > 0) {
+    while (!killed) {
+        if (dropStaleRequests && request.isStale()) {
+            // Note: this will close the connection
+            dropRequest(request);
+            ServerMetrics.getMetrics().STALE_REQUESTS_DROPPED.add(1);
+            request = null;
+            break;
+        }
+        if (zks.getInProcess() < maxRequests) {
+            // ConfLogger Inserted Start
+            logger.info("Throttling check passed: zks.getInProcess() < maxRequests. maxRequests: {}, zks.getInProcess(): {}", maxRequests, zks.getInProcess());
+            // ConfLogger Inserted End
+            break;
+        }
+        throttleSleep(stallTime);
+    }
+}
+
+if (killed) {
+    break;
+}
+
+// A dropped stale request will be null
+if (request != null) {
+    if (request.isStale()) {
+        ServerMetrics.getMetrics().STALE_REQUESTS.add(1);
+    }
+    final long elapsedTime = Time.currentElapsedTime() - request.requestThrottleQueueTime;
+    ServerMetrics.getMetrics().REQUEST_THROTTLE_QUEUE_TIME.add(elapsedTime);
+    if (shouldThrottleOp(request, elapsedTime)) {
+        request.setIsThrottled(true);
+        ServerMetrics.getMetrics().THROTTLED_OPS.add(1);
+    }
+    zks.submitRequestNow(request);
+}
+} catch (InterruptedException e) {
+    LOG.error("Unexpected interruption", e);
+}
+int dropped = drainQueue();
+LOG.info("RequestThrottler shutdown. Dropped {} requests", dropped);
+}
+```

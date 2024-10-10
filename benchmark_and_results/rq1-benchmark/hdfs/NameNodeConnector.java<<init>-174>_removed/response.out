@@ -1,0 +1,52 @@
+```java
+int maxNotChangedIterations)
+throws IOException {
+this.nameNodeUri = nameNodeUri;
+this.idPath = idPath;
+this.targetPaths = targetPaths == null || targetPaths.isEmpty() ? Arrays
+.asList(new Path("/")) : targetPaths;
+this.maxNotChangedIterations = maxNotChangedIterations;
+int getBlocksMaxQps = conf.getInt(
+DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_KEY,
+DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_DEFAULT);
+
+if (getBlocksMaxQps > 0) {
+    this.getBlocksRateLimiter = RateLimiter.create(getBlocksMaxQps);
+    // ConfLogger Inserted Start
+    logger.info("Rate limiter created with max QPS: " + getBlocksMaxQps + 
+                " for configuration parameter: " + DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_KEY);
+    // ConfLogger Inserted End
+} else {
+    this.getBlocksRateLimiter = null;
+    // ConfLogger Inserted Start
+    logger.warn("Rate limiter not created as the max QPS is set to " + getBlocksMaxQps + 
+                ". Ensure that " + DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_KEY + 
+                " is set to a positive value to enable rate limiting.");
+    // ConfLogger Inserted End
+}
+
+this.namenode = NameNodeProxies.createProxy(conf, nameNodeUri,
+BalancerProtocols.class, fallbackToSimpleAuth).getProxy();
+this.requestToStandby = conf.getBoolean(
+DFSConfigKeys.DFS_HA_ALLOW_STALE_READ_KEY,
+DFSConfigKeys.DFS_HA_ALLOW_STALE_READ_DEFAULT);
+this.config = conf;
+
+this.fs = (DistributedFileSystem)FileSystem.get(nameNodeUri, conf);
+
+final NamespaceInfo namespaceinfo = namenode.versionRequest();
+this.blockpoolID = namespaceinfo.getBlockPoolID();
+
+final FsServerDefaults defaults = fs.getServerDefaults(new Path("/"));
+this.keyManager = new KeyManager(blockpoolID, namenode,
+defaults.getEncryptDataTransfer(), conf);
+// if it is for test, we do not create the id file
+if (checkOtherInstanceRunning) {
+out = checkAndMarkRunning();
+if (out == null) {
+// Exit if there is another one running.
+throw new IOException("Another " + name + " is running.");
+}
+}
+}
+```

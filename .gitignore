@@ -2,7 +2,7 @@
 *.class
 
 # Log file
-*.log
+# *.log
 
 # BlueJ files
 *.ctxt
@@ -18,12 +18,12 @@
 *.zip
 *.tar.gz
 *.rar
-*.out
+# *.out
 
-all*/
-storm-*/
-alluxio-*/
-deprecated/*
+# all*/
+# storm-*/
+# alluxio-*/
+# deprecated/*
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
@@ -69,12 +69,11 @@ build/
 .DS_Store
 
 /target/
-<<<<<<< HEAD
 # Compiled class file
 *.class
 
 # Log file
-*.log
+# *.log
 
 # BlueJ files
 *.ctxt
@@ -94,43 +93,3 @@ build/
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
-=======
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
-*.iml
-*.ipr
-
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
-.DS_Store
->>>>>>> 1490fa9 (src)

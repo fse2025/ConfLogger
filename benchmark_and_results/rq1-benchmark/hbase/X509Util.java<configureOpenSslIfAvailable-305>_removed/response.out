@@ -1,0 +1,28 @@
+```java
+Configuration conf) {
+    // ConfLogger Inserted Start
+    if (OpenSsl.isAvailable() && conf.getBoolean(TLS_USE_OPENSSL, true)) {
+        sslContextBuilder.sslProvider(SslProvider.OPENSSL);
+        logger.info("OpenSSL is available and TLS_USE_OPENSSL is set to true. Using OpenSSL as the SSL provider.");
+        return true;
+    } else {
+        sslContextBuilder.sslProvider(SslProvider.JDK);
+        if (!OpenSsl.isAvailable()) {
+            logger.warn("OpenSSL is not available. Falling back to JDK SSL provider.");
+        } else {
+            logger.info("TLS_USE_OPENSSL is set to false. Using JDK as the SSL provider.");
+        }
+        return false;
+    }
+    // ConfLogger Inserted End
+}
+```
+
+### Explanation:
+- **Type Identification**: The code is of type 2, as it checks whether to enable a service (using OpenSSL) or not.
+- **Log Insertion**: Logs are inserted in both the service-enable and service-disable paths.
+- **Logging Details**:
+  - When OpenSSL is available and the configuration parameter `TLS_USE_OPENSSL` is set to true, an info log is generated indicating that OpenSSL is being used.
+  - If OpenSSL is not available, a warning log is generated indicating the fallback to the JDK SSL provider.
+  - If `TLS_USE_OPENSSL` is set to false, an info log is generated indicating the use of the JDK SSL provider.
+- **Dynamic Variables**: The configuration parameter value is logged, and the availability of OpenSSL is checked.

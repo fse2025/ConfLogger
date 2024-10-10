@@ -1,0 +1,99 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileUtil.java	methodSinagture:	org.apache.hadoop.fs.FileUtil.checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V	methodLines:	338:351
+blockLines:	339:-1
+paras:	null
+TaintedStat:	NORMAL checkDependencies:conditional branch(ne, to iindex=67) 1,3 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, copyFromLocalFile(ZZ[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[4]10 = invokestatic < Application, Lorg/apache/hadoop/fs/FileSystem, getLocal(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/LocalFileSystem; > 8 @8 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, copyFromLocalFile(ZZ[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[4]10 = invokestatic < Application, Lorg/apache/hadoop/fs/FileSystem, getLocal(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/LocalFileSystem; > 8 @8 exception:9
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, copyFromLocalFile(ZZ[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[11]12 = invokestatic < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > 10,4,1,5,2,3,8 @19 exception:11 v10
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[21]74 = invokestatic < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > 1,72,3,4,5,6,7 @33 exception:73 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[11]12 = invokestatic < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > 1,10,3,4,5,6,7 @18 exception:11 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[18]invokestatic < Application, Lorg/apache/hadoop/fs/FileUtil, checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V > 1,10,3,14 @31 exception:48 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere v1
+NORMAL checkDependencies:conditional branch(ne, to iindex=67) 1,3 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	FileUtil.java	methodSinagture:	org.apache.hadoop.fs.FileUtil.checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V	methodLines:	338:351
+blockLines:	342:-1
+paras:	null
+TaintedStat:	NORMAL checkDependencies:conditional branch(eq, to iindex=67) 32,33 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/HarFileSystem, copyToLocalFile(ZLorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[4]9 = invokestatic < Application, Lorg/apache/hadoop/fs/HarFileSystem, getLocal(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/LocalFileSystem; > 7 @6 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/HarFileSystem, copyToLocalFile(ZLorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[4]9 = invokestatic < Application, Lorg/apache/hadoop/fs/HarFileSystem, getLocal(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/LocalFileSystem; > 7 @6 exception:8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/HarFileSystem, copyToLocalFile(ZLorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[9]14 = invokestatic < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZLorg/apache/hadoop/conf/Configuration;)Z > 1,3,9,4,10,12 @15 exception:13 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[7]10 = invokestatic < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > 1,2,3,4,5,8,6 @9 exception:9 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[11]12 = invokestatic < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > 1,10,3,4,5,6,7 @18 exception:11 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[18]invokestatic < Application, Lorg/apache/hadoop/fs/FileUtil, checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V > 1,10,3,14 @31 exception:48 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere v3
+NORMAL checkDependencies:conditional branch(ne, to iindex=67) 1,3 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere
+NORMAL checkDependencies:conditional branch(eq, to iindex=67) 32,33 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, checkDependencies(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                        throws IOException {
+    if (srcFS == dstFS) {
+      String srcq = srcFS.makeQualified(src).toString() + Path.SEPARATOR;
+      String dstq = dstFS.makeQualified(dst).toString() + Path.SEPARATOR;
+      if (dstq.startsWith(srcq)) {
+        if (srcq.length() == dstq.length()) {
+          throw new IOException("Cannot copy " + src + " to itself.");
+        } else {
+          throw new IOException("Cannot copy " + src + " to its subdirectory " +
+                                dst);
+        }
+      }
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/FileUtil, copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere, blocks=[BB[SSA:14..18]6 - org.apache.hadoop.fs.FileUtil.copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z, BB[SSA:12..13]5 - org.apache.hadoop.fs.FileUtil.copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z, BB[SSA:19..21]7 - org.apache.hadoop.fs.FileUtil.copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z, BB[SSA:-1..-2]44 - org.apache.hadoop.fs.FileUtil.copy(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;ZZLorg/apache/hadoop/conf/Configuration;)Z], numberOfBasicBlocks=4, firstLineNumber=467, lastLineNumber=469, firstMethodNumber=464, lastMethodNumber=499, isFirstLineValid=true, methodSrcCode=
+                             Configuration conf) throws IOException {
+    Path src = srcStatus.getPath();
+    dst = checkDest(src.getName(), dstFS, dst, overwrite);
+    if (srcStatus.isDirectory()) {
+      checkDependencies(srcFS, src, dstFS, dst);
+      if (!dstFS.mkdirs(dst)) {
+        return false;
+      }
+      RemoteIterator<FileStatus> contents = srcFS.listStatusIterator(src);
+      while (contents.hasNext()) {
+        FileStatus next = contents.next();
+        copy(srcFS, next, dstFS,
+            new Path(dst, next.getPath().getName()),
+            deleteSource, overwrite, conf);
+      }
+    } else {
+      InputStream in = null;
+      OutputStream out = null;
+      try {
+        in = awaitFuture(srcFS.openFile(src)
+            .opt(FS_OPTION_OPENFILE_READ_POLICY,
+                FS_OPTION_OPENFILE_READ_POLICY_WHOLE_FILE)
+            .optLong(FS_OPTION_OPENFILE_LENGTH,
+                srcStatus.getLen())   // file length hint for object stores
+            .build());
+        out = dstFS.create(dst, overwrite);
+        IOUtils.copyBytes(in, out, conf, true);
+      } catch (IOException e) {
+        IOUtils.cleanupWithLogger(LOG, in, out);
+        throw e;
+      }
+    }
+    if (deleteSource) {
+      return srcFS.delete(src, true);
+    } else {
+      return true;
+    }
+}

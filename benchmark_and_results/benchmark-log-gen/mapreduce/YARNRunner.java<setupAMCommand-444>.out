@@ -1,0 +1,204 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;	methodLines:	444:504
+blockLines:	492:-1
+paras:	yarn.app.mapreduce.am.command-opts
+TaintedStat:	NORMAL setupAMCommand:conditional branch(eq, to iindex=141) 93,39 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[98]81 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 77,78,79 @218 exception:80
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[98]81 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 77,78,79 @218 exception:80
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[104]invokestatic < Application, Lorg/apache/hadoop/mapred/YARNRunner, warnForJavaLibPath(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > 81,72,78,82 @231 exception:83 v81
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, warnForJavaLibPath(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v1
+NORMAL warnForJavaLibPath:conditional branch(eq, to iindex=28) 1,6 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, warnForJavaLibPath(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL warnForJavaLibPath:conditional branch(eq, to iindex=28) 9,10 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, warnForJavaLibPath(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL warnForJavaLibPath:33 = invokevirtual < Application, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 31 @60 exception:32 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, warnForJavaLibPath(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[10]16 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 14 @23 exception:15
+NORMAL getCodecClasses:25 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,16,23 @42 exception:24 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 23 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[118]93 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,90,91 @258 exception:92
+NORMAL setupAMCommand:conditional branch(eq, to iindex=141) 93,39 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;	methodLines:	444:504
+blockLines:	488:-1
+paras:	null
+TaintedStat:	NORMAL setupAMCommand:conditional branch(eq, to iindex=141) 89,87 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[112]89 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,86,87 @247 exception:88
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[112]89 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,86,87 @247 exception:88
+NORMAL setupAMCommand:conditional branch(eq, to iindex=141) 89,87 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private List<String> setupAMCommand(Configuration jobConf) {
+    List<String> vargs = new ArrayList<>(8);
+    vargs.add(MRApps.crossPlatformifyMREnv(jobConf, Environment.JAVA_HOME)
+        + "/bin/java");
+
+    Path amTmpDir =
+        new Path(MRApps.crossPlatformifyMREnv(conf, Environment.PWD),
+            YarnConfiguration.DEFAULT_CONTAINER_TEMP_DIR);
+    vargs.add("-Djava.io.tmpdir=" + amTmpDir);
+    MRApps.addLog4jSystemProperties(null, vargs, conf);
+
+    // Check for Java Lib Path usage in MAP and REDUCE configs
+    warnForJavaLibPath(conf.get(MRJobConfig.MAP_JAVA_OPTS, ""),
+        "map",
+        MRJobConfig.MAP_JAVA_OPTS,
+        MRJobConfig.MAP_ENV);
+    warnForJavaLibPath(conf.get(MRJobConfig.MAPRED_MAP_ADMIN_JAVA_OPTS, ""),
+        "map",
+        MRJobConfig.MAPRED_MAP_ADMIN_JAVA_OPTS,
+        MRJobConfig.MAPRED_ADMIN_USER_ENV);
+    warnForJavaLibPath(conf.get(MRJobConfig.REDUCE_JAVA_OPTS, ""),
+        "reduce",
+        MRJobConfig.REDUCE_JAVA_OPTS,
+        MRJobConfig.REDUCE_ENV);
+    warnForJavaLibPath(conf.get(MRJobConfig.MAPRED_REDUCE_ADMIN_JAVA_OPTS, ""),
+        "reduce",
+        MRJobConfig.MAPRED_REDUCE_ADMIN_JAVA_OPTS,
+        MRJobConfig.MAPRED_ADMIN_USER_ENV);
+
+    // Add AM admin command opts before user command opts
+    // so that it can be overridden by user
+    String mrAppMasterAdminOptions = conf.get(MRJobConfig.MR_AM_ADMIN_COMMAND_OPTS,
+        MRJobConfig.DEFAULT_MR_AM_ADMIN_COMMAND_OPTS);
+    warnForJavaLibPath(mrAppMasterAdminOptions, "app master",
+        MRJobConfig.MR_AM_ADMIN_COMMAND_OPTS, MRJobConfig.MR_AM_ADMIN_USER_ENV);
+    vargs.add(mrAppMasterAdminOptions);
+
+    // Add AM user command opts
+    String mrAppMasterUserOptions = conf.get(MRJobConfig.MR_AM_COMMAND_OPTS,
+        MRJobConfig.DEFAULT_MR_AM_COMMAND_OPTS);
+    warnForJavaLibPath(mrAppMasterUserOptions, "app master",
+        MRJobConfig.MR_AM_COMMAND_OPTS, MRJobConfig.MR_AM_ENV);
+    vargs.add(mrAppMasterUserOptions);
+
+    if (jobConf.getBoolean(MRJobConfig.MR_AM_PROFILE,
+        MRJobConfig.DEFAULT_MR_AM_PROFILE)) {
+      final String profileParams = jobConf.get(MRJobConfig.MR_AM_PROFILE_PARAMS,
+          MRJobConfig.DEFAULT_TASK_PROFILE_PARAMS);
+      if (profileParams != null) {
+        vargs.add(String.format(profileParams,
+            ApplicationConstants.LOG_DIR_EXPANSION_VAR + Path.SEPARATOR
+                + TaskLog.LogName.PROFILE));
+      }
+    }
+
+    vargs.add(MRJobConfig.APPLICATION_MASTER_CLASS);
+    vargs.add("1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
+        Path.SEPARATOR + ApplicationConstants.STDOUT);
+    vargs.add("2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
+        Path.SEPARATOR + ApplicationConstants.STDERR);
+    return vargs;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere, blocks=[BB[SSA:22..25]10 - org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;, BB[SSA:21..21]9 - org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;, BB[SSA:26..32]11 - org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;, BB[SSA:-1..-2]99 - org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;], numberOfBasicBlocks=4, firstLineNumber=580, lastLineNumber=584, firstMethodNumber=569, lastMethodNumber=665, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    ApplicationId applicationId = resMgrDelegate.getApplicationId();
+
+    // Setup LocalResources
+    Map<String, LocalResource> localResources =
+        setupLocalResources(jobConf, jobSubmitDir);
+
+    // Setup security tokens
+    DataOutputBuffer dob = new DataOutputBuffer();
+    ts.writeTokenStorageToStream(dob);
+    ByteBuffer securityTokens =
+        ByteBuffer.wrap(dob.getData(), 0, dob.getLength());
+
+    // Setup ContainerLaunchContext for AM container
+    List<String> vargs = setupAMCommand(jobConf);
+    ContainerLaunchContext amContainer = setupContainerLaunchContextForAM(
+        jobConf, localResources, securityTokens, vargs);
+
+    String regex = conf.get(MRJobConfig.MR_JOB_SEND_TOKEN_CONF);
+    if (regex != null && !regex.isEmpty()) {
+      setTokenRenewerConf(amContainer, conf, regex);
+    }
+
+
+    Collection<String> tagsFromConf =
+        jobConf.getTrimmedStringCollection(MRJobConfig.JOB_TAGS);
+
+    // Set up the ApplicationSubmissionContext
+    ApplicationSubmissionContext appContext =
+        recordFactory.newRecordInstance(ApplicationSubmissionContext.class);
+    appContext.setApplicationId(applicationId);                // ApplicationId
+    appContext.setQueue(                                       // Queue name
+        jobConf.get(JobContext.QUEUE_NAME,
+        YarnConfiguration.DEFAULT_QUEUE_NAME));
+    // add reservationID if present
+    ReservationId reservationID = null;
+    try {
+      reservationID =
+          ReservationId.parseReservationId(jobConf
+              .get(JobContext.RESERVATION_ID));
+    } catch (NumberFormatException e) {
+      // throw exception as reservationid as is invalid
+      String errMsg =
+          "Invalid reservationId: " + jobConf.get(JobContext.RESERVATION_ID)
+              + " specified for the app: " + applicationId;
+      LOG.warn(errMsg);
+      throw new IOException(errMsg);
+    }
+    if (reservationID != null) {
+      appContext.setReservationID(reservationID);
+      LOG.info("SUBMITTING ApplicationSubmissionContext app:" + applicationId
+          + " to queue:" + appContext.getQueue() + " with reservationId:"
+          + appContext.getReservationID());
+    }
+    appContext.setApplicationName(                             // Job name
+        jobConf.get(JobContext.JOB_NAME,
+        YarnConfiguration.DEFAULT_APPLICATION_NAME));
+    appContext.setCancelTokensWhenComplete(
+        conf.getBoolean(MRJobConfig.JOB_CANCEL_DELEGATION_TOKEN, true));
+    appContext.setAMContainerSpec(amContainer);         // AM Container
+    appContext.setMaxAppAttempts(
+        conf.getInt(MRJobConfig.MR_AM_MAX_ATTEMPTS,
+            MRJobConfig.DEFAULT_MR_AM_MAX_ATTEMPTS));
+
+    // Setup the AM ResourceRequests
+    List<ResourceRequest> amResourceRequests = generateResourceRequests();
+    appContext.setAMContainerResourceRequests(amResourceRequests);
+
+    // set labels for the AM container requests if present
+    String amNodelabelExpression = conf.get(MRJobConfig.AM_NODE_LABEL_EXP);
+    if (null != amNodelabelExpression
+        && amNodelabelExpression.trim().length() != 0) {
+      for (ResourceRequest amResourceRequest : amResourceRequests) {
+        amResourceRequest.setNodeLabelExpression(amNodelabelExpression.trim());
+      }
+    }
+    // set labels for the Job containers
+    appContext.setNodeLabelExpression(jobConf
+        .get(JobContext.JOB_NODE_LABEL_EXP));
+
+    appContext.setApplicationType(MRJobConfig.MR_APPLICATION_TYPE);
+    if (tagsFromConf != null && !tagsFromConf.isEmpty()) {
+      appContext.setApplicationTags(new HashSet<>(tagsFromConf));
+    }
+
+    String jobPriority = jobConf.get(MRJobConfig.PRIORITY);
+    if (jobPriority != null) {
+      int iPriority;
+      try {
+        iPriority = TypeConverter.toYarnApplicationPriority(jobPriority);
+      } catch (IllegalArgumentException e) {
+        iPriority = Integer.parseInt(jobPriority);
+      }
+      appContext.setPriority(Priority.newInstance(iPriority));
+    }
+
+    return appContext;
+  }
+}

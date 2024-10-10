@@ -1,0 +1,1 @@
+ipc.client.connection.maxidletime	10000	ERROR	Invalid ephemeralOwner detected. No matching ephemeral type found for extended feature bit. EphemeralOwner: ff00010000000000	30

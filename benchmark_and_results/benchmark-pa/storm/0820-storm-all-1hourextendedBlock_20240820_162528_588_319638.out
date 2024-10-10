@@ -1,0 +1,92 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Nimbus.java	methodSinagture:	org.apache.storm.daemon.nimbus.Nimbus.isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z	methodLines:	2283:2289
+blockLines:	2289:-1
+paras:	topology.component.cpu.pcore.percent
+TaintedStat:	NORMAL isFragmented:conditional branch(le, to iindex=50) 55,52 Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z > Context: Everywhere[21]30 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 27,28 @57 exception:29
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z > Context: Everywhere[21]30 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 27,28 @57 exception:29
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z > Context: Everywhere[24]35 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getDouble(Ljava/lang/Object;Ljava/lang/Double;)Ljava/lang/Double; > 30,33 @68 exception:34 v30
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getDouble(Ljava/lang/Object;Ljava/lang/Double;)Ljava/lang/Double; > Context: Everywhere v1
+NORMAL getDouble:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getDouble(Ljava/lang/Object;Ljava/lang/Double;)Ljava/lang/Double; > Context: Everywhere
+NORMAL getDouble:return 2 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getDouble(Ljava/lang/Object;Ljava/lang/Double;)Ljava/lang/Double; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getDouble(Ljava/lang/Object;Ljava/lang/Double;)Ljava/lang/Double; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z > Context: Everywhere[6]12 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getDouble(Ljava/lang/Object;Ljava/lang/Double;)Ljava/lang/Double; > 7,10 @18 exception:11
+NORMAL isFragmented:14 = invokevirtual < Application, Ljava/lang/Double, doubleValue()D > 12 @21 exception:13 Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Double, doubleValue()D > Context: Everywhere
+NORMAL doubleValue:return 3 Node: < Primordial, Ljava/lang/Double, doubleValue()D > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Double, doubleValue()D > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z > Context: Everywhere[25]37 = invokevirtual < Application, Ljava/lang/Double, doubleValue()D > 35 @71 exception:36
+NORMAL isFragmented:48 = binaryop(add) 37 , 47 Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z > Context: Everywhere
+NORMAL isFragmented:55 = compare 48,54 opcode=cmpl Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z > Context: Everywhere
+NORMAL isFragmented:conditional branch(le, to iindex=50) 55,52 Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, isFragmented(Lorg/apache/storm/scheduler/SupervisorResources;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private boolean isFragmented(SupervisorResources supervisorResources) {
+        double minMemory = ObjectReader.getDouble(conf.get(Config.TOPOLOGY_COMPONENT_RESOURCES_ONHEAP_MEMORY_MB), 256.0)
+                           + ObjectReader.getDouble(conf.get(Config.TOPOLOGY_ACKER_RESOURCES_ONHEAP_MEMORY_MB), 128.0);
+        double minCpu = ObjectReader.getDouble(conf.get(Config.TOPOLOGY_COMPONENT_CPU_PCORE_PERCENT), 50.0)
+                        + ObjectReader.getDouble(conf.get(Config.TOPOLOGY_ACKER_CPU_PCORE_PERCENT), 50.0);
+
+        return minMemory > supervisorResources.getAvailableMem() || minCpu > supervisorResources.getAvailableCpu();
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, makeSupervisorSummary(Ljava/lang/String;Lorg/apache/storm/generated/SupervisorInfo;)Lorg/apache/storm/generated/SupervisorSummary; > Context: Everywhere, blocks=[BB[SSA:86..88]39 - org.apache.storm.daemon.nimbus.Nimbus.makeSupervisorSummary(Ljava/lang/String;Lorg/apache/storm/generated/SupervisorInfo;)Lorg/apache/storm/generated/SupervisorSummary;, BB[SSA:85..85]38 - org.apache.storm.daemon.nimbus.Nimbus.makeSupervisorSummary(Ljava/lang/String;Lorg/apache/storm/generated/SupervisorInfo;)Lorg/apache/storm/generated/SupervisorSummary;, BB[SSA:89..90]40 - org.apache.storm.daemon.nimbus.Nimbus.makeSupervisorSummary(Ljava/lang/String;Lorg/apache/storm/generated/SupervisorInfo;)Lorg/apache/storm/generated/SupervisorSummary;, BB[SSA:-1..-2]59 - org.apache.storm.daemon.nimbus.Nimbus.makeSupervisorSummary(Ljava/lang/String;Lorg/apache/storm/generated/SupervisorInfo;)Lorg/apache/storm/generated/SupervisorSummary;], numberOfBasicBlocks=4, firstLineNumber=3018, lastLineNumber=3019, firstMethodNumber=2994, lastMethodNumber=3042, isFirstLineValid=true, methodSrcCode=
+    private SupervisorSummary makeSupervisorSummary(String supervisorId, SupervisorInfo info) {
+        Set<String> blacklistedSupervisorIds = Collections.emptySet();
+        if (scheduler instanceof BlacklistScheduler) {
+            BlacklistScheduler bs = (BlacklistScheduler) scheduler;
+            blacklistedSupervisorIds = bs.getBlacklistSupervisorIds();
+        }
+
+        LOG.debug("INFO: {} ID: {}", info, supervisorId);
+        int numPorts = 0;
+        if (info.is_set_meta()) {
+            numPorts = info.get_meta_size();
+        }
+        int numUsedPorts = 0;
+        if (info.is_set_used_ports()) {
+            numUsedPorts = info.get_used_ports_size();
+        }
+        LOG.debug("NUM PORTS: {}", numPorts);
+        SupervisorSummary ret = new SupervisorSummary(info.get_hostname(),
+                                                      (int) info.get_uptime_secs(), numPorts, numUsedPorts, supervisorId);
+        ret.set_total_resources(info.get_resources_map());
+        SupervisorResources resources = nodeIdToResources.get().get(supervisorId);
+        if (resources != null && underlyingScheduler instanceof ResourceAwareScheduler) {
+            ret.set_used_mem(resources.getUsedMem());
+            ret.set_used_cpu(resources.getUsedCpu());
+            ret.set_used_generic_resources(resources.getUsedGenericResources());
+            if (isFragmented(resources)) {
+                final double availableCpu = resources.getAvailableCpu();
+                if (availableCpu < 0) {
+                    LOG.warn("Negative fragmented CPU on {}", supervisorId);
+                }
+                ret.set_fragmented_cpu(availableCpu);
+                final double availableMem = resources.getAvailableMem();
+                if (availableMem < 0) {
+                    LOG.warn("Negative fragmented Mem on {}", supervisorId);
+                }
+                ret.set_fragmented_mem(availableMem);
+            }
+        }
+        if (info.is_set_version()) {
+            ret.set_version(info.get_version());
+        }
+
+        if (blacklistedSupervisorIds.contains(supervisorId)) {
+            ret.set_blacklisted(true);
+        } else {
+            ret.set_blacklisted(false);
+        }
+
+        return ret;
+    }
+}

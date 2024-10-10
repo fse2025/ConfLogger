@@ -1,0 +1,56 @@
+```java
+final AddressMatcher matcher) {
+    String nameserviceId = null;
+    String namenodeId = null;
+    int found = 0;
+
+    Collection<String> nsIds = DFSUtilClient.getNameServiceIds(conf);
+    for (String nsId : DFSUtilClient.emptyAsSingletonNull(nsIds)) {
+        if (knownNsId != null && !knownNsId.equals(nsId)) {
+            continue;
+        }
+
+        Collection<String> nnIds = DFSUtilClient.getNameNodeIds(conf, nsId);
+        for (String nnId : DFSUtilClient.emptyAsSingletonNull(nnIds)) {
+            if (LOG.isTraceEnabled()) {
+                LOG.trace(String.format("addressKey: %s nsId: %s nnId: %s",
+                        addressKey, nsId, nnId));
+            }
+            if (knownNNId != null && !knownNNId.equals(nnId)) {
+                continue;
+            }
+            String key = addKeySuffixes(addressKey, nsId, nnId);
+            String addr = conf.get(key);
+            if (addr == null) {
+                // ConfLogger Inserted Start
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn(String.format("Address for key '%s' is not set in the configuration. "
+                            + "Ensure that the configuration for '%s' is properly set to avoid missing addresses.",
+                            key, key));
+                }
+                // ConfLogger Inserted End
+                continue;
+            }
+            InetSocketAddress s = null;
+            try {
+                s = NetUtils.createSocketAddr(addr);
+            } catch (Exception e) {
+                continue;
+            }
+            if (!s.isUnresolved() && matcher.match(s)) {
+                nameserviceId = nsId;
+                namenodeId = nnId;
+                found++;
+            }
+        }
+    }
+    if (found > 1) { // Only one address must match the local address
+        String msg = "Configuration has multiple addresses that match "
+                + "local node's address. Please configure the system with "
+                + DFS_NAMESERVICE_ID + " and "
+                + DFS_HA_NAMENODE_ID_KEY;
+        throw new HadoopIllegalArgumentException(msg);
+    }
+    return new String[]{nameserviceId, namenodeId};
+}
+```

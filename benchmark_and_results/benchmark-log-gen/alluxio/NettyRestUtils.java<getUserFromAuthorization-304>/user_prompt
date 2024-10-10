@@ -1,0 +1,56 @@
+<code-whole>
+if (conf.get(PropertyKey.SECURITY_AUTHENTICATION_TYPE) == AuthType.NOSASL) {
+return null;
+}
+if (StringUtils.isEmpty(authorization)) {
+LOG.error("The authorization header content is null or empty");
+throw new S3Exception("The authorization header that you provided is not valid.",
+S3ErrorCode.AUTHORIZATION_HEADER_MALFORMED);
+}
+
+// Parse the authorization header defined at
+// https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html
+// All other authorization types are deprecated or EOL (as of writing)
+// Example Header value (spaces turned to line breaks):
+// AWS4-HMAC-SHA256
+// Credential=AKIAIOSFODNN7EXAMPLE/20130524/us-east-1/s3/aws4_request,
+// SignedHeaders=host;range;x-amz-date,
+// Signature=fe5f80f77d5fa3beca038a248ff027d0445342fe2855ddc963176630326f1024
+
+// We only care about the credential key, so split the header by " " and then take everything
+// after the "=" and before the first "/"
+String[] fields = authorization.split(" ");
+if (fields.length < 2) {
+LOG.error("The authorization header {} content is invalid: not contain the credential key",
+authorization);
+throw new S3Exception("The authorization header that you provided is not valid.",
+S3ErrorCode.AUTHORIZATION_HEADER_MALFORMED);
+}
+String credentials = fields[1];
+String[] creds = credentials.split("=");
+// only support version 4 signature
+if (creds.length < 2 || !StringUtils.equals("Credential", creds[0])
+|| !creds[1].contains("/")) {
+LOG.error(
+"The authorization header {} content is invalid: only version 4 signature is supported",
+authorization);
+throw new S3Exception("The authorization header that you provided is not valid.",
+S3ErrorCode.AUTHORIZATION_HEADER_MALFORMED);
+}
+
+final String user = creds[1].substring(0, creds[1].indexOf("/")).trim();
+if (user.isEmpty()) {
+LOG.error("The authorization header {} content is invalid: empty user", authorization);
+throw new S3Exception("The authorization header that you provided is not valid.",
+S3ErrorCode.AUTHORIZATION_HEADER_MALFORMED);
+}
+
+return user;
+}
+</code-whole>
+
+<code-specified>
+if (conf.get(PropertyKey.SECURITY_AUTHENTICATION_TYPE) == AuthType.NOSASL) {
+return null;
+}
+</code-specified>

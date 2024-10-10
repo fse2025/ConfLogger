@@ -1,0 +1,11 @@
+```java
+String addr = getTrimmedOrNull(conf, DFS_NAMENODE_LIFELINE_RPC_ADDRESS_KEY);
+if (addr == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter '{}' is not set or is empty. Please set a valid address for proper functionality.", DFS_NAMENODE_LIFELINE_RPC_ADDRESS_KEY);
+    // ConfLogger Inserted End
+    return null;
+}
+return NetUtils.createSocketAddr(addr);
+}
+```

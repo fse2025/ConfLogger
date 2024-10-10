@@ -1,0 +1,155 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AdminServerFactory.java	methodSinagture:	org.apache.zookeeper.server.admin.AdminServerFactory.createAdminServer()Lorg/apache/zookeeper/server/admin/AdminServer;	methodLines:	40:61
+blockLines:	41:-1
+paras:	zookeeper.admin.enableServer
+TaintedStat:	NORMAL createAdminServer:conditional branch(ne, to iindex=55) 7,8 Node: < Application, Lorg/apache/zookeeper/server/admin/AdminServerFactory, createAdminServer()Lorg/apache/zookeeper/server/admin/AdminServer; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/admin/AdminServerFactory, createAdminServer()Lorg/apache/zookeeper/server/admin/AdminServer; > Context: Everywhere[2]5 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 3 @4 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/admin/AdminServerFactory, createAdminServer()Lorg/apache/zookeeper/server/admin/AdminServer; > Context: Everywhere[2]5 = invokestatic < Application, Ljava/lang/System, getProperty(Ljava/lang/String;)Ljava/lang/String; > 3 @4 exception:4
+NORMAL createAdminServer:7 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,5 @7 exception:6 Node: < Application, Lorg/apache/zookeeper/server/admin/AdminServerFactory, createAdminServer()Lorg/apache/zookeeper/server/admin/AdminServer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/admin/AdminServerFactory, createAdminServer()Lorg/apache/zookeeper/server/admin/AdminServer; > Context: Everywhere[3]7 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,5 @7 exception:6
+NORMAL createAdminServer:conditional branch(ne, to iindex=55) 7,8 Node: < Application, Lorg/apache/zookeeper/server/admin/AdminServerFactory, createAdminServer()Lorg/apache/zookeeper/server/admin/AdminServer; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static AdminServer createAdminServer() {
+        if (!"false".equals(System.getProperty("zookeeper.admin.enableServer"))) {
+            try {
+                Class<?> jettyAdminServerC = Class.forName("org.apache.zookeeper.server.admin.JettyAdminServer");
+                Object adminServer = jettyAdminServerC.getConstructor().newInstance();
+                return (AdminServer) adminServer;
+
+            } catch (ClassNotFoundException e) {
+                LOG.warn("Unable to start JettyAdminServer", e);
+            } catch (InstantiationException e) {
+                LOG.warn("Unable to start JettyAdminServer", e);
+            } catch (IllegalAccessException e) {
+                LOG.warn("Unable to start JettyAdminServer", e);
+            } catch (InvocationTargetException e) {
+                LOG.warn("Unable to start JettyAdminServer", e);
+            } catch (NoSuchMethodException e) {
+                LOG.warn("Unable to start JettyAdminServer", e);
+            } catch (NoClassDefFoundError e) {
+                LOG.warn("Unable to load jetty, not starting JettyAdminServer", e);
+            }
+        }
+        return new DummyAdminServer();
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, <init>()V > Context: Everywhere, blocks=[BB[SSA:140..141]62 - org.apache.zookeeper.server.quorum.QuorumPeer.<init>()V, BB[SSA:139..139]61 - org.apache.zookeeper.server.quorum.QuorumPeer.<init>()V, BB[SSA:142..142]63 - org.apache.zookeeper.server.quorum.QuorumPeer.<init>()V, BB[SSA:-1..-2]70 - org.apache.zookeeper.server.quorum.QuorumPeer.<init>()V], numberOfBasicBlocks=4, firstLineNumber=1072, lastLineNumber=1073, firstMethodNumber=1069, lastMethodNumber=1077, isFirstLineValid=true, methodSrcCode=
+    public QuorumPeer() throws SaslException {
+        super("QuorumPeer");
+        quorumStats = new QuorumStats(this);
+        jmxRemotePeerBean = new HashMap<>();
+        adminServer = AdminServerFactory.createAdminServer();
+        x509Util = createX509Util();
+        initialize();
+        reconfigEnabled = QuorumPeerConfig.isReconfigEnabled();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/ZooKeeperServerMain, runFromConfig(Lorg/apache/zookeeper/server/ServerConfig;)V > Context: Everywhere, blocks=[BB[SSA:83..84]42 - org.apache.zookeeper.server.ZooKeeperServerMain.runFromConfig(Lorg/apache/zookeeper/server/ServerConfig;)V, BB[SSA:82..82]41 - org.apache.zookeeper.server.ZooKeeperServerMain.runFromConfig(Lorg/apache/zookeeper/server/ServerConfig;)V, BB[SSA:85..85]43 - org.apache.zookeeper.server.ZooKeeperServerMain.runFromConfig(Lorg/apache/zookeeper/server/ServerConfig;)V], numberOfBasicBlocks=3, firstLineNumber=150, lastLineNumber=153, firstMethodNumber=122, lastMethodNumber=213, isFirstLineValid=true, methodSrcCode=
+    public void runFromConfig(ServerConfig config) throws IOException, AdminServerException {
+        LOG.info("Starting server");
+        FileTxnSnapLog txnLog = null;
+        try {
+            try {
+                metricsProvider = MetricsProviderBootstrap.startMetricsProvider(
+                    config.getMetricsProviderClassName(),
+                    config.getMetricsProviderConfiguration());
+            } catch (MetricsProviderLifeCycleException error) {
+                throw new IOException("Cannot boot MetricsProvider " + config.getMetricsProviderClassName(), error);
+            }
+            ServerMetrics.metricsProviderInitialized(metricsProvider);
+            ProviderRegistry.initialize();
+            // Note that this thread isn't going to be doing anything else,
+            // so rather than spawning another thread, we will just call
+            // run() in this thread.
+            // create a file logger url from the command line args
+            txnLog = new FileTxnSnapLog(config.dataLogDir, config.dataDir);
+            JvmPauseMonitor jvmPauseMonitor = null;
+            if (config.jvmPauseMonitorToRun) {
+                jvmPauseMonitor = new JvmPauseMonitor(config);
+            }
+            final ZooKeeperServer zkServer = new ZooKeeperServer(jvmPauseMonitor, txnLog, config.tickTime, config.minSessionTimeout, config.maxSessionTimeout, config.listenBacklog, null, config.initialConfig);
+            txnLog.setServerStats(zkServer.serverStats());
+
+            // Registers shutdown handler which will be used to know the
+            // server error or shutdown state changes.
+            final CountDownLatch shutdownLatch = new CountDownLatch(1);
+            zkServer.registerServerShutdownHandler(new ZooKeeperServerShutdownHandler(shutdownLatch));
+
+            // Start Admin server
+            adminServer = AdminServerFactory.createAdminServer();
+            adminServer.setZooKeeperServer(zkServer);
+            adminServer.start();
+
+            boolean needStartZKServer = true;
+            if (config.getClientPortAddress() != null) {
+                cnxnFactory = ServerCnxnFactory.createFactory();
+                cnxnFactory.configure(config.getClientPortAddress(), config.getMaxClientCnxns(), config.getClientPortListenBacklog(), false);
+                cnxnFactory.startup(zkServer);
+                // zkServer has been started. So we don't need to start it again in secureCnxnFactory.
+                needStartZKServer = false;
+            }
+            if (config.getSecureClientPortAddress() != null) {
+                secureCnxnFactory = ServerCnxnFactory.createFactory();
+                secureCnxnFactory.configure(config.getSecureClientPortAddress(), config.getMaxClientCnxns(), config.getClientPortListenBacklog(), true);
+                secureCnxnFactory.startup(zkServer, needStartZKServer);
+            }
+
+            containerManager = new ContainerManager(
+                zkServer.getZKDatabase(),
+                zkServer.firstProcessor,
+                Integer.getInteger("znode.container.checkIntervalMs", (int) TimeUnit.MINUTES.toMillis(1)),
+                Integer.getInteger("znode.container.maxPerMinute", 10000),
+                Long.getLong("znode.container.maxNeverUsedIntervalMs", 0)
+            );
+            containerManager.start();
+            ZKAuditProvider.addZKStartStopAuditLog();
+
+            serverStarted();
+
+            // Watch status of ZooKeeper server. It will do a graceful shutdown
+            // if the server is not running or hits an internal error.
+            shutdownLatch.await();
+
+            shutdown();
+
+            if (cnxnFactory != null) {
+                cnxnFactory.join();
+            }
+            if (secureCnxnFactory != null) {
+                secureCnxnFactory.join();
+            }
+            if (zkServer.canShutdown()) {
+                zkServer.shutdown(true);
+            }
+        } catch (InterruptedException e) {
+            // warn, but generally this is ok
+            LOG.warn("Server interrupted", e);
+        } finally {
+            if (txnLog != null) {
+                txnLog.close();
+            }
+            if (metricsProvider != null) {
+                try {
+                    metricsProvider.stop();
+                } catch (Throwable error) {
+                    LOG.warn("Error while stopping metrics", error);
+                }
+            }
+        }
+    }
+
+}

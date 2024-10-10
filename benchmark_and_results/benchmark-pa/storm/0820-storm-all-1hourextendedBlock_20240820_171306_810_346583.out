@@ -1,0 +1,134 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	WorkerTransfer.java	methodSinagture:	org.apache.storm.daemon.worker.WorkerTransfer.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/Map;I)V	methodLines:	52:73
+blockLines:	64:-1
+paras:	topology.transfer.buffer.size
+TaintedStat:	NORMAL <init>:conditional branch(le, to iindex=64) 33,37 Node: < Application, Lorg/apache/storm/daemon/worker/WorkerTransfer, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/Map;I)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/WorkerTransfer, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/Map;I)V > Context: Everywhere[42]24 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 3,22 @75 exception:23
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/WorkerTransfer, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/Map;I)V > Context: Everywhere[42]24 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 3,22 @75 exception:23
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/WorkerTransfer, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/Map;I)V > Context: Everywhere[43]26 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > 24 @80 exception:25 v24
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:30 = checkcast <Application,Ljava/lang/Number>1 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:32 = invokevirtual < Application, Ljava/lang/Number, intValue()I > 30 @32 exception:31 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL intValue:return 3 Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/WorkerTransfer, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/Map;I)V > Context: Everywhere[51]33 = invokevirtual < Application, Ljava/lang/Integer, intValue()I > 31 @100 exception:32
+NORMAL <init>:conditional branch(le, to iindex=64) 33,37 Node: < Application, Lorg/apache/storm/daemon/worker/WorkerTransfer, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/Map;I)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    public WorkerTransfer(WorkerState workerState, Map<String, Object> topologyConf, int maxTaskIdInTopo) {
+        this.workerState = workerState;
+        this.backPressureWaitStrategy = IWaitStrategy.createBackPressureWaitStrategy(topologyConf);
+        this.drainer = new TransferDrainer();
+        this.remoteBackPressureStatus = new AtomicBoolean[maxTaskIdInTopo + 1];
+        for (int i = 0; i < remoteBackPressureStatus.length; i++) {
+            remoteBackPressureStatus[i] = new AtomicBoolean(false);
+        }
+
+        Integer xferQueueSz = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_TRANSFER_BUFFER_SIZE));
+        Integer xferBatchSz = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_TRANSFER_BATCH_SIZE));
+        if (xferBatchSz > xferQueueSz / 2) {
+            throw new IllegalArgumentException(Config.TOPOLOGY_TRANSFER_BATCH_SIZE + ":" + xferBatchSz + " must be no more than half of "
+                                               + Config.TOPOLOGY_TRANSFER_BUFFER_SIZE + ":" + xferQueueSz);
+        }
+
+        this.transferQueue = new JCQueue("worker-transfer-queue", "worker-transfer-queue",
+            xferQueueSz, 0, xferBatchSz, backPressureWaitStrategy,
+            workerState.getTopologyId(), Constants.SYSTEM_COMPONENT_ID, Collections.singletonList(-1), workerState.getPort(),
+            workerState.getMetricRegistry());
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/worker/WorkerState, <init>(Ljava/util/Map;Lorg/apache/storm/messaging/IContext;Ljava/lang/String;Ljava/lang/String;Ljava/util/function/Supplier;ILjava/lang/String;Ljava/util/Map;Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Collection;Lorg/apache/storm/metrics2/StormMetricRegistry;Lorg/apache/storm/generated/Credentials;)V > Context: Everywhere, blocks=[BB[SSA:398..402]205 - org.apache.storm.daemon.worker.WorkerState.<init>(Ljava/util/Map;Lorg/apache/storm/messaging/IContext;Ljava/lang/String;Ljava/lang/String;Ljava/util/function/Supplier;ILjava/lang/String;Ljava/util/Map;Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Collection;Lorg/apache/storm/metrics2/StormMetricRegistry;Lorg/apache/storm/generated/Credentials;)V, BB[SSA:395..397]204 - org.apache.storm.daemon.worker.WorkerState.<init>(Ljava/util/Map;Lorg/apache/storm/messaging/IContext;Ljava/lang/String;Ljava/lang/String;Ljava/util/function/Supplier;ILjava/lang/String;Ljava/util/Map;Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Collection;Lorg/apache/storm/metrics2/StormMetricRegistry;Lorg/apache/storm/generated/Credentials;)V, BB[SSA:403..403]206 - org.apache.storm.daemon.worker.WorkerState.<init>(Ljava/util/Map;Lorg/apache/storm/messaging/IContext;Ljava/lang/String;Ljava/lang/String;Ljava/util/function/Supplier;ILjava/lang/String;Ljava/util/Map;Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Collection;Lorg/apache/storm/metrics2/StormMetricRegistry;Lorg/apache/storm/generated/Credentials;)V, BB[SSA:-1..-2]225 - org.apache.storm.daemon.worker.WorkerState.<init>(Ljava/util/Map;Lorg/apache/storm/messaging/IContext;Ljava/lang/String;Ljava/lang/String;Ljava/util/function/Supplier;ILjava/lang/String;Ljava/util/Map;Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Collection;Lorg/apache/storm/metrics2/StormMetricRegistry;Lorg/apache/storm/generated/Credentials;)V], numberOfBasicBlocks=4, firstLineNumber=234, lastLineNumber=249, firstMethodNumber=171, lastMethodNumber=249, isFirstLineValid=true, methodSrcCode=
+            Credentials initialCredentials) throws IOException,
+            InvalidTopologyException {
+        this.metricRegistry = metricRegistry;
+        this.autoCredentials = autoCredentials;
+        this.credentialsAtom = new AtomicReference(initialCredentials);
+        this.conf = conf;
+        this.supervisorIfaceSupplier = supervisorIfaceSupplier;
+        this.mqContext = (null != mqContext) ? mqContext :
+                TransportFactory.makeContext(topologyConf, metricRegistry);
+        this.topologyId = topologyId;
+        this.assignmentId = assignmentId;
+        this.port = port;
+        this.workerId = workerId;
+        this.stateStorage = stateStorage;
+        this.stormClusterState = stormClusterState;
+        this.localExecutors =
+            new HashSet<>(readWorkerExecutors(assignmentId, port, getLocalAssignment(this.stormClusterState, topologyId)));
+        this.isWorkerActive = new CountDownLatch(1);
+        this.isTopologyActive = new AtomicBoolean(false);
+        this.stormComponentToDebug = new AtomicReference<>();
+        this.topology = ConfigUtils.readSupervisorTopology(conf, topologyId, AdvancedFSOps.make(conf));
+        this.taskToComponent = StormCommon.stormTaskInfo(topology, topologyConf);
+        this.executorReceiveQueueMap = mkReceiveQueueMap(topologyConf, localExecutors, taskToComponent);
+        this.localTaskIds = new ArrayList<>();
+        this.taskToExecutorQueue = new HashMap<>();
+        this.blobToLastKnownVersion = new ConcurrentHashMap<>();
+        for (Map.Entry<List<Long>, JCQueue> entry : executorReceiveQueueMap.entrySet()) {
+            List<Integer> taskIds = StormCommon.executorIdToTasks(entry.getKey());
+            for (Integer taskId : taskIds) {
+                this.taskToExecutorQueue.put(taskId, entry.getValue());
+            }
+            this.localTaskIds.addAll(taskIds);
+        }
+        Collections.sort(localTaskIds);
+        this.topologyConf = topologyConf;
+        this.systemTopology = StormCommon.systemTopology(topologyConf, topology);
+        this.componentToStreamToFields = new HashMap<>();
+        for (String c : ThriftTopologyUtils.getComponentIds(systemTopology)) {
+            Map<String, Fields> streamToFields = new HashMap<>();
+            for (Map.Entry<String, StreamInfo> stream :
+                ThriftTopologyUtils.getComponentCommon(systemTopology, c).get_streams().entrySet()) {
+                streamToFields.put(stream.getKey(), new Fields(stream.getValue().get_output_fields()));
+            }
+            componentToStreamToFields.put(c, streamToFields);
+        }
+        this.componentToSortedTasks = Utils.reverseMap(taskToComponent);
+        this.componentToSortedTasks.values().forEach(Collections::sort);
+        this.endpointSocketLock = new ReentrantReadWriteLock();
+        this.cachedNodeToPortSocket = new AtomicReference<>(new HashMap<>());
+        this.cachedTaskToNodePort = new AtomicReference<>(new HashMap<>());
+        this.cachedNodeToHost = new AtomicReference<>(new HashMap<>());
+        this.suicideCallback = Utils.mkSuicideFn();
+        this.uptime = Utils.makeUptimeComputer();
+        this.defaultSharedResources = makeDefaultResources();
+        this.userSharedResources = makeUserResources();
+        this.loadMapping = new LoadMapping();
+        this.assignmentVersions = new AtomicReference<>(new HashMap<>());
+        this.outboundTasks = workerOutboundTasks();
+        this.trySerializeLocal = topologyConf.containsKey(Config.TOPOLOGY_TESTING_ALWAYS_TRY_SERIALIZE)
+                                 && (Boolean) topologyConf.get(Config.TOPOLOGY_TESTING_ALWAYS_TRY_SERIALIZE);
+        if (trySerializeLocal) {
+            LOG.warn("WILL TRY TO SERIALIZE ALL TUPLES (Turn off {} for production", Config.TOPOLOGY_TESTING_ALWAYS_TRY_SERIALIZE);
+        }
+        int maxTaskId = getMaxTaskId(componentToSortedTasks);
+        this.workerTransfer = new WorkerTransfer(this, topologyConf, maxTaskId);
+
+        this.bpTracker = new BackPressureTracker(workerId, taskToExecutorQueue, metricRegistry, taskToComponent);
+        this.deserializedWorkerHooks = deserializeWorkerHooks();
+        LOG.info("Registering IConnectionCallbacks for {}:{}", assignmentId, port);
+        IConnectionCallback cb = new DeserializingConnectionCallback(topologyConf,
+            getWorkerTopologyContext(),
+            this::transferLocalBatch);
+        Supplier<Object> newConnectionResponse = () -> {
+            BackPressureStatus bpStatus = bpTracker.getCurrStatus();
+            LOG.info("Sending BackPressure status to new client. BPStatus: {}", bpStatus);
+            return bpStatus;
+        };
+        this.receiver = this.mqContext.bind(topologyId, port, cb, newConnectionResponse);
+    }
+
+}

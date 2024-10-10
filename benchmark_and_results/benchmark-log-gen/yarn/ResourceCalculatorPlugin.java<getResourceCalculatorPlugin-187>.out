@@ -1,0 +1,95 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ResourceCalculatorPlugin.java	methodSinagture:	org.apache.hadoop.yarn.util.ResourceCalculatorPlugin.getResourceCalculatorPlugin(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin;	methodLines:	187:199
+blockLines:	188:-1
+paras:	yarn.nodemanager.resource-calculator.class
+TaintedStat:	NORMAL getResourceCalculatorPlugin:conditional branch(eq, to iindex=8) 1,4 Node: < Application, Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin, getResourceCalculatorPlugin(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin, getNodeResourceMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin; > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,3,4,5 @6 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin, getNodeResourceMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin; > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,3,4,5 @6 exception:6
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin, getNodeResourceMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin; > Context: Everywhere[8]9 = invokestatic < Application, Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin, getResourceCalculatorPlugin(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin; > 7,1 @12 exception:8 v7
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin, getResourceCalculatorPlugin(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin; > Context: Everywhere v1
+NORMAL getResourceCalculatorPlugin:conditional branch(eq, to iindex=8) 1,4 Node: < Application, Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin, getResourceCalculatorPlugin(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    if (clazz != null) {
+      return ReflectionUtils.newInstance(clazz, conf);
+    }
+    try {
+      return new ResourceCalculatorPlugin();
+    } catch (UnsupportedOperationException ue) {
+      LOG.warn("Failed to instantiate default resource calculator. "
+          + ue.getMessage());
+    } catch (Throwable t) {
+      LOG.warn(t + ": Failed to instantiate default resource calculator.", t);
+    }
+    return null;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin, getNodeResourceMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin; > Context: Everywhere, blocks=[BB[SSA:5..8]3 - org.apache.hadoop.yarn.util.ResourceCalculatorPlugin.getNodeResourceMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin;, BB[SSA:4..4]2 - org.apache.hadoop.yarn.util.ResourceCalculatorPlugin.getNodeResourceMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin;, BB[SSA:9..9]4 - org.apache.hadoop.yarn.util.ResourceCalculatorPlugin.getNodeResourceMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin;, BB[SSA:-1..-2]5 - org.apache.hadoop.yarn.util.ResourceCalculatorPlugin.getNodeResourceMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin;], numberOfBasicBlocks=4, firstLineNumber=234, lastLineNumber=237, firstMethodNumber=233, lastMethodNumber=237, isFirstLineValid=true, methodSrcCode=
+      Configuration conf) {
+    Class<? extends ResourceCalculatorPlugin> clazz = conf.getClass(
+        YarnConfiguration.NM_MON_RESOURCE_CALCULATOR, null,
+        ResourceCalculatorPlugin.class);
+    return ResourceCalculatorPlugin.getResourceCalculatorPlugin(clazz, conf);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin, getContainersMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin; > Context: Everywhere, blocks=[BB[SSA:11..14]5 - org.apache.hadoop.yarn.util.ResourceCalculatorPlugin.getContainersMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin;, BB[SSA:10..10]4 - org.apache.hadoop.yarn.util.ResourceCalculatorPlugin.getContainersMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin;, BB[SSA:15..15]6 - org.apache.hadoop.yarn.util.ResourceCalculatorPlugin.getContainersMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin;, BB[SSA:-1..-2]7 - org.apache.hadoop.yarn.util.ResourceCalculatorPlugin.getContainersMonitorPlugin(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/util/ResourceCalculatorPlugin;], numberOfBasicBlocks=4, firstLineNumber=216, lastLineNumber=219, firstMethodNumber=212, lastMethodNumber=219, isFirstLineValid=true, methodSrcCode=
+      Configuration conf) {
+    Class<? extends ResourceCalculatorPlugin> clazzNM = conf.getClass(
+        YarnConfiguration.NM_MON_RESOURCE_CALCULATOR, null,
+        ResourceCalculatorPlugin.class);
+    Class<? extends ResourceCalculatorPlugin> clazz = conf.getClass(
+        YarnConfiguration.NM_CONTAINER_MON_RESOURCE_CALCULATOR, clazzNM,
+        ResourceCalculatorPlugin.class);
+    return ResourceCalculatorPlugin.getResourceCalculatorPlugin(clazz, conf);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/util/ProcfsBasedProcessTree, main([Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:8..10]5 - org.apache.hadoop.yarn.util.ProcfsBasedProcessTree.main([Ljava/lang/String;)V, BB[SSA:2..3]2 - org.apache.hadoop.yarn.util.ProcfsBasedProcessTree.main([Ljava/lang/String;)V, BB[SSA:11..11]6 - org.apache.hadoop.yarn.util.ProcfsBasedProcessTree.main([Ljava/lang/String;)V, BB[SSA:-1..-2]61 - org.apache.hadoop.yarn.util.ProcfsBasedProcessTree.main([Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=1008, lastLineNumber=1015, firstMethodNumber=1007, lastMethodNumber=1044, isFirstLineValid=true, methodSrcCode=
+  public static void main(String[] args) {
+    if (args.length != 1) {
+      System.out.println("Provide <pid of process to monitor>");
+      return;
+    }
+
+    int numprocessors =
+        ResourceCalculatorPlugin.getResourceCalculatorPlugin(null, null)
+            .getNumProcessors();
+    System.out.println("Number of processors " + numprocessors);
+
+    System.out.println("Creating ProcfsBasedProcessTree for process " +
+        args[0]);
+    ProcfsBasedProcessTree procfsBasedProcessTree = new
+        ProcfsBasedProcessTree(args[0]);
+    procfsBasedProcessTree.updateProcessTree();
+
+    System.out.println(procfsBasedProcessTree.getProcessTreeDump());
+    System.out.println("Get cpu usage " + procfsBasedProcessTree
+        .getCpuUsagePercent());
+
+    try {
+      // Sleep so we can compute the CPU usage
+      Thread.sleep(500L);
+    } catch (InterruptedException e) {
+      // do nothing
+    }
+
+    procfsBasedProcessTree.updateProcessTree();
+
+    System.out.println(procfsBasedProcessTree.getProcessTreeDump());
+    System.out.println("Cpu usage  " + procfsBasedProcessTree
+        .getCpuUsagePercent());
+    System.out.println("Vmem usage in bytes " + procfsBasedProcessTree
+        .getVirtualMemorySize());
+    System.out.println("Rss mem usage in bytes " + procfsBasedProcessTree
+        .getRssMemorySize());
+  }
+}
+}

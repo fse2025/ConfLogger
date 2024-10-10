@@ -1,0 +1,109 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CleanupJobStage.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.output.committer.manifest.stages.CleanupJobStage.cleanupStageOptionsFromConfig(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage$Arguments;	methodLines:	358:367
+blockLines:	359:-1
+paras:	null
+TaintedStat:	NORMAL cleanupStageOptionsFromConfig:conditional branch(ne, to iindex=8) 7,5 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage, cleanupStageOptionsFromConfig(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage$Arguments; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage, cleanupStageOptionsFromConfig(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage$Arguments; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,4,5 @4 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage, cleanupStageOptionsFromConfig(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage$Arguments; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,4,5 @4 exception:6
+NORMAL cleanupStageOptionsFromConfig:conditional branch(ne, to iindex=8) 7,5 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage, cleanupStageOptionsFromConfig(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage$Arguments; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    boolean enabled = !conf.getBoolean(FILEOUTPUTCOMMITTER_CLEANUP_SKIPPED,
+        FILEOUTPUTCOMMITTER_CLEANUP_SKIPPED_DEFAULT);
+    boolean suppressExceptions = conf.getBoolean(
+        FILEOUTPUTCOMMITTER_CLEANUP_FAILURES_IGNORED,
+        FILEOUTPUTCOMMITTER_CLEANUP_FAILURES_IGNORED_DEFAULT);
+    boolean deleteTaskAttemptDirsInParallel = conf.getBoolean(
+        OPT_CLEANUP_PARALLEL_DELETE,
+        OPT_CLEANUP_PARALLEL_DELETE_DIRS_DEFAULT);
+    return new Arguments(
+        statisticName,
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitter, commitJob(Lorg/apache/hadoop/mapreduce/JobContext;)V > Context: Everywhere, blocks=[BB[SSA:46..48]16 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitter.commitJob(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:42..45]15 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitter.commitJob(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:49..49]17 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitter.commitJob(Lorg/apache/hadoop/mapreduce/JobContext;)V], numberOfBasicBlocks=3, firstLineNumber=390, lastLineNumber=392, firstMethodNumber=367, lastMethodNumber=426, isFirstLineValid=true, methodSrcCode=
+
+    ManifestCommitterConfig committerConfig = enterCommitter(false, jobContext);
+
+    // create the initial success data.
+    // this is overwritten by that created during the operation sequence,
+    // but if the sequence fails before that happens, it
+    // will be saved to the report directory.
+    ManifestSuccessData marker = getOrCreateSuccessData(committerConfig);
+    IOException failure = null;
+    try (CloseableTaskPoolSubmitter ioProcs =
+             committerConfig.createSubmitter();
+         ManifestStoreOperations storeOperations = createManifestStoreOperations()) {
+      // the stage config will be shared across all stages.
+      StageConfig stageConfig = committerConfig.createStageConfig()
+          .withOperations(storeOperations)
+          .withIOProcessors(ioProcs)
+          .build();
+
+      // commit the job, including any cleanup and validation.
+      final Configuration conf = jobContext.getConfiguration();
+      CommitJobStage.Result result = new CommitJobStage(stageConfig).apply(
+          new CommitJobStage.Arguments(
+              committerConfig.getCreateJobMarker(),
+              committerConfig.getValidateOutput(),
+              conf.getTrimmed(OPT_DIAGNOSTICS_MANIFEST_DIR, ""),
+              cleanupStageOptionsFromConfig(
+                  OP_STAGE_JOB_CLEANUP, conf)
+          ));
+      marker = result.getJobSuccessData();
+      // update the cached success with the new report.
+      setSuccessReport(marker);
+      // patch in the #of threads as it is useful
+      marker.putDiagnostic(OPT_IO_PROCESSORS,
+          conf.get(OPT_IO_PROCESSORS, Long.toString(OPT_IO_PROCESSORS_DEFAULT)));
+    } catch (IOException e) {
+      // failure. record it for the summary
+      failure = e;
+      // rethrow
+      throw e;
+    } finally {
+      // save the report summary, even on failure
+      maybeSaveSummary(activeStage,
+          committerConfig,
+          marker,
+          failure,
+          true,
+          true);
+      // print job commit stats
+      LOG.info("{}: Job Commit statistics {}",
+          committerConfig.getName(),
+          ioStatisticsToPrettyString(iostatistics));
+      // and warn of rename problems
+      final Long recoveries = iostatistics.counters().get(OP_COMMIT_FILE_RENAME_RECOVERED);
+      if (recoveries != null && recoveries > 0) {
+        LOG.warn("{}: rename failures were recovered from. Number of recoveries: {}",
+            committerConfig.getName(), recoveries);
+      }
+      updateCommonContextOnCommitterExit();
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitter, executeCleanup(Ljava/lang/String;Lorg/apache/hadoop/mapreduce/JobContext;Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitterConfig;)Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage$Result; > Context: Everywhere, blocks=[BB[SSA:19..19]10 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitter.executeCleanup(Ljava/lang/String;Lorg/apache/hadoop/mapreduce/JobContext;Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitterConfig;)Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage$Result;, BB[SSA:16..18]9 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitter.executeCleanup(Ljava/lang/String;Lorg/apache/hadoop/mapreduce/JobContext;Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitterConfig;)Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage$Result;, BB[SSA:20..20]11 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitter.executeCleanup(Ljava/lang/String;Lorg/apache/hadoop/mapreduce/JobContext;Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitterConfig;)Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/CleanupJobStage$Result;], numberOfBasicBlocks=3, firstLineNumber=503, lastLineNumber=504, firstMethodNumber=495, lastMethodNumber=507, isFirstLineValid=true, methodSrcCode=
+      final ManifestCommitterConfig committerConfig) throws IOException {
+    try (CloseableTaskPoolSubmitter ioProcs =
+             committerConfig.createSubmitter()) {
+
+      return new CleanupJobStage(
+          committerConfig.createStageConfig()
+              .withOperations(createManifestStoreOperations())
+              .withIOProcessors(ioProcs)
+              .build())
+          .apply(cleanupStageOptionsFromConfig(
+              statisticName,
+              jobContext.getConfiguration()));
+    }
+  }
+}

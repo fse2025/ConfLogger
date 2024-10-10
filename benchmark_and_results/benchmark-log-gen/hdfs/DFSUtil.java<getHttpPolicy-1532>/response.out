@@ -1,0 +1,16 @@
+```java
+String policyStr = conf.get(DFSConfigKeys.DFS_HTTP_POLICY_KEY,
+DFSConfigKeys.DFS_HTTP_POLICY_DEFAULT);
+HttpConfig.Policy policy = HttpConfig.Policy.fromString(policyStr);
+if (policy == null) {
+    // ConfLogger Inserted Start
+    logger.error("Unrecognized value '{}' for configuration key '{}'. Please set a valid value for {}.", policyStr, DFSConfigKeys.DFS_HTTP_POLICY_KEY, DFSConfigKeys.DFS_HTTP_POLICY_KEY);
+    // ConfLogger Inserted End
+    throw new HadoopIllegalArgumentException("Unrecognized value '"
+    + policyStr + "' for " + DFSConfigKeys.DFS_HTTP_POLICY_KEY);
+}
+
+conf.set(DFSConfigKeys.DFS_HTTP_POLICY_KEY, policy.name());
+return policy;
+}
+```

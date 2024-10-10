@@ -1,0 +1,17 @@
+```java
+if (valInConf == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'valInConf' is null. Please ensure it is properly set.");
+    // ConfLogger Inserted End
+    return null;
+}
+if (!valInConf.startsWith("@")) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'valInConf' does not start with '@'. Returning the original value: " + valInConf);
+    // ConfLogger Inserted End
+    return valInConf;
+}
+String path = valInConf.substring(1).trim();
+return Files.asCharSource(new File(path), Charsets.UTF_8).read().trim();
+}
+```

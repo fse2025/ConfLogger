@@ -1,0 +1,95 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MRAppMaster.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.MRAppMaster.shouldAttemptRecovery()Z	methodLines:	1353:1398
+blockLines:	1382:-1
+paras:	mapreduce.job.reduces
+TaintedStat:	NORMAL shouldAttemptRecovery:conditional branch(le, to iindex=68) 18,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere[46]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 15,16,5 @96 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere[46]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 15,16,5 @96 exception:17
+NORMAL shouldAttemptRecovery:conditional branch(le, to iindex=68) 18,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	MRAppMaster.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.MRAppMaster.shouldAttemptRecovery()Z	methodLines:	1353:1398
+blockLines:	1361:-1
+paras:	null
+TaintedStat:	NORMAL shouldAttemptRecovery:conditional branch(ne, to iindex=20) 11,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere[10]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 7,8,9 @17 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere[10]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 7,8,9 @17 exception:10
+NORMAL shouldAttemptRecovery:conditional branch(ne, to iindex=20) 11,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private boolean shouldAttemptRecovery() throws IOException {
+    if (isFirstAttempt()) {
+      return false;  // no need to recover on the first attempt
+    }
+
+    boolean recoveryEnabled = getConfig().getBoolean(
+        MRJobConfig.MR_AM_JOB_RECOVERY_ENABLE,
+        MRJobConfig.MR_AM_JOB_RECOVERY_ENABLE_DEFAULT);
+    if (!recoveryEnabled) {
+      LOG.info("Not attempting to recover. Recovery disabled. To enable " +
+          "recovery, set " + MRJobConfig.MR_AM_JOB_RECOVERY_ENABLE);
+      return false;
+    }
+
+    boolean recoverySupportedByCommitter = isRecoverySupported();
+    if (!recoverySupportedByCommitter) {
+      LOG.info("Not attempting to recover. Recovery is not supported by " +
+          committer.getClass() + ". Use an OutputCommitter that supports" +
+              " recovery.");
+      return false;
+    }
+
+    int reducerCount = getConfig().getInt(MRJobConfig.NUM_REDUCES, 0);
+
+    // If a shuffle secret was not provided by the job client, one will be
+    // generated in this job attempt. However, that disables recovery if
+    // there are reducers as the shuffle secret would be job attempt specific.
+    boolean shuffleKeyValidForRecovery =
+        TokenCache.getShuffleSecretKey(jobCredentials) != null;
+    if (reducerCount > 0 && !shuffleKeyValidForRecovery) {
+      LOG.info("Not attempting to recover. The shuffle key is invalid for " +
+          "recovery.");
+      return false;
+    }
+
+    // If the intermediate data is encrypted, recovering the job requires the
+    // access to the key. Until the encryption key is persisted, we should
+    // avoid attempts to recover.
+    boolean spillEncrypted = CryptoUtils.isEncryptedSpillEnabled(getConfig());
+    if (reducerCount > 0 && spillEncrypted) {
+      LOG.info("Not attempting to recover. Intermediate spill encryption" +
+          " is enabled.");
+      return false;
+    }
+
+    return true;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, processRecovery()V > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.processRecovery()V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.processRecovery()V, BB[SSA:2..7]2 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.processRecovery()V, BB[SSA:-1..-2]17 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.processRecovery()V], numberOfBasicBlocks=4, firstLineNumber=1327, lastLineNumber=1330, firstMethodNumber=1327, lastMethodNumber=1343, isFirstLineValid=false, methodSrcCode=
+  private void processRecovery() throws IOException{
+    boolean attemptRecovery = shouldAttemptRecovery();
+    boolean recoverySucceeded = true;
+    if (attemptRecovery) {
+      LOG.info("Attempting to recover.");
+      try {
+        parsePreviousJobHistory();
+      } catch (IOException e) {
+        LOG.warn("Unable to parse prior job history, aborting recovery", e);
+        recoverySucceeded = false;
+      }
+    }
+
+    if (!isFirstAttempt() && (!attemptRecovery || !recoverySucceeded)) {
+      amInfos.addAll(readJustAMInfos());
+    }
+  }
+
+}

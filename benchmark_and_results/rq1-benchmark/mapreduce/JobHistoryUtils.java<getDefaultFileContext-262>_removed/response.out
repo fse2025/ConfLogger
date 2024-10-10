@@ -1,0 +1,26 @@
+```java
+// case to exploit this functionality it should create core-site.xml
+FileContext fc = null;
+Configuration defaultConf = new Configuration();
+String[] sources;
+sources = defaultConf.getPropertySources(
+CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY);
+if (sources != null &&
+(!Arrays.asList(sources).contains("core-default.xml") ||
+sources.length > 1)) {
+    try {
+        fc = FileContext.getFileContext(defaultConf);
+    } catch (UnsupportedFileSystemException e) {
+        // ConfLogger Inserted Start
+        logger.error("Failed to get FileContext due to UnsupportedFileSystemException. Ensure that the file system is supported and properly configured.");
+        // ConfLogger Inserted End
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Default file system is set solely by core-default.xml. Ignoring additional configuration sources. Ensure that core-default.xml is the only source if this is intended.");
+    // ConfLogger Inserted End
+}
+
+return fc;
+}
+```

@@ -1,0 +1,25 @@
+```java
+Integer ret = null;
+for (Group g : groups) {
+    if (isSpoutGroup(g)) {
+        SpoutNode n = (SpoutNode) g.nodes.iterator().next();
+        Map<String, Object> conf = getSpoutComponentConfig(n.spout);
+        if (conf == null) {
+            conf = new HashMap();
+        }
+        Number maxP = (Number) conf.get(Config.TOPOLOGY_MAX_TASK_PARALLELISM);
+        if (maxP != null) {
+            // ConfLogger Inserted Start
+            if (ret == null) {
+                logger.info("Setting initial ret value based on maxP configuration. Config Key: " + Config.TOPOLOGY_MAX_TASK_PARALLELISM + ", Config Value: " + maxP.intValue());
+                ret = maxP.intValue();
+            } else {
+                logger.info("Updating ret value to the minimum of current ret and maxP configuration. Config Key: " + Config.TOPOLOGY_MAX_TASK_PARALLELISM + ", Config Value: " + maxP.intValue() + ", Current ret: " + ret);
+                ret = Math.min(ret, maxP.intValue());
+            }
+            // ConfLogger Inserted End
+        }
+    }
+}
+return ret;
+```

@@ -1,0 +1,69 @@
+```java
+Map<String, LocalResource> localResources = new HashMap<>();
+
+Path jobConfPath = new Path(jobSubmitDir, MRJobConfig.JOB_CONF_FILE);
+
+URL yarnUrlForJobSubmitDir = URL.fromPath(defaultFileContext
+.getDefaultFileSystem().resolvePath(
+defaultFileContext.makeQualified(new Path(jobSubmitDir))));
+LOG.debug("Creating setup context, jobSubmitDir url is "
++ yarnUrlForJobSubmitDir);
+
+localResources.put(MRJobConfig.JOB_CONF_FILE,
+createApplicationResource(defaultFileContext,
+jobConfPath, LocalResourceType.FILE));
+if (jobConf.get(MRJobConfig.JAR) != null) {
+Path jobJarPath = new Path(jobConf.get(MRJobConfig.JAR));
+// We hard code the job.jar symlink because mapreduce code expects the
+// job.jar to be named that way.
+FileContext fccc =
+FileContext.getFileContext(jobJarPath.toUri(), jobConf);
+LocalResourceVisibility jobJarViz =
+jobConf.getBoolean(MRJobConfig.JOBJAR_VISIBILITY,
+MRJobConfig.JOBJAR_VISIBILITY_DEFAULT)
+? LocalResourceVisibility.PUBLIC
+: LocalResourceVisibility.APPLICATION;
+LocalResource rc = createApplicationResource(
+FileContext.getFileContext(jobJarPath.toUri(), jobConf), jobJarPath,
+MRJobConfig.JOB_JAR, LocalResourceType.PATTERN, jobJarViz,
+jobConf.getBoolean(
+MRJobConfig.JOBJAR_SHARED_CACHE_UPLOAD_POLICY,
+MRJobConfig.JOBJAR_SHARED_CACHE_UPLOAD_POLICY_DEFAULT));
+String pattern = conf.getPattern(JobContext.JAR_UNPACK_PATTERN,
+JobConf.UNPACK_JAR_PATTERN_DEFAULT).pattern();
+rc.setPattern(pattern);
+localResources.put(MRJobConfig.JOB_JAR, rc);
+
+// ConfLogger Inserted Start
+logger.info("Job jar is present. Added job jar to the list of resources with visibility: " 
+    + jobJarViz + ", shared cache upload policy: " 
+    + jobConf.getBoolean(MRJobConfig.JOBJAR_SHARED_CACHE_UPLOAD_POLICY, MRJobConfig.JOBJAR_SHARED_CACHE_UPLOAD_POLICY_DEFAULT) 
+    + ", and unpack pattern: " + pattern + ". Configuration parameter key: " + MRJobConfig.JAR 
+    + ", value: " + jobConf.get(MRJobConfig.JAR));
+// ConfLogger Inserted End
+
+} else {
+// Job jar may be null. For e.g, for pipes, the job jar is the hadoop
+// mapreduce jar itself which is already on the classpath.
+// ConfLogger Commented: Not Informative
+// LOG.info("Job jar is not present. "
+// + "Not adding any jar to the list of resources.");
+// ConfLogger Inserted Start
+logger.warn("Job jar is not present. Not adding any jar to the list of resources. Configuration parameter key: " 
+    + MRJobConfig.JAR + ", value: null");
+// ConfLogger Inserted End
+}
+
+// TODO gross hack
+for (String s : new String[] {
+MRJobConfig.JOB_SPLIT,
+MRJobConfig.JOB_SPLIT_METAINFO }) {
+localResources.put(
+MRJobConfig.JOB_SUBMIT_DIR + "/" + s,
+createApplicationResource(defaultFileContext,
+new Path(jobSubmitDir, s), LocalResourceType.FILE));
+}
+
+return localResources;
+}
+```

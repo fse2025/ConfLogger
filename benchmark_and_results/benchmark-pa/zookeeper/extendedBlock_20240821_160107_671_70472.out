@@ -1,0 +1,67 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SessionTrackerImpl.java	methodSinagture:	org.apache.zookeeper.server.SessionTrackerImpl.initializeNextSessionId(J)J	methodLines:	99:105
+blockLines:	102:-1
+paras:	null
+TaintedStat:	NORMAL initializeNextSessionId:conditional branch(ne, to iindex=21) 13,14 Node: < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, initializeNextSessionId(J)J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/LeaderZooKeeperServer, createSessionTracker()V > Context: Everywhere[11]11 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getMyId()J > 9 @21 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/LeaderZooKeeperServer, createSessionTracker()V > Context: Everywhere[11]11 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getMyId()J > 9 @21 exception:10
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/LeaderZooKeeperServer, createSessionTracker()V > Context: Everywhere[17]invokespecial < Application, Lorg/apache/zookeeper/server/quorum/LeaderSessionTracker, <init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJZLorg/apache/zookeeper/server/ZooKeeperServerListener;)V > 3,1,7,8,11,14,16 @35 exception:17 v11
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/quorum/LeaderSessionTracker, <init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJZLorg/apache/zookeeper/server/ZooKeeperServerListener;)V > Context: Everywhere v5
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/LeaderSessionTracker, <init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJZLorg/apache/zookeeper/server/ZooKeeperServerListener;)V > Context: Everywhere[10]invokespecial < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, <init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJLorg/apache/zookeeper/server/ZooKeeperServerListener;)V > 10,2,3,4,5,7 @16 exception:11 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, <init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJLorg/apache/zookeeper/server/ZooKeeperServerListener;)V > Context: Everywhere v5
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, <init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJLorg/apache/zookeeper/server/ZooKeeperServerListener;)V > Context: Everywhere[32]19 = invokestatic < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, initializeNextSessionId(J)J > 5 @63 exception:18 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, initializeNextSessionId(J)J > Context: Everywhere v1
+NORMAL initializeNextSessionId:10 = binaryop(SHL) 1 , 9 Node: < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, initializeNextSessionId(J)J > Context: Everywhere
+NORMAL initializeNextSessionId:11 = binaryop(or) 8 , 10 Node: < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, initializeNextSessionId(J)J > Context: Everywhere
+NORMAL initializeNextSessionId:13 = compare 11,12 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, initializeNextSessionId(J)J > Context: Everywhere
+NORMAL initializeNextSessionId:conditional branch(ne, to iindex=21) 13,14 Node: < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, initializeNextSessionId(J)J > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        long nextSid;
+        nextSid = (Time.currentElapsedTime() << 24) >>> 8;
+        nextSid = nextSid | (id << 56);
+        if (nextSid == EphemeralType.CONTAINER_EPHEMERAL_OWNER) {
+            ++nextSid;  // this is an unlikely edge case, but check it just in case
+        }
+        return nextSid;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/LearnerSessionTracker, <init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJZLorg/apache/zookeeper/server/ZooKeeperServerListener;)V > Context: Everywhere, blocks=[BB[SSA:31..31]17 - org.apache.zookeeper.server.quorum.LearnerSessionTracker.<init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJZLorg/apache/zookeeper/server/ZooKeeperServerListener;)V, BB[SSA:29..30]16 - org.apache.zookeeper.server.quorum.LearnerSessionTracker.<init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJZLorg/apache/zookeeper/server/ZooKeeperServerListener;)V, BB[SSA:32..32]18 - org.apache.zookeeper.server.quorum.LearnerSessionTracker.<init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJZLorg/apache/zookeeper/server/ZooKeeperServerListener;)V, BB[SSA:-1..-2]24 - org.apache.zookeeper.server.quorum.LearnerSessionTracker.<init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJZLorg/apache/zookeeper/server/ZooKeeperServerListener;)V], numberOfBasicBlocks=4, firstLineNumber=68, lastLineNumber=68, firstMethodNumber=62, lastMethodNumber=74, isFirstLineValid=true, methodSrcCode=
+
+    public LearnerSessionTracker(SessionExpirer expirer, ConcurrentMap<Long, Integer> sessionsWithTimeouts, int tickTime, long id, boolean localSessionsEnabled, ZooKeeperServerListener listener) {
+        this.expirer = expirer;
+        this.touchTable.set(new ConcurrentHashMap<>());
+        this.globalSessionsWithTimeouts = sessionsWithTimeouts;
+        this.serverId = id;
+        nextSessionId.set(SessionTrackerImpl.initializeNextSessionId(serverId));
+
+        this.localSessionsEnabled = localSessionsEnabled;
+        if (this.localSessionsEnabled) {
+            createLocalSessionTracker(expirer, tickTime, id, listener);
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/SessionTrackerImpl, <init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJLorg/apache/zookeeper/server/ZooKeeperServerListener;)V > Context: Everywhere, blocks=[BB[SSA:31..32]15 - org.apache.zookeeper.server.SessionTrackerImpl.<init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJLorg/apache/zookeeper/server/ZooKeeperServerListener;)V, BB[SSA:29..30]14 - org.apache.zookeeper.server.SessionTrackerImpl.<init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJLorg/apache/zookeeper/server/ZooKeeperServerListener;)V, BB[SSA:33..33]16 - org.apache.zookeeper.server.SessionTrackerImpl.<init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJLorg/apache/zookeeper/server/ZooKeeperServerListener;)V, BB[SSA:-1..-2]34 - org.apache.zookeeper.server.SessionTrackerImpl.<init>(Lorg/apache/zookeeper/server/SessionTracker$SessionExpirer;Ljava/util/concurrent/ConcurrentMap;IJLorg/apache/zookeeper/server/ZooKeeperServerListener;)V], numberOfBasicBlocks=4, firstLineNumber=115, lastLineNumber=115, firstMethodNumber=110, lastMethodNumber=121, isFirstLineValid=true, methodSrcCode=
+    public SessionTrackerImpl(SessionExpirer expirer, ConcurrentMap<Long, Integer> sessionsWithTimeout, int tickTime, long serverId, ZooKeeperServerListener listener) {
+        super("SessionTracker", listener);
+        this.expirer = expirer;
+        this.sessionExpiryQueue = new ExpiryQueue<>(tickTime);
+        this.sessionsWithTimeout = sessionsWithTimeout;
+        this.nextSessionId.set(initializeNextSessionId(serverId));
+        for (Entry<Long, Integer> e : sessionsWithTimeout.entrySet()) {
+            trackSession(e.getKey(), e.getValue());
+        }
+
+        EphemeralType.validateServerId(serverId);
+    }
+
+}

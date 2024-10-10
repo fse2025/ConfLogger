@@ -1,0 +1,27 @@
+```java
+Configuration conf = job.getConfiguration();
+if (conf.getBoolean(CREATE_DIR, false)) {
+    FileSystem fs = FileSystem.get(conf);
+    Path inputPaths[] = FileInputFormat.getInputPaths(job);
+    for (int i = 0; i < inputPaths.length; i++) {
+        if (!fs.exists(inputPaths[i])) {
+            try {
+                fs.mkdirs(inputPaths[i]);
+            } catch (IOException e) {
+                // ConfLogger Commented: Not Informative
+                // ConfLogger Inserted Start
+                logger.error("Failed to create directory for input path: " + inputPaths[i] + ". Configuration parameter: " + CREATE_DIR + " = " + conf.getBoolean(CREATE_DIR, false), e);
+                // ConfLogger Inserted End
+            }
+        }
+    }
+}
+job.submit();
+this.state = State.RUNNING;
+} catch (Exception ioe) {
+    LOG.info(getJobName()+" got an error while submitting ",ioe);
+    this.state = State.FAILED;
+    this.message = StringUtils.stringifyException(ioe);
+}
+}
+```

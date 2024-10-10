@@ -1,0 +1,53 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DistributedCache.java	methodSinagture:	org.apache.hadoop.mapreduce.filecache.DistributedCache.parseBooleans([Ljava/lang/String;)[Z	methodLines:	415:423
+blockLines:	416:-1
+paras:	null
+TaintedStat:	NORMAL parseBooleans:conditional branch(ne, to iindex=5) 3,1 Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, parseBooleans([Ljava/lang/String;)[Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, getFileVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, getFileVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,3 @3 exception:4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, getFileVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z > Context: Everywhere[3]7 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, parseBooleans([Ljava/lang/String;)[Z > 5 @6 exception:6 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, parseBooleans([Ljava/lang/String;)[Z > Context: Everywhere v1
+NORMAL parseBooleans:conditional branch(ne, to iindex=5) 3,1 Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, parseBooleans([Ljava/lang/String;)[Z > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DistributedCache.java	methodSinagture:	org.apache.hadoop.mapreduce.filecache.DistributedCache.parseBooleans([Ljava/lang/String;)[Z	methodLines:	415:423
+blockLines:	420:-1
+paras:	null
+TaintedStat:	NORMAL parseBooleans:conditional branch(ge, to iindex=27) 13,7 Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, parseBooleans([Ljava/lang/String;)[Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, getArchiveVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, getArchiveVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,3 @3 exception:4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, getArchiveVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z > Context: Everywhere[3]7 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, parseBooleans([Ljava/lang/String;)[Z > 5 @6 exception:6 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, parseBooleans([Ljava/lang/String;)[Z > Context: Everywhere v1
+NORMAL parseBooleans:conditional branch(ne, to iindex=5) 3,1 Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, parseBooleans([Ljava/lang/String;)[Z > Context: Everywhere
+NORMAL parseBooleans:conditional branch(ge, to iindex=27) 13,7 Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, parseBooleans([Ljava/lang/String;)[Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static boolean[] parseBooleans(String[] strs) {
+    if (null == strs) {
+      return null;
+    }
+    boolean[] result = new boolean[strs.length];
+    for(int i=0; i < strs.length; ++i) {
+      result[i] = Boolean.parseBoolean(strs[i]);
+    }
+    return result;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, getArchiveVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z > Context: Everywhere, blocks=[BB[SSA:3..3]2 - org.apache.hadoop.mapreduce.filecache.DistributedCache.getArchiveVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z, BB[SSA:0..2]1 - org.apache.hadoop.mapreduce.filecache.DistributedCache.getArchiveVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z, BB[SSA:4..4]3 - org.apache.hadoop.mapreduce.filecache.DistributedCache.getArchiveVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z, BB[SSA:-1..-2]4 - org.apache.hadoop.mapreduce.filecache.DistributedCache.getArchiveVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z], numberOfBasicBlocks=4, firstLineNumber=443, lastLineNumber=443, firstMethodNumber=442, lastMethodNumber=443, isFirstLineValid=true, methodSrcCode=
+  public static boolean[] getArchiveVisibilities(Configuration conf) {
+    return parseBooleans(conf.getStrings(MRJobConfig.CACHE_ARCHIVES_VISIBILITIES));
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, getFileVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z > Context: Everywhere, blocks=[BB[SSA:3..3]2 - org.apache.hadoop.mapreduce.filecache.DistributedCache.getFileVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z, BB[SSA:0..2]1 - org.apache.hadoop.mapreduce.filecache.DistributedCache.getFileVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z, BB[SSA:4..4]3 - org.apache.hadoop.mapreduce.filecache.DistributedCache.getFileVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z, BB[SSA:-1..-2]4 - org.apache.hadoop.mapreduce.filecache.DistributedCache.getFileVisibilities(Lorg/apache/hadoop/conf/Configuration;)[Z], numberOfBasicBlocks=4, firstLineNumber=433, lastLineNumber=433, firstMethodNumber=432, lastMethodNumber=433, isFirstLineValid=true, methodSrcCode=
+  public static boolean[] getFileVisibilities(Configuration conf) {
+    return parseBooleans(conf.getStrings(MRJobConfig.CACHE_FILE_VISIBILITIES));
+  }
+}

@@ -1,0 +1,35 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	WebHdfsFileSystem.java	methodSinagture:	org.apache.hadoop.hdfs.web.WebHdfsFileSystem.initializeRestCsrf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	319:333
+blockLines:	320:-1
+paras:	dfs.webhdfs.rest-csrf.enabled
+TaintedStat:	NORMAL initializeRestCsrf:conditional branch(eq, to iindex=26) 7,5 Node: < Application, Lorg/apache/hadoop/hdfs/web/WebHdfsFileSystem, initializeRestCsrf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/web/WebHdfsFileSystem, initializeRestCsrf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,4,5 @4 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/web/WebHdfsFileSystem, initializeRestCsrf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,4,5 @4 exception:6
+NORMAL initializeRestCsrf:conditional branch(eq, to iindex=26) 7,5 Node: < Application, Lorg/apache/hadoop/hdfs/web/WebHdfsFileSystem, initializeRestCsrf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void initializeRestCsrf(Configuration conf) {
+    if (conf.getBoolean(DFS_WEBHDFS_REST_CSRF_ENABLED_KEY,
+        DFS_WEBHDFS_REST_CSRF_ENABLED_DEFAULT)) {
+      this.restCsrfCustomHeader = conf.getTrimmed(
+          DFS_WEBHDFS_REST_CSRF_CUSTOM_HEADER_KEY,
+          DFS_WEBHDFS_REST_CSRF_CUSTOM_HEADER_DEFAULT);
+      this.restCsrfMethodsToIgnore = new HashSet<>();
+      this.restCsrfMethodsToIgnore.addAll(getTrimmedStringList(conf,
+          DFS_WEBHDFS_REST_CSRF_METHODS_TO_IGNORE_KEY,
+          DFS_WEBHDFS_REST_CSRF_METHODS_TO_IGNORE_DEFAULT));
+    } else {
+      this.restCsrfCustomHeader = null;
+      this.restCsrfMethodsToIgnore = null;
+    }
+  }
+
+
+
+====================ctx:=======================

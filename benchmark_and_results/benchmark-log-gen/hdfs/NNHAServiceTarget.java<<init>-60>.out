@@ -1,0 +1,142 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NNHAServiceTarget.java	methodSinagture:	org.apache.hadoop.hdfs.tools.NNHAServiceTarget.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V	methodLines:	60:118
+blockLines:	69:-1
+paras:	dfs.nameservices
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=39) 59,9 Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[18]59 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 2,57 @29 exception:58
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[18]59 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 2,57 @29 exception:58
+NORMAL <init>:conditional branch(eq, to iindex=39) 59,9 Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public NNHAServiceTarget(Configuration conf,
+      String nsId, String nnId) {
+    Preconditions.checkNotNull(nnId);
+
+    if (nsId == null) {
+      nsId = DFSUtil.getOnlyNameServiceIdOrNull(conf);
+      if (nsId == null) {
+        String errorString = "Unable to determine the name service ID.";
+        String[] dfsNames = conf.getStrings(DFS_NAMESERVICES);
+        if ((dfsNames != null) && (dfsNames.length > 1)) {
+          errorString = "Unable to determine the name service ID. " +
+              "This is an HA configuration with multiple name services " +
+              "configured. " + DFS_NAMESERVICES + " is set to " +
+              Arrays.toString(dfsNames) + ". Please re-run with the -ns option.";
+        }
+        throw new IllegalArgumentException(errorString);
+      }
+    }
+    assert nsId != null;
+    
+    // Make a copy of the conf, and override configs based on the
+    // target node -- not the node we happen to be running on.
+    HdfsConfiguration targetConf = new HdfsConfiguration(conf);
+    NameNode.initializeGenericKeys(targetConf, nsId, nnId);
+    
+    String serviceAddr = 
+      DFSUtil.getNamenodeServiceAddr(targetConf, nsId, nnId);
+    if (serviceAddr == null) {
+      throw new IllegalArgumentException(
+          "Unable to determine service address for namenode '" + nnId + "'");
+    }
+    this.addr = NetUtils.createSocketAddr(serviceAddr,
+        HdfsClientConfigKeys.DFS_NAMENODE_RPC_PORT_DEFAULT);
+
+    String lifelineAddrStr =
+        DFSUtil.getNamenodeLifelineAddr(targetConf, nsId, nnId);
+    this.lifelineAddr = (lifelineAddrStr != null) ?
+        NetUtils.createSocketAddr(lifelineAddrStr) : null;
+
+    this.autoFailoverEnabled = targetConf.getBoolean(
+        DFSConfigKeys.DFS_HA_AUTO_FAILOVER_ENABLED_KEY,
+        DFSConfigKeys.DFS_HA_AUTO_FAILOVER_ENABLED_DEFAULT);
+    if (autoFailoverEnabled) {
+      int port = DFSZKFailoverController.getZkfcPort(targetConf);
+      if (port != 0) {
+        setZkfcPort(port);
+      }
+    }
+    
+    try {
+      this.fencer = NodeFencer.create(targetConf,
+          DFSConfigKeys.DFS_HA_FENCE_METHODS_KEY);
+    } catch (BadFencingConfigurationException e) {
+      this.fenceConfigError = e;
+    }
+    
+    this.nnId = nnId;
+    this.nsId = nsId;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController; > Context: Everywhere, blocks=[BB[SSA:40..44]16 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;, BB[SSA:39..39]15 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;, BB[SSA:45..46]17 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;, BB[SSA:-1..-2]20 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;], numberOfBasicBlocks=4, firstLineNumber=164, lastLineNumber=166, firstMethodNumber=147, lastMethodNumber=166, isFirstLineValid=true, methodSrcCode=
+  public static DFSZKFailoverController create(Configuration conf) {
+    Configuration localNNConf = DFSHAAdmin.addSecurityConfiguration(conf);
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+
+    if (!HAUtil.isHAEnabled(localNNConf, nsId)) {
+      throw new HadoopIllegalArgumentException(
+          "HA is not enabled for this namenode.");
+    }
+    String nnId = HAUtil.getNameNodeId(localNNConf, nsId);
+    if (nnId == null) {
+      String msg = "Could not get the namenode ID of this node. " +
+          "You may run zkfc on the node other than namenode.";
+      throw new HadoopIllegalArgumentException(msg);
+    }
+    NameNode.initializeGenericKeys(localNNConf, nsId, nnId);
+    DFSUtil.setGenericConf(localNNConf, nsId, nnId, ZKFC_CONF_KEYS);
+    
+    NNHAServiceTarget localTarget = new NNHAServiceTarget(
+        localNNConf, nsId, nnId);
+    return new DFSZKFailoverController(localNNConf, localTarget);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, getAllOtherNodes()Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:31..33]16 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.getAllOtherNodes()Ljava/util/List;, BB[SSA:28..30]15 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.getAllOtherNodes()Ljava/util/List;, BB[SSA:34..34]17 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.getAllOtherNodes()Ljava/util/List;, BB[SSA:-1..-2]20 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.getAllOtherNodes()Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=293, lastLineNumber=293, firstMethodNumber=287, lastMethodNumber=295, isFirstLineValid=true, methodSrcCode=
+  public List<HAServiceTarget> getAllOtherNodes() {
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    List<String> otherNn = HAUtil.getNameNodeIdOfOtherNodes(conf, nsId);
+
+    List<HAServiceTarget> targets = new ArrayList<HAServiceTarget>(otherNn.size());
+    for (String nnId : otherNn) {
+      targets.add(new NNHAServiceTarget(conf, nsId, nnId));
+    }
+    return targets;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, dataToTarget([B)Lorg/apache/hadoop/ha/HAServiceTarget; > Context: Everywhere, blocks=[BB[SSA:26..26]16 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.dataToTarget([B)Lorg/apache/hadoop/ha/HAServiceTarget;, BB[SSA:24..25]15 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.dataToTarget([B)Lorg/apache/hadoop/ha/HAServiceTarget;, BB[SSA:27..28]17 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.dataToTarget([B)Lorg/apache/hadoop/ha/HAServiceTarget;, BB[SSA:-1..-2]40 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.dataToTarget([B)Lorg/apache/hadoop/ha/HAServiceTarget;], numberOfBasicBlocks=4, firstLineNumber=83, lastLineNumber=84, firstMethodNumber=76, lastMethodNumber=94, isFirstLineValid=true, methodSrcCode=
+    try {
+      proto = ActiveNodeInfo.parseFrom(data);
+    } catch (InvalidProtocolBufferException e) {
+      throw new RuntimeException("Invalid data in ZK: " +
+          StringUtils.byteToHexString(data));
+    }
+    NNHAServiceTarget ret = new NNHAServiceTarget(
+        conf, proto.getNameserviceId(), proto.getNamenodeId());
+    InetSocketAddress addressFromProtobuf = new InetSocketAddress(
+        proto.getHostname(), proto.getPort());
+    
+    if (!addressFromProtobuf.equals(ret.getAddress())) {
+      throw new RuntimeException("Mismatched address stored in ZK for " +
+          ret + ": Stored protobuf was " + proto + ", address from our own " +
+          "configuration for this NameNode was " + ret.getAddress());
+    }
+    
+    ret.setZkfcPort(proto.getZkfcPort());
+    return ret;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSHAAdmin, resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget; > Context: Everywhere, blocks=[BB[SSA:9..10]5 - org.apache.hadoop.hdfs.tools.DFSHAAdmin.resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget;, BB[SSA:5..8]4 - org.apache.hadoop.hdfs.tools.DFSHAAdmin.resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget;, BB[SSA:11..11]6 - org.apache.hadoop.hdfs.tools.DFSHAAdmin.resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget;, BB[SSA:-1..-2]7 - org.apache.hadoop.hdfs.tools.DFSHAAdmin.resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget;], numberOfBasicBlocks=4, firstLineNumber=121, lastLineNumber=121, firstMethodNumber=119, lastMethodNumber=121, isFirstLineValid=true, methodSrcCode=
+  protected HAServiceTarget resolveTarget(String nnId) {
+    HdfsConfiguration conf = (HdfsConfiguration)getConf();
+    return new NNHAServiceTarget(conf, nameserviceId, nnId);
+  }
+}

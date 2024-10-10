@@ -1,0 +1,33 @@
+```java
+int quorumCnxnThreadsSize, boolean quorumSaslAuthEnabled) {
+
+    this.recvQueue = new CircularBlockingQueue<>(RECV_CAPACITY);
+    this.queueSendMap = new ConcurrentHashMap<>();
+    this.senderWorkerMap = new ConcurrentHashMap<>();
+    this.lastMessageSent = new ConcurrentHashMap<>();
+
+    String cnxToValue = System.getProperty("zookeeper.cnxTimeout");
+    if (cnxToValue != null) {
+        this.cnxTO = Integer.parseInt(cnxToValue);
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter 'zookeeper.cnxTimeout' is set to: " + cnxToValue);
+        // ConfLogger Inserted End
+    }
+
+    this.self = self;
+
+    this.mySid = mySid;
+    this.socketTimeout = socketTimeout;
+    this.view = view;
+    this.listenOnAllIPs = listenOnAllIPs;
+    this.authServer = authServer;
+    this.authLearner = authLearner;
+    this.quorumSaslAuthEnabled = quorumSaslAuthEnabled;
+
+    initializeConnectionExecutor(mySid, quorumCnxnThreadsSize);
+
+    // Starts listener thread that waits for connection requests
+    listener = new Listener();
+    listener.setName("QuorumPeerListener");
+}
+```

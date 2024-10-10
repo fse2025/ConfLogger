@@ -1,0 +1,53 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TokenCache.java	methodSinagture:	org.apache.hadoop.mapreduce.security.TokenCache.getSecretKey(Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/io/Text;)[B	methodLines:	62:65
+blockLines:	63:-1
+paras:	mapreduce.job.reduces
+TaintedStat:	NORMAL getSecretKey:conditional branch(ne, to iindex=5) 1,4 Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, getSecretKey(Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/io/Text;)[B > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere[46]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 15,16,5 @96 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere[46]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 15,16,5 @96 exception:17
+NORMAL shouldAttemptRecovery:conditional branch(le, to iindex=68) 18,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere
+NORMAL shouldAttemptRecovery:25 = invokevirtual < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, getConfig()Lorg/apache/hadoop/conf/Configuration; > 1 @140 exception:24 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/service/AbstractService, getConfig()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL getConfig:return 3 Node: < Extension, Lorg/apache/hadoop/service/AbstractService, getConfig()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/service/AbstractService, getConfig()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere[7]7 = invokevirtual < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, getConfig()Lorg/apache/hadoop/conf/Configuration; > 1 @10 exception:6
+NORMAL shouldAttemptRecovery:11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 7,8,9 @17 exception:10 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:conditional branch(eq, to iindex=11) 7,6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere[10]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 7,8,9 @17 exception:10
+NORMAL shouldAttemptRecovery:conditional branch(ne, to iindex=20) 11,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere
+NORMAL shouldAttemptRecovery:conditional branch(ne, to iindex=42) 13,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere
+NORMAL shouldAttemptRecovery:19 = getfield < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, jobCredentials, <Application,Lorg/apache/hadoop/security/Credentials> > 1 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, shouldAttemptRecovery()Z > Context: Everywhere[50]21 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, getShuffleSecretKey(Lorg/apache/hadoop/security/Credentials;)[B > 19 @104 exception:20 v19
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, getShuffleSecretKey(Lorg/apache/hadoop/security/Credentials;)[B > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, getShuffleSecretKey(Lorg/apache/hadoop/security/Credentials;)[B > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, getSecretKey(Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/io/Text;)[B > 1,3 @4 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, getSecretKey(Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/io/Text;)[B > Context: Everywhere v1
+NORMAL getSecretKey:conditional branch(ne, to iindex=5) 1,4 Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, getSecretKey(Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/io/Text;)[B > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static byte[] getSecretKey(Credentials credentials, Text alias) {
+    if(credentials == null)
+      return null;
+    return credentials.getSecretKey(alias);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, getEncryptedSpillKey(Lorg/apache/hadoop/security/Credentials;)[B > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.mapreduce.security.TokenCache.getEncryptedSpillKey(Lorg/apache/hadoop/security/Credentials;)[B, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.security.TokenCache.getEncryptedSpillKey(Lorg/apache/hadoop/security/Credentials;)[B, BB[SSA:3..3]2 - org.apache.hadoop.mapreduce.security.TokenCache.getEncryptedSpillKey(Lorg/apache/hadoop/security/Credentials;)[B, BB[SSA:-1..-2]3 - org.apache.hadoop.mapreduce.security.TokenCache.getEncryptedSpillKey(Lorg/apache/hadoop/security/Credentials;)[B], numberOfBasicBlocks=4, firstLineNumber=258, lastLineNumber=259, firstMethodNumber=258, lastMethodNumber=259, isFirstLineValid=false, methodSrcCode=
+  public static byte[] getEncryptedSpillKey(Credentials credentials) {
+    return getSecretKey(credentials, ENC_SPILL_KEY);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, getShuffleSecretKey(Lorg/apache/hadoop/security/Credentials;)[B > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.mapreduce.security.TokenCache.getShuffleSecretKey(Lorg/apache/hadoop/security/Credentials;)[B, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.security.TokenCache.getShuffleSecretKey(Lorg/apache/hadoop/security/Credentials;)[B, BB[SSA:3..3]2 - org.apache.hadoop.mapreduce.security.TokenCache.getShuffleSecretKey(Lorg/apache/hadoop/security/Credentials;)[B, BB[SSA:-1..-2]3 - org.apache.hadoop.mapreduce.security.TokenCache.getShuffleSecretKey(Lorg/apache/hadoop/security/Credentials;)[B], numberOfBasicBlocks=4, firstLineNumber=248, lastLineNumber=249, firstMethodNumber=248, lastMethodNumber=249, isFirstLineValid=false, methodSrcCode=
+  public static byte[] getShuffleSecretKey(Credentials credentials) {
+    return getSecretKey(credentials, SHUFFLE_TOKEN);
+  }
+}

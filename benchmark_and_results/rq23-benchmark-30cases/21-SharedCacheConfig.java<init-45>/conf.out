@@ -1,0 +1,3 @@
+        conf.set(param1,"local");
+            public String param1 = MRConfig.FRAMEWORK_NAME;
+            Mapreduce

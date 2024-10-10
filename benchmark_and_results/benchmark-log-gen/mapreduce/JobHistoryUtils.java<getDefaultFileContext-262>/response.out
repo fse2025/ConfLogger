@@ -1,0 +1,38 @@
+```java
+FileContext fc = null;
+Configuration defaultConf = new Configuration();
+String[] sources;
+sources = defaultConf.getPropertySources(
+CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY);
+if (sources != null &&
+(!Arrays.asList(sources).contains("core-default.xml") ||
+sources.length > 1)) {
+    try {
+        fc = FileContext.getFileContext(defaultConf);
+        // ConfLogger Commented: Not Informative
+        // LOG.info("Default file system [" + fc.getDefaultFileSystem().getUri() + "]");
+        // ConfLogger Inserted Start
+        logger.info("Default file system initialized with URI: " + fc.getDefaultFileSystem().getUri() + 
+                    ". Configuration parameter: " + CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY + 
+                    " with sources: " + Arrays.toString(sources));
+        // ConfLogger Inserted End
+    } catch (UnsupportedFileSystemException e) {
+        // ConfLogger Skipped
+        LOG.error("Unable to create default file context [" +
+        defaultConf.get(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY) +
+        "]",
+        e);
+    }
+} else {
+    // ConfLogger Commented: Not Informative
+    // LOG.info("Default file system is set solely " +
+    // "by core-default.xml therefore - ignoring");
+    // ConfLogger Inserted Start
+    logger.info("Default file system is set solely by core-default.xml. Configuration parameter: " + 
+                CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY + " with sources: " + Arrays.toString(sources));
+    // ConfLogger Inserted End
+}
+
+return fc;
+}
+```

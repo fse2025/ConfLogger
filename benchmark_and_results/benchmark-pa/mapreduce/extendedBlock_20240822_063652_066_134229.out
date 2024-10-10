@@ -1,0 +1,35 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	LocalClientProtocolProvider.java	methodSinagture:	org.apache.hadoop.mapred.LocalClientProtocolProvider.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol;	methodLines:	34:42
+blockLines:	37:-1
+paras:	mapreduce.framework.name
+TaintedStat:	NORMAL create:conditional branch(ne, to iindex=12) 9,10 Node: < Application, Lorg/apache/hadoop/mapred/LocalClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/LocalClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,4,5 @5 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/LocalClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,4,5 @5 exception:6
+NORMAL create:9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 5,7 @12 exception:8 Node: < Application, Lorg/apache/hadoop/mapred/LocalClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/LocalClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere[7]9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 5,7 @12 exception:8
+NORMAL create:conditional branch(ne, to iindex=12) 9,10 Node: < Application, Lorg/apache/hadoop/mapred/LocalClientProtocolProvider, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/protocol/ClientProtocol; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public ClientProtocol create(Configuration conf) throws IOException {
+    String framework =
+        conf.get(MRConfig.FRAMEWORK_NAME, MRConfig.LOCAL_FRAMEWORK_NAME);
+    if (!MRConfig.LOCAL_FRAMEWORK_NAME.equals(framework)) {
+      return null;
+    }
+    conf.setInt(JobContext.NUM_MAPS, 1);
+
+    return new LocalJobRunner(conf);
+  }
+
+
+====================ctx:=======================

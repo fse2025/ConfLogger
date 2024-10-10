@@ -1,0 +1,22 @@
+```java
+List<String> clazzes = (List<String>) daemonConf.get(DaemonConfig.STORM_DAEMON_METRICS_REPORTER_PLUGINS);
+List<PreparableReporter> reporterList = new ArrayList<>();
+
+if (clazzes != null) {
+    // ConfLogger Inserted Start
+    logger.debug("STORM_DAEMON_METRICS_REPORTER_PLUGINS is set with values: " + clazzes);
+    // ConfLogger Inserted End
+    for (String clazz : clazzes) {
+        reporterList.add(getPreparableReporter(clazz));
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("STORM_DAEMON_METRICS_REPORTER_PLUGINS is not set. Defaulting to JmxPreparableReporter.");
+    // ConfLogger Inserted End
+}
+
+if (reporterList.isEmpty()) {
+    reporterList.add(new JmxPreparableReporter());
+}
+return reporterList;
+```

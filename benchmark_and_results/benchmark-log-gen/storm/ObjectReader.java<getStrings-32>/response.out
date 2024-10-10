@@ -1,0 +1,33 @@
+```java
+if (o == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'o' is null. Returning an empty ArrayList.");
+    // ConfLogger Inserted End
+    return new ArrayList<>();
+} else if (o instanceof String) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'o' is a String. Converting to ArrayList with one element.");
+    // ConfLogger Inserted End
+    return new ArrayList<String>() {
+        {
+            add((String) o);
+        }
+    };
+} else if (o instanceof Collection) {
+    List<String> answer = new ArrayList<>();
+    for (Object v : (Collection) o) {
+        if (v != null) {
+            answer.add(v.toString());
+        }
+    }
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'o' is a Collection. Converted to ArrayList of Strings.");
+    // ConfLogger Inserted End
+    return answer;
+} else {
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter 'o' is of an unknown type. Throwing IllegalArgumentException.");
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException("Don't know how to convert to string list");
+}
+```

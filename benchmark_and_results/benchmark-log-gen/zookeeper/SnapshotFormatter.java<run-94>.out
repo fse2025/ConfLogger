@@ -1,0 +1,79 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SnapshotFormatter.java	methodSinagture:	org.apache.zookeeper.server.SnapshotFormatter.run(Ljava/lang/String;ZZ)V	methodLines:	94:111
+blockLines:	110:-1
+paras:	null
+TaintedStat:	NORMAL run:conditional branch(eq, to iindex=60) 9,26 Node: < Application, Lorg/apache/zookeeper/server/SnapshotFormatter, run(Ljava/lang/String;ZZ)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/SnapshotFormatter, run(Ljava/lang/String;ZZ)V > Context: Everywhere[6]9 = invokestatic < Application, Lorg/apache/zookeeper/server/persistence/SnapStream, getInputStream(Ljava/io/File;)Ljava/util/zip/CheckedInputStream; > 6 @12 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/SnapshotFormatter, run(Ljava/lang/String;ZZ)V > Context: Everywhere[6]9 = invokestatic < Application, Lorg/apache/zookeeper/server/persistence/SnapStream, getInputStream(Ljava/io/File;)Ljava/util/zip/CheckedInputStream; > 6 @12 exception:8
+NORMAL run:conditional branch(eq, to iindex=60) 9,26 Node: < Application, Lorg/apache/zookeeper/server/SnapshotFormatter, run(Ljava/lang/String;ZZ)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public void run(String snapshotFileName, boolean dumpData, boolean dumpJson) throws IOException {
+        File snapshotFile = new File(snapshotFileName);
+        try (InputStream is = SnapStream.getInputStream(snapshotFile)) {
+            InputArchive ia = BinaryInputArchive.getArchive(is);
+
+            DataTree dataTree = new DataTree();
+            Map<Long, Integer> sessions = new HashMap<>();
+
+            FileSnap.deserialize(dataTree, sessions, ia);
+            long fileNameZxid = Util.getZxidFromName(snapshotFile.getName(), SNAPSHOT_FILE_PREFIX);
+
+            if (dumpJson) {
+                printSnapshotJson(dataTree);
+            } else {
+                printDetails(dataTree, sessions, dumpData, fileNameZxid);
+            }
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/SnapshotFormatter, main([Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:93..96]36 - org.apache.zookeeper.server.SnapshotFormatter.main([Ljava/lang/String;)V, BB[SSA:91..92]35 - org.apache.zookeeper.server.SnapshotFormatter.main([Ljava/lang/String;)V, BB[SSA:97..97]37 - org.apache.zookeeper.server.SnapshotFormatter.main([Ljava/lang/String;)V, BB[SSA:-1..-2]38 - org.apache.zookeeper.server.SnapshotFormatter.main([Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=91, lastLineNumber=92, firstMethodNumber=55, lastMethodNumber=92, isFirstLineValid=true, methodSrcCode=
+    public static void main(String[] args) throws Exception {
+        String snapshotFile = null;
+        boolean dumpData = false;
+        boolean dumpJson = false;
+
+        int i;
+        for (i = 0; i < args.length; i++) {
+            if (args[i].equals("-d")) {
+                dumpData = true;
+            } else if (args[i].equals("-json")) {
+                dumpJson = true;
+            } else {
+                snapshotFile = args[i];
+                i++;
+                break;
+            }
+        }
+        if (args.length != i || snapshotFile == null) {
+            System.err.println("USAGE: SnapshotFormatter [-d|-json] snapshot_file");
+            System.err.println("       -d dump the data for each znode");
+            System.err.println("       -json dump znode info in json format");
+            ServiceUtils.requestSystemExit(ExitCode.INVALID_INVOCATION.getValue());
+            return;
+        }
+
+        String error = ZKUtil.validateFileInput(snapshotFile);
+        if (null != error) {
+            System.err.println(error);
+            ServiceUtils.requestSystemExit(ExitCode.INVALID_INVOCATION.getValue());
+        }
+
+        if (dumpData && dumpJson) {
+            System.err.println("Cannot specify both data dump (-d) and json mode (-json) in same call");
+            ServiceUtils.requestSystemExit(ExitCode.INVALID_INVOCATION.getValue());
+        }
+
+        new SnapshotFormatter().run(snapshotFile, dumpData, dumpJson);
+    }
+
+}

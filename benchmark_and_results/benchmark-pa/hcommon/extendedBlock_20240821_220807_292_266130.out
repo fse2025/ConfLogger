@@ -1,0 +1,85 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ProviderUtils.java	methodSinagture:	org.apache.hadoop.security.ProviderUtils.excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration;	methodLines:	144:198
+blockLines:	170:-1
+paras:	null
+TaintedStat:	NORMAL excludeIncompatibleCredentialProviders:conditional branch(eq, to iindex=88) 34,7 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[47]25 = invokestatic < Application, Lorg/apache/hadoop/fs/FileSystem, getFileSystemClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class; > 23,1 @88 exception:24
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[47]25 = invokestatic < Application, Lorg/apache/hadoop/fs/FileSystem, getFileSystemClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class; > 23,1 @88 exception:24
+PHI Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere:34 = phi  25,7
+NORMAL excludeIncompatibleCredentialProviders:conditional branch(eq, to iindex=88) 34,7 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ProviderUtils.java	methodSinagture:	org.apache.hadoop.security.ProviderUtils.excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration;	methodLines:	144:198
+blockLines:	148:-1
+paras:	hadoop.security.credential.provider.path
+TaintedStat:	NORMAL excludeIncompatibleCredentialProviders:conditional branch(ne, to iindex=9) 6,7 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL excludeIncompatibleCredentialProviders:conditional branch(ne, to iindex=9) 6,7 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, excludeIncompatibleCredentialProviders(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    String providerPath = config.get(
+        CredentialProviderFactory.CREDENTIAL_PROVIDER_PATH);
+
+    if (providerPath == null) {
+      return config;
+    }
+    StringBuffer newProviderPath = new StringBuffer();
+    String[] providers = providerPath.split(",");
+    Path path = null;
+    for (String provider: providers) {
+      try {
+        path = unnestUri(new URI(provider));
+        Class<? extends FileSystem> clazz = null;
+        try {
+          String scheme = path.toUri().getScheme();
+          clazz = FileSystem.getFileSystemClass(scheme, config);
+        } catch (IOException ioe) {
+          // not all providers are filesystem based
+          // for instance user:/// will not be able to
+          // have a filesystem class associated with it.
+          if (newProviderPath.length() > 0) {
+            newProviderPath.append(",");
+          }
+          newProviderPath.append(provider);
+        }
+        if (clazz != null) {
+          if (fileSystemClass.isAssignableFrom(clazz)) {
+            LOG.debug("Filesystem based provider excluded from provider " +
+                "path due to recursive dependency: {}", provider);
+          } else {
+            if (newProviderPath.length() > 0) {
+              newProviderPath.append(",");
+            }
+            newProviderPath.append(provider);
+          }
+        }
+      } catch (URISyntaxException e) {
+        LOG.warn("Credential Provider URI is invalid." + provider);
+      }
+    }
+
+    String effectivePath = newProviderPath.toString();
+    if (effectivePath.equals(providerPath)) {
+      return config;
+    }
+
+    Configuration conf = new Configuration(config);
+    if (effectivePath.equals("")) {
+      conf.unset(CredentialProviderFactory.CREDENTIAL_PROVIDER_PATH);
+    } else {
+      conf.set(CredentialProviderFactory.CREDENTIAL_PROVIDER_PATH,
+          effectivePath);
+    }
+    return conf;
+  }
+
+
+====================ctx:=======================

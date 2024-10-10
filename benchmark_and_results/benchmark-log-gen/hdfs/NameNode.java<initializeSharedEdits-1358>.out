@@ -1,0 +1,165 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;ZZ)Z	methodLines:	1358:1432
+blockLines:	1363:-1
+paras:	dfs.namenode.shared.edits.dir
+TaintedStat:	NORMAL initializeSharedEdits:conditional branch(ne, to iindex=32) 12,13 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere[13]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,10 @23 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere[13]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,10 @23 exception:11
+NORMAL initializeSharedEdits:conditional branch(ne, to iindex=32) 12,13 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      boolean force, boolean interactive) throws IOException {
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    initializeGenericKeys(conf, nsId, namenodeId);
+    
+    if (conf.get(DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY) == null) {
+      LOG.error("No shared edits directory configured for namespace " +
+          nsId + " namenode " + namenodeId);
+      return false;
+    }
+
+    if (UserGroupInformation.isSecurityEnabled()) {
+      InetSocketAddress socAddr = DFSUtilClient.getNNAddress(conf);
+      SecurityUtil.login(conf, DFS_NAMENODE_KEYTAB_FILE_KEY,
+          DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY, socAddr.getHostName());
+    }
+
+    NNStorage existingStorage = null;
+    FSImage sharedEditsImage = null;
+    try {
+      FSNamesystem fsns =
+          FSNamesystem.loadFromDisk(getConfigurationWithoutSharedEdits(conf));
+      
+      existingStorage = fsns.getFSImage().getStorage();
+      NamespaceInfo nsInfo = existingStorage.getNamespaceInfo();
+      
+      List<URI> sharedEditsDirs = FSNamesystem.getSharedEditsDirs(conf);
+      
+      sharedEditsImage = new FSImage(conf,
+          Lists.<URI>newArrayList(),
+          sharedEditsDirs);
+      sharedEditsImage.getEditLog().initJournalsForWrite();
+      
+      if (!sharedEditsImage.confirmFormat(force, interactive)) {
+        return true; // abort
+      }
+      
+      NNStorage newSharedStorage = sharedEditsImage.getStorage();
+      // Call Storage.format instead of FSImage.format here, since we don't
+      // actually want to save a checkpoint - just prime the dirs with
+      // the existing namespace info
+      newSharedStorage.format(nsInfo);
+      sharedEditsImage.getEditLog().formatNonFileJournals(nsInfo, force);
+
+      // Need to make sure the edit log segments are in good shape to initialize
+      // the shared edits dir.
+      fsns.getFSImage().getEditLog().close();
+      fsns.getFSImage().getEditLog().initJournalsForWrite();
+      fsns.getFSImage().getEditLog().recoverUnclosedStreams();
+
+      copyEditLogSegmentsToSharedDir(fsns, sharedEditsDirs, newSharedStorage,
+          conf);
+    } catch (IOException ioe) {
+      LOG.error("Could not initialize shared edits dir", ioe);
+      return true; // aborted
+    } finally {
+      if (sharedEditsImage != null) {
+        try {
+          sharedEditsImage.close();
+        }  catch (IOException ioe) {
+          LOG.warn("Could not close sharedEditsImage", ioe);
+        }
+      }
+      // Have to unlock storage explicitly for the case when we're running in a
+      // unit test, which runs in the same JVM as NNs.
+      if (existingStorage != null) {
+        try {
+          existingStorage.unlockAll();
+        } catch (IOException ioe) {
+          LOG.warn("Could not unlock storage directories", ioe);
+          return true; // aborted
+        }
+      }
+    }
+    return false; // did not abort
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, createNameNode([Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/namenode/NameNode; > Context: Everywhere, blocks=[BB[SSA:106..106]49 - org.apache.hadoop.hdfs.server.namenode.NameNode.createNameNode([Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/namenode/NameNode;, BB[SSA:104..105]48 - org.apache.hadoop.hdfs.server.namenode.NameNode.createNameNode([Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/namenode/NameNode;, BB[SSA:107..110]50 - org.apache.hadoop.hdfs.server.namenode.NameNode.createNameNode([Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/namenode/NameNode;, BB[SSA:-1..-2]76 - org.apache.hadoop.hdfs.server.namenode.NameNode.createNameNode([Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/namenode/NameNode;], numberOfBasicBlocks=4, firstLineNumber=1759, lastLineNumber=1761, firstMethodNumber=1721, lastMethodNumber=1782, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    LOG.info("createNameNode " + Arrays.asList(argv));
+    if (conf == null)
+      conf = new HdfsConfiguration();
+    // Parse out some generic args into Configuration.
+    GenericOptionsParser hParser = new GenericOptionsParser(conf, argv);
+    argv = hParser.getRemainingArgs();
+    // Parse the rest, NN specific args.
+    StartupOption startOpt = parseArguments(argv);
+    if (startOpt == null) {
+      printUsage(System.err);
+      return null;
+    }
+    setStartupOption(conf, startOpt);
+
+    boolean aborted = false;
+    switch (startOpt) {
+    case FORMAT:
+      aborted = format(conf, startOpt.getForceFormat(),
+          startOpt.getInteractiveFormat());
+      terminate(aborted ? 1 : 0);
+      return null; // avoid javac warning
+    case GENCLUSTERID:
+      String clusterID = NNStorage.newClusterID();
+      LOG.info("Generated new cluster id: {}", clusterID);
+      terminate(0);
+      return null;
+    case ROLLBACK:
+      aborted = doRollback(conf, true);
+      terminate(aborted ? 1 : 0);
+      return null; // avoid warning
+    case BOOTSTRAPSTANDBY:
+      String[] toolArgs = Arrays.copyOfRange(argv, 1, argv.length);
+      int rc = BootstrapStandby.run(toolArgs, conf);
+      terminate(rc);
+      return null; // avoid warning
+    case INITIALIZESHAREDEDITS:
+      aborted = initializeSharedEdits(conf,
+          startOpt.getForceFormat(),
+          startOpt.getInteractiveFormat());
+      terminate(aborted ? 1 : 0);
+      return null; // avoid warning
+    case BACKUP:
+    case CHECKPOINT:
+      NamenodeRole role = startOpt.toNodeRole();
+      DefaultMetricsSystem.initialize(role.toString().replace(" ", ""));
+      return new BackupNode(conf, role);
+    case RECOVER:
+      NameNode.doRecovery(startOpt, conf);
+      return null;
+    case METADATAVERSION:
+      printMetadataVersion(conf);
+      terminate(0);
+      return null; // avoid javac warning
+    case UPGRADEONLY:
+      DefaultMetricsSystem.initialize("NameNode");
+      new NameNode(conf);
+      terminate(0);
+      return null;
+    default:
+      DefaultMetricsSystem.initialize("NameNode");
+      return new NameNode(conf);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;Z)Z > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;Z)Z, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;Z)Z, BB[SSA:4..4]2 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;Z)Z, BB[SSA:-1..-2]3 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;Z)Z], numberOfBasicBlocks=4, firstLineNumber=1324, lastLineNumber=1325, firstMethodNumber=1324, lastMethodNumber=1325, isFirstLineValid=false, methodSrcCode=
+      boolean force) throws IOException {
+    return initializeSharedEdits(conf, force, false);
+  }
+}

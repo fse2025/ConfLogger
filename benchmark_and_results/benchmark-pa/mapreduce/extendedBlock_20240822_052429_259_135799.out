@@ -1,0 +1,30 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ExponentiallySmoothedTaskRuntimeEstimator.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.speculate.ExponentiallySmoothedTaskRuntimeEstimator.contextualize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/v2/app/AppContext;)V	methodLines:	133:142
+blockLines:	140:-1
+paras:	null
+TaintedStat:	NORMAL contextualize:conditional branch(eq, to iindex=19) 13,14 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/speculate/ExponentiallySmoothedTaskRuntimeEstimator, contextualize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/v2/app/AppContext;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/speculate/ExponentiallySmoothedTaskRuntimeEstimator, contextualize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/v2/app/AppContext;)V > Context: Everywhere[14]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,10,11 @24 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/speculate/ExponentiallySmoothedTaskRuntimeEstimator, contextualize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/v2/app/AppContext;)V > Context: Everywhere[14]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,10,11 @24 exception:12
+NORMAL contextualize:conditional branch(eq, to iindex=19) 13,14 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/speculate/ExponentiallySmoothedTaskRuntimeEstimator, contextualize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/v2/app/AppContext;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void contextualize(Configuration conf, AppContext context) {
+    super.contextualize(conf, context);
+
+    lambda
+        = conf.getLong(MRJobConfig.MR_AM_TASK_ESTIMATOR_SMOOTH_LAMBDA_MS,
+            MRJobConfig.DEFAULT_MR_AM_TASK_ESTIMATOR_SMOOTH_LAMBDA_MS);
+    smoothedValue
+        = conf.getBoolean(MRJobConfig.MR_AM_TASK_ESTIMATOR_EXPONENTIAL_RATE_ENABLE, true)
+            ? SmoothedValue.RATE : SmoothedValue.TIME_PER_UNIT_PROGRESS;
+  }
+
+
+
+====================ctx:=======================

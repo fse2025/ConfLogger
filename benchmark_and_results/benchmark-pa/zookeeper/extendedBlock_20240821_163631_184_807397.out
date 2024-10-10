@@ -1,0 +1,123 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	X509AuthenticationProvider.java	methodSinagture:	org.apache.zookeeper.server.auth.X509AuthenticationProvider.<init>()V	methodLines:	78:131
+blockLines:	94:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=59) 43,44 Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere[87]69 = invokevirtual < Application, Lorg/apache/zookeeper/common/ZKConfig, getProperty(Ljava/lang/String;)Ljava/lang/String; > 4,67 @180 exception:68
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere[87]69 = invokevirtual < Application, Lorg/apache/zookeeper/common/ZKConfig, getProperty(Ljava/lang/String;)Ljava/lang/String; > 4,67 @180 exception:68
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere[109]75 = invokestatic < Application, Lorg/apache/zookeeper/common/X509Util, createTrustManager(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZZZ)Ljavax/net/ssl/X509TrustManager; > 59,65,69,28,34,40,44,71 @228 exception:74 v69
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/common/X509Util, createTrustManager(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZZZ)Ljavax/net/ssl/X509TrustManager; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/common/X509Util, createTrustManager(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZZZ)Ljavax/net/ssl/X509TrustManager; > Context: Everywhere[8]14 = invokestatic < Application, Lorg/apache/zookeeper/common/X509Util, loadTrustStore(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/security/KeyStore; > 1,12,3 @10 exception:13 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/common/X509Util, loadTrustStore(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/security/KeyStore; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/common/X509Util, loadTrustStore(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/security/KeyStore; > Context: Everywhere[2]6 = invokestatic < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > 3,1 @2 exception:5 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > Context: Everywhere[1]5 = invokestatic < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > 1 @1 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > Context: Everywhere v1
+NORMAL fromPropertyValue:5 = invokevirtual < Application, Ljava/lang/String, length()I > 1 @5 exception:4 Node: < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:return 7 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere[24]11 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @37 exception:10
+NORMAL applyPattern:conditional branch(ge, to iindex=216) 77,11 Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere
+PHI Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere:74 = phi  68,6
+NORMAL applyPattern:invokevirtual < Primordial, Ljava/text/MessageFormat, makeFormat(II[Ljava/lang/StringBuilder;)V > 1,77,74,5 @307 exception:54 Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/text/MessageFormat, makeFormat(II[Ljava/lang/StringBuilder;)V > Context: Everywhere
+NORMAL makeFormat:65 = invokevirtual < Primordial, Ljava/lang/String, isEmpty()Z > 63 @273 exception:64 Node: < Primordial, Ljava/text/MessageFormat, makeFormat(II[Ljava/lang/StringBuilder;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere[52]43 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 12 @102 exception:42
+NORMAL <init>:conditional branch(eq, to iindex=59) 43,44 Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	X509AuthenticationProvider.java	methodSinagture:	org.apache.zookeeper.server.auth.X509AuthenticationProvider.<init>()V	methodLines:	78:131
+blockLines:	111:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=101) 73,44 Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere[38]32 = invokevirtual < Application, Lorg/apache/zookeeper/common/ZKConfig, getProperty(Ljava/lang/String;)Ljava/lang/String; > 4,30 @74 exception:31
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere[38]32 = invokevirtual < Application, Lorg/apache/zookeeper/common/ZKConfig, getProperty(Ljava/lang/String;)Ljava/lang/String; > 4,30 @74 exception:31
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere[39]34 = invokestatic < Application, Ljava/lang/Boolean, parseBoolean(Ljava/lang/String;)Z > 32 @77 exception:33 v32
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/Boolean, parseBoolean(Ljava/lang/String;)Z > Context: Everywhere v1
+PARAM_CALLER:Node: < Primordial, Ljava/lang/Boolean, parseBoolean(Ljava/lang/String;)Z > Context: Everywhere[2]5 = invokevirtual < Primordial, Ljava/lang/String, equalsIgnoreCase(Ljava/lang/String;)Z > 3,1 @3 exception:4 v1
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/String, equalsIgnoreCase(Ljava/lang/String;)Z > Context: Everywhere v2
+NORMAL equalsIgnoreCase:6 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @14 exception:5 Node: < Primordial, Ljava/lang/String, equalsIgnoreCase(Ljava/lang/String;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:return 7 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere[24]11 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @37 exception:10
+NORMAL applyPattern:conditional branch(ge, to iindex=216) 77,11 Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere
+PHI Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere:74 = phi  68,6
+NORMAL applyPattern:invokevirtual < Primordial, Ljava/text/MessageFormat, makeFormat(II[Ljava/lang/StringBuilder;)V > 1,77,74,5 @307 exception:54 Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/text/MessageFormat, makeFormat(II[Ljava/lang/StringBuilder;)V > Context: Everywhere
+NORMAL makeFormat:65 = invokevirtual < Primordial, Ljava/lang/String, isEmpty()Z > 63 @273 exception:64 Node: < Primordial, Ljava/text/MessageFormat, makeFormat(II[Ljava/lang/StringBuilder;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere[94]73 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 59 @194 exception:72
+NORMAL <init>:conditional branch(eq, to iindex=101) 73,44 Node: < Application, Lorg/apache/zookeeper/server/auth/X509AuthenticationProvider, <init>()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+     */
+    public X509AuthenticationProvider() throws X509Exception {
+        ZKConfig config = new ZKConfig();
+        try (X509Util x509Util = new ClientX509Util()) {
+            String keyStoreLocation = config.getProperty(x509Util.getSslKeystoreLocationProperty(), "");
+            String keyStorePassword = x509Util.getPasswordFromConfigPropertyOrFile(config,
+                    x509Util.getSslKeystorePasswdProperty(),
+                    x509Util.getSslKeystorePasswdPathProperty());
+            String keyStoreTypeProp = config.getProperty(x509Util.getSslKeystoreTypeProperty());
+
+            boolean crlEnabled = Boolean.parseBoolean(config.getProperty(x509Util.getSslCrlEnabledProperty()));
+            boolean ocspEnabled = Boolean.parseBoolean(config.getProperty(x509Util.getSslOcspEnabledProperty()));
+            boolean hostnameVerificationEnabled = Boolean.parseBoolean(config.getProperty(x509Util.getSslHostnameVerificationEnabledProperty()));
+
+            X509KeyManager km = null;
+            X509TrustManager tm = null;
+            if (keyStoreLocation.isEmpty()) {
+                LOG.warn("keystore not specified for client connection");
+            } else {
+                try {
+                    km = X509Util.createKeyManager(keyStoreLocation, keyStorePassword, keyStoreTypeProp);
+                } catch (KeyManagerException e) {
+                    LOG.error("Failed to create key manager", e);
+                }
+            }
+
+            String trustStoreLocation = config.getProperty(x509Util.getSslTruststoreLocationProperty(), "");
+            String trustStorePassword = x509Util.getPasswordFromConfigPropertyOrFile(config,
+                    x509Util.getSslTruststorePasswdProperty(),
+                    x509Util.getSslTruststorePasswdPathProperty());
+            String trustStoreTypeProp = config.getProperty(x509Util.getSslTruststoreTypeProperty());
+            boolean fipsMode = x509Util.getFipsMode(config);
+
+            if (trustStoreLocation.isEmpty()) {
+                LOG.warn("Truststore not specified for client connection");
+            } else {
+                try {
+                    tm = X509Util.createTrustManager(
+                        trustStoreLocation,
+                        trustStorePassword,
+                        trustStoreTypeProp,
+                        crlEnabled,
+                        ocspEnabled,
+                        hostnameVerificationEnabled,
+                        false,
+                        fipsMode);
+                } catch (TrustManagerException e) {
+                    LOG.error("Failed to create trust manager", e);
+                }
+            }
+            this.keyManager = km;
+            this.trustManager = tm;
+        }
+    }
+
+
+
+====================ctx:=======================

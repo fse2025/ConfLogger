@@ -1,0 +1,31 @@
+```java
+if (nameNodeUri == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'nameNodeUri' is null. Returning null as a result.");
+    // ConfLogger Inserted End
+    return null;
+}
+String host = nameNodeUri.getHost();
+String configKey = HdfsClientConfigKeys.Failover.PROXY_PROVIDER_KEY_PREFIX
+        + "." + host;
+try {
+    @SuppressWarnings("unchecked")
+    Class<FailoverProxyProvider<T>> ret = (Class<FailoverProxyProvider<T>>)
+            conf.getClass(configKey, null, FailoverProxyProvider.class);
+    return ret;
+} catch (RuntimeException e) {
+    if (e.getCause() instanceof ClassNotFoundException) {
+        // ConfLogger Inserted Start
+        logger.error("Could not load failover proxy provider class configured for authority '{}'. Configuration key: '{}', Value: '{}'", nameNodeUri, configKey, conf.get(configKey));
+        // ConfLogger Inserted End
+        throw new IOException("Could not load failover proxy provider class "
+                + conf.get(configKey) + " which is configured for authority "
+                + nameNodeUri, e);
+    } else {
+        // ConfLogger Inserted Start
+        logger.error("RuntimeException occurred while loading failover proxy provider class. Configuration key: '{}', Value: '{}'", configKey, conf.get(configKey));
+        // ConfLogger Inserted End
+        throw e;
+    }
+}
+```

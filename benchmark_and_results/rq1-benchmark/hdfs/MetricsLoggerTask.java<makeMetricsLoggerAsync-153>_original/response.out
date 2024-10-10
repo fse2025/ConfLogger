@@ -1,0 +1,44 @@
+```java
+public static void makeMetricsLoggerAsync(Log metricsLog) {
+    if (!(metricsLog instanceof Log4JLogger)) {
+        // ConfLogger Skipped: The warning message already contains configuration-related information about the logger type.
+        LOG.warn("Metrics logging will not be async since "
+                + "the logger is not log4j");
+        return;
+    }
+    org.apache.log4j.Logger logger = ((Log4JLogger) metricsLog).getLogger();
+    logger.setAdditivity(false); // Don't pollute actual logs with metrics dump
+
+    @SuppressWarnings("unchecked")
+    List<Appender> appenders = Collections.list(logger.getAllAppenders());
+    // failsafe against trying to async it more than once
+    if (!appenders.isEmpty() && !(appenders.get(0) instanceof AsyncAppender)) {
+        AsyncAppender asyncAppender = new AsyncAppender();
+        // ConfLogger Inserted Start
+        logger.info("Configuring async appender for metrics logging. Ensuring all previously configured appenders are included.");
+        // ConfLogger Inserted End
+        // change logger to have an async appender containing all the
+        // previously configured appenders
+        for (Appender appender : appenders) {
+            logger.removeAppender(appender);
+            asyncAppender.addAppender(appender);
+        }
+        logger.addAppender(asyncAppender);
+    } else {
+        // ConfLogger Inserted Start
+        logger.debug("Metrics logger already configured with an AsyncAppender or no appenders found. No changes made.");
+        // ConfLogger Inserted End
+    }
+}
+```
+
+### Explanation:
+
+1. **Task 1: Inspect Existing Outputs**
+   - The existing warning log in the first `<code-specified>` block is skipped because it already provides configuration-related information about why the metrics logging will not be async. It mentions the logger type, which is relevant to the configuration.
+
+2. **Task 2: Determine Log Insertion Position and Generate Logging Code**
+   - **First `<code-specified>` block**: This block checks if the `metricsLog` is an instance of `Log4JLogger`. Since the existing log is sufficient, no additional logging is needed here.
+   - **Second `<code-specified>` block**: This block configures the logger to use an `AsyncAppender` if it is not already configured. 
+     - A log statement is inserted before the loop to indicate that the system is configuring the async appender and ensuring all previously configured appenders are included.
+     - An additional log statement is added in the `else` block to indicate that no changes were made because the logger is already configured with an `AsyncAppender` or no appenders were found. This provides clarity on the control flow and configuration state.

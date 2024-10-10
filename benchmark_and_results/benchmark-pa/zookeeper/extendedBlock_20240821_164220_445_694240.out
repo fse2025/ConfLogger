@@ -1,0 +1,62 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	WatcherCleaner.java	methodSinagture:	org.apache.zookeeper.server.watch.WatcherCleaner.<init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;IIII)V	methodLines:	70:93
+blockLines:	76:-1
+paras:	zookeeper.watcherCleanIntervalInSeconds
+TaintedStat:	NORMAL <init>:conditional branch(ge, to iindex=52) 6,19 Node: < Application, Lorg/apache/zookeeper/server/watch/WatcherCleaner, <init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;IIII)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/watch/WatcherCleaner, <init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;)V > Context: Everywhere[8]13 = invokestatic < Application, Ljava/lang/Integer, getInteger(Ljava/lang/String;I)Ljava/lang/Integer; > 10,11 @18 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/watch/WatcherCleaner, <init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;)V > Context: Everywhere[8]13 = invokestatic < Application, Ljava/lang/Integer, getInteger(Ljava/lang/String;I)Ljava/lang/Integer; > 10,11 @18 exception:12
+NORMAL <init>:15 = invokevirtual < Application, Ljava/lang/Integer, intValue()I > 13 @21 exception:14 Node: < Application, Lorg/apache/zookeeper/server/watch/WatcherCleaner, <init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL intValue:return 3 Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/watch/WatcherCleaner, <init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;)V > Context: Everywhere[17]27 = invokevirtual < Application, Ljava/lang/Integer, intValue()I > 25 @39 exception:26
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/watch/WatcherCleaner, <init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;)V > Context: Everywhere[18]invokespecial < Application, Lorg/apache/zookeeper/server/watch/WatcherCleaner, <init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;IIII)V > 1,2,9,15,21,27 @42 exception:28 v27
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/watch/WatcherCleaner, <init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;IIII)V > Context: Everywhere v6
+NORMAL <init>:conditional branch(ge, to iindex=52) 6,19 Node: < Application, Lorg/apache/zookeeper/server/watch/WatcherCleaner, <init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;IIII)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    public WatcherCleaner(IDeadWatcherListener listener, int watcherCleanThreshold, int watcherCleanIntervalInSeconds, int watcherCleanThreadsNum, int maxInProcessingDeadWatchers) {
+        this.listener = listener;
+        this.watcherCleanThreshold = watcherCleanThreshold;
+        this.watcherCleanIntervalInSeconds = watcherCleanIntervalInSeconds;
+        int suggestedMaxInProcessingThreshold = watcherCleanThreshold * watcherCleanThreadsNum;
+        if (maxInProcessingDeadWatchers > 0 && maxInProcessingDeadWatchers < suggestedMaxInProcessingThreshold) {
+            maxInProcessingDeadWatchers = suggestedMaxInProcessingThreshold;
+            LOG.info(
+                "The maxInProcessingDeadWatchers config is smaller than the suggested one, change it to use {}",
+                maxInProcessingDeadWatchers);
+        }
+        this.maxInProcessingDeadWatchers = maxInProcessingDeadWatchers;
+        this.deadWatchers = new HashSet<>();
+        this.cleaners = new WorkerService("DeadWatcherCleanner", watcherCleanThreadsNum, false);
+
+        LOG.info(
+            "watcherCleanThreshold={}, watcherCleanIntervalInSeconds={}"
+                + ", watcherCleanThreadsNum={}, maxInProcessingDeadWatchers={}",
+            watcherCleanThreshold,
+            watcherCleanIntervalInSeconds,
+            watcherCleanThreadsNum,
+            maxInProcessingDeadWatchers);
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/watch/WatcherCleaner, <init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;)V > Context: Everywhere, blocks=[BB[SSA:18..18]9 - org.apache.zookeeper.server.watch.WatcherCleaner.<init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;)V, BB[SSA:17..17]8 - org.apache.zookeeper.server.watch.WatcherCleaner.<init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;)V, BB[SSA:19..19]10 - org.apache.zookeeper.server.watch.WatcherCleaner.<init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;)V, BB[SSA:-1..-2]11 - org.apache.zookeeper.server.watch.WatcherCleaner.<init>(Lorg/apache/zookeeper/server/watch/IDeadWatcherListener;)V], numberOfBasicBlocks=4, firstLineNumber=68, lastLineNumber=69, firstMethodNumber=62, lastMethodNumber=69, isFirstLineValid=true, methodSrcCode=
+    public WatcherCleaner(IDeadWatcherListener listener) {
+        this(
+            listener,
+            Integer.getInteger("zookeeper.watcherCleanThreshold", 1000),
+            Integer.getInteger("zookeeper.watcherCleanIntervalInSeconds", 600),
+            Integer.getInteger("zookeeper.watcherCleanThreadsNum", 2),
+            Integer.getInteger("zookeeper.maxInProcessingDeadWatchers", -1));
+    }
+
+}

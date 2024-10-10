@@ -1,0 +1,125 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileBasedKeyStoresFactory.java	methodSinagture:	org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	302:314
+blockLines:	306:-1
+paras:	null
+TaintedStat:	NORMAL getPassword:conditional branch(eq, to iindex=14) 7,8 Node: < Application, Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPassword(Ljava/lang/String;)[C > 2,3 @5 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPassword(Ljava/lang/String;)[C > 2,3 @5 exception:6
+NORMAL getPassword:conditional branch(eq, to iindex=14) 7,8 Node: < Application, Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  String getPassword(Configuration conf, String alias, String defaultPass) {
+    String password = defaultPass;
+    try {
+      char[] passchars = conf.getPassword(alias);
+      if (passchars != null) {
+        password = new String(passchars);
+      }
+    }
+    catch (IOException ioe) {
+      LOG.warn("Exception while trying to get password for alias " + alias +
+          ": " + ioe.getMessage());
+    }
+    return password;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory, createTrustManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;Ljava/lang/String;J)V > Context: Everywhere, blocks=[BB[SSA:7..9]3 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createTrustManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;Ljava/lang/String;J)V, BB[SSA:3..6]2 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createTrustManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;Ljava/lang/String;J)V, BB[SSA:10..12]4 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createTrustManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;Ljava/lang/String;J)V, BB[SSA:-1..-2]50 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createTrustManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;Ljava/lang/String;J)V], numberOfBasicBlocks=4, firstLineNumber=110, lastLineNumber=113, firstMethodNumber=109, lastMethodNumber=150, isFirstLineValid=true, methodSrcCode=
+      throws IOException, GeneralSecurityException {
+    String passwordProperty = resolvePropertyName(mode,
+        SSL_TRUSTSTORE_PASSWORD_TPL_KEY);
+    String truststorePassword = getPassword(conf, passwordProperty, "");
+    if (truststorePassword.isEmpty()) {
+      // An empty trust store password is legal; the trust store password
+      // is only required when writing to a trust store. Otherwise it's
+      // an optional integrity check.
+      truststorePassword = null;
+    }
+
+    // Check if obsolete truststore specific reload interval is present for backward compatible
+    long truststoreReloadInterval =
+        conf.getLong(
+            resolvePropertyName(mode, SSL_TRUSTSTORE_RELOAD_INTERVAL_TPL_KEY),
+            storesReloadInterval);
+
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(mode.toString() + " TrustStore: " + truststoreLocation +
+          ", reloading at " + truststoreReloadInterval + " millis.");
+    }
+
+    trustManager = new ReloadingX509TrustManager(
+        truststoreType,
+        truststoreLocation,
+        truststorePassword);
+
+    if (truststoreReloadInterval > 0) {
+      fileMonitoringTimer.schedule(
+          new FileMonitoringTimerTask(
+              Paths.get(truststoreLocation),
+              path -> trustManager.loadFrom(path),
+              exception -> LOG.error(ReloadingX509TrustManager.RELOAD_ERROR_MESSAGE, exception)),
+          truststoreReloadInterval,
+          truststoreReloadInterval);
+    }
+
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(mode.toString() + " Loaded TrustStore: " + truststoreLocation);
+    }
+    trustManagers = new TrustManager[]{trustManager};
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory, createKeyManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;J)V > Context: Everywhere, blocks=[BB[SSA:35..37]17 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createKeyManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;J)V, BB[SSA:31..34]16 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createKeyManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;J)V, BB[SSA:38..40]18 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createKeyManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;J)V, BB[SSA:-1..-2]57 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createKeyManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;J)V, BB[SSA:64..66]31 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createKeyManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;J)V, BB[SSA:60..63]30 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createKeyManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;J)V, BB[SSA:67..69]32 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createKeyManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;J)V, BB[SSA:-1..-2]57 - org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory.createKeyManagersFromConfiguration(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;Ljava/lang/String;J)V], numberOfBasicBlocks=8, firstLineNumber=178, lastLineNumber=184, firstMethodNumber=162, lastMethodNumber=205, isFirstLineValid=true, methodSrcCode=
+      throws GeneralSecurityException, IOException {
+    String locationProperty =
+        resolvePropertyName(mode, SSL_KEYSTORE_LOCATION_TPL_KEY);
+    String keystoreLocation = conf.get(locationProperty, "");
+    if (keystoreLocation.isEmpty()) {
+      throw new GeneralSecurityException("The property '" + locationProperty +
+          "' has not been set in the ssl configuration file.");
+    }
+    String passwordProperty =
+        resolvePropertyName(mode, SSL_KEYSTORE_PASSWORD_TPL_KEY);
+    String keystorePassword = getPassword(conf, passwordProperty, "");
+    if (keystorePassword.isEmpty()) {
+      throw new GeneralSecurityException("The property '" + passwordProperty +
+          "' has not been set in the ssl configuration file.");
+    }
+    String keyPasswordProperty =
+        resolvePropertyName(mode, SSL_KEYSTORE_KEYPASSWORD_TPL_KEY);
+    // Key password defaults to the same value as store password for
+    // compatibility with legacy configurations that did not use a separate
+    // configuration property for key password.
+    String keystoreKeyPassword = getPassword(
+        conf, keyPasswordProperty, keystorePassword);
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(mode.toString() + " KeyStore: " + keystoreLocation);
+    }
+
+    ReloadingX509KeystoreManager keystoreManager =  new ReloadingX509KeystoreManager(
+        keystoreType,
+        keystoreLocation,
+        keystorePassword,
+        keystoreKeyPassword);
+
+    if (storesReloadInterval > 0) {
+      fileMonitoringTimer.schedule(
+          new FileMonitoringTimerTask(
+              Paths.get(keystoreLocation),
+              path -> keystoreManager.loadFrom(path),
+              exception -> LOG.error(ReloadingX509KeystoreManager.RELOAD_ERROR_MESSAGE, exception)),
+          storesReloadInterval,
+          storesReloadInterval);
+    }
+
+    keyManagers = new KeyManager[] { keystoreManager };
+  }
+
+}

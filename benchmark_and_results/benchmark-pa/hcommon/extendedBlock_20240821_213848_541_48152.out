@@ -1,0 +1,49 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ShellBasedIdMapping.java	methodSinagture:	org.apache.hadoop.security.ShellBasedIdMapping.<init>(Lorg/apache/hadoop/conf/Configuration;Z)V	methodLines:	106:127
+blockLines:	113:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(ge, to iindex=40) 18,8 Node: < Application, Lorg/apache/hadoop/security/ShellBasedIdMapping, <init>(Lorg/apache/hadoop/conf/Configuration;Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/ShellBasedIdMapping, <init>(Lorg/apache/hadoop/conf/Configuration;Z)V > Context: Everywhere[26]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 2,13,14 @49 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/ShellBasedIdMapping, <init>(Lorg/apache/hadoop/conf/Configuration;Z)V > Context: Everywhere[26]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 2,13,14 @49 exception:15
+NORMAL <init>:18 = compare 16,17 opcode=cmp Node: < Application, Lorg/apache/hadoop/security/ShellBasedIdMapping, <init>(Lorg/apache/hadoop/conf/Configuration;Z)V > Context: Everywhere
+NORMAL <init>:conditional branch(ge, to iindex=40) 18,8 Node: < Application, Lorg/apache/hadoop/security/ShellBasedIdMapping, <init>(Lorg/apache/hadoop/conf/Configuration;Z)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public ShellBasedIdMapping(Configuration conf,
+      boolean constructFullMapAtInit) throws IOException {
+    this.constructFullMapAtInit = constructFullMapAtInit;
+    long updateTime = conf.getLong(
+        IdMappingConstant.USERGROUPID_UPDATE_MILLIS_KEY,
+        IdMappingConstant.USERGROUPID_UPDATE_MILLIS_DEFAULT);
+    // Minimal interval is 1 minute
+    if (updateTime < IdMappingConstant.USERGROUPID_UPDATE_MILLIS_MIN) {
+      LOG.info("User configured user account update time is less"
+          + " than 1 minute. Use 1 minute instead.");
+      timeout = IdMappingConstant.USERGROUPID_UPDATE_MILLIS_MIN;
+    } else {
+      timeout = updateTime;
+    }
+    
+    String staticFilePath = 
+        conf.get(IdMappingConstant.STATIC_ID_MAPPING_FILE_KEY,
+            IdMappingConstant.STATIC_ID_MAPPING_FILE_DEFAULT);
+    staticMappingFile = new File(staticFilePath);
+    updateStaticMapping();
+    updateMaps();
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/ShellBasedIdMapping, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.security.ShellBasedIdMapping.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.security.ShellBasedIdMapping.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:4..4]2 - org.apache.hadoop.security.ShellBasedIdMapping.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]3 - org.apache.hadoop.security.ShellBasedIdMapping.<init>(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=134, lastLineNumber=136, firstMethodNumber=134, lastMethodNumber=136, isFirstLineValid=false, methodSrcCode=
+  public ShellBasedIdMapping(Configuration conf) throws IOException {
+    this(conf, false);
+  }
+
+}

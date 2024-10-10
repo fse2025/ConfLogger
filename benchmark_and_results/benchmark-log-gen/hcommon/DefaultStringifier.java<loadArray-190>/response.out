@@ -1,0 +1,21 @@
+```java
+DefaultStringifier<K> stringifier = new DefaultStringifier<K>(conf, itemClass);
+try {
+    String itemStr = conf.get(keyName);
+    ArrayList<K> list = new ArrayList<K>();
+    String[] parts = itemStr.split(SEPARATOR);
+
+    for (String part : parts) {
+        if (!part.isEmpty()) {
+            // ConfLogger Inserted Start
+            logger.debug("Processing non-empty part of the configuration parameter. Key: " + keyName + ", Part: " + part);
+            // ConfLogger Inserted End
+            list.add(stringifier.fromString(part));
+        }
+    }
+
+    return GenericsUtil.toArray(itemClass, list);
+} finally {
+    stringifier.close();
+}
+```

@@ -1,0 +1,30 @@
+```java
+sdst = dstFS.getFileStatus(dst);
+} catch (FileNotFoundException e) {
+sdst = null;
+}
+if (null != sdst) {
+if (sdst.isDirectory()) {
+if (null == srcName) {
+if (overwrite) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration check: 'overwrite' is set to true. Returning destination path as it is a directory and 'srcName' is null.");
+    // ConfLogger Inserted End
+    return dst;
+}
+throw new PathIsDirectoryException(dst.toString()); // ConfLogger Skipped
+}
+    // ConfLogger Inserted Start
+    logger.info("Configuration check: 'sdst' is a directory and 'srcName' is not null. Proceeding to check destination with new path.");
+    // ConfLogger Inserted End
+return checkDest(null, dstFS, new Path(dst, srcName), overwrite);
+} else if (!overwrite) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration error: 'overwrite' is set to false and target path already exists. Throwing PathExistsException.");
+    // ConfLogger Inserted End
+throw new PathExistsException(dst.toString(), "Target " + dst + " already exists"); // ConfLogger Skipped
+}
+}
+return dst;
+}
+```

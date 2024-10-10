@@ -1,0 +1,27 @@
+```java
+List<ZKAuthInfo> ret = Lists.newArrayList();
+if (authString == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'authString' is null. Returning empty list.");
+    // ConfLogger Inserted End
+    return ret;
+}
+
+List<String> authComps = Lists.newArrayList(
+    Splitter.on(',').omitEmptyStrings().trimResults()
+    .split(authString));
+
+for (String comp : authComps) {
+    String parts[] = comp.split(":", 2);
+    if (parts.length != 2) {
+        // ConfLogger Inserted Start
+        logger.error("Auth component '{}' not of expected form scheme:auth. Configuration parameter 'authString': {}", comp, authString);
+        // ConfLogger Inserted End
+        throw new BadAuthFormatException(
+            "Auth '" + comp + "' not of expected form scheme:auth");
+    }
+    ret.add(new ZKAuthInfo(parts[0],
+        parts[1].getBytes(Charsets.UTF_8)));
+}
+return ret;
+```

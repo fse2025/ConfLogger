@@ -1,0 +1,109 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ResourceInformation.java	methodSinagture:	org.apache.hadoop.yarn.api.records.ResourceInformation.setTags(Ljava/util/Set;)V	methodLines:	227:231
+blockLines:	228:-1
+paras:	null
+TaintedStat:	NORMAL setTags:conditional branch(eq, to iindex=6) 2,4 Node: < Application, Lorg/apache/hadoop/yarn/api/records/ResourceInformation, setTags(Ljava/util/Set;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[56]43 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,38,41 @111 exception:42
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[56]43 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,38,41 @111 exception:42
+NORMAL getResourceInformationMapFromConfig:114 = invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 112,43 @336 exception:113 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL append:return 1 Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere[24]25 = invokevirtual < Extension, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 21,23 @48 exception:24
+NORMAL getClass:27 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 25 @51 exception:26 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[128]90 = invokevirtual < Application, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 88 @274 exception:89
+NORMAL getResourceInformationMapFromConfig:[null]: 92 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,90 @277 exception:91 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmedStrings:return 7 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[6]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,5 @11 exception:6
+NORMAL getResourceInformationMapFromConfig:conditional branch(eq, to iindex=196) 7,8 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+NORMAL getResourceInformationMapFromConfig:conditional branch(eq, to iindex=196) 9,10 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+NORMAL getResourceInformationMapFromConfig:conditional branch(ge, to iindex=196) 130,11 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+NORMAL getResourceInformationMapFromConfig:[null]: 93 = new <Application,Ljava/util/HashSet>@282 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[188]125 = invokestatic < Application, Lorg/apache/hadoop/yarn/api/records/ResourceInformation, newInstance(Ljava/lang/String;Ljava/lang/String;JLorg/apache/hadoop/yarn/api/protocolrecords/ResourceTypes;JJLjava/util/Set;Ljava/util/Map;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation; > 12,27,55,79,121,123,93,8 @414 exception:124 v93
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/api/records/ResourceInformation, newInstance(Ljava/lang/String;Ljava/lang/String;JLorg/apache/hadoop/yarn/api/protocolrecords/ResourceTypes;JJLjava/util/Set;Ljava/util/Map;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation; > Context: Everywhere v7
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/api/records/ResourceInformation, newInstance(Ljava/lang/String;Ljava/lang/String;JLorg/apache/hadoop/yarn/api/protocolrecords/ResourceTypes;JJLjava/util/Set;Ljava/util/Map;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation; > Context: Everywhere[24]invokevirtual < Application, Lorg/apache/hadoop/yarn/api/records/ResourceInformation, setTags(Ljava/util/Set;)V > 10,7 @52 exception:18 v7
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/api/records/ResourceInformation, setTags(Ljava/util/Set;)V > Context: Everywhere v2
+NORMAL setTags:conditional branch(eq, to iindex=6) 2,4 Node: < Application, Lorg/apache/hadoop/yarn/api/records/ResourceInformation, setTags(Ljava/util/Set;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setTags(Set<String> tags) {
+    if (tags != null) {
+      this.tags = tags;
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/api/records/ResourceInformation, newInstance(Ljava/lang/String;Ljava/lang/String;JLorg/apache/hadoop/yarn/api/protocolrecords/ResourceTypes;JJLjava/util/Set;Ljava/util/Map;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation; > Context: Everywhere, blocks=[BB[SSA:22..24]9 - org.apache.hadoop.yarn.api.records.ResourceInformation.newInstance(Ljava/lang/String;Ljava/lang/String;JLorg/apache/hadoop/yarn/api/protocolrecords/ResourceTypes;JJLjava/util/Set;Ljava/util/Map;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;, BB[SSA:19..21]8 - org.apache.hadoop.yarn.api.records.ResourceInformation.newInstance(Ljava/lang/String;Ljava/lang/String;JLorg/apache/hadoop/yarn/api/protocolrecords/ResourceTypes;JJLjava/util/Set;Ljava/util/Map;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;, BB[SSA:25..27]10 - org.apache.hadoop.yarn.api.records.ResourceInformation.newInstance(Ljava/lang/String;Ljava/lang/String;JLorg/apache/hadoop/yarn/api/protocolrecords/ResourceTypes;JJLjava/util/Set;Ljava/util/Map;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;, BB[SSA:-1..-2]12 - org.apache.hadoop.yarn.api.records.ResourceInformation.newInstance(Ljava/lang/String;Ljava/lang/String;JLorg/apache/hadoop/yarn/api/protocolrecords/ResourceTypes;JJLjava/util/Set;Ljava/util/Map;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;], numberOfBasicBlocks=4, firstLineNumber=263, lastLineNumber=265, firstMethodNumber=256, lastMethodNumber=266, isFirstLineValid=true, methodSrcCode=
+      Set<String> tags, Map<String, String> attributes) {
+    ResourceInformation ret = new ResourceInformation();
+    ret.setName(name);
+    ret.setResourceType(type);
+    ret.setUnitsWithoutValidation(units);
+    ret.setValue(value);
+    ret.setMinimumAllocation(minimumAllocation);
+    ret.setMaximumAllocation(maximumAllocation);
+    ret.setTags(tags);
+    ret.setAttributes(attributes);
+    return ret;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/api/records/ResourceInformation, copy(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/api/records/ResourceInformation;)V > Context: Everywhere, blocks=[BB[SSA:27..27]14 - org.apache.hadoop.yarn.api.records.ResourceInformation.copy(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/api/records/ResourceInformation;)V, BB[SSA:24..26]13 - org.apache.hadoop.yarn.api.records.ResourceInformation.copy(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/api/records/ResourceInformation;)V, BB[SSA:28..30]15 - org.apache.hadoop.yarn.api.records.ResourceInformation.copy(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/api/records/ResourceInformation;)V, BB[SSA:-1..-2]18 - org.apache.hadoop.yarn.api.records.ResourceInformation.copy(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/api/records/ResourceInformation;)V], numberOfBasicBlocks=4, firstLineNumber=325, lastLineNumber=326, firstMethodNumber=318, lastMethodNumber=327, isFirstLineValid=true, methodSrcCode=
+  public static void copy(ResourceInformation src, ResourceInformation dst) {
+    dst.setName(src.getName());
+    dst.setResourceType(src.getResourceType());
+    dst.setUnits(src.getUnits());
+    dst.setValue(src.getValue());
+    dst.setMinimumAllocation(src.getMinimumAllocation());
+    dst.setMaximumAllocation(src.getMaximumAllocation());
+    dst.setTags(src.getTags());
+    dst.setAttributes(src.getAttributes());
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/api/records/impl/pb/ResourcePBImpl, newDefaultInformation(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/proto/YarnProtos$ResourceInformationProto;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation; > Context: Everywhere, blocks=[BB[SSA:82..82]42 - org.apache.hadoop.yarn.api.records.impl.pb.ResourcePBImpl.newDefaultInformation(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/proto/YarnProtos$ResourceInformationProto;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;, BB[SSA:81..81]41 - org.apache.hadoop.yarn.api.records.impl.pb.ResourcePBImpl.newDefaultInformation(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/proto/YarnProtos$ResourceInformationProto;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;, BB[SSA:83..83]43 - org.apache.hadoop.yarn.api.records.impl.pb.ResourcePBImpl.newDefaultInformation(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/proto/YarnProtos$ResourceInformationProto;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;, BB[SSA:-1..-2]55 - org.apache.hadoop.yarn.api.records.impl.pb.ResourcePBImpl.newDefaultInformation(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/proto/YarnProtos$ResourceInformationProto;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;, BB[SSA:86..86]45 - org.apache.hadoop.yarn.api.records.impl.pb.ResourcePBImpl.newDefaultInformation(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/proto/YarnProtos$ResourceInformationProto;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;, BB[SSA:84..85]44 - org.apache.hadoop.yarn.api.records.impl.pb.ResourcePBImpl.newDefaultInformation(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/proto/YarnProtos$ResourceInformationProto;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;, BB[SSA:87..88]46 - org.apache.hadoop.yarn.api.records.impl.pb.ResourcePBImpl.newDefaultInformation(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/proto/YarnProtos$ResourceInformationProto;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;, BB[SSA:-1..-2]55 - org.apache.hadoop.yarn.api.records.impl.pb.ResourcePBImpl.newDefaultInformation(Lorg/apache/hadoop/yarn/api/records/ResourceInformation;Lorg/apache/hadoop/yarn/proto/YarnProtos$ResourceInformationProto;)Lorg/apache/hadoop/yarn/api/records/ResourceInformation;], numberOfBasicBlocks=8, firstLineNumber=194, lastLineNumber=196, firstMethodNumber=172, lastMethodNumber=202, isFirstLineValid=true, methodSrcCode=
+      ResourceInformation resourceInformation, ResourceInformationProto entry) {
+    ResourceInformation ri = new ResourceInformation();
+    ri.setName(resourceInformation.getName());
+    ri.setMinimumAllocation(resourceInformation.getMinimumAllocation());
+    ri.setMaximumAllocation(resourceInformation.getMaximumAllocation());
+    ri.setResourceType(entry.hasType()
+        ? ProtoUtils.convertFromProtoFormat(entry.getType())
+        : ResourceTypes.COUNTABLE);
+    String units = entry.hasUnits() ? entry.getUnits() :
+        ResourceUtils.getDefaultUnit(entry.getKey());
+    long value = entry.hasValue() ? entry.getValue() : 0L;
+    String destUnit = ResourceUtils.getDefaultUnit(entry.getKey());
+    if(!units.equals(destUnit)) {
+      ri.setValue(UnitsConversionUtil.convert(units, destUnit, value));
+      ri.setUnits(destUnit);
+    } else {
+      ri.setUnits(units);
+      ri.setValue(value);
+    }
+    if (entry.getTagsCount() > 0) {
+      ri.setTags(new HashSet<>(entry.getTagsList()));
+    } else {
+      ri.setTags(ImmutableSet.of());
+    }
+    if (entry.getAttributesCount() > 0) {
+      ri.setAttributes(ProtoUtils
+          .convertStringStringMapProtoListToMap(entry.getAttributesList()));
+    } else {
+      ri.setAttributes(ImmutableMap.of());
+    }
+    return ri;
+  }
+}

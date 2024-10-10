@@ -1,0 +1,246 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	KMSUtil.java	methodSinagture:	org.apache.hadoop.util.KMSUtil.checkNotNull(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;	methodLines:	125:130
+blockLines:	126:-1
+paras:	null
+TaintedStat:	NORMAL checkNotNull:conditional branch(ne, to iindex=17) 1,4 Node: < Application, Lorg/apache/hadoop/util/KMSUtil, checkNotNull(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/key/kms/KMSClientProvider, reencryptEncryptedKeys(Ljava/util/List;)V > Context: Everywhere[32]26 = invokevirtual < Application, Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion, getEncryptionKeyVersionName()Ljava/lang/String; > 19 @70 exception:25
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/key/kms/KMSClientProvider, reencryptEncryptedKeys(Ljava/util/List;)V > Context: Everywhere[32]26 = invokevirtual < Application, Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion, getEncryptionKeyVersionName()Ljava/lang/String; > 19 @70 exception:25
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/key/kms/KMSClientProvider, reencryptEncryptedKeys(Ljava/util/List;)V > Context: Everywhere[34]29 = invokestatic < Application, Lorg/apache/hadoop/util/KMSUtil, checkNotNull(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object; > 26,27 @75 exception:28 v26
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/KMSUtil, checkNotNull(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object; > Context: Everywhere v1
+NORMAL checkNotNull:conditional branch(ne, to iindex=17) 1,4 Node: < Application, Lorg/apache/hadoop/util/KMSUtil, checkNotNull(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IllegalArgumentException {
+    if (o == null) {
+      throw new IllegalArgumentException("Parameter '" + name +
+          "' cannot be null");
+    }
+    return o;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/KMSUtil, checkNotEmpty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.util.KMSUtil.checkNotEmpty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.util.KMSUtil.checkNotEmpty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:3..5]2 - org.apache.hadoop.util.KMSUtil.checkNotEmpty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]14 - org.apache.hadoop.util.KMSUtil.checkNotEmpty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=134, lastLineNumber=136, firstMethodNumber=134, lastMethodNumber=140, isFirstLineValid=false, methodSrcCode=
+      throws IllegalArgumentException {
+    checkNotNull(s, name);
+    if (s.isEmpty()) {
+      throw new IllegalArgumentException("Parameter '" + name +
+          "' cannot be empty");
+    }
+    return s;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/crypto/key/kms/KMSClientProvider, createKeyInternal(Ljava/lang/String;[BLorg/apache/hadoop/crypto/key/KeyProvider$Options;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion; > Context: Everywhere, blocks=[BB[SSA:3..6]2 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.createKeyInternal(Ljava/lang/String;[BLorg/apache/hadoop/crypto/key/KeyProvider$Options;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:0..2]1 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.createKeyInternal(Ljava/lang/String;[BLorg/apache/hadoop/crypto/key/KeyProvider$Options;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:7..8]3 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.createKeyInternal(Ljava/lang/String;[BLorg/apache/hadoop/crypto/key/KeyProvider$Options;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:-1..-2]36 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.createKeyInternal(Ljava/lang/String;[BLorg/apache/hadoop/crypto/key/KeyProvider$Options;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;], numberOfBasicBlocks=4, firstLineNumber=696, lastLineNumber=698, firstMethodNumber=695, lastMethodNumber=718, isFirstLineValid=true, methodSrcCode=
+      throws NoSuchAlgorithmException, IOException {
+    checkNotEmpty(name, "name");
+    checkNotNull(options, "options");
+    Map<String, Object> jsonKey = new HashMap<String, Object>();
+    jsonKey.put(KMSRESTConstants.NAME_FIELD, name);
+    jsonKey.put(KMSRESTConstants.CIPHER_FIELD, options.getCipher());
+    jsonKey.put(KMSRESTConstants.LENGTH_FIELD, options.getBitLength());
+    if (material != null) {
+      jsonKey.put(KMSRESTConstants.MATERIAL_FIELD,
+          Base64.encodeBase64String(material));
+    }
+    if (options.getDescription() != null) {
+      jsonKey.put(KMSRESTConstants.DESCRIPTION_FIELD,
+          options.getDescription());
+    }
+    if (options.getAttributes() != null && !options.getAttributes().isEmpty()) {
+      jsonKey.put(KMSRESTConstants.ATTRIBUTES_FIELD, options.getAttributes());
+    }
+    URL url = createURL(KMSRESTConstants.KEYS_RESOURCE, null, null, null);
+    HttpURLConnection conn = createConnection(url, HTTP_POST);
+    conn.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON_MIME);
+    Map response = call(conn, jsonKey, HttpURLConnection.HTTP_CREATED,
+        Map.class);
+    return parseJSONKeyVersion(response);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/KMSUtil, parseJSONKeyVersion(Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.util.KMSUtil.parseJSONKeyVersion(Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:-1..-2]0 - org.apache.hadoop.util.KMSUtil.parseJSONKeyVersion(Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:3..7]2 - org.apache.hadoop.util.KMSUtil.parseJSONKeyVersion(Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:-1..-2]19 - org.apache.hadoop.util.KMSUtil.parseJSONKeyVersion(Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;], numberOfBasicBlocks=4, firstLineNumber=186, lastLineNumber=189, firstMethodNumber=186, lastMethodNumber=201, isFirstLineValid=false, methodSrcCode=
+  public static KeyProvider.KeyVersion parseJSONKeyVersion(Map valueMap) {
+    checkNotNull(valueMap, "valueMap");
+    KeyProvider.KeyVersion keyVersion = null;
+    if (!valueMap.isEmpty()) {
+      byte[] material =
+          (valueMap.containsKey(KMSRESTConstants.MATERIAL_FIELD)) ?
+              Base64.decodeBase64(
+                  (String) valueMap.get(KMSRESTConstants.MATERIAL_FIELD)) :
+              null;
+      String versionName =
+          (String) valueMap.get(KMSRESTConstants.VERSION_NAME_FIELD);
+      String keyName = (String) valueMap.get(KMSRESTConstants.NAME_FIELD);
+      keyVersion =
+          new KMSClientProvider.KMSKeyVersion(keyName, versionName, material);
+    }
+    return keyVersion;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/crypto/key/kms/KMSClientProvider, rollNewVersion(Ljava/lang/String;[B)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.rollNewVersion(Ljava/lang/String;[B)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:-1..-2]0 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.rollNewVersion(Ljava/lang/String;[B)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:3..7]2 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.rollNewVersion(Ljava/lang/String;[B)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:-1..-2]7 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.rollNewVersion(Ljava/lang/String;[B)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;], numberOfBasicBlocks=4, firstLineNumber=776, lastLineNumber=779, firstMethodNumber=776, lastMethodNumber=781, isFirstLineValid=false, methodSrcCode=
+      throws IOException {
+    checkNotNull(material, "material");
+    try {
+      return rollNewVersionInternal(name, material);
+    } catch (NoSuchAlgorithmException ex) {
+      throw new RuntimeException("It should not happen", ex);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/KMSUtil, parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:-1..-2]0 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:3..6]2 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:-1..-2]27 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:8..9]4 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:7..7]3 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:10..10]5 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:-1..-2]27 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:16..17]8 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:15..15]7 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:18..18]9 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:-1..-2]27 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:25..26]13 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:24..24]12 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:27..27]14 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:-1..-2]27 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:33..34]17 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:32..32]16 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:35..35]18 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:-1..-2]27 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:41..42]21 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:40..40]20 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:43..43]22 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:-1..-2]27 - org.apache.hadoop.util.KMSUtil.parseJSONEncKeyVersion(Ljava/lang/String;Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;], numberOfBasicBlocks=24, firstLineNumber=178, lastLineNumber=177, firstMethodNumber=159, lastMethodNumber=181, isFirstLineValid=false, methodSrcCode=
+      Map valueMap) {
+    checkNotNull(valueMap, "valueMap");
+    String versionName = checkNotNull(
+        (String) valueMap.get(KMSRESTConstants.VERSION_NAME_FIELD),
+        KMSRESTConstants.VERSION_NAME_FIELD);
+
+    byte[] iv = Base64.decodeBase64(checkNotNull(
+        (String) valueMap.get(KMSRESTConstants.IV_FIELD),
+        KMSRESTConstants.IV_FIELD));
+
+    Map encValueMap = checkNotNull((Map)
+            valueMap.get(KMSRESTConstants.ENCRYPTED_KEY_VERSION_FIELD),
+        KMSRESTConstants.ENCRYPTED_KEY_VERSION_FIELD);
+
+    String encVersionName = checkNotNull((String)
+            encValueMap.get(KMSRESTConstants.VERSION_NAME_FIELD),
+        KMSRESTConstants.VERSION_NAME_FIELD);
+
+    byte[] encKeyMaterial = Base64.decodeBase64(checkNotNull((String)
+            encValueMap.get(KMSRESTConstants.MATERIAL_FIELD),
+        KMSRESTConstants.MATERIAL_FIELD));
+
+    return new KMSClientProvider.KMSEncryptedKeyVersion(keyName, versionName,
+        iv, encVersionName, encKeyMaterial);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/crypto/key/kms/KMSClientProvider, decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion; > Context: Everywhere, blocks=[BB[SSA:2..3]2 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:0..1]1 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:4..6]3 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:-1..-2]36 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:7..8]4 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:4..6]3 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:9..11]5 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:-1..-2]36 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:23..24]12 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:21..22]11 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:25..26]13 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:-1..-2]36 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.decryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;], numberOfBasicBlocks=12, firstLineNumber=813, lastLineNumber=814, firstMethodNumber=802, lastMethodNumber=830, isFirstLineValid=true, methodSrcCode=
+                                                      GeneralSecurityException {
+    checkNotNull(encryptedKeyVersion.getEncryptionKeyVersionName(),
+        "versionName");
+    checkNotNull(encryptedKeyVersion.getEncryptedKeyIv(), "iv");
+    Preconditions.checkArgument(
+        encryptedKeyVersion.getEncryptedKeyVersion().getVersionName()
+            .equals(KeyProviderCryptoExtension.EEK),
+        "encryptedKey version name must be '%s', is '%s'",
+        KeyProviderCryptoExtension.EEK,
+        encryptedKeyVersion.getEncryptedKeyVersion().getVersionName()
+    );
+    checkNotNull(encryptedKeyVersion.getEncryptedKeyVersion(), "encryptedKey");
+    Map<String, String> params = new HashMap<String, String>();
+    params.put(KMSRESTConstants.EEK_OP, KMSRESTConstants.EEK_DECRYPT);
+    Map<String, Object> jsonPayload = new HashMap<String, Object>();
+    jsonPayload.put(KMSRESTConstants.NAME_FIELD,
+        encryptedKeyVersion.getEncryptionKeyName());
+    jsonPayload.put(KMSRESTConstants.IV_FIELD, Base64.encodeBase64String(
+        encryptedKeyVersion.getEncryptedKeyIv()));
+    jsonPayload.put(KMSRESTConstants.MATERIAL_FIELD, Base64.encodeBase64String(
+            encryptedKeyVersion.getEncryptedKeyVersion().getMaterial()));
+    URL url = createURL(KMSRESTConstants.KEY_VERSION_RESOURCE,
+        encryptedKeyVersion.getEncryptionKeyVersionName(),
+        KMSRESTConstants.EEK_SUB_RESOURCE, params);
+    HttpURLConnection conn = createConnection(url, HTTP_POST);
+    conn.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON_MIME);
+    Map response =
+        call(conn, jsonPayload, HttpURLConnection.HTTP_OK, Map.class);
+    return parseJSONKeyVersion(response);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/KMSUtil, parseJSONMetadata(Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProvider$Metadata; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.util.KMSUtil.parseJSONMetadata(Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProvider$Metadata;, BB[SSA:-1..-2]0 - org.apache.hadoop.util.KMSUtil.parseJSONMetadata(Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProvider$Metadata;, BB[SSA:3..7]2 - org.apache.hadoop.util.KMSUtil.parseJSONMetadata(Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProvider$Metadata;, BB[SSA:-1..-2]25 - org.apache.hadoop.util.KMSUtil.parseJSONMetadata(Ljava/util/Map;)Lorg/apache/hadoop/crypto/key/KeyProvider$Metadata;], numberOfBasicBlocks=4, firstLineNumber=205, lastLineNumber=208, firstMethodNumber=205, lastMethodNumber=217, isFirstLineValid=false, methodSrcCode=
+  public static KeyProvider.Metadata parseJSONMetadata(Map valueMap) {
+    checkNotNull(valueMap, "valueMap");
+    KeyProvider.Metadata metadata = null;
+    if (!valueMap.isEmpty()) {
+      metadata = new KMSClientProvider.KMSMetadata(
+          (String) valueMap.get(KMSRESTConstants.CIPHER_FIELD),
+          (Integer) valueMap.get(KMSRESTConstants.LENGTH_FIELD),
+          (String) valueMap.get(KMSRESTConstants.DESCRIPTION_FIELD),
+          (Map<String, String>) valueMap.get(KMSRESTConstants.ATTRIBUTES_FIELD),
+          new Date((Long) valueMap.get(KMSRESTConstants.CREATED_FIELD)),
+          (Integer) valueMap.get(KMSRESTConstants.VERSIONS_FIELD));
+    }
+    return metadata;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/crypto/key/kms/KMSClientProvider, reencryptEncryptedKeys(Ljava/util/List;)V > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:3..5]2 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:-1..-2]57 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:28..29]14 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:25..27]13 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:30..32]15 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:-1..-2]57 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:33..34]16 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:30..32]15 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:35..37]17 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:-1..-2]57 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:38..39]18 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:35..37]17 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:40..42]19 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:-1..-2]57 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:43..44]20 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:40..42]19 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:45..47]21 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V, BB[SSA:-1..-2]57 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKeys(Ljava/util/List;)V], numberOfBasicBlocks=20, firstLineNumber=874, lastLineNumber=876, firstMethodNumber=864, lastMethodNumber=902, isFirstLineValid=false, methodSrcCode=
+      throws IOException, GeneralSecurityException {
+    checkNotNull(ekvs, "ekvs");
+    if (ekvs.isEmpty()) {
+      return;
+    }
+    final List<Map> jsonPayload = new ArrayList<>();
+    String keyName = null;
+    for (EncryptedKeyVersion ekv : ekvs) {
+      checkNotNull(ekv.getEncryptionKeyName(), "keyName");
+      checkNotNull(ekv.getEncryptionKeyVersionName(), "versionName");
+      checkNotNull(ekv.getEncryptedKeyIv(), "iv");
+      checkNotNull(ekv.getEncryptedKeyVersion(), "encryptedKey");
+      Preconditions.checkArgument(ekv.getEncryptedKeyVersion().getVersionName()
+              .equals(KeyProviderCryptoExtension.EEK),
+          "encryptedKey version name must be '%s', is '%s'",
+          KeyProviderCryptoExtension.EEK,
+          ekv.getEncryptedKeyVersion().getVersionName());
+      if (keyName == null) {
+        keyName = ekv.getEncryptionKeyName();
+      } else {
+        Preconditions.checkArgument(keyName.equals(ekv.getEncryptionKeyName()),
+            "All EncryptedKey must have the same key name.");
+      }
+      jsonPayload.add(KMSUtil.toJSON(ekv));
+    }
+    final URL url = createURL(KMSRESTConstants.KEY_RESOURCE, keyName,
+        KMSRESTConstants.REENCRYPT_BATCH_SUB_RESOURCE, null);
+    final HttpURLConnection conn = createConnection(url, HTTP_POST);
+    conn.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON_MIME);
+    final List<Map> response =
+        call(conn, jsonPayload, HttpURLConnection.HTTP_OK, List.class);
+    Preconditions.checkArgument(response.size() == ekvs.size(),
+        "Response size is different than input size.");
+    for (int i = 0; i < response.size(); ++i) {
+      final Map item = response.get(i);
+      final EncryptedKeyVersion ekv = parseJSONEncKeyVersion(keyName, item);
+      ekvs.set(i, ekv);
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/crypto/key/kms/KMSClientProvider, createKey(Ljava/lang/String;[BLorg/apache/hadoop/crypto/key/KeyProvider$Options;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.createKey(Ljava/lang/String;[BLorg/apache/hadoop/crypto/key/KeyProvider$Options;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:-1..-2]0 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.createKey(Ljava/lang/String;[BLorg/apache/hadoop/crypto/key/KeyProvider$Options;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:3..8]2 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.createKey(Ljava/lang/String;[BLorg/apache/hadoop/crypto/key/KeyProvider$Options;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;, BB[SSA:-1..-2]7 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.createKey(Ljava/lang/String;[BLorg/apache/hadoop/crypto/key/KeyProvider$Options;)Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;], numberOfBasicBlocks=4, firstLineNumber=729, lastLineNumber=732, firstMethodNumber=729, lastMethodNumber=734, isFirstLineValid=false, methodSrcCode=
+      throws IOException {
+    checkNotNull(material, "material");
+    try {
+      return createKeyInternal(name, material, options);
+    } catch (NoSuchAlgorithmException ex) {
+      throw new RuntimeException("It should not happen", ex);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/crypto/key/kms/KMSClientProvider, reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion; > Context: Everywhere, blocks=[BB[SSA:2..3]2 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:0..1]1 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:4..6]3 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:-1..-2]37 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:7..8]4 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:4..6]3 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:9..11]5 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:-1..-2]37 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:12..13]6 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:9..11]5 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:14..16]7 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;, BB[SSA:-1..-2]37 - org.apache.hadoop.crypto.key.kms.KMSClientProvider.reencryptEncryptedKey(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;], numberOfBasicBlocks=12, firstLineNumber=837, lastLineNumber=839, firstMethodNumber=835, lastMethodNumber=859, isFirstLineValid=true, methodSrcCode=
+      throws IOException, GeneralSecurityException {
+    checkNotNull(ekv.getEncryptionKeyVersionName(), "versionName");
+    checkNotNull(ekv.getEncryptedKeyIv(), "iv");
+    checkNotNull(ekv.getEncryptedKeyVersion(), "encryptedKey");
+    Preconditions.checkArgument(ekv.getEncryptedKeyVersion().getVersionName()
+            .equals(KeyProviderCryptoExtension.EEK),
+        "encryptedKey version name must be '%s', is '%s'",
+        KeyProviderCryptoExtension.EEK,
+        ekv.getEncryptedKeyVersion().getVersionName());
+    final Map<String, String> params = new HashMap<>();
+    params.put(KMSRESTConstants.EEK_OP, KMSRESTConstants.EEK_REENCRYPT);
+    final Map<String, Object> jsonPayload = new HashMap<>();
+    jsonPayload.put(KMSRESTConstants.NAME_FIELD, ekv.getEncryptionKeyName());
+    jsonPayload.put(KMSRESTConstants.IV_FIELD,
+        Base64.encodeBase64String(ekv.getEncryptedKeyIv()));
+    jsonPayload.put(KMSRESTConstants.MATERIAL_FIELD,
+        Base64.encodeBase64String(ekv.getEncryptedKeyVersion().getMaterial()));
+    final URL url = createURL(KMSRESTConstants.KEY_VERSION_RESOURCE,
+        ekv.getEncryptionKeyVersionName(), KMSRESTConstants.EEK_SUB_RESOURCE,
+        params);
+    final HttpURLConnection conn = createConnection(url, HTTP_POST);
+    conn.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON_MIME);
+    final Map response =
+        call(conn, jsonPayload, HttpURLConnection.HTTP_OK, Map.class);
+    return parseJSONEncKeyVersion(ekv.getEncryptionKeyName(), response);
+  }
+}

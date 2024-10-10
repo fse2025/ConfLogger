@@ -1,0 +1,26 @@
+```java
+private void verifyTimeStamp(NodePlan plan) throws DiskBalancerException {
+    long now = Time.now();
+    long planTime = plan.getTimeStamp();
+
+    if ((planTime + planValidityInterval) < now) {
+        String planValidity = config.get(
+            DFSConfigKeys.DFS_DISK_BALANCER_PLAN_VALID_INTERVAL,
+            DFSConfigKeys.DFS_DISK_BALANCER_PLAN_VALID_INTERVAL_DEFAULT);
+        
+        // ConfLogger Inserted Start
+        if (!planValidity.matches("[0-9]$")) {
+            logger.warn("The configuration parameter 'dfs.disk.balancer.plan.valid.interval' is not properly set. Expected a numeric value but got: " + planValidity + ". Appending 'ms' to the value.");
+        }
+        // ConfLogger Inserted End
+
+        if (planValidity.matches("[0-9]$")) {
+            planValidity += "ms";
+        }
+
+        String errorString = "Plan was generated more than " + planValidity + " ago";
+        throw new DiskBalancerException(errorString,
+            DiskBalancerException.Result.OLD_PLAN_SUBMITTED);
+    }
+}
+```

@@ -1,0 +1,31 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BaseConfigurationDeclarer.java	methodSinagture:	org.apache.storm.topology.BaseConfigurationDeclarer.setCPULoad(Ljava/lang/Number;)Lorg/apache/storm/topology/ComponentConfigurationDeclarer;	methodLines:	83:88
+blockLines:	84:-1
+paras:	topology.component.cpu.pcore.percent
+TaintedStat:	NORMAL setCPULoad:conditional branch(eq, to iindex=13) 2,4 Node: < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setCPULoad(Ljava/lang/Number;)Lorg/apache/storm/topology/ComponentConfigurationDeclarer; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/trident/topology/TridentTopologyBuilder, buildTopology(Ljava/util/Map;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere[264]173 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,171 @661 exception:172
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/trident/topology/TridentTopologyBuilder, buildTopology(Ljava/util/Map;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere[264]173 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,171 @661 exception:172
+NORMAL buildTopology:174 = checkcast <Application,Ljava/lang/Number>173 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/trident/topology/TridentTopologyBuilder, buildTopology(Ljava/util/Map;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/trident/topology/TridentTopologyBuilder, buildTopology(Ljava/util/Map;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere[319]202 = invokeinterface < Application, Lorg/apache/storm/topology/SpoutDeclarer, setCPULoad(Ljava/lang/Number;)Lorg/apache/storm/topology/ResourceDeclarer; > 195,174 @798 exception:201 v174
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setCPULoad(Ljava/lang/Number;)Lorg/apache/storm/topology/ResourceDeclarer; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setCPULoad(Ljava/lang/Number;)Lorg/apache/storm/topology/ResourceDeclarer; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setCPULoad(Ljava/lang/Number;)Lorg/apache/storm/topology/ComponentConfigurationDeclarer; > 1,2 @2 exception:4 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setCPULoad(Ljava/lang/Number;)Lorg/apache/storm/topology/ComponentConfigurationDeclarer; > Context: Everywhere v2
+NORMAL setCPULoad:conditional branch(eq, to iindex=13) 2,4 Node: < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setCPULoad(Ljava/lang/Number;)Lorg/apache/storm/topology/ComponentConfigurationDeclarer; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public T setCPULoad(Number amount) {
+        if (amount != null) {
+            addResource(Config.TOPOLOGY_COMPONENT_CPU_PCORE_PERCENT, amount);
+            return addConfiguration(Config.TOPOLOGY_COMPONENT_CPU_PCORE_PERCENT, amount);
+        }
+        return (T) this;
+    }
+
+
+====================ctx:=======================

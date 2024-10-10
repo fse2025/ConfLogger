@@ -1,0 +1,17 @@
+```java
+int ipcMaxDataLength = conf.getInt(
+    CommonConfigurationKeys.IPC_MAXIMUM_DATA_LENGTH,
+    CommonConfigurationKeys.IPC_MAXIMUM_DATA_LENGTH_DEFAULT);
+
+if (size >= ipcMaxDataLength) {
+    // ConfLogger Inserted Start
+    logger.error("Attempted to use QJM output buffer capacity ({}) greater than the IPC max data length ({} = {}). This will cause journals to reject edits. Please ensure that the configuration parameter {} is set to a value greater than the output buffer capacity.", size, CommonConfigurationKeys.IPC_MAXIMUM_DATA_LENGTH, ipcMaxDataLength, CommonConfigurationKeys.IPC_MAXIMUM_DATA_LENGTH);
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException("Attempted to use QJM output buffer "
+        + "capacity (" + size + ") greater than the IPC max data length ("
+        + CommonConfigurationKeys.IPC_MAXIMUM_DATA_LENGTH + " = "
+        + ipcMaxDataLength + "). This will cause journals to reject edits.");
+}
+
+outputBufferCapacity = size;
+```

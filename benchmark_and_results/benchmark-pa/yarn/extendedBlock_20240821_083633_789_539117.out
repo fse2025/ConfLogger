@@ -1,0 +1,72 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	LogAggregationFileController.java	methodSinagture:	org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.extractRemoteRootLogDirSuffix()V	methodLines:	259:271
+blockLines:	265:-1
+paras:	yarn.nodemanager.remote-app-log-dir-suffix
+TaintedStat:	NORMAL extractRemoteRootLogDirSuffix:conditional branch(eq, to iindex=43) 17,6 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDirSuffix()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDirSuffix()V > Context: Everywhere[33]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 20,21,22 @62 exception:23
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDirSuffix()V > Context: Everywhere[33]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 20,21,22 @62 exception:23
+NORMAL extractRemoteRootLogDirSuffix:26 = invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 18,24 @65 exception:25 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDirSuffix()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL append:return 1 Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere[24]25 = invokevirtual < Extension, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 21,23 @48 exception:24
+NORMAL getClass:27 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 25 @51 exception:26 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/StackTraceElement, toString()Ljava/lang/String; > Context: Everywhere[44]37 = invokevirtual < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 35 @89 exception:36
+PHI Node: < Primordial, Ljava/lang/StackTraceElement, toString()Ljava/lang/String; > Context: Everywhere:56 = phi  24,24,37,37,37,55
+NORMAL toString:58 = invokevirtual < Primordial, Ljava/lang/String, isEmpty()Z > 56 @145 exception:57 Node: < Primordial, Ljava/lang/StackTraceElement, toString()Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDirSuffix()V > Context: Everywhere[22]17 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 15 @40 exception:16
+NORMAL extractRemoteRootLogDirSuffix:conditional branch(eq, to iindex=43) 17,6 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, extractRemoteRootLogDirSuffix()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void extractRemoteRootLogDirSuffix() {
+    String suffix = String.format(
+        YarnConfiguration.LOG_AGGREGATION_REMOTE_APP_LOG_DIR_SUFFIX_FMT,
+        fileControllerName);
+    remoteRootLogDirSuffix = conf.get(suffix);
+    if (remoteRootLogDirSuffix == null
+            || remoteRootLogDirSuffix.isEmpty()) {
+      remoteRootLogDirSuffix = conf.get(
+          YarnConfiguration.NM_REMOTE_APP_LOG_DIR_SUFFIX,
+          YarnConfiguration.DEFAULT_NM_REMOTE_APP_LOG_DIR_SUFFIX)
+          + "-" + fileControllerName.toLowerCase();
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:23..24]9 - org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:21..22]8 - org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:25..27]10 - org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:-1..-2]12 - org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=133, lastLineNumber=136, firstMethodNumber=118, lastMethodNumber=137, isFirstLineValid=true, methodSrcCode=
+  public void initialize(Configuration conf, String controllerName) {
+    this.conf = conf;
+    int configuredRetentionSize = conf.getInt(
+        YarnConfiguration.NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP,
+        YarnConfiguration
+            .DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP);
+    if (configuredRetentionSize <= 0) {
+      this.retentionSize =
+          YarnConfiguration
+              .DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP;
+    } else {
+      this.retentionSize = configuredRetentionSize;
+    }
+    this.fileControllerName = controllerName;
+
+    extractRemoteRootLogDir();
+    extractRemoteRootLogDirSuffix();
+
+    initInternal(conf);
+  }
+
+}

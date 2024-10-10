@@ -1,0 +1,12 @@
+```java
+if (ms > 0) {
+    // ConfLogger Inserted Start
+    logger.debug("Configuration parameter 'ms' is set to a positive value: " + ms);
+    // ConfLogger Inserted End
+    if (SIMULATING.get()) {
+        simulatedSleepUntilNanos(millisToNanos(currentTimeMillis() + ms));
+    } else {
+        Thread.sleep(ms);
+    }
+}
+```

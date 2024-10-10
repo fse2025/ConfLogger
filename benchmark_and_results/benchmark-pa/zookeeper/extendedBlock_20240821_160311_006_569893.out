@@ -1,0 +1,95 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MBeanRegistry.java	methodSinagture:	org.apache.zookeeper.jmx.MBeanRegistry.unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V	methodLines:	120:131
+blockLines:	121:-1
+paras:	null
+TaintedStat:	NORMAL unregister:conditional branch(ne, to iindex=4) 2,5 Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere[387]170 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, getVoteTracker(Ljava/util/Map;Lorg/apache/zookeeper/server/quorum/Vote;)Lorg/apache/zookeeper/server/quorum/SyncedLearnerTracker; > 1,23,161 @886 exception:169
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere[387]170 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, getVoteTracker(Ljava/util/Map;Lorg/apache/zookeeper/server/quorum/Vote;)Lorg/apache/zookeeper/server/quorum/SyncedLearnerTracker; > 1,23,161 @886 exception:169
+PHI Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere:278 = phi  281,281,281,281,170,170,281,281,281,281,281,281
+PHI Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere:281 = phi  278,18
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere[129]225 = invokeinterface < Application, Lorg/apache/zookeeper/server/quorum/flexible/QuorumVerifier, revalidateVoteset(Lorg/apache/zookeeper/server/quorum/SyncedLearnerTracker;Z)Z > 221,281,223 @274 exception:224 v281
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/quorum/flexible/QuorumOracleMaj, revalidateVoteset(Lorg/apache/zookeeper/server/quorum/SyncedLearnerTracker;Z)Z > Context: Everywhere v2
+NORMAL revalidateVoteset:conditional branch(eq, to iindex=12) 2,5 Node: < Application, Lorg/apache/zookeeper/server/quorum/flexible/QuorumOracleMaj, revalidateVoteset(Lorg/apache/zookeeper/server/quorum/SyncedLearnerTracker;Z)Z > Context: Everywhere
+PHI Node: < Application, Lorg/apache/zookeeper/server/quorum/flexible/QuorumOracleMaj, revalidateVoteset(Lorg/apache/zookeeper/server/quorum/SyncedLearnerTracker;Z)Z > Context: Everywhere:10 = phi  9,8
+NORMAL revalidateVoteset:return 10 Node: < Application, Lorg/apache/zookeeper/server/quorum/flexible/QuorumOracleMaj, revalidateVoteset(Lorg/apache/zookeeper/server/quorum/SyncedLearnerTracker;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/quorum/flexible/QuorumOracleMaj, revalidateVoteset(Lorg/apache/zookeeper/server/quorum/SyncedLearnerTracker;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere[129]225 = invokeinterface < Application, Lorg/apache/zookeeper/server/quorum/flexible/QuorumVerifier, revalidateVoteset(Lorg/apache/zookeeper/server/quorum/SyncedLearnerTracker;Z)Z > 221,281,223 @274 exception:224
+NORMAL lookForLeader:conditional branch(eq, to iindex=184) 225,56 Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere
+NORMAL lookForLeader:conditional branch(eq, to iindex=165) 403,18 Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere
+NORMAL lookForLeader:407 = getfield < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, jmxLeaderElectionBean, <Application,Lorg/apache/zookeeper/server/quorum/LeaderElectionBean> > 406 Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere[164]invokevirtual < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > 405,407 @350 exception:408 v407
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere v2
+NORMAL unregister:conditional branch(ne, to iindex=4) 2,4 Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere
+NORMAL unregister:8 = checkcast <Application,Ljava/lang/String>7 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere[13]invokespecial < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > 1,8,2 @22 exception:9 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere v2
+NORMAL unregister:conditional branch(ne, to iindex=4) 2,5 Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	MBeanRegistry.java	methodSinagture:	org.apache.zookeeper.jmx.MBeanRegistry.unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V	methodLines:	120:131
+blockLines:	124:-1
+paras:	null
+TaintedStat:	NORMAL unregister:conditional branch(ne, to iindex=34) 7,8 Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere[258]110 = invokespecial < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, getPeerEpoch()J > 1 @600 exception:109
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere[258]110 = invokespecial < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, getPeerEpoch()J > 1 @600 exception:109
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere[259]112 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, totalOrderPredicate(JJJJJJ)Z > 1,102,103,104,106,108,110 @603 exception:111 v110
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, totalOrderPredicate(JJJJJJ)Z > Context: Everywhere v7
+NORMAL totalOrderPredicate:39 = compare 4,7 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, totalOrderPredicate(JJJJJJ)Z > Context: Everywhere
+NORMAL totalOrderPredicate:conditional branch(gt, to iindex=71) 39,13 Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, totalOrderPredicate(JJJJJJ)Z > Context: Everywhere
+PHI Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, totalOrderPredicate(JJJJJJ)Z > Context: Everywhere:44 = phi  16,13
+NORMAL totalOrderPredicate:return 44 Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, totalOrderPredicate(JJJJJJ)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, totalOrderPredicate(JJJJJJ)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere[416]186 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, totalOrderPredicate(JJJJJJ)Z > 1,179,180,181,182,183,184 @949 exception:185
+NORMAL lookForLeader:conditional branch(eq, to iindex=393) 186,56 Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere
+NORMAL lookForLeader:178 = checkcast <Application,Lorg/apache/zookeeper/server/quorum/FastLeaderElection$Notification>177 <Application,Lorg/apache/zookeeper/server/quorum/FastLeaderElection$Notification> Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere
+NORMAL lookForLeader:conditional branch(ne, to iindex=609) 178,18 Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere
+NORMAL lookForLeader:conditional branch(eq, to iindex=460) 354,18 Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere
+NORMAL lookForLeader:358 = getfield < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, jmxLeaderElectionBean, <Application,Lorg/apache/zookeeper/server/quorum/LeaderElectionBean> > 357 Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FastLeaderElection, lookForLeader()Lorg/apache/zookeeper/server/quorum/Vote; > Context: Everywhere[459]invokevirtual < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > 356,358 @1040 exception:359 v358
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere v2
+NORMAL unregister:conditional branch(ne, to iindex=4) 2,4 Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere
+NORMAL unregister:8 = checkcast <Application,Ljava/lang/String>7 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere[13]invokespecial < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > 1,8,2 @22 exception:9 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere v2
+NORMAL unregister:conditional branch(ne, to iindex=4) 2,5 Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere
+NORMAL unregister:conditional branch(ne, to iindex=34) 7,8 Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Ljava/lang/String;Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private void unregister(String path, ZKMBeanInfo bean) throws JMException {
+        if (path == null) {
+            return;
+        }
+        if (!bean.isHidden()) {
+            final ObjectName objName = makeObjectName(path, bean);
+            LOG.debug("Unregister MBean [{}]", objName);
+            synchronized (LOCK) {
+                mBeanServer.unregisterMBean(objName);
+            }
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/jmx/MBeanRegistry, unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V > Context: Everywhere, blocks=[BB[SSA:9..13]6 - org.apache.zookeeper.jmx.MBeanRegistry.unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V, BB[SSA:8..8]5 - org.apache.zookeeper.jmx.MBeanRegistry.unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V, BB[SSA:14..14]7 - org.apache.zookeeper.jmx.MBeanRegistry.unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V, BB[SSA:-1..-2]14 - org.apache.zookeeper.jmx.MBeanRegistry.unregister(Lorg/apache/zookeeper/jmx/ZKMBeanInfo;)V], numberOfBasicBlocks=4, firstLineNumber=149, lastLineNumber=156, firstMethodNumber=145, lastMethodNumber=157, isFirstLineValid=true, methodSrcCode=
+    public void unregister(ZKMBeanInfo bean) {
+        if (bean == null) {
+            return;
+        }
+        String path = mapBean2Path.remove(bean);
+        try {
+            unregister(path, bean);
+        } catch (JMException e) {
+            LOG.warn("Error during unregister of [{}]", bean.getName(), e);
+        } catch (Throwable t) {
+            LOG.error("Unexpected exception during unregister of [{}]. It should be reviewed and fixed.", bean.getName(), t);
+        }
+    }
+
+}

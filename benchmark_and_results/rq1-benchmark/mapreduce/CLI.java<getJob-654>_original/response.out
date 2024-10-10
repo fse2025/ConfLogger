@@ -1,0 +1,29 @@
+```java
+int maxRetry = getConf().getInt(MRJobConfig.MR_CLIENT_JOB_MAX_RETRIES,
+MRJobConfig.DEFAULT_MR_CLIENT_JOB_MAX_RETRIES);
+long retryInterval = getConf()
+.getLong(MRJobConfig.MR_CLIENT_JOB_RETRY_INTERVAL,
+MRJobConfig.DEFAULT_MR_CLIENT_JOB_RETRY_INTERVAL);
+Job job = cluster.getJob(jobid);
+
+for (int i = 0; i < maxRetry; ++i) {
+    if (job != null) {
+        return job;
+    }
+    // ConfLogger Commented: Lacks configuration-related information to guide users on proper settings.
+    // LOG.info("Could not obtain job info after " + String.valueOf(i + 1)
+    // + " attempt(s). Sleeping for " + String.valueOf(retryInterval / 1000)
+    // + " seconds and retrying.");
+    // ConfLogger Inserted Start
+    logger.warn("Could not obtain job info after " + (i + 1) + " attempt(s). Sleeping for " 
+                + (retryInterval / 1000) + " seconds and retrying. Configuration parameter '"
+                + MRJobConfig.MR_CLIENT_JOB_MAX_RETRIES + "' is set to " + maxRetry 
+                + " and '" + MRJobConfig.MR_CLIENT_JOB_RETRY_INTERVAL + "' is set to " 
+                + retryInterval + ". Consider checking these values for optimal retry behavior.");
+    // ConfLogger Inserted End
+    Thread.sleep(retryInterval);
+    job = cluster.getJob(jobid);
+}
+return job;
+}
+```

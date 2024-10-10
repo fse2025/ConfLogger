@@ -1,0 +1,24 @@
+```java
+if (fileIOSamplingPercentage <= 0) {
+    // ConfLogger Commented: Not Informative
+    // LOG.info(DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY + " set to " + fileIOSamplingPercentage + ". Disabling file IO profiling");
+    // ConfLogger Inserted Start
+    logger.info("File IO profiling disabled due to non-positive sampling percentage. " +
+                "Parameter: " + DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY + 
+                ", Value: " + fileIOSamplingPercentage + ". Ensure the sampling percentage is greater than 0 to enable profiling.");
+    // ConfLogger Inserted End
+    isEnabled = false;
+} else {
+    // ConfLogger Commented: Not Informative
+    // LOG.info(DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY + " set to " + fileIOSamplingPercentage + ". Enabling file IO profiling");
+    // ConfLogger Inserted Start
+    logger.info("File IO profiling enabled. " +
+                "Parameter: " + DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY + 
+                ", Value: " + fileIOSamplingPercentage + ". Ensure the sampling percentage is set correctly for desired profiling.");
+    // ConfLogger Inserted End
+    isEnabled = true;
+}
+
+return isEnabled;
+}
+```

@@ -1,0 +1,31 @@
+```java
+private static double parseDecayFactor(String ns, Configuration conf) {
+    double factor = conf.getDouble(ns + "." +
+    IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY, 0.0);
+    if (factor == 0.0) {
+        factor = conf.getDouble(ns + "." +
+        IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY,
+        IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_DEFAULT);
+        // ConfLogger Inserted Start
+        logger.info("Initial decay factor was 0.0. Using default decay factor from IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY: " 
+                    + factor + ". Ensure that the configuration parameter " + ns + "." + IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY 
+                    + " is set correctly to a value between 0 and 1.");
+        // ConfLogger Inserted End
+    } else if ((factor > 0.0) && (factor < 1)) {
+        // ConfLogger Inserted Start
+        logger.debug("Decay factor is set correctly between 0 and 1: " + factor + ". Configuration parameter: " 
+                     + ns + "." + IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY);
+        // ConfLogger Inserted End
+    }
+    if (factor <= 0 || factor >= 1) {
+        // ConfLogger Inserted Start
+        logger.error("Invalid decay factor: " + factor + ". Decay Factor must be between 0 and 1. Configuration parameter: " 
+                     + ns + "." + IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY);
+        // ConfLogger Inserted End
+        throw new IllegalArgumentException("Decay Factor " +
+        "must be between 0 and 1");
+    }
+
+    return factor;
+}
+```

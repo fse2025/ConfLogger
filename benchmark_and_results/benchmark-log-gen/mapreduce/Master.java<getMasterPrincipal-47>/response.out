@@ -1,0 +1,20 @@
+```java
+String framework = conf.get(MRConfig.FRAMEWORK_NAME, MRConfig.YARN_FRAMEWORK_NAME);
+
+if (framework.equals(MRConfig.CLASSIC_FRAMEWORK_NAME)) {
+    String masterAddress = getMasterAddress(conf);
+    // get kerberos principal for use as delegation token renewer
+    masterPrincipal = SecurityUtil.getServerPrincipal(conf.get(MRConfig.MASTER_USER_NAME), masterAddress);
+    // ConfLogger Inserted Start
+    logger.info("Configuration set to CLASSIC_FRAMEWORK_NAME. MASTER_USER_NAME: " + conf.get(MRConfig.MASTER_USER_NAME) + ", masterAddress: " + masterAddress);
+    // ConfLogger Inserted End
+} else {
+    masterPrincipal = YarnClientUtils.getRmPrincipal(conf);
+    // ConfLogger Inserted Start
+    logger.info("Configuration set to YARN_FRAMEWORK_NAME. Using RM principal.");
+    // ConfLogger Inserted End
+}
+
+return masterPrincipal;
+}
+```

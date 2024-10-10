@@ -1,0 +1,6 @@
+    // conf.set(paramEnable,"true");
+    // conf.set(paramPolicy,"");
+        // ConfLogger Added
+    String paramEnable = HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.ENABLE_KEY;
+    String paramPolicy = HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_KEY;
+    HDFS

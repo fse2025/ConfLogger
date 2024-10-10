@@ -1,0 +1,101 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Storage.java	methodSinagture:	org.apache.hadoop.hdfs.server.common.Storage.confirmFormat(Ljava/lang/Iterable;ZZ)Z	methodLines:	1183:1204
+blockLines:	1187:-1
+paras:	dfs.reformat.disabled
+TaintedStat:	NORMAL confirmFormat:conditional branch(eq, to iindex=32) 2,9 Node: < Application, Lorg/apache/hadoop/hdfs/server/common/Storage, confirmFormat(Ljava/lang/Iterable;ZZ)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere[84]55 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,53,13 @179 exception:54
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere[84]55 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,53,13 @179 exception:54
+NORMAL format:conditional branch(eq, to iindex=115) 55,13 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere:68 = phi  2,13
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere[118]71 = invokevirtual < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSImage, confirmFormat(ZZ)Z > 46,68,69 @253 exception:70 v68
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSImage, confirmFormat(ZZ)Z > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSImage, confirmFormat(ZZ)Z > Context: Everywhere[30]27 = invokestatic < Application, Lorg/apache/hadoop/hdfs/server/common/Storage, confirmFormat(Ljava/lang/Iterable;ZZ)Z > 6,2,3 @70 exception:26 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/common/Storage, confirmFormat(Ljava/lang/Iterable;ZZ)Z > Context: Everywhere v2
+NORMAL confirmFormat:conditional branch(eq, to iindex=32) 2,9 Node: < Application, Lorg/apache/hadoop/hdfs/server/common/Storage, confirmFormat(Ljava/lang/Iterable;ZZ)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      boolean force, boolean interactive) throws IOException {
+    for (FormatConfirmable item : items) {
+      if (!item.hasSomeData())
+        continue;
+      if (force) { // Don't confirm, always format.
+        System.err.println(
+            "Data exists in " + item + ". Formatting anyway.");
+        continue;
+      }
+      if (!interactive) { // Don't ask - always don't format
+        System.err.println(
+            "Running in non-interactive mode, and data appears to exist in " +
+            item + ". Not formatting.");
+        return false;
+      }
+      if (!ToolRunner.confirmPrompt("Re-format filesystem in " + item + " ?")) {
+        System.err.println("Format aborted in " + item);
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSImage, confirmFormat(ZZ)Z > Context: Everywhere, blocks=[BB[SSA:26..30]15 - org.apache.hadoop.hdfs.server.namenode.FSImage.confirmFormat(ZZ)Z, BB[SSA:25..25]14 - org.apache.hadoop.hdfs.server.namenode.FSImage.confirmFormat(ZZ)Z, BB[SSA:31..31]16 - org.apache.hadoop.hdfs.server.namenode.FSImage.confirmFormat(ZZ)Z, BB[SSA:-1..-2]17 - org.apache.hadoop.hdfs.server.namenode.FSImage.confirmFormat(ZZ)Z], numberOfBasicBlocks=4, firstLineNumber=211, lastLineNumber=212, firstMethodNumber=205, lastMethodNumber=212, isFirstLineValid=true, methodSrcCode=
+  boolean confirmFormat(boolean force, boolean interactive) throws IOException {
+    List<FormatConfirmable> confirms = Lists.newArrayList();
+    for (StorageDirectory sd : storage.dirIterable(null)) {
+      confirms.add(sd);
+    }
+    
+    confirms.addAll(editLog.getFormatConfirmables());
+    return Storage.confirmFormat(confirms, force, interactive);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/BootstrapStandby, formatAndDownloadAliasMap(Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/namenode/ha/RemoteNameNodeInfo;)I > Context: Everywhere, blocks=[BB[SSA:44..44]23 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.formatAndDownloadAliasMap(Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/namenode/ha/RemoteNameNodeInfo;)I, BB[SSA:42..43]22 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.formatAndDownloadAliasMap(Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/namenode/ha/RemoteNameNodeInfo;)I, BB[SSA:45..46]24 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.formatAndDownloadAliasMap(Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/namenode/ha/RemoteNameNodeInfo;)I, BB[SSA:-1..-2]49 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.formatAndDownloadAliasMap(Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/namenode/ha/RemoteNameNodeInfo;)I], numberOfBasicBlocks=4, firstLineNumber=511, lastLineNumber=510, firstMethodNumber=500, lastMethodNumber=527, isFirstLineValid=true, methodSrcCode=
+      RemoteNameNodeInfo proxyInfo) throws IOException {
+    LOG.info("Bootstrapping the InMemoryAliasMap from "
+        + proxyInfo.getHttpAddress());
+    if (pathAliasMap == null) {
+      throw new IOException("InMemoryAliasMap enabled with null location");
+    }
+    File aliasMapFile = new File(pathAliasMap);
+    if (aliasMapFile.exists()) {
+      AliasMapStorageDirectory aliasMapSD =
+          new AliasMapStorageDirectory(aliasMapFile);
+      if (!Storage.confirmFormat(
+          Arrays.asList(aliasMapSD), force, interactive)) {
+        return ERR_CODE_ALREADY_FORMATTED;
+      } else {
+        if (!FileUtil.fullyDelete(aliasMapFile)) {
+          throw new IOException(
+              "Cannot remove current alias map: " + aliasMapFile);
+        }
+      }
+    }
+
+    // create the aliasmap location.
+    if (!aliasMapFile.mkdirs()) {
+      throw new IOException("Cannot create directory " + aliasMapFile);
+    }
+    TransferFsImage.downloadAliasMap(proxyInfo.getHttpAddress(), aliasMapFile,
+        true);
+    return 0;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/BootstrapStandby, format(Lorg/apache/hadoop/hdfs/server/namenode/NNStorage;Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;)Z > Context: Everywhere, blocks=[BB[SSA:7..7]4 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.format(Lorg/apache/hadoop/hdfs/server/namenode/NNStorage;Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;)Z, BB[SSA:5..6]3 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.format(Lorg/apache/hadoop/hdfs/server/namenode/NNStorage;Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;)Z, BB[SSA:8..9]5 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.format(Lorg/apache/hadoop/hdfs/server/namenode/NNStorage;Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;)Z, BB[SSA:-1..-2]10 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.format(Lorg/apache/hadoop/hdfs/server/namenode/NNStorage;Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;)Z], numberOfBasicBlocks=4, firstLineNumber=265, lastLineNumber=265, firstMethodNumber=264, lastMethodNumber=271, isFirstLineValid=true, methodSrcCode=
+    // Check with the user before blowing away data.
+    if (!Storage.confirmFormat(storage.dirIterable(null), force, interactive)) {
+      storage.close();
+      return false;
+    } else {
+      // Format the storage (writes VERSION file)
+      storage.format(nsInfo);
+      return true;
+    }
+}

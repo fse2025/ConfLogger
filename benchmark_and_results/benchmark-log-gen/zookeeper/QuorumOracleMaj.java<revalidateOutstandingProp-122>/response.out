@@ -1,0 +1,34 @@
+```java
+LOG.debug("Start Revalidation outstandingProposals");
+try {
+    while (outstandingProposal.size() >= 1) {
+        outstandingProposal.sort((o1, o2) -> (int) (o1.getZxid() - o2.getZxid()));
+
+        Leader.Proposal p;
+        int i = 0;
+        while (i < outstandingProposal.size()) {
+            p = outstandingProposal.get(i);
+            if (p.getZxid() > lastCommitted) {
+                // ConfLogger Commented: Not Informative
+                // LOG.debug("Re-validate outstanding proposal: 0x{} size:{} lastCommitted:{}", Long.toHexString(p.getZxid()), outstandingProposal.size(), Long.toHexString(lastCommitted));
+                // ConfLogger Inserted Start
+                logger.debug("Re-validate outstanding proposal: zxid=0x{} size={} lastCommitted=0x{}", Long.toHexString(p.getZxid()), outstandingProposal.size(), Long.toHexString(lastCommitted));
+                // ConfLogger Inserted End
+                if (!self.tryToCommit(p, p.getZxid(), null)) {
+                    break;
+                } else {
+                    lastCommitted = p.getZxid();
+                    outstandingProposal.remove(p);
+                }
+            }
+        }
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+    return false;
+}
+
+LOG.debug("Finish Revalidation outstandingProposals");
+return true;
+}
+```

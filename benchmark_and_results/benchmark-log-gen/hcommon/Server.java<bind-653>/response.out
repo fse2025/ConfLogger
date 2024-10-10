@@ -1,0 +1,36 @@
+```java
+IntegerRanges range = null;
+if (rangeConf != null) {
+    range = conf.getRange(rangeConf, "");
+}
+if (range == null || range.isEmpty() || (address.getPort() != 0)) {
+    // ConfLogger Inserted Start
+    logger.info("Binding socket to address with backlog. Configuration parameter 'rangeConf' is null or empty, or address port is not 0. rangeConf: " + rangeConf + ", address port: " + address.getPort());
+    // ConfLogger Inserted End
+    socket.bind(address, backlog);
+} else {
+    for (Integer port : range) {
+        if (socket.isBound()) break;
+        try {
+            InetSocketAddress temp = new InetSocketAddress(address.getAddress(), port);
+            socket.bind(temp, backlog);
+        } catch(BindException e) {
+            // ConfLogger Commented: Not Informative
+            // Ignored
+        }
+    }
+    if (!socket.isBound()) {
+        // ConfLogger Inserted Start
+        logger.error("Could not find a free port in the specified range. Configuration parameter 'rangeConf': " + rangeConf + ", range: " + range);
+        // ConfLogger Inserted End
+        throw new BindException("Could not find a free port in "+range);
+    }
+}
+} catch (SocketException e) {
+    // ConfLogger Inserted Start
+    logger.error("SocketException occurred while binding socket. Configuration parameter 'rangeConf': " + rangeConf + ", address: " + address + ", backlog: " + backlog, e);
+    // ConfLogger Inserted End
+    throw NetUtils.wrapException(null, 0, address.getHostName(), address.getPort(), e);
+}
+}
+```

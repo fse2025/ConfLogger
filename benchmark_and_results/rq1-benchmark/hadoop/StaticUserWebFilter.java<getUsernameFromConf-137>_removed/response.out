@@ -1,0 +1,29 @@
+```java
+static String getUsernameFromConf(Configuration conf) {
+    String oldStyleUgi = conf.get(DEPRECATED_UGI_KEY);
+    if (oldStyleUgi != null) {
+        // We can't use the normal configuration deprecation mechanism here
+        // since we need to split out the username from the configured UGI.
+        String[] parts = oldStyleUgi.split(",");
+        // ConfLogger Inserted Start
+        logger.info("Using deprecated UGI configuration. Extracted username from UGI: " + parts[0] + ". Configuration key: " + DEPRECATED_UGI_KEY + ", value: " + oldStyleUgi);
+        // ConfLogger Inserted End
+        return parts[0];
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("Using default or static user configuration. Configuration key: " + HADOOP_HTTP_STATIC_USER + ", default value: " + DEFAULT_HADOOP_HTTP_STATIC_USER);
+        // ConfLogger Inserted End
+        return conf.get(HADOOP_HTTP_STATIC_USER, DEFAULT_HADOOP_HTTP_STATIC_USER);
+    }
+}
+```
+
+### Explanation:
+- **Type Identification**: The code snippet is of type 3, as it configures the behavior of the system based on the configuration parameter value. The behavior changes depending on whether `oldStyleUgi` is set or not.
+- **Log Insertion**: 
+  - For the `if` block, a log statement is inserted to indicate that the deprecated UGI configuration is being used and the username is extracted from it.
+  - For the `else` block, a log statement is inserted to indicate that the default or static user configuration is being used.
+- **Log Level**: The log level chosen is `info` because the information is about the configuration being used, which is important for understanding system behavior but not indicative of an error or warning.
+- **Log Content**: 
+  - The log messages include the configuration key and value being used, which helps in understanding the configuration-related execution information.
+  - The extracted username is also logged to provide more context on the operation being performed.

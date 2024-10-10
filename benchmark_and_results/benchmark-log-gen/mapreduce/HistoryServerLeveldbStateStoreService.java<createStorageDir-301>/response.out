@@ -1,0 +1,14 @@
+```java
+String confPath = conf.get(JHAdminConfig.MR_HS_LEVELDB_STATE_STORE_PATH);
+if (confPath == null) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter '{}' is not set. Please configure the store location directory in '{}'.", JHAdminConfig.MR_HS_LEVELDB_STATE_STORE_PATH, JHAdminConfig.MR_HS_LEVELDB_STATE_STORE_PATH);
+    // ConfLogger Inserted End
+    throw new IOException("No store location directory configured in " + JHAdminConfig.MR_HS_LEVELDB_STATE_STORE_PATH);
+}
+Path root = new Path(confPath, DB_NAME);
+FileSystem fs = FileSystem.getLocal(conf);
+fs.mkdirs(root, new FsPermission((short)0700));
+return root;
+}
+```

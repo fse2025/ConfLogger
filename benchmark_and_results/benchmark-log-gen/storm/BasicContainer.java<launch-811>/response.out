@@ -1,0 +1,53 @@
+```java
+type.assertFull();
+String numaId = SupervisorUtils.getNumaIdForPort(port, conf);
+if (numaId == null) {
+    LOG.info("Launching worker with assignment {} for this supervisor {} on port {} with id {}",
+    assignment, supervisorId, port, workerId);
+} else {
+    LOG.info("Launching worker with assignment {} for this supervisor {} on port {} with id {}  bound to numa zone {}",
+    assignment, supervisorId, port, workerId, numaId);
+}
+exitedEarly = false;
+
+final WorkerResources resources = assignment.get_resources();
+final int memOnHeap = getMemOnHeap(resources);
+final int memOffHeap = getMemOffHeap(resources);
+memoryLimitMb = calculateMemoryLimit(resources, memOnHeap);
+final String stormRoot = ConfigUtils.supervisorStormDistRoot(conf, topologyId);
+String jlp = javaLibraryPath(stormRoot, conf);
+
+Map<String, String> topEnvironment = new HashMap<String, String>();
+@SuppressWarnings("unchecked")
+Map<String, String> environment = (Map<String, String>) topoConf.get(Config.TOPOLOGY_ENVIRONMENT);
+if (environment != null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'Config.TOPOLOGY_ENVIRONMENT' is set. Merging with topEnvironment. Value: {}", environment);
+    // ConfLogger Inserted End
+    topEnvironment.putAll(environment);
+}
+
+String ldLibraryPath = topEnvironment.get("LD_LIBRARY_PATH");
+if (ldLibraryPath != null) {
+    jlp = jlp + System.getProperty("path.separator") + ldLibraryPath;
+}
+
+topEnvironment.put("LD_LIBRARY_PATH", jlp);
+
+if (resourceIsolationManager.isResourceManaged()) {
+    final int cpu = (int) Math.ceil(resources.get_cpu());
+    //Save the memory limit so we can enforce it less strictly
+    resourceIsolationManager.reserveResourcesForWorker(workerId, (int) memoryLimitMb, cpu, numaId);
+}
+
+List<String> commandList = mkLaunchCommand(memOnHeap, memOffHeap, stormRoot, jlp, numaId);
+
+LOG.info("Launching worker with command: {}. ", ServerUtils.shellCmd(commandList));
+
+String workerDir = ConfigUtils.workerRoot(conf, workerId);
+
+String logPrefix = "Worker Process " + workerId;
+ProcessExitCallback processExitCallback = new ProcessExitCallback(logPrefix);
+resourceIsolationManager.launchWorkerProcess(getWorkerUser(), topologyId, topoConf, port, workerId,
+commandList, topEnvironment, logPrefix, processExitCallback, new File(workerDir));
+```

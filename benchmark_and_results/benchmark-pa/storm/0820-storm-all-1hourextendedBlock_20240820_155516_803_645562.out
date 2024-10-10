@@ -1,0 +1,80 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ConfigUtils.java	methodSinagture:	org.apache.storm.utils.ConfigUtils.absoluteStormLocalDir(Ljava/util/Map;)Ljava/lang/String;	methodLines:	240:249
+blockLines:	243:-1
+paras:	storm.local.dir
+TaintedStat:	NORMAL absoluteStormLocalDir:conditional branch(ne, to iindex=15) 9,10 Node: < Application, Lorg/apache/storm/utils/ConfigUtils, absoluteStormLocalDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ConfigUtils, absoluteStormLocalDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere[5]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,6 @9 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ConfigUtils, absoluteStormLocalDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere[5]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,6 @9 exception:7
+NORMAL absoluteStormLocalDir:9 = checkcast <Application,Ljava/lang/String>8 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/utils/ConfigUtils, absoluteStormLocalDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere
+NORMAL absoluteStormLocalDir:conditional branch(ne, to iindex=15) 9,10 Node: < Application, Lorg/apache/storm/utils/ConfigUtils, absoluteStormLocalDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static String absoluteStormLocalDir(Map<String, Object> conf) {
+        String stormHome = System.getProperty(STORM_HOME);
+        String localDir = (String) conf.get(Config.STORM_LOCAL_DIR);
+        if (localDir == null) {
+            return (stormHome + FILE_SEPARATOR + "storm-local");
+        } else {
+            if (new File(localDir).isAbsolute()) {
+                return localDir;
+            } else {
+                return (stormHome + FILE_SEPARATOR + localDir);
+            }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ServerConfigUtils, masterLocalDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.utils.ServerConfigUtils.masterLocalDir(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ServerConfigUtils.masterLocalDir(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:2..3]2 - org.apache.storm.utils.ServerConfigUtils.masterLocalDir(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]7 - org.apache.storm.utils.ServerConfigUtils.masterLocalDir(Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=57, lastLineNumber=58, firstMethodNumber=57, lastMethodNumber=60, isFirstLineValid=false, methodSrcCode=
+    public static String masterLocalDir(Map<String, Object> conf) throws IOException {
+        String ret = ConfigUtils.absoluteStormLocalDir(conf) + FILE_SEPARATOR + "nimbus";
+        FileUtils.forceMkdir(new File(ret));
+        return ret;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ConfigUtils, absoluteStormBlobStoreDir(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:8..9]4 - org.apache.storm.utils.ConfigUtils.absoluteStormBlobStoreDir(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:4..7]3 - org.apache.storm.utils.ConfigUtils.absoluteStormBlobStoreDir(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:10..10]5 - org.apache.storm.utils.ConfigUtils.absoluteStormBlobStoreDir(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]14 - org.apache.storm.utils.ConfigUtils.absoluteStormBlobStoreDir(Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=255, lastLineNumber=257, firstMethodNumber=254, lastMethodNumber=263, isFirstLineValid=true, methodSrcCode=
+    public static String absoluteStormBlobStoreDir(Map<String, Object> conf) {
+        String blobStoreDir = (String) conf.get(Config.BLOBSTORE_DIR);
+        if (blobStoreDir == null) {
+            return ConfigUtils.absoluteStormLocalDir(conf);
+        } else {
+            if (new File(blobStoreDir).isAbsolute()) {
+                return blobStoreDir;
+            } else {
+                String stormHome = System.getProperty(STORM_HOME);
+                return (stormHome + FILE_SEPARATOR + blobStoreDir);
+            }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ConfigUtils, supervisorLocalDirImpl(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.utils.ConfigUtils.supervisorLocalDirImpl(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ConfigUtils.supervisorLocalDirImpl(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:2..3]2 - org.apache.storm.utils.ConfigUtils.supervisorLocalDirImpl(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]7 - org.apache.storm.utils.ConfigUtils.supervisorLocalDirImpl(Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=482, lastLineNumber=483, firstMethodNumber=482, lastMethodNumber=485, isFirstLineValid=false, methodSrcCode=
+    public String supervisorLocalDirImpl(Map<String, Object> conf) throws IOException {
+        String ret = ConfigUtils.absoluteStormLocalDir(conf) + FILE_SEPARATOR + "supervisor";
+        FileUtils.forceMkdir(new File(ret));
+        return ret;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ConfigUtils, workerUserRoot(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.utils.ConfigUtils.workerUserRoot(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ConfigUtils.workerUserRoot(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:2..3]2 - org.apache.storm.utils.ConfigUtils.workerUserRoot(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.storm.utils.ConfigUtils.workerUserRoot(Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=398, lastLineNumber=399, firstMethodNumber=398, lastMethodNumber=399, isFirstLineValid=false, methodSrcCode=
+    public static String workerUserRoot(Map<String, Object> conf) {
+        return (absoluteStormLocalDir(conf) + FILE_SEPARATOR + "workers-users");
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/metrics2/reporters/CsvStormReporter, getCsvLogDir(Ljava/util/Map;Ljava/util/Map;)Ljava/io/File; > Context: Everywhere, blocks=[BB[SSA:9..10]4 - org.apache.storm.metrics2.reporters.CsvStormReporter.getCsvLogDir(Ljava/util/Map;Ljava/util/Map;)Ljava/io/File;, BB[SSA:5..8]3 - org.apache.storm.metrics2.reporters.CsvStormReporter.getCsvLogDir(Ljava/util/Map;Ljava/util/Map;)Ljava/io/File;, BB[SSA:11..14]5 - org.apache.storm.metrics2.reporters.CsvStormReporter.getCsvLogDir(Ljava/util/Map;Ljava/util/Map;)Ljava/io/File;, BB[SSA:-1..-2]11 - org.apache.storm.metrics2.reporters.CsvStormReporter.getCsvLogDir(Ljava/util/Map;Ljava/util/Map;)Ljava/io/File;], numberOfBasicBlocks=4, firstLineNumber=33, lastLineNumber=36, firstMethodNumber=32, lastMethodNumber=40, isFirstLineValid=true, methodSrcCode=
+    private static File getCsvLogDir(Map stormConf, Map reporterConf) {
+        String csvMetricsLogDirectory = ObjectReader.getString(reporterConf.get(CSV_LOG_DIR), null);
+        if (csvMetricsLogDirectory == null) {
+            csvMetricsLogDirectory = ConfigUtils.absoluteStormLocalDir(stormConf);
+            csvMetricsLogDirectory = csvMetricsLogDirectory + ConfigUtils.FILE_SEPARATOR + "csvmetrics";
+        }
+        File csvMetricsDir = new File(csvMetricsLogDirectory);
+        validateCreateOutputDir(csvMetricsDir);
+        return csvMetricsDir;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ConfigUtils, workerRootImpl(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.utils.ConfigUtils.workerRootImpl(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ConfigUtils.workerRootImpl(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:2..3]2 - org.apache.storm.utils.ConfigUtils.workerRootImpl(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]4 - org.apache.storm.utils.ConfigUtils.workerRootImpl(Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=472, lastLineNumber=473, firstMethodNumber=472, lastMethodNumber=473, isFirstLineValid=false, methodSrcCode=
+    public String workerRootImpl(Map<String, Object> conf) {
+        return (absoluteStormLocalDir(conf) + FILE_SEPARATOR + "workers");
+    }
+}

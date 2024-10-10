@@ -1,0 +1,50 @@
+```java
+if (trustStorePassword == null) {
+    // ConfLogger Inserted Start
+    logger.warn("trustStorePassword is null, setting it to EMPTY_CHAR_ARRAY.");
+    // ConfLogger Inserted End
+    trustStorePassword = EMPTY_CHAR_ARRAY;
+}
+
+try {
+    KeyStoreFileType storeFileType =
+        KeyStoreFileType.fromPropertyValueOrFileName(trustStoreType, trustStoreLocation);
+    KeyStore ts = FileKeyStoreLoaderBuilderProvider.getBuilderForKeyStoreFileType(storeFileType)
+        .setTrustStorePath(trustStoreLocation).setTrustStorePassword(trustStorePassword).build()
+        .loadTrustStore();
+
+    PKIXBuilderParameters pbParams = new PKIXBuilderParameters(ts, new X509CertSelector());
+    if (crlEnabled || ocspEnabled) {
+        pbParams.setRevocationEnabled(true);
+        System.setProperty("com.sun.net.ssl.checkRevocation", "true");
+        if (crlEnabled) {
+            System.setProperty("com.sun.security.enableCRLDP", "true");
+        }
+        if (ocspEnabled) {
+            Security.setProperty("ocsp.enable", "true");
+        }
+        // ConfLogger Inserted Start
+        logger.info("Revocation checking enabled. crlEnabled: {}, ocspEnabled: {}", crlEnabled, ocspEnabled);
+        // ConfLogger Inserted End
+    } else {
+        pbParams.setRevocationEnabled(false);
+        // ConfLogger Inserted Start
+        logger.info("Revocation checking disabled. crlEnabled: {}, ocspEnabled: {}", crlEnabled, ocspEnabled);
+        // ConfLogger Inserted End
+    }
+
+    // Revocation checking is only supported with the PKIX algorithm
+    TrustManagerFactory tmf = TrustManagerFactory.getInstance("PKIX");
+    tmf.init(new CertPathTrustManagerParameters(pbParams));
+
+    for (final TrustManager tm : tmf.getTrustManagers()) {
+        if (tm instanceof X509ExtendedTrustManager) {
+            return new HBaseTrustManager((X509ExtendedTrustManager) tm, verifyHostName,
+                allowReverseDnsLookup);
+        }
+    }
+    throw new TrustManagerException("Couldn't find X509TrustManager");
+} catch (IOException | GeneralSecurityException | IllegalArgumentException e) {
+    throw new TrustManagerException(e);
+}
+```

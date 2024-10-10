@@ -1,0 +1,23 @@
+```java
+Class<? extends CompressionCodec> codecClass = defaultValue;
+String name = get(JobContext.MAP_OUTPUT_COMPRESS_CODEC);
+if (name != null) {
+    // ConfLogger Inserted Start
+    logger.debug("MAP_OUTPUT_COMPRESS_CODEC is set to: " + name);
+    // ConfLogger Inserted End
+    try {
+        codecClass = getClassByName(name).asSubclass(CompressionCodec.class);
+    } catch (ClassNotFoundException e) {
+        // ConfLogger Inserted Start
+        logger.error("Failed to find the specified compression codec class for MAP_OUTPUT_COMPRESS_CODEC: " + name, e);
+        // ConfLogger Inserted End
+        throw new IllegalArgumentException("Compression codec " + name + " was not found.", e);
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.info("MAP_OUTPUT_COMPRESS_CODEC is not set. Using default compression codec.");
+    // ConfLogger Inserted End
+}
+return codecClass;
+}
+```

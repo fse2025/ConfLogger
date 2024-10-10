@@ -1,0 +1,69 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	GrpcChannelBuilder.java	methodSinagture:	alluxio.grpc.GrpcChannelBuilder.build()Lalluxio/grpc/GrpcChannel;	methodLines:	150:171
+blockLines:	168:-1
+paras:	null
+TaintedStat:	NORMAL build:conditional branch(eq, to iindex=59) 33,21 Node: < Application, Lalluxio/grpc/GrpcChannelBuilder, build()Lalluxio/grpc/GrpcChannel; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/grpc/GrpcChannelBuilder, build()Lalluxio/grpc/GrpcChannel; > Context: Everywhere[51]33 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 30,31 @97 exception:32
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/grpc/GrpcChannelBuilder, build()Lalluxio/grpc/GrpcChannel; > Context: Everywhere[51]33 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 30,31 @97 exception:32
+NORMAL build:conditional branch(eq, to iindex=59) 33,21 Node: < Application, Lalluxio/grpc/GrpcChannelBuilder, build()Lalluxio/grpc/GrpcChannel; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // Acquire a connection from the pool.
+    GrpcChannel channel =
+        GrpcChannelPool.INSTANCE.acquireChannel(mNetworkGroup, mAddress,
+            mConfiguration, mAlwaysEnableTLS);
+    try {
+      channel.authenticate(mAuthType, mParentSubject, mConfiguration);
+    } catch (Throwable t) {
+      try {
+        channel.close();
+      } catch (Exception e) {
+        throw new RuntimeException(
+            String.format("Failed to release the connection: %s", channel.getChannelKey()), e);
+      }
+      if (t instanceof AlluxioStatusException) {
+        throw t;
+      }
+      throw AlluxioStatusException.fromThrowable(t);
+    }
+    if (mConfiguration.getBoolean(PropertyKey.USER_CLIENT_REPORT_VERSION_ENABLED)) {
+      channel.intercept(new ClientVersionClientInjector());
+    }
+    return channel;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/AbstractClient, createChannel()Lalluxio/grpc/GrpcChannel; > Context: Everywhere, blocks=[BB[SSA:14..14]9 - alluxio.AbstractClient.createChannel()Lalluxio/grpc/GrpcChannel;, BB[SSA:13..13]8 - alluxio.AbstractClient.createChannel()Lalluxio/grpc/GrpcChannel;, BB[SSA:15..15]10 - alluxio.AbstractClient.createChannel()Lalluxio/grpc/GrpcChannel;, BB[SSA:-1..-2]11 - alluxio.AbstractClient.createChannel()Lalluxio/grpc/GrpcChannel;], numberOfBasicBlocks=4, firstLineNumber=241, lastLineNumber=239, firstMethodNumber=237, lastMethodNumber=239, isFirstLineValid=true, methodSrcCode=
+  protected GrpcChannel createChannel() throws AlluxioStatusException {
+    AlluxioConfiguration conf = mContext.getClusterConf();
+    return GrpcChannelBuilder
+        .newBuilder(mServerAddress, conf, mAlwaysEnableTLS)
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/master/PollingMasterInquireClient, pingMetaService(Ljava/net/InetSocketAddress;)V > Context: Everywhere, blocks=[BB[SSA:10..10]8 - alluxio.master.PollingMasterInquireClient.pingMetaService(Ljava/net/InetSocketAddress;)V, BB[SSA:9..9]7 - alluxio.master.PollingMasterInquireClient.pingMetaService(Ljava/net/InetSocketAddress;)V, BB[SSA:11..13]9 - alluxio.master.PollingMasterInquireClient.pingMetaService(Ljava/net/InetSocketAddress;)V, BB[SSA:-1..-2]26 - alluxio.master.PollingMasterInquireClient.pingMetaService(Ljava/net/InetSocketAddress;)V], numberOfBasicBlocks=4, firstLineNumber=226, lastLineNumber=228, firstMethodNumber=222, lastMethodNumber=239, isFirstLineValid=true, methodSrcCode=
+    // disable authentication in the channel since version service does not require authentication
+    GrpcChannel channel =
+        GrpcChannelBuilder.newBuilder(GrpcServerAddress.create(address), mConfiguration)
+            .setSubject(mUserState.getSubject())
+            .disableAuthentication().build();
+    ServiceVersionClientServiceGrpc.ServiceVersionClientServiceBlockingStub versionClient =
+        ServiceVersionClientServiceGrpc.newBlockingStub(channel)
+            .withDeadlineAfter(mConfiguration.getMs(PropertyKey.USER_MASTER_POLLING_TIMEOUT),
+                TimeUnit.MILLISECONDS);
+    try {
+      versionClient.getServiceVersion(GetServiceVersionPRequest.newBuilder()
+          .setServiceType(mServiceType).build());
+    } catch (StatusRuntimeException e) {
+      throw AlluxioStatusException.fromThrowable(e);
+    } finally {
+      channel.shutdown();
+    }
+  }
+
+}

@@ -1,0 +1,40 @@
+```java
+private boolean deprecatedConf(Configuration conf) {
+    String[] queues = null;
+    String queueNameValues = getQueueNames(conf);
+    if (queueNameValues == null) {
+        return false;
+    } else {
+        LOG.warn(
+            "Configuring \"" + MAPRED_QUEUE_NAMES_KEY
+            + "\" in mapred-site.xml or "
+            + "hadoop-site.xml is deprecated and will overshadow "
+            + QUEUE_CONF_FILE_NAME + ". Remove this property and configure "
+            + "queue hierarchy in " + QUEUE_CONF_FILE_NAME);
+        // store queues so we can check if ACLs are also configured
+        // in the deprecated files.
+        queues = conf.getStrings(MAPRED_QUEUE_NAMES_KEY);
+    }
+
+    // check if acls are defined
+    if (queues != null) {
+        for (String queue : queues) {
+            for (QueueACL qAcl : QueueACL.values()) {
+                String key = toFullPropertyName(queue, qAcl.getAclName());
+                String aclString = conf.get(key);
+                if (aclString != null) {
+                    // ConfLogger Skipped: The existing log message already provides information about deprecated configuration and suggests proper configuration.
+                    LOG.warn(
+                        "Configuring queue ACLs in mapred-site.xml or " +
+                        "hadoop-site.xml is deprecated. Configure queue ACLs in " +
+                        QUEUE_CONF_FILE_NAME);
+                    // even if one string is configured, it is enough for printing
+                    // the warning. so we can return from here.
+                    return true;
+                }
+            }
+        }
+    }
+    return true;
+}
+```

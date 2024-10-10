@@ -1,0 +1,116 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Mover.java	methodSinagture:	org.apache.hadoop.hdfs.server.mover.Mover.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicInteger;Ljava/util/Map;)V	methodLines:	123:157
+blockLines:	140:-1
+paras:	dfs.mover.retry.max.attempts
+TaintedStat:	NORMAL <init>:conditional branch(lt, to iindex=34) 27,28 Node: < Application, Lorg/apache/hadoop/hdfs/server/mover/Mover, <init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicInteger;Ljava/util/Map;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/mover/Mover, <init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicInteger;Ljava/util/Map;)V > Context: Everywhere[25]27 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 3,24,25 @51 exception:26
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/mover/Mover, <init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicInteger;Ljava/util/Map;)V > Context: Everywhere[25]27 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 3,24,25 @51 exception:26
+NORMAL <init>:conditional branch(lt, to iindex=34) 27,28 Node: < Application, Lorg/apache/hadoop/hdfs/server/mover/Mover, <init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicInteger;Ljava/util/Map;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  Mover(NameNodeConnector nnc, Configuration conf, AtomicInteger retryCount,
+      Map<Long, Set<DatanodeInfo>> excludedPinnedBlocks) {
+    final long movedWinWidth = conf.getLong(
+        DFSConfigKeys.DFS_MOVER_MOVEDWINWIDTH_KEY,
+        DFSConfigKeys.DFS_MOVER_MOVEDWINWIDTH_DEFAULT);
+    final int moverThreads = conf.getInt(
+        DFSConfigKeys.DFS_MOVER_MOVERTHREADS_KEY,
+        DFSConfigKeys.DFS_MOVER_MOVERTHREADS_DEFAULT);
+    final int maxConcurrentMovesPerNode = conf.getInt(
+        DFSConfigKeys.DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY,
+        DFSConfigKeys.DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT);
+    final int maxNoMoveInterval = conf.getInt(
+        DFSConfigKeys.DFS_MOVER_MAX_NO_MOVE_INTERVAL_KEY,
+        DFSConfigKeys.DFS_MOVER_MAX_NO_MOVE_INTERVAL_DEFAULT);
+    final int maxAttempts = conf.getInt(
+        DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_KEY,
+        DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_DEFAULT);
+    if (maxAttempts >= 0) {
+      this.retryMaxAttempts = maxAttempts;
+    } else {
+      LOG.warn(DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_KEY + " is "
+          + "configured with a negative value, using default value of "
+          + DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_DEFAULT);
+      this.retryMaxAttempts = DFSConfigKeys.DFS_MOVER_RETRY_MAX_ATTEMPTS_DEFAULT;
+    }
+    this.retryCount = retryCount;
+    this.dispatcher = new Dispatcher(nnc, Collections.<String> emptySet(),
+        Collections.<String> emptySet(), movedWinWidth, moverThreads, 0,
+        maxConcurrentMovesPerNode, maxNoMoveInterval, conf);
+    this.storages = new StorageMap();
+    this.targetPaths = nnc.getTargetPaths();
+    this.blockStoragePolicies = new BlockStoragePolicy[1 <<
+        BlockStoragePolicySuite.ID_BIT_LENGTH];
+    this.excludedPinnedBlocks = excludedPinnedBlocks;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/mover/Mover, run(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere, blocks=[BB[SSA:65..70]29 - org.apache.hadoop.hdfs.server.mover.Mover.run(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)I, BB[SSA:63..64]28 - org.apache.hadoop.hdfs.server.mover.Mover.run(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)I, BB[SSA:71..73]30 - org.apache.hadoop.hdfs.server.mover.Mover.run(Ljava/util/Map;Lorg/apache/hadoop/conf/Configuration;)I], numberOfBasicBlocks=3, firstLineNumber=663, lastLineNumber=667, firstMethodNumber=638, lastMethodNumber=695, isFirstLineValid=true, methodSrcCode=
+      throws IOException, InterruptedException {
+    final long sleeptime =
+        conf.getTimeDuration(DFSConfigKeys.DFS_HEARTBEAT_INTERVAL_KEY,
+            DFSConfigKeys.DFS_HEARTBEAT_INTERVAL_DEFAULT,
+            TimeUnit.SECONDS, TimeUnit.MILLISECONDS) * 2 +
+        conf.getTimeDuration(
+            DFSConfigKeys.DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY,
+            DFSConfigKeys.DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_DEFAULT,
+            TimeUnit.SECONDS, TimeUnit.MILLISECONDS);
+    AtomicInteger retryCount = new AtomicInteger(0);
+    // TODO: Need to limit the size of the pinned blocks to limit memory usage
+    Map<Long, Set<DatanodeInfo>> excludedPinnedBlocks = new HashMap<>();
+    LOG.info("namenodes = " + namenodes);
+
+    checkKeytabAndInit(conf);
+    List<NameNodeConnector> connectors = Collections.emptyList();
+    try {
+      connectors = NameNodeConnector.newNameNodeConnectors(namenodes,
+          Mover.class.getSimpleName(), HdfsServerConstants.MOVER_ID_PATH, conf,
+          NameNodeConnector.DEFAULT_MAX_IDLE_ITERATIONS);
+
+      while (connectors.size() > 0) {
+        Collections.shuffle(connectors);
+        Iterator<NameNodeConnector> iter = connectors.iterator();
+        while (iter.hasNext()) {
+          NameNodeConnector nnc = iter.next();
+          final Mover m = new Mover(nnc, conf, retryCount,
+              excludedPinnedBlocks);
+
+          final ExitStatus r = m.run();
+
+          if (r == ExitStatus.SUCCESS) {
+            IOUtils.cleanupWithLogger(LOG, nnc);
+            iter.remove();
+          } else if (r != ExitStatus.IN_PROGRESS) {
+            if (r == ExitStatus.NO_MOVE_PROGRESS) {
+              System.err.println("Failed to move some blocks after "
+                  + m.retryMaxAttempts + " retries. Exiting...");
+            } else if (r == ExitStatus.NO_MOVE_BLOCK) {
+              System.err.println("Some blocks can't be moved. Exiting...");
+            } else {
+              System.err.println("Mover failed. Exiting with status " + r
+                  + "... ");
+            }
+            // must be an error statue, return
+            return r.getExitCode();
+          }
+        }
+        Thread.sleep(sleeptime);
+      }
+      System.out.println("Mover Successful: all blocks satisfy"
+          + " the specified storage policy. Exiting...");
+      return ExitStatus.SUCCESS.getExitCode();
+    } finally {
+      for (NameNodeConnector nnc : connectors) {
+        IOUtils.cleanupWithLogger(LOG, nnc);
+      }
+    }
+  }
+}

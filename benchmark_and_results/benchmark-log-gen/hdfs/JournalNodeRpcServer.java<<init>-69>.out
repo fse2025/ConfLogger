@@ -1,0 +1,121 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JournalNodeRpcServer.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.server.JournalNodeRpcServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;)V	methodLines:	69:122
+blockLines:	117:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=102) 75,61 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;)V > Context: Everywhere[92]75 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 6,73,61 @197 exception:74
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;)V > Context: Everywhere[92]75 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 6,73,61 @197 exception:74
+NORMAL <init>:conditional branch(eq, to iindex=102) 75,61 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JournalNodeRpcServer.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.server.JournalNodeRpcServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;)V	methodLines:	69:122
+blockLines:	82:-1
+paras:	dfs.journalnode.rpc-bind-host
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=28) 16,14 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;)V > Context: Everywhere[20]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,13,14 @35 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;)V > Context: Everywhere[20]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,13,14 @35 exception:15
+NORMAL <init>:conditional branch(ne, to iindex=28) 16,14 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeRpcServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+  JournalNodeRpcServer(Configuration conf, JournalNode jn) throws IOException {
+    this.jn = jn;
+    
+    Configuration confCopy = new Configuration(conf);
+    
+    // Ensure that nagling doesn't kick in, which could cause latency issues.
+    confCopy.setBoolean(
+        CommonConfigurationKeysPublic.IPC_SERVER_TCPNODELAY_KEY,
+        true);
+    
+    InetSocketAddress addr = getAddress(confCopy);
+    String bindHost = conf.getTrimmed(DFS_JOURNALNODE_RPC_BIND_HOST_KEY, null);
+    if (bindHost == null) {
+      bindHost = addr.getHostName();
+    }
+    LOG.info("RPC server is binding to " + bindHost + ":" + addr.getPort());
+
+    RPC.setProtocolEngine(confCopy, QJournalProtocolPB.class,
+        ProtobufRpcEngine2.class);
+    QJournalProtocolServerSideTranslatorPB translator =
+        new QJournalProtocolServerSideTranslatorPB(this);
+    BlockingService service = QJournalProtocolService
+        .newReflectiveBlockingService(translator);
+    
+    this.server = new RPC.Builder(confCopy)
+        .setProtocol(QJournalProtocolPB.class)
+        .setInstance(service)
+        .setBindAddress(bindHost)
+        .setPort(addr.getPort())
+        .setNumHandlers(HANDLER_COUNT)
+        .setVerbose(false)
+        .build();
+
+
+    //Adding InterQJournalProtocolPB to server
+    InterQJournalProtocolServerSideTranslatorPB
+        qJournalProtocolServerSideTranslatorPB = new
+        InterQJournalProtocolServerSideTranslatorPB(this);
+
+    BlockingService interQJournalProtocolService = InterQJournalProtocolService
+        .newReflectiveBlockingService(qJournalProtocolServerSideTranslatorPB);
+
+    DFSUtil.addPBProtocol(confCopy, InterQJournalProtocolPB.class,
+        interQJournalProtocolService, server);
+
+
+    // set service-level authorization security policy
+    if (confCopy.getBoolean(
+      CommonConfigurationKeys.HADOOP_SECURITY_AUTHORIZATION, false)) {
+          server.refreshServiceAcl(confCopy, new HDFSPolicyProvider());
+    }
+    this.server.setTracer(jn.tracer);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, start()V > Context: Everywhere, blocks=[BB[SSA:74..75]40 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.start()V, BB[SSA:71..73]39 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.start()V, BB[SSA:76..76]41 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.start()V, BB[SSA:-1..-2]49 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.start()V], numberOfBasicBlocks=4, firstLineNumber=247, lastLineNumber=247, firstMethodNumber=221, lastMethodNumber=255, isFirstLineValid=true, methodSrcCode=
+  public void start() throws IOException {
+    Preconditions.checkState(!isStarted(), "JN already running");
+
+    try {
+
+      for (File journalDir : localDir) {
+        validateAndCreateJournalDir(journalDir);
+      }
+      DefaultMetricsSystem.initialize("JournalNode");
+      JvmMetrics.create("JournalNode",
+          conf.get(DFSConfigKeys.DFS_METRICS_SESSION_ID_KEY),
+          DefaultMetricsSystem.instance());
+
+      InetSocketAddress socAddr = JournalNodeRpcServer.getAddress(conf);
+      SecurityUtil.login(conf, DFSConfigKeys.DFS_JOURNALNODE_KEYTAB_FILE_KEY,
+          DFSConfigKeys.DFS_JOURNALNODE_KERBEROS_PRINCIPAL_KEY,
+          socAddr.getHostName());
+
+      registerJNMXBean();
+
+      httpServer = new JournalNodeHttpServer(conf, this,
+          getHttpServerBindAddress(conf));
+      httpServer.start();
+
+      httpServerURI = httpServer.getServerURI().toString();
+
+      rpcServer = new JournalNodeRpcServer(conf, this);
+      rpcServer.start();
+    } catch (IOException ioe) {
+      //Shutdown JournalNode of JournalNodeRpcServer fails to start
+      LOG.error("Failed to start JournalNode.", ioe);
+      this.stop(1);
+      throw ioe;
+    }
+  }
+
+}

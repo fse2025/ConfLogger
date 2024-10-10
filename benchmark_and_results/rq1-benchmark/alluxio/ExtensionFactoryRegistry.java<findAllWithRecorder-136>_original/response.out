@@ -1,0 +1,55 @@
+```java
+public List<T> findAllWithRecorder(String path, S conf, Recorder recorder) {
+    Preconditions.checkArgument(path != null, "path may not be null");
+
+    List<T> eligibleFactories = scanRegistered(path, conf);
+    if (!eligibleFactories.isEmpty()) {
+        // ConfLogger Skipped: The log message already contains configuration-related information about the path and the number of eligible items.
+        LOG.debug("Find {} eligible items from registered factories for path {}",
+                eligibleFactories.size(), path);
+        return eligibleFactories;
+    }
+
+    List<T> factories = new ArrayList<>(mFactories);
+    String libDir = PathUtils.concatPath(conf.getString(PropertyKey.HOME), "lib");
+    String extensionDir = conf.getString(PropertyKey.EXTENSIONS_DIR);
+    scanLibs(factories, libDir);
+    recorder.record("Loaded {} factory core jars from {}", factories.size(), libDir);
+    scanExtensions(factories, extensionDir);
+    recorder.record("Loaded extension jars from {}.%n"
+            + "The total number of loaded factory core jars is {}", extensionDir, factories.size());
+
+    if (conf.isSetByUser(PropertyKey.UNDERFS_VERSION)) {
+        recorder.record("alluxio.underfs.version is set by user, target version is {}",
+                conf.getString(PropertyKey.UNDERFS_VERSION));
+    } else {
+        recorder.record("alluxio.underfs.version is not set by user");
+    }
+
+    for (T factory : factories) {
+        // if `getVersion` returns null set the version to "unknown"
+        String version = UNKNOWN_VERSION;
+        if (factory instanceof UnderFileSystemFactory) {
+            version = Optional.ofNullable(((UnderFileSystemFactory) factory)
+                    .getVersion()).orElse(UNKNOWN_VERSION);
+        }
+        if (factory.supportsPath(path, conf)) {
+            String message =
+                    String.format("Adding factory %s of version %s which supports path %s",
+                            factory.getClass().getSimpleName(), version, path);
+            recorder.record(message);
+            LOG.debug(message);
+            eligibleFactories.add(factory);
+        } else {
+            recorder.record("Factory implementation {} of version {} "
+                    + "isn't eligible for path {}", factory.getClass().getSimpleName(), version, path);
+        }
+    }
+    if (eligibleFactories.isEmpty()) {
+        String message = String.format("No factory implementation supports the path %s", path);
+        recorder.record(message);
+        LOG.warn(message);
+    }
+    return eligibleFactories;
+}
+```

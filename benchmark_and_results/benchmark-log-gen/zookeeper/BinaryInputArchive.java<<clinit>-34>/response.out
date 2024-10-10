@@ -1,0 +1,22 @@
+```java
+public static final int maxBuffer = Integer.getInteger("jute.maxbuffer", 0xfffff);
+// CHECKSTYLE.ON:
+private static final int extraMaxBuffer;
+
+static {
+    final Integer configuredExtraMaxBuffer =
+        Integer.getInteger("zookeeper.jute.maxbuffer.extrasize", maxBuffer);
+    if (configuredExtraMaxBuffer < 1024) {
+        // Earlier hard coded value was 1024, So the value should not be less than that value
+        // ConfLogger Inserted Start
+        logger.warn("Configured 'zookeeper.jute.maxbuffer.extrasize' is less than 1024. Setting 'extraMaxBuffer' to 1024. Provided value: " + configuredExtraMaxBuffer);
+        // ConfLogger Inserted End
+        extraMaxBuffer = 1024;
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("'extraMaxBuffer' is set to the configured value of 'zookeeper.jute.maxbuffer.extrasize': " + configuredExtraMaxBuffer);
+        // ConfLogger Inserted End
+        extraMaxBuffer = configuredExtraMaxBuffer;
+    }
+}
+```

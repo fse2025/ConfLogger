@@ -1,0 +1,13 @@
+```java
+String message = String.format("Journal replay error: " + format, args);
+if (t != null) {
+    message += "\n" + Throwables.getStackTraceAsString(t);
+}
+logger.error(message); // ConfLogger Commented: Not Informative
+// ConfLogger Inserted Start
+if (!Configuration.getBoolean(PropertyKey.MASTER_JOURNAL_TOLERATE_CORRUPTION)) {
+    logger.error("Configuration parameter 'MASTER_JOURNAL_TOLERATE_CORRUPTION' is set to false. Throwing RuntimeException. Parameter value: {}", Configuration.getBoolean(PropertyKey.MASTER_JOURNAL_TOLERATE_CORRUPTION));
+    throw new RuntimeException(t);
+}
+// ConfLogger Inserted End
+```

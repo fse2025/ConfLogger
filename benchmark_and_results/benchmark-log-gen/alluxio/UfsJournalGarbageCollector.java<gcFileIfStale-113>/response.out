@@ -1,0 +1,30 @@
+```java
+if (file.getEnd() > checkpointSequenceNumber && !file.isTmpCheckpoint()) {
+    return;
+}
+
+Long lastModifiedTimeMs;
+try {
+    lastModifiedTimeMs = mUfs.getFileStatus(file.getLocation().toString()).getLastModifiedTime();
+} catch (IOException e) {
+    LOG.warn("Failed to get the last modified time for {}.", file.getLocation()); // ConfLogger Skipped
+    return;
+}
+if (lastModifiedTimeMs == null) {
+    LOG.warn("Failed to get the last modified time for {}.", file.getLocation()); // ConfLogger Skipped
+    return;
+}
+
+long thresholdMs = file.isTmpCheckpoint()
+    ? Configuration.getMs(PropertyKey.MASTER_JOURNAL_TEMPORARY_FILE_GC_THRESHOLD_MS)
+    : Configuration.getMs(PropertyKey.MASTER_JOURNAL_GC_THRESHOLD_MS);
+
+if (System.currentTimeMillis() - lastModifiedTimeMs > thresholdMs) {
+    // ConfLogger Inserted Start
+    logger.info("Deleting file due to threshold breach. Configuration parameter: {}, Value: {}",
+        file.isTmpCheckpoint() ? "MASTER_JOURNAL_TEMPORARY_FILE_GC_THRESHOLD_MS" : "MASTER_JOURNAL_GC_THRESHOLD_MS",
+        thresholdMs);
+    // ConfLogger Inserted End
+    deleteNoException(file.getLocation());
+}
+```

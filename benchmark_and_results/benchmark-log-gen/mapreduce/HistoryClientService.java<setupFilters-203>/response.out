@@ -1,0 +1,17 @@
+```java
+boolean enableCorsFilter =
+conf.getBoolean(JHAdminConfig.MR_HISTORY_ENABLE_CORS_FILTER,
+JHAdminConfig.DEFAULT_MR_HISTORY_ENABLE_CORS_FILTER);
+
+if (enableCorsFilter) {
+    // ConfLogger Inserted Start
+    logger.info("CORS Filter enabled. Configuration parameter: " + JHAdminConfig.MR_HISTORY_ENABLE_CORS_FILTER + " = " + enableCorsFilter);
+    // ConfLogger Inserted End
+    conf.setBoolean(HttpCrossOriginFilterInitializer.PREFIX
+    + HttpCrossOriginFilterInitializer.ENABLED_SUFFIX, true);
+} else {
+    // ConfLogger Inserted Start
+    logger.info("CORS Filter not enabled. Configuration parameter: " + JHAdminConfig.MR_HISTORY_ENABLE_CORS_FILTER + " = " + enableCorsFilter);
+    // ConfLogger Inserted End
+}
+```

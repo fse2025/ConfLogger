@@ -1,0 +1,12 @@
+```java
+long flushDelay = zks.getFlushDelay();
+long maxBatchSize = zks.getMaxBatchSize();
+if ((flushDelay > 0) && (getRemainingDelay() == 0)) {
+    // ConfLogger Inserted Start
+    logger.info("Flush delay is set to a positive value and remaining delay is zero. flushDelay: " + flushDelay);
+    // ConfLogger Inserted End
+    return true;
+}
+return (maxBatchSize > 0) && (toFlush.size() >= maxBatchSize);
+}
+```

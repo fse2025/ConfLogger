@@ -1,0 +1,11 @@
+```java
+String addr = conf.get(YarnConfiguration.PROXY_ADDRESS);
+if(addr == null || addr.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.warn("YarnConfiguration.PROXY_ADDRESS is not set or empty. Using resolved RM WebApp URL without scheme as fallback.");
+    // ConfLogger Inserted End
+    addr = getResolvedRMWebAppURLWithoutScheme(conf);
+}
+return addr;
+}
+```

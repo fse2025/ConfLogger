@@ -1,0 +1,17 @@
+```java
+String delimiter = context.getConfiguration().get(
+"textinputformat.record.delimiter");
+byte[] recordDelimiterBytes = null;
+if (null != delimiter) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'textinputformat.record.delimiter' is set to: " + delimiter);
+    // ConfLogger Inserted End
+    recordDelimiterBytes = delimiter.getBytes(Charsets.UTF_8);
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'textinputformat.record.delimiter' is not set. Using default delimiter.");
+    // ConfLogger Inserted End
+}
+return new LineRecordReader(recordDelimiterBytes);
+}
+```

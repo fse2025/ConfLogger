@@ -1,0 +1,130 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	IntegerSplitter.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.db.IntegerSplitter.split(Lorg/apache/hadoop/conf/Configuration;Ljava/sql/ResultSet;Ljava/lang/String;)Ljava/util/List;	methodLines:	40:90
+blockLines:	48:-1
+paras:	mapreduce.job.maps
+TaintedStat:	NORMAL split:conditional branch(ge, to iindex=36) 32,6 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/IntegerSplitter, split(Lorg/apache/hadoop/conf/Configuration;Ljava/sql/ResultSet;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/IntegerSplitter, split(Lorg/apache/hadoop/conf/Configuration;Ljava/sql/ResultSet;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[29]32 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,30,6 @64 exception:31
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/IntegerSplitter, split(Lorg/apache/hadoop/conf/Configuration;Ljava/sql/ResultSet;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[29]32 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,30,6 @64 exception:31
+NORMAL split:conditional branch(ge, to iindex=36) 32,6 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/IntegerSplitter, split(Lorg/apache/hadoop/conf/Configuration;Ljava/sql/ResultSet;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    long minVal = results.getLong(1);
+    long maxVal = results.getLong(2);
+
+    String lowClausePrefix = colName + " >= ";
+    String highClausePrefix = colName + " < ";
+
+    int numSplits = conf.getInt(MRJobConfig.NUM_MAPS, 1);
+    if (numSplits < 1) {
+      numSplits = 1;
+    }
+
+    if (results.getString(1) == null && results.getString(2) == null) {
+      // Range is null to null. Return a null split accordingly.
+      List<InputSplit> splits = new ArrayList<InputSplit>();
+      splits.add(new DataDrivenDBInputFormat.DataDrivenDBInputSplit(
+          colName + " IS NULL", colName + " IS NULL"));
+      return splits;
+    }
+
+    // Get all the split points together.
+    List<Long> splitPoints = split(numSplits, minVal, maxVal);
+    List<InputSplit> splits = new ArrayList<InputSplit>();
+
+    // Turn the split points into a set of intervals.
+    long start = splitPoints.get(0);
+    for (int i = 1; i < splitPoints.size(); i++) {
+      long end = splitPoints.get(i);
+
+      if (i == splitPoints.size() - 1) {
+        // This is the last one; use a closed interval.
+        splits.add(new DataDrivenDBInputFormat.DataDrivenDBInputSplit(
+            lowClausePrefix + Long.toString(start),
+            colName + " <= " + Long.toString(end)));
+      } else {
+        // Normal open-interval case.
+        splits.add(new DataDrivenDBInputFormat.DataDrivenDBInputSplit(
+            lowClausePrefix + Long.toString(start),
+            highClausePrefix + Long.toString(end)));
+      }
+
+      start = end;
+    }
+
+    if (results.getString(1) == null || results.getString(2) == null) {
+      // At least one extrema is null; add a null split.
+      splits.add(new DataDrivenDBInputFormat.DataDrivenDBInputSplit(
+          colName + " IS NULL", colName + " IS NULL"));
+    }
+
+    return splits;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DataDrivenDBInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=169, lastMethodNumber=224, isFirstLineValid=true, methodSrcCode=
+
+    int targetNumTasks = job.getConfiguration().getInt(MRJobConfig.NUM_MAPS, 1);
+    if (1 == targetNumTasks) {
+      // There's no need to run a bounding vals query; just return a split
+      // that separates nothing. This can be considerably more optimal for a
+      // large table with no index.
+      List<InputSplit> singletonSplit = new ArrayList<InputSplit>();
+      singletonSplit.add(new DataDrivenDBInputSplit("1=1", "1=1"));
+      return singletonSplit;
+    }
+
+    ResultSet results = null;
+    Statement statement = null;
+    try {
+      statement = connection.createStatement();
+
+      results = statement.executeQuery(getBoundingValsQuery());
+      results.next();
+
+      // Based on the type of the results, use a different mechanism
+      // for interpolating split points (i.e., numeric splits, text splits,
+      // dates, etc.)
+      int sqlDataType = results.getMetaData().getColumnType(1);
+      DBSplitter splitter = getSplitter(sqlDataType);
+      if (null == splitter) {
+        throw new IOException("Unknown SQL data type: " + sqlDataType);
+      }
+
+      return splitter.split(job.getConfiguration(), results, getDBConf().getInputOrderBy());
+    } catch (SQLException e) {
+      throw new IOException(e.getMessage());
+    } finally {
+      // More-or-less ignore SQL exceptions here, but log in case we need it.
+      try {
+        if (null != results) {
+          results.close();
+        }
+      } catch (SQLException se) {
+        LOG.debug("SQLException closing resultset: " + se.toString());
+      }
+
+      try {
+        if (null != statement) {
+          statement.close();
+        }
+      } catch (SQLException se) {
+        LOG.debug("SQLException closing statement: " + se.toString());
+      }
+
+      try {
+        connection.commit();
+        closeConnection();
+      } catch (SQLException se) {
+        LOG.debug("SQLException committing split transaction: " + se.toString());
+      }
+    }
+  }
+}

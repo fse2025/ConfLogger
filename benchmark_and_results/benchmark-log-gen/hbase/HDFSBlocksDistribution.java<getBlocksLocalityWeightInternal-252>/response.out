@@ -1,0 +1,23 @@
+```java
+long localityIndex = 0;
+HostAndWeight hostAndWeight = this.hostAndWeights.get(host);
+// Compatible with local mode, see HBASE-24569
+if (hostAndWeight == null) {
+    String currentHost = "";
+    try {
+        currentHost = DNS.getDefaultHost("default", "default");
+    } catch (Exception e) {
+        // Just ignore, it's ok, avoid too many log info
+    }
+    if (host.equals(currentHost)) {
+        hostAndWeight = this.hostAndWeights.get(HConstants.LOCALHOST);
+        // ConfLogger Inserted Start
+        logger.debug("Host matches currentHost. Using LOCALHOST configuration. host: " + host + ", currentHost: " + currentHost);
+        // ConfLogger Inserted End
+    }
+}
+if (hostAndWeight != null && uniqueBlocksTotalWeight != 0) {
+    localityIndex = visitor.visit(hostAndWeight);
+}
+return localityIndex;
+```

@@ -1,0 +1,531 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Time.java	methodSinagture:	org.apache.storm.utils.Time.sleep(J)V	methodLines:	95:103
+blockLines:	96:-1
+paras:	supervisor.worker.shutdown.sleep.secs
+TaintedStat:	NORMAL sleep:conditional branch(le, to iindex=17) 4,5 Node: < Application, Lorg/apache/storm/utils/Time, sleep(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere[45]35 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 32,33 @114 exception:34
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere[45]35 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 32,33 @114 exception:34
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere[46]37 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > 35 @119 exception:36 v35
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:30 = checkcast <Application,Ljava/lang/Number>1 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:32 = invokevirtual < Application, Ljava/lang/Number, intValue()I > 30 @32 exception:31 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL intValue:return 3 Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere[47]39 = invokevirtual < Application, Ljava/lang/Integer, intValue()I > 37 @122 exception:38
+NORMAL killWorkers:42 = conversion(J) 39 Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere[55]invokestatic < Application, Lorg/apache/storm/utils/Time, sleepSecs(J)V > 42 @137 exception:43 v42
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/Time, sleepSecs(J)V > Context: Everywhere v1
+NORMAL sleepSecs:7 = binaryop(mul) 1 , 6 Node: < Application, Lorg/apache/storm/utils/Time, sleepSecs(J)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/Time, sleepSecs(J)V > Context: Everywhere[8]invokestatic < Application, Lorg/apache/storm/utils/Time, sleep(J)V > 7 @11 exception:8 v7
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/Time, sleep(J)V > Context: Everywhere v1
+NORMAL sleep:4 = compare 1,3 opcode=cmp Node: < Application, Lorg/apache/storm/utils/Time, sleep(J)V > Context: Everywhere
+NORMAL sleep:conditional branch(le, to iindex=17) 4,5 Node: < Application, Lorg/apache/storm/utils/Time, sleep(J)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static void sleep(long ms) throws InterruptedException {
+        if (ms > 0) {
+            if (SIMULATING.get()) {
+                simulatedSleepUntilNanos(millisToNanos(currentTimeMillis() + ms));
+            } else {
+                Thread.sleep(ms);
+            }
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/Utils, sleep(J)V > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.storm.utils.Utils.sleep(J)V, BB[SSA:-1..-2]0 - org.apache.storm.utils.Utils.sleep(J)V, BB[SSA:2..2]2 - org.apache.storm.utils.Utils.sleep(J)V, BB[SSA:-1..-2]9 - org.apache.storm.utils.Utils.sleep(J)V], numberOfBasicBlocks=4, firstLineNumber=748, lastLineNumber=753, firstMethodNumber=748, lastMethodNumber=754, isFirstLineValid=false, methodSrcCode=
+        try {
+            Time.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V > Context: Everywhere, blocks=[BB[SSA:98..99]49 - org.apache.storm.daemon.supervisor.Supervisor.killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V, BB[SSA:96..97]48 - org.apache.storm.daemon.supervisor.Supervisor.killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V, BB[SSA:100..100]50 - org.apache.storm.daemon.supervisor.Supervisor.killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V, BB[SSA:-1..-2]56 - org.apache.storm.daemon.supervisor.Supervisor.killWorkers(Ljava/util/Collection;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;)V], numberOfBasicBlocks=4, firstLineNumber=546, lastLineNumber=547, firstMethodNumber=516, lastMethodNumber=554, isFirstLineValid=true, methodSrcCode=
+    void killWorkers(Collection<String> workerIds, ContainerLauncher launcher) throws InterruptedException, IOException {
+        HashSet<Killable> containers = new HashSet<>();
+        for (String workerId : workerIds) {
+            try {
+                Killable k = launcher.recoverContainer(workerId, localState);
+                if (!k.areAllProcessesDead()) {
+                    k.kill();
+                    containers.add(k);
+                } else {
+                    k.cleanUp();
+                }
+            } catch (Exception e) {
+                LOG.error("Error trying to kill {}", workerId, e);
+            }
+        }
+        int shutdownSleepSecs = ObjectReader.getInt(conf.get(Config.SUPERVISOR_WORKER_SHUTDOWN_SLEEP_SECS));
+        if (!containers.isEmpty()) {
+            Time.sleepSecs(shutdownSleepSecs);
+        }
+        for (Killable k : containers) {
+            try {
+                long start = Time.currentTimeMillis();
+                while (!k.areAllProcessesDead()) {
+                    if ((Time.currentTimeMillis() - start) > 10_000) {
+                        if (killErrorMeter != null) {
+                            killErrorMeter.mark();
+                        }
+                        throw new RuntimeException("Giving up on killing " + k
+                                                   + " after " + (Time.currentTimeMillis() - start) + " ms");
+                    }
+                    k.forceKill();
+                    Time.sleep(100);
+                }
+                k.cleanUp();
+            } catch (Exception e) {
+                LOG.error("Error trying to clean up {}", k, e);
+            }
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, handleKillAndRelaunch(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState; > Context: Everywhere, blocks=[BB[SSA:104..104]59 - org.apache.storm.daemon.supervisor.Slot.handleKillAndRelaunch(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:102..103]58 - org.apache.storm.daemon.supervisor.Slot.handleKillAndRelaunch(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:105..106]60 - org.apache.storm.daemon.supervisor.Slot.handleKillAndRelaunch(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:-1..-2]61 - org.apache.storm.daemon.supervisor.Slot.handleKillAndRelaunch(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;], numberOfBasicBlocks=4, firstLineNumber=641, lastLineNumber=642, firstMethodNumber=607, lastMethodNumber=642, isFirstLineValid=true, methodSrcCode=
+    private static DynamicState handleKillAndRelaunch(DynamicState dynamicState, StaticState staticState) throws Exception {
+        if (dynamicState.container == null) {
+            throw new Exception("dynamicState.container is null");
+        }
+        if (dynamicState.currentAssignment == null) {
+            throw new Exception("dynamicState.currentAssignment is null");
+        }
+        if (!dynamicState.pendingChangingBlobs.isEmpty()) {
+            throw new Exception("dynamicState.pendingChangingBlobs is not empty");
+        }
+        if (dynamicState.pendingChangingBlobsAssignment != null) {
+            throw new Exception("dynamicState.pendingChangingBlobsAssignment is not null");
+        }
+        if (dynamicState.pendingLocalization != null) {
+            throw new Exception("dynamicState.pendingLocalization is not null");
+        }
+        if (dynamicState.pendingDownload != null) {
+            throw new Exception("dynamicState.pendingDownload is not null");
+        }
+
+        if (dynamicState.container.areAllProcessesDead()) {
+            if (EquivalenceUtils.areLocalAssignmentsEquivalent(dynamicState.newAssignment, dynamicState.currentAssignment)) {
+                dynamicState.container.cleanUpForRestart();
+                dynamicState.container.relaunch();
+                return dynamicState.withState(MachineState.WAITING_FOR_WORKER_START);
+            }
+            //Scheduling changed after we killed all of the processes
+            return prepareForNewAssignmentNoWorkersRunning(cleanupCurrentContainer(dynamicState, staticState, null), staticState);
+        }
+        //The child processes typically exit in < 1 sec.  If 2 mins later they are still around something is wrong
+        if ((Time.currentTimeMillis() - dynamicState.startTime) > 120_000) {
+            throw new RuntimeException("Not all processes in " + dynamicState.container + " exited after 120 seconds");
+        }
+        dynamicState.container.forceKill();
+        Time.sleep(staticState.killSleepMs);
+        return dynamicState;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, handleKill(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState; > Context: Everywhere, blocks=[BB[SSA:70..70]40 - org.apache.storm.daemon.supervisor.Slot.handleKill(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:68..69]39 - org.apache.storm.daemon.supervisor.Slot.handleKill(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:71..72]41 - org.apache.storm.daemon.supervisor.Slot.handleKill(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:-1..-2]42 - org.apache.storm.daemon.supervisor.Slot.handleKill(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;], numberOfBasicBlocks=4, firstLineNumber=594, lastLineNumber=595, firstMethodNumber=569, lastMethodNumber=595, isFirstLineValid=true, methodSrcCode=
+    private static DynamicState handleKill(DynamicState dynamicState, StaticState staticState) throws Exception {
+        if (dynamicState.container == null) {
+            throw new Exception("dynamicState.container is null");
+        }
+        if (dynamicState.currentAssignment == null) {
+            throw new Exception("dynamicState.currentAssignment is null");
+        }
+        if (!dynamicState.pendingChangingBlobs.isEmpty()) {
+            throw new Exception("dynamicState.pendingChangingBlobs is not empty");
+        }
+        if (dynamicState.pendingChangingBlobsAssignment != null) {
+            throw new Exception("dynamicState.pendingChangingBlobsAssignment is not null");
+        }
+
+        if (dynamicState.container.areAllProcessesDead()) {
+            LOG.info("SLOT {} all processes are dead...", staticState.port);
+            return cleanupCurrentContainer(dynamicState,
+                    staticState,
+                    dynamicState.pendingLocalization == null
+                            ? MachineState.EMPTY
+                            : MachineState.WAITING_FOR_BLOB_LOCALIZATION);
+        }
+
+        LOG.info("SLOT {} force kill and wait...", staticState.port);
+        dynamicState.container.forceKill();
+        Time.sleep(staticState.killSleepMs);
+        return dynamicState;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, handleKillBlobUpdate(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState; > Context: Everywhere, blocks=[BB[SSA:115..115]63 - org.apache.storm.daemon.supervisor.Slot.handleKillBlobUpdate(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:113..114]62 - org.apache.storm.daemon.supervisor.Slot.handleKillBlobUpdate(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:116..117]64 - org.apache.storm.daemon.supervisor.Slot.handleKillBlobUpdate(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:-1..-2]65 - org.apache.storm.daemon.supervisor.Slot.handleKillBlobUpdate(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;], numberOfBasicBlocks=4, firstLineNumber=693, lastLineNumber=694, firstMethodNumber=655, lastMethodNumber=694, isFirstLineValid=true, methodSrcCode=
+    private static DynamicState handleKillBlobUpdate(DynamicState dynamicState, StaticState staticState) throws Exception {
+        if (dynamicState.container == null) {
+            throw new Exception("dynamicState.container is null");
+        }
+        if (dynamicState.currentAssignment == null) {
+            throw new Exception("dynamicState.currentAssignment is null");
+        }
+        if (!dynamicState.pendingChangingBlobs.isEmpty()) {
+            throw new Exception("dynamicState.pendingChangingBlobs is not empty");
+        }
+        if (dynamicState.pendingChangingBlobsAssignment != null) {
+            throw new Exception("dynamicState.pendingChangingBlobsAssignment is not null");
+        }
+        if (dynamicState.pendingLocalization != null) {
+            throw new Exception("dynamicState.pendingLocalization is not null");
+        }
+        if (dynamicState.pendingDownload != null) {
+            throw new Exception("dynamicState.pendingDownload is not null");
+        }
+
+        //Release things that don't need to wait for us
+        dynamicState = filterChangingBlobsFor(dynamicState, dynamicState.currentAssignment);
+
+        if (dynamicState.container.areAllProcessesDead()) {
+            if (EquivalenceUtils.areLocalAssignmentsEquivalent(dynamicState.newAssignment, dynamicState.currentAssignment)) {
+                dynamicState.container.cleanUp();
+                dynamicState = dynamicState.withCurrentAssignment(null, dynamicState.currentAssignment);
+                return informChangedBlobs(dynamicState, dynamicState.currentAssignment)
+                    .withState(MachineState.WAITING_FOR_BLOB_UPDATE);
+            }
+            //Scheduling changed after we killed all of the processes
+            return prepareForNewAssignmentNoWorkersRunning(cleanupCurrentContainer(dynamicState, staticState, null), staticState);
+        }
+        //The child processes typically exit in < 1 sec.  If 2 mins later they are still around something is wrong
+        if ((Time.currentTimeMillis() - dynamicState.startTime) > 120_000) {
+            throw new RuntimeException("Not all processes in " + dynamicState.container + " exited after 120 seconds");
+        }
+        dynamicState.container.forceKill();
+        Time.sleep(staticState.killSleepMs);
+        return dynamicState;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, handleEmpty(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState; > Context: Everywhere, blocks=[BB[SSA:90..92]51 - org.apache.storm.daemon.supervisor.Slot.handleEmpty(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:88..89]50 - org.apache.storm.daemon.supervisor.Slot.handleEmpty(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:93..94]52 - org.apache.storm.daemon.supervisor.Slot.handleEmpty(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:-1..-2]53 - org.apache.storm.daemon.supervisor.Slot.handleEmpty(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;], numberOfBasicBlocks=4, firstLineNumber=918, lastLineNumber=920, firstMethodNumber=886, lastMethodNumber=920, isFirstLineValid=true, methodSrcCode=
+    static DynamicState handleEmpty(DynamicState dynamicState, StaticState staticState) throws InterruptedException, IOException {
+        if (dynamicState.container != null) {
+            throw new IOException("dynamicState.container is not null");
+        }
+        if (dynamicState.currentAssignment != null) {
+            throw new IOException("dynamicState.currentAssignment is not null");
+        }
+        if (!dynamicState.pendingChangingBlobs.isEmpty()) {
+            throw new IOException("dynamicState.pendingChangingBlobs is not empty");
+        }
+        if (dynamicState.pendingChangingBlobsAssignment != null) {
+            throw new IOException("dynamicState.pendingChangingBlobsAssignment is not null");
+        }
+        if (dynamicState.pendingLocalization != null) {
+            throw new IOException("dynamicState.pendingLocalization is not null");
+        }
+        if (dynamicState.pendingDownload != null) {
+            throw new IOException("dynamicState.pendingDownload is not null");
+        }
+
+        if (!EquivalenceUtils.areLocalAssignmentsEquivalent(dynamicState.newAssignment, dynamicState.currentAssignment)) {
+            return prepareForNewAssignmentNoWorkersRunning(dynamicState, staticState);
+        }
+        dynamicState = updateAssignmentIfNeeded(dynamicState);
+
+        //Both assignments are null, just wait
+        if (dynamicState.profileActions != null && !dynamicState.profileActions.isEmpty()) {
+            //Nothing is scheduled here so throw away all of the profileActions
+            LOG.warn("Dropping {} no topology is running", dynamicState.profileActions);
+            dynamicState = dynamicState.withProfileActions(Collections.emptySet(), Collections.emptySet());
+        }
+        //Drop the change notifications we are not running anything right now
+        dynamicState = drainAllChangingBlobs(dynamicState);
+        Time.sleep(1000);
+        return dynamicState;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, handleRunning(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState; > Context: Everywhere, blocks=[BB[SSA:372..372]180 - org.apache.storm.daemon.supervisor.Slot.handleRunning(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:370..371]179 - org.apache.storm.daemon.supervisor.Slot.handleRunning(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:373..374]181 - org.apache.storm.daemon.supervisor.Slot.handleRunning(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:-1..-2]182 - org.apache.storm.daemon.supervisor.Slot.handleRunning(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;], numberOfBasicBlocks=4, firstLineNumber=882, lastLineNumber=883, firstMethodNumber=768, lastMethodNumber=883, isFirstLineValid=true, methodSrcCode=
+    private static DynamicState handleRunning(DynamicState dynamicState, StaticState staticState) throws Exception {
+        if (dynamicState.container == null) {
+            throw new Exception("dynamicState.container is null");
+        }
+        if (dynamicState.currentAssignment == null) {
+            throw new Exception("dynamicState.currentAssignment is null");
+        }
+        if (!dynamicState.pendingChangingBlobs.isEmpty()) {
+            throw new Exception("dynamicState.pendingChangingBlobs is not empty");
+        }
+        if (dynamicState.pendingChangingBlobsAssignment != null) {
+            throw new Exception("dynamicState.pendingChangingBlobsAssignment is not null");
+        }
+        if (dynamicState.pendingLocalization != null) {
+            throw new Exception("dynamicState.pendingLocalization is not null");
+        }
+        if (dynamicState.pendingDownload != null) {
+            throw new Exception("dynamicState.pendingDownload is not null");
+        }
+
+        if (!EquivalenceUtils.areLocalAssignmentsEquivalent(dynamicState.newAssignment, dynamicState.currentAssignment)) {
+            LOG.info("SLOT {}: Assignment Changed from {} to {}", staticState.port, dynamicState.currentAssignment,
+                     dynamicState.newAssignment);
+            //Scheduling changed while running...
+            return killContainerFor(KillReason.ASSIGNMENT_CHANGED, dynamicState, staticState);
+        }
+        dynamicState = updateAssignmentIfNeeded(dynamicState);
+
+        dynamicState = filterChangingBlobsFor(dynamicState, dynamicState.currentAssignment);
+        if (!dynamicState.changingBlobs.isEmpty()) {
+            //Kill the container and restart it
+            return killContainerFor(KillReason.BLOB_CHANGED, dynamicState, staticState);
+        }
+
+        if (dynamicState.container.didMainProcessExit()) {
+            LOG.warn("SLOT {}: main process has exited for topology: {}",
+                    staticState.port, dynamicState.currentAssignment.get_topology_id());
+            return killContainerFor(KillReason.PROCESS_EXIT, dynamicState, staticState);
+        }
+
+        if (dynamicState.container.isMemoryLimitViolated(dynamicState.currentAssignment)) {
+            LOG.warn("SLOT {}: violated memory limits for topology: {}",
+                    staticState.port, dynamicState.currentAssignment.get_topology_id());
+            return killContainerFor(KillReason.MEMORY_VIOLATION, dynamicState, staticState);
+        }
+
+        LSWorkerHeartbeat hb = dynamicState.container.readHeartbeat();
+        if (hb == null) {
+            LOG.warn("SLOT {}: HB returned as null for topology: {}",
+                    staticState.port, dynamicState.currentAssignment.get_topology_id());
+            //This can happen if the supervisor crashed after launching a
+            // worker that never came up.
+            return killContainerFor(KillReason.HB_NULL, dynamicState, staticState);
+        }
+
+        long timeDiffMs = (Time.currentTimeSecs() - hb.get_time_secs()) * 1000;
+        long hbTimeoutMs = getHbTimeoutMs(staticState, dynamicState);
+        if (timeDiffMs > hbTimeoutMs) {
+            LOG.warn("SLOT {}: HB is too old {} > {} for topology: {}",
+                    staticState.port, timeDiffMs, hbTimeoutMs, dynamicState.currentAssignment.get_topology_id());
+            return killContainerFor(KillReason.HB_TIMEOUT, dynamicState, staticState);
+        }
+
+        //The worker is up and running check for profiling requests
+        if (!dynamicState.profileActions.isEmpty()) {
+            HashSet<TopoProfileAction> mod = new HashSet<>(dynamicState.profileActions);
+            HashSet<TopoProfileAction> modPending = new HashSet<>(dynamicState.pendingStopProfileActions);
+            Iterator<TopoProfileAction> iter = mod.iterator();
+            while (iter.hasNext()) {
+                TopoProfileAction action = iter.next();
+                if (!action.topoId.equals(dynamicState.currentAssignment.get_topology_id())) {
+                    iter.remove();
+                    LOG.warn("Dropping {} wrong topology is running", action);
+                    //Not for this topology so skip it
+                } else {
+                    if (modPending.contains(action)) {
+                        boolean isTimeForStop = Time.currentTimeMillis() > action.request.get_time_stamp();
+                        if (isTimeForStop) {
+                            if (dynamicState.container.runProfiling(action.request, true)) {
+                                LOG.debug("Stopped {} action finished", action);
+                                iter.remove();
+                                modPending.remove(action);
+                            } else {
+                                LOG.warn("Stopping {} failed, will be retried", action);
+                            }
+                        } else {
+                            LOG.debug("Still pending {} now: {}", action, Time.currentTimeMillis());
+                        }
+                    } else {
+                        //J_PROFILE_START is not used.  When you see a J_PROFILE_STOP
+                        // start profiling and save it away to stop when timeout happens
+                        if (action.request.get_action() == ProfileAction.JPROFILE_STOP) {
+                            if (dynamicState.container.runProfiling(action.request, false)) {
+                                modPending.add(action);
+                                LOG.debug("Started {} now: {}", action, Time.currentTimeMillis());
+                            } else {
+                                LOG.warn("Starting {} failed, will be retried", action);
+                            }
+                        } else {
+                            if (dynamicState.container.runProfiling(action.request, false)) {
+                                LOG.debug("Started {} action finished", action);
+                                iter.remove();
+                            } else {
+                                LOG.warn("Starting {} failed, will be retried", action);
+                            }
+                        }
+                    }
+                }
+            }
+            dynamicState = dynamicState.withProfileActions(mod, modPending);
+        }
+
+        dynamicState.container.processMetrics(staticState.metricsExec, staticState.metricsProcessor);
+
+        Time.sleep(staticState.monitorFreqMs);
+        return dynamicState;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/nimbus/AssignmentDistributionService, nextAssignments(Ljava/lang/Integer;)Lorg/apache/storm/nimbus/AssignmentDistributionService$NodeAssignments; > Context: Everywhere, blocks=[BB[SSA:13..14]7 - org.apache.storm.nimbus.AssignmentDistributionService.nextAssignments(Ljava/lang/Integer;)Lorg/apache/storm/nimbus/AssignmentDistributionService$NodeAssignments;, BB[SSA:7..10]5 - org.apache.storm.nimbus.AssignmentDistributionService.nextAssignments(Ljava/lang/Integer;)Lorg/apache/storm/nimbus/AssignmentDistributionService$NodeAssignments;, BB[SSA:15..15]8 - org.apache.storm.nimbus.AssignmentDistributionService.nextAssignments(Ljava/lang/Integer;)Lorg/apache/storm/nimbus/AssignmentDistributionService$NodeAssignments;, BB[SSA:-1..-2]9 - org.apache.storm.nimbus.AssignmentDistributionService.nextAssignments(Ljava/lang/Integer;)Lorg/apache/storm/nimbus/AssignmentDistributionService$NodeAssignments;], numberOfBasicBlocks=4, firstLineNumber=202, lastLineNumber=206, firstMethodNumber=199, lastMethodNumber=206, isFirstLineValid=true, methodSrcCode=
+    public NodeAssignments nextAssignments(Integer queueIndex) throws InterruptedException {
+        NodeAssignments target = null;
+        while (true) {
+            target = getQueueById(queueIndex).poll();
+            if (target != null) {
+                return target;
+            }
+            Time.sleep(100L);
+        }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, handleWaitingForWorkerStart(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState; > Context: Everywhere, blocks=[BB[SSA:178..179]82 - org.apache.storm.daemon.supervisor.Slot.handleWaitingForWorkerStart(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:171..172]79 - org.apache.storm.daemon.supervisor.Slot.handleWaitingForWorkerStart(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:180..181]83 - org.apache.storm.daemon.supervisor.Slot.handleWaitingForWorkerStart(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:-1..-2]84 - org.apache.storm.daemon.supervisor.Slot.handleWaitingForWorkerStart(Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;], numberOfBasicBlocks=4, firstLineNumber=752, lastLineNumber=757, firstMethodNumber=705, lastMethodNumber=757, isFirstLineValid=true, methodSrcCode=
+    private static DynamicState handleWaitingForWorkerStart(DynamicState dynamicState, StaticState staticState) throws Exception {
+        if (dynamicState.container == null) {
+            throw new Exception("dynamicState.container is null");
+        }
+        if (dynamicState.currentAssignment == null) {
+            throw new Exception("dynamicState.currentAssignment is null");
+        }
+        if (!dynamicState.pendingChangingBlobs.isEmpty()) {
+            throw new Exception("dynamicState.pendingChangingBlobs is not empty");
+        }
+        if (dynamicState.pendingChangingBlobsAssignment != null) {
+            throw new Exception("dynamicState.pendingChangingBlobsAssignment is not null");
+        }
+        if (dynamicState.pendingLocalization != null) {
+            throw new Exception("dynamicState.pendingLocalization is not null");
+        }
+        if (dynamicState.pendingDownload != null) {
+            throw new Exception("dynamicState.pendingDownload is not null");
+        }
+
+        LSWorkerHeartbeat hb = dynamicState.container.readHeartbeat();
+        if (hb != null) {
+            long hbAgeMs = (Time.currentTimeSecs() - hb.get_time_secs()) * 1000;
+            long hbTimeoutMs = getHbTimeoutMs(staticState, dynamicState);
+            if (hbAgeMs <= hbTimeoutMs) {
+                return dynamicState.withState(MachineState.RUNNING);
+            }
+        }
+
+        if (!EquivalenceUtils.areLocalAssignmentsEquivalent(dynamicState.newAssignment, dynamicState.currentAssignment)) {
+            //We were rescheduled while waiting for the worker to come up
+            LOG.info("SLOT {}: Assignment Changed from {} to {}", staticState.port, dynamicState.currentAssignment,
+                     dynamicState.newAssignment);
+            return killContainerFor(KillReason.ASSIGNMENT_CHANGED, dynamicState, staticState);
+        }
+        dynamicState = updateAssignmentIfNeeded(dynamicState);
+
+        long timeDiffms = (Time.currentTimeMillis() - dynamicState.startTime);
+        long hbFirstTimeoutMs = getFirstHbTimeoutMs(staticState, dynamicState);
+        if (timeDiffms > hbFirstTimeoutMs) {
+            staticState.slotMetrics.numWorkerStartTimedOut.mark();
+            LOG.warn("SLOT {}: Container {} failed to launch in {} ms.", staticState.port, dynamicState.container,
+                    hbFirstTimeoutMs);
+            return killContainerFor(KillReason.HB_TIMEOUT, dynamicState, staticState);
+        }
+
+        dynamicState = filterChangingBlobsFor(dynamicState, dynamicState.currentAssignment);
+        if (!dynamicState.changingBlobs.isEmpty()) {
+            //Kill the container and restart it
+            return killContainerFor(KillReason.BLOB_CHANGED, dynamicState, staticState);
+        }
+        Time.sleep(1000);
+        return dynamicState;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, killContainerFor(Lorg/apache/storm/daemon/supervisor/Slot$KillReason;Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState; > Context: Everywhere, blocks=[BB[SSA:104..104]55 - org.apache.storm.daemon.supervisor.Slot.killContainerFor(Lorg/apache/storm/daemon/supervisor/Slot$KillReason;Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:102..103]54 - org.apache.storm.daemon.supervisor.Slot.killContainerFor(Lorg/apache/storm/daemon/supervisor/Slot$KillReason;Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:105..106]56 - org.apache.storm.daemon.supervisor.Slot.killContainerFor(Lorg/apache/storm/daemon/supervisor/Slot$KillReason;Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;, BB[SSA:-1..-2]57 - org.apache.storm.daemon.supervisor.Slot.killContainerFor(Lorg/apache/storm/daemon/supervisor/Slot$KillReason;Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;Lorg/apache/storm/daemon/supervisor/Slot$StaticState;)Lorg/apache/storm/daemon/supervisor/Slot$DynamicState;], numberOfBasicBlocks=4, firstLineNumber=277, lastLineNumber=279, firstMethodNumber=231, lastMethodNumber=279, isFirstLineValid=true, methodSrcCode=
+            throws Exception {
+        if (dynamicState.container == null) {
+            throw new Exception("dynamicState.container is null");
+        }
+
+        //Skip special case if `storm kill_workers` is already invoked
+        Boolean isDead = dynamicState.container.areAllProcessesDead();
+        if (!isDead) {
+            if (reason == KillReason.ASSIGNMENT_CHANGED || reason == KillReason.BLOB_CHANGED) {
+                staticState.supervisor.killedWorker(staticState.port);
+            }
+            dynamicState.container.kill();
+        }
+        staticState.slotMetrics.numWorkersKilledFor.get(reason).mark();
+
+        DynamicState next;
+        switch (reason) {
+            case ASSIGNMENT_CHANGED:
+                Future<Void> pendingDownload = null;
+                if (dynamicState.newAssignment != null) {
+                    pendingDownload = staticState.localizer.requestDownloadTopologyBlobs(
+                            dynamicState.newAssignment, staticState.port, staticState.changingCallback);
+                }
+                next = dynamicState.withState(MachineState.KILL)
+                        .withPendingLocalization(dynamicState.newAssignment, pendingDownload);
+                break;
+
+            case BLOB_CHANGED:
+                next = dynamicState.withState(MachineState.KILL_BLOB_UPDATE);
+                break;
+
+            case PROCESS_EXIT:
+            case MEMORY_VIOLATION:
+            case HB_TIMEOUT:
+            case HB_NULL:
+                //any stop profile actions that hadn't timed out yet, we should restart after the worker is running again.
+                HashSet<TopoProfileAction> mod = new HashSet<>(dynamicState.profileActions);
+                mod.addAll(dynamicState.pendingStopProfileActions);
+                next = dynamicState.withState(MachineState.KILL_AND_RELAUNCH).withProfileActions(mod, Collections.emptySet());
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown reason for killing a container");
+        }
+
+        if (!isDead) {
+            Time.sleep(staticState.killSleepMs);
+        }
+        return next;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/timer/SynchronizeAssignments, getAssignmentsFromMasterUntilSuccess(Lorg/apache/storm/daemon/supervisor/Supervisor;)V > Context: Everywhere, blocks=[BB[SSA:49..50]23 - org.apache.storm.daemon.supervisor.timer.SynchronizeAssignments.getAssignmentsFromMasterUntilSuccess(Lorg/apache/storm/daemon/supervisor/Supervisor;)V, BB[SSA:46..48]22 - org.apache.storm.daemon.supervisor.timer.SynchronizeAssignments.getAssignmentsFromMasterUntilSuccess(Lorg/apache/storm/daemon/supervisor/Supervisor;)V, BB[SSA:51..51]24 - org.apache.storm.daemon.supervisor.timer.SynchronizeAssignments.getAssignmentsFromMasterUntilSuccess(Lorg/apache/storm/daemon/supervisor/Supervisor;)V, BB[SSA:-1..-2]29 - org.apache.storm.daemon.supervisor.timer.SynchronizeAssignments.getAssignmentsFromMasterUntilSuccess(Lorg/apache/storm/daemon/supervisor/Supervisor;)V], numberOfBasicBlocks=4, firstLineNumber=104, lastLineNumber=109, firstMethodNumber=93, lastMethodNumber=114, isFirstLineValid=true, methodSrcCode=
+    public void getAssignmentsFromMasterUntilSuccess(Supervisor supervisor) {
+        boolean success = false;
+        while (!success) {
+            try (NimbusClient master = NimbusClient.getConfiguredClient(supervisor.getConf())) {
+                SupervisorAssignments assignments = master.getClient().getSupervisorAssignments(supervisor.getAssignmentId());
+                assignedAssignmentsToLocal(supervisor.getStormClusterState(), Collections.singletonList(assignments));
+                success = true;
+            } catch (Exception t) {
+                // just ignore the exception
+            }
+            if (!success) {
+                LOG.info("Waiting for a success sync of assignments from master...");
+                try {
+                    Time.sleep(5000L);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        }
+
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/Time, sleepSecs(J)V > Context: Everywhere, blocks=[BB[SSA:5..8]2 - org.apache.storm.utils.Time.sleepSecs(J)V, BB[SSA:0..4]1 - org.apache.storm.utils.Time.sleepSecs(J)V, BB[SSA:9..9]3 - org.apache.storm.utils.Time.sleepSecs(J)V, BB[SSA:-1..-2]4 - org.apache.storm.utils.Time.sleepSecs(J)V], numberOfBasicBlocks=4, firstLineNumber=116, lastLineNumber=119, firstMethodNumber=115, lastMethodNumber=119, isFirstLineValid=true, methodSrcCode=
+    public static void sleepSecs(long secs) throws InterruptedException {
+        if (secs > 0) {
+            sleep(secs * 1000);
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/spout/SpoutExecutor, inactiveExecute()V > Context: Everywhere, blocks=[BB[SSA:12..14]8 - org.apache.storm.executor.spout.SpoutExecutor.inactiveExecute()V, BB[SSA:11..11]7 - org.apache.storm.executor.spout.SpoutExecutor.inactiveExecute()V, BB[SSA:15..16]9 - org.apache.storm.executor.spout.SpoutExecutor.inactiveExecute()V, BB[SSA:-1..-2]13 - org.apache.storm.executor.spout.SpoutExecutor.inactiveExecute()V], numberOfBasicBlocks=4, firstLineNumber=281, lastLineNumber=283, firstMethodNumber=276, lastMethodNumber=284, isFirstLineValid=true, methodSrcCode=
+    private void inactiveExecute() throws InterruptedException {
+        if (lastActive.get()) {
+            lastActive.set(false);
+            deactivateSpouts();
+        }
+        long start = Time.currentTimeMillis();
+        Time.sleep(100);
+        skippedInactiveMs.inc(Time.currentTimeMillis() - start);
+    }
+
+}

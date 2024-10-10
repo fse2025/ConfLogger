@@ -1,0 +1,3 @@
+conf.set(param,"-1;93");
+public String param = "mapreduce.partition.keypartitioner.options";
+mapreduce

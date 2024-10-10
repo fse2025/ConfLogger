@@ -1,0 +1,40 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	KeyStoreFileType.java	methodSinagture:	org.apache.hadoop.hbase.io.crypto.tls.KeyStoreFileType.fromPropertyValue(Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType;	methodLines:	68:72
+blockLines:	69:-1
+paras:	null
+TaintedStat:	NORMAL fromPropertyValue:conditional branch(eq, to iindex=7) 1,3 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[18]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,14,8 @32 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[18]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,14,8 @32 exception:15
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[32]21 = invokestatic < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createKeyManager(Ljava/lang/String;[CLjava/lang/String;)Ljavax/net/ssl/X509KeyManager; > 10,13,16 @63 exception:20 v16
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createKeyManager(Ljava/lang/String;[CLjava/lang/String;)Ljavax/net/ssl/X509KeyManager; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createKeyManager(Ljava/lang/String;[CLjava/lang/String;)Ljavax/net/ssl/X509KeyManager; > Context: Everywhere[7]9 = invokestatic < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType; > 3,1 @10 exception:8 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType; > Context: Everywhere[1]5 = invokestatic < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType; > 1 @1 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType; > Context: Everywhere v1
+NORMAL fromPropertyValue:conditional branch(eq, to iindex=7) 1,3 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static KeyStoreFileType fromPropertyValue(String propertyValue) {
+    if (propertyValue == null || propertyValue.length() == 0) {
+      return null;
+    }
+    return KeyStoreFileType.valueOf(propertyValue.toUpperCase());
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.hbase.io.crypto.tls.KeyStoreFileType.fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType;, BB[SSA:-1..-2]0 - org.apache.hadoop.hbase.io.crypto.tls.KeyStoreFileType.fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType;, BB[SSA:2..5]2 - org.apache.hadoop.hbase.io.crypto.tls.KeyStoreFileType.fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType;, BB[SSA:-1..-2]6 - org.apache.hadoop.hbase.io.crypto.tls.KeyStoreFileType.fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hbase/io/crypto/tls/KeyStoreFileType;], numberOfBasicBlocks=4, firstLineNumber=115, lastLineNumber=117, firstMethodNumber=115, lastMethodNumber=120, isFirstLineValid=false, methodSrcCode=
+    String filename) {
+    KeyStoreFileType result = KeyStoreFileType.fromPropertyValue(propertyValue);
+    if (result == null) {
+      result = KeyStoreFileType.fromFilename(filename);
+    }
+    return result;
+  }
+}

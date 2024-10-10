@@ -1,0 +1,146 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ClientSupervisorUtils.java	methodSinagture:	org.apache.storm.daemon.supervisor.ClientSupervisorUtils.launchProcess(Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process;	methodLines:	128:166
+blockLines:	135:-1
+paras:	topology.environment
+TaintedStat:	NORMAL launchProcess:conditional branch(eq, to iindex=25) 2,11 Node: < Application, Lorg/apache/storm/daemon/supervisor/ClientSupervisorUtils, launchProcess(Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, runProfiling(Lorg/apache/storm/generated/ProfileRequest;Z)Z > Context: Everywhere[15]17 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 14,15 @33 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, runProfiling(Lorg/apache/storm/generated/ProfileRequest;Z)Z > Context: Everywhere[15]17 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 14,15 @33 exception:16
+NORMAL runProfiling:18 = checkcast <Application,Ljava/util/Map>17 <Application,Ljava/util/Map> Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, runProfiling(Lorg/apache/storm/generated/ProfileRequest;Z)Z > Context: Everywhere
+PHI Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, runProfiling(Lorg/apache/storm/generated/ProfileRequest;Z)Z > Context: Everywhere:22 = phi  18,20
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, runProfiling(Lorg/apache/storm/generated/ProfileRequest;Z)Z > Context: Everywhere[79]59 = invokeinterface < Application, Lorg/apache/storm/container/ResourceIsolationInterface, runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z > 54,56,57,44,22,42,45 @173 exception:58 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/container/DefaultResourceIsolationManager, runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z > Context: Everywhere v5
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/container/DefaultResourceIsolationManager, runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z > Context: Everywhere[77]13 = invokestatic < Application, Lorg/apache/storm/daemon/supervisor/ClientSupervisorUtils, launchProcess(Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process; > 4,5,6,11,7 @147 exception:12 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/daemon/supervisor/ClientSupervisorUtils, launchProcess(Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process; > Context: Everywhere v2
+NORMAL launchProcess:conditional branch(eq, to iindex=25) 2,11 Node: < Application, Lorg/apache/storm/daemon/supervisor/ClientSupervisorUtils, launchProcess(Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        throws IOException {
+        ProcessBuilder builder = new ProcessBuilder(command);
+        Map<String, String> procEnv = builder.environment();
+        if (dir != null) {
+            builder.directory(dir);
+        }
+        builder.redirectErrorStream(true);
+        if (environment != null) {
+            procEnv.putAll(environment);
+        }
+        final Process process;
+        try {
+            process = builder.start();
+        } catch (IOException e) {
+            numWorkerLaunchExceptions.mark();
+            throw e;
+        }
+        if (logPrefix != null || exitCodeCallback != null) {
+            Utils.asyncLoop(new Callable<Long>() {
+                @Override
+                public Long call() {
+                    if (logPrefix != null) {
+                        Utils.readAndLogStream(logPrefix,
+                                               process.getInputStream());
+                    }
+                    if (exitCodeCallback != null) {
+                        try {
+                            process.waitFor();
+                            exitCodeCallback.call(process.exitValue());
+                        } catch (InterruptedException ie) {
+                            LOG.info("{} interrupted", logPrefix);
+                            exitCodeCallback.call(-1);
+                        }
+                    }
+                    return null; // Run only once.
+                }
+            });
+        }
+        return process;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/ClientSupervisorUtils, processLauncher(Ljava/util/Map;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process; > Context: Everywhere, blocks=[BB[SSA:56..61]24 - org.apache.storm.daemon.supervisor.ClientSupervisorUtils.processLauncher(Ljava/util/Map;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process;, BB[SSA:50..55]23 - org.apache.storm.daemon.supervisor.ClientSupervisorUtils.processLauncher(Ljava/util/Map;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process;, BB[SSA:62..62]25 - org.apache.storm.daemon.supervisor.ClientSupervisorUtils.processLauncher(Ljava/util/Map;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process;, BB[SSA:-1..-2]26 - org.apache.storm.daemon.supervisor.ClientSupervisorUtils.processLauncher(Ljava/util/Map;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)Ljava/lang/Process;], numberOfBasicBlocks=4, firstLineNumber=108, lastLineNumber=110, firstMethodNumber=90, lastMethodNumber=110, isFirstLineValid=true, methodSrcCode=
+                                   final ExitCodeCallback exitCodeCallback, File dir) throws IOException {
+        if (StringUtils.isBlank(user)) {
+            throw new IllegalArgumentException("User cannot be blank when calling processLauncher.");
+        }
+        String wlinitial = (String) (conf.get(Config.SUPERVISOR_WORKER_LAUNCHER));
+        String stormHome = ConfigUtils.concatIfNotNull(System.getProperty(ConfigUtils.STORM_HOME));
+        String wl;
+        if (StringUtils.isNotBlank(wlinitial)) {
+            wl = wlinitial;
+        } else {
+            wl = stormHome + "/bin/worker-launcher";
+        }
+        List<String> commands = new ArrayList<>();
+        if (commandPrefix != null) {
+            commands.addAll(commandPrefix);
+        }
+        commands.add(wl);
+        commands.add(user);
+        commands.addAll(args);
+        LOG.info("Running as user: {} command: {}", user, commands);
+        return launchProcess(commands, environment, logPreFix, exitCodeCallback, dir);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/container/cgroup/CgroupManager, launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V > Context: Everywhere, blocks=[BB[SSA:60..66]22 - org.apache.storm.container.cgroup.CgroupManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:56..59]21 - org.apache.storm.container.cgroup.CgroupManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:67..67]23 - org.apache.storm.container.cgroup.CgroupManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:-1..-2]25 - org.apache.storm.container.cgroup.CgroupManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V], numberOfBasicBlocks=4, firstLineNumber=256, lastLineNumber=257, firstMethodNumber=244, lastMethodNumber=259, isFirstLineValid=true, methodSrcCode=
+                                    ExitCodeCallback processExitCallback, File targetDir) throws IOException {
+        if (workerToNumaId.containsKey(workerId)) {
+            prefixNumaPinning(command, workerToNumaId.get(workerId));
+        }
+
+        if (runAsUser) {
+            String workerDir = targetDir.getAbsolutePath();
+            List<String> args = Arrays.asList("worker", workerDir, ServerUtils.writeScript(workerDir, command, env));
+            List<String> commandPrefix = getLaunchCommandPrefix(workerId);
+            ClientSupervisorUtils.processLauncher(conf, user, commandPrefix, args, null,
+                logPrefix, processExitCallback, targetDir);
+        } else {
+            command = getLaunchCommand(workerId, command);
+            ClientSupervisorUtils.launchProcess(command, env, logPrefix, processExitCallback, targetDir);
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/container/DefaultResourceIsolationManager, runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z > Context: Everywhere, blocks=[BB[SSA:72..77]27 - org.apache.storm.container.DefaultResourceIsolationManager.runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z, BB[SSA:2..3]2 - org.apache.storm.container.DefaultResourceIsolationManager.runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z, BB[SSA:78..80]28 - org.apache.storm.container.DefaultResourceIsolationManager.runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z, BB[SSA:-1..-2]33 - org.apache.storm.container.DefaultResourceIsolationManager.runProfilingCommand(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)Z], numberOfBasicBlocks=4, firstLineNumber=152, lastLineNumber=169, firstMethodNumber=151, lastMethodNumber=170, isFirstLineValid=true, methodSrcCode=
+                                       String logPrefix, File targetDir) throws IOException, InterruptedException {
+        if (runAsUser) {
+            String td = targetDir.getAbsolutePath();
+            LOG.info("Running as user: {} command: {}", user, command);
+            String containerFile = ServerUtils.containerFilePath(td);
+            if (Utils.checkFileExists(containerFile)) {
+                SupervisorUtils.rmrAsUser(conf, containerFile, containerFile);
+            }
+            String scriptFile = ServerUtils.scriptFilePath(td);
+            if (Utils.checkFileExists(scriptFile)) {
+                SupervisorUtils.rmrAsUser(conf, scriptFile, scriptFile);
+            }
+            String script = ServerUtils.writeScript(td, command, env);
+            List<String> args = Arrays.asList("profiler", td, script);
+            int ret = ClientSupervisorUtils.processLauncherAndWait(conf, user, args, env, logPrefix);
+            return ret == 0;
+        } else {
+            Process p = ClientSupervisorUtils.launchProcess(command, env, logPrefix, null, targetDir);
+            int ret = p.waitFor();
+            return ret == 0;
+        }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/container/DefaultResourceIsolationManager, launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V > Context: Everywhere, blocks=[BB[SSA:38..43]13 - org.apache.storm.container.DefaultResourceIsolationManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:2..3]2 - org.apache.storm.container.DefaultResourceIsolationManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:44..44]14 - org.apache.storm.container.DefaultResourceIsolationManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V, BB[SSA:-1..-2]16 - org.apache.storm.container.DefaultResourceIsolationManager.launchWorkerProcess(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/daemon/supervisor/ExitCodeCallback;Ljava/io/File;)V], numberOfBasicBlocks=4, firstLineNumber=61, lastLineNumber=69, firstMethodNumber=60, lastMethodNumber=71, isFirstLineValid=true, methodSrcCode=
+                                    String logPrefix, ExitCodeCallback processExitCallback, File targetDir) throws IOException {
+        if (runAsUser) {
+            String workerDir = targetDir.getAbsolutePath();
+            List<String> args = Arrays.asList("worker", workerDir, ServerUtils.writeScript(workerDir, command, env));
+            ClientSupervisorUtils.processLauncher(
+                conf, user, null, args, null, logPrefix,
+                processExitCallback, targetDir
+            );
+        } else {
+            ClientSupervisorUtils.launchProcess(command, env, logPrefix, processExitCallback, targetDir);
+        }
+    }
+
+}

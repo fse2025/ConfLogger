@@ -1,0 +1,109 @@
+```java
+public LogAggregationFileControllerFactory(Configuration conf) {
+    this.conf = conf;
+    Collection<String> fileControllers = conf.getStringCollection(
+        YarnConfiguration.LOG_AGGREGATION_FILE_FORMATS);
+    List<String> controllerClassName = new ArrayList<>();
+
+    Map<String, String> controllerChecker = new HashMap<>();
+
+    for (String fileController : fileControllers) {
+        Preconditions.checkArgument(validateAggregatedFileControllerName(
+            fileController), "The FileControllerName: " + fileController
+            + " set in " + YarnConfiguration.LOG_AGGREGATION_FILE_FORMATS
+            +" is invalid." + "The valid File Controller name should only "
+            + "contain a-zA-Z0-9_ and can not start with numbers");
+
+        String remoteDirStr = String.format(
+            YarnConfiguration.LOG_AGGREGATION_REMOTE_APP_LOG_DIR_FMT,
+            fileController);
+        String remoteDir = conf.get(remoteDirStr);
+        boolean defaultRemoteDir = false;
+        if (remoteDir == null || remoteDir.isEmpty()) {
+            remoteDir = conf.get(YarnConfiguration.NM_REMOTE_APP_LOG_DIR,
+                YarnConfiguration.DEFAULT_NM_REMOTE_APP_LOG_DIR);
+            defaultRemoteDir = true;
+            // ConfLogger Inserted Start
+            logger.warn("Remote directory for fileController '{}' is not set. Using default value '{}'.", fileController, remoteDir);
+            // ConfLogger Inserted End
+        }
+        String suffixStr = String.format(
+            YarnConfiguration.LOG_AGGREGATION_REMOTE_APP_LOG_DIR_SUFFIX_FMT,
+            fileController);
+        String suffix = conf.get(suffixStr);
+        boolean defaultSuffix = false;
+        if (suffix == null || suffix.isEmpty()) {
+            suffix = conf.get(YarnConfiguration.NM_REMOTE_APP_LOG_DIR_SUFFIX,
+                YarnConfiguration.DEFAULT_NM_REMOTE_APP_LOG_DIR_SUFFIX);
+            defaultSuffix = true;
+            // ConfLogger Inserted Start
+            logger.warn("Suffix for fileController '{}' is not set. Using default value '{}'.", fileController, suffix);
+            // ConfLogger Inserted End
+        }
+        String dirSuffix = remoteDir + "-" + suffix;
+        if (controllerChecker.containsKey(dirSuffix)) {
+            if (defaultRemoteDir && defaultSuffix) {
+                String fileControllerStr = controllerChecker.get(dirSuffix);
+                List<String> controllersList = new ArrayList<>();
+                controllersList.add(fileControllerStr);
+                controllersList.add(fileController);
+                fileControllerStr = StringUtils.join(controllersList, ",");
+                controllerChecker.put(dirSuffix, fileControllerStr);
+            } else {
+                String conflictController = controllerChecker.get(dirSuffix);
+                // ConfLogger Commented: Not Informative
+                // throw new RuntimeException("The combined value of " + remoteDirStr
+                // + " and " + suffixStr + " should not be the same as the value"
+                // + " set for " + conflictController);
+                // ConfLogger Inserted Start
+                logger.error("Conflict detected: The combined value of '{}' and '{}' should not be the same as the value set for '{}'.", remoteDirStr, suffixStr, conflictController);
+                throw new RuntimeException("The combined value of " + remoteDirStr
+                    + " and " + suffixStr + " should not be the same as the value"
+                    + " set for " + conflictController);
+                // ConfLogger Inserted End
+            }
+        } else {
+            controllerChecker.put(dirSuffix, fileController);
+        }
+        String classKey = String.format(
+            YarnConfiguration.LOG_AGGREGATION_FILE_CONTROLLER_FMT,
+            fileController);
+        String className = conf.get(classKey);
+        if (className == null || className.isEmpty()) {
+            // ConfLogger Commented: Not Informative
+            // throw new RuntimeException("No class configured for "
+            // + fileController);
+            // ConfLogger Inserted Start
+            logger.error("No class configured for fileController '{}'.", fileController);
+            throw new RuntimeException("No class configured for "
+                + fileController);
+            // ConfLogger Inserted End
+        }
+        controllerClassName.add(className);
+        Class<? extends LogAggregationFileController> sClass = conf.getClass(
+            classKey, null, LogAggregationFileController.class);
+        if (sClass == null) {
+            // ConfLogger Commented: Not Informative
+            // throw new RuntimeException("No class defined for " + fileController);
+            // ConfLogger Inserted Start
+            logger.error("No class defined for fileController '{}'.", fileController);
+            throw new RuntimeException("No class defined for " + fileController);
+            // ConfLogger Inserted End
+        }
+        LogAggregationFileController s = ReflectionUtils.newInstance(
+            sClass, conf);
+        if (s == null) {
+            // ConfLogger Commented: Not Informative
+            // throw new RuntimeException("No object created for "
+            // + controllerClassName);
+            // ConfLogger Inserted Start
+            logger.error("No object created for controller class '{}'.", controllerClassName);
+            throw new RuntimeException("No object created for "
+                + controllerClassName);
+            // ConfLogger Inserted End
+        }
+        s.initialize(conf, fileController);
+        controllers.add(s);
+    }
+}
+```

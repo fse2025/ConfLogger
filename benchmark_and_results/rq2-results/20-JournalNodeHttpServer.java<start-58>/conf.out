@@ -1,0 +1,4 @@
+       conf.set(paramHttps,"0.0.0.0:8486");
+       conf.set(paramBindHost,"bindHost:port");
+           String paramHttps = DFSConfigKeys.DFS_JOURNALNODE_HTTPS_ADDRESS_KEY;
+    String paramBindHost = DFSConfigKeys.DFS_JOURNALNODE_HTTPS_BIND_HOST_KEY;

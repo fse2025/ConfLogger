@@ -1,0 +1,66 @@
+```java
+Map<String, Double> totalGenericResources) {
+    this.inimbus = nimbus;
+    this.resourceMetrics = resourceMetrics;
+    this.supervisors.putAll(supervisors);
+    this.nodeToScheduledResourcesCache = new HashMap<>(this.supervisors.size());
+    this.nodeToScheduledOffHeapNodeMemoryCache = new HashMap<>();
+    this.nodeToUsedSlotsCache = new HashMap<>(this.supervisors.size());
+
+    for (Map.Entry<String, SupervisorDetails> entry : supervisors.entrySet()) {
+        String nodeId = entry.getKey();
+        SupervisorDetails supervisor = entry.getValue();
+        String host = supervisor.getHost();
+        List<String> ids = hostToId.computeIfAbsent(host, k -> new ArrayList<>());
+        ids.add(nodeId);
+    }
+    this.conf = conf;
+    this.topologies = topologies;
+    this.minWorkerCpu = ObjectReader.getDouble(conf.get(DaemonConfig.STORM_WORKER_MIN_CPU_PCORE_PERCENT), 0.0);
+
+    this.totalCpuResource = Double.isNaN(totalCpuResource) ? computeClusterCpuResource() : totalCpuResource;
+    this.totalMemoryResource = Double.isNaN(totalMemoryResource) ? computeClusterMemoryResource() : totalMemoryResource;
+    this.totalGenericResources = totalGenericResources == null ? computeClusterGenericResources() : totalGenericResources;
+
+    ArrayList<String> supervisorHostNames = new ArrayList<>();
+    for (SupervisorDetails s : supervisors.values()) {
+        supervisorHostNames.add(s.getHost());
+    }
+
+    //Initialize the network topography
+    if (networkTopography == null || networkTopography.isEmpty()) {
+        //Initialize the network topography
+        String clazz = (String) conf.get(Config.STORM_NETWORK_TOPOGRAPHY_PLUGIN);
+        if (clazz == null || clazz.isEmpty()) {
+            clazz = DefaultRackDNSToSwitchMapping.class.getName();
+            // ConfLogger Inserted Start
+            logger.info("STORM_NETWORK_TOPOGRAPHY_PLUGIN is not set or empty. Using default: {}", clazz);
+            // ConfLogger Inserted End
+        }
+        DNSToSwitchMapping topographyMapper = ReflectionUtils.newInstance(clazz);
+
+        Map<String, String> resolvedSuperVisors = topographyMapper.resolve(supervisorHostNames);
+        for (Map.Entry<String, String> entry : resolvedSuperVisors.entrySet()) {
+            String hostName = entry.getKey();
+            String rack = entry.getValue();
+            List<String> nodesForRack = this.networkTopography.computeIfAbsent(rack, k -> new ArrayList<>());
+            nodesForRack.add(hostName);
+        }
+    } else {
+        this.networkTopography.putAll(networkTopography);
+    }
+
+    if (status != null) {
+        this.status.putAll(status);
+    }
+
+    if (blackListedHosts != null) {
+        this.blackListedHosts.addAll(blackListedHosts);
+    }
+
+    if (greyListedSupervisors != null) {
+        this.greyListedSupervisors.addAll(greyListedSupervisors);
+    }
+    setAssignments(assignments, true);
+}
+```

@@ -1,0 +1,21 @@
+```java
+String nameserviceId = conf.get(DFS_NAMESERVICE_ID);
+if (nameserviceId != null) {
+    // ConfLogger Skipped
+    return nameserviceId;
+}
+Collection<String> nsIds = DFSUtilClient.getNameServiceIds(conf);
+if (1 == nsIds.size()) {
+    // ConfLogger Inserted Start
+    logger.info("Only one nameservice ID found in configuration. Using the single available nameservice ID. Configuration parameter: DFS_NAMESERVICE_ID, Value: " + nsIds.toArray(new String[1])[0]);
+    // ConfLogger Inserted End
+    return nsIds.toArray(new String[1])[0];
+}
+String nnId = conf.get(DFS_HA_NAMENODE_ID_KEY);
+
+// ConfLogger Inserted Start
+logger.info("Multiple nameservice IDs found or none specified. Proceeding with suffix IDs. Configuration parameter: DFS_HA_NAMENODE_ID_KEY, Value: " + nnId);
+// ConfLogger Inserted End
+return getSuffixIDs(conf, addressKey, null, nnId, LOCAL_ADDRESS_MATCHER)[0];
+}
+```

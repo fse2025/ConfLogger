@@ -1,0 +1,122 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FsAction.java	methodSinagture:	org.apache.hadoop.fs.permission.FsAction.implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z	methodLines:	54:58
+blockLines:	55:-1
+paras:	null
+TaintedStat:	NORMAL implies:conditional branch(eq, to iindex=15) 2,4 Node: < Application, Lorg/apache/hadoop/fs/permission/FsAction, implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/fs/permission/FsPermission, getGroupAction()Lorg/apache/hadoop/fs/permission/FsAction; > 2 @6 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/fs/permission/FsPermission, getGroupAction()Lorg/apache/hadoop/fs/permission/FsAction; > 2 @6 exception:6
+NORMAL setPermission:conditional branch(ne, to iindex=18) 7,9 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere
+NORMAL setPermission:conditional branch(ne, to iindex=18) 11,12 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere
+NORMAL setPermission:conditional branch(eq, to iindex=22) 13,12 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere
+NORMAL setPermission:15 = getstatic < Application, Lorg/apache/hadoop/fs/permission/FsAction, READ, <Application,Lorg/apache/hadoop/fs/permission/FsAction> > Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere[27]17 = invokevirtual < Application, Lorg/apache/hadoop/fs/permission/FsAction, implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z > 7,15 @48 exception:16 v15
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/permission/FsAction, implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z > Context: Everywhere v2
+NORMAL implies:conditional branch(eq, to iindex=15) 2,4 Node: < Application, Lorg/apache/hadoop/fs/permission/FsAction, implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	FsAction.java	methodSinagture:	org.apache.hadoop.fs.permission.FsAction.implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z	methodLines:	54:58
+blockLines:	56:-1
+paras:	null
+TaintedStat:	NORMAL implies:conditional branch(ne, to iindex=13) 10,12 Node: < Application, Lorg/apache/hadoop/fs/permission/FsAction, implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere[7]9 = invokevirtual < Application, Lorg/apache/hadoop/fs/permission/FsPermission, getOtherAction()Lorg/apache/hadoop/fs/permission/FsAction; > 2 @11 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere[7]9 = invokevirtual < Application, Lorg/apache/hadoop/fs/permission/FsPermission, getOtherAction()Lorg/apache/hadoop/fs/permission/FsAction; > 2 @11 exception:8
+NORMAL setPermission:conditional branch(ne, to iindex=18) 7,9 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere
+NORMAL setPermission:conditional branch(ne, to iindex=18) 11,12 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere
+NORMAL setPermission:conditional branch(eq, to iindex=22) 13,12 Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere
+NORMAL setPermission:15 = getstatic < Application, Lorg/apache/hadoop/fs/permission/FsAction, READ, <Application,Lorg/apache/hadoop/fs/permission/FsAction> > Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere[27]17 = invokevirtual < Application, Lorg/apache/hadoop/fs/permission/FsAction, implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z > 7,15 @48 exception:16 v15
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/permission/FsAction, implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z > Context: Everywhere v2
+NORMAL implies:conditional branch(eq, to iindex=15) 2,4 Node: < Application, Lorg/apache/hadoop/fs/permission/FsAction, implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z > Context: Everywhere
+NORMAL implies:conditional branch(ne, to iindex=13) 10,12 Node: < Application, Lorg/apache/hadoop/fs/permission/FsAction, implies(Lorg/apache/hadoop/fs/permission/FsAction;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public boolean implies(FsAction that) {
+    if (that != null) {
+      return (ordinal() & that.ordinal()) == that.ordinal();
+    }
+    return false;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/permission/FsPermission, toString()Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:36..37]21 - org.apache.hadoop.fs.permission.FsPermission.toString()Ljava/lang/String;, BB[SSA:34..35]20 - org.apache.hadoop.fs.permission.FsPermission.toString()Ljava/lang/String;, BB[SSA:38..39]22 - org.apache.hadoop.fs.permission.FsPermission.toString()Ljava/lang/String;, BB[SSA:-1..-2]29 - org.apache.hadoop.fs.permission.FsPermission.toString()Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=277, lastLineNumber=278, firstMethodNumber=273, lastMethodNumber=282, isFirstLineValid=true, methodSrcCode=
+  public String toString() {
+    String str = useraction.SYMBOL + groupaction.SYMBOL + otheraction.SYMBOL;
+    if(stickyBit) {
+      StringBuilder str2 = new StringBuilder(str);
+      str2.replace(str2.length() - 1, str2.length(),
+           otheraction.implies(FsAction.EXECUTE) ? "t" : "T");
+      str = str2.toString();
+    }
+
+    return str;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/FileUtil, setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V > Context: Everywhere, blocks=[BB[SSA:22..27]10 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:15..17]7 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:28..29]11 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:35..37]13 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:30..34]12 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:38..40]14 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:38..40]14 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:35..37]13 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:41..41]15 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:42..45]16 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:41..41]15 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:46..47]17 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:53..56]19 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:41..41]15 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:48..52]18 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:57..58]20 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:64..66]22 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:59..63]21 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:67..69]23 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:67..69]23 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:64..66]22 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:70..70]24 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:71..74]25 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:70..70]24 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:75..76]26 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:82..85]28 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:70..70]24 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:77..81]27 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:86..87]29 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:93..95]31 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:88..92]30 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:96..98]32 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:96..98]32 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:93..95]31 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:99..99]33 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:100..103]34 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:99..99]33 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:104..105]35 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.fs.FileUtil.setPermission(Ljava/io/File;Lorg/apache/hadoop/fs/permission/FsPermission;)V], numberOfBasicBlocks=50, firstLineNumber=1482, lastLineNumber=1483, firstMethodNumber=1449, lastMethodNumber=1486, isFirstLineValid=true, methodSrcCode=
+                                   ) throws IOException {
+    FsAction user = permission.getUserAction();
+    FsAction group = permission.getGroupAction();
+    FsAction other = permission.getOtherAction();
+
+    // use the native/fork if the group/other permissions are different
+    // or if the native is available or on Windows
+    if (group != other || NativeIO.isAvailable() || Shell.WINDOWS) {
+      execSetPermission(f, permission);
+      return;
+    }
+
+    boolean rv = true;
+
+    // read perms
+    rv = f.setReadable(group.implies(FsAction.READ), false);
+    checkReturnValue(rv, f, permission);
+    if (group.implies(FsAction.READ) != user.implies(FsAction.READ)) {
+      rv = f.setReadable(user.implies(FsAction.READ), true);
+      checkReturnValue(rv, f, permission);
+    }
+
+    // write perms
+    rv = f.setWritable(group.implies(FsAction.WRITE), false);
+    checkReturnValue(rv, f, permission);
+    if (group.implies(FsAction.WRITE) != user.implies(FsAction.WRITE)) {
+      rv = f.setWritable(user.implies(FsAction.WRITE), true);
+      checkReturnValue(rv, f, permission);
+    }
+
+    // exec perms
+    rv = f.setExecutable(group.implies(FsAction.EXECUTE), false);
+    checkReturnValue(rv, f, permission);
+    if (group.implies(FsAction.EXECUTE) != user.implies(FsAction.EXECUTE)) {
+      rv = f.setExecutable(user.implies(FsAction.EXECUTE), true);
+      checkReturnValue(rv, f, permission);
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/FileSystem, checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V > Context: Everywhere, blocks=[BB[SSA:16..17]8 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:14..15]7 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:18..19]9 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:-1..-2]41 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:30..31]16 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:28..29]15 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:32..33]17 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:-1..-2]41 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:37..38]20 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:35..36]19 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:39..40]21 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V, BB[SSA:-1..-2]41 - org.apache.hadoop.fs.FileSystem.checkAccessPermissions(Lorg/apache/hadoop/fs/FileStatus;Lorg/apache/hadoop/fs/permission/FsAction;)V], numberOfBasicBlocks=12, firstLineNumber=2870, lastLineNumber=2870, firstMethodNumber=2857, lastMethodNumber=2874, isFirstLineValid=true, methodSrcCode=
+      throws AccessControlException, IOException {
+    FsPermission perm = stat.getPermission();
+    UserGroupInformation ugi = UserGroupInformation.getCurrentUser();
+    String user = ugi.getShortUserName();
+    if (user.equals(stat.getOwner())) {
+      if (perm.getUserAction().implies(mode)) {
+        return;
+      }
+    } else if (ugi.getGroups().contains(stat.getGroup())) {
+      if (perm.getGroupAction().implies(mode)) {
+        return;
+      }
+    } else {
+      if (perm.getOtherAction().implies(mode)) {
+        return;
+      }
+    }
+    throw new AccessControlException(String.format(
+      "Permission denied: user=%s, path=\"%s\":%s:%s:%s%s", user, stat.getPath(),
+}

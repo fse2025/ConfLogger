@@ -1,0 +1,92 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ReflectionUtils.java	methodSinagture:	org.apache.hadoop.util.ReflectionUtils.setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	76:83
+blockLines:	78:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=11) 5,6 Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/HarFileSystem, copyToLocalFile(ZLorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/fs/HarFileSystem, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @3 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/HarFileSystem, copyToLocalFile(ZLorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/fs/HarFileSystem, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @3 exception:6
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/HarFileSystem, copyToLocalFile(ZLorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[4]9 = invokestatic < Application, Lorg/apache/hadoop/fs/HarFileSystem, getLocal(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/LocalFileSystem; > 7 @6 exception:8 v7
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getLocal(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/LocalFileSystem; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getLocal(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/LocalFileSystem; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/hadoop/fs/FileSystem, get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > 3,1 @4 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > Context: Everywhere[59]32 = invokestatic < Application, Lorg/apache/hadoop/fs/FileSystem, createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > 1,2 @102 exception:31 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > Context: Everywhere[36]26 = invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 24,2 @67 exception:25 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere[34]invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > 21,2 @65 exception:25 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere v2
+NORMAL setConf:conditional branch(eq, to iindex=14) 2,4 Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=11) 5,6 Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ReflectionUtils.java	methodSinagture:	org.apache.hadoop.util.ReflectionUtils.setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	76:83
+blockLines:	77:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=14) 2,4 Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, copyFromLocalFile(ZZ[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[1]8 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, copyFromLocalFile(ZZ[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[1]8 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:7
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, copyFromLocalFile(ZZ[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[4]10 = invokestatic < Application, Lorg/apache/hadoop/fs/FileSystem, getLocal(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/LocalFileSystem; > 8 @8 exception:9 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getLocal(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/LocalFileSystem; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, getLocal(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/LocalFileSystem; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/hadoop/fs/FileSystem, get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > 3,1 @4 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > Context: Everywhere[59]32 = invokestatic < Application, Lorg/apache/hadoop/fs/FileSystem, createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > 1,2 @102 exception:31 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/FileSystem, createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/FileSystem; > Context: Everywhere[36]26 = invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 24,2 @67 exception:25 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere[34]invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > 21,2 @65 exception:25 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere v2
+NORMAL setConf:conditional branch(eq, to iindex=14) 2,4 Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void setConf(Object theObject, Configuration conf) {
+    if (conf != null) {
+      if (theObject instanceof Configurable) {
+        ((Configurable) theObject).setConf(conf);
+      }
+      setJobConf(theObject, conf);
+    }
+  }
+  
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere, blocks=[BB[SSA:32..34]14 - org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;, BB[SSA:24..25]10 - org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;, BB[SSA:35..36]15 - org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;, BB[SSA:-1..-2]16 - org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;], numberOfBasicBlocks=4, firstLineNumber=136, lastLineNumber=141, firstMethodNumber=129, lastMethodNumber=141, isFirstLineValid=true, methodSrcCode=
+    try {
+      Constructor<T> meth = (Constructor<T>) CONSTRUCTOR_CACHE.get(theClass);
+      if (meth == null) {
+        meth = theClass.getDeclaredConstructor(EMPTY_ARRAY);
+        meth.setAccessible(true);
+        CONSTRUCTOR_CACHE.put(theClass, meth);
+      }
+      result = meth.newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    setConf(result, conf);
+    return result;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/io/WritableComparator, get(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/WritableComparator; > Context: Everywhere, blocks=[BB[SSA:25..27]11 - org.apache.hadoop.io.WritableComparator.get(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/WritableComparator;, BB[SSA:4..7]3 - org.apache.hadoop.io.WritableComparator.get(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/WritableComparator;, BB[SSA:14..17]7 - org.apache.hadoop.io.WritableComparator.get(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/WritableComparator;, BB[SSA:24..24]10 - org.apache.hadoop.io.WritableComparator.get(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/WritableComparator;, BB[SSA:28..29]12 - org.apache.hadoop.io.WritableComparator.get(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/WritableComparator;, BB[SSA:-1..-2]13 - org.apache.hadoop.io.WritableComparator.get(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/io/WritableComparator;], numberOfBasicBlocks=6, firstLineNumber=67, lastLineNumber=80, firstMethodNumber=66, lastMethodNumber=80, isFirstLineValid=true, methodSrcCode=
+      Class<? extends WritableComparable> c, Configuration conf) {
+    WritableComparator comparator = comparators.get(c);
+    if (comparator == null) {
+      // force the static initializers to run
+      forceInit(c);
+      // look to see if it is defined now
+      comparator = comparators.get(c);
+      // if not, use the generic one
+      if (comparator == null) {
+        comparator = new WritableComparator(c, conf, true);
+      }
+    }
+    // Newly passed Configuration objects should be used.
+    ReflectionUtils.setConf(comparator, conf);
+    return comparator;
+  }
+}

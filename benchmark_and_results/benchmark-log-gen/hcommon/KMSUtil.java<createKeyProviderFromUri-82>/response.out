@@ -1,0 +1,21 @@
+```java
+KeyProvider keyProvider = KeyProviderFactory.get(providerUri, conf);
+if (keyProvider == null) {
+    // ConfLogger Commented: Not Informative
+    // throw new IOException("Could not instantiate KeyProvider for uri: " + providerUri);
+    // ConfLogger Inserted Start
+    logger.error("Failed to instantiate KeyProvider. Configuration parameter 'providerUri': " + providerUri);
+    throw new IOException("Could not instantiate KeyProvider for uri: " + providerUri);
+    // ConfLogger Inserted End
+}
+if (keyProvider.isTransient()) {
+    // ConfLogger Commented: Not Informative
+    // throw new IOException("KeyProvider " + keyProvider.toString() + " was found but it is a transient provider.");
+    // ConfLogger Inserted Start
+    logger.error("KeyProvider is transient. Configuration parameter 'providerUri': " + providerUri + ", KeyProvider: " + keyProvider.toString());
+    throw new IOException("KeyProvider " + keyProvider.toString() + " was found but it is a transient provider.");
+    // ConfLogger Inserted End
+}
+return keyProvider;
+}
+```

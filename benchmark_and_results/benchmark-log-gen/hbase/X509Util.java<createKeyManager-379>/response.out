@@ -1,0 +1,28 @@
+```java
+if (keyStorePassword == null) {
+    keyStorePassword = EMPTY_CHAR_ARRAY;
+    // ConfLogger Inserted Start
+    logger.warn("keyStorePassword is not set. Defaulting to EMPTY_CHAR_ARRAY.");
+    // ConfLogger Inserted End
+}
+
+try {
+    KeyStoreFileType storeFileType =
+        KeyStoreFileType.fromPropertyValueOrFileName(keyStoreType, keyStoreLocation);
+    KeyStore ks = FileKeyStoreLoaderBuilderProvider.getBuilderForKeyStoreFileType(storeFileType)
+        .setKeyStorePath(keyStoreLocation).setKeyStorePassword(keyStorePassword).build()
+        .loadKeyStore();
+
+    KeyManagerFactory kmf = KeyManagerFactory.getInstance("PKIX");
+    kmf.init(ks, keyStorePassword);
+
+    for (KeyManager km : kmf.getKeyManagers()) {
+        if (km instanceof X509KeyManager) {
+            return (X509KeyManager) km;
+        }
+    }
+    throw new KeyManagerException("Couldn't find X509KeyManager");
+} catch (IOException | GeneralSecurityException | IllegalArgumentException e) {
+    throw new KeyManagerException(e);
+}
+```

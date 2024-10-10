@@ -1,0 +1,73 @@
+```java
+ContainerId containerId = LogAggregationWebUtils
+    .verifyAndGetContainerId(html, $(CONTAINER_ID));
+NodeId nodeId = LogAggregationWebUtils
+    .verifyAndGetNodeId(html, $(NM_NODENAME));
+String appOwner = LogAggregationWebUtils
+    .verifyAndGetAppOwner(html, $(APP_OWNER));
+boolean isValid = true;
+try {
+    LogAggregationWebUtils.getLogStartIndex(
+        html, $("start"));
+} catch (NumberFormatException ne) {
+    html.h1().__("Invalid log start value: " + $("start")).__();
+    isValid = false;
+}
+try {
+    LogAggregationWebUtils.getLogEndIndex(
+        html, $("end"));
+} catch (NumberFormatException ne) {
+    html.h1().__("Invalid log end value: " + $("end")).__();
+    isValid = false;
+}
+
+if (containerId == null || nodeId == null || appOwner == null
+    || appOwner.isEmpty() || !isValid) {
+    return;
+}
+
+ApplicationId applicationId = containerId.getApplicationAttemptId()
+    .getApplicationId();
+String logEntity = $(ENTITY_STRING);
+if (logEntity == null || logEntity.isEmpty()) {
+    logEntity = containerId.toString();
+}
+
+String nmApplicationLogUrl = getApplicationLogURL(applicationId);
+if (!conf.getBoolean(YarnConfiguration.LOG_AGGREGATION_ENABLED,
+    YarnConfiguration.DEFAULT_LOG_AGGREGATION_ENABLED)) {
+    html.h1()
+        .__("Aggregation is not enabled. Try the nodemanager at " + nodeId)
+        .__();
+    if(nmApplicationLogUrl != null) {
+        html.h1()
+            .__("Or see application log at " + nmApplicationLogUrl)
+            .__();
+    }
+    // ConfLogger Inserted Start
+    logger.info("Log aggregation is disabled. Configuration parameter: YarnConfiguration.LOG_AGGREGATION_ENABLED, Value: " 
+        + conf.getBoolean(YarnConfiguration.LOG_AGGREGATION_ENABLED, YarnConfiguration.DEFAULT_LOG_AGGREGATION_ENABLED));
+    // ConfLogger Inserted End
+    return;
+}
+
+LogAggregationFileController fileController;
+try {
+    fileController = this.factory.getFileControllerForRead(
+        applicationId, appOwner);
+} catch (Exception fnf) {
+    html.h1()
+        .__("Logs not available for " + logEntity
+        + ". Aggregation may not be complete, Check back later or "
+        + "try to find the container logs in the local directory of "
+        + "nodemanager " + nodeId).__();
+    if(nmApplicationLogUrl != null)  {
+        html.h1()
+            .__("Or see application log at " + nmApplicationLogUrl)
+            .__();
+    }
+    return;
+}
+
+fileController.renderAggregatedLogsBlock(html, this.context());
+```

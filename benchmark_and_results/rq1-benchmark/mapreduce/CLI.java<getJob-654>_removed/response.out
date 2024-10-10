@@ -1,0 +1,30 @@
+```java
+int maxRetry = getConf().getInt(MRJobConfig.MR_CLIENT_JOB_MAX_RETRIES,
+MRJobConfig.DEFAULT_MR_CLIENT_JOB_MAX_RETRIES);
+long retryInterval = getConf()
+.getLong(MRJobConfig.MR_CLIENT_JOB_RETRY_INTERVAL,
+MRJobConfig.DEFAULT_MR_CLIENT_JOB_RETRY_INTERVAL);
+Job job = cluster.getJob(jobid);
+
+for (int i = 0; i < maxRetry; ++i) {
+    if (job != null) {
+        // ConfLogger Inserted Start
+        logger.info("Job retrieved successfully on attempt " + (i + 1) + ". Configuration parameter: " +
+                    "yarn.app.mapreduce.client.job.max-retries=" + maxRetry + 
+                    ", yarn.app.mapreduce.client.job.retry-interval=" + retryInterval + 
+                    ". The job was found before reaching the maximum retry limit.");
+        // ConfLogger Inserted End
+        return job;
+    }
+    Thread.sleep(retryInterval);
+    job = cluster.getJob(jobid);
+}
+// ConfLogger Inserted Start
+logger.warn("Failed to retrieve job after " + maxRetry + " attempts. Configuration parameter: " +
+            "yarn.app.mapreduce.client.job.max-retries=" + maxRetry + 
+            ", yarn.app.mapreduce.client.job.retry-interval=" + retryInterval + 
+            ". Consider increasing the max-retries or adjusting the retry-interval for better results.");
+// ConfLogger Inserted End
+return job;
+}
+```

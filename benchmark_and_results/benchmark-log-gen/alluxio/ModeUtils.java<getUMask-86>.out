@@ -1,0 +1,69 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ModeUtils.java	methodSinagture:	alluxio.util.ModeUtils.getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode;	methodLines:	86:100
+blockLines:	89:-1
+paras:	null
+TaintedStat:	NORMAL getUMask:conditional branch(gt, to iindex=13) 6,7 Node: < Application, Lalluxio/util/ModeUtils, getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/underfs/options/MkdirsOptions, defaults(Lalluxio/conf/AlluxioConfiguration;)Lalluxio/underfs/options/MkdirsOptions; > Context: Everywhere[4]6 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 1,4 @8 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/underfs/options/MkdirsOptions, defaults(Lalluxio/conf/AlluxioConfiguration;)Lalluxio/underfs/options/MkdirsOptions; > Context: Everywhere[4]6 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 1,4 @8 exception:5
+PARAM_CALLER:Node: < Application, Lalluxio/underfs/options/MkdirsOptions, defaults(Lalluxio/conf/AlluxioConfiguration;)Lalluxio/underfs/options/MkdirsOptions; > Context: Everywhere[5]invokespecial < Application, Lalluxio/underfs/options/MkdirsOptions, <init>(Ljava/lang/String;)V > 3,6 @13 exception:7 v6
+PARAM_CALLEE:Node: < Application, Lalluxio/underfs/options/MkdirsOptions, <init>(Ljava/lang/String;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lalluxio/underfs/options/MkdirsOptions, <init>(Ljava/lang/String;)V > Context: Everywhere[14]10 = invokestatic < Application, Lalluxio/util/ModeUtils, applyDirectoryUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode; > 8,2 @24 exception:9 v2
+PARAM_CALLEE:Node: < Application, Lalluxio/util/ModeUtils, applyDirectoryUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lalluxio/util/ModeUtils, applyDirectoryUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere[2]5 = invokestatic < Application, Lalluxio/util/ModeUtils, getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode; > 2 @2 exception:4 v2
+PARAM_CALLEE:Node: < Application, Lalluxio/util/ModeUtils, getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere v1
+NORMAL getUMask:conditional branch(eq, to iindex=62) 1,4 Node: < Application, Lalluxio/util/ModeUtils, getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere
+NORMAL getUMask:conditional branch(gt, to iindex=13) 6,7 Node: < Application, Lalluxio/util/ModeUtils, getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ModeUtils.java	methodSinagture:	alluxio.util.ModeUtils.getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode;	methodLines:	86:100
+blockLines:	88:-1
+paras:	null
+TaintedStat:	NORMAL getUMask:conditional branch(eq, to iindex=62) 1,4 Node: < Application, Lalluxio/util/ModeUtils, getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/underfs/options/CreateOptions, defaults(Lalluxio/conf/AlluxioConfiguration;)Lalluxio/underfs/options/CreateOptions; > Context: Everywhere[4]6 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 1,4 @8 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/underfs/options/CreateOptions, defaults(Lalluxio/conf/AlluxioConfiguration;)Lalluxio/underfs/options/CreateOptions; > Context: Everywhere[4]6 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 1,4 @8 exception:5
+PARAM_CALLER:Node: < Application, Lalluxio/underfs/options/CreateOptions, defaults(Lalluxio/conf/AlluxioConfiguration;)Lalluxio/underfs/options/CreateOptions; > Context: Everywhere[5]invokespecial < Application, Lalluxio/underfs/options/CreateOptions, <init>(Ljava/lang/String;)V > 3,6 @13 exception:7 v6
+PARAM_CALLEE:Node: < Application, Lalluxio/underfs/options/CreateOptions, <init>(Ljava/lang/String;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lalluxio/underfs/options/CreateOptions, <init>(Ljava/lang/String;)V > Context: Everywhere[20]10 = invokestatic < Application, Lalluxio/util/ModeUtils, applyFileUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode; > 8,2 @34 exception:9 v2
+PARAM_CALLEE:Node: < Application, Lalluxio/util/ModeUtils, applyFileUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lalluxio/util/ModeUtils, applyFileUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere[2]5 = invokestatic < Application, Lalluxio/util/ModeUtils, getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode; > 2 @2 exception:4 v2
+PARAM_CALLEE:Node: < Application, Lalluxio/util/ModeUtils, getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere v1
+NORMAL getUMask:conditional branch(eq, to iindex=62) 1,4 Node: < Application, Lalluxio/util/ModeUtils, getUMask(Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static Mode getUMask(@Nullable String confUmask) {
+    int umask = Constants.DEFAULT_FILE_SYSTEM_UMASK;
+    if (confUmask != null) {
+      if ((confUmask.length() > 4) || !isValid(confUmask)) {
+        throw new IllegalArgumentException(ExceptionMessage.INVALID_CONFIGURATION_VALUE
+            .getMessage(confUmask, PropertyKey.SECURITY_AUTHORIZATION_PERMISSION_UMASK));
+      }
+      int newUmask = 0;
+      int lastIndex = confUmask.length() - 1;
+      for (int i = 0; i <= lastIndex; i++) {
+        newUmask += (confUmask.charAt(i) - '0') << 3 * (lastIndex - i);
+      }
+      umask = newUmask;
+    }
+    return new Mode((short) umask);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/util/ModeUtils, applyFileUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - alluxio.util.ModeUtils.applyFileUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode;, BB[SSA:-1..-2]0 - alluxio.util.ModeUtils.applyFileUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode;, BB[SSA:3..3]2 - alluxio.util.ModeUtils.applyFileUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode;, BB[SSA:-1..-2]5 - alluxio.util.ModeUtils.applyFileUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode;], numberOfBasicBlocks=4, firstLineNumber=39, lastLineNumber=40, firstMethodNumber=39, lastMethodNumber=42, isFirstLineValid=false, methodSrcCode=
+  public static Mode applyFileUMask(Mode mode, String authUmask) {
+    mode = applyUMask(mode, getUMask(authUmask));
+    mode = applyUMask(mode, FILE_UMASK);
+    return mode;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/util/ModeUtils, applyDirectoryUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - alluxio.util.ModeUtils.applyDirectoryUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode;, BB[SSA:-1..-2]0 - alluxio.util.ModeUtils.applyDirectoryUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode;, BB[SSA:3..3]2 - alluxio.util.ModeUtils.applyDirectoryUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode;, BB[SSA:-1..-2]4 - alluxio.util.ModeUtils.applyDirectoryUMask(Lalluxio/security/authorization/Mode;Ljava/lang/String;)Lalluxio/security/authorization/Mode;], numberOfBasicBlocks=4, firstLineNumber=52, lastLineNumber=53, firstMethodNumber=52, lastMethodNumber=53, isFirstLineValid=false, methodSrcCode=
+  public static Mode applyDirectoryUMask(Mode mode, String authUmask) {
+    return applyUMask(mode, getUMask(authUmask));
+  }
+}

@@ -1,0 +1,122 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TotalOrderPartitioner.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;	methodLines:	375:411
+blockLines:	379:-1
+paras:	null
+TaintedStat:	NORMAL buildTrieRec:conditional branch(ge, to iindex=11) 9,6 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[107]54 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,51,52 @195 exception:53
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[107]54 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,51,52 @195 exception:53
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[108]56 = invokespecial < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > 1,48,11,49,50,54 @198 exception:55 v54
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere v6
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere[10]11 = invokespecial < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > 1,2,3,4,5,6,8 @16 exception:10 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere v6
+NORMAL buildTrieRec:conditional branch(ge, to iindex=11) 9,6 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	TotalOrderPartitioner.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;	methodLines:	375:411
+blockLines:	382:-1
+paras:	null
+TaintedStat:	NORMAL buildTrieRec:conditional branch(ne, to iindex=21) 3,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[84]41 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,39,26 @152 exception:40
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[84]41 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,39,26 @152 exception:40
+NORMAL setConf:conditional branch(eq, to iindex=111) 41,11 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=111) 44,11 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:49 = arraylength 22 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[108]56 = invokespecial < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > 1,48,11,49,50,54 @198 exception:55 v49
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere v4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere[10]11 = invokespecial < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > 1,2,3,4,5,6,8 @16 exception:10 v4
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere v4
+NORMAL buildTrieRec:conditional branch(ne, to iindex=21) 3,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      int upper, byte[] prefix, int maxDepth, CarriedTrieNodeRef ref) {
+    final int depth = prefix.length;
+    // We generate leaves for a single split point as well as for 
+    // no split points.
+    if (depth >= maxDepth || lower >= upper - 1) {
+        // If we have two consecutive requests for an unsplit trie node, we
+        // can deliver the same one the second time.
+        if (lower == upper && ref.content != null) {
+            return ref.content;
+        }
+        TrieNode  result = LeafTrieNodeFactory(depth, splits, lower, upper);
+        ref.content = lower == upper ? result : null;
+        return result;
+    }
+    InnerTrieNode result = new InnerTrieNode(depth);
+    byte[] trial = Arrays.copyOf(prefix, prefix.length + 1);
+    // append an extra byte on to the prefix
+    int         currentBound = lower;
+    for(int ch = 0; ch < 0xFF; ++ch) {
+      trial[depth] = (byte) (ch + 1);
+      lower = currentBound;
+      while (currentBound < upper) {
+        if (splits[currentBound].compareTo(trial, 0, trial.length) >= 0) {
+          break;
+        }
+        currentBound += 1;
+      }
+      trial[depth] = (byte) ch;
+      result.child[0xFF & ch]
+                   = buildTrieRec(splits, lower, currentBound, trial, maxDepth, ref);
+    }
+    // pick up the rest
+    trial[depth] = (byte)0xFF;
+    result.child[0xFF] 
+                 = buildTrieRec(splits, lower, currentBound, trial, maxDepth, ref);
+    
+    return result;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere, blocks=[BB[SSA:93..103]32 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;, BB[SSA:91..92]31 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;, BB[SSA:104..104]33 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;, BB[SSA:-1..-2]40 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;, BB[SSA:116..124]37 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;, BB[SSA:114..115]36 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;, BB[SSA:125..125]38 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;, BB[SSA:-1..-2]40 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrieRec([Lorg/apache/hadoop/io/BinaryComparable;II[BILorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$CarriedTrieNodeRef;)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;], numberOfBasicBlocks=8, firstLineNumber=408, lastLineNumber=409, firstMethodNumber=375, lastMethodNumber=411, isFirstLineValid=true, methodSrcCode=
+      int upper, byte[] prefix, int maxDepth, CarriedTrieNodeRef ref) {
+    final int depth = prefix.length;
+    // We generate leaves for a single split point as well as for 
+    // no split points.
+    if (depth >= maxDepth || lower >= upper - 1) {
+        // If we have two consecutive requests for an unsplit trie node, we
+        // can deliver the same one the second time.
+        if (lower == upper && ref.content != null) {
+            return ref.content;
+        }
+        TrieNode  result = LeafTrieNodeFactory(depth, splits, lower, upper);
+        ref.content = lower == upper ? result : null;
+        return result;
+    }
+    InnerTrieNode result = new InnerTrieNode(depth);
+    byte[] trial = Arrays.copyOf(prefix, prefix.length + 1);
+    // append an extra byte on to the prefix
+    int         currentBound = lower;
+    for(int ch = 0; ch < 0xFF; ++ch) {
+      trial[depth] = (byte) (ch + 1);
+      lower = currentBound;
+      while (currentBound < upper) {
+        if (splits[currentBound].compareTo(trial, 0, trial.length) >= 0) {
+          break;
+        }
+        currentBound += 1;
+      }
+      trial[depth] = (byte) ch;
+      result.child[0xFF & ch]
+                   = buildTrieRec(splits, lower, currentBound, trial, maxDepth, ref);
+    }
+    // pick up the rest
+    trial[depth] = (byte)0xFF;
+    result.child[0xFF] 
+                 = buildTrieRec(splits, lower, currentBound, trial, maxDepth, ref);
+    
+    return result;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner, buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode; > Context: Everywhere, blocks=[BB[SSA:10..10]3 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;, BB[SSA:7..9]2 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;, BB[SSA:11..11]4 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;, BB[SSA:-1..-2]5 - org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner.buildTrie([Lorg/apache/hadoop/io/BinaryComparable;II[BI)Lorg/apache/hadoop/mapreduce/lib/partition/TotalOrderPartitioner$TrieNode;], numberOfBasicBlocks=4, firstLineNumber=350, lastLineNumber=350, firstMethodNumber=349, lastMethodNumber=350, isFirstLineValid=true, methodSrcCode=
+          int upper, byte[] prefix, int maxDepth) {
+      return buildTrieRec
+               (splits, lower, upper, prefix, maxDepth, new CarriedTrieNodeRef());
+}

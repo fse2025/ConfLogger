@@ -1,0 +1,36 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HistoryServerFileSystemStateStoreService.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.HistoryServerFileSystemStateStoreService.initStorage(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	83:92
+blockLines:	85:-1
+paras:	mapreduce.jobhistory.recovery.store.fs.uri
+TaintedStat:	NORMAL initStorage:conditional branch(ne, to iindex=12) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerFileSystemStateStoreService, initStorage(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerFileSystemStateStoreService, initStorage(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerFileSystemStateStoreService, initStorage(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+NORMAL initStorage:conditional branch(ne, to iindex=12) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerFileSystemStateStoreService, initStorage(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    final String storeUri = conf.get(JHAdminConfig.MR_HS_FS_STATE_STORE_URI);
+    if (storeUri == null) {
+      throw new IOException("No store location URI configured in " +
+          JHAdminConfig.MR_HS_FS_STATE_STORE_URI);
+    }
+
+    LOG.info("Using " + storeUri + " for history server state storage");
+    rootStatePath = new Path(storeUri, ROOT_STATE_DIR_NAME);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=68, lastMethodNumber=70, isFirstLineValid=true, methodSrcCode=
+  public void serviceInit(Configuration conf) throws IOException {
+    initStorage(conf);
+  }
+
+}

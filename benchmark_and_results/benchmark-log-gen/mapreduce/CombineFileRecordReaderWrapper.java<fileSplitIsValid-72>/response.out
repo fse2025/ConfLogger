@@ -1,0 +1,26 @@
+```java
+Configuration conf = context.getConfiguration();
+long offset = conf.getLong(MRJobConfig.MAP_INPUT_START, 0L);
+if (fileSplit.getStart() != offset) {
+// ConfLogger Inserted Start
+logger.warn("Configuration mismatch: Expected MAP_INPUT_START offset is " + offset + " but got " + fileSplit.getStart() + ". Please check the configuration parameter " + MRJobConfig.MAP_INPUT_START + ".");
+// ConfLogger Inserted End
+return false;
+}
+long length = conf.getLong(MRJobConfig.MAP_INPUT_PATH, 0L);
+if (fileSplit.getLength() != length) {
+// ConfLogger Inserted Start
+logger.warn("Configuration mismatch: Expected MAP_INPUT_PATH length is " + length + " but got " + fileSplit.getLength() + ". Please check the configuration parameter " + MRJobConfig.MAP_INPUT_PATH + ".");
+// ConfLogger Inserted End
+return false;
+}
+String path = conf.get(MRJobConfig.MAP_INPUT_FILE);
+if (!fileSplit.getPath().toString().equals(path)) {
+// ConfLogger Inserted Start
+logger.warn("Configuration mismatch: Expected MAP_INPUT_FILE path is " + path + " but got " + fileSplit.getPath().toString() + ". Please check the configuration parameter " + MRJobConfig.MAP_INPUT_FILE + ".");
+// ConfLogger Inserted End
+return false;
+}
+return true;
+}
+```

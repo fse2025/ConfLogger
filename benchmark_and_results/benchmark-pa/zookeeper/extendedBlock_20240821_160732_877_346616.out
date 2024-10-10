@@ -1,0 +1,134 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileSnap.java	methodSinagture:	org.apache.zookeeper.server.persistence.FileSnap.deserialize(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;)J	methodLines:	76:125
+blockLines:	110:-1
+paras:	null
+TaintedStat:	NORMAL deserialize:conditional branch(eq, to iindex=75) 27,11 Node: < Application, Lorg/apache/zookeeper/server/persistence/FileSnap, deserialize(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;)J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FileSnap, deserialize(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;)J > Context: Everywhere[39]27 = invokestatic < Application, Lorg/apache/zookeeper/server/persistence/SnapStream, getInputStream(Ljava/io/File;)Ljava/util/zip/CheckedInputStream; > 17 @88 exception:26
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FileSnap, deserialize(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;)J > Context: Everywhere[39]27 = invokestatic < Application, Lorg/apache/zookeeper/server/persistence/SnapStream, getInputStream(Ljava/io/File;)Ljava/util/zip/CheckedInputStream; > 17 @88 exception:26
+NORMAL deserialize:conditional branch(eq, to iindex=75) 27,11 Node: < Application, Lorg/apache/zookeeper/server/persistence/FileSnap, deserialize(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;)J > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        // we should  give up
+        List<File> snapList = findNValidSnapshots(100);
+        if (snapList.size() == 0) {
+            return -1L;
+        }
+        File snap = null;
+        long snapZxid = -1;
+        boolean foundValid = false;
+        for (int i = 0, snapListSize = snapList.size(); i < snapListSize; i++) {
+            snap = snapList.get(i);
+            LOG.info("Reading snapshot {}", snap);
+            snapZxid = Util.getZxidFromName(snap.getName(), SNAPSHOT_FILE_PREFIX);
+            try (CheckedInputStream snapIS = SnapStream.getInputStream(snap)) {
+                InputArchive ia = BinaryInputArchive.getArchive(snapIS);
+                deserialize(dt, sessions, ia);
+                SnapStream.checkSealIntegrity(snapIS, ia);
+
+                // Digest feature was added after the CRC to make it backward
+                // compatible, the older code can still read snapshots which
+                // includes digest.
+                //
+                // To check the intact, after adding digest we added another
+                // CRC check.
+                if (dt.deserializeZxidDigest(ia, snapZxid)) {
+                    SnapStream.checkSealIntegrity(snapIS, ia);
+                }
+
+                // deserialize lastProcessedZxid and check inconsistency
+                if (dt.deserializeLastProcessedZxid(ia)) {
+                    SnapStream.checkSealIntegrity(snapIS, ia);
+                }
+
+                foundValid = true;
+                break;
+            } catch (IOException e) {
+                LOG.warn("problem reading snap file {}", snap, e);
+            }
+        }
+        if (!foundValid) {
+            throw new IOException("Not able to find valid snapshots in " + snapDir);
+        }
+        dt.lastProcessedZxid = snapZxid;
+        lastSnapshotInfo = new SnapshotInfo(dt.lastProcessedZxid, snap.lastModified() / 1000);
+
+        // compare the digest if this is not a fuzzy snapshot, we want to compare
+        // and find inconsistent asap.
+        if (dt.getDigestFromLoadedSnapshot() != null) {
+            dt.compareSnapshotDigests(dt.lastProcessedZxid);
+        }
+        return dt.lastProcessedZxid;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnSnapLog, restore(Lorg/apache/zookeeper/server/DataTree;Ljava/util/Map;Lorg/apache/zookeeper/server/persistence/FileTxnSnapLog$PlayBackListener;)J > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=252, lastMethodNumber=312, isFirstLineValid=true, methodSrcCode=
+    public long restore(DataTree dt, Map<Long, Integer> sessions, PlayBackListener listener) throws IOException {
+        long snapLoadingStartTime = Time.currentElapsedTime();
+        long deserializeResult = snapLog.deserialize(dt, sessions);
+        ServerMetrics.getMetrics().STARTUP_SNAP_LOAD_TIME.add(Time.currentElapsedTime() - snapLoadingStartTime);
+        FileTxnLog txnLog = new FileTxnLog(dataDir);
+        boolean trustEmptyDB;
+        File initFile = new File(dataDir.getParent(), "initialize");
+        if (Files.deleteIfExists(initFile.toPath())) {
+            LOG.info("Initialize file found, an empty database will not block voting participation");
+            trustEmptyDB = true;
+        } else {
+            trustEmptyDB = autoCreateDB;
+        }
+
+        RestoreFinalizer finalizer = () -> {
+            long highestZxid = fastForwardFromEdits(dt, sessions, listener);
+            // The snapshotZxidDigest will reset after replaying the txn of the
+            // zxid in the snapshotZxidDigest, if it's not reset to null after
+            // restoring, it means either there are not enough txns to cover that
+            // zxid or that txn is missing
+            DataTree.ZxidDigest snapshotZxidDigest = dt.getDigestFromLoadedSnapshot();
+            if (snapshotZxidDigest != null) {
+                LOG.warn(
+                        "Highest txn zxid 0x{} is not covering the snapshot digest zxid 0x{}, "
+                                + "which might lead to inconsistent state",
+                        Long.toHexString(highestZxid),
+                        Long.toHexString(snapshotZxidDigest.getZxid()));
+            }
+            return highestZxid;
+        };
+
+        if (-1L == deserializeResult) {
+            /* this means that we couldn't find any snapshot, so we need to
+             * initialize an empty database (reported in ZOOKEEPER-2325) */
+            if (txnLog.getLastLoggedZxid() != -1) {
+                // ZOOKEEPER-3056: provides an escape hatch for users upgrading
+                // from old versions of zookeeper (3.4.x, pre 3.5.3).
+                if (!trustEmptySnapshot) {
+                    throw new IOException(EMPTY_SNAPSHOT_WARNING + "Something is broken!");
+                } else {
+                    LOG.warn("{}This should only be allowed during upgrading.", EMPTY_SNAPSHOT_WARNING);
+                    return finalizer.run();
+                }
+            }
+
+            if (trustEmptyDB) {
+                /* TODO: (br33d) we should either put a ConcurrentHashMap on restore()
+                 *       or use Map on save() */
+                save(dt, (ConcurrentHashMap<Long, Integer>) sessions, false);
+
+                /* return a zxid of 0, since we know the database is empty */
+                return 0L;
+            } else {
+                /* return a zxid of -1, since we are possibly missing data */
+                LOG.warn("Unexpected empty data tree, setting zxid to -1");
+                dt.lastProcessedZxid = -1L;
+                return -1L;
+            }
+        }
+
+        return finalizer.run();
+    }
+}

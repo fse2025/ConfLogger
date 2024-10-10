@@ -1,0 +1,26 @@
+```java
+String keytabFile =
+config.get(ZK_DTSM_ZK_KERBEROS_KEYTAB, "").trim();
+if (keytabFile == null || keytabFile.length() == 0) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration error: {} must be specified. Current value: '{}'", ZK_DTSM_ZK_KERBEROS_KEYTAB, keytabFile);
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException(ZK_DTSM_ZK_KERBEROS_KEYTAB
+    + " must be specified");
+}
+String principal =
+config.get(ZK_DTSM_ZK_KERBEROS_PRINCIPAL, "").trim();
+principal = SecurityUtil.getServerPrincipal(principal, "");
+if (principal == null || principal.length() == 0) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration error: {} must be specified. Current value: '{}'", ZK_DTSM_ZK_KERBEROS_PRINCIPAL, principal);
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException(ZK_DTSM_ZK_KERBEROS_PRINCIPAL
+    + " must be specified");
+}
+
+JaasConfiguration jConf =
+new JaasConfiguration(JAAS_LOGIN_ENTRY_NAME, principal, keytabFile);
+javax.security.auth.login.Configuration.setConfiguration(jConf);
+return principal.split("[/@]")[0];
+```

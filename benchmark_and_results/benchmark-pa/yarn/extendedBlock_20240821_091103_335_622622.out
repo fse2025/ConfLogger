@@ -1,0 +1,59 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RMAdminCLI.java	methodSinagture:	org.apache.hadoop.yarn.client.cli.RMAdminCLI.buildUsageMsg(Ljava/lang/StringBuilder;Z)V	methodLines:	243:263
+blockLines:	249:-1
+paras:	yarn.resourcemanager.ha.enabled
+TaintedStat:	NORMAL buildUsageMsg:conditional branch(eq, to iindex=106) 2,14 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, buildUsageMsg(Ljava/lang/StringBuilder;Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, run([Ljava/lang/String;)I > Context: Everywhere[17]17 = invokevirtual < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, getBoolean(Ljava/lang/String;Z)Z > 13,14,15 @33 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, run([Ljava/lang/String;)I > Context: Everywhere[17]17 = invokevirtual < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, getBoolean(Ljava/lang/String;Z)Z > 13,14,15 @33 exception:16
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, run([Ljava/lang/String;)I > Context: Everywhere[25]invokestatic < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, printUsage(Ljava/lang/String;Z)V > 94,17 @46 exception:231 v17
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, printUsage(Ljava/lang/String;Z)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, printUsage(Ljava/lang/String;Z)V > Context: Everywhere[20]invokestatic < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, buildUsageMsg(Ljava/lang/StringBuilder;Z)V > 4,2 @42 exception:13 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, buildUsageMsg(Ljava/lang/StringBuilder;Z)V > Context: Everywhere v2
+NORMAL buildUsageMsg:conditional branch(eq, to iindex=106) 2,14 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, buildUsageMsg(Ljava/lang/StringBuilder;Z)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      boolean isHAEnabled) {
+    builder.append("Usage: yarn rmadmin\n");
+    for (Map.Entry<String,UsageInfo> cmdEntry : ADMIN_USAGE.entrySet()) {
+      UsageInfo usageInfo = cmdEntry.getValue();
+      builder.append("   " + cmdEntry.getKey() + " " + usageInfo.args + "\n");
+    }
+    if (isHAEnabled) {
+      for (Map.Entry<String,UsageInfo> cmdEntry : USAGE.entrySet()) {
+        String cmdKey = cmdEntry.getKey();
+        if (!cmdKey.equals("-help")) {
+          UsageInfo usageInfo = cmdEntry.getValue();
+          if (usageInfo.args == null) {
+            builder.append("   " + cmdKey + "\n");
+          } else {
+            builder.append("   " + cmdKey + " " + usageInfo.args + "\n");
+          }
+        }
+      }
+    }
+    builder.append("   -help" + " [cmd]\n");
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, printUsage(Ljava/lang/String;Z)V > Context: Everywhere, blocks=[BB[SSA:18..20]9 - org.apache.hadoop.yarn.client.cli.RMAdminCLI.printUsage(Ljava/lang/String;Z)V, BB[SSA:12..13]6 - org.apache.hadoop.yarn.client.cli.RMAdminCLI.printUsage(Ljava/lang/String;Z)V, BB[SSA:21..23]10 - org.apache.hadoop.yarn.client.cli.RMAdminCLI.printUsage(Ljava/lang/String;Z)V, BB[SSA:-1..-2]13 - org.apache.hadoop.yarn.client.cli.RMAdminCLI.printUsage(Ljava/lang/String;Z)V], numberOfBasicBlocks=4, firstLineNumber=323, lastLineNumber=328, firstMethodNumber=321, lastMethodNumber=331, isFirstLineValid=true, methodSrcCode=
+  private static void printUsage(String cmd, boolean isHAEnabled) {
+    StringBuilder usageBuilder = new StringBuilder();
+    if (ADMIN_USAGE.containsKey(cmd) || USAGE.containsKey(cmd)) {
+      buildIndividualUsageMsg(cmd, usageBuilder);
+    } else {
+      buildUsageMsg(usageBuilder, isHAEnabled);
+    }
+    System.err.println(usageBuilder);
+    ToolRunner.printGenericCommandUsage(System.err);
+
+  }
+  
+}

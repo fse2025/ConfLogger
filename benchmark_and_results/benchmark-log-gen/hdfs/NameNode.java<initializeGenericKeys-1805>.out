@@ -1,0 +1,647 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V	methodLines:	1805:1828
+blockLines:	1807:-1
+paras:	dfs.web.authentication.kerberos.keytab
+TaintedStat:	NORMAL initializeGenericKeys:conditional branch(ne, to iindex=38) 10,8 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL getSpnegoKeytabKey:9 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 6 @12 exception:8 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSpnegoKeytabKey(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[6]6 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 2 @7 exception:5
+NORMAL replacePattern:conditional branch(ne, to iindex=14) 6,7 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL replacePattern:10 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,8 @16 exception:9 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, replacePattern([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere[79]35 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 17,8 @138 exception:34
+NORMAL runCmd:conditional branch(eq, to iindex=86) 35,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+NORMAL runCmd:68 = invokespecial < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > 1,25 @147 exception:67 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL transitionToStandby:conditional branch(eq, to iindex=18) 6,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL transitionToStandby:9 = arrayload 5[8] Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere[22]11 = invokevirtual < Extension, Lorg/apache/hadoop/ha/HAAdmin, resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget; > 1,9 @36 exception:10 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSHAAdmin, resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSHAAdmin, resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget; > Context: Everywhere[10]invokespecial < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > 7,6,8,2 @18 exception:9 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[62]invokestatic < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > 15,12,4 @118 exception:17 v4
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v3
+NORMAL initializeGenericKeys:conditional branch(eq, to iindex=38) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL initializeGenericKeys:conditional branch(ne, to iindex=38) 10,8 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V	methodLines:	1805:1828
+blockLines:	1808:-1
+paras:	dfs.storage.policy.satisfier.mode
+TaintedStat:	NORMAL initializeGenericKeys:conditional branch(eq, to iindex=21) 2,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createSPSManager(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Z > Context: Everywhere[14]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,12,13 @27 exception:14
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createSPSManager(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Z > Context: Everywhere[14]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,12,13 @27 exception:14
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createSPSManager(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Z > Context: Everywhere:16 = phi  3,15
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createSPSManager(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Z > Context: Everywhere[17]18 = invokestatic < Application, Lorg/apache/hadoop/hdfs/protocol/HdfsConstants$StoragePolicySatisfierMode, fromString(Ljava/lang/String;)Lorg/apache/hadoop/hdfs/protocol/HdfsConstants$StoragePolicySatisfierMode; > 16 @34 exception:17 v16
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/HdfsConstants$StoragePolicySatisfierMode, fromString(Ljava/lang/String;)Lorg/apache/hadoop/hdfs/protocol/HdfsConstants$StoragePolicySatisfierMode; > Context: Everywhere v1
+NORMAL fromString:5 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, toUpperCase(Ljava/lang/String;)Ljava/lang/String; > 1 @4 exception:4 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/HdfsConstants$StoragePolicySatisfierMode, fromString(Ljava/lang/String;)Lorg/apache/hadoop/hdfs/protocol/HdfsConstants$StoragePolicySatisfierMode; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, toUpperCase(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL toUpperCase:return 5 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, toUpperCase(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, toUpperCase(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/ssl/SSLFactory, getHostnameVerifier(Lorg/apache/hadoop/conf/Configuration;)Ljavax/net/ssl/HostnameVerifier; > Context: Everywhere[5]11 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, toUpperCase(Ljava/lang/String;)Ljava/lang/String; > 9 @11 exception:10
+NORMAL getHostnameVerifier:13 = invokestatic < Extension, Lorg/apache/hadoop/security/ssl/SSLFactory, getHostnameVerifier(Ljava/lang/String;)Ljavax/net/ssl/HostnameVerifier; > 11 @14 exception:12 Node: < Extension, Lorg/apache/hadoop/security/ssl/SSLFactory, getHostnameVerifier(Lorg/apache/hadoop/conf/Configuration;)Ljavax/net/ssl/HostnameVerifier; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/ssl/SSLFactory, getHostnameVerifier(Ljava/lang/String;)Ljavax/net/ssl/HostnameVerifier; > Context: Everywhere
+NORMAL getHostnameVerifier:5 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 1,3 @3 exception:4 Node: < Extension, Lorg/apache/hadoop/security/ssl/SSLFactory, getHostnameVerifier(Ljava/lang/String;)Ljavax/net/ssl/HostnameVerifier; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere[79]35 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 17,8 @138 exception:34
+NORMAL runCmd:conditional branch(eq, to iindex=86) 35,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+NORMAL runCmd:68 = invokespecial < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > 1,25 @147 exception:67 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL transitionToStandby:conditional branch(eq, to iindex=18) 6,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL transitionToStandby:9 = arrayload 5[8] Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere[22]11 = invokevirtual < Extension, Lorg/apache/hadoop/ha/HAAdmin, resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget; > 1,9 @36 exception:10 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSHAAdmin, resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSHAAdmin, resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget; > Context: Everywhere[10]invokespecial < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > 7,6,8,2 @18 exception:9 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[62]invokestatic < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > 15,12,4 @118 exception:17 v4
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v3
+NORMAL initializeGenericKeys:conditional branch(eq, to iindex=38) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL initializeGenericKeys:conditional branch(ne, to iindex=38) 10,8 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL initializeGenericKeys:conditional branch(eq, to iindex=21) 2,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V	methodLines:	1805:1828
+blockLines:	1806:-1
+paras:	dfs.namenode.rpc-address
+TaintedStat:	NORMAL initializeGenericKeys:conditional branch(eq, to iindex=14) 7,8 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[40]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @68 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[40]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @68 exception:20
+NORMAL initializeGenericKeys:conditional branch(eq, to iindex=65) 21,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL initializeGenericKeys:28 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @91 exception:27 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/http/HttpServer2, initSpnego(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[6]10 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @11 exception:9
+NORMAL initSpnego:13 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 10 @23 exception:12 Node: < Extension, Lorg/apache/hadoop/http/HttpServer2, initSpnego(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[4]7 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 2 @5 exception:6
+NORMAL initializeGenericKeys:conditional branch(eq, to iindex=14) 7,8 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V	methodLines:	1805:1828
+blockLines:	1811:-1
+paras:	dfs.namenode.fslock.fair
+TaintedStat:	NORMAL initializeGenericKeys:conditional branch(eq, to iindex=28) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystemLock, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/metrics2/lib/MutableRatesWithAggregation;Lorg/apache/hadoop/util/Timer;)V > Context: Everywhere[52]29 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,26,27 @101 exception:28
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystemLock, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/metrics2/lib/MutableRatesWithAggregation;Lorg/apache/hadoop/util/Timer;)V > Context: Everywhere[52]29 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,26,27 @101 exception:28
+NORMAL <init>:37 = invokevirtual < Application, Ljava/lang/StringBuilder, append(Z)Ljava/lang/StringBuilder; > 35,29 @123 exception:36 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystemLock, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/metrics2/lib/MutableRatesWithAggregation;Lorg/apache/hadoop/util/Timer;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, append(Z)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL append:return 1 Node: < Primordial, Ljava/lang/StringBuilder, append(Z)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Z)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, setTokenServiceUseIp(Z)V > Context: Everywhere[11]14 = invokevirtual < Extension, Ljava/lang/StringBuilder, append(Z)Ljava/lang/StringBuilder; > 12,1 @27 exception:13
+NORMAL setTokenServiceUseIp:16 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 14 @30 exception:15 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, setTokenServiceUseIp(Z)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere[2]5 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 3 @4 exception:4
+NORMAL handleEndElement:77 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 75,5 @281 exception:76 Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere[79]35 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 17,8 @138 exception:34
+NORMAL runCmd:conditional branch(eq, to iindex=86) 35,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+NORMAL runCmd:68 = invokespecial < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > 1,25 @147 exception:67 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL transitionToStandby:conditional branch(eq, to iindex=18) 6,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL transitionToStandby:9 = arrayload 5[8] Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, transitionToStandby(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere[22]11 = invokevirtual < Extension, Lorg/apache/hadoop/ha/HAAdmin, resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget; > 1,9 @36 exception:10 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSHAAdmin, resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSHAAdmin, resolveTarget(Ljava/lang/String;)Lorg/apache/hadoop/ha/HAServiceTarget; > Context: Everywhere[10]invokespecial < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > 7,6,8,2 @18 exception:9 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[62]invokestatic < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > 15,12,4 @118 exception:17 v4
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v3
+NORMAL initializeGenericKeys:conditional branch(eq, to iindex=28) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V	methodLines:	1805:1828
+blockLines:	1822:-1
+paras:	dfs.namenode.rpc-address
+TaintedStat:	NORMAL initializeGenericKeys:conditional branch(eq, to iindex=65) 21,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[50]28 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @91 exception:27
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[50]28 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @91 exception:27
+NORMAL initializeGenericKeys:30 = invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 26,28 @94 exception:29 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL append:return 1 Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/fs/FileSystemLinkResolver, resolve(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/lang/Object; > Context: Everywhere[39]65 = invokevirtual < Extension, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 62,63 @74 exception:64
+NORMAL resolve:67 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 65 @77 exception:66 Node: < Extension, Lorg/apache/hadoop/fs/FileSystemLinkResolver, resolve(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/lang/Object; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @20 exception:14
+NORMAL setProtocolEngine:17 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16 Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[40]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @68 exception:20
+NORMAL initializeGenericKeys:conditional branch(eq, to iindex=65) 21,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeGenericKeys(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String nameserviceId, String namenodeId) {
+    if ((nameserviceId != null && !nameserviceId.isEmpty()) || 
+        (namenodeId != null && !namenodeId.isEmpty())) {
+      if (nameserviceId != null) {
+        conf.set(DFS_NAMESERVICE_ID, nameserviceId);
+      }
+      if (namenodeId != null) {
+        conf.set(DFS_HA_NAMENODE_ID_KEY, namenodeId);
+      }
+      
+      DFSUtil.setGenericConf(conf, nameserviceId, namenodeId,
+          NAMENODE_SPECIFIC_KEYS);
+      DFSUtil.setGenericConf(conf, nameserviceId, null,
+          NAMESERVICE_SPECIFIC_KEYS);
+    }
+    
+    // If the RPC address is set use it to (re-)configure the default FS
+    if (conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY) != null) {
+      URI defaultUri = URI.create(HdfsConstants.HDFS_URI_SCHEME + "://"
+          + conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY));
+      conf.set(FS_DEFAULT_NAME_KEY, defaultUri.toString());
+      LOG.debug("Setting {} to {}", FS_DEFAULT_NAME_KEY, defaultUri);
+    }
+  }
+    
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere, blocks=[BB[SSA:6..10]3 - org.apache.hadoop.hdfs.server.namenode.NameNode.format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z, BB[SSA:2..5]2 - org.apache.hadoop.hdfs.server.namenode.NameNode.format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z, BB[SSA:11..12]4 - org.apache.hadoop.hdfs.server.namenode.NameNode.format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z, BB[SSA:-1..-2]67 - org.apache.hadoop.hdfs.server.namenode.NameNode.format(Lorg/apache/hadoop/conf/Configuration;ZZ)Z], numberOfBasicBlocks=4, firstLineNumber=1238, lastLineNumber=1241, firstMethodNumber=1237, lastMethodNumber=1303, isFirstLineValid=true, methodSrcCode=
+      boolean isInteractive) throws IOException {
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    initializeGenericKeys(conf, nsId, namenodeId);
+    checkAllowFormat(conf);
+
+    if (UserGroupInformation.isSecurityEnabled()) {
+      InetSocketAddress socAddr = DFSUtilClient.getNNAddress(conf);
+      SecurityUtil.login(conf, DFS_NAMENODE_KEYTAB_FILE_KEY,
+          DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY, socAddr.getHostName());
+    }
+    
+    Collection<URI> nameDirsToFormat = FSNamesystem.getNamespaceDirs(conf);
+    List<URI> sharedDirs = FSNamesystem.getSharedEditsDirs(conf);
+    List<URI> dirsToPrompt = new ArrayList<URI>();
+    dirsToPrompt.addAll(nameDirsToFormat);
+    dirsToPrompt.addAll(sharedDirs);
+    List<URI> editDirsToFormat = 
+                 FSNamesystem.getNamespaceEditsDirs(conf);
+
+    // if clusterID is not provided - see if you can find the current one
+    String clusterId = StartupOption.FORMAT.getClusterId();
+    if(clusterId == null || clusterId.equals("")) {
+      //Generate a new cluster id
+      clusterId = NNStorage.newClusterID();
+    }
+
+    LOG.info("Formatting using clusterid: {}", clusterId);
+    
+    FSImage fsImage = new FSImage(conf, nameDirsToFormat, editDirsToFormat);
+    FSNamesystem fsn = null;
+    try {
+      fsn = new FSNamesystem(conf, fsImage);
+      fsImage.getEditLog().initJournalsForWrite();
+
+      // Abort NameNode format if reformat is disabled and if
+      // meta-dir already exists
+      if (conf.getBoolean(DFSConfigKeys.DFS_REFORMAT_DISABLED,
+          DFSConfigKeys.DFS_REFORMAT_DISABLED_DEFAULT)) {
+        force = false;
+        isInteractive = false;
+        for (StorageDirectory sd : fsImage.storage.dirIterable(null)) {
+          if (sd.hasSomeData()) {
+            throw new NameNodeFormatException(
+                "NameNode format aborted as reformat is disabled for "
+                    + "this cluster.");
+          }
+        }
+      }
+
+      if (!fsImage.confirmFormat(force, isInteractive)) {
+        return true; // aborted
+      }
+
+      fsImage.format(fsn, clusterId, force);
+    } catch (IOException ioe) {
+      LOG.warn("Encountered exception during format", ioe);
+      throw ioe;
+    } finally {
+      if (fsImage != null) {
+        fsImage.close();
+      }
+      if (fsn != null) {
+        fsn.close();
+      }
+    }
+    return false;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController; > Context: Everywhere, blocks=[BB[SSA:30..33]13 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;, BB[SSA:19..22]9 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;, BB[SSA:34..38]14 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;, BB[SSA:-1..-2]20 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController;], numberOfBasicBlocks=4, firstLineNumber=155, lastLineNumber=162, firstMethodNumber=147, lastMethodNumber=166, isFirstLineValid=true, methodSrcCode=
+  public static DFSZKFailoverController create(Configuration conf) {
+    Configuration localNNConf = DFSHAAdmin.addSecurityConfiguration(conf);
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+
+    if (!HAUtil.isHAEnabled(localNNConf, nsId)) {
+      throw new HadoopIllegalArgumentException(
+          "HA is not enabled for this namenode.");
+    }
+    String nnId = HAUtil.getNameNodeId(localNNConf, nsId);
+    if (nnId == null) {
+      String msg = "Could not get the namenode ID of this node. " +
+          "You may run zkfc on the node other than namenode.";
+      throw new HadoopIllegalArgumentException(msg);
+    }
+    NameNode.initializeGenericKeys(localNNConf, nsId, nnId);
+    DFSUtil.setGenericConf(localNNConf, nsId, nnId, ZKFC_CONF_KEYS);
+    
+    NNHAServiceTarget localTarget = new NNHAServiceTarget(
+        localNNConf, nsId, nnId);
+    return new DFSZKFailoverController(localNNConf, localTarget);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, doRecovery(Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:6..10]3 - org.apache.hadoop.hdfs.server.namenode.NameNode.doRecovery(Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:2..5]2 - org.apache.hadoop.hdfs.server.namenode.NameNode.doRecovery(Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:11..12]4 - org.apache.hadoop.hdfs.server.namenode.NameNode.doRecovery(Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]29 - org.apache.hadoop.hdfs.server.namenode.NameNode.doRecovery(Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=1668, lastLineNumber=1671, firstMethodNumber=1667, lastMethodNumber=1700, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    initializeGenericKeys(conf, nsId, namenodeId);
+    if (startOpt.getForce() < MetaRecoveryContext.FORCE_ALL) {
+      if (!confirmPrompt("You have selected Metadata Recovery mode.  " +
+          "This mode is intended to recover lost metadata on a corrupt " +
+          "filesystem.  Metadata recovery mode often permanently deletes " +
+          "data from your HDFS filesystem.  Please back up your edit log " +
+          "and fsimage before trying this!\n\n" +
+          "Are you ready to proceed? (Y/N)\n")) {
+        System.err.println("Recovery aborted at user request.\n");
+        return;
+      }
+    }
+    MetaRecoveryContext.LOG.info("starting recovery...");
+    UserGroupInformation.setConfiguration(conf);
+    NameNode.initMetrics(conf, startOpt.toNodeRole());
+    FSNamesystem fsn = null;
+    try {
+      fsn = FSNamesystem.loadFromDisk(conf);
+      fsn.getFSImage().saveNamespace(fsn);
+      MetaRecoveryContext.LOG.info("RECOVERY COMPLETE");
+    } catch (IOException e) {
+      MetaRecoveryContext.LOG.info("RECOVERY FAILED: caught exception", e);
+      throw e;
+    } catch (RuntimeException e) {
+      MetaRecoveryContext.LOG.info("RECOVERY FAILED: caught exception", e);
+      throw e;
+    } finally {
+      if (fsn != null)
+        fsn.close();
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/HAUtil, getConfForOtherNodes(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:55..59]22 - org.apache.hadoop.hdfs.HAUtil.getConfForOtherNodes(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;, BB[SSA:52..54]21 - org.apache.hadoop.hdfs.HAUtil.getConfForOtherNodes(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;, BB[SSA:60..62]23 - org.apache.hadoop.hdfs.HAUtil.getConfForOtherNodes(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;, BB[SSA:-1..-2]26 - org.apache.hadoop.hdfs.HAUtil.getConfForOtherNodes(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=213, lastLineNumber=215, firstMethodNumber=201, lastMethodNumber=217, isFirstLineValid=true, methodSrcCode=
+    
+    String nsId = DFSUtil.getNamenodeNameServiceId(myConf);
+    List<String> otherNodes = getNameNodeIdOfOtherNodes(myConf, nsId);
+
+    // Look up the address of the other NNs
+    List<Configuration> confs = new ArrayList<Configuration>(otherNodes.size());
+    myConf = new Configuration(myConf);
+    // unset independent properties
+    for (String idpKey : HA_SPECIAL_INDEPENDENT_KEYS) {
+      myConf.unset(idpKey);
+    }
+    for (String nn : otherNodes) {
+      Configuration confForOtherNode = new Configuration(myConf);
+      NameNode.initializeGenericKeys(confForOtherNode, nsId, nn);
+      confs.add(confForOtherNode);
+    }
+    return confs;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/tools/NNHAServiceTarget, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:58..62]28 - org.apache.hadoop.hdfs.tools.NNHAServiceTarget.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:55..57]27 - org.apache.hadoop.hdfs.tools.NNHAServiceTarget.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:63..66]29 - org.apache.hadoop.hdfs.tools.NNHAServiceTarget.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]62 - org.apache.hadoop.hdfs.tools.NNHAServiceTarget.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=82, lastLineNumber=86, firstMethodNumber=60, lastMethodNumber=118, isFirstLineValid=true, methodSrcCode=
+  public NNHAServiceTarget(Configuration conf,
+      String nsId, String nnId) {
+    Preconditions.checkNotNull(nnId);
+
+    if (nsId == null) {
+      nsId = DFSUtil.getOnlyNameServiceIdOrNull(conf);
+      if (nsId == null) {
+        String errorString = "Unable to determine the name service ID.";
+        String[] dfsNames = conf.getStrings(DFS_NAMESERVICES);
+        if ((dfsNames != null) && (dfsNames.length > 1)) {
+          errorString = "Unable to determine the name service ID. " +
+              "This is an HA configuration with multiple name services " +
+              "configured. " + DFS_NAMESERVICES + " is set to " +
+              Arrays.toString(dfsNames) + ". Please re-run with the -ns option.";
+        }
+        throw new IllegalArgumentException(errorString);
+      }
+    }
+    assert nsId != null;
+    
+    // Make a copy of the conf, and override configs based on the
+    // target node -- not the node we happen to be running on.
+    HdfsConfiguration targetConf = new HdfsConfiguration(conf);
+    NameNode.initializeGenericKeys(targetConf, nsId, nnId);
+    
+    String serviceAddr = 
+      DFSUtil.getNamenodeServiceAddr(targetConf, nsId, nnId);
+    if (serviceAddr == null) {
+      throw new IllegalArgumentException(
+          "Unable to determine service address for namenode '" + nnId + "'");
+    }
+    this.addr = NetUtils.createSocketAddr(serviceAddr,
+        HdfsClientConfigKeys.DFS_NAMENODE_RPC_PORT_DEFAULT);
+
+    String lifelineAddrStr =
+        DFSUtil.getNamenodeLifelineAddr(targetConf, nsId, nnId);
+    this.lifelineAddr = (lifelineAddrStr != null) ?
+        NetUtils.createSocketAddr(lifelineAddrStr) : null;
+
+    this.autoFailoverEnabled = targetConf.getBoolean(
+        DFSConfigKeys.DFS_HA_AUTO_FAILOVER_ENABLED_KEY,
+        DFSConfigKeys.DFS_HA_AUTO_FAILOVER_ENABLED_DEFAULT);
+    if (autoFailoverEnabled) {
+      int port = DFSZKFailoverController.getZkfcPort(targetConf);
+      if (port != 0) {
+        setZkfcPort(port);
+      }
+    }
+    
+    try {
+      this.fencer = NodeFencer.create(targetConf,
+          DFSConfigKeys.DFS_HA_FENCE_METHODS_KEY);
+    } catch (BadFencingConfigurationException e) {
+      this.fenceConfigError = e;
+    }
+    
+    this.nnId = nnId;
+    this.nsId = nsId;
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;ZZ)Z > Context: Everywhere, blocks=[BB[SSA:6..10]3 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;ZZ)Z, BB[SSA:2..5]2 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;ZZ)Z, BB[SSA:11..13]4 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;ZZ)Z, BB[SSA:-1..-2]88 - org.apache.hadoop.hdfs.server.namenode.NameNode.initializeSharedEdits(Lorg/apache/hadoop/conf/Configuration;ZZ)Z], numberOfBasicBlocks=4, firstLineNumber=1359, lastLineNumber=1363, firstMethodNumber=1358, lastMethodNumber=1432, isFirstLineValid=true, methodSrcCode=
+      boolean force, boolean interactive) throws IOException {
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    initializeGenericKeys(conf, nsId, namenodeId);
+    
+    if (conf.get(DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY) == null) {
+      LOG.error("No shared edits directory configured for namespace " +
+          nsId + " namenode " + namenodeId);
+      return false;
+    }
+
+    if (UserGroupInformation.isSecurityEnabled()) {
+      InetSocketAddress socAddr = DFSUtilClient.getNNAddress(conf);
+      SecurityUtil.login(conf, DFS_NAMENODE_KEYTAB_FILE_KEY,
+          DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY, socAddr.getHostName());
+    }
+
+    NNStorage existingStorage = null;
+    FSImage sharedEditsImage = null;
+    try {
+      FSNamesystem fsns =
+          FSNamesystem.loadFromDisk(getConfigurationWithoutSharedEdits(conf));
+      
+      existingStorage = fsns.getFSImage().getStorage();
+      NamespaceInfo nsInfo = existingStorage.getNamespaceInfo();
+      
+      List<URI> sharedEditsDirs = FSNamesystem.getSharedEditsDirs(conf);
+      
+      sharedEditsImage = new FSImage(conf,
+          Lists.<URI>newArrayList(),
+          sharedEditsDirs);
+      sharedEditsImage.getEditLog().initJournalsForWrite();
+      
+      if (!sharedEditsImage.confirmFormat(force, interactive)) {
+        return true; // abort
+      }
+      
+      NNStorage newSharedStorage = sharedEditsImage.getStorage();
+      // Call Storage.format instead of FSImage.format here, since we don't
+      // actually want to save a checkpoint - just prime the dirs with
+      // the existing namespace info
+      newSharedStorage.format(nsInfo);
+      sharedEditsImage.getEditLog().formatNonFileJournals(nsInfo, force);
+
+      // Need to make sure the edit log segments are in good shape to initialize
+      // the shared edits dir.
+      fsns.getFSImage().getEditLog().close();
+      fsns.getFSImage().getEditLog().initJournalsForWrite();
+      fsns.getFSImage().getEditLog().recoverUnclosedStreams();
+
+      copyEditLogSegmentsToSharedDir(fsns, sharedEditsDirs, newSharedStorage,
+          conf);
+    } catch (IOException ioe) {
+      LOG.error("Could not initialize shared edits dir", ioe);
+      return true; // aborted
+    } finally {
+      if (sharedEditsImage != null) {
+        try {
+          sharedEditsImage.close();
+        }  catch (IOException ioe) {
+          LOG.warn("Could not close sharedEditsImage", ioe);
+        }
+      }
+      // Have to unlock storage explicitly for the case when we're running in a
+      // unit test, which runs in the same JVM as NNs.
+      if (existingStorage != null) {
+        try {
+          existingStorage.unlockAll();
+        } catch (IOException ioe) {
+          LOG.warn("Could not unlock storage directories", ioe);
+          return true; // aborted
+        }
+      }
+    }
+    return false; // did not abort
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V > Context: Everywhere, blocks=[BB[SSA:145..148]52 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V, BB[SSA:144..144]51 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V, BB[SSA:149..151]53 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V, BB[SSA:-1..-2]79 - org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$NamenodeRole;)V], numberOfBasicBlocks=4, firstLineNumber=1030, lastLineNumber=1033, firstMethodNumber=1012, lastMethodNumber=1052, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    super(conf);
+    this.tracer = new Tracer.Builder("NameNode").
+        conf(TraceUtils.wrapHadoopConf(NAMENODE_HTRACE_PREFIX, conf)).
+        build();
+    this.role = role;
+    String nsId = getNameServiceId(conf);
+    String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    clientNamenodeAddress = NameNodeUtils.getClientNamenodeAddress(
+        conf, nsId);
+
+    if (clientNamenodeAddress != null) {
+      LOG.info("Clients should use {} to access"
+          + " this namenode/service.", clientNamenodeAddress);
+    }
+    this.haEnabled = HAUtil.isHAEnabled(conf, nsId);
+    state = createHAState(getStartupOption(conf));
+    this.allowStaleStandbyReads = HAUtil.shouldAllowStandbyReads(conf);
+    this.haContext = createHAContext();
+    try {
+      initializeGenericKeys(conf, nsId, namenodeId);
+      initialize(getConf());
+      state.prepareToEnterState(haContext);
+      try {
+        haContext.writeLock();
+        state.enterState(haContext);
+      } finally {
+        haContext.writeUnlock();
+      }
+    } catch (IOException e) {
+      this.stopAtException(e);
+      throw e;
+    } catch (HadoopIllegalArgumentException e) {
+      this.stopAtException(e);
+      throw e;
+    }
+    notBecomeActiveInSafemode = conf.getBoolean(
+        DFS_HA_NN_NOT_BECOME_ACTIVE_IN_SAFEMODE,
+        DFS_HA_NN_NOT_BECOME_ACTIVE_IN_SAFEMODE_DEFAULT);
+    this.started.set(true);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set; > Context: Everywhere, blocks=[BB[SSA:38..42]21 - org.apache.hadoop.hdfs.DFSUtil.getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:35..37]20 - org.apache.hadoop.hdfs.DFSUtil.getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:43..45]22 - org.apache.hadoop.hdfs.DFSUtil.getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:-1..-2]40 - org.apache.hadoop.hdfs.DFSUtil.getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:61..65]31 - org.apache.hadoop.hdfs.DFSUtil.getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:58..60]30 - org.apache.hadoop.hdfs.DFSUtil.getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:66..68]32 - org.apache.hadoop.hdfs.DFSUtil.getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;, BB[SSA:-1..-2]40 - org.apache.hadoop.hdfs.DFSUtil.getAllNnPrincipals(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Set;], numberOfBasicBlocks=8, firstLineNumber=443, lastLineNumber=446, firstMethodNumber=430, lastMethodNumber=452, isFirstLineValid=true, methodSrcCode=
+  public static Set<String> getAllNnPrincipals(Configuration conf) throws IOException {
+    Set<String> principals = new HashSet<String>();
+    for (String nsId : DFSUtilClient.getNameServiceIds(conf)) {
+      if (HAUtil.isHAEnabled(conf, nsId)) {
+        for (String nnId : DFSUtilClient.getNameNodeIds(conf, nsId)) {
+          Configuration confForNn = new Configuration(conf);
+          NameNode.initializeGenericKeys(confForNn, nsId, nnId);
+          String principal = SecurityUtil.getServerPrincipal(confForNn
+              .get(DFSConfigKeys.DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY),
+              DFSUtilClient.getNNAddress(confForNn).getHostName());
+          principals.add(principal);
+        }
+      } else {
+        Configuration confForNn = new Configuration(conf);
+        NameNode.initializeGenericKeys(confForNn, nsId, null);
+        String principal = SecurityUtil.getServerPrincipal(confForNn
+            .get(DFSConfigKeys.DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY),
+            DFSUtilClient.getNNAddress(confForNn).getHostName());
+        principals.add(principal);
+      }
+    }
+
+    return principals;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, printMetadataVersion(Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere, blocks=[BB[SSA:6..10]3 - org.apache.hadoop.hdfs.server.namenode.NameNode.printMetadataVersion(Lorg/apache/hadoop/conf/Configuration;)Z, BB[SSA:2..5]2 - org.apache.hadoop.hdfs.server.namenode.NameNode.printMetadataVersion(Lorg/apache/hadoop/conf/Configuration;)Z, BB[SSA:11..11]4 - org.apache.hadoop.hdfs.server.namenode.NameNode.printMetadataVersion(Lorg/apache/hadoop/conf/Configuration;)Z, BB[SSA:-1..-2]10 - org.apache.hadoop.hdfs.server.namenode.NameNode.printMetadataVersion(Lorg/apache/hadoop/conf/Configuration;)Z], numberOfBasicBlocks=4, firstLineNumber=1711, lastLineNumber=1714, firstMethodNumber=1710, lastMethodNumber=1716, isFirstLineValid=true, methodSrcCode=
+    throws IOException {
+    final String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    final String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    NameNode.initializeGenericKeys(conf, nsId, namenodeId);
+    final FSImage fsImage = new FSImage(conf);
+    final FSNamesystem fs = new FSNamesystem(conf, fsImage, false);
+    return fsImage.recoverTransitionRead(
+      StartupOption.METADATAVERSION, fs, null);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V > Context: Everywhere, blocks=[BB[SSA:24..27]12 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V, BB[SSA:17..18]8 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V, BB[SSA:28..31]13 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V, BB[SSA:-1..-2]20 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V], numberOfBasicBlocks=4, firstLineNumber=188, lastLineNumber=194, firstMethodNumber=184, lastMethodNumber=202, isFirstLineValid=true, methodSrcCode=
+  public SecondaryNameNode(Configuration conf,
+      CommandLineOpts commandLineOpts) throws IOException {
+    try {
+      String nsId = DFSUtil.getSecondaryNameServiceId(conf);
+      if (HAUtil.isHAEnabled(conf, nsId)) {
+        throw new IOException(
+            "Cannot use SecondaryNameNode in an HA cluster." +
+            " The Standby Namenode will perform checkpointing.");
+      }
+      NameNode.initializeGenericKeys(conf, nsId, null);
+      initialize(conf, commandLineOpts);
+    } catch (IOException e) {
+      shutdown();
+      throw e;
+    } catch (HadoopIllegalArgumentException e) {
+      shutdown();
+      throw e;
+    }
+  }
+  
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/BootstrapStandby, parseConfAndFindOtherNN()V > Context: Everywhere, blocks=[BB[SSA:29..29]15 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.parseConfAndFindOtherNN()V, BB[SSA:27..28]14 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.parseConfAndFindOtherNN()V, BB[SSA:30..31]16 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.parseConfAndFindOtherNN()V, BB[SSA:-1..-2]79 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.parseConfAndFindOtherNN()V], numberOfBasicBlocks=4, firstLineNumber=421, lastLineNumber=423, firstMethodNumber=412, lastMethodNumber=454, isFirstLineValid=true, methodSrcCode=
+  private void parseConfAndFindOtherNN() throws IOException {
+    Configuration conf = getConf();
+    nsId = DFSUtil.getNamenodeNameServiceId(conf);
+
+    if (!HAUtil.isHAEnabled(conf, nsId)) {
+      throw new HadoopIllegalArgumentException(
+          "HA is not enabled for this namenode.");
+    }
+    nnId = HAUtil.getNameNodeId(conf, nsId);
+    NameNode.initializeGenericKeys(conf, nsId, nnId);
+
+    if (!HAUtil.usesSharedEditsDir(conf)) {
+      throw new HadoopIllegalArgumentException(
+        "Shared edits storage is not enabled for this namenode.");
+    }
+
+
+    remoteNNs = RemoteNameNodeInfo.getRemoteNameNodes(conf, nsId);
+    // validate the configured NNs
+    List<RemoteNameNodeInfo> remove = new ArrayList<RemoteNameNodeInfo>(remoteNNs.size());
+    for (RemoteNameNodeInfo info : remoteNNs) {
+      InetSocketAddress address = info.getIpcAddress();
+      LOG.info("Found nn: " + info.getNameNodeID() + ", ipc: " + info.getIpcAddress());
+      if (address.getPort() == 0 || address.getAddress().isAnyLocalAddress()) {
+        LOG.error("Could not determine valid IPC address for other NameNode ("
+            + info.getNameNodeID() + ") , got: " + address);
+        remove.add(info);
+      }
+    }
+
+    // remove any invalid nns
+    remoteNNs.removeAll(remove);
+
+    // make sure we have at least one left to read
+    Preconditions.checkArgument(!remoteNNs.isEmpty(), "Could not find any valid namenodes!");
+
+    dirsToFormat = FSNamesystem.getNamespaceDirs(conf);
+    editUrisToFormat = FSNamesystem.getNamespaceEditsDirs(
+        conf, false);
+    sharedEditsUris = FSNamesystem.getSharedEditsDirs(conf);
+
+    parseProvidedConfigurations(conf);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, doRollback(Lorg/apache/hadoop/conf/Configuration;Z)Z > Context: Everywhere, blocks=[BB[SSA:6..10]3 - org.apache.hadoop.hdfs.server.namenode.NameNode.doRollback(Lorg/apache/hadoop/conf/Configuration;Z)Z, BB[SSA:2..5]2 - org.apache.hadoop.hdfs.server.namenode.NameNode.doRollback(Lorg/apache/hadoop/conf/Configuration;Z)Z, BB[SSA:11..11]4 - org.apache.hadoop.hdfs.server.namenode.NameNode.doRollback(Lorg/apache/hadoop/conf/Configuration;Z)Z, BB[SSA:-1..-2]17 - org.apache.hadoop.hdfs.server.namenode.NameNode.doRollback(Lorg/apache/hadoop/conf/Configuration;Z)Z], numberOfBasicBlocks=4, firstLineNumber=1499, lastLineNumber=1503, firstMethodNumber=1498, lastMethodNumber=1517, isFirstLineValid=true, methodSrcCode=
+      boolean isConfirmationNeeded) throws IOException {
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    initializeGenericKeys(conf, nsId, namenodeId);
+
+    FSNamesystem nsys = new FSNamesystem(conf, new FSImage(conf));
+    System.err.print(
+        "\"rollBack\" will remove the current state of the file system,\n"
+        + "returning you to the state prior to initiating your recent.\n"
+        + "upgrade. This action is permanent and cannot be undone. If you\n"
+        + "are performing a rollback in an HA environment, you should be\n"
+        + "certain that no NameNode process is running on any host.");
+    if (isConfirmationNeeded) {
+      if (!confirmPrompt("Roll back file system state?")) {
+        System.err.println("Rollback aborted.");
+        return true;
+      }
+    }
+    nsys.getFSImage().doRollback(nsys);
+    return false;
+  }
+}

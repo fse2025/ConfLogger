@@ -1,0 +1,142 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Server.java	methodSinagture:	org.apache.hadoop.ipc.Server.getSchedulerClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class;	methodLines:	765:786
+blockLines:	775:-1
+paras:	null
+TaintedStat:	NORMAL getSchedulerClass:conditional branch(eq, to iindex=50) 31,16 Node: < Application, Lorg/apache/hadoop/ipc/Server, getSchedulerClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/Server, getSchedulerClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class; > Context: Everywhere[33]31 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > 2,29,16 @66 exception:30
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/Server, getSchedulerClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class; > Context: Everywhere[33]31 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > 2,29,16 @66 exception:30
+NORMAL getSchedulerClass:conditional branch(eq, to iindex=50) 31,16 Node: < Application, Lorg/apache/hadoop/ipc/Server, getSchedulerClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	Server.java	methodSinagture:	org.apache.hadoop.ipc.Server.getSchedulerClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class;	methodLines:	765:786
+blockLines:	771:-1
+paras:	null
+TaintedStat:	NORMAL getSchedulerClass:conditional branch(ne, to iindex=50) 18,16 Node: < Application, Lorg/apache/hadoop/ipc/Server, getSchedulerClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/Server, getSchedulerClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class; > Context: Everywhere[14]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > 2,15,16 @28 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/Server, getSchedulerClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class; > Context: Everywhere[14]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > 2,15,16 @28 exception:17
+NORMAL getSchedulerClass:conditional branch(ne, to iindex=50) 18,16 Node: < Application, Lorg/apache/hadoop/ipc/Server, getSchedulerClass(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Class; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String prefix, Configuration conf) {
+    String schedulerKeyname = prefix + "." + CommonConfigurationKeys
+        .IPC_SCHEDULER_IMPL_KEY;
+    Class<?> schedulerClass = conf.getClass(schedulerKeyname, null);
+    // Patch the configuration for legacy fcq configuration that does not have
+    // a separate scheduler setting
+    if (schedulerClass == null) {
+      String queueKeyName = prefix + "." + CommonConfigurationKeys
+          .IPC_CALLQUEUE_IMPL_KEY;
+      Class<?> queueClass = conf.getClass(queueKeyName, null);
+      if (queueClass != null) {
+        if (queueClass.getCanonicalName().equals(
+            FairCallQueue.class.getCanonicalName())) {
+          conf.setClass(schedulerKeyname, DecayRpcScheduler.class,
+              RpcScheduler.class);
+        }
+      }
+    }
+    schedulerClass = conf.getClass(schedulerKeyname,
+        DefaultRpcScheduler.class);
+
+    return CallQueueManager.convertSchedulerClass(schedulerClass);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/ipc/Server, <init>(Ljava/lang/String;ILjava/lang/Class;IIILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/token/SecretManager;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:131..133]50 - org.apache.hadoop.ipc.Server.<init>(Ljava/lang/String;ILjava/lang/Class;IIILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/token/SecretManager;Ljava/lang/String;)V, BB[SSA:127..130]49 - org.apache.hadoop.ipc.Server.<init>(Ljava/lang/String;ILjava/lang/Class;IIILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/token/SecretManager;Ljava/lang/String;)V, BB[SSA:134..136]51 - org.apache.hadoop.ipc.Server.<init>(Ljava/lang/String;ILjava/lang/Class;IIILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/token/SecretManager;Ljava/lang/String;)V, BB[SSA:-1..-2]120 - org.apache.hadoop.ipc.Server.<init>(Ljava/lang/String;ILjava/lang/Class;IIILorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/token/SecretManager;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=3197, lastLineNumber=3199, firstMethodNumber=3161, lastMethodNumber=3248, isFirstLineValid=true, methodSrcCode=
+      String portRangeConfig)
+    throws IOException {
+    this.bindAddress = bindAddress;
+    this.conf = conf;
+    this.portRangeConfig = portRangeConfig;
+    this.port = port;
+    this.rpcRequestClass = rpcRequestClass; 
+    this.handlerCount = handlerCount;
+    this.socketSendBufferSize = 0;
+    this.serverName = serverName;
+    this.auxiliaryListenerMap = null;
+    this.maxDataLength = conf.getInt(CommonConfigurationKeys.IPC_MAXIMUM_DATA_LENGTH,
+        CommonConfigurationKeys.IPC_MAXIMUM_DATA_LENGTH_DEFAULT);
+    if (queueSizePerHandler != -1) {
+      this.maxQueueSize = handlerCount * queueSizePerHandler;
+    } else {
+      this.maxQueueSize = handlerCount * conf.getInt(
+          CommonConfigurationKeys.IPC_SERVER_HANDLER_QUEUE_SIZE_KEY,
+          CommonConfigurationKeys.IPC_SERVER_HANDLER_QUEUE_SIZE_DEFAULT);      
+    }
+    this.maxRespSize = conf.getInt(
+        CommonConfigurationKeys.IPC_SERVER_RPC_MAX_RESPONSE_SIZE_KEY,
+        CommonConfigurationKeys.IPC_SERVER_RPC_MAX_RESPONSE_SIZE_DEFAULT);
+    if (numReaders != -1) {
+      this.readThreads = numReaders;
+    } else {
+      this.readThreads = conf.getInt(
+          CommonConfigurationKeys.IPC_SERVER_RPC_READ_THREADS_KEY,
+          CommonConfigurationKeys.IPC_SERVER_RPC_READ_THREADS_DEFAULT);
+    }
+    this.readerPendingConnectionQueue = conf.getInt(
+        CommonConfigurationKeys.IPC_SERVER_RPC_READ_CONNECTION_QUEUE_SIZE_KEY,
+        CommonConfigurationKeys.IPC_SERVER_RPC_READ_CONNECTION_QUEUE_SIZE_DEFAULT);
+
+    // Setup appropriate callqueue
+    final String prefix = getQueueClassPrefix();
+    this.callQueue = new CallQueueManager<Call>(getQueueClass(prefix, conf),
+        getSchedulerClass(prefix, conf),
+        getClientBackoffEnable(prefix, conf), maxQueueSize, prefix, conf);
+
+    this.secretManager = (SecretManager<TokenIdentifier>) secretManager;
+    this.authorize = 
+      conf.getBoolean(CommonConfigurationKeys.HADOOP_SECURITY_AUTHORIZATION, 
+                      false);
+
+    // configure supported authentications
+    this.enabledAuthMethods = getAuthMethods(secretManager, conf);
+    this.negotiateResponse = buildNegotiateResponse(enabledAuthMethods);
+    
+    // Start the listener here and let it bind to the port
+    listener = new Listener(port);
+    // set the server port to the default listener port.
+    this.port = listener.getAddress().getPort();
+    connectionManager = new ConnectionManager();
+    this.rpcMetrics = RpcMetrics.create(this, conf);
+    this.rpcDetailedMetrics = RpcDetailedMetrics.create(this.port);
+    this.tcpNoDelay = conf.getBoolean(
+        CommonConfigurationKeysPublic.IPC_SERVER_TCPNODELAY_KEY,
+        CommonConfigurationKeysPublic.IPC_SERVER_TCPNODELAY_DEFAULT);
+
+    this.setLogSlowRPC(conf.getBoolean(
+        CommonConfigurationKeysPublic.IPC_SERVER_LOG_SLOW_RPC,
+        CommonConfigurationKeysPublic.IPC_SERVER_LOG_SLOW_RPC_DEFAULT));
+
+    this.setPurgeIntervalNanos(conf.getInt(
+        CommonConfigurationKeysPublic.IPC_SERVER_PURGE_INTERVAL_MINUTES_KEY,
+        CommonConfigurationKeysPublic.IPC_SERVER_PURGE_INTERVAL_MINUTES_DEFAULT));
+
+    // Create the responder here
+    responder = new Responder();
+    
+    if (secretManager != null || UserGroupInformation.isSecurityEnabled()) {
+      SaslRpcServer.init(conf);
+      saslPropsResolver = SaslPropertiesResolver.getInstance(conf);
+    }
+    
+    this.exceptionsHandler.addTerseLoggingExceptions(StandbyException.class);
+    this.exceptionsHandler.addTerseLoggingExceptions(
+        HealthCheckFailedException.class);
+    this.metricsUpdaterInterval =
+        conf.getLong(CommonConfigurationKeysPublic.IPC_SERVER_METRICS_UPDATE_RUNNER_INTERVAL,
+            CommonConfigurationKeysPublic.IPC_SERVER_METRICS_UPDATE_RUNNER_INTERVAL_DEFAULT);
+    this.scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
+        new ThreadFactoryBuilder().setDaemon(true).setNameFormat("Hadoop-Metrics-Updater-%d")
+            .build());
+    this.scheduledExecutorService.scheduleWithFixedDelay(new MetricsUpdateRunner(),
+        metricsUpdaterInterval, metricsUpdaterInterval, TimeUnit.MILLISECONDS);
+  }
+
+}

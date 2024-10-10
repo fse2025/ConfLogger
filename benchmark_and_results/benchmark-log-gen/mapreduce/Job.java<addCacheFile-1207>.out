@@ -1,0 +1,124 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Job.java	methodSinagture:	org.apache.hadoop.mapreduce.Job.addCacheFile(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	1207:1211
+blockLines:	1209:-1
+paras:	null
+TaintedStat:	NORMAL addCacheFile:conditional branch(ne, to iindex=12) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addCacheFile(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addCacheFile(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addCacheFile(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+NORMAL addCacheFile:conditional branch(ne, to iindex=12) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addCacheFile(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void addCacheFile(URI uri, Configuration conf) {
+    String files = conf.get(MRJobConfig.CACHE_FILES);
+    conf.set(MRJobConfig.CACHE_FILES,
+        files == null ? uri.toString() : files + "," + uri.toString());
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:151..153]64 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:148..150]63 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:154..154]65 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:-1..-2]95 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:190..191]84 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:187..189]83 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:192..192]85 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:-1..-2]95 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:203..206]92 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:202..202]91 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:207..207]93 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:-1..-2]95 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V], numberOfBasicBlocks=12, firstLineNumber=356, lastLineNumber=358, firstMethodNumber=285, lastMethodNumber=361, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    Configuration conf = job.getConfiguration();
+    Path libjarsDir = JobSubmissionFiles.getJobDistCacheLibjars(submitJobDir);
+    if (!libjars.isEmpty()) {
+      mkdirs(jtFs, libjarsDir, mapredSysPerms);
+      Collection<URI> libjarURIs = new LinkedList<>();
+      boolean foundFragment = false;
+      for (String tmpjars : libjars) {
+        URI tmpURI = null;
+        try {
+          tmpURI = new URI(tmpjars);
+        } catch (URISyntaxException e) {
+          throw new IllegalArgumentException("Error parsing libjars argument."
+              + " Argument must be a valid URI: " + tmpjars, e);
+        }
+        Path tmp = new Path(tmpURI);
+        URI newURI = null;
+        boolean uploadToSharedCache = false;
+        boolean fromSharedCache = false;
+        if (scConfig.isSharedCacheLibjarsEnabled()) {
+          newURI = useSharedCache(tmpURI, tmp.getName(), statCache, conf, true);
+          if (newURI == null) {
+            uploadToSharedCache = true;
+          } else {
+            fromSharedCache = true;
+          }
+        }
+
+        if (newURI == null) {
+          Path newPath =
+              copyRemoteFiles(libjarsDir, tmp, conf, submitReplication);
+          try {
+            newURI = getPathURI(newPath, tmpURI.getFragment());
+          } catch (URISyntaxException ue) {
+            // should not throw a uri exception
+            throw new IOException(
+                "Failed to create a URI (URISyntaxException) for the"
+                    + " remote path " + newPath
+                    + ". This was based on the libjar parameter: " + tmpjars,
+                ue);
+          }
+        }
+
+        if (!foundFragment) {
+          // We do not count shared cache paths containing fragments as a
+          // "foundFragment." This is because these resources are not in the
+          // staging directory and will be added to the distributed cache
+          // separately.
+          foundFragment = (newURI.getFragment() != null) && !fromSharedCache;
+        }
+        Job.addFileToClassPath(new Path(newURI.getPath()), conf, jtFs, false);
+        if (fromSharedCache) {
+          // We simply add this URI to the distributed cache. It will not come
+          // from the staging directory (it is in the shared cache), so we
+          // must add it to the cache regardless of the wildcard feature.
+          Job.addCacheFile(newURI, conf);
+        } else {
+          libjarURIs.add(newURI);
+        }
+
+        if (scConfig.isSharedCacheLibjarsEnabled()) {
+          fileSCUploadPolicies.put(newURI.toString(), uploadToSharedCache);
+        }
+      }
+
+      if (useWildcard && !foundFragment) {
+        // Add the whole directory to the cache using a wild card
+        Path libJarsDirWildcard =
+            jtFs.makeQualified(new Path(libjarsDir, DistributedCache.WILDCARD));
+        Job.addCacheFile(libJarsDirWildcard.toUri(), conf);
+      } else {
+        for (URI uri : libjarURIs) {
+          Job.addCacheFile(uri, conf);
+        }
+      }
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V > Context: Everywhere, blocks=[BB[SSA:31..34]16 - org.apache.hadoop.mapreduce.Job.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V, BB[SSA:30..30]15 - org.apache.hadoop.mapreduce.Job.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V, BB[SSA:35..35]17 - org.apache.hadoop.mapreduce.Job.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V, BB[SSA:-1..-2]18 - org.apache.hadoop.mapreduce.Job.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V], numberOfBasicBlocks=4, firstLineNumber=1257, lastLineNumber=1260, firstMethodNumber=1252, lastMethodNumber=1260, isFirstLineValid=true, methodSrcCode=
+      boolean addToCache) {
+    String classpath = conf.get(MRJobConfig.CLASSPATH_FILES);
+    conf.set(MRJobConfig.CLASSPATH_FILES,
+        classpath == null ? file.toString() : classpath + "," + file.toString());
+    if (addToCache) {
+      URI uri = fs.makeQualified(file).toUri();
+      Job.addCacheFile(uri, conf);
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addCacheFile(Ljava/net/URI;)V > Context: Everywhere, blocks=[BB[SSA:6..6]3 - org.apache.hadoop.mapreduce.Job.addCacheFile(Ljava/net/URI;)V, BB[SSA:3..5]2 - org.apache.hadoop.mapreduce.Job.addCacheFile(Ljava/net/URI;)V, BB[SSA:7..7]4 - org.apache.hadoop.mapreduce.Job.addCacheFile(Ljava/net/URI;)V, BB[SSA:-1..-2]5 - org.apache.hadoop.mapreduce.Job.addCacheFile(Ljava/net/URI;)V], numberOfBasicBlocks=4, firstLineNumber=1185, lastLineNumber=1186, firstMethodNumber=1183, lastMethodNumber=1186, isFirstLineValid=true, methodSrcCode=
+  public void addCacheFile(URI uri) {
+    ensureState(JobState.DEFINE);
+    addCacheFile(uri, conf);
+  }
+
+}

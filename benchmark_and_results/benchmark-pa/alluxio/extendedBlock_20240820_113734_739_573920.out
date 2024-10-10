@@ -1,0 +1,68 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	GrpcChannelPool.java	methodSinagture:	alluxio.grpc.GrpcChannelPool.createManagedChannel(Lalluxio/grpc/GrpcChannelKey;Lalluxio/conf/AlluxioConfiguration;Z)Lio/grpc/ManagedChannel;	methodLines:	171:218
+blockLines:	206:-1
+paras:	null
+TaintedStat:	NORMAL createManagedChannel:conditional branch(eq, to iindex=148) 104,11 Node: < Application, Lalluxio/grpc/GrpcChannelPool, createManagedChannel(Lalluxio/grpc/GrpcChannelKey;Lalluxio/conf/AlluxioConfiguration;Z)Lio/grpc/ManagedChannel; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/grpc/GrpcChannelPool, createManagedChannel(Lalluxio/grpc/GrpcChannelKey;Lalluxio/conf/AlluxioConfiguration;Z)Lio/grpc/ManagedChannel; > Context: Everywhere[135]104 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 3,102 @289 exception:103
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/grpc/GrpcChannelPool, createManagedChannel(Lalluxio/grpc/GrpcChannelKey;Lalluxio/conf/AlluxioConfiguration;Z)Lio/grpc/ManagedChannel; > Context: Everywhere[135]104 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 3,102 @289 exception:103
+NORMAL createManagedChannel:conditional branch(eq, to iindex=148) 104,11 Node: < Application, Lalluxio/grpc/GrpcChannelPool, createManagedChannel(Lalluxio/grpc/GrpcChannelKey;Lalluxio/conf/AlluxioConfiguration;Z)Lio/grpc/ManagedChannel; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    NettyChannelBuilder channelBuilder;
+    SocketAddress address = channelKey.getServerAddress().getSocketAddress();
+    if (address instanceof InetSocketAddress) {
+      InetSocketAddress inetServerAddress = (InetSocketAddress) address;
+      // This constructor delays DNS lookup to detect changes
+      channelBuilder = NettyChannelBuilder.forAddress(inetServerAddress.getHostName(),
+          inetServerAddress.getPort());
+    } else {
+      channelBuilder = NettyChannelBuilder.forAddress(address);
+    }
+    // Apply default channel options for the multiplex group.
+    channelBuilder.keepAliveTime(conf.getMs(PropertyKey.Template.USER_NETWORK_KEEPALIVE_TIME_MS
+        .format(channelKey.getNetworkGroup().getPropertyCode())),
+        TimeUnit.MILLISECONDS);
+    channelBuilder.keepAliveTimeout(
+        conf.getMs(PropertyKey.Template.USER_NETWORK_KEEPALIVE_TIMEOUT_MS.format(
+            channelKey.getNetworkGroup().getPropertyCode())),
+        TimeUnit.MILLISECONDS);
+    channelBuilder.maxInboundMessageSize((int) conf.getBytes(
+        PropertyKey.Template.USER_NETWORK_MAX_INBOUND_MESSAGE_SIZE.format(
+            channelKey.getNetworkGroup().getPropertyCode())));
+    channelBuilder.flowControlWindow((int) conf.getBytes(
+        PropertyKey.Template.USER_NETWORK_FLOWCONTROL_WINDOW.format(
+            channelKey.getNetworkGroup().getPropertyCode())));
+    channelBuilder.channelType(NettyUtils.getChannelClass(
+        !(channelKey.getServerAddress().getSocketAddress() instanceof InetSocketAddress),
+        PropertyKey.Template.USER_NETWORK_NETTY_CHANNEL.format(
+            channelKey.getNetworkGroup().getPropertyCode()),
+        conf));
+    channelBuilder.eventLoopGroup(acquireNetworkEventLoop(channelKey, conf));
+    channelBuilder.usePlaintext();
+    if (channelKey.getNetworkGroup() == GrpcNetworkGroup.SECRET) {
+      // Use self-signed for SECRET network group.
+      channelBuilder.sslContext(mSslContextProvider.getSelfSignedClientSslContext());
+      channelBuilder.useTransportSecurity();
+    } else if (conf.getBoolean(alluxio.conf.PropertyKey.NETWORK_TLS_ENABLED)) {
+      // Use shared TLS config for other network groups if enabled.
+      // Or this channel is enforced to enable TLS
+      channelBuilder.sslContext(mSslContextProvider.getClientSslContext());
+      channelBuilder.useTransportSecurity();
+    } else if (alwaysEnableTLS) {
+      // If the NETWORK_TLS_ENABLED is false and alwaysEnableTLS is true, use the self
+      // signed ssl context
+      channelBuilder.sslContext(mSslContextProvider.getSelfSignedClientSslContext());
+      channelBuilder.useTransportSecurity();
+    }
+    // Build netty managed channel.
+    return channelBuilder.build();
+  }
+
+
+====================ctx:=======================

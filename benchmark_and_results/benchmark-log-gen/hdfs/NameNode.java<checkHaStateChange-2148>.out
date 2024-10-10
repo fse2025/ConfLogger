@@ -1,0 +1,49 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.checkHaStateChange(Lorg/apache/hadoop/ha/HAServiceProtocol$StateChangeRequestInfo;)V	methodLines:	2148:2176
+blockLines:	2153:-1
+paras:	dfs.ha.automatic-failover.enabled
+TaintedStat:	NORMAL checkHaStateChange:conditional branch(eq, to iindex=53) 9,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, checkHaStateChange(Lorg/apache/hadoop/ha/HAServiceProtocol$StateChangeRequestInfo;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, checkHaStateChange(Lorg/apache/hadoop/ha/HAServiceProtocol$StateChangeRequestInfo;)V > Context: Everywhere[4]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 5,6,7 @8 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, checkHaStateChange(Lorg/apache/hadoop/ha/HAServiceProtocol$StateChangeRequestInfo;)V > Context: Everywhere[4]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 5,6,7 @8 exception:8
+NORMAL checkHaStateChange:conditional branch(eq, to iindex=53) 9,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, checkHaStateChange(Lorg/apache/hadoop/ha/HAServiceProtocol$StateChangeRequestInfo;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws AccessControlException {
+    boolean autoHaEnabled = getConf().getBoolean(
+        DFS_HA_AUTO_FAILOVER_ENABLED_KEY, DFS_HA_AUTO_FAILOVER_ENABLED_DEFAULT);
+    switch (req.getSource()) {
+    case REQUEST_BY_USER:
+      if (autoHaEnabled) {
+        throw new AccessControlException(
+            "Manual HA control for this NameNode is disallowed, because " +
+            "automatic HA is enabled.");
+      }
+      break;
+    case REQUEST_BY_USER_FORCED:
+      if (autoHaEnabled) {
+        LOG.warn("Allowing manual HA control from " +
+            Server.getRemoteAddress() +
+            " even though automatic HA is enabled, because the user " +
+            "specified the force flag");
+      }
+      break;
+    case REQUEST_BY_ZKFC:
+      if (!autoHaEnabled) {
+        throw new AccessControlException(
+            "Request from ZK failover controller at " +
+            Server.getRemoteAddress() + " denied since automatic HA " +
+            "is not enabled"); 
+      }
+      break;
+    }
+  }
+
+
+
+====================ctx:=======================

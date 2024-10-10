@@ -1,0 +1,56 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DefaultStringifier.java	methodSinagture:	org.apache.hadoop.io.DefaultStringifier.loadArray(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/Class;)[Ljava/lang/Object;	methodLines:	190:207
+blockLines:	199:-1
+paras:	null
+TaintedStat:	NORMAL loadArray:conditional branch(ne, to iindex=42) 18,15 Node: < Application, Lorg/apache/hadoop/io/DefaultStringifier, loadArray(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/Class;)[Ljava/lang/Object; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/DefaultStringifier, loadArray(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/Class;)[Ljava/lang/Object; > Context: Everywhere[8]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @12 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/DefaultStringifier, loadArray(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/Class;)[Ljava/lang/Object; > Context: Everywhere[8]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @12 exception:7
+NORMAL loadArray:13 = invokevirtual < Application, Ljava/lang/String, split(Ljava/lang/String;)[Ljava/lang/String; > 8,11 @30 exception:12 Node: < Application, Lorg/apache/hadoop/io/DefaultStringifier, loadArray(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/Class;)[Ljava/lang/Object; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, split(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL split:6 = invokevirtual < Primordial, Ljava/lang/String, split(Ljava/lang/String;I)[Ljava/lang/String; > 1,2,4 @3 exception:5 Node: < Primordial, Ljava/lang/String, split(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, split(Ljava/lang/String;I)[Ljava/lang/String; > Context: Everywhere
+NORMAL split:7 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @3 exception:6 Node: < Primordial, Ljava/lang/String, split(Ljava/lang/String;I)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:return 7 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere[24]11 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @37 exception:10
+NORMAL applyPattern:conditional branch(ge, to iindex=216) 77,11 Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere
+PHI Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere:74 = phi  68,6
+NORMAL applyPattern:invokevirtual < Primordial, Ljava/text/MessageFormat, makeFormat(II[Ljava/lang/StringBuilder;)V > 1,77,74,5 @307 exception:54 Node: < Primordial, Ljava/text/MessageFormat, applyPattern(Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/text/MessageFormat, makeFormat(II[Ljava/lang/StringBuilder;)V > Context: Everywhere
+NORMAL makeFormat:65 = invokevirtual < Primordial, Ljava/lang/String, isEmpty()Z > 63 @273 exception:64 Node: < Primordial, Ljava/text/MessageFormat, makeFormat(II[Ljava/lang/StringBuilder;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/DefaultStringifier, loadArray(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/Class;)[Ljava/lang/Object; > Context: Everywhere[33]18 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 16 @63 exception:17
+NORMAL loadArray:conditional branch(ne, to iindex=42) 18,15 Node: < Application, Lorg/apache/hadoop/io/DefaultStringifier, loadArray(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/Class;)[Ljava/lang/Object; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Class<K> itemClass) throws IOException {
+    DefaultStringifier<K> stringifier = new DefaultStringifier<K>(conf,
+        itemClass);
+    try {
+      String itemStr = conf.get(keyName);
+      ArrayList<K> list = new ArrayList<K>();
+      String[] parts = itemStr.split(SEPARATOR);
+
+      for (String part : parts) {
+        if (!part.isEmpty())
+          list.add(stringifier.fromString(part));
+      }
+
+      return GenericsUtil.toArray(itemClass, list);
+    }
+    finally {
+      stringifier.close();
+    }
+  }
+
+
+====================ctx:=======================

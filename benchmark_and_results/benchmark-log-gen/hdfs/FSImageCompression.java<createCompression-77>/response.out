@@ -1,0 +1,22 @@
+```java
+boolean compressImage = conf.getBoolean(
+DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY,
+DFSConfigKeys.DFS_IMAGE_COMPRESS_DEFAULT);
+
+if (!compressImage) {
+    // ConfLogger Inserted Start
+    logger.info("Image compression is disabled. Configuration parameter: " + DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY + " = " + compressImage);
+    // ConfLogger Inserted End
+    return createNoopCompression();
+}
+
+String codecClassName = conf.get(
+DFSConfigKeys.DFS_IMAGE_COMPRESSION_CODEC_KEY,
+DFSConfigKeys.DFS_IMAGE_COMPRESSION_CODEC_DEFAULT);
+
+// ConfLogger Inserted Start
+logger.info("Image compression is enabled. Using codec: " + codecClassName + ". Configuration parameter: " + DFSConfigKeys.DFS_IMAGE_COMPRESSION_CODEC_KEY + " = " + codecClassName);
+// ConfLogger Inserted End
+
+return createCompression(conf, codecClassName);
+```

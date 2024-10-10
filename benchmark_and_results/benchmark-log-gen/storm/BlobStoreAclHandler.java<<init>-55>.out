@@ -1,0 +1,77 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BlobStoreAclHandler.java	methodSinagture:	org.apache.storm.blobstore.BlobStoreAclHandler.<init>(Ljava/util/Map;)V	methodLines:	55:78
+blockLines:	58:-1
+paras:	storm.group.mapping.service
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=16) 9,10 Node: < Application, Lorg/apache/storm/blobstore/BlobStoreAclHandler, <init>(Ljava/util/Map;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/blobstore/BlobStoreAclHandler, <init>(Ljava/util/Map;)V > Context: Everywhere[8]9 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,7 @15 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/blobstore/BlobStoreAclHandler, <init>(Ljava/util/Map;)V > Context: Everywhere[8]9 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,7 @15 exception:8
+NORMAL <init>:conditional branch(eq, to iindex=16) 9,10 Node: < Application, Lorg/apache/storm/blobstore/BlobStoreAclHandler, <init>(Ljava/util/Map;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    public BlobStoreAclHandler(Map<String, Object> conf) {
+        ptol = ClientAuthUtils.getPrincipalToLocalPlugin(conf);
+        if (conf.get(Config.STORM_GROUP_MAPPING_SERVICE_PROVIDER_PLUGIN) != null) {
+            groupMappingServiceProvider = ClientAuthUtils.getGroupMappingServiceProviderPlugin(conf);
+        } else {
+            groupMappingServiceProvider = null;
+        }
+        supervisors = new HashSet<String>();
+        admins = new HashSet<String>();
+        adminsGroups = new HashSet<>();
+        if (conf.containsKey(Config.NIMBUS_SUPERVISOR_USERS)) {
+            supervisors.addAll((List<String>) conf.get(Config.NIMBUS_SUPERVISOR_USERS));
+        }
+        if (conf.containsKey(Config.NIMBUS_ADMINS)) {
+            admins.addAll((List<String>) conf.get(Config.NIMBUS_ADMINS));
+        }
+        if (conf.containsKey(Config.NIMBUS_ADMINS_GROUPS)) {
+            adminsGroups.addAll((List<String>) conf.get(Config.NIMBUS_ADMINS_GROUPS));
+        }
+        if (conf.containsKey(Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED)) {
+            doAclValidation = (boolean) conf.get(Config.STORM_BLOBSTORE_ACL_VALIDATION_ENABLED);
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/TopoCache, <init>(Lorg/apache/storm/blobstore/BlobStore;Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:17..19]10 - org.apache.storm.daemon.nimbus.TopoCache.<init>(Lorg/apache/storm/blobstore/BlobStore;Ljava/util/Map;)V, BB[SSA:15..16]9 - org.apache.storm.daemon.nimbus.TopoCache.<init>(Lorg/apache/storm/blobstore/BlobStore;Ljava/util/Map;)V, BB[SSA:20..20]11 - org.apache.storm.daemon.nimbus.TopoCache.<init>(Lorg/apache/storm/blobstore/BlobStore;Ljava/util/Map;)V, BB[SSA:-1..-2]13 - org.apache.storm.daemon.nimbus.TopoCache.<init>(Lorg/apache/storm/blobstore/BlobStore;Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=50, lastLineNumber=50, firstMethodNumber=47, lastMethodNumber=51, isFirstLineValid=true, methodSrcCode=
+
+    public TopoCache(BlobStore store, Map<String, Object> conf) {
+        this.store = store;
+        aclHandler = new BlobStoreAclHandler(conf);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/blobstore/LocalFsBlobStore, prepare(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)V > Context: Everywhere, blocks=[BB[SSA:39..41]18 - org.apache.storm.blobstore.LocalFsBlobStore.prepare(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)V, BB[SSA:37..38]17 - org.apache.storm.blobstore.LocalFsBlobStore.prepare(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)V, BB[SSA:42..42]19 - org.apache.storm.blobstore.LocalFsBlobStore.prepare(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)V, BB[SSA:-1..-2]31 - org.apache.storm.blobstore.LocalFsBlobStore.prepare(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)V], numberOfBasicBlocks=4, firstLineNumber=109, lastLineNumber=109, firstMethodNumber=96, lastMethodNumber=117, isFirstLineValid=true, methodSrcCode=
+    public void prepare(Map<String, Object> conf, String overrideBase, NimbusInfo nimbusInfo, ILeaderElector leaderElector) {
+        this.conf = conf;
+        this.nimbusInfo = nimbusInfo;
+        zkClient = BlobStoreUtils.createZKClient(conf, DaemonType.NIMBUS);
+        if (overrideBase == null) {
+            overrideBase = ConfigUtils.absoluteStormBlobStoreDir(conf);
+        }
+        File baseDir = new File(overrideBase, BASE_BLOBS_DIR_NAME);
+        try {
+            fbs = new FileBlobStoreImpl(baseDir, conf);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        aclHandler = new BlobStoreAclHandler(conf);
+        try {
+            this.stormClusterState = ClusterUtils.mkStormClusterState(conf, new ClusterStateContext(DaemonType.NIMBUS, conf));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        timer = new Timer("BLOB-STORE-TIMER", true);
+        this.leaderElector = leaderElector;
+    }
+
+}

@@ -1,0 +1,39 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.getHttpServerBindAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress;	methodLines:	674:684
+blockLines:	680:-1
+paras:	dfs.namenode.http-bind-host
+TaintedStat:	NORMAL getHttpServerBindAddress:conditional branch(eq, to iindex=22) 8,9 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, getHttpServerBindAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, getHttpServerBindAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress; > Context: Everywhere[6]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 2,6 @9 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, getHttpServerBindAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress; > Context: Everywhere[6]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 2,6 @9 exception:7
+NORMAL getHttpServerBindAddress:conditional branch(eq, to iindex=22) 8,9 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, getHttpServerBindAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected InetSocketAddress getHttpServerBindAddress(Configuration conf) {
+    InetSocketAddress bindAddress = getHttpServerAddress(conf);
+
+    // If DFS_NAMENODE_HTTP_BIND_HOST_KEY exists then it overrides the
+    // host name portion of DFS_NAMENODE_HTTP_ADDRESS_KEY.
+    final String bindHost = conf.getTrimmed(DFS_NAMENODE_HTTP_BIND_HOST_KEY);
+    if (bindHost != null && !bindHost.isEmpty()) {
+      bindAddress = new InetSocketAddress(bindHost, bindAddress.getPort());
+    }
+
+    return bindAddress;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startHttpServer(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:2..7]2 - org.apache.hadoop.hdfs.server.namenode.NameNode.startHttpServer(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..1]1 - org.apache.hadoop.hdfs.server.namenode.NameNode.startHttpServer(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:8..8]3 - org.apache.hadoop.hdfs.server.namenode.NameNode.startHttpServer(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]10 - org.apache.hadoop.hdfs.server.namenode.NameNode.startHttpServer(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=966, lastLineNumber=966, firstMethodNumber=965, lastMethodNumber=969, isFirstLineValid=true, methodSrcCode=
+  private void startHttpServer(final Configuration conf) throws IOException {
+    httpServer = new NameNodeHttpServer(conf, this, getHttpServerBindAddress(conf));
+    httpServer.start();
+    httpServer.setStartupProgress(startupProgress);
+  }
+  
+}

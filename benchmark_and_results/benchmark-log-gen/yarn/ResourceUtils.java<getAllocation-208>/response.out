@@ -1,0 +1,15 @@
+```java
+long value = conf.getLong(resourceTypesKey, -1L);
+if (value == -1) {
+    // ConfLogger Commented: Not Informative
+    // LOG.debug("Mandatory Resource '{}' is not "
+    // + "configured in resource-types config file. Setting allocation "
+    // + "specified using '{}'", resourceTypesKey, schedulerKey);
+    // ConfLogger Inserted Start
+    logger.warn("Mandatory Resource '{}' is not configured in resource-types config file. Setting allocation specified using '{}'.", resourceTypesKey, schedulerKey);
+    // ConfLogger Inserted End
+    value = conf.getLong(schedulerKey, schedulerDefault);
+}
+return value;
+}
+```

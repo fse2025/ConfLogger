@@ -1,0 +1,1 @@
+2024-09-04 14:45:20,203 INFO  [main] ConfLogger (AggregatedLogDeletionService.java:scheduleLogDeletionTask(266)) - Log aggregation is not enabled. Please ensure that the configuration parameter 'yarn.log-aggregation-enable' is set to true to enable log aggregation.

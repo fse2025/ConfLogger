@@ -1,0 +1,43 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ControlledJob.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.jobcontrol.ControlledJob.submit()V	methodLines:	321:343
+blockLines:	323:-1
+paras:	null
+TaintedStat:	NORMAL submit:conditional branch(eq, to iindex=43) 9,7 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/jobcontrol/ControlledJob, submit()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/jobcontrol/ControlledJob, submit()V > Context: Everywhere[7]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 5,6,7 @12 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/jobcontrol/ControlledJob, submit()V > Context: Everywhere[7]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 5,6,7 @12 exception:8
+NORMAL submit:conditional branch(eq, to iindex=43) 9,7 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/jobcontrol/ControlledJob, submit()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    try {
+      Configuration conf = job.getConfiguration();
+      if (conf.getBoolean(CREATE_DIR, false)) {
+        FileSystem fs = FileSystem.get(conf);
+        Path inputPaths[] = FileInputFormat.getInputPaths(job);
+        for (int i = 0; i < inputPaths.length; i++) {
+          if (!fs.exists(inputPaths[i])) {
+            try {
+              fs.mkdirs(inputPaths[i]);
+            } catch (IOException e) {
+
+            }
+          }
+        }
+      }
+      job.submit();
+      this.state = State.RUNNING;
+    } catch (Exception ioe) {
+      LOG.info(getJobName()+" got an error while submitting ",ioe);
+      this.state = State.FAILED;
+      this.message = StringUtils.stringifyException(ioe);
+    }
+  }
+	
+
+
+====================ctx:=======================

@@ -1,0 +1,137 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ProviderUtils.java	methodSinagture:	org.apache.hadoop.security.ProviderUtils.locatePassword(Ljava/lang/String;Ljava/lang/String;)[C	methodLines:	215:233
+blockLines:	224:-1
+paras:	hadoop.security.credstore.java-keystore-provider.password-file
+TaintedStat:	NORMAL locatePassword:conditional branch(ne, to iindex=32) 20,4 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/alias/AbstractJavaKeyStoreProvider, needsPassword()Z > Context: Everywhere[5]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @9 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/alias/AbstractJavaKeyStoreProvider, needsPassword()Z > Context: Everywhere[5]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @9 exception:7
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/alias/AbstractJavaKeyStoreProvider, needsPassword()Z > Context: Everywhere[6]10 = invokestatic < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > 4,8 @12 exception:9 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere v2
+NORMAL locatePassword:conditional branch(eq, to iindex=84) 2,4 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere
+NORMAL locatePassword:conditional branch(ne, to iindex=32) 20,4 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ProviderUtils.java	methodSinagture:	org.apache.hadoop.security.ProviderUtils.locatePassword(Ljava/lang/String;Ljava/lang/String;)[C	methodLines:	215:233
+blockLines:	230:-1
+paras:	null
+TaintedStat:	NORMAL locatePassword:conditional branch(eq, to iindex=84) 22,4 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/key/JavaKeyStoreProvider, locateKeystore()V > Context: Everywhere[5]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @9 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/key/JavaKeyStoreProvider, locateKeystore()V > Context: Everywhere[5]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @9 exception:7
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/key/JavaKeyStoreProvider, locateKeystore()V > Context: Everywhere[6]10 = invokestatic < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > 3,8 @12 exception:9 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere v2
+NORMAL locatePassword:conditional branch(eq, to iindex=84) 2,4 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere
+NORMAL locatePassword:conditional branch(eq, to iindex=84) 22,4 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ProviderUtils.java	methodSinagture:	org.apache.hadoop.security.ProviderUtils.locatePassword(Ljava/lang/String;Ljava/lang/String;)[C	methodLines:	215:233
+blockLines:	221:-1
+paras:	null
+TaintedStat:	NORMAL locatePassword:conditional branch(eq, to iindex=84) 2,4 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/key/JavaKeyStoreProvider, needsPassword()Z > Context: Everywhere[5]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 6,7 @9 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/key/JavaKeyStoreProvider, needsPassword()Z > Context: Everywhere[5]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 6,7 @9 exception:8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/crypto/key/JavaKeyStoreProvider, needsPassword()Z > Context: Everywhere[6]11 = invokestatic < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > 4,9 @12 exception:10 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere v2
+NORMAL locatePassword:conditional branch(eq, to iindex=84) 2,4 Node: < Application, Lorg/apache/hadoop/security/ProviderUtils, locatePassword(Ljava/lang/String;Ljava/lang/String;)[C > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    char[] pass = null;
+    if (System.getenv().containsKey(envWithPass)) {
+      pass = System.getenv(envWithPass).toCharArray();
+    }
+    if (pass == null) {
+      if (fileWithPass != null) {
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        URL pwdFile = cl.getResource(fileWithPass);
+        if (pwdFile == null) {
+          // Provided Password file does not exist
+          throw new IOException("Password file does not exist");
+        }
+        try (InputStream is = pwdFile.openStream()) {
+          pass = IOUtils.toString(is, StandardCharsets.UTF_8).trim().toCharArray();
+        }
+      }
+    }
+    return pass;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/crypto/key/JavaKeyStoreProvider, needsPassword()Z > Context: Everywhere, blocks=[BB[SSA:6..6]3 - org.apache.hadoop.crypto.key.JavaKeyStoreProvider.needsPassword()Z, BB[SSA:4..5]2 - org.apache.hadoop.crypto.key.JavaKeyStoreProvider.needsPassword()Z, BB[SSA:7..7]4 - org.apache.hadoop.crypto.key.JavaKeyStoreProvider.needsPassword()Z, BB[SSA:-1..-2]8 - org.apache.hadoop.crypto.key.JavaKeyStoreProvider.needsPassword()Z], numberOfBasicBlocks=4, firstLineNumber=311, lastLineNumber=310, firstMethodNumber=309, lastMethodNumber=310, isFirstLineValid=true, methodSrcCode=
+  public boolean needsPassword() throws IOException {
+    return (null == ProviderUtils.locatePassword(KEYSTORE_PASSWORD_ENV_VAR,
+        getConf().get(KEYSTORE_PASSWORD_FILE_KEY)));
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/alias/AbstractJavaKeyStoreProvider, locateKeystore()V > Context: Everywhere, blocks=[BB[SSA:6..6]3 - org.apache.hadoop.security.alias.AbstractJavaKeyStoreProvider.locateKeystore()V, BB[SSA:4..5]2 - org.apache.hadoop.security.alias.AbstractJavaKeyStoreProvider.locateKeystore()V, BB[SSA:7..7]4 - org.apache.hadoop.security.alias.AbstractJavaKeyStoreProvider.locateKeystore()V, BB[SSA:-1..-2]53 - org.apache.hadoop.security.alias.AbstractJavaKeyStoreProvider.locateKeystore()V], numberOfBasicBlocks=4, firstLineNumber=316, lastLineNumber=316, firstMethodNumber=315, lastMethodNumber=339, isFirstLineValid=true, methodSrcCode=
+    try {
+      password = ProviderUtils.locatePassword(CREDENTIAL_PASSWORD_ENV_VAR,
+          conf.get(CREDENTIAL_PASSWORD_FILE_KEY));
+      if (password == null) {
+        password = CREDENTIAL_PASSWORD_DEFAULT.toCharArray();
+      }
+      KeyStore ks;
+      ks = KeyStore.getInstance(getKeyStoreType());
+      if (keystoreExists()) {
+        stashOriginalFilePermissions();
+        try (InputStream in = getInputStreamForFile()) {
+          ks.load(in, password);
+        }
+      } else {
+        createPermissions("600");
+        // required to create an empty keystore. *sigh*
+        ks.load(null, password);
+      }
+      keyStore = ks;
+    } catch (KeyStoreException e) {
+      throw new IOException("Can't create keystore", e);
+    } catch (GeneralSecurityException e) {
+      throw new IOException("Can't load keystore " + getPathAsString(), e);
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/crypto/key/JavaKeyStoreProvider, locateKeystore()V > Context: Everywhere, blocks=[BB[SSA:6..6]3 - org.apache.hadoop.crypto.key.JavaKeyStoreProvider.locateKeystore()V, BB[SSA:4..5]2 - org.apache.hadoop.crypto.key.JavaKeyStoreProvider.locateKeystore()V, BB[SSA:7..7]4 - org.apache.hadoop.crypto.key.JavaKeyStoreProvider.locateKeystore()V, BB[SSA:-1..-2]56 - org.apache.hadoop.crypto.key.JavaKeyStoreProvider.locateKeystore()V], numberOfBasicBlocks=4, firstLineNumber=148, lastLineNumber=147, firstMethodNumber=146, lastMethodNumber=176, isFirstLineValid=true, methodSrcCode=
+    try {
+      password = ProviderUtils.locatePassword(KEYSTORE_PASSWORD_ENV_VAR,
+          getConf().get(KEYSTORE_PASSWORD_FILE_KEY));
+      if (password == null) {
+        password = KEYSTORE_PASSWORD_DEFAULT;
+      }
+      Path oldPath = constructOldPath(path);
+      Path newPath = constructNewPath(path);
+      keyStore = KeyStore.getInstance(SCHEME_NAME);
+      FsPermission perm = null;
+      if (fs.exists(path)) {
+        // flush did not proceed to completion
+        // _NEW should not exist
+        if (fs.exists(newPath)) {
+          throw new IOException(
+              String.format("Keystore not loaded due to some inconsistency "
+              + "('%s' and '%s' should not exist together)!!", path, newPath));
+        }
+        perm = tryLoadFromPath(path, oldPath);
+      } else {
+        perm = tryLoadIncompleteFlush(oldPath, newPath);
+      }
+      // Need to save off permissions in case we need to
+      // rewrite the keystore in flush()
+      permissions = perm;
+    } catch (KeyStoreException e) {
+      throw new IOException("Can't create keystore: " + e, e);
+    } catch (GeneralSecurityException e) {
+      throw new IOException("Can't load keystore " + path + " : " + e , e);
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/alias/AbstractJavaKeyStoreProvider, needsPassword()Z > Context: Everywhere, blocks=[BB[SSA:6..6]3 - org.apache.hadoop.security.alias.AbstractJavaKeyStoreProvider.needsPassword()Z, BB[SSA:4..5]2 - org.apache.hadoop.security.alias.AbstractJavaKeyStoreProvider.needsPassword()Z, BB[SSA:7..7]4 - org.apache.hadoop.security.alias.AbstractJavaKeyStoreProvider.needsPassword()Z, BB[SSA:-1..-2]8 - org.apache.hadoop.security.alias.AbstractJavaKeyStoreProvider.needsPassword()Z], numberOfBasicBlocks=4, firstLineNumber=343, lastLineNumber=343, firstMethodNumber=342, lastMethodNumber=343, isFirstLineValid=true, methodSrcCode=
+  public boolean needsPassword() throws IOException {
+    return (null == ProviderUtils.locatePassword(CREDENTIAL_PASSWORD_ENV_VAR,
+        conf.get(CREDENTIAL_PASSWORD_FILE_KEY)));
+}

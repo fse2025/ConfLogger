@@ -1,0 +1,37 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HAUtil.java	methodSinagture:	org.apache.hadoop.yarn.conf.HAUtil.verifyLeaderElection(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	171:178
+blockLines:	173:-1
+paras:	null
+TaintedStat:	NORMAL verifyLeaderElection:conditional branch(ne, to iindex=16) 8,5 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, verifyLeaderElection(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, verifyLeaderElection(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,6,5 @11 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, verifyLeaderElection(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,6,5 @11 exception:7
+NORMAL verifyLeaderElection:conditional branch(ne, to iindex=16) 8,5 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, verifyLeaderElection(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static void verifyLeaderElection(Configuration conf) {
+    if (isAutomaticFailoverEnabled(conf) &&
+        !conf.getBoolean(YarnConfiguration.CURATOR_LEADER_ELECTOR,
+          YarnConfiguration.DEFAULT_CURATOR_LEADER_ELECTOR_ENABLED) &&
+        !isAutomaticFailoverEmbedded(conf)) {
+      throwBadConfigurationException(NO_LEADER_ELECTION_MESSAGE);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, verifyAndSetConfiguration(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:4..5]3 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetConfiguration(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:2..3]2 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetConfiguration(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:6..7]4 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetConfiguration(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]6 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetConfiguration(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=106, lastLineNumber=108, firstMethodNumber=104, lastMethodNumber=109, isFirstLineValid=true, methodSrcCode=
+    throws YarnRuntimeException {
+    verifyAndSetRMHAIdsList(conf);
+    verifyAndSetCurrentRMHAId(conf);
+    verifyLeaderElection(conf);
+    verifyAndSetAllServiceAddresses(conf);
+  }
+
+}

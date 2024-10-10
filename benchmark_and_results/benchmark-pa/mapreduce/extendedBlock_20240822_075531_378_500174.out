@@ -1,0 +1,112 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileInputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.FileInputFormat.getBlockIndex([Lorg/apache/hadoop/fs/BlockLocation;J)I	methodLines:	473:483
+blockLines:	476:-1
+paras:	null
+TaintedStat:	NORMAL getBlockIndex:conditional branch(gt, to iindex=29) 10,5 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getBlockIndex([Lorg/apache/hadoop/fs/BlockLocation;J)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[30]27 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 24,25,22 @61 exception:26
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[30]27 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 24,25,22 @61 exception:26
+NORMAL getSplits:conditional branch(eq, to iindex=35) 27,22 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere:29 = phi  28,22
+NORMAL getSplits:conditional branch(eq, to iindex=56) 29,22 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+NORMAL getSplits:conditional branch(eq, to iindex=214) 44,22 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+NORMAL getSplits:conditional branch(eq, to iindex=174) 57,22 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+NORMAL getSplits:conditional branch(le, to iindex=143) 66,22 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+NORMAL getSplits:67 = binaryop(sub) 42 , 82 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[118]69 = invokevirtual < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getBlockIndex([Lorg/apache/hadoop/fs/BlockLocation;J)I > 1,55,67 @242 exception:68 v67
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getBlockIndex([Lorg/apache/hadoop/fs/BlockLocation;J)I > Context: Everywhere v3
+NORMAL getBlockIndex:10 = compare 9,3 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getBlockIndex([Lorg/apache/hadoop/fs/BlockLocation;J)I > Context: Everywhere
+NORMAL getBlockIndex:conditional branch(gt, to iindex=29) 10,5 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getBlockIndex([Lorg/apache/hadoop/fs/BlockLocation;J)I > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                              long offset) {
+    for (int i = 0 ; i < blkLocations.length; i++) {
+      // is the offset inside this block?
+      if ((blkLocations[i].getOffset() <= offset) &&
+          (offset < blkLocations[i].getOffset() + blkLocations[i].getLength())){
+        return i;
+      }
+    }
+    BlockLocation last = blkLocations[blkLocations.length -1];
+    long fileLength = last.getOffset() + last.getLength() -1;
+    throw new IllegalArgumentException("Offset " + offset + 
+                                       " is outside of file (0.." +
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:113..118]45 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;, BB[SSA:104..112]44 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;, BB[SSA:119..129]46 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;, BB[SSA:-1..-2]105 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;, BB[SSA:148..153]54 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;, BB[SSA:143..147]53 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;, BB[SSA:154..164]55 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;, BB[SSA:-1..-2]105 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;], numberOfBasicBlocks=8, firstLineNumber=435, lastLineNumber=437, firstMethodNumber=397, lastMethodNumber=464, isFirstLineValid=true, methodSrcCode=
+  public List<InputSplit> getSplits(JobContext job) throws IOException {
+    StopWatch sw = new StopWatch().start();
+    long minSize = Math.max(getFormatMinSplitSize(), getMinSplitSize(job));
+    long maxSize = getMaxSplitSize(job);
+
+    // generate splits
+    List<InputSplit> splits = new ArrayList<InputSplit>();
+    List<FileStatus> files = listStatus(job);
+
+    boolean ignoreDirs = !getInputDirRecursive(job)
+      && job.getConfiguration().getBoolean(INPUT_DIR_NONRECURSIVE_IGNORE_SUBDIRS, false);
+    for (FileStatus file: files) {
+      if (ignoreDirs && file.isDirectory()) {
+        continue;
+      }
+      Path path = file.getPath();
+      long length = file.getLen();
+      if (length != 0) {
+        BlockLocation[] blkLocations;
+        if (file instanceof LocatedFileStatus) {
+          blkLocations = ((LocatedFileStatus) file).getBlockLocations();
+        } else {
+          FileSystem fs = path.getFileSystem(job.getConfiguration());
+          blkLocations = fs.getFileBlockLocations(file, 0, length);
+        }
+        if (isSplitable(job, path)) {
+          long blockSize = file.getBlockSize();
+          long splitSize = computeSplitSize(blockSize, minSize, maxSize);
+
+          long bytesRemaining = length;
+          while (((double) bytesRemaining)/splitSize > SPLIT_SLOP) {
+            int blkIndex = getBlockIndex(blkLocations, length-bytesRemaining);
+            splits.add(makeSplit(path, length-bytesRemaining, splitSize,
+                        blkLocations[blkIndex].getHosts(),
+                        blkLocations[blkIndex].getCachedHosts()));
+            bytesRemaining -= splitSize;
+          }
+
+          if (bytesRemaining != 0) {
+            int blkIndex = getBlockIndex(blkLocations, length-bytesRemaining);
+            splits.add(makeSplit(path, length-bytesRemaining, bytesRemaining,
+                       blkLocations[blkIndex].getHosts(),
+                       blkLocations[blkIndex].getCachedHosts()));
+          }
+        } else { // not splitable
+          if (LOG.isDebugEnabled()) {
+            // Log only if the file is big enough to be splitted
+            if (length > Math.min(file.getBlockSize(), minSize)) {
+              LOG.debug("File is not splittable so no parallelization "
+                  + "is possible: " + file.getPath());
+            }
+          }
+          splits.add(makeSplit(path, 0, length, blkLocations[0].getHosts(),
+                      blkLocations[0].getCachedHosts()));
+        }
+      } else { 
+        //Create empty hosts array for zero length files
+        splits.add(makeSplit(path, 0, length, new String[0]));
+      }
+    }
+    // Save the number of input files for metrics/loadgen
+    job.getConfiguration().setLong(NUM_INPUT_FILES, files.size());
+    sw.stop();
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("Total # of splits generated by getSplits: " + splits.size()
+          + ", TimeTaken: " + sw.now(TimeUnit.MILLISECONDS));
+    }
+    return splits;
+  }
+}

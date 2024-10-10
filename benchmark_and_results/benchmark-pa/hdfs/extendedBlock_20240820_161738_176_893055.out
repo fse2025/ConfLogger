@@ -1,0 +1,51 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSZKFailoverController.java	methodSinagture:	org.apache.hadoop.hdfs.tools.DFSZKFailoverController.getLocalNNThreadDump()V	methodLines:	239:269
+blockLines:	246:-1
+paras:	dfs.ha.zkfc.nn.http.timeout.ms
+TaintedStat:	NORMAL getLocalNNThreadDump:conditional branch(ne, to iindex=13) 8,3 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, getLocalNNThreadDump()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, getLocalNNThreadDump()V > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,5,6 @14 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, getLocalNNThreadDump()V > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,5,6 @14 exception:7
+NORMAL getLocalNNThreadDump:conditional branch(ne, to iindex=13) 8,3 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, getLocalNNThreadDump()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void getLocalNNThreadDump() {
+    isThreadDumpCaptured = false;
+    // We use the same timeout value for both connection establishment
+    // timeout and read timeout.
+    int httpTimeOut = conf.getInt(
+        DFSConfigKeys.DFS_HA_ZKFC_NN_HTTP_TIMEOUT_KEY,
+        DFSConfigKeys.DFS_HA_ZKFC_NN_HTTP_TIMEOUT_KEY_DEFAULT);
+    if (httpTimeOut == 0) {
+      // If timeout value is set to zero, the feature is turned off.
+      return;
+    }
+    try {
+      String stacksUrl = DFSUtil.getInfoServer(localNNTarget.getAddress(),
+          conf, DFSUtil.getHttpClientScheme(conf)) + "/stacks";
+      URL url = new URL(stacksUrl);
+      HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+      conn.setReadTimeout(httpTimeOut);
+      conn.setConnectTimeout(httpTimeOut);
+      conn.connect();
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      IOUtils.copyBytes(conn.getInputStream(), out, 4096, true);
+      StringBuilder localNNThreadDumpContent =
+          new StringBuilder("-- Local NN thread dump -- \n");
+      localNNThreadDumpContent.append(out)
+          .append("\n -- Local NN thread dump -- ");
+      LOG.info("{}", localNNThreadDumpContent.toString());
+      isThreadDumpCaptured = true;
+    } catch (IOException e) {
+      LOG.warn("Can't get local NN thread dump due to " + e.getMessage());
+    }
+  }
+
+
+
+====================ctx:=======================

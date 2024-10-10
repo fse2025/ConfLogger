@@ -1,0 +1,29 @@
+```java
+public static IPrincipalToLocal getPrincipalToLocalPlugin(Map<String, Object> topoConf) {
+    IPrincipalToLocal ptol = null;
+    try {
+        String ptolClassname = (String) topoConf.get(Config.STORM_PRINCIPAL_TO_LOCAL_PLUGIN);
+        if (ptolClassname == null) {
+            // ConfLogger Skipped: The existing log statement already provides configuration parameter key information.
+            LOG.warn("No principal to local given {}", Config.STORM_PRINCIPAL_TO_LOCAL_PLUGIN);
+        } else {
+            ptol = ReflectionUtils.newInstance(ptolClassname);
+            //TODO this can only ever be null if someone is doing something odd with mocking
+            // We should really fix the mocking and remove this
+            if (ptol != null) {
+                ptol.prepare(topoConf);
+            } else {
+                // ConfLogger Inserted Start
+                logger.error("Failed to instantiate principal to local plugin. Ensure the class name {} is correct and accessible. Configuration key: {}, value: {}", ptolClassname, Config.STORM_PRINCIPAL_TO_LOCAL_PLUGIN, ptolClassname);
+                // ConfLogger Inserted End
+            }
+        }
+    } catch (Exception e) {
+        // ConfLogger Inserted Start
+        logger.error("Exception occurred while getting principal to local plugin. Configuration key: {}, value: {}. Exception: {}", Config.STORM_PRINCIPAL_TO_LOCAL_PLUGIN, topoConf.get(Config.STORM_PRINCIPAL_TO_LOCAL_PLUGIN), e.getMessage());
+        // ConfLogger Inserted End
+        throw new RuntimeException(e);
+    }
+    return ptol;
+}
+```

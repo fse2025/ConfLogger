@@ -1,0 +1,31 @@
+```java
+String libname = conf.get("io.compression.codec.bzip2.library",
+"system-native");
+if (!bzip2LibraryName.equals(libname)) {
+    nativeBzip2Loaded = false;
+    bzip2LibraryName = libname;
+    if (libname.equals("java-builtin")) {
+        // ConfLogger Skipped
+        LOG.info("Using pure-Java version of bzip2 library");
+    } else if (NativeCodeLoader.isNativeCodeLoaded()) {
+        try {
+            // Initialize the native library.
+            Bzip2Compressor.initSymbols(libname);
+            Bzip2Decompressor.initSymbols(libname);
+            nativeBzip2Loaded = true;
+            // ConfLogger Skipped
+            LOG.info("Successfully loaded & initialized native-bzip2 library " +
+            libname);
+        } catch (Throwable t) {
+            // ConfLogger Skipped
+            LOG.warn("Failed to load/initialize native-bzip2 library " +
+            libname + ", will use pure-Java version");
+        }
+    }
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'io.compression.codec.bzip2.library' set to '{}'. Native Bzip2 library loaded: {}", libname, nativeBzip2Loaded);
+    // ConfLogger Inserted End
+}
+return nativeBzip2Loaded;
+}
+```

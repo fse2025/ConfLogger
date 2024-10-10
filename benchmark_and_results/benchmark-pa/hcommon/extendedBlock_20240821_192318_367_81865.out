@@ -1,0 +1,30 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Client.java	methodSinagture:	org.apache.hadoop.ipc.Client.getTimeout(Lorg/apache/hadoop/conf/Configuration;)I	methodLines:	186:195
+blockLines:	191:-1
+paras:	ipc.client.ping
+TaintedStat:	NORMAL getTimeout:conditional branch(ne, to iindex=17) 9,5 Node: < Application, Lorg/apache/hadoop/ipc/Client, getTimeout(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/Client, getTimeout(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere[11]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,6,7 @15 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/Client, getTimeout(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere[11]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,6,7 @15 exception:8
+NORMAL getTimeout:conditional branch(ne, to iindex=17) 9,5 Node: < Application, Lorg/apache/hadoop/ipc/Client, getTimeout(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  final public static int getTimeout(Configuration conf) {
+    int timeout = getRpcTimeout(conf);
+    if (timeout > 0)  {
+      return timeout;
+    }
+    if (!conf.getBoolean(CommonConfigurationKeys.IPC_CLIENT_PING_KEY,
+        CommonConfigurationKeys.IPC_CLIENT_PING_DEFAULT)) {
+      return getPingInterval(conf);
+    }
+    return -1;
+  }
+
+
+====================ctx:=======================

@@ -1,0 +1,64 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ProcessUtils.java	methodSinagture:	alluxio.ProcessUtils.dumpInformationOnExit()V	methodLines:	151:177
+blockLines:	157:-1
+paras:	null
+TaintedStat:	NORMAL dumpInformationOnExit:conditional branch(eq, to iindex=69) 11,8 Node: < Application, Lalluxio/ProcessUtils, dumpInformationOnExit()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/ProcessUtils, dumpInformationOnExit()V > Context: Everywhere[13]11 = invokestatic < Application, Lalluxio/conf/Configuration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 9 @37 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/ProcessUtils, dumpInformationOnExit()V > Context: Everywhere[13]11 = invokestatic < Application, Lalluxio/conf/Configuration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 9 @37 exception:10
+NORMAL dumpInformationOnExit:conditional branch(eq, to iindex=69) 11,8 Node: < Application, Lalluxio/ProcessUtils, dumpInformationOnExit()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void dumpInformationOnExit() {
+    if (!COLLECT_ON_EXIT.contains(CommonUtils.PROCESS_TYPE.get())) {
+      LOG.info("Process type is {}, skip dumping metrics and thread stacks",
+          CommonUtils.PROCESS_TYPE.get());
+      return;
+    }
+    if (Configuration.getBoolean(PropertyKey.EXIT_COLLECT_INFO)) {
+      synchronized (ProcessUtils.class) {
+        if (!sInfoDumpOnExitCheck) {
+          sInfoDumpOnExitCheck = true;
+          LOG.info("Logging metrics and jstack on {} exit...", CommonUtils.PROCESS_TYPE.get());
+          try {
+            String logsDir = Configuration.getString(PropertyKey.LOGS_DIR);
+            String outputFilePrefix = "alluxio-"
+                + CommonUtils.PROCESS_TYPE.get().toString().toLowerCase() + "-exit";
+            dumpMetrics(logsDir, outputFilePrefix);
+            dumpStacks(logsDir, outputFilePrefix);
+          } catch (Throwable t) {
+            LOG.error("Failed to dump metrics and jstacks", t);
+          }
+        }
+      }
+    } else {
+      LOG.info("Not logging metrics and jstack on exit, set {}=true to enable this feature",
+          PropertyKey.EXIT_COLLECT_INFO.getName());
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/ProcessUtils, fatalError(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere, blocks=[BB[SSA:38..38]22 - alluxio.ProcessUtils.fatalError(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V, BB[SSA:35..37]21 - alluxio.ProcessUtils.fatalError(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V, BB[SSA:39..40]23 - alluxio.ProcessUtils.fatalError(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V, BB[SSA:-1..-2]25 - alluxio.ProcessUtils.fatalError(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V], numberOfBasicBlocks=4, firstLineNumber=119, lastLineNumber=123, firstMethodNumber=111, lastMethodNumber=124, isFirstLineValid=true, methodSrcCode=
+  public static void fatalError(Logger logger, Throwable t, String format, Object... args) {
+    String message = String.format("Fatal error: " + format, args);
+    if (t != null) {
+      message += "\n" + Throwables.getStackTraceAsString(t);
+    }
+    if (Configuration.getBoolean(PropertyKey.TEST_MODE)) {
+      throw new RuntimeException(message);
+    }
+    logger.error(message);
+
+    dumpInformationOnExit();
+
+    System.exit(-1);
+  }
+
+}

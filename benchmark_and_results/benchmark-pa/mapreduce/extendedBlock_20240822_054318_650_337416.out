@@ -1,0 +1,64 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileOutputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.getOutputPath(Lorg/apache/hadoop/mapreduce/JobContext;)Lorg/apache/hadoop/fs/Path;	methodLines:	193:195
+blockLines:	195:-1
+paras:	null
+TaintedStat:	NORMAL getOutputPath:conditional branch(ne, to iindex=10) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputFormat, getOutputPath(Lorg/apache/hadoop/mapreduce/JobContext;)Lorg/apache/hadoop/fs/Path; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputFormat, getOutputPath(Lorg/apache/hadoop/mapreduce/JobContext;)Lorg/apache/hadoop/fs/Path; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,5 @8 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputFormat, getOutputPath(Lorg/apache/hadoop/mapreduce/JobContext;)Lorg/apache/hadoop/fs/Path; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,5 @8 exception:6
+NORMAL getOutputPath:conditional branch(ne, to iindex=10) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputFormat, getOutputPath(Lorg/apache/hadoop/mapreduce/JobContext;)Lorg/apache/hadoop/fs/Path; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static Path getOutputPath(JobContext job) {
+    String name = job.getConfiguration().get(FileOutputFormat.OUTDIR);
+    return name == null ? null: new Path(name);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBOutputFormat, getOutputCommitter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/OutputCommitter; > Context: Everywhere, blocks=[BB[SSA:1..3]2 - org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.getOutputCommitter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/OutputCommitter;, BB[SSA:0..0]1 - org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.getOutputCommitter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/OutputCommitter;, BB[SSA:4..5]3 - org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.getOutputCommitter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/OutputCommitter;, BB[SSA:-1..-2]5 - org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.getOutputCommitter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/OutputCommitter;], numberOfBasicBlocks=4, firstLineNumber=63, lastLineNumber=63, firstMethodNumber=62, lastMethodNumber=63, isFirstLineValid=true, methodSrcCode=
+      throws IOException, InterruptedException {
+    return new FileOutputCommitter(FileOutputFormat.getOutputPath(context),
+                                   context);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputFormat, checkOutputSpecs(Lorg/apache/hadoop/mapreduce/JobContext;)V > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:2..5]2 - org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:-1..-2]25 - org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(Lorg/apache/hadoop/mapreduce/JobContext;)V], numberOfBasicBlocks=4, firstLineNumber=153, lastLineNumber=155, firstMethodNumber=153, lastMethodNumber=167, isFirstLineValid=false, methodSrcCode=
+    // Ensure that the output directory is set and not already there
+    Path outDir = getOutputPath(job);
+    if (outDir == null) {
+      throw new InvalidJobConfException("Output directory not set.");
+    }
+
+    // get delegation token for outDir's file system
+    TokenCache.obtainTokensForNamenodes(job.getCredentials(),
+        new Path[] { outDir }, job.getConfiguration());
+
+    if (outDir.getFileSystem(job.getConfiguration()).exists(outDir)) {
+      throw new FileAlreadyExistsException("Output directory " + outDir + 
+                                           " already exists");
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputFormat, checkOutputSpecs(Lorg/apache/hadoop/mapreduce/JobContext;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/output/TextOutputFormat in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/output/TextOutputFormat, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:0..1]1 - org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:2..5]2 - org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(Lorg/apache/hadoop/mapreduce/JobContext;)V, BB[SSA:-1..-2]25 - org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(Lorg/apache/hadoop/mapreduce/JobContext;)V], numberOfBasicBlocks=4, firstLineNumber=153, lastLineNumber=155, firstMethodNumber=153, lastMethodNumber=167, isFirstLineValid=false, methodSrcCode=
+    // Ensure that the output directory is set and not already there
+    Path outDir = getOutputPath(job);
+    if (outDir == null) {
+      throw new InvalidJobConfException("Output directory not set.");
+    }
+
+    // get delegation token for outDir's file system
+    TokenCache.obtainTokensForNamenodes(job.getCredentials(),
+        new Path[] { outDir }, job.getConfiguration());
+
+    if (outDir.getFileSystem(job.getConfiguration()).exists(outDir)) {
+      throw new FileAlreadyExistsException("Output directory " + outDir + 
+                                           " already exists");
+    }
+  }
+
+}

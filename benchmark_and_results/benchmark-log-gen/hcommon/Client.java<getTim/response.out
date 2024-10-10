@@ -1,0 +1,21 @@
+```java
+int timeout = getRpcTimeout(conf);
+if (timeout > 0)  {
+    // ConfLogger Inserted Start
+    logger.info("RPC timeout is set to a positive value: " + timeout + ". Configuration parameter: " + "timeout");
+    // ConfLogger Inserted End
+    return timeout;
+}
+if (!conf.getBoolean(CommonConfigurationKeys.IPC_CLIENT_PING_KEY,
+        CommonConfigurationKeys.IPC_CLIENT_PING_DEFAULT)) {
+    // ConfLogger Inserted Start
+    logger.info("IPC client ping is disabled. Configuration parameter: " + CommonConfigurationKeys.IPC_CLIENT_PING_KEY + ", value: " + conf.getBoolean(CommonConfigurationKeys.IPC_CLIENT_PING_KEY, CommonConfigurationKeys.IPC_CLIENT_PING_DEFAULT));
+    // ConfLogger Inserted End
+    return getPingInterval(conf);
+}
+// ConfLogger Inserted Start
+logger.info("Default case: returning -1. Configuration parameters: timeout=" + timeout + ", " + CommonConfigurationKeys.IPC_CLIENT_PING_KEY + "=" + conf.getBoolean(CommonConfigurationKeys.IPC_CLIENT_PING_KEY, CommonConfigurationKeys.IPC_CLIENT_PING_DEFAULT));
+// ConfLogger Inserted End
+return -1;
+}
+```

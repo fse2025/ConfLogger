@@ -1,0 +1,58 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HistoryClientService.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.HistoryClientService.setupFilters(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	203:212
+blockLines:	208:-1
+paras:	null
+TaintedStat:	NORMAL setupFilters:conditional branch(eq, to iindex=12) 7,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryClientService, setupFilters(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryClientService, setupFilters(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,4,5 @4 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryClientService, setupFilters(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,4,5 @4 exception:6
+NORMAL setupFilters:conditional branch(eq, to iindex=12) 7,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryClientService, setupFilters(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void setupFilters(Configuration conf) {
+    boolean enableCorsFilter =
+        conf.getBoolean(JHAdminConfig.MR_HISTORY_ENABLE_CORS_FILTER,
+            JHAdminConfig.DEFAULT_MR_HISTORY_ENABLE_CORS_FILTER);
+
+    if (enableCorsFilter) {
+      conf.setBoolean(HttpCrossOriginFilterInitializer.PREFIX
+          + HttpCrossOriginFilterInitializer.ENABLED_SUFFIX, true);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryClientService, initializeWebApp(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:7..9]5 - org.apache.hadoop.mapreduce.v2.hs.HistoryClientService.initializeWebApp(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:6..6]4 - org.apache.hadoop.mapreduce.v2.hs.HistoryClientService.initializeWebApp(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:10..11]6 - org.apache.hadoop.mapreduce.v2.hs.HistoryClientService.initializeWebApp(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]36 - org.apache.hadoop.mapreduce.v2.hs.HistoryClientService.initializeWebApp(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=157, lastLineNumber=161, firstMethodNumber=156, lastMethodNumber=180, isFirstLineValid=true, methodSrcCode=
+  protected void initializeWebApp(Configuration conf) throws IOException {
+    webApp = new HsWebApp(history);
+
+    setupFilters(conf);
+
+    InetSocketAddress bindAddress = MRWebAppUtil.getJHSWebBindAddress(conf);
+    ApplicationClientProtocol appClientProtocol =
+        ClientRMProxy.createRMProxy(conf, ApplicationClientProtocol.class);
+    // NOTE: there should be a .at(InetSocketAddress)
+    WebApps
+        .$for("jobhistory", HistoryClientService.class, this, "ws")
+        .with(conf)
+        .withHttpSpnegoKeytabKey(
+            JHAdminConfig.MR_WEBAPP_SPNEGO_KEYTAB_FILE_KEY)
+        .withHttpSpnegoPrincipalKey(
+            JHAdminConfig.MR_WEBAPP_SPNEGO_USER_NAME_KEY)
+        .withCSRFProtection(JHAdminConfig.MR_HISTORY_CSRF_PREFIX)
+        .withXFSProtection(JHAdminConfig.MR_HISTORY_XFS_PREFIX)
+        .withAppClientProtocol(appClientProtocol)
+        .at(NetUtils.getHostPortString(bindAddress)).start(webApp);
+    
+    String connectHost = MRWebAppUtil.getJHSWebappURLWithoutScheme(conf).split(":")[0];
+    MRWebAppUtil.setJHSWebappURLWithoutScheme(conf,
+        connectHost + ":" + webApp.getListenerAddress().getPort());
+  }
+
+}

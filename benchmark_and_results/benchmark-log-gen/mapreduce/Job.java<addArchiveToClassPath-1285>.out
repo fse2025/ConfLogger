@@ -1,0 +1,46 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Job.java	methodSinagture:	org.apache.hadoop.mapreduce.Job.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V	methodLines:	1285:1291
+blockLines:	1287:-1
+paras:	null
+TaintedStat:	NORMAL addArchiveToClassPath:conditional branch(ne, to iindex=12) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V > Context: Everywhere[2]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,5 @3 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V > Context: Everywhere[2]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,5 @3 exception:6
+NORMAL addArchiveToClassPath:conditional branch(ne, to iindex=12) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void addArchiveToClassPath(Path archive, Configuration conf, FileSystem fs) {
+    String classpath = conf.get(MRJobConfig.CLASSPATH_ARCHIVES);
+    conf.set(MRJobConfig.CLASSPATH_ARCHIVES,
+        classpath == null ? archive.toString() : classpath + "," + archive.toString());
+    URI uri = fs.makeQualified(archive).toUri();
+    Job.addCacheArchive(uri, conf);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:5..5]2 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..4]1 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:6..6]3 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]4 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=362, lastLineNumber=363, firstMethodNumber=361, lastMethodNumber=363, isFirstLineValid=true, methodSrcCode=
+    throws IOException {
+    Job.addArchiveToClassPath(archive, conf, archive.getFileSystem(conf));
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere, blocks=[BB[SSA:10..10]5 - org.apache.hadoop.mapreduce.Job.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;)V, BB[SSA:9..9]4 - org.apache.hadoop.mapreduce.Job.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;)V, BB[SSA:11..11]6 - org.apache.hadoop.mapreduce.Job.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;)V, BB[SSA:-1..-2]7 - org.apache.hadoop.mapreduce.Job.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;)V], numberOfBasicBlocks=4, firstLineNumber=1274, lastLineNumber=1275, firstMethodNumber=1272, lastMethodNumber=1275, isFirstLineValid=true, methodSrcCode=
+    throws IOException {
+    ensureState(JobState.DEFINE);
+    addArchiveToClassPath(archive, conf, archive.getFileSystem(conf));
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V, BB[SSA:4..4]2 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V, BB[SSA:-1..-2]3 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addArchiveToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V], numberOfBasicBlocks=4, firstLineNumber=375, lastLineNumber=377, firstMethodNumber=375, lastMethodNumber=377, isFirstLineValid=false, methodSrcCode=
+      throws IOException {
+    Job.addArchiveToClassPath(archive, conf, fs);
+  }
+
+}

@@ -1,0 +1,25 @@
+```java
+Configuration conf) {
+    String userDoneDirPermissions = conf.get(
+        JHAdminConfig.MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS);
+    if (userDoneDirPermissions == null) {
+        // ConfLogger Inserted Start
+        logger.warn("Configuration parameter 'mapreduce.jobhistory.intermediate-user-done-dir.permissions' is not set. Using default permissions: " 
+            + JHAdminConfig.DEFAULT_MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS);
+        // ConfLogger Inserted End
+        return new FsPermission(
+            JHAdminConfig.DEFAULT_MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS);
+    }
+    FsPermission permission = new FsPermission(userDoneDirPermissions);
+    if (permission.getUserAction() != FsAction.ALL ||
+        permission.getGroupAction() != FsAction.ALL) {
+        // ConfLogger Inserted Start
+        logger.warn("Configuration parameter 'mapreduce.jobhistory.intermediate-user-done-dir.permissions' is set to '" 
+            + userDoneDirPermissions + "', but user and group actions are not set to 'ALL'. Adjusting permissions to ensure user and group have 'ALL' actions.");
+        // ConfLogger Inserted End
+        permission = new FsPermission(FsAction.ALL, FsAction.ALL,
+            permission.getOtherAction(), permission.getStickyBit());
+    }
+    return permission;
+}
+```

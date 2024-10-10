@@ -1,0 +1,462 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSAdmin.java	methodSinagture:	org.apache.hadoop.hdfs.tools.DFSAdmin.listOpenFiles([Ljava/lang/String;)I	methodLines:	991:1026
+blockLines:	996:-1
+paras:	dfs.datanode.directoryscan.interval
+TaintedStat:	NORMAL listOpenFiles:conditional branch(eq, to iindex=24) 13,14 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, initDirectoryScanner(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[11]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTimeDuration(Ljava/lang/String;JLjava/util/concurrent/TimeUnit;)J > 2,6,7,8 @20 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, initDirectoryScanner(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[11]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTimeDuration(Ljava/lang/String;JLjava/util/concurrent/TimeUnit;)J > 2,6,7,8 @20 exception:9
+NORMAL initDirectoryScanner:12 = compare 10,11 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, initDirectoryScanner(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL initDirectoryScanner:conditional branch(ge, to iindex=19) 12,13 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, initDirectoryScanner(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL initDirectoryScanner:21 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 14,19 @48 exception:20 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, initDirectoryScanner(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere[88]38 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 36,8 @154 exception:37
+NORMAL runCmd:conditional branch(eq, to iindex=95) 38,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+NORMAL runCmd:66 = invokespecial < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > 1,25 @163 exception:65 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:conditional branch(eq, to iindex=18) 6,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:13 = invokevirtual < Extension, Lorg/apache/hadoop/ha/HAAdmin, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @40 exception:12 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL getConf:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[1]5 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:4
+NORMAL run:7 = invokestatic < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > 5,1,2 @8 exception:6 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL getRemainingArgs:return 10 Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[30]22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[34]24 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, run([Ljava/lang/String;)I > 2,22 @65 exception:23 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, run([Ljava/lang/String;)I > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, run([Ljava/lang/String;)I > Context: Everywhere[755]250 = invokevirtual < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > 1,2 @1418 exception:249 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere v2
+NORMAL listOpenFiles:conditional branch(eq, to iindex=28) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+NORMAL listOpenFiles:conditional branch(eq, to iindex=24) 13,14 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSAdmin.java	methodSinagture:	org.apache.hadoop.hdfs.tools.DFSAdmin.listOpenFiles([Ljava/lang/String;)I	methodLines:	991:1026
+blockLines:	1006:-1
+paras:	dfs.encrypt.data.transfer.cipher.suites
+TaintedStat:	NORMAL listOpenFiles:conditional branch(eq, to iindex=49) 21,4 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, negotiateCipherOption(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;)Lorg/apache/hadoop/crypto/CipherOption; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, negotiateCipherOption(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;)Lorg/apache/hadoop/crypto/CipherOption; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL negotiateCipherOption:15 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 6,13 @27 exception:14 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, negotiateCipherOption(Lorg/apache/hadoop/conf/Configuration;Ljava/util/List;)Lorg/apache/hadoop/crypto/CipherOption; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere[88]38 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 36,8 @154 exception:37
+NORMAL runCmd:conditional branch(eq, to iindex=95) 38,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+NORMAL runCmd:66 = invokespecial < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > 1,25 @163 exception:65 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:conditional branch(eq, to iindex=18) 6,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:13 = invokevirtual < Extension, Lorg/apache/hadoop/ha/HAAdmin, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @40 exception:12 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL getConf:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[1]5 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:4
+NORMAL run:7 = invokestatic < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > 5,1,2 @8 exception:6 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL getRemainingArgs:return 10 Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[30]22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[34]24 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, run([Ljava/lang/String;)I > 2,22 @65 exception:23 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, run([Ljava/lang/String;)I > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, run([Ljava/lang/String;)I > Context: Everywhere[755]250 = invokevirtual < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > 1,2 @1418 exception:249 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere v2
+NORMAL listOpenFiles:conditional branch(eq, to iindex=28) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere:21 = phi  4,20
+NORMAL listOpenFiles:conditional branch(eq, to iindex=49) 21,4 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSAdmin.java	methodSinagture:	org.apache.hadoop.hdfs.tools.DFSAdmin.listOpenFiles([Ljava/lang/String;)I	methodLines:	991:1026
+blockLines:	1008:-1
+paras:	dfs.namenode.gc.time.monitor.enable
+TaintedStat:	NORMAL listOpenFiles:conditional branch(ne, to iindex=51) 31,14 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[47]33 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,30,31 @93 exception:32
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[47]33 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,30,31 @93 exception:32
+NORMAL initialize:conditional branch(eq, to iindex=80) 33,34 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL initialize:invokevirtual < Application, Lorg/apache/hadoop/util/GcTimeMonitor, start()V > 53 @153 exception:54 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, initialize(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:9 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, getConf()Lorg/apache/hadoop/conf/Configuration; > 7 @14 exception:8 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL getConf:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[1]5 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:4
+NORMAL run:7 = invokestatic < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > 5,1,2 @8 exception:6 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL getRemainingArgs:return 10 Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[30]22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[34]24 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, run([Ljava/lang/String;)I > 2,22 @65 exception:23 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, run([Ljava/lang/String;)I > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, run([Ljava/lang/String;)I > Context: Everywhere[755]250 = invokevirtual < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > 1,2 @1418 exception:249 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere v2
+NORMAL listOpenFiles:conditional branch(eq, to iindex=28) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere:21 = phi  4,20
+NORMAL listOpenFiles:conditional branch(eq, to iindex=49) 21,4 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+NORMAL listOpenFiles:conditional branch(ne, to iindex=51) 31,14 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSAdmin.java	methodSinagture:	org.apache.hadoop.hdfs.tools.DFSAdmin.listOpenFiles([Ljava/lang/String;)I	methodLines:	991:1026
+blockLines:	994:-1
+paras:	null
+TaintedStat:	NORMAL listOpenFiles:conditional branch(eq, to iindex=28) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @16 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @16 exception:8
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere:21 = phi  17,9
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, getHostName(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[34]25 = invokestatic < Application, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > 21,22,23 @61 exception:24 v21
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere v1
+NORMAL getDefaultHost:8 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 6,1 @7 exception:7 Node: < Extension, Lorg/apache/hadoop/net/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere[88]38 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 36,8 @154 exception:37
+NORMAL runCmd:conditional branch(eq, to iindex=95) 38,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+NORMAL runCmd:66 = invokespecial < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > 1,25 @163 exception:65 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, runCmd([Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:conditional branch(eq, to iindex=18) 6,7 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+NORMAL getServiceState:13 = invokevirtual < Extension, Lorg/apache/hadoop/ha/HAAdmin, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @40 exception:12 Node: < Extension, Lorg/apache/hadoop/ha/HAAdmin, getServiceState(Lorg/apache/commons/cli/CommandLine;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL getConf:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[1]5 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:4
+NORMAL run:7 = invokestatic < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > 5,1,2 @8 exception:6 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+NORMAL run:22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL getRemainingArgs:return 10 Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[30]22 = invokevirtual < Extension, Lorg/apache/hadoop/util/GenericOptionsParser, getRemainingArgs()[Ljava/lang/String; > 18 @57 exception:21
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[34]24 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, run([Ljava/lang/String;)I > 2,22 @65 exception:23 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, run([Ljava/lang/String;)I > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, run([Ljava/lang/String;)I > Context: Everywhere[755]250 = invokevirtual < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > 1,2 @1418 exception:249 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere v2
+NORMAL listOpenFiles:conditional branch(eq, to iindex=28) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, listOpenFiles([Ljava/lang/String;)I > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public int listOpenFiles(String[] argv) throws IOException {
+    String path = null;
+    List<OpenFilesType> types = new ArrayList<>();
+    if (argv != null) {
+      List<String> args = new ArrayList<>(Arrays.asList(argv));
+      if (StringUtils.popOption("-blockingDecommission", args)) {
+        types.add(OpenFilesType.BLOCKING_DECOMMISSION);
+      }
+
+      path = StringUtils.popOptionWithArgument("-path", args);
+    }
+    if (types.isEmpty()) {
+      types.add(OpenFilesType.ALL_OPEN_FILES);
+    }
+
+    if (path != null) {
+      path = path.trim();
+      if (path.length() == 0) {
+        path = OpenFilesIterator.FILTER_PATH_DEFAULT;
+      }
+    } else {
+      path = OpenFilesIterator.FILTER_PATH_DEFAULT;
+    }
+
+    EnumSet<OpenFilesType> openFilesTypes = EnumSet.copyOf(types);
+
+    DistributedFileSystem dfs = getDFS();
+    RemoteIterator<OpenFileEntry> openFilesRemoteIterator;
+    try{
+      openFilesRemoteIterator = dfs.listOpenFiles(openFilesTypes, path);
+      printOpenFiles(openFilesRemoteIterator);
+    } catch (IOException ioe){
+      System.out.println("List open files failed.");
+      throw ioe;
+    }
+    return 0;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSAdmin, run([Ljava/lang/String;)I > Context: Everywhere, blocks=[BB[SSA:753..755]327 - org.apache.hadoop.hdfs.tools.DFSAdmin.run([Ljava/lang/String;)I, BB[SSA:751..752]326 - org.apache.hadoop.hdfs.tools.DFSAdmin.run([Ljava/lang/String;)I, BB[SSA:756..757]328 - org.apache.hadoop.hdfs.tools.DFSAdmin.run([Ljava/lang/String;)I, BB[SSA:-1..-2]395 - org.apache.hadoop.hdfs.tools.DFSAdmin.run([Ljava/lang/String;)I], numberOfBasicBlocks=4, firstLineNumber=2537, lastLineNumber=2538, firstMethodNumber=2315, lastMethodNumber=2580, isFirstLineValid=true, methodSrcCode=
+
+    if (argv.length < 1) {
+      printUsage("");
+      return -1;
+    }
+
+    int exitCode = -1;
+    int i = 0;
+    String cmd = argv[i++];
+
+    //
+    // verify that we have enough command line parameters
+    //
+    if ("-safemode".equals(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-allowSnapshot".equalsIgnoreCase(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-disallowSnapshot".equalsIgnoreCase(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-report".equals(cmd)) {
+      if (argv.length > DFS_REPORT_ARGS.length + 1) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-saveNamespace".equals(cmd)) {
+      if (argv.length != 1 && argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-rollEdits".equals(cmd)) {
+      if (argv.length != 1) {
+        printUsage(cmd);
+        return exitCode;
+      }      
+    } else if ("-restoreFailedStorage".equals(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-refreshNodes".equals(cmd)) {
+      if (argv.length != 1) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-finalizeUpgrade".equals(cmd)) {
+      if (argv.length != 1) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if (RollingUpgradeCommand.matches(cmd)) {
+      if (argv.length > 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-upgrade".equals(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-metasave".equals(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-refreshServiceAcl".equals(cmd)) {
+      if (argv.length != 1) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-refresh".equals(cmd)) {
+      if (argv.length < 3) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-refreshUserToGroupsMappings".equals(cmd)) {
+      if (argv.length != 1) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-printTopology".equals(cmd)) {
+      if(argv.length != 1) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-refreshNamenodes".equals(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-getVolumeReport".equals(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-reconfig".equals(cmd)) {
+      if (argv.length != 4) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-deleteBlockPool".equals(cmd)) {
+      if ((argv.length != 3) && (argv.length != 4)) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-setBalancerBandwidth".equals(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-getBalancerBandwidth".equalsIgnoreCase(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-fetchImage".equals(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-shutdownDatanode".equals(cmd)) {
+      if ((argv.length != 2) && (argv.length != 3)) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-getDatanodeInfo".equals(cmd)) {
+      if (argv.length != 2) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-triggerBlockReport".equals(cmd)) {
+      if ((argv.length < 2) || (argv.length > 5)) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    } else if ("-listOpenFiles".equals(cmd)) {
+      if ((argv.length > 4)) {
+        printUsage(cmd);
+        return exitCode;
+      }
+    }
+    
+    // initialize DFSAdmin
+    init();
+
+    Exception debugException = null;
+    exitCode = 0;
+    try {
+      if ("-report".equals(cmd)) {
+        report(argv, i);
+      } else if ("-safemode".equals(cmd)) {
+        setSafeMode(argv, i);
+      } else if ("-allowSnapshot".equalsIgnoreCase(cmd)) {
+        allowSnapshot(argv);
+      } else if ("-disallowSnapshot".equalsIgnoreCase(cmd)) {
+        disallowSnapshot(argv);
+      } else if ("-saveNamespace".equals(cmd)) {
+        exitCode = saveNamespace(argv);
+      } else if ("-rollEdits".equals(cmd)) {
+        exitCode = rollEdits();
+      } else if ("-restoreFailedStorage".equals(cmd)) {
+        exitCode = restoreFailedStorage(argv[i]);
+      } else if ("-refreshNodes".equals(cmd)) {
+        exitCode = refreshNodes();
+      } else if ("-finalizeUpgrade".equals(cmd)) {
+        exitCode = finalizeUpgrade();
+      } else if (RollingUpgradeCommand.matches(cmd)) {
+        exitCode = RollingUpgradeCommand.run(getDFS(), argv, i);
+      } else if ("-upgrade".equals(cmd)) {
+        exitCode = upgrade(argv[i]);
+      } else if ("-metasave".equals(cmd)) {
+        exitCode = metaSave(argv, i);
+      } else if (ClearQuotaCommand.matches(cmd)) {
+        exitCode = new ClearQuotaCommand(argv, i, getConf()).runAll();
+      } else if (SetQuotaCommand.matches(cmd)) {
+        exitCode = new SetQuotaCommand(argv, i, getConf()).runAll();
+      } else if (ClearSpaceQuotaCommand.matches(cmd)) {
+        exitCode = new ClearSpaceQuotaCommand(argv, i, getConf()).runAll();
+      } else if (SetSpaceQuotaCommand.matches(cmd)) {
+        exitCode = new SetSpaceQuotaCommand(argv, i, getConf()).runAll();
+      } else if ("-refreshServiceAcl".equals(cmd)) {
+        exitCode = refreshServiceAcl();
+      } else if ("-refreshUserToGroupsMappings".equals(cmd)) {
+        exitCode = refreshUserToGroupsMappings();
+      } else if ("-refreshSuperUserGroupsConfiguration".equals(cmd)) {
+        exitCode = refreshSuperUserGroupsConfiguration();
+      } else if ("-refreshCallQueue".equals(cmd)) {
+        exitCode = refreshCallQueue();
+      } else if ("-refresh".equals(cmd)) {
+        exitCode = genericRefresh(argv, i);
+      } else if ("-printTopology".equals(cmd)) {
+        exitCode = printTopology();
+      } else if ("-refreshNamenodes".equals(cmd)) {
+        exitCode = refreshNamenodes(argv, i);
+      } else if ("-getVolumeReport".equals(cmd)) {
+        exitCode = getVolumeReport(argv, i);
+      } else if ("-deleteBlockPool".equals(cmd)) {
+        exitCode = deleteBlockPool(argv, i);
+      } else if ("-setBalancerBandwidth".equals(cmd)) {
+        exitCode = setBalancerBandwidth(argv, i);
+      } else if ("-getBalancerBandwidth".equals(cmd)) {
+        exitCode = getBalancerBandwidth(argv, i);
+      } else if ("-fetchImage".equals(cmd)) {
+        exitCode = fetchImage(argv, i);
+      } else if ("-shutdownDatanode".equals(cmd)) {
+        exitCode = shutdownDatanode(argv, i);
+      } else if ("-evictWriters".equals(cmd)) {
+        exitCode = evictWriters(argv, i);
+      } else if ("-getDatanodeInfo".equals(cmd)) {
+        exitCode = getDatanodeInfo(argv, i);
+      } else if ("-reconfig".equals(cmd)) {
+        exitCode = reconfig(argv, i);
+      } else if ("-triggerBlockReport".equals(cmd)) {
+        exitCode = triggerBlockReport(argv);
+      } else if ("-listOpenFiles".equals(cmd)) {
+        exitCode = listOpenFiles(argv);
+      } else if ("-help".equals(cmd)) {
+        if (i < argv.length) {
+          printHelp(argv[i]);
+        } else {
+          printHelp("");
+        }
+      } else {
+        exitCode = -1;
+        System.err.println(cmd.substring(1) + ": Unknown command");
+        printUsage("");
+      }
+    } catch (IllegalArgumentException arge) {
+      debugException = arge;
+      exitCode = -1;
+      System.err.println(cmd.substring(1) + ": " + arge.getLocalizedMessage());
+      printUsage(cmd);
+    } catch (RemoteException e) {
+      //
+      // This is a error returned by hadoop server. Print
+      // out the first line of the error message, ignore the stack trace.
+      exitCode = -1;
+      debugException = e;
+      try {
+        String[] content;
+        content = e.getLocalizedMessage().split("\n");
+        System.err.println(cmd.substring(1) + ": "
+                           + content[0]);
+      } catch (Exception ex) {
+        System.err.println(cmd.substring(1) + ": "
+                           + ex.getLocalizedMessage());
+        debugException = ex;
+      }
+    } catch (Exception e) {
+      exitCode = -1;
+      debugException = e;
+      System.err.println(cmd.substring(1) + ": "
+                         + e.getLocalizedMessage());
+    }
+    if (LOG.isDebugEnabled() && debugException != null) {
+      LOG.debug("Exception encountered:", debugException);
+    }
+    return exitCode;
+  }
+}

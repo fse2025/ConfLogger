@@ -1,0 +1,30 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MultipleInputs.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.MultipleInputs.addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;Ljava/lang/Class;)V	methodLines:	81:90
+blockLines:	86:-1
+paras:	null
+TaintedStat:	NORMAL addInputPath:conditional branch(ne, to iindex=31) 26,27 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[22]26 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 8,24 @47 exception:25
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[22]26 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 8,24 @47 exception:25
+NORMAL addInputPath:conditional branch(ne, to iindex=31) 26,27 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    addInputPath(job, path, inputFormatClass);
+    Configuration conf = job.getConfiguration();
+    String mapperMapping = path.toString() + ";" + mapperClass.getName();
+    String mappers = conf.get(DIR_MAPPERS);
+    conf.set(DIR_MAPPERS, mappers == null ? mapperMapping
+       : mappers + "," + mapperMapping);
+
+    job.setMapperClass(DelegatingMapper.class);
+  }
+
+
+
+====================ctx:=======================

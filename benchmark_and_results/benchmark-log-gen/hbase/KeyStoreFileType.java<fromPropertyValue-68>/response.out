@@ -1,0 +1,9 @@
+```java
+if (propertyValue == null || propertyValue.length() == 0) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'propertyValue' is null or empty. Returning null.");
+    // ConfLogger Inserted End
+    return null;
+}
+return KeyStoreFileType.valueOf(propertyValue.toUpperCase());
+```

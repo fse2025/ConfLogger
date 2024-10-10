@@ -1,0 +1,1 @@
+2024-09-05 05:21:15,381 INFO  ConfLogger (Trash.java:moveToAppropriateTrash(113)) - Localized trash flag is not enabled. Initializing Trash with fully resolved FileSystem object. Configuration parameter: CONFIG_VIEWFS_TRASH_FORCE_INSIDE_MOUNT_POINT, Value: false

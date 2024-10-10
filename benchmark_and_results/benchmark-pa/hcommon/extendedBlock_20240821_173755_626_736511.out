@@ -1,0 +1,27 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SocksSocketFactory.java	methodSinagture:	org.apache.hadoop.net.SocksSocketFactory.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	136:142
+blockLines:	139:-1
+paras:	hadoop.socks.server
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=17) 6,7 Node: < Application, Lorg/apache/hadoop/net/SocksSocketFactory, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/net/SocksSocketFactory, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[5]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @8 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/net/SocksSocketFactory, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[5]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @8 exception:5
+NORMAL setConf:conditional branch(eq, to iindex=17) 6,7 Node: < Application, Lorg/apache/hadoop/net/SocksSocketFactory, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setConf(Configuration conf) {
+    this.conf = conf;
+    String proxyStr = conf.get(HADOOP_SOCKS_SERVER_KEY);
+    if ((proxyStr != null) && (proxyStr.length() > 0)) {
+      setProxy(proxyStr);
+    }
+  }
+
+
+
+====================ctx:=======================

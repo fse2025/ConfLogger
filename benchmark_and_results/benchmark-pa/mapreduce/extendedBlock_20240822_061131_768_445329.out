@@ -1,0 +1,53 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobContextImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.task.JobContextImpl.parseTimestamps([Ljava/lang/String;)[J	methodLines:	419:427
+blockLines:	420:-1
+paras:	null
+TaintedStat:	NORMAL parseTimestamps:conditional branch(ne, to iindex=5) 1,3 Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, parseTimestamps([Ljava/lang/String;)[J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, getArchiveTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, getArchiveTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,3 @3 exception:4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, getArchiveTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J > Context: Everywhere[3]7 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, parseTimestamps([Ljava/lang/String;)[J > 5 @6 exception:6 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, parseTimestamps([Ljava/lang/String;)[J > Context: Everywhere v1
+NORMAL parseTimestamps:conditional branch(ne, to iindex=5) 1,3 Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, parseTimestamps([Ljava/lang/String;)[J > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JobContextImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.task.JobContextImpl.parseTimestamps([Ljava/lang/String;)[J	methodLines:	419:427
+blockLines:	424:-1
+paras:	null
+TaintedStat:	NORMAL parseTimestamps:conditional branch(ge, to iindex=27) 13,7 Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, parseTimestamps([Ljava/lang/String;)[J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, getFileTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, getFileTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,3 @3 exception:4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, getFileTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J > Context: Everywhere[3]7 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, parseTimestamps([Ljava/lang/String;)[J > 5 @6 exception:6 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, parseTimestamps([Ljava/lang/String;)[J > Context: Everywhere v1
+NORMAL parseTimestamps:conditional branch(ne, to iindex=5) 1,3 Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, parseTimestamps([Ljava/lang/String;)[J > Context: Everywhere
+NORMAL parseTimestamps:conditional branch(ge, to iindex=27) 13,7 Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, parseTimestamps([Ljava/lang/String;)[J > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static long[] parseTimestamps(String[] strs) {
+    if (strs == null) {
+      return null;
+    }
+    long[] result = new long[strs.length];
+    for(int i=0; i < strs.length; ++i) {
+      result[i] = Long.parseLong(strs[i]);
+    }
+    return result;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, getArchiveTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J > Context: Everywhere, blocks=[BB[SSA:3..3]2 - org.apache.hadoop.mapreduce.task.JobContextImpl.getArchiveTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J, BB[SSA:0..2]1 - org.apache.hadoop.mapreduce.task.JobContextImpl.getArchiveTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J, BB[SSA:4..4]3 - org.apache.hadoop.mapreduce.task.JobContextImpl.getArchiveTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J, BB[SSA:-1..-2]4 - org.apache.hadoop.mapreduce.task.JobContextImpl.getArchiveTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J], numberOfBasicBlocks=4, firstLineNumber=438, lastLineNumber=438, firstMethodNumber=437, lastMethodNumber=438, isFirstLineValid=true, methodSrcCode=
+  public static long[] getArchiveTimestamps(Configuration conf) {
+    return parseTimestamps(conf.getStrings(MRJobConfig.CACHE_ARCHIVES_TIMESTAMPS));
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/task/JobContextImpl, getFileTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J > Context: Everywhere, blocks=[BB[SSA:3..3]2 - org.apache.hadoop.mapreduce.task.JobContextImpl.getFileTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J, BB[SSA:0..2]1 - org.apache.hadoop.mapreduce.task.JobContextImpl.getFileTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J, BB[SSA:4..4]3 - org.apache.hadoop.mapreduce.task.JobContextImpl.getFileTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J, BB[SSA:-1..-2]4 - org.apache.hadoop.mapreduce.task.JobContextImpl.getFileTimestamps(Lorg/apache/hadoop/conf/Configuration;)[J], numberOfBasicBlocks=4, firstLineNumber=449, lastLineNumber=449, firstMethodNumber=448, lastMethodNumber=449, isFirstLineValid=true, methodSrcCode=
+  public static long[] getFileTimestamps(Configuration conf) {
+    return parseTimestamps(conf.getStrings(MRJobConfig.CACHE_FILE_TIMESTAMPS));
+  }
+}

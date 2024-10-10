@@ -1,0 +1,31 @@
+```java
+String path = scriptFilePath(dir);
+try (BufferedWriter out = new BufferedWriter(new FileWriter(path))) {
+    out.write("#!/bin/bash");
+    out.newLine();
+    if (environment != null) {
+        // ConfLogger Inserted Start
+        logger.debug("Environment configuration is not null. Processing environment variables.");
+        // ConfLogger Inserted End
+        for (String k : environment.keySet()) {
+            String v = environment.get(k);
+            if (v == null) {
+                v = "";
+            }
+            out.write(shellCmd(
+                Arrays.asList(
+                    "export", k + "=" + v)));
+            out.write(";");
+            out.newLine();
+        }
+    }
+    out.newLine();
+    if (umask != null) {
+        out.write("umask " + umask);
+        out.newLine();
+    }
+    out.write("exec " + shellCmd(command) + ";");
+}
+return path;
+}
+```

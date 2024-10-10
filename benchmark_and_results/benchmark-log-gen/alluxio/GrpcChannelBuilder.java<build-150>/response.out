@@ -1,0 +1,29 @@
+```java
+GrpcChannel channel =
+GrpcChannelPool.INSTANCE.acquireChannel(mNetworkGroup, mAddress,
+mConfiguration, mAlwaysEnableTLS);
+try {
+channel.authenticate(mAuthType, mParentSubject, mConfiguration);
+} catch (Throwable t) {
+try {
+channel.close();
+} catch (Exception e) {
+throw new RuntimeException(
+String.format("Failed to release the connection: %s", channel.getChannelKey()), e);
+}
+if (t instanceof AlluxioStatusException) {
+throw t;
+}
+throw AlluxioStatusException.fromThrowable(t);
+}
+// ConfLogger Inserted Start
+if (mConfiguration.getBoolean(PropertyKey.USER_CLIENT_REPORT_VERSION_ENABLED)) {
+    logger.info("USER_CLIENT_REPORT_VERSION_ENABLED is set to true. Enabling ClientVersionClientInjector. PropertyKey: {}, Value: {}", PropertyKey.USER_CLIENT_REPORT_VERSION_ENABLED, mConfiguration.getBoolean(PropertyKey.USER_CLIENT_REPORT_VERSION_ENABLED));
+    channel.intercept(new ClientVersionClientInjector());
+} else {
+    logger.info("USER_CLIENT_REPORT_VERSION_ENABLED is set to false. Skipping ClientVersionClientInjector. PropertyKey: {}, Value: {}", PropertyKey.USER_CLIENT_REPORT_VERSION_ENABLED, mConfiguration.getBoolean(PropertyKey.USER_CLIENT_REPORT_VERSION_ENABLED));
+}
+// ConfLogger Inserted End
+return channel;
+}
+```

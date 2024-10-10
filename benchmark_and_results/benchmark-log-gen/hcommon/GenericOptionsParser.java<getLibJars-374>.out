@@ -1,0 +1,114 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	GenericOptionsParser.java	methodSinagture:	org.apache.hadoop.util.GenericOptionsParser.getLibJars(Lorg/apache/hadoop/conf/Configuration;)[Ljava/net/URL;	methodLines:	374:390
+blockLines:	376:-1
+paras:	null
+TaintedStat:	NORMAL getLibJars:conditional branch(eq, to iindex=12) 5,6 Node: < Application, Lorg/apache/hadoop/util/GenericOptionsParser, getLibJars(Lorg/apache/hadoop/conf/Configuration;)[Ljava/net/URL; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/GenericOptionsParser, getLibJars(Lorg/apache/hadoop/conf/Configuration;)[Ljava/net/URL; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/GenericOptionsParser, getLibJars(Lorg/apache/hadoop/conf/Configuration;)[Ljava/net/URL; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+NORMAL getLibJars:conditional branch(eq, to iindex=12) 5,6 Node: < Application, Lorg/apache/hadoop/util/GenericOptionsParser, getLibJars(Lorg/apache/hadoop/conf/Configuration;)[Ljava/net/URL; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static URL[] getLibJars(Configuration conf) throws IOException {
+    String jars = conf.get("tmpjars");
+    if (jars == null || jars.trim().isEmpty()) {
+      return null;
+    }
+    String[] files = jars.split(",");
+    List<URL> cp = new ArrayList<URL>();
+    for (String file : files) {
+      Path tmp = new Path(file);
+      if (tmp.getFileSystem(conf).equals(FileSystem.getLocal(conf))) {
+        cp.add(FileSystem.getLocal(conf).pathToFile(tmp).toURI().toURL());
+      } else {
+        LOG.warn("The libjars file " + tmp + " is not on the local " +
+            "filesystem. It will not be added to the local classpath.");
+      }
+    }
+    return cp.toArray(new URL[0]);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/GenericOptionsParser, processGeneralOptions(Lorg/apache/commons/cli/CommandLine;)V > Context: Everywhere, blocks=[BB[SSA:136..136]49 - org.apache.hadoop.util.GenericOptionsParser.processGeneralOptions(Lorg/apache/commons/cli/CommandLine;)V, BB[SSA:134..135]48 - org.apache.hadoop.util.GenericOptionsParser.processGeneralOptions(Lorg/apache/commons/cli/CommandLine;)V, BB[SSA:137..140]50 - org.apache.hadoop.util.GenericOptionsParser.processGeneralOptions(Lorg/apache/commons/cli/CommandLine;)V, BB[SSA:-1..-2]104 - org.apache.hadoop.util.GenericOptionsParser.processGeneralOptions(Lorg/apache/commons/cli/CommandLine;)V], numberOfBasicBlocks=4, firstLineNumber=330, lastLineNumber=331, firstMethodNumber=293, lastMethodNumber=366, isFirstLineValid=true, methodSrcCode=
+  private void processGeneralOptions(CommandLine line) throws IOException {
+    if (line.hasOption("fs")) {
+      FileSystem.setDefaultUri(conf, line.getOptionValue("fs"));
+    }
+
+    if (line.hasOption("jt")) {
+      String optionValue = line.getOptionValue("jt");
+      if (optionValue.equalsIgnoreCase("local")) {
+        conf.set("mapreduce.framework.name", optionValue);
+      }
+
+      conf.set("yarn.resourcemanager.address", optionValue, 
+          "from -jt command line option");
+    }
+    if (line.hasOption("conf")) {
+      String[] values = line.getOptionValues("conf");
+      for(String value : values) {
+        conf.addResource(new Path(value));
+      }
+    }
+
+    if (line.hasOption('D')) {
+      String[] property = line.getOptionValues('D');
+      for(String prop : property) {
+        String[] keyval = prop.split("=", 2);
+        if (keyval.length == 2) {
+          conf.set(keyval[0], keyval[1], "from command line");
+        }
+      }
+    }
+
+    if (line.hasOption("libjars")) {
+      // for libjars, we allow expansion of wildcards
+      conf.set("tmpjars",
+               validateFiles(line.getOptionValue("libjars"), true),
+               "from -libjars command line option");
+      //setting libjars in client classpath
+      URL[] libjars = getLibJars(conf);
+      if(libjars!=null && libjars.length>0) {
+        conf.setClassLoader(new URLClassLoader(libjars, conf.getClassLoader()));
+        Thread.currentThread().setContextClassLoader(
+            new URLClassLoader(libjars, 
+                Thread.currentThread().getContextClassLoader()));
+      }
+    }
+    if (line.hasOption("files")) {
+      conf.set("tmpfiles", 
+               validateFiles(line.getOptionValue("files")),
+               "from -files command line option");
+    }
+    if (line.hasOption("archives")) {
+      conf.set("tmparchives", 
+                validateFiles(line.getOptionValue("archives")),
+                "from -archives command line option");
+    }
+    conf.setBoolean("mapreduce.client.genericoptionsparser.used", true);
+    
+    // tokensFile
+    if(line.hasOption("tokenCacheFile")) {
+      String fileName = line.getOptionValue("tokenCacheFile");
+      // check if the local file exists
+      FileSystem localFs = FileSystem.getLocal(conf);
+      Path p = localFs.makeQualified(new Path(fileName));
+      localFs.getFileStatus(p);
+      if(LOG.isDebugEnabled()) {
+        LOG.debug("setting conf tokensFile: " + fileName);
+      }
+      UserGroupInformation.getCurrentUser().addCredentials(
+          Credentials.readTokenStorageFile(p, conf));
+      conf.set("mapreduce.job.credentials.binary", p.toString(),
+               "from -tokenCacheFile command line option");
+
+    }
+  }
+  
+}

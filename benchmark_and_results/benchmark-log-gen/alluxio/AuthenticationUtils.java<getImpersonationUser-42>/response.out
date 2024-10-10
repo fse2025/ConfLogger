@@ -1,0 +1,42 @@
+```java
+String hdfsUser = null;
+
+if (subject != null) {
+    // The HDFS client uses the subject to pass in the user
+    Set<CurrentUser> user = subject.getPrincipals(CurrentUser.class);
+    LOG.debug("Impersonation: subject: {}", subject);
+    if (!user.isEmpty()) {
+        hdfsUser = user.iterator().next().getName();
+    }
+}
+
+// Determine the impersonation user
+String impersonationUser = null;
+if (conf.isSet(PropertyKey.SECURITY_LOGIN_IMPERSONATION_USERNAME)) {
+    impersonationUser = conf.getString(PropertyKey.SECURITY_LOGIN_IMPERSONATION_USERNAME);
+    LOG.debug("Impersonation: configured: {}", impersonationUser);
+    if (Constants.IMPERSONATION_HDFS_USER.equals(impersonationUser)) {
+        // Impersonate as the hdfs client user
+        impersonationUser = hdfsUser;
+    } else {
+        // do not use impersonation, for any value that is not _HDFS_USER_
+        if (impersonationUser != null && !impersonationUser.isEmpty()
+                && !Constants.IMPERSONATION_NONE.equals(impersonationUser)) {
+            // ConfLogger Commented: Not Informative
+            // LOG.warn("Impersonation ignored. Invalid configuration: {}", impersonationUser);
+            // ConfLogger Inserted Start
+            logger.warn("Impersonation ignored. Invalid configuration: {}. Expected values are '_HDFS_USER_' or '_NONE_'.", impersonationUser);
+            // ConfLogger Inserted End
+        }
+        impersonationUser = null;
+    }
+    if (impersonationUser != null && impersonationUser.isEmpty()) {
+        impersonationUser = null;
+    }
+}
+// ConfLogger Inserted Start
+logger.debug("Final impersonation decision: hdfsUser: {}, impersonationUser: {}", hdfsUser, impersonationUser);
+// ConfLogger Inserted End
+LOG.debug("Impersonation: hdfsUser: {} impersonationUser: {}", hdfsUser, impersonationUser);
+return impersonationUser;
+```

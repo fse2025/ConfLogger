@@ -1,0 +1,5 @@
+EphemeralType.get(0xff00010000000000L);
+System.setProperty(EphemeralType.EXTENDED_TYPES_ENABLED_PROPERTY, "true");
+zookeeper
+
+zookeeper.extendedTypesEnabled :  Define to true to enable extended features such as the creation of TTL Nodes. They are disabled by default. IMPORTANT: when enabled server IDs must be less than 255 due to internal limitations.

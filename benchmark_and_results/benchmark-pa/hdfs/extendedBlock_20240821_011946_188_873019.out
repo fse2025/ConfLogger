@@ -1,0 +1,73 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtilClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtilClient.checkRpcAuxiliary(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	500:530
+blockLines:	504:-1
+paras:	null
+TaintedStat:	NORMAL checkRpcAuxiliary:conditional branch(eq, to iindex=17) 9,10 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, checkRpcAuxiliary(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, checkRpcAuxiliary(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[8]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInts(Ljava/lang/String;)[I > 1,7 @11 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, checkRpcAuxiliary(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[8]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInts(Ljava/lang/String;)[I > 1,7 @11 exception:8
+NORMAL checkRpcAuxiliary:conditional branch(eq, to iindex=17) 9,10 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, checkRpcAuxiliary(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String address) {
+    String key = DFS_NAMENODE_RPC_ADDRESS_AUXILIARY_KEY;
+    key = addSuffix(key, suffix);
+    int[] ports = conf.getInts(key);
+    if (ports == null || ports.length == 0) {
+      return address;
+    }
+    LOG.info("Using server auxiliary ports " + Arrays.toString(ports));
+    URI uri;
+    try {
+      uri = new URI(address);
+    } catch (URISyntaxException e) {
+      // return the original address untouched if it is not a valid URI. This
+      // happens in unit test, as MiniDFSCluster sets the value to
+      // 127.0.0.1:0, without schema (i.e. "hdfs://"). While in practice, this
+      // should not be the case. So log a warning message here.
+      LOG.warn("NameNode address is not a valid uri:" + address);
+      return address;
+    }
+    // Ignore the port, only take the schema(e.g. hdfs) and host (e.g.
+    // localhost), then append port
+    // TODO : revisit if there is a better way
+    StringBuilder sb = new StringBuilder();
+    sb.append(uri.getScheme())
+        .append("://")
+        .append(uri.getHost())
+        .append(":");
+    // TODO : currently, only the very first auxiliary port is being used.
+    // But actually NN supports running multiple auxiliary
+    sb.append(ports[0]);
+    return sb.toString();
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, checkKeysAndProcess(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:51..54]15 - org.apache.hadoop.hdfs.DFSUtilClient.checkKeysAndProcess(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:49..50]14 - org.apache.hadoop.hdfs.DFSUtilClient.checkKeysAndProcess(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:55..56]16 - org.apache.hadoop.hdfs.DFSUtilClient.checkKeysAndProcess(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]19 - org.apache.hadoop.hdfs.DFSUtilClient.checkKeysAndProcess(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=481, lastLineNumber=482, firstMethodNumber=468, lastMethodNumber=486, isFirstLineValid=true, methodSrcCode=
+      Configuration conf, String... keys) {
+    String succeededKey = null;
+    String address = null;
+    for (String key : keys) {
+      address = getConfValue(null, suffix, conf, key);
+      if (address != null) {
+        succeededKey = key;
+        break;
+      }
+    }
+    String ret;
+    if (address == null) {
+      ret = defaultValue;
+    } else if(DFS_NAMENODE_RPC_ADDRESS_KEY.equals(succeededKey))  {
+      ret = checkRpcAuxiliary(conf, suffix, address);
+    } else {
+      ret = address;
+    }
+    return ret;
+  }
+}

@@ -1,0 +1,31 @@
+```java
+List<UnderFileSystemFactory> eligibleFactories =
+sRegistryInstance.findAllWithRecorder(path, ufsConf, recorder);
+if (eligibleFactories.isEmpty() && ufsConf.isSet(PropertyKey.UNDERFS_VERSION)) {
+    String configuredVersion = ufsConf.getString(PropertyKey.UNDERFS_VERSION);
+    List<String> supportedVersions = getSupportedVersions(path, ufsConf);
+    if (!supportedVersions.isEmpty()) {
+        String message = String.format(
+            "Versions [%s] are supported for path %s but you have configured version: %s",
+            StringUtils.join(supportedVersions, ","), path,
+            configuredVersion);
+        recorder.record(message);
+        LOG.warn(message); // ConfLogger Skipped
+    }
+} else if (ufsConf.getBoolean(PropertyKey.UNDERFS_STRICT_VERSION_MATCH_ENABLED)
+        && !eligibleFactories.isEmpty()
+        && ufsConf.isSet(PropertyKey.UNDERFS_VERSION)) {
+    String configuredVersion = ufsConf.getString(PropertyKey.UNDERFS_VERSION);
+    Iterator<UnderFileSystemFactory> it = eligibleFactories.iterator();
+    while (it.hasNext()) {
+        if (!configuredVersion.equals(it.next().getVersion())) {
+            // ConfLogger Inserted Start
+            logger.debug(String.format("Removing factory with version %s as it does not match the configured version: %s. Configuration Key: %s", it.next().getVersion(), configuredVersion, PropertyKey.UNDERFS_VERSION));
+            // ConfLogger Inserted End
+            it.remove();
+        }
+    }
+}
+return eligibleFactories;
+}
+```

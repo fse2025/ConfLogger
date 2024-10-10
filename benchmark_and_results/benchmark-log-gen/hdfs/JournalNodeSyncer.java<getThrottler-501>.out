@@ -1,0 +1,51 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JournalNodeSyncer.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.server.JournalNodeSyncer.getThrottler(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/util/DataTransferThrottler;	methodLines:	501:509
+blockLines:	506:-1
+paras:	dfs.edit.log.transfer.bandwidthPerSec
+TaintedStat:	NORMAL getThrottler:conditional branch(le, to iindex=17) 8,9 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getThrottler(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/util/DataTransferThrottler; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getThrottler(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/util/DataTransferThrottler; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 1,3,4 @4 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getThrottler(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/util/DataTransferThrottler; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 1,3,4 @4 exception:5
+NORMAL getThrottler:8 = compare 6,4 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getThrottler(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/util/DataTransferThrottler; > Context: Everywhere
+NORMAL getThrottler:conditional branch(le, to iindex=17) 8,9 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, getThrottler(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/util/DataTransferThrottler; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static DataTransferThrottler getThrottler(Configuration conf) {
+    long transferBandwidth =
+        conf.getLong(DFSConfigKeys.DFS_EDIT_LOG_TRANSFER_RATE_KEY,
+            DFSConfigKeys.DFS_EDIT_LOG_TRANSFER_RATE_DEFAULT);
+    DataTransferThrottler throttler = null;
+    if (transferBandwidth > 0) {
+      throttler = new DataTransferThrottler(transferBandwidth);
+    }
+    return throttler;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeSyncer, <init>(Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;Lorg/apache/hadoop/hdfs/qjournal/server/Journal;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:42..44]17 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeSyncer.<init>(Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;Lorg/apache/hadoop/hdfs/qjournal/server/Journal;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:41..41]16 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeSyncer.<init>(Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;Lorg/apache/hadoop/hdfs/qjournal/server/Journal;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:45..45]18 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeSyncer.<init>(Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;Lorg/apache/hadoop/hdfs/qjournal/server/Journal;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:-1..-2]23 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeSyncer.<init>(Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode;Lorg/apache/hadoop/hdfs/qjournal/server/Journal;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=98, lastLineNumber=101, firstMethodNumber=87, lastMethodNumber=104, isFirstLineValid=true, methodSrcCode=
+  JournalNodeSyncer(JournalNode jouranlNode, Journal journal, String jid,
+      Configuration conf, String nameServiceId) {
+    this.jn = jouranlNode;
+    this.journal = journal;
+    this.jid = jid;
+    this.nameServiceId = nameServiceId;
+    this.jnStorage = journal.getStorage();
+    this.conf = conf;
+    journalSyncInterval = conf.getLong(
+        DFSConfigKeys.DFS_JOURNALNODE_SYNC_INTERVAL_KEY,
+        DFSConfigKeys.DFS_JOURNALNODE_SYNC_INTERVAL_DEFAULT);
+    logSegmentTransferTimeout = conf.getInt(
+        DFSConfigKeys.DFS_EDIT_LOG_TRANSFER_TIMEOUT_KEY,
+        DFSConfigKeys.DFS_EDIT_LOG_TRANSFER_TIMEOUT_DEFAULT);
+    throttler = getThrottler(conf);
+    metrics = journal.getMetrics();
+    journalSyncerStarted = false;
+  }
+
+}

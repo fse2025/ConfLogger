@@ -1,0 +1,91 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RequestThrottler.java	methodSinagture:	org.apache.zookeeper.server.RequestThrottler.shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z	methodLines:	101:102
+blockLines:	104:-1
+paras:	null
+TaintedStat:	NORMAL shouldThrottleOp:conditional branch(le, to iindex=15) 13,7 Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z > Context: Everywhere[8]11 = invokestatic < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getThrottledOpWaitTime()I > @14 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z > Context: Everywhere[8]11 = invokestatic < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getThrottledOpWaitTime()I > @14 exception:10
+NORMAL shouldThrottleOp:12 = conversion(J) 11 Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z > Context: Everywhere
+NORMAL shouldThrottleOp:13 = compare 3,12 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z > Context: Everywhere
+NORMAL shouldThrottleOp:conditional branch(le, to iindex=15) 13,7 Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	RequestThrottler.java	methodSinagture:	org.apache.zookeeper.server.RequestThrottler.shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z	methodLines:	101:102
+blockLines:	103:-1
+paras:	null
+TaintedStat:	NORMAL shouldThrottleOp:conditional branch(le, to iindex=15) 9,7 Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z > Context: Everywhere[4]9 = invokestatic < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getThrottledOpWaitTime()I > @7 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z > Context: Everywhere[4]9 = invokestatic < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getThrottledOpWaitTime()I > @7 exception:8
+NORMAL shouldThrottleOp:conditional branch(le, to iindex=15) 9,7 Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, shouldThrottleOp(Lorg/apache/zookeeper/server/Request;J)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    protected boolean shouldThrottleOp(Request request, long elapsedTime) {
+        return request.isThrottlable()
+                && ZooKeeperServer.getThrottledOpWaitTime() > 0
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, run()V > Context: Everywhere, blocks=[BB[SSA:78..81]43 - org.apache.zookeeper.server.RequestThrottler.run()V, BB[SSA:76..77]42 - org.apache.zookeeper.server.RequestThrottler.run()V, BB[SSA:82..83]44 - org.apache.zookeeper.server.RequestThrottler.run()V, BB[SSA:-1..-2]58 - org.apache.zookeeper.server.RequestThrottler.run()V], numberOfBasicBlocks=4, firstLineNumber=183, lastLineNumber=184, firstMethodNumber=142, lastMethodNumber=196, isFirstLineValid=true, methodSrcCode=
+            while (true) {
+                if (killed) {
+                    break;
+                }
+
+                Request request = submittedRequests.take();
+                if (Request.requestOfDeath == request) {
+                    break;
+                }
+
+                if (request.mustDrop()) {
+                    continue;
+                }
+
+                // Throttling is disabled when maxRequests = 0
+                if (maxRequests > 0) {
+                    while (!killed) {
+                        if (dropStaleRequests && request.isStale()) {
+                            // Note: this will close the connection
+                            dropRequest(request);
+                            ServerMetrics.getMetrics().STALE_REQUESTS_DROPPED.add(1);
+                            request = null;
+                            break;
+                        }
+                        if (zks.getInProcess() < maxRequests) {
+                            break;
+                        }
+                        throttleSleep(stallTime);
+                    }
+                }
+
+                if (killed) {
+                    break;
+                }
+
+                // A dropped stale request will be null
+                if (request != null) {
+                    if (request.isStale()) {
+                        ServerMetrics.getMetrics().STALE_REQUESTS.add(1);
+                    }
+                    final long elapsedTime = Time.currentElapsedTime() - request.requestThrottleQueueTime;
+                    ServerMetrics.getMetrics().REQUEST_THROTTLE_QUEUE_TIME.add(elapsedTime);
+                    if (shouldThrottleOp(request, elapsedTime)) {
+                      request.setIsThrottled(true);
+                      ServerMetrics.getMetrics().THROTTLED_OPS.add(1);
+                    }
+                    zks.submitRequestNow(request);
+                }
+            }
+        } catch (InterruptedException e) {
+            LOG.error("Unexpected interruption", e);
+        }
+        int dropped = drainQueue();
+        LOG.info("RequestThrottler shutdown. Dropped {} requests", dropped);
+    }
+
+}

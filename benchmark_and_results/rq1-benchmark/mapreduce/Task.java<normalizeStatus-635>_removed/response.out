@@ -1,0 +1,18 @@
+```java
+// and truncate it if needed.
+int progressStatusLength = conf.getInt(
+MRConfig.PROGRESS_STATUS_LEN_LIMIT_KEY,
+MRConfig.PROGRESS_STATUS_LEN_LIMIT_DEFAULT);
+if (status.length() > progressStatusLength) {
+    // ConfLogger Inserted Start
+    logger.info("Truncating status to comply with the configured length limit. " +
+                "Original status length: " + status.length() + 
+                ", Configured limit: " + progressStatusLength + 
+                " (Parameter: " + MRConfig.PROGRESS_STATUS_LEN_LIMIT_KEY + "). " +
+                "Ensure the configuration parameter is set appropriately to avoid truncation.");
+    // ConfLogger Inserted End
+    status = status.substring(0, progressStatusLength);
+}
+return status;
+}
+```

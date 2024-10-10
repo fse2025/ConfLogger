@@ -1,0 +1,48 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	KMSUtil.java	methodSinagture:	org.apache.hadoop.util.KMSUtil.toJSON(Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;)Ljava/util/Map;	methodLines:	96:107
+blockLines:	98:-1
+paras:	null
+TaintedStat:	NORMAL toJSON:conditional branch(eq, to iindex=26) 1,5 Node: < Application, Lorg/apache/hadoop/util/KMSUtil, toJSON(Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;)Ljava/util/Map; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/KMSUtil, toJSON(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Ljava/util/Map; > Context: Everywhere[23]20 = invokevirtual < Application, Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion, getEncryptedKeyVersion()Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion; > 1 @45 exception:19
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/KMSUtil, toJSON(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Ljava/util/Map; > Context: Everywhere[23]20 = invokevirtual < Application, Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion, getEncryptedKeyVersion()Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion; > 1 @45 exception:19
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/util/KMSUtil, toJSON(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Ljava/util/Map; > Context: Everywhere[24]22 = invokestatic < Application, Lorg/apache/hadoop/util/KMSUtil, toJSON(Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;)Ljava/util/Map; > 20 @48 exception:21 v20
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/KMSUtil, toJSON(Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;)Ljava/util/Map; > Context: Everywhere v1
+NORMAL toJSON:conditional branch(eq, to iindex=26) 1,5 Node: < Application, Lorg/apache/hadoop/util/KMSUtil, toJSON(Lorg/apache/hadoop/crypto/key/KeyProvider$KeyVersion;)Ljava/util/Map; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static Map toJSON(KeyProvider.KeyVersion keyVersion) {
+    Map json = new HashMap();
+    if (keyVersion != null) {
+      json.put(KMSRESTConstants.NAME_FIELD,
+          keyVersion.getName());
+      json.put(KMSRESTConstants.VERSION_NAME_FIELD,
+          keyVersion.getVersionName());
+      json.put(KMSRESTConstants.MATERIAL_FIELD,
+          Base64.encodeBase64URLSafeString(
+              keyVersion.getMaterial()));
+    }
+    return json;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/KMSUtil, toJSON(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:24..24]10 - org.apache.hadoop.util.KMSUtil.toJSON(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Ljava/util/Map;, BB[SSA:19..23]9 - org.apache.hadoop.util.KMSUtil.toJSON(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Ljava/util/Map;, BB[SSA:25..25]11 - org.apache.hadoop.util.KMSUtil.toJSON(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Ljava/util/Map;, BB[SSA:-1..-2]14 - org.apache.hadoop.util.KMSUtil.toJSON(Lorg/apache/hadoop/crypto/key/KeyProviderCryptoExtension$EncryptedKeyVersion;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=116, lastLineNumber=118, firstMethodNumber=111, lastMethodNumber=121, isFirstLineValid=true, methodSrcCode=
+  public static Map toJSON(EncryptedKeyVersion encryptedKeyVersion) {
+    Map json = new HashMap();
+    if (encryptedKeyVersion != null) {
+      json.put(KMSRESTConstants.VERSION_NAME_FIELD,
+          encryptedKeyVersion.getEncryptionKeyVersionName());
+      json.put(KMSRESTConstants.IV_FIELD, Base64
+          .encodeBase64URLSafeString(encryptedKeyVersion.getEncryptedKeyIv()));
+      json.put(KMSRESTConstants.ENCRYPTED_KEY_VERSION_FIELD,
+          toJSON(encryptedKeyVersion.getEncryptedKeyVersion()));
+    }
+    return json;
+  }
+}

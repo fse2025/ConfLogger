@@ -1,0 +1,1288 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ObjectReader.java	methodSinagture:	org.apache.storm.utils.ObjectReader.getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer;	methodLines:	80:98
+blockLines:	81:-1
+paras:	supervisor.worker.timeout.secs
+TaintedStat:	NORMAL getInt:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, <init>(Lorg/apache/storm/localizer/AsyncLocalizer;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;Ljava/lang/String;ILorg/apache/storm/utils/LocalState;Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/scheduler/ISupervisor;Ljava/util/concurrent/atomic/AtomicReference;Lorg/apache/storm/daemon/supervisor/OnlyLatestExecutor;Lorg/apache/storm/metricstore/WorkerMetricsProcessor;Lorg/apache/storm/daemon/supervisor/SlotMetrics;)V > Context: Everywhere[40]30 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 3,28 @83 exception:29
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, <init>(Lorg/apache/storm/localizer/AsyncLocalizer;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;Ljava/lang/String;ILorg/apache/storm/utils/LocalState;Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/scheduler/ISupervisor;Ljava/util/concurrent/atomic/AtomicReference;Lorg/apache/storm/daemon/supervisor/OnlyLatestExecutor;Lorg/apache/storm/metricstore/WorkerMetricsProcessor;Lorg/apache/storm/daemon/supervisor/SlotMetrics;)V > Context: Everywhere[40]30 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 3,28 @83 exception:29
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, <init>(Lorg/apache/storm/localizer/AsyncLocalizer;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;Ljava/lang/String;ILorg/apache/storm/utils/LocalState;Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/scheduler/ISupervisor;Ljava/util/concurrent/atomic/AtomicReference;Lorg/apache/storm/daemon/supervisor/OnlyLatestExecutor;Lorg/apache/storm/metricstore/WorkerMetricsProcessor;Lorg/apache/storm/daemon/supervisor/SlotMetrics;)V > Context: Everywhere[41]32 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > 30 @88 exception:31 v30
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ObjectReader.java	methodSinagture:	org.apache.storm.utils.ObjectReader.getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer;	methodLines:	80:98
+blockLines:	91:-1
+paras:	supervisor.blobstore.download.thread.count
+TaintedStat:	NORMAL getInt:conditional branch(gt, to iindex=44) 20,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/localizer/AsyncLocalizer, <init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere[96]70 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,68 @212 exception:69
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/localizer/AsyncLocalizer, <init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere[96]70 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,68 @212 exception:69
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/localizer/AsyncLocalizer, <init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere[99]75 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 70,73 @221 exception:74 v70
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:9 = instanceof 1 <Application,Ljava/lang/Long> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:conditional branch(eq, to iindex=45) 9,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:conditional branch(gt, to iindex=44) 20,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ObjectReader.java	methodSinagture:	org.apache.storm.utils.ObjectReader.getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer;	methodLines:	80:98
+blockLines:	85:-1
+paras:	supervisor.worker.start.timeout.secs
+TaintedStat:	NORMAL getInt:conditional branch(eq, to iindex=22) 8,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, <init>(Lorg/apache/storm/localizer/AsyncLocalizer;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;Ljava/lang/String;ILorg/apache/storm/utils/LocalState;Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/scheduler/ISupervisor;Ljava/util/concurrent/atomic/AtomicReference;Lorg/apache/storm/daemon/supervisor/OnlyLatestExecutor;Lorg/apache/storm/metricstore/WorkerMetricsProcessor;Lorg/apache/storm/daemon/supervisor/SlotMetrics;)V > Context: Everywhere[48]40 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 3,38 @102 exception:39
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, <init>(Lorg/apache/storm/localizer/AsyncLocalizer;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;Ljava/lang/String;ILorg/apache/storm/utils/LocalState;Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/scheduler/ISupervisor;Ljava/util/concurrent/atomic/AtomicReference;Lorg/apache/storm/daemon/supervisor/OnlyLatestExecutor;Lorg/apache/storm/metricstore/WorkerMetricsProcessor;Lorg/apache/storm/daemon/supervisor/SlotMetrics;)V > Context: Everywhere[48]40 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 3,38 @102 exception:39
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Slot, <init>(Lorg/apache/storm/localizer/AsyncLocalizer;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/ContainerLauncher;Ljava/lang/String;ILorg/apache/storm/utils/LocalState;Lorg/apache/storm/cluster/IStormClusterState;Lorg/apache/storm/scheduler/ISupervisor;Ljava/util/concurrent/atomic/AtomicReference;Lorg/apache/storm/daemon/supervisor/OnlyLatestExecutor;Lorg/apache/storm/metricstore/WorkerMetricsProcessor;Lorg/apache/storm/daemon/supervisor/SlotMetrics;)V > Context: Everywhere[49]42 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > 40 @107 exception:41 v40
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:8 = instanceof 1 <Application,Ljava/lang/Byte> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:conditional branch(eq, to iindex=22) 8,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ObjectReader.java	methodSinagture:	org.apache.storm.utils.ObjectReader.getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer;	methodLines:	80:98
+blockLines:	94:-1
+paras:	num.stat.buckets
+TaintedStat:	NORMAL getInt:conditional branch(eq, to iindex=54) 10,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/executor/bolt/BoltExecutor, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;)V > Context: Everywhere[66]51 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 48,49 @151 exception:50
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/executor/bolt/BoltExecutor, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;)V > Context: Everywhere[66]51 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 48,49 @151 exception:50
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/executor/bolt/BoltExecutor, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;)V > Context: Everywhere[67]53 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > 51 @156 exception:52 v51
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:10 = instanceof 1 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:conditional branch(eq, to iindex=54) 10,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ObjectReader.java	methodSinagture:	org.apache.storm.utils.ObjectReader.getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer;	methodLines:	80:98
+blockLines:	89:-1
+paras:	nimbus.blobstore.expiration.secs
+TaintedStat:	NORMAL getInt:conditional branch(eq, to iindex=45) 9,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, makeBlobCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap; > Context: Everywhere[4]6 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,4 @8 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, makeBlobCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap; > Context: Everywhere[4]6 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,4 @8 exception:5
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, makeBlobCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap; > Context: Everywhere[7]11 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 6,9 @19 exception:10 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:9 = instanceof 1 <Application,Ljava/lang/Long> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:conditional branch(eq, to iindex=45) 9,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static Integer getInt(Object o, Integer defaultValue) {
+        if (null == o) {
+            return defaultValue;
+        }
+
+        if (o instanceof Integer
+                || o instanceof Short
+                || o instanceof Byte) {
+            return ((Number) o).intValue();
+        } else if (o instanceof Long) {
+            final long l = (Long) o;
+            if (l <= Integer.MAX_VALUE && l >= Integer.MIN_VALUE) {
+                return (int) l;
+            }
+        } else if (o instanceof String) {
+            return Integer.parseInt((String) o);
+        }
+
+        throw new IllegalArgumentException("Don't know how to convert " + o + " to int");
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/blobstore/NimbusBlobStore, setClient(Ljava/util/Map;Lorg/apache/storm/utils/NimbusClient;)Z > Context: Everywhere, blocks=[BB[SSA:20..20]10 - org.apache.storm.blobstore.NimbusBlobStore.setClient(Ljava/util/Map;Lorg/apache/storm/utils/NimbusClient;)Z, BB[SSA:19..19]9 - org.apache.storm.blobstore.NimbusBlobStore.setClient(Ljava/util/Map;Lorg/apache/storm/utils/NimbusClient;)Z, BB[SSA:21..21]11 - org.apache.storm.blobstore.NimbusBlobStore.setClient(Ljava/util/Map;Lorg/apache/storm/utils/NimbusClient;)Z, BB[SSA:-1..-2]14 - org.apache.storm.blobstore.NimbusBlobStore.setClient(Ljava/util/Map;Lorg/apache/storm/utils/NimbusClient;)Z], numberOfBasicBlocks=4, firstLineNumber=196, lastLineNumber=196, firstMethodNumber=190, lastMethodNumber=198, isFirstLineValid=true, methodSrcCode=
+    public boolean setClient(Map<String, Object> conf, NimbusClient client) {
+        if (this.client != null) {
+            this.client.close();
+        }
+        this.client = client;
+        if (conf != null) {
+            this.bufferSize = ObjectReader.getInt(conf.get(Config.STORM_BLOBSTORE_INPUTSTREAM_BUFFER_SIZE_BYTES), bufferSize);
+        }
+        return true;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, makeBlobListCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap; > Context: Everywhere, blocks=[BB[SSA:7..7]4 - org.apache.storm.daemon.nimbus.Nimbus.makeBlobListCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;, BB[SSA:5..6]3 - org.apache.storm.daemon.nimbus.Nimbus.makeBlobListCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;, BB[SSA:8..8]5 - org.apache.storm.daemon.nimbus.Nimbus.makeBlobListCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;, BB[SSA:-1..-2]8 - org.apache.storm.daemon.nimbus.Nimbus.makeBlobListCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;], numberOfBasicBlocks=4, firstLineNumber=714, lastLineNumber=714, firstMethodNumber=713, lastMethodNumber=714, isFirstLineValid=true, methodSrcCode=
+    private static TimeCacheMap<String, Iterator<String>> makeBlobListCacheMap(Map<String, Object> conf) {
+        return new TimeCacheMap<>(ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_BLOBSTORE_EXPIRATION_SECS), 600));
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/spout/SpoutExecutor, getSpoutRecvqCheckSkipCount()I > Context: Everywhere, blocks=[BB[SSA:12..12]7 - org.apache.storm.executor.spout.SpoutExecutor.getSpoutRecvqCheckSkipCount()I, BB[SSA:10..11]6 - org.apache.storm.executor.spout.SpoutExecutor.getSpoutRecvqCheckSkipCount()I, BB[SSA:13..13]8 - org.apache.storm.executor.spout.SpoutExecutor.getSpoutRecvqCheckSkipCount()I, BB[SSA:-1..-2]10 - org.apache.storm.executor.spout.SpoutExecutor.getSpoutRecvqCheckSkipCount()I], numberOfBasicBlocks=4, firstLineNumber=368, lastLineNumber=368, firstMethodNumber=364, lastMethodNumber=368, isFirstLineValid=true, methodSrcCode=
+    public int getSpoutRecvqCheckSkipCount() {
+        if (ackingEnabled) {
+            return 0; // always check recQ if ACKing enabled
+        }
+        return ObjectReader.getInt(conf.get(Config.TOPOLOGY_SPOUT_RECVQ_SKIPS), 0);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/metrics2/reporters/ScheduledStormReporter, getReportPeriod(Ljava/util/Map;)J > Context: Everywhere, blocks=[BB[SSA:5..5]3 - org.apache.storm.metrics2.reporters.ScheduledStormReporter.getReportPeriod(Ljava/util/Map;)J, BB[SSA:3..4]2 - org.apache.storm.metrics2.reporters.ScheduledStormReporter.getReportPeriod(Ljava/util/Map;)J, BB[SSA:6..6]4 - org.apache.storm.metrics2.reporters.ScheduledStormReporter.getReportPeriod(Ljava/util/Map;)J, BB[SSA:-1..-2]6 - org.apache.storm.metrics2.reporters.ScheduledStormReporter.getReportPeriod(Ljava/util/Map;)J], numberOfBasicBlocks=4, firstLineNumber=37, lastLineNumber=37, firstMethodNumber=36, lastMethodNumber=37, isFirstLineValid=true, methodSrcCode=
+    public static long getReportPeriod(Map<String, Object> reporterConf) {
+        return ObjectReader.getInt(reporterConf.get(REPORT_PERIOD), 10).longValue();
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/TopologyDetails, initConfigs()V > Context: Everywhere, blocks=[BB[SSA:13..14]7 - org.apache.storm.scheduler.TopologyDetails.initConfigs()V, BB[SSA:11..12]6 - org.apache.storm.scheduler.TopologyDetails.initConfigs()V, BB[SSA:15..15]8 - org.apache.storm.scheduler.TopologyDetails.initConfigs()V, BB[SSA:-1..-2]10 - org.apache.storm.scheduler.TopologyDetails.initConfigs()V], numberOfBasicBlocks=4, firstLineNumber=556, lastLineNumber=557, firstMethodNumber=552, lastMethodNumber=566, isFirstLineValid=true, methodSrcCode=
+    private void initConfigs() {
+        this.topologyWorkerMaxHeapSize =
+            ObjectReader.getDouble(
+                topologyConf.get(Config.TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB), null);
+        this.topologyPriority =
+            ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_PRIORITY), null);
+
+        // Fails in storm-core: org.apache.storm.scheduler-test / testname: test-cluster
+        //if (this.topologyWorkerMaxHeapSize == null) {
+        //    throw new AssertionError("topologyWorkerMaxHeapSize is null");
+        //}
+        //if (this.topologyPriority == null) {
+        //    throw new AssertionError("topologyPriority is null");
+        //}
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo; > Context: Everywhere, blocks=[BB[SSA:27..27]12 - org.apache.storm.nimbus.NimbusInfo.fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo;, BB[SSA:25..26]11 - org.apache.storm.nimbus.NimbusInfo.fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo;, BB[SSA:28..28]13 - org.apache.storm.nimbus.NimbusInfo.fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo;, BB[SSA:-1..-2]20 - org.apache.storm.nimbus.NimbusInfo.fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo;], numberOfBasicBlocks=4, firstLineNumber=64, lastLineNumber=64, firstMethodNumber=55, lastMethodNumber=68, isFirstLineValid=true, methodSrcCode=
+        try {
+            String host = InetAddress.getLocalHost().getCanonicalHostName();
+            if (conf.containsKey(Config.STORM_LOCAL_HOSTNAME)) {
+                host = (String) conf.get(Config.STORM_LOCAL_HOSTNAME);
+                LOG.info("Overriding nimbus host to storm.local.hostname -> {}", host);
+            } else {
+                LOG.info("Nimbus figures out its name to {}", host);
+            }
+
+            int port = ObjectReader.getInt(conf.get(Config.NIMBUS_THRIFT_PORT), 6627);
+            return new NimbusInfo(host, port, false);
+
+        } catch (UnknownHostException e) {
+            throw new RuntimeException("Something wrong with network/dns config, host cant figure out its name", e);
+        }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/nimbus/AssignmentDistributionService, prepare(Ljava/util/Map;Lorg/apache/storm/scheduler/INodeAssignmentSentCallBack;)V > Context: Everywhere, blocks=[BB[SSA:18..18]8 - org.apache.storm.nimbus.AssignmentDistributionService.prepare(Ljava/util/Map;Lorg/apache/storm/scheduler/INodeAssignmentSentCallBack;)V, BB[SSA:16..17]7 - org.apache.storm.nimbus.AssignmentDistributionService.prepare(Ljava/util/Map;Lorg/apache/storm/scheduler/INodeAssignmentSentCallBack;)V, BB[SSA:19..19]9 - org.apache.storm.nimbus.AssignmentDistributionService.prepare(Ljava/util/Map;Lorg/apache/storm/scheduler/INodeAssignmentSentCallBack;)V, BB[SSA:-1..-2]49 - org.apache.storm.nimbus.AssignmentDistributionService.prepare(Ljava/util/Map;Lorg/apache/storm/scheduler/INodeAssignmentSentCallBack;)V, BB[SSA:27..27]13 - org.apache.storm.nimbus.AssignmentDistributionService.prepare(Ljava/util/Map;Lorg/apache/storm/scheduler/INodeAssignmentSentCallBack;)V, BB[SSA:25..26]12 - org.apache.storm.nimbus.AssignmentDistributionService.prepare(Ljava/util/Map;Lorg/apache/storm/scheduler/INodeAssignmentSentCallBack;)V, BB[SSA:28..28]14 - org.apache.storm.nimbus.AssignmentDistributionService.prepare(Ljava/util/Map;Lorg/apache/storm/scheduler/INodeAssignmentSentCallBack;)V, BB[SSA:-1..-2]49 - org.apache.storm.nimbus.AssignmentDistributionService.prepare(Ljava/util/Map;Lorg/apache/storm/scheduler/INodeAssignmentSentCallBack;)V], numberOfBasicBlocks=8, firstLineNumber=117, lastLineNumber=117, firstMethodNumber=111, lastMethodNumber=135, isFirstLineValid=true, methodSrcCode=
+    public void prepare(Map conf, INodeAssignmentSentCallBack callBack) {
+        this.conf = conf;
+        this.sendAssignmentCallback = callBack;
+        this.random = new Random(47);
+
+        this.threadsNum = ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_ASSIGNMENTS_SERVICE_THREADS), 10);
+        this.queueSize = ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_ASSIGNMENTS_SERVICE_THREAD_QUEUE_SIZE), 100);
+
+        this.assignmentsQueue = new HashMap<>();
+        for (int i = 0; i < threadsNum; i++) {
+            this.assignmentsQueue.put(i, new LinkedBlockingQueue<NodeAssignments>(queueSize));
+        }
+        //start the thread pool
+        this.service = Executors.newFixedThreadPool(threadsNum);
+        this.active = true;
+        //start the threads
+        for (int i = 0; i < threadsNum; i++) {
+            this.service.submit(new DistributeTask(this, i));
+        }
+        // for local cluster
+        localSupervisors = new HashMap<>();
+        if (ConfigUtils.isLocalMode(conf)) {
+            isLocalMode = true;
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/task/GeneralTopologyContext, maxTopologyMessageTimeout()I > Context: Everywhere, blocks=[BB[SSA:37..40]19 - org.apache.storm.task.GeneralTopologyContext.maxTopologyMessageTimeout()I, BB[SSA:33..36]18 - org.apache.storm.task.GeneralTopologyContext.maxTopologyMessageTimeout()I, BB[SSA:41..41]20 - org.apache.storm.task.GeneralTopologyContext.maxTopologyMessageTimeout()I, BB[SSA:-1..-2]31 - org.apache.storm.task.GeneralTopologyContext.maxTopologyMessageTimeout()I], numberOfBasicBlocks=4, firstLineNumber=199, lastLineNumber=201, firstMethodNumber=192, lastMethodNumber=207, isFirstLineValid=true, methodSrcCode=
+    public int maxTopologyMessageTimeout() {
+        Integer max = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS));
+        for (String spout : getRawTopology().get_spouts().keySet()) {
+            ComponentCommon common = getComponentCommon(spout);
+            String jsonConf = common.get_json_conf();
+            if (jsonConf != null) {
+                try {
+                    Map<String, Object> conf = (Map) JSONValue.parseWithException(jsonConf);
+                    Object comp = conf.get(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS);
+                    max = Math.max(ObjectReader.getInt(comp, max), max);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return max;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, fileCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap; > Context: Everywhere, blocks=[BB[SSA:7..7]4 - org.apache.storm.daemon.nimbus.Nimbus.fileCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;, BB[SSA:5..6]3 - org.apache.storm.daemon.nimbus.Nimbus.fileCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;, BB[SSA:8..8]5 - org.apache.storm.daemon.nimbus.Nimbus.fileCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;, BB[SSA:-1..-2]9 - org.apache.storm.daemon.nimbus.Nimbus.fileCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;], numberOfBasicBlocks=4, firstLineNumber=640, lastLineNumber=640, firstMethodNumber=639, lastMethodNumber=640, isFirstLineValid=true, methodSrcCode=
+    private static <T extends AutoCloseable> TimeCacheMap<String, T> fileCacheMap(Map<String, Object> conf) {
+        return new TimeCacheMap<>(ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_FILE_COPY_EXPIRATION_SECS), 600),
+            (id, stream) -> {
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/Executor, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:262..262]144 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:260..261]143 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:263..263]145 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:-1..-2]147 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=191, lastLineNumber=192, firstMethodNumber=134, lastMethodNumber=192, isFirstLineValid=true, methodSrcCode=
+
+    protected Executor(WorkerState workerData, List<Long> executorId, Map<String, String> credentials, String type) {
+        this.workerData = workerData;
+        this.executorId = executorId;
+        this.type = type;
+        this.workerTopologyContext = workerData.getWorkerTopologyContext();
+        this.taskIds = StormCommon.executorIdToTasks(executorId);
+        this.componentId = workerTopologyContext.getComponentId(taskIds.get(0));
+        this.openOrPrepareWasCalled = new AtomicBoolean(false);
+        this.topoConf = normalizedComponentConf(workerData.getTopologyConf(), workerTopologyContext, componentId);
+        this.receiveQueue = (workerData.getExecutorReceiveQueueMap().get(executorId));
+        this.stormId = workerData.getTopologyId();
+        this.conf = workerData.getConf();
+        this.sharedExecutorData = new HashMap();
+        this.workerReady = workerData.getIsWorkerActive();
+        this.stormActive = workerData.getIsTopologyActive();
+        this.stormComponentDebug = workerData.getStormComponentToDebug();
+
+        this.executorTransfer = new ExecutorTransfer(workerData, topoConf);
+
+        this.suicideFn = workerData.getSuicideCallback();
+        try {
+            this.stormClusterState = ClusterUtils.mkStormClusterState(workerData.getStateStorage(),
+                                                                      new ClusterStateContext(DaemonType.WORKER, topoConf));
+        } catch (Exception e) {
+            throw Utils.wrapInRuntime(e);
+        }
+
+        this.intervalToTaskToMetricToRegistry = new HashMap<>();
+        this.taskToComponent = workerData.getTaskToComponent();
+        this.streamToComponentToGrouper = outboundComponents(workerTopologyContext, componentId, topoConf);
+        if (this.streamToComponentToGrouper != null) {
+            this.groupers = streamToComponentToGrouper.values().stream()
+                                                      .filter(Objects::nonNull)
+                                                      .flatMap(m -> m.values().stream()).collect(Collectors.toList());
+        } else {
+            this.groupers = Collections.emptyList();
+        }
+        this.reportError = new ReportError(topoConf, stormClusterState, stormId, componentId, workerTopologyContext);
+        this.reportErrorDie = new ReportErrorAndDie(reportError, suicideFn);
+        this.sampler = ConfigUtils.mkStatsSampler(topoConf);
+        this.isDebug = ObjectReader.getBoolean(topoConf.get(Config.TOPOLOGY_DEBUG), false);
+        this.rand = new Random(Utils.secureRandomLong());
+        this.credentials = credentials;
+        this.hasEventLoggers = StormCommon.hasEventLoggers(topoConf);
+        this.ackingEnabled = StormCommon.hasAckers(topoConf);
+
+        try {
+            this.hostname = Utils.hostname();
+        } catch (UnknownHostException ignored) {
+            this.hostname = "";
+        }
+        flushTuple = AddressedTuple.createFlushTuple(workerTopologyContext);
+        this.reportedErrorCount = workerData.getMetricRegistry().rateCounter("__reported-error-count", componentId,
+                taskIds.get(0));
+
+        enableV2MetricsDataPoints = ObjectReader.getBoolean(topoConf.get(Config.TOPOLOGY_ENABLE_V2_METRICS_TICK), false);
+        v2MetricsTickInterval = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_V2_METRICS_TICK_INTERVAL_SECONDS), 60);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/nimbus/TimeOutWorkerHeartbeatsRecoveryStrategy, prepare(Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:5..5]3 - org.apache.storm.nimbus.TimeOutWorkerHeartbeatsRecoveryStrategy.prepare(Ljava/util/Map;)V, BB[SSA:3..4]2 - org.apache.storm.nimbus.TimeOutWorkerHeartbeatsRecoveryStrategy.prepare(Ljava/util/Map;)V, BB[SSA:6..6]4 - org.apache.storm.nimbus.TimeOutWorkerHeartbeatsRecoveryStrategy.prepare(Ljava/util/Map;)V, BB[SSA:-1..-2]12 - org.apache.storm.nimbus.TimeOutWorkerHeartbeatsRecoveryStrategy.prepare(Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=48, lastLineNumber=48, firstMethodNumber=47, lastMethodNumber=51, isFirstLineValid=true, methodSrcCode=
+    public void prepare(Map conf) {
+        NODE_MAX_TIMEOUT_SECS = ObjectReader.getInt(conf.get(Config.SUPERVISOR_WORKER_HEARTBEATS_MAX_TIMEOUT_SECS), 600);
+        this.startTimeSecs = new AtomicLong(0L);
+        this.reportedIds = new HashSet<>();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set; > Context: Everywhere, blocks=[BB[SSA:9..9]5 - org.apache.storm.daemon.nimbus.Nimbus.getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set;, BB[SSA:7..8]4 - org.apache.storm.daemon.nimbus.Nimbus.getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set;, BB[SSA:10..10]6 - org.apache.storm.daemon.nimbus.Nimbus.getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set;, BB[SSA:-1..-2]22 - org.apache.storm.daemon.nimbus.Nimbus.getExpiredTopologyIds(Ljava/util/Set;Ljava/util/Map;)Ljava/util/Set;], numberOfBasicBlocks=4, firstLineNumber=1072, lastLineNumber=1071, firstMethodNumber=1069, lastMethodNumber=1081, isFirstLineValid=true, methodSrcCode=
+    static Set<String> getExpiredTopologyIds(Set<String> toposToClean, Map<String, Object> conf) {
+        Set<String> idleTopologies = new HashSet<>();
+        long topologyDeletionDelay = ObjectReader.getInt(
+                conf.get(DaemonConfig.NIMBUS_TOPOLOGY_BLOBSTORE_DELETION_DELAY_MS), 5 * 60 * 1000);
+        for (String topologyId : toposToClean) {
+            if (Math.max(0, Time.currentTimeMillis() - getTopologyCleanupDetectedTime(topologyId)) >= topologyDeletionDelay) {
+                idleTopologies.add(topologyId);
+            }
+        }
+
+        rotateTopologyCleanupMap(topologyDeletionDelay);
+
+        return idleTopologies;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ServerUtils, getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I > Context: Everywhere, blocks=[BB[SSA:11..11]6 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I, BB[SSA:10..10]5 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I, BB[SSA:12..12]7 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I, BB[SSA:-1..-2]15 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I, BB[SSA:17..18]9 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I, BB[SSA:13..16]8 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I, BB[SSA:19..24]10 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I, BB[SSA:-1..-2]15 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I], numberOfBasicBlocks=8, firstLineNumber=726, lastLineNumber=729, firstMethodNumber=724, lastMethodNumber=732, isFirstLineValid=true, methodSrcCode=
+    public static int getComponentParallelism(Map<String, Object> topoConf, Object component) throws InvalidTopologyException {
+        Map<String, Object> combinedConf = Utils.merge(topoConf, StormCommon.componentConf(component));
+        int numTasks = ObjectReader.getInt(combinedConf.get(Config.TOPOLOGY_TASKS), StormCommon.numStartExecutors(component));
+        Integer maxParallel = ObjectReader.getInt(combinedConf.get(Config.TOPOLOGY_MAX_TASK_PARALLELISM), null);
+        int ret = numTasks;
+        if (maxParallel != null) {
+            ret = Math.min(maxParallel, numTasks);
+        }
+        return ret;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/container/oci/RuncLibContainerManager, prepare(Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:33..33]16 - org.apache.storm.container.oci.RuncLibContainerManager.prepare(Ljava/util/Map;)V, BB[SSA:31..32]15 - org.apache.storm.container.oci.RuncLibContainerManager.prepare(Ljava/util/Map;)V, BB[SSA:34..34]17 - org.apache.storm.container.oci.RuncLibContainerManager.prepare(Ljava/util/Map;)V, BB[SSA:-1..-2]44 - org.apache.storm.container.oci.RuncLibContainerManager.prepare(Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=109, lastLineNumber=108, firstMethodNumber=96, lastMethodNumber=132, isFirstLineValid=true, methodSrcCode=
+    public void prepare(Map<String, Object> conf) throws IOException {
+        super.prepare(conf);
+
+        imageTagToManifestPlugin = chooseImageTagToManifestPlugin();
+        imageTagToManifestPlugin.init(conf);
+
+        manifestToResourcesPlugin = chooseManifestToResourcesPlugin();
+        manifestToResourcesPlugin.init(conf);
+
+        ociResourcesLocalizer = chooseOciResourcesLocalizer();
+        ociResourcesLocalizer.init(conf);
+
+        layersToKeep = ObjectReader.getInt(
+                conf.get(DaemonConfig.STORM_OCI_LAYER_MOUNTS_TO_KEEP),
+                100
+        );
+
+        mapper = new ObjectMapper();
+
+        if (seccompJsonFile != null) {
+            seccomp = new String(Files.readAllBytes(Paths.get(seccompJsonFile)));
+        }
+
+        if (checkContainerAliveTimer == null) {
+            checkContainerAliveTimer =
+                new StormTimer("CheckRuncContainerAlive", Utils.createDefaultUncaughtExceptionHandler());
+            checkContainerAliveTimer
+                .scheduleRecurring(0, (Integer) conf.get(DaemonConfig.SUPERVISOR_MONITOR_FREQUENCY_SECS), () -> {
+                    try {
+                        checkContainersAlive();
+                    } catch (Exception e) {
+                        //Ignore
+                        LOG.warn("The CheckRuncContainerAlive thread has exception. Ignored", e);
+                    }
+                });
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/DRPCClient, getConfiguredClient(Ljava/util/Map;)Lorg/apache/storm/utils/DRPCClient; > Context: Everywhere, blocks=[BB[SSA:23..23]11 - org.apache.storm.utils.DRPCClient.getConfiguredClient(Ljava/util/Map;)Lorg/apache/storm/utils/DRPCClient;, BB[SSA:21..22]10 - org.apache.storm.utils.DRPCClient.getConfiguredClient(Ljava/util/Map;)Lorg/apache/storm/utils/DRPCClient;, BB[SSA:24..24]12 - org.apache.storm.utils.DRPCClient.getConfiguredClient(Ljava/util/Map;)Lorg/apache/storm/utils/DRPCClient;, BB[SSA:-1..-2]40 - org.apache.storm.utils.DRPCClient.getConfiguredClient(Ljava/util/Map;)Lorg/apache/storm/utils/DRPCClient;], numberOfBasicBlocks=4, firstLineNumber=93, lastLineNumber=93, firstMethodNumber=82, lastMethodNumber=114, isFirstLineValid=true, methodSrcCode=
+    public static DRPCClient getConfiguredClient(Map<String, Object> conf) throws TTransportException {
+        DistributedRPC.Iface override = localOverrideClient;
+        if (override != null) {
+            return new DRPCClient(override);
+        }
+
+        //Extend the config with defaults and the command line
+        Map<String, Object> fullConf = Utils.readStormConfig();
+        fullConf.putAll(Utils.readCommandLineOpts());
+        fullConf.putAll(conf);
+
+        int port = ObjectReader.getInt(fullConf.get(Config.DRPC_PORT), 3772);
+        List<String> servers = (List<String>) fullConf.get(Config.DRPC_SERVERS);
+        if (servers == null) {
+            throw new IllegalStateException(Config.DRPC_SERVERS + " is not set, could not find any DRPC servers to connect to.");
+        }
+        Collections.shuffle(servers);
+        RuntimeException excpt = null;
+        for (String host : servers) {
+            try {
+                return new DRPCClient(fullConf, host, port);
+            } catch (RuntimeException e) {
+                if (Utils.exceptionCauseIsInstanceOf(ConnectException.class, e)) {
+                    excpt = e;
+                } else {
+                    throw e;
+                }
+            }
+        }
+        if (excpt != null) {
+            throw excpt;
+        }
+        throw new IllegalStateException("It appears that no drpc servers were configured.");
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/blobstore/NimbusBlobStore, prepare(Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:14..14]7 - org.apache.storm.blobstore.NimbusBlobStore.prepare(Ljava/util/Map;)V, BB[SSA:13..13]6 - org.apache.storm.blobstore.NimbusBlobStore.prepare(Ljava/util/Map;)V, BB[SSA:15..15]8 - org.apache.storm.blobstore.NimbusBlobStore.prepare(Ljava/util/Map;)V, BB[SSA:-1..-2]11 - org.apache.storm.blobstore.NimbusBlobStore.prepare(Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=49, lastLineNumber=49, firstMethodNumber=46, lastMethodNumber=51, isFirstLineValid=true, methodSrcCode=
+    public void prepare(Map<String, Object> conf) {
+        this.client = NimbusClient.getConfiguredClient(conf);
+        if (conf != null) {
+            this.bufferSize = ObjectReader.getInt(conf.get(Config.STORM_BLOBSTORE_INPUTSTREAM_BUFFER_SIZE_BYTES), bufferSize);
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/metrics2/reporters/GraphiteStormReporter, getMetricsTargetPort(Ljava/util/Map;)Ljava/lang/Integer; > Context: Everywhere, blocks=[BB[SSA:3..4]2 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetPort(Ljava/util/Map;)Ljava/lang/Integer;, BB[SSA:0..2]1 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetPort(Ljava/util/Map;)Ljava/lang/Integer;, BB[SSA:5..5]3 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetPort(Ljava/util/Map;)Ljava/lang/Integer;, BB[SSA:-1..-2]4 - org.apache.storm.metrics2.reporters.GraphiteStormReporter.getMetricsTargetPort(Ljava/util/Map;)Ljava/lang/Integer;], numberOfBasicBlocks=4, firstLineNumber=44, lastLineNumber=44, firstMethodNumber=43, lastMethodNumber=44, isFirstLineValid=true, methodSrcCode=
+    private static Integer getMetricsTargetPort(Map<String, Object> reporterConf) {
+        return ObjectReader.getInt(reporterConf.get(GRAPHITE_PORT), null);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/utils/SchedulerConfigCache, <init>(Ljava/util/Map;Lorg/apache/storm/scheduler/utils/SchedulerConfigCache$Reloadable;)V > Context: Everywhere, blocks=[BB[SSA:19..19]9 - org.apache.storm.scheduler.utils.SchedulerConfigCache.<init>(Ljava/util/Map;Lorg/apache/storm/scheduler/utils/SchedulerConfigCache$Reloadable;)V, BB[SSA:17..18]8 - org.apache.storm.scheduler.utils.SchedulerConfigCache.<init>(Ljava/util/Map;Lorg/apache/storm/scheduler/utils/SchedulerConfigCache$Reloadable;)V, BB[SSA:20..20]10 - org.apache.storm.scheduler.utils.SchedulerConfigCache.<init>(Ljava/util/Map;Lorg/apache/storm/scheduler/utils/SchedulerConfigCache$Reloadable;)V, BB[SSA:-1..-2]13 - org.apache.storm.scheduler.utils.SchedulerConfigCache.<init>(Ljava/util/Map;Lorg/apache/storm/scheduler/utils/SchedulerConfigCache$Reloadable;)V], numberOfBasicBlocks=4, firstLineNumber=43, lastLineNumber=43, firstMethodNumber=38, lastMethodNumber=44, isFirstLineValid=true, methodSrcCode=
+
+    public SchedulerConfigCache(Map<String, Object> conf, Reloadable<T> reloader) {
+        schedulerConfigAtomicReference = new AtomicReference<>();
+        lastUpdateTimestamp = 0;
+        this.reloader = reloader;
+        configCacheExpirationMs = ObjectReader.getInt(conf.get(DaemonConfig.SCHEDULER_CONFIG_CACHE_EXPIRATION_SECS), 60) * 1000L;
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, <init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:155..155]70 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:153..154]69 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:156..156]71 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:-1..-2]94 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:165..165]75 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:163..164]74 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:166..166]76 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:-1..-2]94 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:175..175]80 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:173..174]79 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:176..176]81 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:-1..-2]94 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:185..185]85 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:183..184]84 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:186..186]86 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V, BB[SSA:-1..-2]94 - org.apache.storm.daemon.supervisor.BasicContainer.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Lorg/apache/storm/utils/LocalState;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;)V], numberOfBasicBlocks=16, firstLineNumber=180, lastLineNumber=180, firstMethodNumber=130, lastMethodNumber=186, isFirstLineValid=true, methodSrcCode=
+        AdvancedFSOps ops, String profileCmd) throws IOException {
+        super(type, conf, supervisorId, supervisorPort, port, assignment,
+            resourceIsolationManager, workerId, topoConf, ops, metricsRegistry, containerMemoryTracker);
+        if (localState == null) {
+            throw new IOException("LocalState parameter value is null");
+        }
+        this.localState = localState;
+
+        if (type.isRecovery() && !type.isOnlyKillable()) {
+            synchronized (this.localState) {
+                String wid = null;
+                Map<String, Integer> workerToPort = this.localState.getApprovedWorkers();
+                for (Map.Entry<String, Integer> entry : workerToPort.entrySet()) {
+                    if (port == entry.getValue()) {
+                        wid = entry.getKey();
+                    }
+                }
+                if (wid == null) {
+                    throw new ContainerRecoveryException("Could not find worker id for " + port + " " + assignment);
+                }
+                LOG.info("Recovered Worker {}", wid);
+                this.workerId = wid;
+            }
+        } else if (this.workerId == null) {
+            createNewWorkerId();
+        }
+
+        if (resourceIsolationManager instanceof OciContainerManager) {
+            //When we use OciContainerManager, we will only use the profiler configured in worker-launcher.cfg due to security reasons
+            LOG.debug("Supervisor is using {} as the {}."
+                    + "The profiler set at worker.profiler.script.path in worker-launcher.cfg is the only profiler to be used. "
+                    + "Please make sure it is configured properly",
+                resourceIsolationManager.getClass().getName(), ResourceIsolationInterface.class.getName());
+            this.profileCmd = "";
+        } else {
+            if (profileCmd == null) {
+                profileCmd = stormHome + File.separator + "bin" + File.separator
+                    + conf.get(DaemonConfig.WORKER_PROFILER_COMMAND);
+            }
+            this.profileCmd = profileCmd;
+        }
+
+        hardMemoryLimitMultiplier =
+            ObjectReader.getDouble(conf.get(DaemonConfig.STORM_SUPERVISOR_HARD_MEMORY_LIMIT_MULTIPLIER), 2.0);
+        hardMemoryLimitOver =
+            ObjectReader.getInt(conf.get(DaemonConfig.STORM_SUPERVISOR_HARD_LIMIT_MEMORY_OVERAGE_MB), 0);
+        lowMemoryThresholdMb = ObjectReader.getInt(conf.get(DaemonConfig.STORM_SUPERVISOR_LOW_MEMORY_THRESHOLD_MB), 1024);
+        mediumMemoryThresholdMb =
+            ObjectReader.getInt(conf.get(DaemonConfig.STORM_SUPERVISOR_MEDIUM_MEMORY_THRESHOLD_MB), 1536);
+        mediumMemoryGracePeriodMs =
+            ObjectReader.getInt(conf.get(DaemonConfig.STORM_SUPERVISOR_MEDIUM_MEMORY_GRACE_PERIOD_MS), 20_000);
+
+        if (assignment != null) {
+            WorkerResources resources = assignment.get_resources();
+            memoryLimitMb = calculateMemoryLimit(resources, getMemOnHeap(resources));
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/localizer/AsyncLocalizer, <init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere, blocks=[BB[SSA:67..67]32 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:65..66]31 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:68..68]33 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]73 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:78..78]37 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:76..77]36 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:79..79]38 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]73 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:91..91]44 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:89..90]43 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:92..92]45 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]73 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:99..99]49 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:97..98]48 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:100..100]50 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]73 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Ljava/lang/String;Lorg/apache/storm/metric/StormMetricsRegistry;)V], numberOfBasicBlocks=16, firstLineNumber=132, lastLineNumber=132, firstMethodNumber=108, lastMethodNumber=141, isFirstLineValid=true, methodSrcCode=
+    @VisibleForTesting
+    AsyncLocalizer(Map<String, Object> conf, AdvancedFSOps ops, String baseDir, StormMetricsRegistry metricsRegistry) throws IOException {
+        this.conf = conf;
+        this.blobCacheUpdateDuration = metricsRegistry.registerTimer("supervisor:blob-cache-update-duration");
+        this.blobLocalizationDuration = metricsRegistry.registerTimer("supervisor:blob-localization-duration");
+        this.localResourceFileNotFoundWhenReleasingSlot
+                = metricsRegistry.registerMeter("supervisor:local-resource-file-not-found-when-releasing-slot");
+        this.updateBlobExceptions = metricsRegistry.registerMeter("supervisor:update-blob-exceptions");
+        this.metricsRegistry = metricsRegistry;
+        isLocalMode = ConfigUtils.isLocalMode(conf);
+        fsOps = ops;
+        localBaseDir = Paths.get(baseDir);
+        // default cache size 10GB, converted to Bytes
+        cacheTargetSize = ObjectReader.getInt(conf.get(DaemonConfig.SUPERVISOR_LOCALIZER_CACHE_TARGET_SIZE_MB),
+                                              10 * 1024).longValue() << 20;
+        // default 30 seconds. (we cache the size so it is cheap to do)
+        cacheCleanupPeriod = ObjectReader.getInt(conf.get(
+            DaemonConfig.SUPERVISOR_LOCALIZER_CACHE_CLEANUP_INTERVAL_MS), 30 * 1000).longValue();
+
+        updateBlobPeriod = ServerConfigUtils.getLocalizerUpdateBlobInterval(conf);
+
+        blobDownloadRetries = ObjectReader.getInt(conf.get(
+            DaemonConfig.SUPERVISOR_BLOBSTORE_DOWNLOAD_MAX_RETRIES), 3);
+
+        int downloadThreadPoolSize = ObjectReader.getInt(conf.get(DaemonConfig.SUPERVISOR_BLOBSTORE_DOWNLOAD_THREAD_COUNT), 5);
+        downloadExecService = Executors.newScheduledThreadPool(downloadThreadPoolSize,
+                new ThreadFactoryBuilder().setNameFormat("AsyncLocalizer Download Executor - %d").build());
+        taskExecService = Executors.newScheduledThreadPool(3,
+                new ThreadFactoryBuilder().setNameFormat("AsyncLocalizer Task Executor - %d").build());
+        reconstructLocalizedResources();
+
+        symlinksDisabled = (boolean) conf.getOrDefault(Config.DISABLE_SYMLINKS, false);
+        blobPending = new ConcurrentHashMap<>();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, startTopology(Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/generated/TopologyStatus;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere, blocks=[BB[SSA:80..80]40 - org.apache.storm.daemon.nimbus.Nimbus.startTopology(Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/generated/TopologyStatus;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:78..79]39 - org.apache.storm.daemon.nimbus.Nimbus.startTopology(Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/generated/TopologyStatus;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:81..81]41 - org.apache.storm.daemon.nimbus.Nimbus.startTopology(Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/generated/TopologyStatus;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:-1..-2]60 - org.apache.storm.daemon.nimbus.Nimbus.startTopology(Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/generated/TopologyStatus;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V], numberOfBasicBlocks=4, firstLineNumber=2711, lastLineNumber=2711, firstMethodNumber=2694, lastMethodNumber=2721, isFirstLineValid=true, methodSrcCode=
+        throws InvalidTopologyException {
+        if (TopologyStatus.ACTIVE != initStatus && TopologyStatus.INACTIVE != initStatus) {
+            throw new InvalidTopologyException("Cannot startTopology: initStatus should be ACTIVE or INACTIVE, not " + initStatus.name());
+        }
+        Map<String, Integer> numExecutors = new HashMap<>();
+        StormTopology topology = StormCommon.systemTopology(topoConf, stormTopology);
+        for (Entry<String, Object> entry : StormCommon.allComponents(topology).entrySet()) {
+            numExecutors.put(entry.getKey(), StormCommon.numStartExecutors(entry.getValue()));
+        }
+        LOG.info("Activating {}: {}", topoName, topoId);
+        StormBase base = new StormBase();
+        base.set_name(topoName);
+        if (topoConf.containsKey(Config.TOPOLOGY_VERSION)) {
+            base.set_topology_version(ObjectReader.getString(topoConf.get(Config.TOPOLOGY_VERSION)));
+        }
+        base.set_launch_time_secs(Time.currentTimeSecs());
+        base.set_status(initStatus);
+        base.set_num_workers(ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_WORKERS), 0));
+        base.set_component_executors(numExecutors);
+        base.set_owner(owner);
+        base.set_principal(principal);
+        base.set_component_debug(new HashMap<>());
+        IStormClusterState state = stormClusterState;
+        state.activateStorm(topoId, base, topoConf);
+        idToExecutors.getAndUpdate(new Assoc<>(topoId,
+            new HashSet<>(computeExecutors(base, topoConf, stormTopology))));
+        notifyTopologyActionListener(topoName, "activate");
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getMemOnHeap(Lorg/apache/storm/generated/WorkerResources;)I > Context: Everywhere, blocks=[BB[SSA:27..27]12 - org.apache.storm.daemon.supervisor.BasicContainer.getMemOnHeap(Lorg/apache/storm/generated/WorkerResources;)I, BB[SSA:25..26]11 - org.apache.storm.daemon.supervisor.BasicContainer.getMemOnHeap(Lorg/apache/storm/generated/WorkerResources;)I, BB[SSA:28..28]13 - org.apache.storm.daemon.supervisor.BasicContainer.getMemOnHeap(Lorg/apache/storm/generated/WorkerResources;)I, BB[SSA:-1..-2]16 - org.apache.storm.daemon.supervisor.BasicContainer.getMemOnHeap(Lorg/apache/storm/generated/WorkerResources;)I], numberOfBasicBlocks=4, firstLineNumber=563, lastLineNumber=563, firstMethodNumber=555, lastMethodNumber=565, isFirstLineValid=true, methodSrcCode=
+    private int getMemOnHeap(WorkerResources resources) {
+        int memOnheap = 0;
+        if (resources != null
+                && resources.is_set_mem_on_heap()
+                && resources.get_mem_on_heap() > 0) {
+            memOnheap = (int) Math.ceil(resources.get_mem_on_heap());
+        } else {
+            // set the default heap memory size for supervisor-test
+            memOnheap = ObjectReader.getInt(topoConf.get(Config.WORKER_HEAP_MEMORY_MB), 768);
+        }
+        return memOnheap;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/resource/ResourceAwareScheduler, prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere, blocks=[BB[SSA:31..31]15 - org.apache.storm.scheduler.resource.ResourceAwareScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:29..30]14 - org.apache.storm.scheduler.resource.ResourceAwareScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:32..32]16 - org.apache.storm.scheduler.resource.ResourceAwareScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]35 - org.apache.storm.scheduler.resource.ResourceAwareScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:40..40]20 - org.apache.storm.scheduler.resource.ResourceAwareScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:38..39]19 - org.apache.storm.scheduler.resource.ResourceAwareScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:41..41]21 - org.apache.storm.scheduler.resource.ResourceAwareScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]35 - org.apache.storm.scheduler.resource.ResourceAwareScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V], numberOfBasicBlocks=8, firstLineNumber=94, lastLineNumber=93, firstMethodNumber=84, lastMethodNumber=100, isFirstLineValid=true, methodSrcCode=
+    public void prepare(Map<String, Object> conf, StormMetricsRegistry metricsRegistry) {
+        this.conf = conf;
+        schedulingTimeoutMeter = metricsRegistry.registerMeter("nimbus:num-scheduling-timeouts");
+        internalErrorMeter = metricsRegistry.registerMeter("nimbus:scheduler-internal-errors");
+        schedulingPriorityStrategy = ReflectionUtils.newInstance(
+            (String) conf.get(DaemonConfig.RESOURCE_AWARE_SCHEDULER_PRIORITY_STRATEGY));
+        configLoader = ConfigLoaderFactoryService.createConfigLoader(conf);
+        maxSchedulingAttempts = ObjectReader.getInt(
+            conf.get(DaemonConfig.RESOURCE_AWARE_SCHEDULER_MAX_TOPOLOGY_SCHEDULING_ATTEMPTS), 5);
+        schedulingTimeoutSeconds = ObjectReader.getInt(
+                conf.get(DaemonConfig.SCHEDULING_TIMEOUT_SECONDS_PER_TOPOLOGY), 60);
+        backgroundScheduling = Executors.newFixedThreadPool(1);
+        evictedTopologiesMap = new HashMap<>();
+
+        schedulerConfigCache = new SchedulerConfigCache<>(conf, this::loadConfig);
+        schedulerConfigCache.prepare();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;)Ljava/lang/Integer; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.storm.utils.ObjectReader.getInt(Ljava/lang/Object;)Ljava/lang/Integer;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ObjectReader.getInt(Ljava/lang/Object;)Ljava/lang/Integer;, BB[SSA:3..6]2 - org.apache.storm.utils.ObjectReader.getInt(Ljava/lang/Object;)Ljava/lang/Integer;, BB[SSA:-1..-2]7 - org.apache.storm.utils.ObjectReader.getInt(Ljava/lang/Object;)Ljava/lang/Integer;], numberOfBasicBlocks=4, firstLineNumber=72, lastLineNumber=74, firstMethodNumber=72, lastMethodNumber=77, isFirstLineValid=false, methodSrcCode=
+    public static Integer getInt(Object o) {
+        Integer result = getInt(o, null);
+        if (null == result) {
+            throw new IllegalArgumentException("Don't know how to convert null to int");
+        }
+        return result;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, makeBlobCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap; > Context: Everywhere, blocks=[BB[SSA:7..7]4 - org.apache.storm.daemon.nimbus.Nimbus.makeBlobCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;, BB[SSA:5..6]3 - org.apache.storm.daemon.nimbus.Nimbus.makeBlobCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;, BB[SSA:8..8]5 - org.apache.storm.daemon.nimbus.Nimbus.makeBlobCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;, BB[SSA:-1..-2]9 - org.apache.storm.daemon.nimbus.Nimbus.makeBlobCacheMap(Ljava/util/Map;)Lorg/apache/storm/utils/TimeCacheMap;], numberOfBasicBlocks=4, firstLineNumber=692, lastLineNumber=692, firstMethodNumber=691, lastMethodNumber=692, isFirstLineValid=true, methodSrcCode=
+    private static <T extends AutoCloseable> TimeCacheMap<String, T> makeBlobCacheMap(Map<String, Object> conf) {
+        return new TimeCacheMap<>(ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_BLOBSTORE_EXPIRATION_SECS), 600),
+            (id, stream) -> {
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/blacklist/strategies/DefaultBlacklistStrategy, prepare(Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:6..6]3 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V, BB[SSA:4..5]2 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V, BB[SSA:7..7]4 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V, BB[SSA:-1..-2]26 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V, BB[SSA:15..15]8 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V, BB[SSA:13..14]7 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V, BB[SSA:16..16]9 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V, BB[SSA:-1..-2]26 - org.apache.storm.scheduler.blacklist.strategies.DefaultBlacklistStrategy.prepare(Ljava/util/Map;)V], numberOfBasicBlocks=8, firstLineNumber=53, lastLineNumber=53, firstMethodNumber=50, lastMethodNumber=61, isFirstLineValid=true, methodSrcCode=
+    public void prepare(Map<String, Object> conf) {
+        toleranceCount = ObjectReader.getInt(conf.get(DaemonConfig.BLACKLIST_SCHEDULER_TOLERANCE_COUNT),
+                                             DEFAULT_BLACKLIST_SCHEDULER_TOLERANCE_COUNT);
+        resumeTime = ObjectReader.getInt(conf.get(DaemonConfig.BLACKLIST_SCHEDULER_RESUME_TIME), DEFAULT_BLACKLIST_SCHEDULER_RESUME_TIME);
+
+        String reporterClassName = ObjectReader.getString(conf.get(DaemonConfig.BLACKLIST_SCHEDULER_REPORTER),
+                                                          LogReporter.class.getName());
+        reporter = (IReporter) initializeInstance(reporterClassName, "blacklist reporter");
+
+        nimbusMonitorFreqSecs = ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_MONITOR_FREQ_SECS));
+        blacklist = new TreeMap<>();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/Executor, setupTicks(Z)V > Context: Everywhere, blocks=[BB[SSA:4..5]3 - org.apache.storm.executor.Executor.setupTicks(Z)V, BB[SSA:2..3]2 - org.apache.storm.executor.Executor.setupTicks(Z)V, BB[SSA:6..9]4 - org.apache.storm.executor.Executor.setupTicks(Z)V, BB[SSA:-1..-2]30 - org.apache.storm.executor.Executor.setupTicks(Z)V], numberOfBasicBlocks=4, firstLineNumber=503, lastLineNumber=504, firstMethodNumber=502, lastMethodNumber=532, isFirstLineValid=true, methodSrcCode=
+    protected void setupTicks(boolean isSpout) {
+        final Integer tickTimeSecs = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_TICK_TUPLE_FREQ_SECS), null);
+        if (tickTimeSecs != null) {
+            boolean enableMessageTimeout = (Boolean) topoConf.get(Config.TOPOLOGY_ENABLE_MESSAGE_TIMEOUTS);
+            boolean isAcker = Acker.ACKER_COMPONENT_ID.equals(componentId);
+            if ((!isAcker && Utils.isSystemId(componentId))
+                || (!enableMessageTimeout && isSpout)
+                || (!enableMessageTimeout && isAcker)) {
+                LOG.info("Timeouts disabled for executor {}:{}", componentId, executorId);
+            } else {
+                StormTimer timerTask = workerData.getUserTimer();
+                timerTask.scheduleRecurring(tickTimeSecs, tickTimeSecs,
+                    () -> {
+                        TupleImpl tuple = new TupleImpl(workerTopologyContext, new Values(tickTimeSecs),
+                                                        Constants.SYSTEM_COMPONENT_ID,
+                                                        (int) Constants.SYSTEM_TASK_ID,
+                                                        Constants.SYSTEM_TICK_STREAM_ID);
+                        AddressedTuple tickTuple = new AddressedTuple(AddressedTuple.BROADCAST_DEST, tuple);
+                        try {
+                            receiveQueue.publish(tickTuple);
+                            receiveQueue.flush(); // avoid buffering
+                        } catch (InterruptedException e) {
+                            LOG.warn("Thread interrupted when emitting tick tuple. Setting interrupt flag.");
+                            Thread.currentThread().interrupt();
+                            return;
+                        }
+                    }
+                );
+            }
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ServerConfigUtils, getLocalizerUpdateBlobInterval(Ljava/util/Map;)I > Context: Everywhere, blocks=[BB[SSA:5..5]3 - org.apache.storm.utils.ServerConfigUtils.getLocalizerUpdateBlobInterval(Ljava/util/Map;)I, BB[SSA:3..4]2 - org.apache.storm.utils.ServerConfigUtils.getLocalizerUpdateBlobInterval(Ljava/util/Map;)I, BB[SSA:6..6]4 - org.apache.storm.utils.ServerConfigUtils.getLocalizerUpdateBlobInterval(Ljava/util/Map;)I, BB[SSA:-1..-2]6 - org.apache.storm.utils.ServerConfigUtils.getLocalizerUpdateBlobInterval(Ljava/util/Map;)I], numberOfBasicBlocks=4, firstLineNumber=163, lastLineNumber=163, firstMethodNumber=162, lastMethodNumber=163, isFirstLineValid=true, methodSrcCode=
+    public static int getLocalizerUpdateBlobInterval(Map<String, Object> conf) {
+        return ObjectReader.getInt(conf.get(
+                DaemonConfig.SUPERVISOR_LOCALIZER_UPDATE_BLOB_INTERVAL_SECS), 30);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, launchServer()V > Context: Everywhere, blocks=[BB[SSA:118..119]64 - org.apache.storm.daemon.nimbus.Nimbus.launchServer()V, BB[SSA:116..117]63 - org.apache.storm.daemon.nimbus.Nimbus.launchServer()V, BB[SSA:120..123]65 - org.apache.storm.daemon.nimbus.Nimbus.launchServer()V, BB[SSA:-1..-2]126 - org.apache.storm.daemon.nimbus.Nimbus.launchServer()V], numberOfBasicBlocks=4, firstLineNumber=1463, lastLineNumber=1464, firstMethodNumber=1398, lastMethodNumber=1547, isFirstLineValid=true, methodSrcCode=
+        try {
+            IStormClusterState state = stormClusterState;
+            NimbusInfo hpi = nimbusHostPortInfo;
+
+            LOG.info("Starting Nimbus with conf {}", ConfigUtils.maskPasswords(conf));
+            validator.prepare(conf);
+
+            //add to nimbuses
+            state.addNimbusHost(hpi.getHost(),
+                    new NimbusSummary(hpi.getHost(), hpi.getPort(), Time.currentTimeSecs(), false, STORM_VERSION));
+            leaderElector.addToLeaderLockQueue();
+            this.blobStore.startSyncBlobs();
+
+            for (ClusterMetricsConsumerExecutor exec: clusterConsumerExceutors) {
+                exec.prepare();
+            }
+
+            // Leadership coordination may be incomplete when launchServer is called. Previous behavior did a one time check
+            // which could cause Nimbus to not process TopologyActions.GAIN_LEADERSHIP transitions. Similar problem exists for
+            // HA Nimbus on being newly elected as leader. Change to a recurring pattern addresses these problems.
+            timer.scheduleRecurring(3, 5,
+                () -> {
+                    try {
+                        boolean isLeader = isLeader();
+                        if (isLeader && !wasLeader) {
+                            for (String topoId : state.activeStorms()) {
+                                transition(topoId, TopologyActions.GAIN_LEADERSHIP, null);
+                            }
+                            clusterMetricSet.setActive(true);
+                        }
+                        wasLeader = isLeader;
+                    } catch (Exception e) {
+                        throw  new RuntimeException(e);
+                    }
+                });
+
+            final boolean doNotReassign = (Boolean) conf.getOrDefault(ServerConfigUtils.NIMBUS_DO_NOT_REASSIGN, false);
+            timer.scheduleRecurring(0, ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_MONITOR_FREQ_SECS)),
+                () -> {
+                    try {
+                        if (!doNotReassign) {
+                            mkAssignments();
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            // Schedule topology cleanup
+            cleanupTimer.scheduleRecurring(0, ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_MONITOR_FREQ_SECS)),
+                () -> {
+                    cleanupTimer.schedule(0, () -> doCleanup());
+                });
+            // Schedule Nimbus inbox cleaner
+            final int jarExpSecs = ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_INBOX_JAR_EXPIRATION_SECS));
+            timer.scheduleRecurring(0, ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_CLEANUP_INBOX_FREQ_SECS)),
+                () -> {
+                    try {
+                        cleanInbox(getInbox(), jarExpSecs);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+
+            // Schedule topology history cleaner
+            Integer interval = ObjectReader.getInt(conf.get(DaemonConfig.LOGVIEWER_CLEANUP_INTERVAL_SECS), null);
+            if (interval != null) {
+                final int lvCleanupAgeMins = ObjectReader.getInt(conf.get(DaemonConfig.LOGVIEWER_CLEANUP_AGE_MINS));
+                timer.scheduleRecurring(0, interval,
+                    () -> {
+                        try {
+                            cleanTopologyHistory(lvCleanupAgeMins);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+            }
+
+            timer.scheduleRecurring(0, ObjectReader.getInt(conf.get(DaemonConfig.NIMBUS_CREDENTIAL_RENEW_FREQ_SECS)),
+                () -> {
+                    try {
+                        renewCredentials();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+            // Periodically make sure the blobstore update time is up to date.  This could have failed if Nimbus encountered
+            // an exception updating the update time, or due to bugs causing a missed update of the blobstore mod time on a blob
+            // update.
+            timer.scheduleRecurring(30, ServerConfigUtils.getLocalizerUpdateBlobInterval(conf) * 5,
+                () -> {
+                    try {
+                        blobStore.validateBlobUpdateTime();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+            metricsRegistry.registerGauge("nimbus:total-available-memory-non-negative", () -> nodeIdToResources.get().values()
+                    .parallelStream()
+                    .mapToDouble(supervisorResources -> Math.max(supervisorResources.getAvailableMem(), 0))
+                    .sum());
+            metricsRegistry.registerGauge("nimbus:available-cpu-non-negative", () -> nodeIdToResources.get().values()
+                    .parallelStream()
+                    .mapToDouble(supervisorResources -> Math.max(supervisorResources.getAvailableCpu(), 0))
+                    .sum());
+            metricsRegistry.registerGauge("nimbus:total-memory", () -> nodeIdToResources.get().values()
+                    .parallelStream()
+                    .mapToDouble(SupervisorResources::getTotalMem)
+                    .sum());
+            metricsRegistry.registerGauge("nimbus:total-cpu", () -> nodeIdToResources.get().values()
+                    .parallelStream()
+                    .mapToDouble(SupervisorResources::getTotalCpu)
+                    .sum());
+            metricsRegistry.registerGauge("nimbus:longest-scheduling-time-ms", () -> {
+                //We want to update longest scheduling time in real time in case scheduler get stuck
+                // Get current time before startTime to avoid potential race with scheduler's Timer
+                Long currTime = Time.nanoTime();
+                Long startTime = schedulingStartTimeNs.get();
+                return TimeUnit.NANOSECONDS.toMillis(startTime == null
+                        ? longestSchedulingTime.get()
+                        : Math.max(currTime - startTime, longestSchedulingTime.get()));
+            });
+            metricsRegistry.registerMeter("nimbus:num-launched").mark();
+
+            timer.scheduleRecurring(0, ObjectReader.getInt(conf.get(DaemonConfig.STORM_CLUSTER_METRICS_CONSUMER_PUBLISH_INTERVAL_SECS)),
+                () -> {
+                    try {
+                        if (isLeader()) {
+                            sendClusterMetricsToExecutors();
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+            timer.scheduleRecurring(5, 5, clusterMetricSet);
+        } catch (Exception e) {
+            if (Utils.exceptionCauseIsInstanceOf(InterruptedException.class, e)) {
+                throw e;
+            }
+
+            if (Utils.exceptionCauseIsInstanceOf(InterruptedIOException.class, e)) {
+                throw e;
+            }
+            LOG.error("Error on initialization of nimbus", e);
+            Utils.exitProcess(13, "Error on initialization of nimbus");
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/StormCommon, metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:78..78]37 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:76..77]36 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:79..82]38 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:-1..-2]78 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:85..85]40 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:83..84]39 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:86..87]41 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:-1..-2]78 - org.apache.storm.daemon.StormCommon.metricsConsumerBoltSpecs(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;], numberOfBasicBlocks=8, firstLineNumber=384, lastLineNumber=385, firstMethodNumber=364, lastMethodNumber=416, isFirstLineValid=true, methodSrcCode=
+    public static Map<String, Bolt> metricsConsumerBoltSpecs(Map<String, Object> conf, StormTopology topology) {
+        Map<String, Bolt> metricsConsumerBolts = new HashMap<>();
+
+        Set<String> componentIdsEmitMetrics = new HashSet<>();
+        componentIdsEmitMetrics.addAll(allComponents(topology).keySet());
+        componentIdsEmitMetrics.add(Constants.SYSTEM_COMPONENT_ID);
+
+        Map<GlobalStreamId, Grouping> inputs = new HashMap<>();
+        for (String componentId : componentIdsEmitMetrics) {
+            inputs.put(Utils.getGlobalStreamId(componentId, Constants.METRICS_STREAM_ID), Thrift.prepareShuffleGrouping());
+        }
+
+        List<Map<String, Object>> registerInfo = (List<Map<String, Object>>) conf.get(Config.TOPOLOGY_METRICS_CONSUMER_REGISTER);
+        if (registerInfo != null) {
+            Map<String, Integer> classOccurrencesMap = new HashMap<>();
+            for (Map<String, Object> info : registerInfo) {
+                String className = (String) info.get(TOPOLOGY_METRICS_CONSUMER_CLASS);
+                Object argument = info.get(TOPOLOGY_METRICS_CONSUMER_ARGUMENT);
+                Integer maxRetainMetricTuples = ObjectReader.getInt(info.get(
+                    TOPOLOGY_METRICS_CONSUMER_MAX_RETAIN_METRIC_TUPLES), 100);
+                Integer phintNum = ObjectReader.getInt(info.get(TOPOLOGY_METRICS_CONSUMER_PARALLELISM_HINT), 1);
+                Map<String, Object> metricsConsumerConf = new HashMap<>();
+                metricsConsumerConf.put(Config.TOPOLOGY_TASKS, phintNum);
+                List<String> whitelist = (List<String>) info.get(
+                    TOPOLOGY_METRICS_CONSUMER_WHITELIST);
+                List<String> blacklist = (List<String>) info.get(
+                    TOPOLOGY_METRICS_CONSUMER_BLACKLIST);
+                FilterByMetricName filterPredicate = new FilterByMetricName(whitelist, blacklist);
+                Boolean expandMapType = ObjectReader.getBoolean(info.get(
+                    TOPOLOGY_METRICS_CONSUMER_EXPAND_MAP_TYPE), false);
+                String metricNameSeparator = ObjectReader.getString(info.get(
+                    TOPOLOGY_METRICS_CONSUMER_METRIC_NAME_SEPARATOR), ".");
+                DataPointExpander expander = new DataPointExpander(expandMapType, metricNameSeparator);
+                MetricsConsumerBolt boltInstance = new MetricsConsumerBolt(className, argument,
+                                                                           maxRetainMetricTuples, filterPredicate, expander);
+                Bolt metricsConsumerBolt = Thrift.prepareSerializedBoltDetails(inputs,
+                                                                               boltInstance, null, phintNum, metricsConsumerConf);
+
+                String id;
+                if (classOccurrencesMap.containsKey(className)) {
+                    // e.g. [\"a\", \"b\", \"a\"]) => [\"a\", \"b\", \"a#2\"]"
+                    int occurrenceNum = classOccurrencesMap.get(className);
+                    occurrenceNum++;
+                    classOccurrencesMap.put(className, occurrenceNum);
+                    id = Constants.METRICS_COMPONENT_ID_PREFIX + className + "#" + occurrenceNum;
+                } else {
+                    id = Constants.METRICS_COMPONENT_ID_PREFIX + className;
+                    classOccurrencesMap.put(className, 1);
+                }
+                metricsConsumerBolts.put(id, metricsConsumerBolt);
+            }
+        }
+        return metricsConsumerBolts;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere, blocks=[BB[SSA:9..9]5 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:7..8]4 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:10..10]6 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:-1..-2]35 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:15..16]8 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:11..14]7 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:17..20]9 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:-1..-2]35 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:54..55]26 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:51..53]25 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:56..59]27 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:-1..-2]35 - org.apache.storm.daemon.nimbus.Nimbus.validateTopologySize(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V], numberOfBasicBlocks=12, firstLineNumber=1299, lastLineNumber=1300, firstMethodNumber=1286, lastMethodNumber=1304, isFirstLineValid=true, methodSrcCode=
+        // check allowedWorkers only if the scheduler is not the Resource Aware Scheduler
+        if (!ServerUtils.isRas(nimbusConf)) {
+            int workerCount = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_WORKERS), 1);
+            Integer allowedWorkers = ObjectReader.getInt(nimbusConf.get(DaemonConfig.NIMBUS_SLOTS_PER_TOPOLOGY), null);
+            if (allowedWorkers != null && workerCount > allowedWorkers) {
+                throw new WrappedInvalidTopologyException("Failed to submit topology. Topology requests more than "
+                        + allowedWorkers + " workers.");
+            }
+        }
+        int executorsCount = 0;
+        for (Object comp : StormCommon.allComponents(topology).values()) {
+            executorsCount += StormCommon.numStartExecutors(comp);
+        }
+        Integer allowedExecutors = ObjectReader.getInt(nimbusConf.get(DaemonConfig.NIMBUS_EXECUTORS_PER_TOPOLOGY), null);
+        if (allowedExecutors != null && executorsCount > allowedExecutors) {
+            throw new WrappedInvalidTopologyException("Failed to submit topology. Topology requests more than "
+                    + allowedExecutors + " executors.");
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/StormCommon, validateBasic(Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere, blocks=[BB[SSA:81..81]36 - org.apache.storm.daemon.StormCommon.validateBasic(Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:79..80]35 - org.apache.storm.daemon.StormCommon.validateBasic(Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:82..84]37 - org.apache.storm.daemon.StormCommon.validateBasic(Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:-1..-2]45 - org.apache.storm.daemon.StormCommon.validateBasic(Lorg/apache/storm/generated/StormTopology;)V], numberOfBasicBlocks=4, firstLineNumber=177, lastLineNumber=178, firstMethodNumber=157, lastMethodNumber=183, isFirstLineValid=true, methodSrcCode=
+    public static void validateBasic(StormTopology topology) throws InvalidTopologyException {
+        validateIds(topology);
+
+        for (StormTopology._Fields field : Thrift.getSpoutFields()) {
+            Map<String, Object> spoutComponents = (Map<String, Object>) topology.getFieldValue(field);
+            if (spoutComponents != null) {
+                for (Object obj : spoutComponents.values()) {
+                    ComponentCommon common = getComponentCommon(obj);
+                    if (!isEmptyInputs(common)) {
+                        throw new WrappedInvalidTopologyException("May not declare inputs for a spout");
+                    }
+                }
+            }
+        }
+
+        Map<String, Object> componentMap = allComponents(topology);
+        for (Object componentObj : componentMap.values()) {
+            Map<String, Object> conf = componentConf(componentObj);
+            ComponentCommon common = getComponentCommon(componentObj);
+            int parallelismHintNum = Thrift.getParallelismHint(common);
+            Integer taskNum = ObjectReader.getInt(conf.get(Config.TOPOLOGY_TASKS), 0);
+            if (taskNum > 0 && parallelismHintNum <= 0) {
+                throw new WrappedInvalidTopologyException(
+                        "Number of executors must be greater than 0 when number of tasks is greater than 0");
+            }
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, submitTopologyWithOpts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/generated/StormTopology;Lorg/apache/storm/generated/SubmitOptions;)V > Context: Everywhere, blocks=[BB[SSA:304..304]131 - org.apache.storm.daemon.nimbus.Nimbus.submitTopologyWithOpts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/generated/StormTopology;Lorg/apache/storm/generated/SubmitOptions;)V, BB[SSA:302..303]130 - org.apache.storm.daemon.nimbus.Nimbus.submitTopologyWithOpts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/generated/StormTopology;Lorg/apache/storm/generated/SubmitOptions;)V, BB[SSA:305..305]132 - org.apache.storm.daemon.nimbus.Nimbus.submitTopologyWithOpts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/generated/StormTopology;Lorg/apache/storm/generated/SubmitOptions;)V, BB[SSA:-1..-2]233 - org.apache.storm.daemon.nimbus.Nimbus.submitTopologyWithOpts(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/storm/generated/StormTopology;Lorg/apache/storm/generated/SubmitOptions;)V], numberOfBasicBlocks=4, firstLineNumber=3304, lastLineNumber=3304, firstMethodNumber=3212, lastMethodNumber=3379, isFirstLineValid=true, methodSrcCode=
+        try {
+            submitTopologyWithOptsCalls.mark();
+            assertIsLeader();
+            if (options == null) {
+                throw new InvalidTopologyException("Cannot submitTopologyWithOpts: SubmitOptions parameter value is null");
+            }
+            validateTopologyName(topoName);
+            checkAuthorization(topoName, null, "submitTopology");
+            assertTopoActive(topoName, false);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> topoConf = (Map<String, Object>) JSONValue.parse(jsonConf);
+            try {
+                ConfigValidation.validateTopoConf(topoConf);
+            } catch (IllegalArgumentException ex) {
+                throw new WrappedInvalidTopologyException(ex.getMessage());
+            }
+            validator.validate(topoName, topoConf, topology);
+            if ((boolean) conf.getOrDefault(Config.DISABLE_SYMLINKS, false)) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> blobMap = (Map<String, Object>) topoConf.get(Config.TOPOLOGY_BLOBSTORE_MAP);
+                if (blobMap != null && !blobMap.isEmpty()) {
+                    throw new WrappedInvalidTopologyException("symlinks are disabled so blobs are not supported but "
+                                                       + Config.TOPOLOGY_BLOBSTORE_MAP + " = " + blobMap);
+                }
+            }
+            ServerUtils.validateTopologyWorkerMaxHeapSizeConfigs(topoConf, topology,
+                                                     ObjectReader.getDouble(conf.get(Config.TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB)));
+            Utils.validateTopologyBlobStoreMap(topoConf, blobStore);
+            long uniqueNum = submittedCount.incrementAndGet();
+            String topoId = topoName + "-" + uniqueNum + "-" + Time.currentTimeSecs();
+            Map<String, String> creds = null;
+            if (options.is_set_creds()) {
+                creds = options.get_creds().get_creds();
+            }
+            topoConf.put(Config.STORM_ID, topoId);
+            topoConf.put(Config.TOPOLOGY_NAME, topoName);
+            topoConf = normalizeConf(conf, topoConf, topology);
+
+            OciUtils.adjustImageConfigForTopo(conf, topoConf, topoId);
+
+            ReqContext req = ReqContext.context();
+            Principal principal = req.principal();
+            String submitterPrincipal = principal == null ? null : principal.toString();
+            Set<String> topoAcl = new HashSet<>(ObjectReader.getStrings(topoConf.get(Config.TOPOLOGY_USERS)));
+            topoAcl.add(submitterPrincipal);
+            String submitterUser = principalToLocal.toLocal(principal);
+            topoAcl.add(submitterUser);
+
+            String topologyPrincipal = Utils.OR(submitterPrincipal, "");
+            topoConf.put(Config.TOPOLOGY_SUBMITTER_PRINCIPAL, topologyPrincipal);
+            String systemUser = System.getProperty("user.name");
+            String topologyOwner = Utils.OR(submitterUser, systemUser);
+            topoConf.put(Config.TOPOLOGY_SUBMITTER_USER, topologyOwner); //Don't let the user set who we launch as
+            topoConf.put(Config.TOPOLOGY_USERS, new ArrayList<>(topoAcl));
+            topoConf.put(Config.STORM_ZOOKEEPER_SUPERACL, conf.get(Config.STORM_ZOOKEEPER_SUPERACL));
+            if (!Utils.isZkAuthenticationConfiguredStormServer(conf)) {
+                topoConf.remove(Config.STORM_ZOOKEEPER_TOPOLOGY_AUTH_SCHEME);
+                topoConf.remove(Config.STORM_ZOOKEEPER_TOPOLOGY_AUTH_PAYLOAD);
+            }
+            if (!(Boolean) conf.getOrDefault(DaemonConfig.STORM_TOPOLOGY_CLASSPATH_BEGINNING_ENABLED, false)) {
+                topoConf.remove(Config.TOPOLOGY_CLASSPATH_BEGINNING);
+            }
+
+            String topoVersionString = topology.get_storm_version();
+            if (topoVersionString == null) {
+                topoVersionString = (String) conf.getOrDefault(Config.SUPERVISOR_WORKER_DEFAULT_VERSION, VersionInfo.getVersion());
+            }
+            //Check if we can run a topology with that version of storm.
+            SimpleVersion topoVersion = new SimpleVersion(topoVersionString);
+            List<String> cp = Utils.getCompatibleVersion(supervisorClasspaths, topoVersion, "classpath", null);
+            if (cp == null) {
+                throw new WrappedInvalidTopologyException("Topology submitted with storm version " + topoVersionString
+                                                   + " but could not find a configured compatible version to use "
+                                                   + supervisorClasspaths.keySet());
+            }
+            Map<String, Object> otherConf = Utils.getConfigFromClasspath(cp, conf);
+            Map<String, Object> totalConfToSave = Utils.merge(otherConf, topoConf);
+            Map<String, Object> totalConf = Utils.merge(conf, totalConfToSave);
+
+
+            //When reading the conf in nimbus we want to fall back to our own settings
+            // if the other config does not have it set.
+            topology = normalizeTopology(totalConf, topology);
+
+            // if the Resource Aware Scheduler is used,
+            // we might need to set the number of acker executors and eventlogger executors to be the estimated number of workers.
+            if (ServerUtils.isRas(conf)) {
+                int estimatedNumWorker = ServerUtils.getEstimatedWorkerCountForRasTopo(totalConf, topology);
+
+                setUpAckerExecutorConfigs(topoName, totalConfToSave, totalConf, estimatedNumWorker);
+                ServerUtils.validateTopologyAckerBundleResource(totalConfToSave, topology, topoName);
+
+                int numEventLoggerExecs = ObjectReader.getInt(totalConf.get(Config.TOPOLOGY_EVENTLOGGER_EXECUTORS), estimatedNumWorker);
+                totalConfToSave.put(Config.TOPOLOGY_EVENTLOGGER_EXECUTORS, numEventLoggerExecs);
+                LOG.debug("Config {} set to: {} for topology: {}",
+                    Config.TOPOLOGY_EVENTLOGGER_EXECUTORS, numEventLoggerExecs, topoName);
+
+            }
+
+            //Remove any configs that are specific to a host that might mess with the running topology.
+            totalConfToSave.remove(Config.STORM_LOCAL_HOSTNAME); //Don't override the host name, or everything looks like it is on nimbus
+
+            IStormClusterState state = stormClusterState;
+
+            if (creds == null && workerTokenManager != null) {
+                //Make sure we can store the worker tokens even if no creds are provided.
+                creds = new HashMap<>();
+            }
+            if (creds != null) {
+                Map<String, Object> finalConf = Collections.unmodifiableMap(topoConf);
+                for (INimbusCredentialPlugin autocred : nimbusAutocredPlugins) {
+                    autocred.populateCredentials(creds, finalConf);
+                }
+                upsertWorkerTokensInCreds(creds, topologyPrincipal, topoId);
+            }
+
+            if (ObjectReader.getBoolean(conf.get(Config.SUPERVISOR_RUN_WORKER_AS_USER), false)
+                && (submitterUser == null || submitterUser.isEmpty())) {
+                throw new WrappedAuthorizationException("Could not determine the user to run this topology as.");
+            }
+            StormCommon.systemTopology(totalConf, topology); //this validates the structure of the topology
+            validateTopologySize(topoConf, conf, topology);
+            if (Utils.isZkAuthenticationConfiguredStormServer(conf)
+                && !Utils.isZkAuthenticationConfiguredTopology(topoConf)) {
+                throw new IllegalArgumentException("The cluster is configured for zookeeper authentication, but no payload was provided.");
+            }
+            LOG.info("Received topology submission for {} (storm-{} JDK-{}) with conf {}", topoName,
+                     topoVersionString, topology.get_jdk_version(), ConfigUtils.maskPasswords(topoConf));
+
+            // lock protects against multiple topologies being submitted at once and
+            // cleanup thread killing topology in b/w assignment and starting the topology
+            synchronized (submitLock) {
+                assertTopoActive(topoName, false);
+                //cred-update-lock is not needed here because creds are being added for the first time.
+                if (creds != null) {
+                    state.setCredentials(topoId, new Credentials(creds), topoConf);
+                }
+                LOG.info("uploadedJar {} for {}", uploadedJarLocation, topoName);
+                setupStormCode(conf, topoId, uploadedJarLocation, totalConfToSave, topology);
+                waitForDesiredCodeReplication(totalConf, topoId);
+                state.setupHeatbeats(topoId, topoConf);
+                state.setupErrors(topoId, topoConf);
+                if (ObjectReader.getBoolean(totalConf.get(Config.TOPOLOGY_BACKPRESSURE_ENABLE), false)) {
+                    state.setupBackpressure(topoId, topoConf);
+                }
+                notifyTopologyActionListener(topoName, "submitTopology");
+                TopologyStatus status = null;
+                switch (options.get_initial_status()) {
+                    case INACTIVE:
+                        status = TopologyStatus.INACTIVE;
+                        break;
+                    case ACTIVE:
+                        status = TopologyStatus.ACTIVE;
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Inital Status of " + options.get_initial_status() + " is not allowed.");
+
+                }
+                startTopology(topoName, topoId, status, topologyOwner, topologyPrincipal, totalConfToSave, topology);
+            }
+        } catch (Exception e) {
+            LOG.warn("Topology submission exception. (topology name='{}')", topoName, e);
+            if (e instanceof TException) {
+                throw (TException) e;
+            }
+            throw new RuntimeException(e);
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/blacklist/BlacklistScheduler, prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere, blocks=[BB[SSA:21..21]9 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:19..20]8 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:22..22]10 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]75 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:31..31]15 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:29..30]14 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:32..32]16 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]75 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:41..41]21 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:39..40]20 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:42..42]22 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]75 - org.apache.storm.scheduler.blacklist.BlacklistScheduler.prepare(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V], numberOfBasicBlocks=12, firstLineNumber=79, lastLineNumber=79, firstMethodNumber=69, lastMethodNumber=106, isFirstLineValid=true, methodSrcCode=
+    public void prepare(Map<String, Object> conf, StormMetricsRegistry metricsRegistry) {
+        LOG.info("Preparing black list scheduler");
+        underlyingScheduler.prepare(conf, metricsRegistry);
+        this.conf = conf;
+        this.metricsRegistry = metricsRegistry;
+
+        toleranceTime = ObjectReader.getInt(this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_TOLERANCE_TIME),
+                                            DEFAULT_BLACKLIST_SCHEDULER_TOLERANCE_TIME);
+        toleranceCount = ObjectReader.getInt(this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_TOLERANCE_COUNT),
+                                             DEFAULT_BLACKLIST_SCHEDULER_TOLERANCE_COUNT);
+        resumeTime = ObjectReader.getInt(this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_RESUME_TIME),
+                                         DEFAULT_BLACKLIST_SCHEDULER_RESUME_TIME);
+        blacklistSendAssignentFailures = ObjectReader.getBoolean(this.conf.get(
+                DaemonConfig.BLACKLIST_SCHEDULER_ENABLE_SEND_ASSIGNMENT_FAILURES), false);
+
+        String reporterClassName = ObjectReader.getString(this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_REPORTER),
+                                                          LogReporter.class.getName());
+        reporter = (IReporter) initializeInstance(reporterClassName, "blacklist reporter");
+
+        String strategyClassName = ObjectReader.getString(this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_STRATEGY),
+                                                          DefaultBlacklistStrategy.class.getName());
+        blacklistStrategy = (IBlacklistStrategy) initializeInstance(strategyClassName, "blacklist strategy");
+
+        nimbusMonitorFreqSecs = ObjectReader.getInt(this.conf.get(DaemonConfig.NIMBUS_MONITOR_FREQ_SECS));
+        blacklistStrategy.prepare(this.conf);
+
+        windowSize = toleranceTime / nimbusMonitorFreqSecs;
+        badSupervisorsToleranceSlidingWindow = EvictingQueue.create(windowSize);
+        sendAssignmentFailureCount = EvictingQueue.create(windowSize);
+        cachedSupervisors = new HashMap<>();
+        blacklistedSupervisorIds = new HashSet<>();
+        blacklistOnBadSlots = ObjectReader.getBoolean(
+                this.conf.get(DaemonConfig.BLACKLIST_SCHEDULER_ASSUME_SUPERVISOR_BAD_BASED_ON_BAD_SLOT),
+                true);
+
+        //nimbus:num-blacklisted-supervisor + non-blacklisted supervisor = nimbus:num-supervisors
+        metricsRegistry.registerGauge("nimbus:num-blacklisted-supervisor", () -> blacklistedSupervisorIds.size());
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/drpc/DRPC, <init>(Lorg/apache/storm/metric/StormMetricsRegistry;Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:13..13]6 - org.apache.storm.daemon.drpc.DRPC.<init>(Lorg/apache/storm/metric/StormMetricsRegistry;Ljava/util/Map;)V, BB[SSA:11..12]5 - org.apache.storm.daemon.drpc.DRPC.<init>(Lorg/apache/storm/metric/StormMetricsRegistry;Ljava/util/Map;)V, BB[SSA:14..14]7 - org.apache.storm.daemon.drpc.DRPC.<init>(Lorg/apache/storm/metric/StormMetricsRegistry;Ljava/util/Map;)V, BB[SSA:-1..-2]10 - org.apache.storm.daemon.drpc.DRPC.<init>(Lorg/apache/storm/metric/StormMetricsRegistry;Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=81, lastLineNumber=81, firstMethodNumber=79, lastMethodNumber=82, isFirstLineValid=true, methodSrcCode=
+    public DRPC(StormMetricsRegistry metricsRegistry, Map<String, Object> conf) {
+        this(metricsRegistry, mkAuthorizationHandler((String) conf.get(DaemonConfig.DRPC_AUTHORIZER), conf),
+             ObjectReader.getInt(conf.get(DaemonConfig.DRPC_REQUEST_TIMEOUT_SECS), 600) * 1000);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/StormCommon, addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere, blocks=[BB[SSA:7..7]4 - org.apache.storm.daemon.StormCommon.addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:6..6]3 - org.apache.storm.daemon.StormCommon.addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:8..11]5 - org.apache.storm.daemon.StormCommon.addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:-1..-2]33 - org.apache.storm.daemon.StormCommon.addEventLogger(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V], numberOfBasicBlocks=4, firstLineNumber=346, lastLineNumber=347, firstMethodNumber=344, lastMethodNumber=361, isFirstLineValid=true, methodSrcCode=
+    public static void addEventLogger(Map<String, Object> conf, StormTopology topology) {
+        Integer numExecutors = ObjectReader.getInt(conf.get(Config.TOPOLOGY_EVENTLOGGER_EXECUTORS),
+                                                   ObjectReader.getInt(conf.get(Config.TOPOLOGY_WORKERS)));
+        if (numExecutors == null || numExecutors == 0) {
+            return;
+        }
+        HashMap<String, Object> componentConf = new HashMap<>();
+        componentConf.put(Config.TOPOLOGY_TASKS, numExecutors);
+        componentConf.put(Config.TOPOLOGY_TICK_TUPLE_FREQ_SECS, ObjectReader.getInt(conf.get(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS)));
+        Bolt eventLoggerBolt = Thrift.prepareSerializedBoltDetails(
+            eventLoggerInputs(topology), new EventLoggerBolt(), null, numExecutors, componentConf);
+
+        for (Object component : allComponents(topology).values()) {
+            ComponentCommon common = getComponentCommon(component);
+            common.put_to_streams(EVENTLOGGER_STREAM_ID, Thrift.outputFields(eventLoggerBoltFields()));
+        }
+        topology.put_to_bolts(EVENTLOGGER_COMPONENT_ID, eventLoggerBolt);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/StormCommon, addAcker(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V > Context: Everywhere, blocks=[BB[SSA:63..63]26 - org.apache.storm.daemon.StormCommon.addAcker(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:62..62]25 - org.apache.storm.daemon.StormCommon.addAcker(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:64..64]27 - org.apache.storm.daemon.StormCommon.addAcker(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V, BB[SSA:-1..-2]97 - org.apache.storm.daemon.StormCommon.addAcker(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)V], numberOfBasicBlocks=4, firstLineNumber=265, lastLineNumber=265, firstMethodNumber=257, lastMethodNumber=296, isFirstLineValid=true, methodSrcCode=
+
+        Map<String, StreamInfo> outputStreams = new HashMap<String, StreamInfo>();
+        outputStreams.put(Acker.ACKER_ACK_STREAM_ID, Thrift.directOutputFields(Arrays.asList("id", "time-delta-ms")));
+        outputStreams.put(Acker.ACKER_FAIL_STREAM_ID, Thrift.directOutputFields(Arrays.asList("id", "time-delta-ms")));
+        outputStreams.put(Acker.ACKER_RESET_TIMEOUT_STREAM_ID, Thrift.directOutputFields(Arrays.asList("id", "time-delta-ms")));
+
+        Map<String, Object> ackerConf = new HashMap<>();
+        int ackerNum =
+                ObjectReader.getInt(conf.get(Config.TOPOLOGY_ACKER_EXECUTORS), ObjectReader.getInt(conf.get(Config.TOPOLOGY_WORKERS)));
+        ackerConf.put(Config.TOPOLOGY_TASKS, ackerNum);
+        ackerConf.put(Config.TOPOLOGY_TICK_TUPLE_FREQ_SECS, ObjectReader.getInt(conf.get(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS)));
+
+        Map<GlobalStreamId, Grouping> inputs = ackerInputs(topology);
+        Bolt acker = Thrift.prepareSerializedBoltDetails(inputs, makeAckerBolt(), outputStreams, ackerNum, ackerConf);
+
+        for (Bolt bolt : topology.get_bolts().values()) {
+            ComponentCommon common = bolt.get_common();
+            common.put_to_streams(Acker.ACKER_ACK_STREAM_ID, Thrift.outputFields(Arrays.asList("id", "ack-val")));
+            common.put_to_streams(Acker.ACKER_FAIL_STREAM_ID, Thrift.outputFields(Arrays.asList("id")));
+            common.put_to_streams(Acker.ACKER_RESET_TIMEOUT_STREAM_ID, Thrift.outputFields(Arrays.asList("id")));
+        }
+
+        for (SpoutSpec spout : topology.get_spouts().values()) {
+            ComponentCommon common = spout.get_common();
+            Map<String, Object> spoutConf = componentConf(spout);
+            spoutConf.put(Config.TOPOLOGY_TICK_TUPLE_FREQ_SECS,
+                          ObjectReader.getInt(conf.get(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS)));
+            common.set_json_conf(JSONValue.toJSONString(spoutConf));
+            common.put_to_streams(Acker.ACKER_INIT_STREAM_ID,
+                                  Thrift.outputFields(Arrays.asList("id", "init-val", "spout-task")));
+            common.put_to_inputs(Utils.getGlobalStreamId(Acker.ACKER_COMPONENT_ID, Acker.ACKER_ACK_STREAM_ID),
+                                 Thrift.prepareDirectGrouping());
+            common.put_to_inputs(Utils.getGlobalStreamId(Acker.ACKER_COMPONENT_ID, Acker.ACKER_FAIL_STREAM_ID),
+                                 Thrift.prepareDirectGrouping());
+            common.put_to_inputs(Utils.getGlobalStreamId(Acker.ACKER_COMPONENT_ID, Acker.ACKER_RESET_TIMEOUT_STREAM_ID),
+                                 Thrift.prepareDirectGrouping());
+        }
+
+        topology.put_to_bolts(Acker.ACKER_COMPONENT_ID, acker);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/resource/strategies/scheduling/SchedulingSearcherState, <init>(Ljava/util/Map;Ljava/util/Map;IJLjava/util/List;Ljava/util/LinkedList;Lorg/apache/storm/scheduler/TopologyDetails;Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:102..102]46 - org.apache.storm.scheduler.resource.strategies.scheduling.SchedulingSearcherState.<init>(Ljava/util/Map;Ljava/util/Map;IJLjava/util/List;Ljava/util/LinkedList;Lorg/apache/storm/scheduler/TopologyDetails;Ljava/util/Map;)V, BB[SSA:100..101]45 - org.apache.storm.scheduler.resource.strategies.scheduling.SchedulingSearcherState.<init>(Ljava/util/Map;Ljava/util/Map;IJLjava/util/List;Ljava/util/LinkedList;Lorg/apache/storm/scheduler/TopologyDetails;Ljava/util/Map;)V, BB[SSA:103..103]47 - org.apache.storm.scheduler.resource.strategies.scheduling.SchedulingSearcherState.<init>(Ljava/util/Map;Ljava/util/Map;IJLjava/util/List;Ljava/util/LinkedList;Lorg/apache/storm/scheduler/TopologyDetails;Ljava/util/Map;)V, BB[SSA:-1..-2]56 - org.apache.storm.scheduler.resource.strategies.scheduling.SchedulingSearcherState.<init>(Ljava/util/Map;Ljava/util/Map;IJLjava/util/List;Ljava/util/LinkedList;Lorg/apache/storm/scheduler/TopologyDetails;Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=115, lastLineNumber=114, firstMethodNumber=89, lastMethodNumber=118, isFirstLineValid=true, methodSrcCode=
+                                    List<ExecutorDetails> execs, LinkedList<ExecutorDetails> unassignedAckers,
+                                    TopologyDetails td, Map<ExecutorDetails, String> execToComp) {
+        assert execs != null;
+
+        this.workerCompAssignmentCnts = workerCompAssignmentCnts;
+        this.nodeCompAssignmentCnts = nodeCompAssignmentCnts;
+        this.maxStatesSearched = maxStatesSearched;
+        this.execs = execs;
+        okToRemoveFromWorker = new boolean[execs.size()];
+        okToRemoveFromNode = new boolean[execs.size()];
+        this.td = td;
+        this.topoName = td.getName();
+        startTimeMillis = Time.currentTimeMillis();
+        if (maxTimeMs <= 0) {
+            maxEndTimeMs = Long.MAX_VALUE;
+        } else {
+            maxEndTimeMs = startTimeMillis + maxTimeMs;
+        }
+        this.execToComp = execToComp;
+
+        this.oneExecutorPerWorker = ObjectReader.getBoolean(td.getConf().get(Config.TOPOLOGY_RAS_ONE_EXECUTOR_PER_WORKER), false);
+        this.oneComponentPerWorker =  ObjectReader.getBoolean(td.getConf().get(Config.TOPOLOGY_RAS_ONE_COMPONENT_PER_WORKER), false);
+
+        this.unassignedAckers = unassignedAckers;
+        this.boundAckers = new HashSet<>();
+        this.ackersPerWorker = ObjectReader.getInt(
+            td.getConf().get(Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER), 1);
+        this.workerSlotToBoundAckers = new HashMap<>();
+        this.execsWithBoundAckers = new HashSet<>();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/spout/SpoutExecutor, init(Ljava/util/ArrayList;I)V > Context: Everywhere, blocks=[BB[SSA:35..35]20 - org.apache.storm.executor.spout.SpoutExecutor.init(Ljava/util/ArrayList;I)V, BB[SSA:33..34]19 - org.apache.storm.executor.spout.SpoutExecutor.init(Ljava/util/ArrayList;I)V, BB[SSA:36..36]21 - org.apache.storm.executor.spout.SpoutExecutor.init(Ljava/util/ArrayList;I)V, BB[SSA:-1..-2]88 - org.apache.storm.executor.spout.SpoutExecutor.init(Ljava/util/ArrayList;I)V], numberOfBasicBlocks=4, firstLineNumber=108, lastLineNumber=108, firstMethodNumber=97, lastMethodNumber=148, isFirstLineValid=true, methodSrcCode=
+    public void init(final ArrayList<Task> idToTask, int idToTaskBase) throws InterruptedException {
+        this.threadId = Thread.currentThread().getId();
+        executorTransfer.initLocalRecvQueues();
+        workerReady.await();
+        while (!stormActive.get()) {
+            //Topology may be deployed in deactivated mode, wait for activation
+            Utils.sleepNoSimulation(100);
+        }
+
+        LOG.info("Opening spout {}:{}", componentId, taskIds);
+        this.idToTask = idToTask;
+        this.maxSpoutPending = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_MAX_SPOUT_PENDING), 0) * idToTask.size();
+        this.spouts = new ArrayList<>();
+        for (Task task : idToTask) {
+            if (task != null) {
+                this.spouts.add((ISpout) task.getTaskObject());
+            }
+        }
+        this.pending = new RotatingMap<>(2, new RotatingMap.ExpiredCallback<Long, TupleInfo>() {
+            @Override
+            public void expire(Long key, TupleInfo tupleInfo) {
+                Long timeDelta = null;
+                if (tupleInfo.getTimestamp() != 0) {
+                    timeDelta = Time.deltaMs(tupleInfo.getTimestamp());
+                }
+                failSpoutMsg(SpoutExecutor.this, idToTask.get(tupleInfo.getTaskId() - idToTaskBase), timeDelta, tupleInfo, "TIMEOUT");
+            }
+        });
+
+        this.outputCollectors = new ArrayList<>();
+        for (int i = 0; i < idToTask.size(); ++i) {
+            Task taskData = idToTask.get(i);
+            if (taskData == null) {
+                continue;
+            }
+            ISpout spoutObject = (ISpout) taskData.getTaskObject();
+            spoutOutputCollector = new SpoutOutputCollectorImpl(
+                spoutObject, this, taskData, emittedCount,
+                hasAckers, rand, hasEventLoggers, isDebug, pending);
+            SpoutOutputCollector outputCollector = new SpoutOutputCollector(spoutOutputCollector);
+            this.outputCollectors.add(outputCollector);
+
+            if (spoutObject instanceof ICredentialsListener) {
+                ((ICredentialsListener) spoutObject).setCredentials(credentials);
+            }
+            spoutObject.open(topoConf, taskData.getUserContext(), outputCollector);
+        }
+        openOrPrepareWasCalled.set(true);
+        LOG.info("Opened spout {}:{}", componentId, taskIds);
+        setupTicks(true);
+        setupMetrics();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/resource/strategies/scheduling/BaseResourceAwareStrategy, computeMaxSchedulingTimeMs(Ljava/util/Map;)J > Context: Everywhere, blocks=[BB[SSA:5..5]3 - org.apache.storm.scheduler.resource.strategies.scheduling.BaseResourceAwareStrategy.computeMaxSchedulingTimeMs(Ljava/util/Map;)J, BB[SSA:3..4]2 - org.apache.storm.scheduler.resource.strategies.scheduling.BaseResourceAwareStrategy.computeMaxSchedulingTimeMs(Ljava/util/Map;)J, BB[SSA:6..6]4 - org.apache.storm.scheduler.resource.strategies.scheduling.BaseResourceAwareStrategy.computeMaxSchedulingTimeMs(Ljava/util/Map;)J, BB[SSA:-1..-2]13 - org.apache.storm.scheduler.resource.strategies.scheduling.BaseResourceAwareStrategy.computeMaxSchedulingTimeMs(Ljava/util/Map;)J, BB[SSA:13..13]7 - org.apache.storm.scheduler.resource.strategies.scheduling.BaseResourceAwareStrategy.computeMaxSchedulingTimeMs(Ljava/util/Map;)J, BB[SSA:11..12]6 - org.apache.storm.scheduler.resource.strategies.scheduling.BaseResourceAwareStrategy.computeMaxSchedulingTimeMs(Ljava/util/Map;)J, BB[SSA:14..14]8 - org.apache.storm.scheduler.resource.strategies.scheduling.BaseResourceAwareStrategy.computeMaxSchedulingTimeMs(Ljava/util/Map;)J, BB[SSA:-1..-2]13 - org.apache.storm.scheduler.resource.strategies.scheduling.BaseResourceAwareStrategy.computeMaxSchedulingTimeMs(Ljava/util/Map;)J], numberOfBasicBlocks=8, firstLineNumber=240, lastLineNumber=240, firstMethodNumber=238, lastMethodNumber=241, isFirstLineValid=true, methodSrcCode=
+        // expect to be killed by DaemonConfig.SCHEDULING_TIMEOUT_SECONDS_PER_TOPOLOGY seconds, terminate slightly before
+        int daemonMaxTimeSec = ObjectReader.getInt(topoConf.get(DaemonConfig.SCHEDULING_TIMEOUT_SECONDS_PER_TOPOLOGY), 60);
+        int confMaxTimeSec = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_RAS_CONSTRAINT_MAX_TIME_SECS), daemonMaxTimeSec);
+        return (confMaxTimeSec >= daemonMaxTimeSec) ? daemonMaxTimeSec * 1000L - 200L :  confMaxTimeSec * 1000L;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/dependency/DependencyUploader, <init>()V > Context: Everywhere, blocks=[BB[SSA:12..12]7 - org.apache.storm.dependency.DependencyUploader.<init>()V, BB[SSA:10..11]6 - org.apache.storm.dependency.DependencyUploader.<init>()V, BB[SSA:13..13]8 - org.apache.storm.dependency.DependencyUploader.<init>()V, BB[SSA:-1..-2]11 - org.apache.storm.dependency.DependencyUploader.<init>()V], numberOfBasicBlocks=4, firstLineNumber=55, lastLineNumber=55, firstMethodNumber=52, lastMethodNumber=56, isFirstLineValid=true, methodSrcCode=
+
+    public DependencyUploader() {
+        conf = Utils.readStormConfig();
+        this.uploadChunkSize = ObjectReader.getInt(conf.get(Config.STORM_BLOBSTORE_DEPENDENCY_JAR_UPLOAD_CHUNK_SIZE_BYTES), 1024 * 1024);
+    }
+
+}

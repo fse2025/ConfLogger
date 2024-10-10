@@ -1,0 +1,140 @@
+```java
+YarnConfiguration yarnConf =
+getConf() == null ? new YarnConfiguration() : new YarnConfiguration(
+getConf());
+boolean isHAEnabled =
+yarnConf.getBoolean(YarnConfiguration.RM_HA_ENABLED,
+YarnConfiguration.DEFAULT_RM_HA_ENABLED);
+
+if (args.length < 1) {
+printUsage("", isHAEnabled);
+return -1;
+}
+
+int exitCode = -1;
+int i = 0;
+String cmd = args[i++];
+
+exitCode = 0;
+if ("-help".equals(cmd)) {
+if (i < args.length) {
+printUsage(args[i], isHAEnabled);
+} else {
+printHelp("", isHAEnabled);
+}
+return exitCode;
+}
+
+if (USAGE.containsKey(cmd)) {
+if (isHAEnabled) {
+    // ConfLogger Inserted Start
+    logger.info("ResourceManager HA is enabled. Proceeding with command: " + cmd + ". Configuration parameter: " + YarnConfiguration.RM_HA_ENABLED + " = " + isHAEnabled);
+    // ConfLogger Inserted End
+    return super.run(args);
+}
+// ConfLogger Commented: Not Informative
+// System.out.println("Cannot run " + cmd
+// + " when ResourceManager HA is not enabled");
+// ConfLogger Inserted Start
+logger.warn("Cannot run command: " + cmd + " when ResourceManager HA is not enabled. Configuration parameter: " + YarnConfiguration.RM_HA_ENABLED + " = " + isHAEnabled);
+// ConfLogger Inserted End
+return -1;
+}
+
+//
+// verify that we have enough command line parameters
+//
+if ("-refreshAdminAcls".equals(cmd) || "-refreshQueues".equals(cmd) ||
+"-refreshNodesResources".equals(cmd) ||
+"-refreshServiceAcl".equals(cmd) ||
+"-refreshUserToGroupsMappings".equals(cmd) ||
+"-refreshSuperUserGroupsConfiguration".equals(cmd)) {
+if (args.length != 1) {
+printUsage(cmd, isHAEnabled);
+return exitCode;
+}
+}
+
+try {
+if ("-refreshQueues".equals(cmd)) {
+exitCode = refreshQueues();
+} else if ("-refreshNodes".equals(cmd)) {
+exitCode = handleRefreshNodes(args, cmd, isHAEnabled);
+} else if ("-refreshNodesResources".equals(cmd)) {
+exitCode = refreshNodesResources();
+} else if ("-refreshUserToGroupsMappings".equals(cmd)) {
+exitCode = refreshUserToGroupsMappings();
+} else if ("-refreshSuperUserGroupsConfiguration".equals(cmd)) {
+exitCode = refreshSuperUserGroupsConfiguration();
+} else if ("-refreshAdminAcls".equals(cmd)) {
+exitCode = refreshAdminAcls();
+} else if ("-refreshServiceAcl".equals(cmd)) {
+exitCode = refreshServiceAcls();
+} else if ("-refreshClusterMaxPriority".equals(cmd)) {
+exitCode = refreshClusterMaxPriority();
+} else if ("-getGroups".equals(cmd)) {
+String[] usernames = Arrays.copyOfRange(args, i, args.length);
+exitCode = getGroups(usernames);
+} else if ("-updateNodeResource".equals(cmd)) {
+exitCode = handleUpdateNodeResource(args, cmd, isHAEnabled);
+} else if ("-addToClusterNodeLabels".equals(cmd)) {
+exitCode = handleAddToClusterNodeLabels(args, cmd, isHAEnabled);
+} else if ("-removeFromClusterNodeLabels".equals(cmd)) {
+exitCode = handleRemoveFromClusterNodeLabels(args, cmd, isHAEnabled);
+} else if ("-replaceLabelsOnNode".equals(cmd)) {
+exitCode = handleReplaceLabelsOnNodes(args, cmd, isHAEnabled);
+} else {
+exitCode = -1;
+// ConfLogger Commented: Not Informative
+// System.err.println(cmd.substring(1) + ": Unknown command");
+// ConfLogger Inserted Start
+logger.error("Unknown command: " + cmd + ". Configuration parameter: " + YarnConfiguration.RM_HA_ENABLED + " = " + isHAEnabled);
+// ConfLogger Inserted End
+printUsage("", isHAEnabled);
+}
+
+} catch (IllegalArgumentException arge) {
+exitCode = -1;
+// ConfLogger Commented: Not Informative
+// System.err.println(cmd.substring(1) + ": " + arge.getLocalizedMessage());
+// ConfLogger Inserted Start
+logger.error("IllegalArgumentException for command: " + cmd + ". Error: " + arge.getLocalizedMessage() + ". Configuration parameter: " + YarnConfiguration.RM_HA_ENABLED + " = " + isHAEnabled);
+// ConfLogger Inserted End
+printUsage(cmd, isHAEnabled);
+} catch (RemoteException e) {
+//
+// This is a error returned by hadoop server. Print
+// out the first line of the error message, ignore the stack trace.
+exitCode = -1;
+try {
+String[] content;
+content = e.getLocalizedMessage().split("\n");
+// ConfLogger Commented: Not Informative
+// System.err.println(cmd.substring(1) + ": "
+// + content[0]);
+// ConfLogger Inserted Start
+logger.error("RemoteException for command: " + cmd + ". Error: " + content[0] + ". Configuration parameter: " + YarnConfiguration.RM_HA_ENABLED + " = " + isHAEnabled);
+// ConfLogger Inserted End
+} catch (Exception ex) {
+// ConfLogger Commented: Not Informative
+// System.err.println(cmd.substring(1) + ": "
+// + ex.getLocalizedMessage());
+// ConfLogger Inserted Start
+logger.error("Exception while handling RemoteException for command: " + cmd + ". Error: " + ex.getLocalizedMessage() + ". Configuration parameter: " + YarnConfiguration.RM_HA_ENABLED + " = " + isHAEnabled);
+// ConfLogger Inserted End
+}
+} catch (Exception e) {
+exitCode = -1;
+// ConfLogger Commented: Not Informative
+// System.err.println(cmd.substring(1) + ": "
+// + e.getLocalizedMessage());
+// ConfLogger Inserted Start
+logger.error("Exception for command: " + cmd + ". Error: " + e.getLocalizedMessage() + ". Configuration parameter: " + YarnConfiguration.RM_HA_ENABLED + " = " + isHAEnabled);
+// ConfLogger Inserted End
+}
+if (null != localNodeLabelsManager) {
+localNodeLabelsManager.stop();
+}
+return exitCode;
+}
+```

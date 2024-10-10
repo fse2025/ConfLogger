@@ -1,0 +1,87 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DBConfiguration.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.db.DBConfiguration.getConnection()Ljava/sql/Connection;	methodLines:	147:154
+blockLines:	150:-1
+paras:	null
+TaintedStat:	NORMAL getConnection:conditional branch(ne, to iindex=18) 12,13 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBConfiguration, getConnection()Ljava/sql/Connection; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBConfiguration, getConnection()Ljava/sql/Connection; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 3,4 @6 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBConfiguration, getConnection()Ljava/sql/Connection; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 3,4 @6 exception:5
+NORMAL getConnection:8 = invokestatic < Application, Ljava/lang/Class, forName(Ljava/lang/String;)Ljava/lang/Class; > 6 @9 exception:7 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBConfiguration, getConnection()Ljava/sql/Connection; > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Class, forName(Ljava/lang/String;)Ljava/lang/Class; > Context: Everywhere
+NORMAL forName:return 2 Node: synthetic < Primordial, Ljava/lang/Class, forName(Ljava/lang/String;)Ljava/lang/Class; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: synthetic < Primordial, Ljava/lang/Class, forName(Ljava/lang/String;)Ljava/lang/Class; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/DiskValidatorFactory, getInstance(Ljava/lang/String;)Lorg/apache/hadoop/util/DiskValidator; > Context: Everywhere[17]11 = invokestatic < Extension, Ljava/lang/Class, forName(Ljava/lang/String;)Ljava/lang/Class; > 1 @31 exception:10
+PHI Node: < Extension, Lorg/apache/hadoop/util/DiskValidatorFactory, getInstance(Ljava/lang/String;)Lorg/apache/hadoop/util/DiskValidator; > Context: Everywhere:26 = phi  25,24,11
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/DiskValidatorFactory, getInstance(Ljava/lang/String;)Lorg/apache/hadoop/util/DiskValidator; > Context: Everywhere[35]28 = invokestatic < Extension, Lorg/apache/hadoop/util/DiskValidatorFactory, getInstance(Ljava/lang/Class;)Lorg/apache/hadoop/util/DiskValidator; > 26 @68 exception:27 v26
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/DiskValidatorFactory, getInstance(Ljava/lang/Class;)Lorg/apache/hadoop/util/DiskValidator; > Context: Everywhere v1
+NORMAL getInstance:9 = invokestatic < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 1,7 @26 exception:8 Node: < Extension, Lorg/apache/hadoop/util/DiskValidatorFactory, getInstance(Ljava/lang/Class;)Lorg/apache/hadoop/util/DiskValidator; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+NORMAL newInstance:invokestatic < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > 21,2 @65 exception:25 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=14) 2,4 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=11) 5,6 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:invokeinterface < Extension, Lorg/apache/hadoop/conf/Configurable, setConf(Lorg/apache/hadoop/conf/Configuration;)V > 7,2 @16 exception:8 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/SaslPropertiesResolver in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL setConf:14 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > 2,6,8 @32 exception:13 Node: < Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/SaslPropertiesResolver in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmedStrings:6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBConfiguration, getConnection()Ljava/sql/Connection; > Context: Everywhere[9]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 9,10 @19 exception:11
+NORMAL getConnection:conditional branch(ne, to iindex=18) 12,13 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBConfiguration, getConnection()Ljava/sql/Connection; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    Class.forName(conf.get(DBConfiguration.DRIVER_CLASS_PROPERTY));
+
+    if(conf.get(DBConfiguration.USERNAME_PROPERTY) == null) {
+      return DriverManager.getConnection(
+               conf.get(DBConfiguration.URL_PROPERTY));
+    } else {
+      return DriverManager.getConnection(
+          conf.get(DBConfiguration.URL_PROPERTY), 
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBInputFormat, createConnection()Ljava/sql/Connection; > Context: Everywhere, blocks=[BB[SSA:2..2]2 - org.apache.hadoop.mapreduce.lib.db.DBInputFormat.createConnection()Ljava/sql/Connection;, BB[SSA:0..1]1 - org.apache.hadoop.mapreduce.lib.db.DBInputFormat.createConnection()Ljava/sql/Connection;, BB[SSA:3..6]3 - org.apache.hadoop.mapreduce.lib.db.DBInputFormat.createConnection()Ljava/sql/Connection;, BB[SSA:-1..-2]9 - org.apache.hadoop.mapreduce.lib.db.DBInputFormat.createConnection()Ljava/sql/Connection;], numberOfBasicBlocks=4, firstLineNumber=199, lastLineNumber=200, firstMethodNumber=198, lastMethodNumber=206, isFirstLineValid=true, methodSrcCode=
+    try {
+      Connection newConnection = dbConf.getConnection();
+      newConnection.setAutoCommit(false);
+      newConnection.setTransactionIsolation(
+          Connection.TRANSACTION_SERIALIZABLE);
+
+      return newConnection;
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DBOutputFormat, getRecordWriter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordWriter; > Context: Everywhere, blocks=[BB[SSA:19..20]10 - org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.getRecordWriter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordWriter;, BB[SSA:11..14]6 - org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.getRecordWriter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordWriter;, BB[SSA:18..18]9 - org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.getRecordWriter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordWriter;, BB[SSA:21..25]11 - org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.getRecordWriter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordWriter;, BB[SSA:-1..-2]24 - org.apache.hadoop.mapreduce.lib.db.DBOutputFormat.getRecordWriter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordWriter;], numberOfBasicBlocks=5, firstLineNumber=180, lastLineNumber=190, firstMethodNumber=177, lastMethodNumber=197, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    DBConfiguration dbConf = new DBConfiguration(context.getConfiguration());
+    String tableName = dbConf.getOutputTableName();
+    String[] fieldNames = dbConf.getOutputFieldNames();
+    
+    if(fieldNames == null) {
+      fieldNames = new String[dbConf.getOutputFieldCount()];
+    }
+    
+    try {
+      Connection connection = dbConf.getConnection();
+      PreparedStatement statement = null;
+
+      DatabaseMetaData dbMeta = connection.getMetaData();
+      this.dbProductName = dbMeta.getDatabaseProductName().toUpperCase();
+
+      statement = connection.prepareStatement(
+                    constructQuery(tableName, fieldNames));
+      return new DBRecordWriter(connection, statement);
+    } catch (Exception ex) {
+      throw new IOException(ex.getMessage());
+    }
+}

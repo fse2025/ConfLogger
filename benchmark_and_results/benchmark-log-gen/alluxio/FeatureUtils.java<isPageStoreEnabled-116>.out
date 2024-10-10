@@ -1,0 +1,22 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FeatureUtils.java	methodSinagture:	alluxio.util.FeatureUtils.isPageStoreEnabled()Z	methodLines:	116:117
+blockLines:	117:-1
+paras:	null
+TaintedStat:	NORMAL isPageStoreEnabled:conditional branch(ne, to iindex=6) 4,5 Node: < Application, Lalluxio/util/FeatureUtils, isPageStoreEnabled()Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/FeatureUtils, isPageStoreEnabled()Z > Context: Everywhere[1]4 = invokestatic < Application, Lalluxio/conf/Configuration, get(Lalluxio/conf/PropertyKey;)Ljava/lang/Object; > 2 @3 exception:3
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/FeatureUtils, isPageStoreEnabled()Z > Context: Everywhere[1]4 = invokestatic < Application, Lalluxio/conf/Configuration, get(Lalluxio/conf/PropertyKey;)Ljava/lang/Object; > 2 @3 exception:3
+NORMAL isPageStoreEnabled:conditional branch(ne, to iindex=6) 4,5 Node: < Application, Lalluxio/util/FeatureUtils, isPageStoreEnabled()Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static boolean isPageStoreEnabled() {
+    return Configuration.get(PropertyKey.WORKER_BLOCK_STORE_TYPE) == BlockStoreType.PAGE;
+  }
+
+
+====================ctx:=======================

@@ -1,0 +1,42 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	KeyStoreFileType.java	methodSinagture:	org.apache.zookeeper.common.KeyStoreFileType.fromPropertyValue(Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType;	methodLines:	61:65
+blockLines:	62:-1
+paras:	null
+TaintedStat:	NORMAL fromPropertyValue:conditional branch(eq, to iindex=7) 1,3 Node: < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/common/ClientX509Util, createNettySslContextForServer(Lorg/apache/zookeeper/common/ZKConfig;)Lio/netty/handler/ssl/SslContext; > Context: Everywhere[17]18 = invokevirtual < Application, Lorg/apache/zookeeper/common/ZKConfig, getProperty(Ljava/lang/String;)Ljava/lang/String; > 2,16 @30 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/common/ClientX509Util, createNettySslContextForServer(Lorg/apache/zookeeper/common/ZKConfig;)Lio/netty/handler/ssl/SslContext; > Context: Everywhere[17]18 = invokevirtual < Application, Lorg/apache/zookeeper/common/ZKConfig, getProperty(Ljava/lang/String;)Ljava/lang/String; > 2,16 @30 exception:17
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/common/ClientX509Util, createNettySslContextForServer(Lorg/apache/zookeeper/common/ZKConfig;)Lio/netty/handler/ssl/SslContext; > Context: Everywhere[39]23 = invokestatic < Application, Lorg/apache/zookeeper/common/ClientX509Util, createKeyManager(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljavax/net/ssl/X509KeyManager; > 8,14,18 @76 exception:22 v18
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/common/X509Util, createKeyManager(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljavax/net/ssl/X509KeyManager; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/common/X509Util, createKeyManager(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljavax/net/ssl/X509KeyManager; > Context: Everywhere[8]9 = invokestatic < Application, Lorg/apache/zookeeper/common/X509Util, loadKeyStore(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/security/KeyStore; > 1,7,3 @10 exception:8 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/common/X509Util, loadKeyStore(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/security/KeyStore; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/common/X509Util, loadKeyStore(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/security/KeyStore; > Context: Everywhere[2]6 = invokestatic < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > 3,1 @2 exception:5 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > Context: Everywhere[1]5 = invokestatic < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > 1 @1 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > Context: Everywhere v1
+NORMAL fromPropertyValue:conditional branch(eq, to iindex=7) 1,3 Node: < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValue(Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static KeyStoreFileType fromPropertyValue(String propertyValue) {
+        if (propertyValue == null || propertyValue.length() == 0) {
+            return null;
+        }
+        return KeyStoreFileType.valueOf(propertyValue.toUpperCase());
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/common/KeyStoreFileType, fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.zookeeper.common.KeyStoreFileType.fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType;, BB[SSA:-1..-2]0 - org.apache.zookeeper.common.KeyStoreFileType.fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType;, BB[SSA:2..5]2 - org.apache.zookeeper.common.KeyStoreFileType.fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType;, BB[SSA:-1..-2]6 - org.apache.zookeeper.common.KeyStoreFileType.fromPropertyValueOrFileName(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/zookeeper/common/KeyStoreFileType;], numberOfBasicBlocks=4, firstLineNumber=109, lastLineNumber=111, firstMethodNumber=109, lastMethodNumber=114, isFirstLineValid=false, methodSrcCode=
+    public static KeyStoreFileType fromPropertyValueOrFileName(String propertyValue, String filename) {
+        KeyStoreFileType result = KeyStoreFileType.fromPropertyValue(propertyValue);
+        if (result == null) {
+            result = KeyStoreFileType.fromFilename(filename);
+        }
+        return result;
+    }
+}

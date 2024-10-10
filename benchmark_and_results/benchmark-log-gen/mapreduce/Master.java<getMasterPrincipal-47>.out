@@ -1,0 +1,69 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Master.java	methodSinagture:	org.apache.hadoop.mapred.Master.getMasterPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	47:61
+blockLines:	51:-1
+paras:	null
+TaintedStat:	NORMAL getMasterPrincipal:conditional branch(eq, to iindex=20) 9,10 Node: < Application, Lorg/apache/hadoop/mapred/Master, getMasterPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/Master, getMasterPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[15]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @26 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/Master, getMasterPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[15]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @26 exception:16
+NORMAL getMasterPrincipal:19 = invokestatic < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 17,14 @30 exception:18 Node: < Application, Lorg/apache/hadoop/mapred/Master, getMasterPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getServerPrincipal:conditional branch(eq, to iindex=17) 5,6 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getServerPrincipal:conditional branch(ne, to iindex=17) 7,8 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getServerPrincipal:13 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 10,11 @20 exception:12 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/Master, getMasterPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[7]9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 6,7 @12 exception:8
+NORMAL getMasterPrincipal:conditional branch(eq, to iindex=20) 9,10 Node: < Application, Lorg/apache/hadoop/mapred/Master, getMasterPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    String masterPrincipal;
+    String framework = conf.get(MRConfig.FRAMEWORK_NAME,
+            MRConfig.YARN_FRAMEWORK_NAME);
+
+    if (framework.equals(MRConfig.CLASSIC_FRAMEWORK_NAME)) {
+      String masterAddress = getMasterAddress(conf);
+      // get kerberos principal for use as delegation token renewer
+      masterPrincipal =
+          SecurityUtil.getServerPrincipal(conf.get(MRConfig.MASTER_USER_NAME),
+          masterAddress);
+    } else {
+      masterPrincipal = YarnClientUtils.getRmPrincipal(conf);
+    }
+
+    return masterPrincipal;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, getDelegationTokenFromHS(Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;)Lorg/apache/hadoop/security/token/Token; > Context: Everywhere, blocks=[BB[SSA:8..8]5 - org.apache.hadoop.mapred.YARNRunner.getDelegationTokenFromHS(Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;)Lorg/apache/hadoop/security/token/Token;, BB[SSA:4..7]4 - org.apache.hadoop.mapred.YARNRunner.getDelegationTokenFromHS(Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;)Lorg/apache/hadoop/security/token/Token;, BB[SSA:9..9]6 - org.apache.hadoop.mapred.YARNRunner.getDelegationTokenFromHS(Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;)Lorg/apache/hadoop/security/token/Token;, BB[SSA:-1..-2]12 - org.apache.hadoop.mapred.YARNRunner.getDelegationTokenFromHS(Lorg/apache/hadoop/mapreduce/v2/api/MRClientProtocol;)Lorg/apache/hadoop/security/token/Token;], numberOfBasicBlocks=4, firstLineNumber=248, lastLineNumber=249, firstMethodNumber=246, lastMethodNumber=253, isFirstLineValid=true, methodSrcCode=
+      throws IOException, InterruptedException {
+    GetDelegationTokenRequest request = recordFactory
+      .newRecordInstance(GetDelegationTokenRequest.class);
+    request.setRenewer(Master.getMasterPrincipal(conf));
+    org.apache.hadoop.yarn.api.records.Token mrDelegationToken;
+    mrDelegationToken = hsProxy.getDelegationToken(request)
+        .getDelegationToken();
+    return ConverterUtils.convertFromYarn(mrDelegationToken,
+        hsProxy.getConnectAddress());
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, obtainTokensForNamenodesInternal(Lorg/apache/hadoop/security/Credentials;[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:29..30]10 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/security/Credentials;[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:11..13]5 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/security/Credentials;[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:31..33]11 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/security/Credentials;[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]20 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/security/Credentials;[Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=97, lastLineNumber=101, firstMethodNumber=95, lastMethodNumber=104, isFirstLineValid=true, methodSrcCode=
+      Path[] ps, Configuration conf) throws IOException {
+    Set<FileSystem> fsSet = new HashSet<FileSystem>();
+    for(Path p: ps) {
+      fsSet.add(p.getFileSystem(conf));
+    }
+    String masterPrincipal = Master.getMasterPrincipal(conf);
+    for (FileSystem fs : fsSet) {
+      obtainTokensForNamenodesInternal(fs, credentials, conf, masterPrincipal);
+    }
+  }
+
+}

@@ -1,0 +1,127 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JettyAdminServer.java	methodSinagture:	org.apache.zookeeper.server.admin.JettyAdminServer.<init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V	methodLines:	104:182
+blockLines:	157:-1
+paras:	zookeeper.admin.portUnification
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=170) 8,15 Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>()V > Context: Everywhere[20]31 = invokestatic < Application, Ljava/lang/Boolean, getBoolean(Ljava/lang/String;)Z > 29 @49 exception:30
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>()V > Context: Everywhere[20]31 = invokestatic < Application, Ljava/lang/Boolean, getBoolean(Ljava/lang/String;)Z > 29 @49 exception:30
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>()V > Context: Everywhere[25]invokespecial < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V > 1,6,12,18,22,28,31,34,37 @62 exception:38 v31
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V > Context: Everywhere v7
+NORMAL <init>:conditional branch(ne, to iindex=34) 7,15 Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V > Context: Everywhere
+NORMAL <init>:conditional branch(eq, to iindex=170) 8,15 Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JettyAdminServer.java	methodSinagture:	org.apache.zookeeper.server.admin.JettyAdminServer.<init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V	methodLines:	104:182
+blockLines:	115:-1
+paras:	zookeeper.admin.forceHttps
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=34) 8,15 Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>()V > Context: Everywhere[22]34 = invokestatic < Application, Ljava/lang/Boolean, getBoolean(Ljava/lang/String;)Z > 32 @54 exception:33
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>()V > Context: Everywhere[22]34 = invokestatic < Application, Ljava/lang/Boolean, getBoolean(Ljava/lang/String;)Z > 32 @54 exception:33
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>()V > Context: Everywhere[25]invokespecial < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V > 1,6,12,18,22,28,31,34,37 @62 exception:38 v34
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V > Context: Everywhere v8
+NORMAL <init>:conditional branch(ne, to iindex=34) 8,15 Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>(Ljava/lang/String;IILjava/lang/String;IZZZ)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        boolean forceHttps,
+        boolean needClientAuth) throws IOException, GeneralSecurityException {
+
+        this.port = port;
+        this.idleTimeout = timeout;
+        this.commandUrl = commandUrl;
+        this.address = address;
+
+        server = new Server();
+        ServerConnector connector = null;
+
+        if (!portUnification && !forceHttps) {
+            connector = new ServerConnector(server);
+        } else {
+            SecureRequestCustomizer customizer = new SecureRequestCustomizer();
+            customizer.setStsMaxAge(DEFAULT_STS_MAX_AGE);
+            customizer.setStsIncludeSubDomains(true);
+
+            HttpConfiguration config = new HttpConfiguration();
+            config.setSecureScheme("https");
+            config.addCustomizer(customizer);
+
+            try (QuorumX509Util x509Util = new QuorumX509Util()) {
+                String privateKeyType = System.getProperty(x509Util.getSslKeystoreTypeProperty(), "");
+                String privateKeyPath = System.getProperty(x509Util.getSslKeystoreLocationProperty(), "");
+                String privateKeyPassword = getPasswordFromSystemPropertyOrFile(
+                        x509Util.getSslKeystorePasswdProperty(),
+                        x509Util.getSslKeystorePasswdPathProperty());
+
+                String certAuthType = System.getProperty(x509Util.getSslTruststoreTypeProperty(), "");
+                String certAuthPath = System.getProperty(x509Util.getSslTruststoreLocationProperty(), "");
+                String certAuthPassword = getPasswordFromSystemPropertyOrFile(
+                        x509Util.getSslTruststorePasswdProperty(),
+                        x509Util.getSslTruststorePasswdPathProperty());
+                KeyStore keyStore = null, trustStore = null;
+
+                try {
+                    keyStore = X509Util.loadKeyStore(privateKeyPath, privateKeyPassword, privateKeyType);
+                    trustStore = X509Util.loadTrustStore(certAuthPath, certAuthPassword, certAuthType);
+                    LOG.info("Successfully loaded private key from {}", privateKeyPath);
+                    LOG.info("Successfully loaded certificate authority from {}", certAuthPath);
+                } catch (Exception e) {
+                    LOG.error("Failed to load authentication certificates for admin server.", e);
+                    throw e;
+                }
+
+                SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+                sslContextFactory.setKeyStore(keyStore);
+                sslContextFactory.setKeyStorePassword(privateKeyPassword);
+                sslContextFactory.setTrustStore(trustStore);
+                sslContextFactory.setTrustStorePassword(certAuthPassword);
+                sslContextFactory.setNeedClientAuth(needClientAuth);
+
+                if (forceHttps) {
+                    connector = new ServerConnector(server,
+                            new SslConnectionFactory(sslContextFactory, HttpVersion.fromVersion(httpVersion).asString()),
+                            new HttpConnectionFactory(config));
+                } else {
+                    connector = new ServerConnector(
+                            server,
+                            new UnifiedConnectionFactory(sslContextFactory, HttpVersion.fromVersion(httpVersion).asString()),
+                            new HttpConnectionFactory(config));
+                }
+            }
+        }
+
+        connector.setHost(address);
+        connector.setPort(port);
+        connector.setIdleTimeout(idleTimeout);
+
+        server.addConnector(connector);
+
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/*");
+        constrainTraceMethod(context);
+        server.setHandler(context);
+
+        context.addServlet(new ServletHolder(new CommandServlet()), commandUrl + "/*");
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/admin/JettyAdminServer, <init>()V > Context: Everywhere, blocks=[BB[SSA:25..25]12 - org.apache.zookeeper.server.admin.JettyAdminServer.<init>()V, BB[SSA:23..24]11 - org.apache.zookeeper.server.admin.JettyAdminServer.<init>()V, BB[SSA:26..26]13 - org.apache.zookeeper.server.admin.JettyAdminServer.<init>()V, BB[SSA:-1..-2]14 - org.apache.zookeeper.server.admin.JettyAdminServer.<init>()V], numberOfBasicBlocks=4, firstLineNumber=93, lastLineNumber=95, firstMethodNumber=85, lastMethodNumber=95, isFirstLineValid=true, methodSrcCode=
+    public JettyAdminServer() throws AdminServerException, IOException, GeneralSecurityException {
+        this(
+            System.getProperty("zookeeper.admin.serverAddress", DEFAULT_ADDRESS),
+            Integer.getInteger("zookeeper.admin.serverPort", DEFAULT_PORT),
+            Integer.getInteger("zookeeper.admin.idleTimeout", DEFAULT_IDLE_TIMEOUT),
+            System.getProperty("zookeeper.admin.commandURL", DEFAULT_COMMAND_URL),
+            Integer.getInteger("zookeeper.admin.httpVersion", DEFAULT_HTTP_VERSION),
+            Boolean.getBoolean("zookeeper.admin.portUnification"),
+            Boolean.getBoolean("zookeeper.admin.forceHttps"),
+            Boolean.getBoolean("zookeeper.admin.needClientAuth"));
+    }
+
+}

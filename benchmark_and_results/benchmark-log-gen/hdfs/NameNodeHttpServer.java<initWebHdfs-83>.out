@@ -1,0 +1,119 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNodeHttpServer.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.initWebHdfs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/http/HttpServer2;Ljava/lang/String;)V	methodLines:	83:110
+blockLines:	94:-1
+paras:	dfs.webhdfs.rest-csrf.enabled
+TaintedStat:	NORMAL initWebHdfs:conditional branch(eq, to iindex=37) 21,19 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, initWebHdfs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/http/HttpServer2;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, initWebHdfs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/http/HttpServer2;Ljava/lang/String;)V > Context: Everywhere[15]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,18,19 @30 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, initWebHdfs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/http/HttpServer2;Ljava/lang/String;)V > Context: Everywhere[15]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,18,19 @30 exception:20
+NORMAL initWebHdfs:conditional branch(eq, to iindex=37) 21,19 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, initWebHdfs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/http/HttpServer2;Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // set user pattern based on configuration file
+    UserParam.setUserPattern(conf.get(
+        HdfsClientConfigKeys.DFS_WEBHDFS_USER_PATTERN_KEY,
+        HdfsClientConfigKeys.DFS_WEBHDFS_USER_PATTERN_DEFAULT));
+    AclPermissionParam.setAclPermissionPattern(conf.get(
+        HdfsClientConfigKeys.DFS_WEBHDFS_ACL_PERMISSION_PATTERN_KEY,
+        HdfsClientConfigKeys.DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT));
+
+    final String pathSpec = WebHdfsFileSystem.PATH_PREFIX + "/*";
+
+    // add REST CSRF prevention filter
+    if (conf.getBoolean(DFS_WEBHDFS_REST_CSRF_ENABLED_KEY,
+        DFS_WEBHDFS_REST_CSRF_ENABLED_DEFAULT)) {
+      Map<String, String> restCsrfParams = RestCsrfPreventionFilter
+          .getFilterParams(conf, "dfs.webhdfs.rest-csrf.");
+      String restCsrfClassName = RestCsrfPreventionFilter.class.getName();
+      HttpServer2.defineFilter(httpServer2.getWebAppContext(),
+          restCsrfClassName, restCsrfClassName, restCsrfParams,
+          new String[] {pathSpec});
+    }
+
+    // add webhdfs packages
+    final Map<String, String> params = new HashMap<>();
+    params.put(ResourceConfig.FEATURE_MATCH_MATRIX_PARAMS, "true");
+    httpServer2.addJerseyResourcePackage(
+        jerseyResourcePackage + ";" + Param.class.getPackage().getName(),
+        pathSpec, params);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere, blocks=[BB[SSA:119..119]55 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:118..118]54 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:120..121]56 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:-1..-2]85 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V], numberOfBasicBlocks=4, firstLineNumber=165, lastLineNumber=167, firstMethodNumber=117, lastMethodNumber=184, isFirstLineValid=true, methodSrcCode=
+  void start() throws IOException {
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    final String infoHost = bindAddress.getHostName();
+
+    final InetSocketAddress httpAddr = bindAddress;
+    final String httpsAddrString = conf.getTrimmed(
+        DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_DEFAULT);
+    InetSocketAddress httpsAddr = NetUtils.createSocketAddr(httpsAddrString);
+
+    if (httpsAddr != null) {
+      // If DFS_NAMENODE_HTTPS_BIND_HOST_KEY exists then it overrides the
+      // host name portion of DFS_NAMENODE_HTTPS_ADDRESS_KEY.
+      final String bindHost =
+          conf.getTrimmed(DFSConfigKeys.DFS_NAMENODE_HTTPS_BIND_HOST_KEY);
+      if (bindHost != null && !bindHost.isEmpty()) {
+        httpsAddr = new InetSocketAddress(bindHost, httpsAddr.getPort());
+      }
+    }
+
+    HttpServer2.Builder builder = DFSUtil.httpServerTemplateForNNAndJN(conf,
+        httpAddr, httpsAddr, "hdfs",
+        DFSConfigKeys.DFS_NAMENODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY,
+        DFSConfigKeys.DFS_NAMENODE_KEYTAB_FILE_KEY);
+
+    final boolean xFrameEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED,
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED_DEFAULT);
+
+    final String xFrameOptionValue = conf.getTrimmed(
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE,
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE_DEFAULT);
+
+    builder.configureXFrame(xFrameEnabled).setXFrameOption(xFrameOptionValue);
+
+    httpServer = builder.build();
+
+    if (policy.isHttpsEnabled()) {
+      // assume same ssl port for all datanodes
+      InetSocketAddress datanodeSslPort = NetUtils.createSocketAddr(conf.getTrimmed(
+          DFSConfigKeys.DFS_DATANODE_HTTPS_ADDRESS_KEY, infoHost + ":"
+              + DFSConfigKeys.DFS_DATANODE_HTTPS_DEFAULT_PORT));
+      httpServer.setAttribute(DFSConfigKeys.DFS_DATANODE_HTTPS_PORT_KEY,
+          datanodeSslPort.getPort());
+    }
+    String httpKeytab = conf.get(DFSUtil.getSpnegoKeytabKey(conf,
+        DFSConfigKeys.DFS_NAMENODE_KEYTAB_FILE_KEY));
+    initWebHdfs(conf, bindAddress.getHostName(), httpKeytab, httpServer,
+        NamenodeWebHdfsMethods.class.getPackage().getName());
+
+    httpServer.setAttribute(NAMENODE_ATTRIBUTE_KEY, nn);
+    httpServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    setupServlets(httpServer);
+    httpServer.start();
+
+    int connIdx = 0;
+    if (policy.isHttpEnabled()) {
+      httpAddress = httpServer.getConnectorAddress(connIdx++);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_HTTP_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpAddress));
+    }
+
+    if (policy.isHttpsEnabled()) {
+      httpsAddress = httpServer.getConnectorAddress(connIdx);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpsAddress));
+    }
+  }
+
+}

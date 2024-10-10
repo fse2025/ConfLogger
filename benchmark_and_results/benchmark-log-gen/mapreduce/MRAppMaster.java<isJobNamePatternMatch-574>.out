@@ -1,0 +1,40 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MRAppMaster.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.MRAppMaster.isJobNamePatternMatch(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z	methodLines:	574:584
+blockLines:	575:-1
+paras:	null
+TaintedStat:	NORMAL isJobNamePatternMatch:conditional branch(eq, to iindex=30) 3,7 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, isJobNamePatternMatch(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, cleanupStagingDir()V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,5 @6 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, cleanupStagingDir()V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,5 @6 exception:6
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, cleanupStagingDir()V > Context: Everywhere[17]17 = invokevirtual < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, keepJobFiles(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z > 1,12,7 @32 exception:16 v7
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, keepJobFiles(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, keepJobFiles(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z > Context: Everywhere[3]6 = invokespecial < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, isJobNamePatternMatch(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z > 1,2,3 @3 exception:5 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, isJobNamePatternMatch(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z > Context: Everywhere v3
+NORMAL isJobNamePatternMatch:conditional branch(eq, to iindex=30) 3,7 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, isJobNamePatternMatch(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // Matched staging files should be preserved after job is finished.
+    if (conf.getKeepTaskFilesPattern() != null && jobTempDir != null) {
+      java.nio.file.Path pathName = Paths.get(jobTempDir).getFileName();
+      if (pathName != null) {
+        String jobFileName = pathName.toString();
+        Pattern pattern = Pattern.compile(conf.getKeepTaskFilesPattern());
+        Matcher matcher = pattern.matcher(jobFileName);
+        return matcher.find();
+      }
+    }
+    return false;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, keepJobFiles(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.keepJobFiles(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.keepJobFiles(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z, BB[SSA:4..5]2 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.keepJobFiles(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z, BB[SSA:-1..-2]8 - org.apache.hadoop.mapreduce.v2.app.MRAppMaster.keepJobFiles(Lorg/apache/hadoop/mapred/JobConf;Ljava/lang/String;)Z], numberOfBasicBlocks=4, firstLineNumber=593, lastLineNumber=594, firstMethodNumber=593, lastMethodNumber=594, isFirstLineValid=false, methodSrcCode=
+  protected boolean keepJobFiles(JobConf conf, String jobTempDir) {
+    return isJobNamePatternMatch(conf, jobTempDir)
+            || isKeepFailedTaskFiles(conf);
+}

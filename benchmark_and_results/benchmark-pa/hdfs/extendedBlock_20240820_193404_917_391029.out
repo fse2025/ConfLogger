@@ -1,0 +1,82 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DNConf.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DNConf.setBlockReportInterval(J)V	methodLines:	480:484
+blockLines:	481:-1
+paras:	null
+TaintedStat:	NORMAL setBlockReportInterval:conditional branch(le, to iindex=7) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, setBlockReportInterval(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[133]85 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 83,2 @285 exception:84
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[133]85 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 83,2 @285 exception:84
+NORMAL reconfBlockReportParameters:invokespecial < Application, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > 81,2,3,85,79 @290 exception:86 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > Context: Everywhere
+NORMAL <init>:8 = invokestatic < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,3,4 @4 exception:7 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL constructMessage:13 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 11 @16 exception:12 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere[2]5 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 3 @4 exception:4
+NORMAL handleEndElement:77 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 75,5 @281 exception:76 Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[9]11 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,9 @17 exception:10
+NORMAL reconfBlockReportParameters:conditional branch(eq, to iindex=67) 11,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:47 = phi  46,45
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[31]invokevirtual < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, setBlockReportInterval(J)V > 50,47 @61 exception:51 v47
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, setBlockReportInterval(J)V > Context: Everywhere v2
+NORMAL setBlockReportInterval:5 = compare 2,4 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, setBlockReportInterval(J)V > Context: Everywhere
+NORMAL setBlockReportInterval:conditional branch(le, to iindex=7) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, setBlockReportInterval(J)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  void setBlockReportInterval(long intervalMs) {
+    Preconditions.checkArgument(intervalMs > 0,
+        DFS_BLOCKREPORT_INTERVAL_MSEC_KEY + " should be larger than 0");
+    blockReportInterval = intervalMs;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:30..31]11 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:27..29]10 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:32..33]12 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]61 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfBlockReportParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=752, lastLineNumber=754, firstMethodNumber=744, lastMethodNumber=777, isFirstLineValid=true, methodSrcCode=
+      throws ReconfigurationException {
+    String result = null;
+    try {
+      LOG.info("Reconfiguring {} to {}", property, newVal);
+      if (property.equals(DFS_BLOCKREPORT_INTERVAL_MSEC_KEY)) {
+        Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+        long intervalMs = newVal == null ? DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT :
+            Long.parseLong(newVal);
+        result = Long.toString(intervalMs);
+        dnConf.setBlockReportInterval(intervalMs);
+        for (BPOfferService bpos : blockPoolManager.getAllNamenodeThreads()) {
+          if (bpos != null) {
+            for (BPServiceActor actor : bpos.getBPServiceActors()) {
+              actor.getScheduler().setBlockReportIntervalMs(intervalMs);
+            }
+          }
+        }
+      } else if (property.equals(DFS_BLOCKREPORT_SPLIT_THRESHOLD_KEY)) {
+        Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+        long threshold = newVal == null ? DFS_BLOCKREPORT_SPLIT_THRESHOLD_DEFAULT :
+            Long.parseLong(newVal);
+        result = Long.toString(threshold);
+        dnConf.setBlockReportSplitThreshold(threshold);
+      } else if (property.equals(DFS_BLOCKREPORT_INITIAL_DELAY_KEY)) {
+        Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+        int initialDelay = newVal == null ? DFS_BLOCKREPORT_INITIAL_DELAY_DEFAULT :
+            Integer.parseInt(newVal);
+        result = Integer.toString(initialDelay);
+        dnConf.setInitBRDelayMs(result);
+      }
+      LOG.info("RECONFIGURE* changed {} to {}", property, newVal);
+      return result;
+    } catch (IllegalArgumentException e) {
+      throw new ReconfigurationException(property, newVal, getConf().get(property), e);
+    }
+}

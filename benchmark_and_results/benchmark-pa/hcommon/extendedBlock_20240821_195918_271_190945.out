@@ -1,0 +1,22 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AbstractDNSToSwitchMapping.java	methodSinagture:	org.apache.hadoop.net.AbstractDNSToSwitchMapping.isSingleSwitchByScriptPolicy()Z	methodLines:	135:136
+blockLines:	137:-1
+paras:	net.topology.script.file.name
+TaintedStat:	NORMAL isSingleSwitchByScriptPolicy:conditional branch(ne, to iindex=12) 8,4 Node: < Application, Lorg/apache/hadoop/net/AbstractDNSToSwitchMapping, isSingleSwitchByScriptPolicy()Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/net/AbstractDNSToSwitchMapping, isSingleSwitchByScriptPolicy()Z > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @13 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/net/AbstractDNSToSwitchMapping, isSingleSwitchByScriptPolicy()Z > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @13 exception:7
+NORMAL isSingleSwitchByScriptPolicy:conditional branch(ne, to iindex=12) 8,4 Node: < Application, Lorg/apache/hadoop/net/AbstractDNSToSwitchMapping, isSingleSwitchByScriptPolicy()Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected boolean isSingleSwitchByScriptPolicy() {
+    return conf != null
+        && conf.get(CommonConfigurationKeys.NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY) == null;
+
+
+====================ctx:=======================

@@ -1,0 +1,74 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ReplaceDatanodeOnFailure.java	methodSinagture:	org.apache.hadoop.hdfs.protocol.datatransfer.ReplaceDatanodeOnFailure.getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy;	methodLines:	153:170
+blockLines:	157:-1
+paras:	dfs.client.block.write.replace-datanode-on-failure.enable
+TaintedStat:	NORMAL getPolicy:conditional branch(ne, to iindex=10) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @4 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @4 exception:5
+NORMAL getPolicy:conditional branch(ne, to iindex=10) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ReplaceDatanodeOnFailure.java	methodSinagture:	org.apache.hadoop.hdfs.protocol.datatransfer.ReplaceDatanodeOnFailure.getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy;	methodLines:	153:170
+blockLines:	164:-1
+paras:	dfs.client.block.write.replace-datanode-on-failure.policy
+TaintedStat:	NORMAL getPolicy:conditional branch(ge, to iindex=38) 23,14 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere[13]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,8,9 @21 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere[13]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,8,9 @21 exception:10
+NORMAL getPolicy:31 = invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 29,11 @80 exception:30 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL append:return 1 Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/fs/FileSystemLinkResolver, resolve(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/lang/Object; > Context: Everywhere[39]65 = invokevirtual < Extension, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 62,63 @74 exception:64
+NORMAL resolve:67 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 65 @77 exception:66 Node: < Extension, Lorg/apache/hadoop/fs/FileSystemLinkResolver, resolve(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/lang/Object; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @21 exception:14
+NORMAL getClientBackoffEnable:18 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,15,16 @28 exception:17 Node: < Extension, Lorg/apache/hadoop/ipc/Server, getClientBackoffEnable(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:conditional branch(eq, to iindex=11) 7,6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @4 exception:5
+NORMAL getPolicy:conditional branch(ne, to iindex=10) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere
+NORMAL getPolicy:conditional branch(ge, to iindex=38) 23,14 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, getPolicy(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure$Policy; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static Policy getPolicy(final Configuration conf) {
+    final boolean enabled = conf.getBoolean(
+        HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.ENABLE_KEY,
+        HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.ENABLE_DEFAULT);
+    if (!enabled) {
+      return Policy.DISABLE;
+    }
+
+    final String policy = conf.get(
+        HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_KEY,
+        HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_DEFAULT);
+    for(int i = 1; i < Policy.values().length; i++) {
+      final Policy p = Policy.values()[i];
+      if (p.name().equalsIgnoreCase(policy)) {
+        return p;
+      }
+    }
+    throw new HadoopIllegalArgumentException("Illegal configuration value for "
+        + HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.POLICY_KEY
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure, get(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.hdfs.protocol.datatransfer.ReplaceDatanodeOnFailure.get(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.protocol.datatransfer.ReplaceDatanodeOnFailure.get(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure;, BB[SSA:2..6]2 - org.apache.hadoop.hdfs.protocol.datatransfer.ReplaceDatanodeOnFailure.get(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure;, BB[SSA:-1..-2]6 - org.apache.hadoop.hdfs.protocol.datatransfer.ReplaceDatanodeOnFailure.get(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/protocol/datatransfer/ReplaceDatanodeOnFailure;], numberOfBasicBlocks=4, firstLineNumber=144, lastLineNumber=146, firstMethodNumber=144, lastMethodNumber=150, isFirstLineValid=false, methodSrcCode=
+  public static ReplaceDatanodeOnFailure get(final Configuration conf) {
+    final Policy policy = getPolicy(conf);
+    final boolean bestEffort = conf.getBoolean(
+        HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.BEST_EFFORT_KEY,
+        HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.BEST_EFFORT_DEFAULT);
+
+    return new ReplaceDatanodeOnFailure(policy, bestEffort);
+  }
+}

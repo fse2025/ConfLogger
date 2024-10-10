@@ -1,0 +1,63 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RackResolver.java	methodSinagture:	org.apache.hadoop.yarn.util.RackResolver.init(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	54:76
+blockLines:	70:-1
+paras:	null
+TaintedStat:	NORMAL init:conditional branch(eq, to iindex=23) 14,4 Node: < Application, Lorg/apache/hadoop/yarn/util/RackResolver, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/RackResolver, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[10]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,6,7,8 @18 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/RackResolver, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[10]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,6,7,8 @18 exception:9
+NORMAL init:12 = invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 10,1 @24 exception:11 Node: < Application, Lorg/apache/hadoop/yarn/util/RackResolver, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+NORMAL newInstance:return 21 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/RackResolver, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[14]12 = invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 10,1 @24 exception:11
+NORMAL init:13 = checkcast <Application,Lorg/apache/hadoop/net/DNSToSwitchMapping>12 <Application,Lorg/apache/hadoop/net/DNSToSwitchMapping> Node: < Application, Lorg/apache/hadoop/yarn/util/RackResolver, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL init:14 = instanceof 13 <Application,Lorg/apache/hadoop/net/CachedDNSToSwitchMapping> Node: < Application, Lorg/apache/hadoop/yarn/util/RackResolver, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL init:conditional branch(eq, to iindex=23) 14,4 Node: < Application, Lorg/apache/hadoop/yarn/util/RackResolver, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public synchronized static void init(Configuration conf) {
+    if (initCalled) {
+      return;
+    }
+    initCalled = true;
+    Class<? extends DNSToSwitchMapping> dnsToSwitchMappingClass =
+        conf.getClass(
+        CommonConfigurationKeysPublic.NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY,
+        ScriptBasedMapping.class,
+        DNSToSwitchMapping.class);
+    try {
+      DNSToSwitchMapping newInstance = ReflectionUtils.newInstance(
+          dnsToSwitchMappingClass, conf);
+      // Wrap around the configured class with the Cached implementation so as
+      // to save on repetitive lookups.
+      // Check if the impl is already caching, to avoid double caching.
+      dnsToSwitchMapping =
+          ((newInstance instanceof CachedDNSToSwitchMapping) ? newInstance
+              : new CachedDNSToSwitchMapping(newInstance));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/api/impl/AMRMClientImpl, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.yarn.client.api.impl.AMRMClientImpl.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.yarn.client.api.impl.AMRMClientImpl.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:2..4]2 - org.apache.hadoop.yarn.client.api.impl.AMRMClientImpl.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]4 - org.apache.hadoop.yarn.client.api.impl.AMRMClientImpl.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=183, lastLineNumber=185, firstMethodNumber=183, lastMethodNumber=186, isFirstLineValid=false, methodSrcCode=
+  protected void serviceInit(Configuration conf) throws Exception {
+    RackResolver.init(conf);
+    super.serviceInit(conf);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/util/RackResolver, resolve(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/net/Node; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.yarn.util.RackResolver.resolve(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/net/Node;, BB[SSA:-1..-2]0 - org.apache.hadoop.yarn.util.RackResolver.resolve(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/net/Node;, BB[SSA:2..3]2 - org.apache.hadoop.yarn.util.RackResolver.resolve(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/net/Node;, BB[SSA:-1..-2]4 - org.apache.hadoop.yarn.util.RackResolver.resolve(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/net/Node;], numberOfBasicBlocks=4, firstLineNumber=86, lastLineNumber=88, firstMethodNumber=86, lastMethodNumber=88, isFirstLineValid=false, methodSrcCode=
+  public static Node resolve(Configuration conf, String hostName) {
+    init(conf);
+    return coreResolve(hostName);
+  }
+}

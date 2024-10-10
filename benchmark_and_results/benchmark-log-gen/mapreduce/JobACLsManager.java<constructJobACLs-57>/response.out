@@ -1,0 +1,27 @@
+```java
+Map<JobACL, AccessControlList> acls =
+new HashMap<JobACL, AccessControlList>();
+
+// Don't construct anything if authorization is disabled.
+if (!areACLsEnabled()) {
+    // ConfLogger Inserted Start
+    logger.info("Authorization is disabled. No ACLs will be constructed.");
+    // ConfLogger Inserted End
+    return acls;
+}
+
+for (JobACL aclName : JobACL.values()) {
+    String aclConfigName = aclName.getAclName();
+    String aclConfigured = conf.get(aclConfigName);
+    if (aclConfigured == null) {
+        // If ACLs are not configured at all, we grant no access to anyone. So
+        // jobOwner and cluster administrator _only_ can do 'stuff'
+        aclConfigured = " ";
+        // ConfLogger Inserted Start
+        logger.warn("ACL for {} is not configured. Defaulting to no access. Configuration key: {}", aclConfigName, aclConfigName);
+        // ConfLogger Inserted End
+    }
+    acls.put(aclName, new AccessControlList(aclConfigured));
+}
+return acls;
+```

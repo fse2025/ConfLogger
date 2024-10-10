@@ -1,0 +1,21 @@
+```java
+String oldStyleUgi = conf.get(DEPRECATED_UGI_KEY);
+if (oldStyleUgi != null) {
+// We can't use the normal configuration deprecation mechanism here
+// since we need to split out the username from the configured UGI.
+// ConfLogger Skipped
+LOG.warn(DEPRECATED_UGI_KEY + " should not be used. Instead, use " +
+HADOOP_HTTP_STATIC_USER + ".");
+String[] parts = oldStyleUgi.split(",");
+// ConfLogger Inserted Start
+logger.info("Deprecated configuration parameter used: " + DEPRECATED_UGI_KEY + ". Extracted username: " + parts[0] + ". Please use " + HADOOP_HTTP_STATIC_USER + " instead.");
+// ConfLogger Inserted End
+return parts[0];
+} else {
+String staticUser = conf.get(HADOOP_HTTP_STATIC_USER, DEFAULT_HADOOP_HTTP_STATIC_USER);
+// ConfLogger Inserted Start
+logger.info("Using configuration parameter: " + HADOOP_HTTP_STATIC_USER + " with value: " + staticUser + ". Default value: " + DEFAULT_HADOOP_HTTP_STATIC_USER + ".");
+// ConfLogger Inserted End
+return staticUser;
+}
+```

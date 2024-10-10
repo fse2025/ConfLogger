@@ -1,0 +1,40 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	LogAggregationFileController.java	methodSinagture:	org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileController.initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V	methodLines:	118:137
+blockLines:	124:-1
+paras:	yarn.nodemanager.log-aggregation.num-log-files-per-app
+TaintedStat:	NORMAL initialize:conditional branch(gt, to iindex=15) 8,9 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere[6]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,5,6 @10 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere[6]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,5,6 @10 exception:7
+NORMAL initialize:conditional branch(gt, to iindex=15) 8,9 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController, initialize(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void initialize(Configuration conf, String controllerName) {
+    this.conf = conf;
+    int configuredRetentionSize = conf.getInt(
+        YarnConfiguration.NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP,
+        YarnConfiguration
+            .DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP);
+    if (configuredRetentionSize <= 0) {
+      this.retentionSize =
+          YarnConfiguration
+              .DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP;
+    } else {
+      this.retentionSize = configuredRetentionSize;
+    }
+    this.fileControllerName = controllerName;
+
+    extractRemoteRootLogDir();
+    extractRemoteRootLogDirSuffix();
+
+    initInternal(conf);
+  }
+
+
+
+====================ctx:=======================

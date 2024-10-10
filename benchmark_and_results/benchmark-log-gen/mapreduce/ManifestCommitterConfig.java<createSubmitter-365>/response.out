@@ -1,0 +1,11 @@
+```java
+int numThreads = conf.getInt(key, defVal);
+if (numThreads <= 0) {
+    // ConfLogger Inserted Start
+    logger.warn("Invalid configuration for 'numThreads': " + numThreads + ". Using default value: " + defVal + ". Ensure 'numThreads' is set to a positive integer.");
+    // ConfLogger Inserted End
+    // ignore the setting if it is too invalid.
+    numThreads = defVal;
+}
+return createCloseableTaskSubmitter(numThreads, getJobAttemptId());
+```

@@ -1,0 +1,131 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileNameIndexUtils.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.jobhistory.FileNameIndexUtils.trimURLEncodedString(Ljava/lang/String;I)Ljava/lang/String;	methodLines:	312:362
+blockLines:	313:-1
+paras:	mapreduce.jobhistory.jobname.limit
+TaintedStat:	NORMAL trimURLEncodedString:conditional branch(ge, to iindex=11) 2,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/FileNameIndexUtils, trimURLEncodedString(Ljava/lang/String;I)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/JobHistoryEventHandler, processDoneFiles(Lorg/apache/hadoop/mapreduce/v2/api/records/JobId;)V > Context: Everywhere[129]94 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 90,91,92 @293 exception:93
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/JobHistoryEventHandler, processDoneFiles(Lorg/apache/hadoop/mapreduce/v2/api/records/JobId;)V > Context: Everywhere[129]94 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 90,91,92 @293 exception:93
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/jobhistory/JobHistoryEventHandler, processDoneFiles(Lorg/apache/hadoop/mapreduce/v2/api/records/JobId;)V > Context: Everywhere[135]98 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/FileNameIndexUtils, getDoneFileName(Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobIndexInfo;I)Ljava/lang/String; > 96,94 @305 exception:97 v94
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/FileNameIndexUtils, getDoneFileName(Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobIndexInfo;I)Ljava/lang/String; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/FileNameIndexUtils, getDoneFileName(Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobIndexInfo;I)Ljava/lang/String; > Context: Everywhere[45]48 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/FileNameIndexUtils, trimURLEncodedString(Ljava/lang/String;I)Ljava/lang/String; > 46,2 @92 exception:47 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/FileNameIndexUtils, trimURLEncodedString(Ljava/lang/String;I)Ljava/lang/String; > Context: Everywhere v2
+NORMAL trimURLEncodedString:conditional branch(ge, to iindex=11) 2,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/FileNameIndexUtils, trimURLEncodedString(Ljava/lang/String;I)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String encodedString, int limitLength) {
+    assert(limitLength >= 0) : "limitLength should be positive integer";
+
+    if (encodedString.length() <= limitLength) {
+      return encodedString;
+    }
+
+    int index = 0;
+    int increase = 0;
+    byte[] strBytes = encodedString.getBytes(UTF_8);
+
+    // calculate effective character length based on UTF-8 specification.
+    // The size of a character coded in UTF-8 should be 4-byte at most.
+    // See RFC3629
+    while (true) {
+      byte b = strBytes[index];
+      if (b == '%') {
+        byte minuend1 = strBytes[index + 1];
+        byte subtrahend1 = (byte)(Character.isDigit(
+            minuend1) ? '0' : 'A' - 10);
+        byte minuend2 = strBytes[index + 2];
+        byte subtrahend2 = (byte)(Character.isDigit(
+            minuend2) ? '0' : 'A' - 10);
+        int initialHex =
+            ((Character.toUpperCase(minuend1) - subtrahend1) << 4) +
+            (Character.toUpperCase(minuend2) - subtrahend2);
+
+        if (0x00 <= initialHex && initialHex <= 0x7F) {
+          // For 1-byte UTF-8 characters
+          increase = 3;
+        } else if (0xC2 <= initialHex && initialHex <= 0xDF) {
+          // For 2-byte UTF-8 characters
+          increase = 6;
+        } else if (0xE0 <= initialHex && initialHex <= 0xEF) {
+          // For 3-byte UTF-8 characters
+          increase = 9;
+        } else {
+          // For 4-byte UTF-8 characters
+          increase = 12;
+        }
+      } else {
+        increase = 1;
+      }
+      if (index + increase > limitLength) {
+        break;
+      } else {
+        index += increase;
+      }
+    }
+
+    return encodedString.substring(0, index);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/FileNameIndexUtils, getDoneFileName(Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobIndexInfo;I)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:44..45]23 - org.apache.hadoop.mapreduce.v2.jobhistory.FileNameIndexUtils.getDoneFileName(Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobIndexInfo;I)Ljava/lang/String;, BB[SSA:43..43]22 - org.apache.hadoop.mapreduce.v2.jobhistory.FileNameIndexUtils.getDoneFileName(Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobIndexInfo;I)Ljava/lang/String;, BB[SSA:46..46]24 - org.apache.hadoop.mapreduce.v2.jobhistory.FileNameIndexUtils.getDoneFileName(Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobIndexInfo;I)Ljava/lang/String;, BB[SSA:-1..-2]58 - org.apache.hadoop.mapreduce.v2.jobhistory.FileNameIndexUtils.getDoneFileName(Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobIndexInfo;I)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=87, lastLineNumber=87, firstMethodNumber=69, lastMethodNumber=121, isFirstLineValid=true, methodSrcCode=
+      int jobNameLimit) throws IOException {
+    StringBuilder sb = new StringBuilder();
+    //JobId
+    sb.append(encodeJobHistoryFileName(escapeDelimiters(
+        TypeConverter.fromYarn(indexInfo.getJobId()).toString())));
+    sb.append(DELIMITER);
+
+    //SubmitTime
+    sb.append(encodeJobHistoryFileName(String.valueOf(
+        indexInfo.getSubmitTime())));
+    sb.append(DELIMITER);
+
+    //UserName
+    sb.append(encodeJobHistoryFileName(escapeDelimiters(
+        getUserName(indexInfo))));
+    sb.append(DELIMITER);
+
+    //JobName
+    sb.append(trimURLEncodedString(encodeJobHistoryFileName(escapeDelimiters(
+        getJobName(indexInfo))), jobNameLimit));
+    sb.append(DELIMITER);
+
+    //FinishTime
+    sb.append(encodeJobHistoryFileName(
+        String.valueOf(indexInfo.getFinishTime())));
+    sb.append(DELIMITER);
+
+    //NumMaps
+    sb.append(encodeJobHistoryFileName(
+        String.valueOf(indexInfo.getNumMaps())));
+    sb.append(DELIMITER);
+
+    //NumReduces
+    sb.append(encodeJobHistoryFileName(
+        String.valueOf(indexInfo.getNumReduces())));
+    sb.append(DELIMITER);
+
+    //JobStatus
+    sb.append(encodeJobHistoryFileName(indexInfo.getJobStatus()));
+    sb.append(DELIMITER);
+
+    //QueueName
+    sb.append(escapeDelimiters(encodeJobHistoryFileName(
+        getQueueName(indexInfo))));
+    sb.append(DELIMITER);
+
+    //JobStartTime
+    sb.append(encodeJobHistoryFileName(
+        String.valueOf(indexInfo.getJobStartTime())));
+
+    sb.append(encodeJobHistoryFileName(
+        JobHistoryUtils.JOB_HISTORY_FILE_EXTENSION));
+    return sb.toString();
+  }
+}

@@ -1,0 +1,78 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HdfsKMSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.HdfsKMSUtil.getKeyProviderUri(Lorg/apache/hadoop/security/UserGroupInformation;Ljava/net/URI;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI;	methodLines:	134:165
+blockLines:	147:-1
+paras:	null
+TaintedStat:	NORMAL getKeyProviderUri:conditional branch(ne, to iindex=38) 21,19 Node: < Application, Lorg/apache/hadoop/hdfs/HdfsKMSUtil, getKeyProviderUri(Lorg/apache/hadoop/security/UserGroupInformation;Ljava/net/URI;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/HdfsKMSUtil, getKeyProviderUri(Lorg/apache/hadoop/security/UserGroupInformation;Ljava/net/URI;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI; > Context: Everywhere[28]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,18,19 @52 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/HdfsKMSUtil, getKeyProviderUri(Lorg/apache/hadoop/security/UserGroupInformation;Ljava/net/URI;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI; > Context: Everywhere[28]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 4,18,19 @52 exception:20
+NORMAL getKeyProviderUri:conditional branch(ne, to iindex=38) 21,19 Node: < Application, Lorg/apache/hadoop/hdfs/HdfsKMSUtil, getKeyProviderUri(Lorg/apache/hadoop/security/UserGroupInformation;Ljava/net/URI;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URI; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+          throws IOException {
+    URI keyProviderUri = null;
+    // Lookup the secret in credentials object for namenodeuri.
+    Credentials credentials = ugi.getCredentials();
+    Text credsKey = getKeyProviderMapKey(namenodeUri);
+    byte[] keyProviderUriBytes =
+        credentials.getSecretKey(credsKey);
+    if(keyProviderUriBytes != null) {
+      keyProviderUri =
+          URI.create(DFSUtilClient.bytes2String(keyProviderUriBytes));
+    }
+    if (keyProviderUri == null) {
+      // Check if NN provided uri is not null and ignore property is false.
+      if (keyProviderUriStr != null && !conf.getBoolean(
+          DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI,
+          DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI_DEFAULT)) {
+        if (!keyProviderUriStr.isEmpty()) {
+          keyProviderUri = URI.create(keyProviderUriStr);
+        }
+      }
+      // Fallback to configuration.
+      if (keyProviderUri == null) {
+        // Either NN is old and doesn't report provider or ignore NN KMS
+        // provider property is set to true, so use conf.
+        keyProviderUri = KMSUtil.getKeyProviderUri(conf, keyProviderUriKeyName);
+      }
+      if (keyProviderUri != null) {
+        credentials.addSecretKey(
+            credsKey, DFSUtilClient.string2Bytes(keyProviderUri.toString()));
+      }
+    }
+    return keyProviderUri;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, getKeyProviderUri()Ljava/net/URI; > Context: Everywhere, blocks=[BB[SSA:9..9]6 - org.apache.hadoop.hdfs.DFSClient.getKeyProviderUri()Ljava/net/URI;, BB[SSA:7..8]5 - org.apache.hadoop.hdfs.DFSClient.getKeyProviderUri()Ljava/net/URI;, BB[SSA:10..10]7 - org.apache.hadoop.hdfs.DFSClient.getKeyProviderUri()Ljava/net/URI;, BB[SSA:-1..-2]8 - org.apache.hadoop.hdfs.DFSClient.getKeyProviderUri()Ljava/net/URI;], numberOfBasicBlocks=4, firstLineNumber=3135, lastLineNumber=3134, firstMethodNumber=3133, lastMethodNumber=3134, isFirstLineValid=true, methodSrcCode=
+  public URI getKeyProviderUri() throws IOException {
+    return HdfsKMSUtil.getKeyProviderUri(ugi, namenodeUri,
+        getServerDefaults().getKeyProviderUri(), conf);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/web/WebHdfsFileSystem, getKeyProviderUri()Ljava/net/URI; > Context: Everywhere, blocks=[BB[SSA:30..30]15 - org.apache.hadoop.hdfs.web.WebHdfsFileSystem.getKeyProviderUri()Ljava/net/URI;, BB[SSA:27..29]14 - org.apache.hadoop.hdfs.web.WebHdfsFileSystem.getKeyProviderUri()Ljava/net/URI;, BB[SSA:31..31]16 - org.apache.hadoop.hdfs.web.WebHdfsFileSystem.getKeyProviderUri()Ljava/net/URI;, BB[SSA:-1..-2]17 - org.apache.hadoop.hdfs.web.WebHdfsFileSystem.getKeyProviderUri()Ljava/net/URI;], numberOfBasicBlocks=4, firstLineNumber=2089, lastLineNumber=2089, firstMethodNumber=2072, lastMethodNumber=2089, isFirstLineValid=true, methodSrcCode=
+  public URI getKeyProviderUri() throws IOException {
+    String keyProviderUri = null;
+    try {
+      keyProviderUri = getServerDefaults().getKeyProviderUri();
+    } catch (UnsupportedOperationException e) {
+      // This means server doesn't support GETSERVERDEFAULTS call.
+      // Do nothing, let keyProviderUri = null.
+    } catch (RemoteException e) {
+      if (e.getClassName() != null &&
+          e.getClassName().equals("java.lang.IllegalArgumentException")) {
+        // See HDFS-13100.
+        // This means server doesn't support GETSERVERDEFAULTS call.
+        // Do nothing, let keyProviderUri = null.
+      } else {
+        throw e;
+      }
+    }
+    return HdfsKMSUtil.getKeyProviderUri(ugi, getUri(), keyProviderUri,
+        getConf());
+}

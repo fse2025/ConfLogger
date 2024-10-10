@@ -1,0 +1,21 @@
+```java
+String artifactsDir = (String) conf.get(Config.STORM_WORKERS_ARTIFACTS_DIR);
+if (artifactsDir == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'Config.STORM_WORKERS_ARTIFACTS_DIR' is not set. Using default directory: " + getLogDir() + FILE_SEPARATOR + "workers-artifacts");
+    // ConfLogger Inserted End
+    return (getLogDir() + FILE_SEPARATOR + "workers-artifacts");
+} else {
+    if (new File(artifactsDir).isAbsolute()) {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter 'Config.STORM_WORKERS_ARTIFACTS_DIR' is set to an absolute path: " + artifactsDir);
+        // ConfLogger Inserted End
+        return artifactsDir;
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter 'Config.STORM_WORKERS_ARTIFACTS_DIR' is set to a relative path: " + artifactsDir + ". Using combined path: " + getLogDir() + FILE_SEPARATOR + artifactsDir);
+        // ConfLogger Inserted End
+        return (getLogDir() + FILE_SEPARATOR + artifactsDir);
+    }
+}
+```

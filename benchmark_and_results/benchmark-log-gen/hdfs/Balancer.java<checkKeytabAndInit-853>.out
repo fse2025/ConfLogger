@@ -1,0 +1,97 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Balancer.java	methodSinagture:	org.apache.hadoop.hdfs.server.balancer.Balancer.checkKeytabAndInit(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	853:866
+blockLines:	854:-1
+paras:	dfs.balancer.keytab.enabled
+TaintedStat:	NORMAL checkKeytabAndInit:conditional branch(eq, to iindex=27) 6,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Balancer, checkKeytabAndInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Balancer, checkKeytabAndInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @5 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Balancer, checkKeytabAndInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @5 exception:5
+NORMAL checkKeytabAndInit:conditional branch(eq, to iindex=27) 6,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Balancer, checkKeytabAndInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    if (conf.getBoolean(DFSConfigKeys.DFS_BALANCER_KEYTAB_ENABLED_KEY,
+        DFSConfigKeys.DFS_BALANCER_KEYTAB_ENABLED_DEFAULT)) {
+      LOG.info("Keytab is configured, will login using keytab.");
+      UserGroupInformation.setConfiguration(conf);
+      String addr = conf.get(DFSConfigKeys.DFS_BALANCER_ADDRESS_KEY,
+          DFSConfigKeys.DFS_BALANCER_ADDRESS_DEFAULT);
+      InetSocketAddress socAddr = NetUtils.createSocketAddr(addr, 0,
+          DFSConfigKeys.DFS_BALANCER_ADDRESS_KEY);
+      SecurityUtil.login(conf, DFSConfigKeys.DFS_BALANCER_KEYTAB_FILE_KEY,
+          DFSConfigKeys.DFS_BALANCER_KERBEROS_PRINCIPAL_KEY,
+          socAddr.getHostName());
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Balancer, doBalance(Ljava/util/Collection;Ljava/util/Collection;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere, blocks=[BB[SSA:69..70]36 - org.apache.hadoop.hdfs.server.balancer.Balancer.doBalance(Ljava/util/Collection;Ljava/util/Collection;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)I, BB[SSA:68..68]35 - org.apache.hadoop.hdfs.server.balancer.Balancer.doBalance(Ljava/util/Collection;Ljava/util/Collection;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)I, BB[SSA:71..73]37 - org.apache.hadoop.hdfs.server.balancer.Balancer.doBalance(Ljava/util/Collection;Ljava/util/Collection;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)I, BB[SSA:-1..-2]120 - org.apache.hadoop.hdfs.server.balancer.Balancer.doBalance(Ljava/util/Collection;Ljava/util/Collection;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)I], numberOfBasicBlocks=4, firstLineNumber=742, lastLineNumber=744, firstMethodNumber=729, lastMethodNumber=788, isFirstLineValid=true, methodSrcCode=
+      throws IOException, InterruptedException {
+    final long sleeptime =
+        conf.getTimeDuration(DFSConfigKeys.DFS_HEARTBEAT_INTERVAL_KEY,
+            DFSConfigKeys.DFS_HEARTBEAT_INTERVAL_DEFAULT,
+            TimeUnit.SECONDS, TimeUnit.MILLISECONDS) * 2 +
+        conf.getTimeDuration(
+            DFSConfigKeys.DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY,
+            DFSConfigKeys.DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_DEFAULT,
+            TimeUnit.SECONDS, TimeUnit.MILLISECONDS);
+    LOG.info("namenodes  = " + namenodes);
+    LOG.info("parameters = " + p);
+    LOG.info("included nodes = " + p.getIncludedNodes());
+    LOG.info("excluded nodes = " + p.getExcludedNodes());
+    LOG.info("source nodes = " + p.getSourceNodes());
+    checkKeytabAndInit(conf);
+    System.out.println("Time Stamp               Iteration#"
+        + "  Bytes Already Moved  Bytes Left To Move  Bytes Being Moved"
+        + "  NameNode");
+    
+    List<NameNodeConnector> connectors = Collections.emptyList();
+    try {
+      connectors = NameNodeConnector.newNameNodeConnectors(namenodes, nsIds,
+          Balancer.class.getSimpleName(), BALANCER_ID_PATH, conf,
+          p.getMaxIdleIteration());
+      boolean done = false;
+      for(int iteration = 0; !done; iteration++) {
+        done = true;
+        Collections.shuffle(connectors);
+        for(NameNodeConnector nnc : connectors) {
+          if (p.getBlockPools().size() == 0
+              || p.getBlockPools().contains(nnc.getBlockpoolID())) {
+            final Balancer b = new Balancer(nnc, p, conf);
+            final Result r = b.runOneIteration();
+            r.print(iteration, nnc, System.out);
+
+            // clean all lists
+            b.resetData(conf);
+            if (r.exitStatus == ExitStatus.IN_PROGRESS) {
+              done = false;
+            } else if (r.exitStatus != ExitStatus.SUCCESS) {
+              // must be an error statue, return.
+              return r.exitStatus.getExitCode();
+            }
+          } else {
+            LOG.info("Skipping blockpool " + nnc.getBlockpoolID());
+          }
+          if (done) {
+            System.out.println("The cluster is balanced. Exiting...");
+          }
+        }
+        if (!done) {
+          Thread.sleep(sleeptime);
+        }
+      }
+    } finally {
+      for(NameNodeConnector nnc : connectors) {
+        IOUtils.cleanupWithLogger(LOG, nnc);
+      }
+    }
+    return ExitStatus.SUCCESS.getExitCode();
+  }
+}

@@ -1,0 +1,131 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Cluster.java	methodSinagture:	org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;DDLjava/util/Map;)V	methodLines:	175:239
+blockLines:	211:-1
+paras:	storm.network.topography.plugin
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=206) 124,97 Node: < Application, Lorg/apache/storm/scheduler/Cluster, <init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;DDLjava/util/Map;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/scheduler/Cluster, <init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;DDLjava/util/Map;)V > Context: Everywhere[196]123 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 7,121 @463 exception:122
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/scheduler/Cluster, <init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;DDLjava/util/Map;)V > Context: Everywhere[196]123 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 7,121 @463 exception:122
+NORMAL <init>:124 = checkcast <Application,Ljava/lang/String>123 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/scheduler/Cluster, <init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;DDLjava/util/Map;)V > Context: Everywhere
+NORMAL <init>:conditional branch(eq, to iindex=206) 124,97 Node: < Application, Lorg/apache/storm/scheduler/Cluster, <init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;DDLjava/util/Map;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        double totalMemoryResource,
+        Map<String, Double> totalGenericResources) {
+        this.inimbus = nimbus;
+        this.resourceMetrics = resourceMetrics;
+        this.supervisors.putAll(supervisors);
+        this.nodeToScheduledResourcesCache = new HashMap<>(this.supervisors.size());
+        this.nodeToScheduledOffHeapNodeMemoryCache = new HashMap<>();
+        this.nodeToUsedSlotsCache = new HashMap<>(this.supervisors.size());
+
+        for (Map.Entry<String, SupervisorDetails> entry : supervisors.entrySet()) {
+            String nodeId = entry.getKey();
+            SupervisorDetails supervisor = entry.getValue();
+            String host = supervisor.getHost();
+            List<String> ids = hostToId.computeIfAbsent(host, k -> new ArrayList<>());
+            ids.add(nodeId);
+        }
+        this.conf = conf;
+        this.topologies = topologies;
+        this.minWorkerCpu = ObjectReader.getDouble(conf.get(DaemonConfig.STORM_WORKER_MIN_CPU_PCORE_PERCENT), 0.0);
+
+        this.totalCpuResource = Double.isNaN(totalCpuResource) ? computeClusterCpuResource() :
+                                                           totalCpuResource;
+        this.totalMemoryResource = Double.isNaN(totalMemoryResource) ? computeClusterMemoryResource() :
+                                                                 totalMemoryResource;
+        this.totalGenericResources = totalGenericResources == null ? computeClusterGenericResources() :
+                                                                     totalGenericResources;
+
+        ArrayList<String> supervisorHostNames = new ArrayList<>();
+        for (SupervisorDetails s : supervisors.values()) {
+            supervisorHostNames.add(s.getHost());
+        }
+
+        //Initialize the network topography
+        if (networkTopography == null || networkTopography.isEmpty()) {
+            //Initialize the network topography
+            String clazz = (String) conf.get(Config.STORM_NETWORK_TOPOGRAPHY_PLUGIN);
+            if (clazz == null || clazz.isEmpty()) {
+                clazz = DefaultRackDNSToSwitchMapping.class.getName();
+            }
+            DNSToSwitchMapping topographyMapper = ReflectionUtils.newInstance(clazz);
+
+            Map<String, String> resolvedSuperVisors = topographyMapper.resolve(supervisorHostNames);
+            for (Map.Entry<String, String> entry : resolvedSuperVisors.entrySet()) {
+                String hostName = entry.getKey();
+                String rack = entry.getValue();
+                List<String> nodesForRack = this.networkTopography.computeIfAbsent(rack, k -> new ArrayList<>());
+                nodesForRack.add(hostName);
+            }
+        } else {
+            this.networkTopography.putAll(networkTopography);
+        }
+
+        if (status != null) {
+            this.status.putAll(status);
+        }
+
+        if (blackListedHosts != null) {
+            this.blackListedHosts.addAll(blackListedHosts);
+        }
+
+        if (greyListedSupervisors != null) {
+            this.greyListedSupervisors.addAll(greyListedSupervisors);
+        }
+        setAssignments(assignments, true);
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/Cluster, <init>(Lorg/apache/storm/scheduler/Cluster;)V > Context: Everywhere, blocks=[BB[SSA:30..30]16 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/Cluster;)V, BB[SSA:28..29]15 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/Cluster;)V, BB[SSA:31..31]17 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/Cluster;)V, BB[SSA:-1..-2]18 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/Cluster;)V], numberOfBasicBlocks=4, firstLineNumber=123, lastLineNumber=137, firstMethodNumber=122, lastMethodNumber=137, isFirstLineValid=true, methodSrcCode=
+    public Cluster(Cluster src) {
+        this(
+            src.inimbus,
+            src.resourceMetrics,
+            src.supervisors,
+            src.assignments,
+            src.topologies,
+            new HashMap<>(src.conf),
+            src.status,
+            src.blackListedHosts,
+            src.greyListedSupervisors,
+            src.networkTopography,
+            src.totalCpuResource,
+            src.totalMemoryResource,
+            src.totalGenericResources);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/Cluster, <init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:0..14]1 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;)V, BB[SSA:-1..-2]0 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;)V, BB[SSA:15..15]2 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;)V, BB[SSA:-1..-2]3 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/INimbus;Lorg/apache/storm/scheduler/resource/normalization/ResourceMetrics;Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/scheduler/Topologies;Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=114, lastLineNumber=117, firstMethodNumber=114, lastMethodNumber=117, isFirstLineValid=false, methodSrcCode=
+        Map<String, Object> conf) {
+        this(nimbus, resourceMetrics, supervisors, assignments, topologies, conf, null, null, null, null,
+            Double.NaN, Double.NaN, null);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/scheduler/Cluster, <init>(Lorg/apache/storm/scheduler/Cluster;Lorg/apache/storm/scheduler/Topologies;)V > Context: Everywhere, blocks=[BB[SSA:29..29]15 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/Cluster;Lorg/apache/storm/scheduler/Topologies;)V, BB[SSA:27..28]14 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/Cluster;Lorg/apache/storm/scheduler/Topologies;)V, BB[SSA:30..30]16 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/Cluster;Lorg/apache/storm/scheduler/Topologies;)V, BB[SSA:-1..-2]17 - org.apache.storm.scheduler.Cluster.<init>(Lorg/apache/storm/scheduler/Cluster;Lorg/apache/storm/scheduler/Topologies;)V], numberOfBasicBlocks=4, firstLineNumber=147, lastLineNumber=161, firstMethodNumber=146, lastMethodNumber=161, isFirstLineValid=true, methodSrcCode=
+    public Cluster(Cluster src, Topologies topologies) {
+        this(
+            src.inimbus,
+            src.resourceMetrics,
+            src.supervisors,
+            src.assignments,
+            topologies,
+            new HashMap<>(src.conf),
+            src.status,
+            src.blackListedHosts,
+            src.greyListedSupervisors,
+            src.networkTopography,
+            src.totalCpuResource,
+            src.totalMemoryResource,
+            src.totalGenericResources);
+    }
+
+}

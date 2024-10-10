@@ -1,0 +1,20 @@
+```java
+long transferBandwidth =
+conf.getLong(DFSConfigKeys.DFS_EDIT_LOG_TRANSFER_RATE_KEY,
+DFSConfigKeys.DFS_EDIT_LOG_TRANSFER_RATE_DEFAULT);
+DataTransferThrottler throttler = null;
+if (transferBandwidth > 0) {
+    throttler = new DataTransferThrottler(transferBandwidth);
+    // ConfLogger Inserted Start
+    logger.info("DataTransferThrottler initialized with transferBandwidth: " + transferBandwidth + 
+                " (key: " + DFSConfigKeys.DFS_EDIT_LOG_TRANSFER_RATE_KEY + ").");
+    // ConfLogger Inserted End
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("DataTransferThrottler not initialized because transferBandwidth is non-positive: " + transferBandwidth + 
+                " (key: " + DFSConfigKeys.DFS_EDIT_LOG_TRANSFER_RATE_KEY + ").");
+    // ConfLogger Inserted End
+}
+return throttler;
+}
+```

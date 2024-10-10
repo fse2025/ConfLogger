@@ -1,0 +1,18 @@
+```java
+if (options != null) {
+    // ConfLogger Inserted Start
+    logger.debug("Configuration parameter 'options' is set with size: " + options.size());
+    // ConfLogger Inserted End
+    List<HdfsProtos.CipherOptionProto> protos =
+        Lists.newArrayListWithCapacity(options.size());
+    for (CipherOption option : options) {
+        protos.add(convert(option));
+    }
+    return protos;
+}
+// ConfLogger Inserted Start
+logger.warn("Configuration parameter 'options' is null. Returning null.");
+// ConfLogger Inserted End
+return null;
+}
+```

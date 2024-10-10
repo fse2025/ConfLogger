@@ -1,0 +1,118 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ProcessUtils.java	methodSinagture:	alluxio.ProcessUtils.fatalError(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V	methodLines:	111:124
+blockLines:	116:-1
+paras:	null
+TaintedStat:	NORMAL fatalError:conditional branch(eq, to iindex=35) 34,35 Node: < Application, Lalluxio/ProcessUtils, fatalError(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/ProcessUtils, fatalError(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere[27]34 = invokestatic < Application, Lalluxio/conf/Configuration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 32 @61 exception:33
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/ProcessUtils, fatalError(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere[27]34 = invokestatic < Application, Lalluxio/conf/Configuration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 32 @61 exception:33
+NORMAL fatalError:conditional branch(eq, to iindex=35) 34,35 Node: < Application, Lalluxio/ProcessUtils, fatalError(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void fatalError(Logger logger, Throwable t, String format, Object... args) {
+    String message = String.format("Fatal error: " + format, args);
+    if (t != null) {
+      message += "\n" + Throwables.getStackTraceAsString(t);
+    }
+    if (Configuration.getBoolean(PropertyKey.TEST_MODE)) {
+      throw new RuntimeException(message);
+    }
+    logger.error(message);
+
+    dumpInformationOnExit();
+
+    System.exit(-1);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/master/journal/MasterJournalContext, waitForJournalFlush()V > Context: Everywhere, blocks=[BB[SSA:67..67]30 - alluxio.master.journal.MasterJournalContext.waitForJournalFlush()V, BB[SSA:68..68]31 - alluxio.master.journal.MasterJournalContext.waitForJournalFlush()V, BB[SSA:-1..-2]38 - alluxio.master.journal.MasterJournalContext.waitForJournalFlush()V], numberOfBasicBlocks=3, firstLineNumber=71, lastLineNumber=97, firstMethodNumber=71, lastMethodNumber=100, isFirstLineValid=false, methodSrcCode=
+  private void waitForJournalFlush() throws UnavailableException {
+    if (mFlushCounter == INVALID_FLUSH_COUNTER) {
+      // Check this before the precondition.
+      return;
+    }
+
+    RetryPolicy retry = new TimeoutRetry(FLUSH_RETRY_TIMEOUT_MS, FLUSH_RETRY_INTERVAL_MS);
+    while (retry.attempt()) {
+      try {
+        mAsyncJournalWriter.flush(mFlushCounter);
+        return;
+      } catch (NotLeaderException | JournalClosedException e) {
+        throw new UnavailableException(String.format("Failed to complete request: %s",
+            e.getMessage()), e);
+      } catch (AlluxioStatusException e) {
+        // Note that we cannot actually cancel the journal flush because it could be partially
+        // written already
+        if (e.getStatus().equals(Status.CANCELLED)) {
+          LOG.warn("Journal flush interrupted because the RPC was cancelled. ", e);
+        } else {
+          LOG.warn("Journal flush failed. retrying...", e);
+        }
+      } catch (IOException e) {
+        LOG.warn("Journal flush failed. retrying...", e);
+      } catch (Throwable e) {
+        ProcessUtils.fatalError(LOG, e, "Journal flush failed");
+      }
+    }
+    ProcessUtils.fatalError(LOG, "Journal flush failed after %d attempts", retry.getAttemptCount());
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/master/journal/AbstractCatchupThread, waitTermination()V > Context: Everywhere, blocks=[BB[SSA:26..26]14 - alluxio.master.journal.AbstractCatchupThread.waitTermination()V, BB[SSA:27..27]15 - alluxio.master.journal.AbstractCatchupThread.waitTermination()V, BB[SSA:-1..-2]16 - alluxio.master.journal.AbstractCatchupThread.waitTermination()V], numberOfBasicBlocks=3, firstLineNumber=53, lastLineNumber=63, firstMethodNumber=53, lastMethodNumber=63, isFirstLineValid=false, methodSrcCode=
+      // Wait until thread terminates or timeout elapses.
+      join(0);
+      // If the catchup failed but the process did not fail, abort the process on detection
+      if (crashed()) {
+        LOG.error("Thread {} has crashed before termination", Thread.currentThread().getId());
+        throw new RuntimeException(getError());
+      }
+    } catch (Exception e) {
+      ProcessUtils.fatalError(LOG, e, "Catch-up task failed.");
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/master/journal/raft/BufferedJournalApplier, applyToMaster(Lalluxio/proto/journal/Journal$JournalEntry;)V > Context: Everywhere, blocks=[BB[SSA:14..14]5 - alluxio.master.journal.raft.BufferedJournalApplier.applyToMaster(Lalluxio/proto/journal/Journal$JournalEntry;)V, BB[SSA:10..13]4 - alluxio.master.journal.raft.BufferedJournalApplier.applyToMaster(Lalluxio/proto/journal/Journal$JournalEntry;)V, BB[SSA:15..15]6 - alluxio.master.journal.raft.BufferedJournalApplier.applyToMaster(Lalluxio/proto/journal/Journal$JournalEntry;)V, BB[SSA:-1..-2]25 - alluxio.master.journal.raft.BufferedJournalApplier.applyToMaster(Lalluxio/proto/journal/Journal$JournalEntry;)V], numberOfBasicBlocks=4, firstLineNumber=237, lastLineNumber=238, firstMethodNumber=234, lastMethodNumber=251, isFirstLineValid=true, methodSrcCode=
+    try {
+      masterName = JournalEntryAssociation.getMasterForEntry(entry);
+    } catch (Exception t) {
+      ProcessUtils.fatalError(LOG, t, "Unrecognized journal entry: %s", entry);
+      throw new IllegalStateException();
+    }
+    try {
+      Journaled master = mJournals.get(masterName).getStateMachine();
+      LOG.trace("Applying entry to master {}: {} ", masterName, entry);
+      master.processJournalEntry(entry);
+      JournalUtils.sinkAppend(mJournalSinks, entry);
+    } catch (Exception t) {
+      JournalUtils.handleJournalReplayFailure(LOG, t,
+          "Failed to apply journal entry to master %s. Entry: %s", masterName, entry);
+    }
+    // Store last applied sequence.
+    mLastAppliedSequence = entry.getSequenceNumber();
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/ProcessUtils, fatalError(Lorg/slf4j/Logger;Ljava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere, blocks=[BB[SSA:4..6]3 - alluxio.ProcessUtils.fatalError(Lorg/slf4j/Logger;Ljava/lang/String;[Ljava/lang/Object;)V, BB[SSA:2..3]2 - alluxio.ProcessUtils.fatalError(Lorg/slf4j/Logger;Ljava/lang/String;[Ljava/lang/Object;)V, BB[SSA:7..7]4 - alluxio.ProcessUtils.fatalError(Lorg/slf4j/Logger;Ljava/lang/String;[Ljava/lang/Object;)V, BB[SSA:-1..-2]5 - alluxio.ProcessUtils.fatalError(Lorg/slf4j/Logger;Ljava/lang/String;[Ljava/lang/Object;)V], numberOfBasicBlocks=4, firstLineNumber=100, lastLineNumber=101, firstMethodNumber=99, lastMethodNumber=101, isFirstLineValid=true, methodSrcCode=
+  public static void fatalError(Logger logger, String format, Object... args) {
+    fatalError(logger, new Throwable(), format, args);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/master/journal/AbstractCatchupThread, run()V > Context: Everywhere, blocks=[BB[SSA:12..12]5 - alluxio.master.journal.AbstractCatchupThread.run()V, BB[SSA:7..11]4 - alluxio.master.journal.AbstractCatchupThread.run()V, BB[SSA:13..13]6 - alluxio.master.journal.AbstractCatchupThread.run()V, BB[SSA:-1..-2]7 - alluxio.master.journal.AbstractCatchupThread.run()V], numberOfBasicBlocks=4, firstLineNumber=39, lastLineNumber=41, firstMethodNumber=35, lastMethodNumber=41, isFirstLineValid=true, methodSrcCode=
+    try {
+      runCatchup();
+    } catch (Exception e) {
+      setError(e);
+      ProcessUtils.fatalError(LOG, e, "Catch-up thread is failed.");
+    }
+  }
+
+}

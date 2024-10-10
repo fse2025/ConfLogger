@@ -1,0 +1,195 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNodeProxiesClient.java	methodSinagture:	org.apache.hadoop.hdfs.NameNodeProxiesClient.createProxyWithLossyRetryHandler(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ILjava/util/concurrent/atomic/AtomicBoolean;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo;	methodLines:	167:210
+blockLines:	168:-1
+paras:	dfs.client.cache.readahead
+TaintedStat:	NORMAL createProxyWithLossyRetryHandler:conditional branch(le, to iindex=5) 4,7 Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, createProxyWithLossyRetryHandler(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ILjava/util/concurrent/atomic/AtomicBoolean;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[242]168 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLongBytes(Ljava/lang/String;J)J > 4,163,166 @523 exception:167
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[242]168 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLongBytes(Ljava/lang/String;J)J > 4,163,166 @523 exception:167
+NORMAL <init>:170 = invokestatic < Application, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > 168 @526 exception:169 Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL valueOf:conditional branch(lt, to iindex=19) 5,6 Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL valueOf:return 9 Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/Time, formatTime(J)Ljava/lang/String; > Context: Everywhere[4]8 = invokestatic < Extension, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > 1 @10 exception:7
+NORMAL formatTime:10 = invokevirtual < Extension, Ljava/text/SimpleDateFormat, format(Ljava/lang/Object;)Ljava/lang/String; > 6,8 @13 exception:9 Node: < Extension, Lorg/apache/hadoop/util/Time, formatTime(J)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/text/Format, format(Ljava/lang/Object;)Ljava/lang/String; > Context: Everywhere
+NORMAL format:10 = invokevirtual < Primordial, Ljava/text/Format, format(Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;)Ljava/lang/StringBuffer; > 1,2,4,6 @17 exception:9 Node: < Primordial, Ljava/text/Format, format(Ljava/lang/Object;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/text/MessageFormat, format(Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;)Ljava/lang/StringBuffer; > Context: Everywhere
+NORMAL format:9 = invokevirtual < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > 1,6,3,4,7 @8 exception:8 Node: < Primordial, Ljava/text/MessageFormat, format(Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;)Ljava/lang/StringBuffer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > Context: Everywhere
+NORMAL subformat:130 = invokevirtual < Primordial, Ljava/lang/String, length()I > 128 @499 exception:129 Node: < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:return 7 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/Integer, parseInt(Ljava/lang/String;I)I > Context: Everywhere[47]9 = invokevirtual < Primordial, Ljava/lang/String, length()I > 1 @94 exception:8
+NORMAL parseInt:conditional branch(ge, to iindex=130) 37,9 Node: < Primordial, Ljava/lang/Integer, parseInt(Ljava/lang/String;I)I > Context: Everywhere
+PHI Node: < Primordial, Ljava/lang/Integer, parseInt(Ljava/lang/String;I)I > Context: Everywhere:38 = phi  36,7
+PHI Node: < Primordial, Ljava/lang/Integer, parseInt(Ljava/lang/String;I)I > Context: Everywhere:40 = phi  38,39
+NORMAL parseInt:return 40 Node: < Primordial, Ljava/lang/Integer, parseInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, parseInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere[18]14 = invokestatic < Extension, Ljava/lang/Integer, parseInt(Ljava/lang/String;I)I > 9,12 @28 exception:13
+NORMAL getInt:return 14 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[97]77 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,75,25 @214 exception:76
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere[126]97 = invokestatic < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, createProxyWithLossyRetryHandler(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ILjava/util/concurrent/atomic/AtomicBoolean;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo; > 4,2,95,77,79 @278 exception:96 v77
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, createProxyWithLossyRetryHandler(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ILjava/util/concurrent/atomic/AtomicBoolean;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo; > Context: Everywhere v4
+NORMAL createProxyWithLossyRetryHandler:conditional branch(le, to iindex=5) 4,7 Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, createProxyWithLossyRetryHandler(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ILjava/util/concurrent/atomic/AtomicBoolean;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    Preconditions.checkArgument(numResponseToDrop > 0);
+    AbstractNNFailoverProxyProvider<T> failoverProxyProvider =
+        createFailoverProxyProvider(config, nameNodeUri, xface, true,
+            fallbackToSimpleAuth);
+
+    if (failoverProxyProvider != null) { // HA case
+      int delay = config.getInt(
+          HdfsClientConfigKeys.Failover.SLEEPTIME_BASE_KEY,
+          HdfsClientConfigKeys.Failover.SLEEPTIME_BASE_DEFAULT);
+      int maxCap = config.getInt(
+          HdfsClientConfigKeys.Failover.SLEEPTIME_MAX_KEY,
+          HdfsClientConfigKeys.Failover.SLEEPTIME_MAX_DEFAULT);
+      int maxFailoverAttempts = config.getInt(
+          HdfsClientConfigKeys.Failover.MAX_ATTEMPTS_KEY,
+          HdfsClientConfigKeys.Failover.MAX_ATTEMPTS_DEFAULT);
+      int maxRetryAttempts = config.getInt(
+          HdfsClientConfigKeys.Retry.MAX_ATTEMPTS_KEY,
+          HdfsClientConfigKeys.Retry.MAX_ATTEMPTS_DEFAULT);
+      InvocationHandler dummyHandler = new LossyRetryInvocationHandler<>(
+              numResponseToDrop, failoverProxyProvider,
+              RetryPolicies.failoverOnNetworkException(
+                  RetryPolicies.TRY_ONCE_THEN_FAIL, maxFailoverAttempts,
+                  Math.max(numResponseToDrop + 1, maxRetryAttempts), delay,
+                  maxCap));
+
+      @SuppressWarnings("unchecked")
+      T proxy = (T) Proxy.newProxyInstance(
+          failoverProxyProvider.getInterface().getClassLoader(),
+          new Class[]{xface}, dummyHandler);
+      Text dtService;
+      if (failoverProxyProvider.useLogicalURI()) {
+        dtService = HAUtilClient.buildTokenServiceForLogicalUri(nameNodeUri,
+            HdfsConstants.HDFS_URI_SCHEME);
+      } else {
+        dtService = SecurityUtil.buildTokenService(
+            DFSUtilClient.getNNAddress(nameNodeUri));
+      }
+      return new ProxyAndInfo<>(proxy, dtService,
+          DFSUtilClient.getNNAddress(nameNodeUri));
+    } else {
+      LOG.warn("Currently creating proxy using " +
+          "LossyRetryInvocationHandler requires NN HA setup");
+      return null;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere, blocks=[BB[SSA:124..126]65 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V, BB[SSA:121..123]64 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V, BB[SSA:127..127]66 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V, BB[SSA:-1..-2]155 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V], numberOfBasicBlocks=4, firstLineNumber=358, lastLineNumber=358, firstMethodNumber=320, lastMethodNumber=419, isFirstLineValid=true, methodSrcCode=
+  public DFSClient(URI nameNodeUri, ClientProtocol rpcNamenode,
+      Configuration conf, FileSystem.Statistics stats) throws IOException {
+    // Copy only the required DFSClient configuration
+    this.tracer = FsTracer.get(conf);
+    this.dfsClientConf = new DfsClientConf(conf);
+    this.conf = conf;
+    this.stats = stats;
+    this.socketFactory = NetUtils.getSocketFactory(conf, ClientProtocol.class);
+    this.dtpReplaceDatanodeOnFailure = ReplaceDatanodeOnFailure.get(conf);
+    this.smallBufferSize = DFSUtilClient.getSmallBufferSize(conf);
+    this.dtpReplaceDatanodeOnFailureReplication = (short) conf
+        .getInt(HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+                MIN_REPLICATION,
+            HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+                MIN_REPLICATION_DEFAULT);
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(
+          "Sets " + HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+              MIN_REPLICATION + " to "
+              + dtpReplaceDatanodeOnFailureReplication);
+    }
+    this.ugi = UserGroupInformation.getCurrentUser();
+
+    this.namenodeUri = nameNodeUri;
+    this.clientName = "DFSClient_" + dfsClientConf.getTaskId() + "_" +
+        ThreadLocalRandom.current().nextInt()  + "_" +
+        Thread.currentThread().getId();
+    int numResponseToDrop = conf.getInt(
+        DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY,
+        DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT);
+    ProxyAndInfo<ClientProtocol> proxyInfo = null;
+    AtomicBoolean nnFallbackToSimpleAuth = new AtomicBoolean(false);
+
+    if (numResponseToDrop > 0) {
+      // This case is used for testing.
+      LOG.warn(DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
+          + " is set to " + numResponseToDrop
+          + ", this hacked client will proactively drop responses");
+      proxyInfo = NameNodeProxiesClient.createProxyWithLossyRetryHandler(conf,
+          nameNodeUri, ClientProtocol.class, numResponseToDrop,
+          nnFallbackToSimpleAuth);
+    }
+
+    if (proxyInfo != null) {
+      this.dtService = proxyInfo.getDelegationTokenService();
+      this.namenode = proxyInfo.getProxy();
+    } else if (rpcNamenode != null) {
+      // This case is used for testing.
+      Preconditions.checkArgument(nameNodeUri == null);
+      this.namenode = rpcNamenode;
+      dtService = null;
+    } else {
+      Preconditions.checkArgument(nameNodeUri != null,
+          "null URI");
+      proxyInfo = NameNodeProxiesClient.createProxyWithClientProtocol(conf,
+          nameNodeUri, nnFallbackToSimpleAuth);
+      this.dtService = proxyInfo.getDelegationTokenService();
+      this.namenode = proxyInfo.getProxy();
+    }
+
+    String localInterfaces[] =
+        conf.getTrimmedStrings(DFS_CLIENT_LOCAL_INTERFACES);
+    localInterfaceAddrs = getLocalInterfaceAddrs(localInterfaces);
+    if (LOG.isDebugEnabled() && 0 != localInterfaces.length) {
+      LOG.debug("Using local interfaces [" +
+          Joiner.on(',').join(localInterfaces)+ "] with addresses [" +
+          Joiner.on(',').join(localInterfaceAddrs) + "]");
+    }
+
+    Boolean readDropBehind =
+        (conf.get(DFS_CLIENT_CACHE_DROP_BEHIND_READS) == null) ?
+            null : conf.getBoolean(DFS_CLIENT_CACHE_DROP_BEHIND_READS, false);
+    Long readahead = (conf.get(DFS_CLIENT_CACHE_READAHEAD) == null) ?
+        null : conf.getLongBytes(DFS_CLIENT_CACHE_READAHEAD, 0);
+    this.serverDefaultsValidityPeriod = conf.getTimeDuration(
+        DFS_CLIENT_SERVER_DEFAULTS_VALIDITY_PERIOD_MS_KEY,
+        DFS_CLIENT_SERVER_DEFAULTS_VALIDITY_PERIOD_MS_DEFAULT,
+        TimeUnit.MILLISECONDS);
+    Boolean writeDropBehind =
+        (conf.get(DFS_CLIENT_CACHE_DROP_BEHIND_WRITES) == null) ?
+            null : conf.getBoolean(DFS_CLIENT_CACHE_DROP_BEHIND_WRITES, false);
+    this.defaultReadCachingStrategy =
+        new CachingStrategy(readDropBehind, readahead);
+    this.defaultWriteCachingStrategy =
+        new CachingStrategy(writeDropBehind, readahead);
+    this.clientContext = ClientContext.get(
+        conf.get(DFS_CLIENT_CONTEXT, DFS_CLIENT_CONTEXT_DEFAULT),
+        dfsClientConf, conf);
+
+    if (dfsClientConf.getHedgedReadThreadpoolSize() > 0) {
+      this.initThreadsNumForHedgedReads(dfsClientConf.
+          getHedgedReadThreadpoolSize());
+    }
+
+    this.initThreadsNumForStripedReads(dfsClientConf.
+        getStripedReadThreadpoolSize());
+    this.saslClient = new SaslDataTransferClient(
+        conf, DataTransferSaslUtil.getSaslPropertiesResolver(conf),
+        TrustedChannelResolver.getInstance(conf), nnFallbackToSimpleAuth);
+  }
+
+}

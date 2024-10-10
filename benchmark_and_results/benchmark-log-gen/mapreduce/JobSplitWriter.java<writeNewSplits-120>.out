@@ -1,0 +1,63 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobSplitWriter.java	methodSinagture:	org.apache.hadoop.mapreduce.split.JobSplitWriter.writeNewSplits(Lorg/apache/hadoop/conf/Configuration;[Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/fs/FSDataOutputStream;)[Lorg/apache/hadoop/mapreduce/split/JobSplit$SplitMetaInfo;	methodLines:	120:150
+blockLines:	137:-1
+paras:	mapreduce.job.max.split.locations
+TaintedStat:	NORMAL writeNewSplits:conditional branch(le, to iindex=91) 37,14 Node: < Application, Lorg/apache/hadoop/mapreduce/split/JobSplitWriter, writeNewSplits(Lorg/apache/hadoop/conf/Configuration;[Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/fs/FSDataOutputStream;)[Lorg/apache/hadoop/mapreduce/split/JobSplit$SplitMetaInfo; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/split/JobSplitWriter, writeNewSplits(Lorg/apache/hadoop/conf/Configuration;[Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/fs/FSDataOutputStream;)[Lorg/apache/hadoop/mapreduce/split/JobSplit$SplitMetaInfo; > Context: Everywhere[18]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,11,12 @29 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/split/JobSplitWriter, writeNewSplits(Lorg/apache/hadoop/conf/Configuration;[Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/fs/FSDataOutputStream;)[Lorg/apache/hadoop/mapreduce/split/JobSplit$SplitMetaInfo; > Context: Everywhere[18]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,11,12 @29 exception:13
+NORMAL writeNewSplits:conditional branch(le, to iindex=91) 37,14 Node: < Application, Lorg/apache/hadoop/mapreduce/split/JobSplitWriter, writeNewSplits(Lorg/apache/hadoop/conf/Configuration;[Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/fs/FSDataOutputStream;)[Lorg/apache/hadoop/mapreduce/split/JobSplit$SplitMetaInfo; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    SplitMetaInfo[] info = new SplitMetaInfo[array.length];
+    if (array.length != 0) {
+      SerializationFactory factory = new SerializationFactory(conf);
+      int i = 0;
+      int maxBlockLocations = conf.getInt(MRConfig.MAX_BLOCK_LOCATIONS_KEY,
+          MRConfig.MAX_BLOCK_LOCATIONS_DEFAULT);
+      long offset = out.getPos();
+      for(T split: array) {
+        long prevCount = out.getPos();
+        Text.writeString(out, split.getClass().getName());
+        Serializer<T> serializer = 
+          factory.getSerializer((Class<T>) split.getClass());
+        serializer.open(out);
+        serializer.serialize(split);
+        long currCount = out.getPos();
+        String[] locations = split.getLocations();
+        if (locations.length > maxBlockLocations) {
+          LOG.warn("Max block location exceeded for split: "
+              + split + " splitsize: " + locations.length +
+              " maxsize: " + maxBlockLocations);
+          locations = Arrays.copyOf(locations, maxBlockLocations);
+        }
+        info[i++] = 
+          new JobSplit.SplitMetaInfo( 
+              locations, offset,
+              split.getLength());
+        offset += currCount - prevCount;
+      }
+    }
+    return info;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/split/JobSplitWriter, createSplitFiles(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;[Lorg/apache/hadoop/mapreduce/InputSplit;)V > Context: Everywhere, blocks=[BB[SSA:5..9]3 - org.apache.hadoop.mapreduce.split.JobSplitWriter.createSplitFiles(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;[Lorg/apache/hadoop/mapreduce/InputSplit;)V, BB[SSA:3..4]2 - org.apache.hadoop.mapreduce.split.JobSplitWriter.createSplitFiles(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;[Lorg/apache/hadoop/mapreduce/InputSplit;)V, BB[SSA:10..12]4 - org.apache.hadoop.mapreduce.split.JobSplitWriter.createSplitFiles(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;[Lorg/apache/hadoop/mapreduce/InputSplit;)V, BB[SSA:-1..-2]10 - org.apache.hadoop.mapreduce.split.JobSplitWriter.createSplitFiles(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;[Lorg/apache/hadoop/mapreduce/InputSplit;)V], numberOfBasicBlocks=4, firstLineNumber=79, lastLineNumber=81, firstMethodNumber=77, lastMethodNumber=85, isFirstLineValid=true, methodSrcCode=
+  throws IOException, InterruptedException {
+    FSDataOutputStream out = createFile(fs, 
+        JobSubmissionFiles.getJobSplitFile(jobSubmitDir), conf);
+    SplitMetaInfo[] info = writeNewSplits(conf, splits, out);
+    out.close();
+    writeJobSplitMetaInfo(fs,JobSubmissionFiles.getJobSplitMetaFile(jobSubmitDir), 
+        new FsPermission(JobSubmissionFiles.JOB_FILE_PERMISSION), splitVersion,
+        info);
+  }
+  
+}

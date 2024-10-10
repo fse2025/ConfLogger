@@ -1,0 +1,40 @@
+```java
+Configuration conf = getConfig();
+YarnRPC rpc = YarnRPC.create(conf);
+initializeWebApp(conf);
+InetSocketAddress address = conf.getSocketAddr(
+JHAdminConfig.MR_HISTORY_BIND_HOST,
+JHAdminConfig.MR_HISTORY_ADDRESS,
+JHAdminConfig.DEFAULT_MR_HISTORY_ADDRESS,
+JHAdminConfig.DEFAULT_MR_HISTORY_PORT);
+
+server =
+rpc.getServer(HSClientProtocol.class, protocolHandler, address,
+conf, jhsDTSecretManager,
+conf.getInt(JHAdminConfig.MR_HISTORY_CLIENT_THREAD_COUNT,
+JHAdminConfig.DEFAULT_MR_HISTORY_CLIENT_THREAD_COUNT));
+
+// Enable service authorization?
+if (conf.getBoolean(
+CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHORIZATION,
+false)) {
+    // ConfLogger Inserted Start
+    logger.info("Service authorization enabled. Configuration parameter: " + CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHORIZATION + " = " + conf.getBoolean(CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHORIZATION, false));
+    // ConfLogger Inserted End
+    server.refreshServiceAcl(conf, new ClientHSPolicyProvider());
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Service authorization not enabled. Configuration parameter: " + CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHORIZATION + " = " + conf.getBoolean(CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHORIZATION, false));
+    // ConfLogger Inserted End
+}
+
+server.start();
+this.bindAddress = conf.updateConnectAddr(JHAdminConfig.MR_HISTORY_BIND_HOST,
+JHAdminConfig.MR_HISTORY_ADDRESS,
+JHAdminConfig.DEFAULT_MR_HISTORY_ADDRESS,
+server.getListenerAddress());
+LOG.info("Instantiated HistoryClientService at " + this.bindAddress);
+
+super.serviceStart();
+}
+```

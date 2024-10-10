@@ -1,0 +1,108 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DataNodeDiskMetrics.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.metrics.DataNodeDiskMetrics.setMinOutlierDetectionDisks(J)V	methodLines:	288:293
+blockLines:	289:-1
+paras:	dfs.namenode.checkpoint.txns
+TaintedStat:	NORMAL setMinOutlierDetectionDisks:conditional branch(le, to iindex=7) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/metrics/DataNodeDiskMetrics, setMinOutlierDetectionDisks(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere[130]62 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 58,59,60 @303 exception:61
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere[130]62 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 58,59,60 @303 exception:61
+NORMAL run:76 = compare 75,62 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere
+NORMAL run:conditional branch(ge, to iindex=196) 76,28 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=231) 81,82 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere
+NORMAL run:87 = invokestatic < Application, Lorg/apache/hadoop/util/Time, monotonicNow()J > @532 exception:86 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ImageServlet$2, run()Ljava/lang/Void; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/Time, monotonicNow()J > Context: Everywhere
+NORMAL monotonicNow:return 5 Node: < Extension, Lorg/apache/hadoop/util/Time, monotonicNow()J > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/Time, monotonicNow()J > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/Shell, run()V > Context: Everywhere[5]7 = invokestatic < Extension, Lorg/apache/hadoop/util/Time, monotonicNow()J > @9 exception:6
+NORMAL run:8 = compare 5,7 opcode=cmp Node: < Extension, Lorg/apache/hadoop/util/Shell, run()V > Context: Everywhere
+NORMAL run:conditional branch(le, to iindex=10) 8,9 Node: < Extension, Lorg/apache/hadoop/util/Shell, run()V > Context: Everywhere
+NORMAL run:invokespecial < Extension, Lorg/apache/hadoop/util/Shell, runCommand()V > 1 @37 exception:15 Node: < Extension, Lorg/apache/hadoop/util/Shell, run()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/Shell, runCommand()V > Context: Everywhere
+NORMAL runCommand:invokevirtual < Extension, Ljava/lang/Thread, start()V > 71 @271 exception:73 Node: < Extension, Lorg/apache/hadoop/util/Shell, runCommand()V > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+NORMAL start:invokeinterface < Primordial, Ljava/lang/Runnable, run()V > 4 @5 exception:5 Node: synthetic < Primordial, Ljava/lang/Thread, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(eq, to iindex=159) 25,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:conditional branch(ne, to iindex=83) 42,26 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+NORMAL run:87 = getfield < Extension, Lorg/apache/hadoop/conf/ReconfigurationUtil$PropertyChange, newVal, <Extension,Ljava/lang/String> > 29 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase$ReconfigurationThread, run()V > Context: Everywhere[122]89 = invokevirtual < Extension, Lorg/apache/hadoop/conf/ReconfigurableBase, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 85,86,87 @277 exception:88 v87
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[564]84 = invokespecial < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @1277 exception:83 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v3
+NORMAL reconfSlowDiskParameters:conditional branch(ne, to iindex=146) 3,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:40 = phi  39,38
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[155]invokevirtual < Application, Lorg/apache/hadoop/hdfs/server/datanode/metrics/DataNodeDiskMetrics, setMinOutlierDetectionDisks(J)V > 43,40 @330 exception:44 v40
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/metrics/DataNodeDiskMetrics, setMinOutlierDetectionDisks(J)V > Context: Everywhere v2
+NORMAL setMinOutlierDetectionDisks:5 = compare 2,4 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/metrics/DataNodeDiskMetrics, setMinOutlierDetectionDisks(J)V > Context: Everywhere
+NORMAL setMinOutlierDetectionDisks:conditional branch(le, to iindex=7) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/metrics/DataNodeDiskMetrics, setMinOutlierDetectionDisks(J)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setMinOutlierDetectionDisks(long minDisks) {
+    Preconditions.checkArgument(minDisks > 0,
+        DFS_DATANODE_MIN_OUTLIER_DETECTION_DISKS_KEY + " should be larger than 0");
+    minOutlierDetectionDisks = minDisks;
+    this.slowDiskDetector.setMinNumResources(minDisks);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:154..155]74 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:151..153]73 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:156..156]75 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:-1..-2]93 - org.apache.hadoop.hdfs.server.datanode.DataNode.reconfSlowDiskParameters(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=867, lastLineNumber=869, firstMethodNumber=829, lastMethodNumber=879, isFirstLineValid=true, methodSrcCode=
+      throws ReconfigurationException {
+    String result = null;
+    try {
+      LOG.info("Reconfiguring {} to {}", property, newVal);
+      if (property.equals(DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_KEY)) {
+        checkNotNull(dnConf, "DNConf has not been initialized.");
+        String reportInterval = (newVal == null ? DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_DEFAULT :
+            newVal);
+        result = reportInterval;
+        dnConf.setOutliersReportIntervalMs(reportInterval);
+        for (BPOfferService bpos : blockPoolManager.getAllNamenodeThreads()) {
+          if (bpos != null) {
+            for (BPServiceActor actor : bpos.getBPServiceActors()) {
+              actor.getScheduler().setOutliersReportIntervalMs(
+                  dnConf.outliersReportIntervalMs);
+            }
+          }
+        }
+      } else if (property.equals(DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY)) {
+        checkNotNull(dnConf, "DNConf has not been initialized.");
+        int samplingPercentage = (newVal == null ?
+            DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_DEFAULT :
+            Integer.parseInt(newVal));
+        result = Integer.toString(samplingPercentage);
+        dnConf.setFileIoProfilingSamplingPercentage(samplingPercentage);
+        if (fileIoProvider != null) {
+          fileIoProvider.getProfilingEventHook().setSampleRangeMax(samplingPercentage);
+        }
+        if (samplingPercentage > 0 && diskMetrics == null) {
+          diskMetrics = new DataNodeDiskMetrics(this,
+              dnConf.outliersReportIntervalMs, getConf());
+        } else if (samplingPercentage <= 0 && diskMetrics != null) {
+          diskMetrics.shutdownAndWait();
+        }
+      } else if (property.equals(DFS_DATANODE_MIN_OUTLIER_DETECTION_DISKS_KEY)) {
+        checkNotNull(diskMetrics, "DataNode disk stats may be disabled.");
+        long minDisks = (newVal == null ? DFS_DATANODE_MIN_OUTLIER_DETECTION_DISKS_DEFAULT :
+            Long.parseLong(newVal));
+        result = Long.toString(minDisks);
+        diskMetrics.setMinOutlierDetectionDisks(minDisks);
+      } else if (property.equals(DFS_DATANODE_SLOWDISK_LOW_THRESHOLD_MS_KEY)) {
+        checkNotNull(diskMetrics, "DataNode disk stats may be disabled.");
+        long threshold = (newVal == null ? DFS_DATANODE_SLOWDISK_LOW_THRESHOLD_MS_DEFAULT :
+            Long.parseLong(newVal));
+        result = Long.toString(threshold);
+        diskMetrics.setLowThresholdMs(threshold);
+      }
+      LOG.info("RECONFIGURE* changed {} to {}", property, newVal);
+      return result;
+    } catch (IllegalArgumentException e) {
+      throw new ReconfigurationException(property, newVal, getConf().get(property), e);
+    }
+}

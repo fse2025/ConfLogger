@@ -1,0 +1,139 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ObjectReader.java	methodSinagture:	org.apache.storm.utils.ObjectReader.getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long;	methodLines:	105:114
+blockLines:	109:-1
+paras:	topology.backpressure.wait.park.microsec
+TaintedStat:	NORMAL getLong:conditional branch(eq, to iindex=14) 5,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/policy/WaitStrategyPark, prepare(Ljava/util/Map;Lorg/apache/storm/policy/IWaitStrategy$WaitSituation;)V > Context: Everywhere[33]15 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,13 @78 exception:14
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/policy/WaitStrategyPark, prepare(Ljava/util/Map;Lorg/apache/storm/policy/IWaitStrategy$WaitSituation;)V > Context: Everywhere[33]15 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,13 @78 exception:14
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/policy/WaitStrategyPark, prepare(Ljava/util/Map;Lorg/apache/storm/policy/IWaitStrategy$WaitSituation;)V > Context: Everywhere[34]17 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;)Ljava/lang/Long; > 15 @83 exception:16 v15
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;)Ljava/lang/Long; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;)Ljava/lang/Long; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere v1
+NORMAL getLong:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere
+NORMAL getLong:conditional branch(eq, to iindex=14) 5,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ObjectReader.java	methodSinagture:	org.apache.storm.utils.ObjectReader.getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long;	methodLines:	105:114
+blockLines:	111:-1
+paras:	topology.spout.wait.progressive.level3.sleep.millis
+TaintedStat:	NORMAL getLong:conditional branch(eq, to iindex=22) 7,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/policy/WaitStrategyProgressive, prepare(Ljava/util/Map;Lorg/apache/storm/policy/IWaitStrategy$WaitSituation;)V > Context: Everywhere[20]70 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,68 @47 exception:69
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/policy/WaitStrategyProgressive, prepare(Ljava/util/Map;Lorg/apache/storm/policy/IWaitStrategy$WaitSituation;)V > Context: Everywhere[20]70 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,68 @47 exception:69
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/policy/WaitStrategyProgressive, prepare(Ljava/util/Map;Lorg/apache/storm/policy/IWaitStrategy$WaitSituation;)V > Context: Everywhere[21]72 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;)Ljava/lang/Long; > 70 @52 exception:71 v70
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;)Ljava/lang/Long; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;)Ljava/lang/Long; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere v1
+NORMAL getLong:7 = instanceof 1 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere
+NORMAL getLong:conditional branch(eq, to iindex=22) 7,6 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ObjectReader.java	methodSinagture:	org.apache.storm.utils.ObjectReader.getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long;	methodLines:	105:114
+blockLines:	106:-1
+paras:	topology.batch.flush.interval.millis
+TaintedStat:	NORMAL getLong:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/Worker, setupFlushTupleTimer(Ljava/util/Map;Ljava/util/List;)V > Context: Everywhere[12]17 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,15 @31 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/Worker, setupFlushTupleTimer(Ljava/util/Map;Ljava/util/List;)V > Context: Everywhere[12]17 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,15 @31 exception:16
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/worker/Worker, setupFlushTupleTimer(Ljava/util/Map;Ljava/util/List;)V > Context: Everywhere[13]19 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;)Ljava/lang/Long; > 17 @36 exception:18 v17
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;)Ljava/lang/Long; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;)Ljava/lang/Long; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > 1,3 @2 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere v1
+NORMAL getLong:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;Ljava/lang/Long;)Ljava/lang/Long; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static Long getLong(Object o, Long defaultValue) {
+        if (null == o) {
+            return defaultValue;
+        }
+        if (o instanceof Number) {
+            return ((Number) o).longValue();
+        } else if (o instanceof String) {
+            return Long.valueOf((String) o);
+        }
+        throw new IllegalArgumentException("Don't know how to convert " + o + " to a long");
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ObjectReader, getLong(Ljava/lang/Object;)Ljava/lang/Long; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.storm.utils.ObjectReader.getLong(Ljava/lang/Object;)Ljava/lang/Long;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ObjectReader.getLong(Ljava/lang/Object;)Ljava/lang/Long;, BB[SSA:3..3]2 - org.apache.storm.utils.ObjectReader.getLong(Ljava/lang/Object;)Ljava/lang/Long;, BB[SSA:-1..-2]3 - org.apache.storm.utils.ObjectReader.getLong(Ljava/lang/Object;)Ljava/lang/Long;], numberOfBasicBlocks=4, firstLineNumber=101, lastLineNumber=102, firstMethodNumber=101, lastMethodNumber=102, isFirstLineValid=false, methodSrcCode=
+    public static Long getLong(Object o) {
+        return getLong(o, null);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/healthcheck/HealthChecker, processScript(Ljava/util/Map;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:13..13]5 - org.apache.storm.healthcheck.HealthChecker.processScript(Ljava/util/Map;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:11..12]4 - org.apache.storm.healthcheck.HealthChecker.processScript(Ljava/util/Map;Ljava/lang/String;)Ljava/lang/String;, BB[SSA:14..14]6 - org.apache.storm.healthcheck.HealthChecker.processScript(Ljava/util/Map;Ljava/lang/String;)Ljava/lang/String;], numberOfBasicBlocks=3, firstLineNumber=104, lastLineNumber=104, firstMethodNumber=99, lastMethodNumber=151, isFirstLineValid=true, methodSrcCode=
+    public static String processScript(Map<String, Object> conf, String script) {
+        Thread interruptThread = null;
+        Process process = null;
+        try {
+            process = Runtime.getRuntime().exec(script);
+            final long timeout = ObjectReader.getLong(conf.get(DaemonConfig.STORM_HEALTH_CHECK_TIMEOUT_MS), 5000L);
+            final Thread curThread = Thread.currentThread();
+            // kill process when timeout
+            interruptThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(timeout);
+                        curThread.interrupt();
+                    } catch (InterruptedException e) {
+                        // Ignored
+                    }
+                }
+            });
+            interruptThread.start();
+            process.waitFor();
+            interruptThread.interrupt();
+            curThread.interrupted();
+
+            if (process.exitValue() != 0) {
+                String outMessage = readFromStream(process.getInputStream());
+                String errMessage = readFromStream(process.getErrorStream());
+
+                LOG.warn("The healthcheck process {} exited with code: {}; output: {}; err: {}.",
+                    script, process.exitValue(), outMessage, errMessage);
+
+                //Keep this for backwards compatibility.
+                //It relies on "ERROR" at the beginning of stdout to determine FAILED status
+                if (outMessage.startsWith("ERROR")) {
+                    return FAILED;
+                }
+                return FAILED_WITH_EXIT_CODE;
+            }
+            return SUCCESS;
+        } catch (InterruptedException | ClosedByInterruptException e) {
+            LOG.warn("Script:  {} timed out.", script);
+            if (process != null) {
+                process.destroyForcibly();
+            }
+            return TIMEOUT;
+        } catch (Exception e) {
+            LOG.warn("Script failed with exception: ", e);
+            return FAILED;
+        } finally {
+            if (interruptThread != null) {
+                interruptThread.interrupt();
+            }
+        }
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/security/auth/workertoken/WorkerTokenManager, <init>(Ljava/util/Map;Lorg/apache/storm/cluster/IStormClusterState;)V > Context: Everywhere, blocks=[BB[SSA:27..27]13 - org.apache.storm.security.auth.workertoken.WorkerTokenManager.<init>(Ljava/util/Map;Lorg/apache/storm/cluster/IStormClusterState;)V, BB[SSA:25..26]12 - org.apache.storm.security.auth.workertoken.WorkerTokenManager.<init>(Ljava/util/Map;Lorg/apache/storm/cluster/IStormClusterState;)V, BB[SSA:28..28]14 - org.apache.storm.security.auth.workertoken.WorkerTokenManager.<init>(Ljava/util/Map;Lorg/apache/storm/cluster/IStormClusterState;)V, BB[SSA:-1..-2]18 - org.apache.storm.security.auth.workertoken.WorkerTokenManager.<init>(Ljava/util/Map;Lorg/apache/storm/cluster/IStormClusterState;)V], numberOfBasicBlocks=4, firstLineNumber=74, lastLineNumber=74, firstMethodNumber=64, lastMethodNumber=76, isFirstLineValid=true, methodSrcCode=
+     */
+    public WorkerTokenManager(Map<String, Object> daemonConf, IStormClusterState state) {
+        this.state = state;
+        try {
+            keyGen = KeyGenerator.getInstance(WorkerTokenSigner.DEFAULT_HMAC_ALGORITHM);
+            keyGen.init(KEY_LENGTH);
+        } catch (NoSuchAlgorithmException nsa) {
+            throw new IllegalArgumentException("Can't find " + WorkerTokenSigner.DEFAULT_HMAC_ALGORITHM + " algorithm.");
+        }
+        this.tokenLifetimeMillis = TimeUnit.MILLISECONDS.convert(
+            ObjectReader.getLong(daemonConf.get(DaemonConfig.STORM_WORKER_TOKEN_LIFE_TIME_HOURS), 24L),
+            TimeUnit.HOURS);
+    }
+
+}

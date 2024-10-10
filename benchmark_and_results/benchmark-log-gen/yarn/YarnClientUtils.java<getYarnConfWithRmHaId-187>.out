@@ -1,0 +1,64 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	YarnClientUtils.java	methodSinagture:	org.apache.hadoop.yarn.client.util.YarnClientUtils.getYarnConfWithRmHaId(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/conf/YarnConfiguration;	methodLines:	187:203
+blockLines:	190:-1
+paras:	yarn.resourcemanager.ha.id
+TaintedStat:	NORMAL getYarnConfWithRmHaId:conditional branch(ne, to iindex=33) 7,8 Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getYarnConfWithRmHaId(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/conf/YarnConfiguration; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getYarnConfWithRmHaId(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/conf/YarnConfiguration; > Context: Everywhere[7]7 = invokevirtual < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, get(Ljava/lang/String;)Ljava/lang/String; > 3,5 @12 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getYarnConfWithRmHaId(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/conf/YarnConfiguration; > Context: Everywhere[7]7 = invokevirtual < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, get(Ljava/lang/String;)Ljava/lang/String; > 3,5 @12 exception:6
+NORMAL getYarnConfWithRmHaId:conditional branch(ne, to iindex=33) 7,8 Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getYarnConfWithRmHaId(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/conf/YarnConfiguration; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	YarnClientUtils.java	methodSinagture:	org.apache.hadoop.yarn.client.util.YarnClientUtils.getYarnConfWithRmHaId(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/conf/YarnConfiguration;	methodLines:	187:203
+blockLines:	195:-1
+paras:	yarn.resourcemanager.ha.rm-ids
+TaintedStat:	NORMAL getYarnConfWithRmHaId:conditional branch(eq, to iindex=28) 11,8 Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getYarnConfWithRmHaId(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/conf/YarnConfiguration; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getYarnConfWithRmHaId(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/conf/YarnConfiguration; > Context: Everywhere[12]11 = invokevirtual < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 3,9 @21 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getYarnConfWithRmHaId(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/conf/YarnConfiguration; > Context: Everywhere[12]11 = invokevirtual < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 3,9 @21 exception:10
+NORMAL getYarnConfWithRmHaId:conditional branch(eq, to iindex=28) 11,8 Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getYarnConfWithRmHaId(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/conf/YarnConfiguration; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    YarnConfiguration yarnConf = new YarnConfiguration(conf);
+
+    if (yarnConf.get(YarnConfiguration.RM_HA_ID) == null) {
+      // If RM_HA_ID is not configured, use the first of RM_HA_IDS.
+      // Any valid RM HA ID should work.
+      String[] rmIds = yarnConf.getStrings(YarnConfiguration.RM_HA_IDS);
+
+      if ((rmIds != null) && (rmIds.length > 0)) {
+        yarnConf.set(YarnConfiguration.RM_HA_ID, rmIds[0]);
+      } else {
+        throw new IOException("RM_HA_IDS property is not set for HA resource "
+            + "manager");
+      }
+    }
+
+    return yarnConf;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:12..13]7 - org.apache.hadoop.yarn.client.util.YarnClientUtils.getRmPrincipal(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:10..11]6 - org.apache.hadoop.yarn.client.util.YarnClientUtils.getRmPrincipal(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:14..14]8 - org.apache.hadoop.yarn.client.util.YarnClientUtils.getRmPrincipal(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]13 - org.apache.hadoop.yarn.client.util.YarnClientUtils.getRmPrincipal(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=98, lastLineNumber=99, firstMethodNumber=93, lastMethodNumber=107, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    if (rmPrincipal == null) {
+      throw new IllegalArgumentException("RM principal string is null");
+    }
+
+    if (HAUtil.isHAEnabled(conf)) {
+      conf = getYarnConfWithRmHaId(conf);
+    }
+
+    String hostname = conf.getSocketAddr(
+        YarnConfiguration.RM_ADDRESS,
+        YarnConfiguration.DEFAULT_RM_ADDRESS,
+        YarnConfiguration.DEFAULT_RM_PORT).getHostName();
+
+    return SecurityUtil.getServerPrincipal(rmPrincipal, hostname);
+  }
+}

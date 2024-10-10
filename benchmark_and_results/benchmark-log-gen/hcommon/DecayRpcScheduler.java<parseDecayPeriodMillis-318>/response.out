@@ -1,0 +1,30 @@
+```java
+long period = conf.getLong(ns + "." +
+IPC_FCQ_DECAYSCHEDULER_PERIOD_KEY,
+0);
+if (period == 0) {
+    period = conf.getLong(ns + "." +
+    IPC_SCHEDULER_DECAYSCHEDULER_PERIOD_KEY,
+    IPC_SCHEDULER_DECAYSCHEDULER_PERIOD_DEFAULT);
+    // ConfLogger Inserted Start
+    logger.info("Period set to default value using key: " + IPC_SCHEDULER_DECAYSCHEDULER_PERIOD_KEY + " with value: " + period);
+    // ConfLogger Inserted End
+} else if (period > 0) {
+    // ConfLogger Commented: Not Informative
+    // LOG.warn((IPC_FCQ_DECAYSCHEDULER_PERIOD_KEY +
+    // " is deprecated. Please use " +
+    // IPC_SCHEDULER_DECAYSCHEDULER_PERIOD_KEY));
+    // ConfLogger Inserted Start
+    logger.warn(IPC_FCQ_DECAYSCHEDULER_PERIOD_KEY + " is deprecated. Please use " + IPC_SCHEDULER_DECAYSCHEDULER_PERIOD_KEY + ". Current period value: " + period);
+    // ConfLogger Inserted End
+}
+if (period <= 0) {
+    // ConfLogger Inserted Start
+    logger.error("Invalid period value: " + period + ". Period millis must be >= 0. Check configuration key: " + IPC_SCHEDULER_DECAYSCHEDULER_PERIOD_KEY);
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException("Period millis must be >= 0");
+}
+
+return period;
+}
+```

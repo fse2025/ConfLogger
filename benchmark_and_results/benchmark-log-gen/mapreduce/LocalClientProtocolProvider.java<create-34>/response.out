@@ -1,0 +1,13 @@
+```java
+String framework =
+conf.get(MRConfig.FRAMEWORK_NAME, MRConfig.LOCAL_FRAMEWORK_NAME);
+if (!MRConfig.LOCAL_FRAMEWORK_NAME.equals(framework)) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter mismatch: Expected " + MRConfig.LOCAL_FRAMEWORK_NAME + " but found " + framework + ". Ensure that " + MRConfig.FRAMEWORK_NAME + " is set to " + MRConfig.LOCAL_FRAMEWORK_NAME + " for proper operation.");
+    // ConfLogger Inserted End
+    return null;
+}
+conf.setInt(JobContext.NUM_MAPS, 1);
+
+return new LocalJobRunner(conf);
+```

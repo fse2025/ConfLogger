@@ -1,0 +1,118 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNodeProxiesClient.java	methodSinagture:	org.apache.hadoop.hdfs.NameNodeProxiesClient.getFailoverProxyProviderClass(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;)Ljava/lang/Class;	methodLines:	280:298
+blockLines:	281:-1
+paras:	dfs.provided.aliasmap.inmemory.dnrpc-address
+TaintedStat:	NORMAL getFailoverProxyProviderClass:conditional branch(ne, to iindex=5) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, getFailoverProxyProviderClass(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;)Ljava/lang/Class; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[105]72 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,20 @222 exception:71
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[105]72 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,20 @222 exception:71
+NORMAL init:74 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > 72 @225 exception:73 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL createSocketAddr:return 5 Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, buildTokenService(Ljava/net/URI;)Lorg/apache/hadoop/io/Text; > Context: Everywhere[2]6 = invokestatic < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > 4 @4 exception:5
+NORMAL buildTokenService:8 = invokestatic < Extension, Lorg/apache/hadoop/security/SecurityUtil, buildTokenService(Ljava/net/InetSocketAddress;)Lorg/apache/hadoop/io/Text; > 6 @7 exception:7 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, buildTokenService(Ljava/net/URI;)Lorg/apache/hadoop/io/Text; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, buildTokenService(Ljava/net/InetSocketAddress;)Lorg/apache/hadoop/io/Text; > Context: Everywhere
+NORMAL buildTokenService:30 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 28 @80 exception:29 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, buildTokenService(Ljava/net/InetSocketAddress;)Lorg/apache/hadoop/io/Text; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @20 exception:14
+NORMAL setProtocolEngine:17 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16 Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[64]26 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,24 @129 exception:25
+NORMAL init:conditional branch(eq, to iindex=74) 26,15 Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere:50 = phi  34,15,49
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocolPB/InMemoryAliasMapProtocolClientSideTranslatorPB, init(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Collection; > Context: Everywhere[81]53 = invokestatic < Application, Lorg/apache/hadoop/hdfs/NameNodeProxies, createProxy(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo; > 16,50,51 @163 exception:52 v50
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxies, createProxy(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxies, createProxy(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo; > Context: Everywhere[4]7 = invokestatic < Application, Lorg/apache/hadoop/hdfs/NameNodeProxies, createProxy(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;Ljava/util/concurrent/atomic/AtomicBoolean;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo; > 1,2,3,5 @4 exception:6 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxies, createProxy(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;Ljava/util/concurrent/atomic/AtomicBoolean;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxies, createProxy(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;Ljava/util/concurrent/atomic/AtomicBoolean;)Lorg/apache/hadoop/hdfs/NameNodeProxiesClient$ProxyAndInfo; > Context: Everywhere[8]10 = invokestatic < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, createFailoverProxyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ZLjava/util/concurrent/atomic/AtomicBoolean;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAProxyFactory;)Lorg/apache/hadoop/hdfs/server/namenode/ha/AbstractNNFailoverProxyProvider; > 1,2,3,6,4,7 @12 exception:9 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, createFailoverProxyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ZLjava/util/concurrent/atomic/AtomicBoolean;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAProxyFactory;)Lorg/apache/hadoop/hdfs/server/namenode/ha/AbstractNNFailoverProxyProvider; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, createFailoverProxyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ZLjava/util/concurrent/atomic/AtomicBoolean;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAProxyFactory;)Lorg/apache/hadoop/hdfs/server/namenode/ha/AbstractNNFailoverProxyProvider; > Context: Everywhere[4]10 = invokestatic < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, getFailoverProxyProviderClass(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;)Ljava/lang/Class; > 1,2 @5 exception:9 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, getFailoverProxyProviderClass(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;)Ljava/lang/Class; > Context: Everywhere v2
+NORMAL getFailoverProxyProviderClass:conditional branch(ne, to iindex=5) 2,4 Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, getFailoverProxyProviderClass(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;)Ljava/lang/Class; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Configuration conf, URI nameNodeUri) throws IOException {
+    if (nameNodeUri == null) {
+      return null;
+    }
+    String host = nameNodeUri.getHost();
+    String configKey = HdfsClientConfigKeys.Failover.PROXY_PROVIDER_KEY_PREFIX
+        + "." + host;
+    try {
+      @SuppressWarnings("unchecked")
+      Class<FailoverProxyProvider<T>> ret = (Class<FailoverProxyProvider<T>>)
+          conf.getClass(configKey, null, FailoverProxyProvider.class);
+      return ret;
+    } catch (RuntimeException e) {
+      if (e.getCause() instanceof ClassNotFoundException) {
+        throw new IOException("Could not load failover proxy provider class "
+            + conf.get(configKey) + " which is configured for authority "
+            + nameNodeUri, e);
+      } else {
+        throw e;
+      }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/NameNodeProxiesClient, createFailoverProxyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ZLjava/util/concurrent/atomic/AtomicBoolean;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAProxyFactory;)Lorg/apache/hadoop/hdfs/server/namenode/ha/AbstractNNFailoverProxyProvider; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.hdfs.NameNodeProxiesClient.createFailoverProxyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ZLjava/util/concurrent/atomic/AtomicBoolean;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAProxyFactory;)Lorg/apache/hadoop/hdfs/server/namenode/ha/AbstractNNFailoverProxyProvider;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.NameNodeProxiesClient.createFailoverProxyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ZLjava/util/concurrent/atomic/AtomicBoolean;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAProxyFactory;)Lorg/apache/hadoop/hdfs/server/namenode/ha/AbstractNNFailoverProxyProvider;, BB[SSA:5..8]2 - org.apache.hadoop.hdfs.NameNodeProxiesClient.createFailoverProxyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ZLjava/util/concurrent/atomic/AtomicBoolean;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAProxyFactory;)Lorg/apache/hadoop/hdfs/server/namenode/ha/AbstractNNFailoverProxyProvider;, BB[SSA:-1..-2]64 - org.apache.hadoop.hdfs.NameNodeProxiesClient.createFailoverProxyProvider(Lorg/apache/hadoop/conf/Configuration;Ljava/net/URI;Ljava/lang/Class;ZLjava/util/concurrent/atomic/AtomicBoolean;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAProxyFactory;)Lorg/apache/hadoop/hdfs/server/namenode/ha/AbstractNNFailoverProxyProvider;], numberOfBasicBlocks=4, firstLineNumber=226, lastLineNumber=233, firstMethodNumber=226, lastMethodNumber=274, isFirstLineValid=false, methodSrcCode=
+      throws IOException {
+    Class<FailoverProxyProvider<T>> failoverProxyProviderClass = null;
+    AbstractNNFailoverProxyProvider<T> providerNN;
+    try {
+      // Obtain the class of the proxy provider
+      failoverProxyProviderClass = getFailoverProxyProviderClass(conf,
+          nameNodeUri);
+      if (failoverProxyProviderClass == null) {
+        return null;
+      }
+      // Create a proxy provider instance.
+      Constructor<FailoverProxyProvider<T>> ctor = failoverProxyProviderClass
+          .getConstructor(Configuration.class, URI.class,
+              Class.class, HAProxyFactory.class);
+      FailoverProxyProvider<T> provider = ctor.newInstance(conf, nameNodeUri,
+          xface, proxyFactory);
+
+      // If the proxy provider is of an old implementation, wrap it.
+      if (!(provider instanceof AbstractNNFailoverProxyProvider)) {
+        providerNN = new WrappedFailoverProxyProvider<>(provider);
+      } else {
+        providerNN = (AbstractNNFailoverProxyProvider<T>)provider;
+      }
+    } catch (Exception e) {
+      final String message = "Couldn't create proxy provider " +
+          failoverProxyProviderClass;
+      LOG.debug(message, e);
+      if (e.getCause() instanceof IOException) {
+        throw (IOException) e.getCause();
+      } else {
+        throw new IOException(message, e);
+      }
+    }
+
+    // Check the port in the URI, if it is logical.
+    if (checkPort && providerNN.useLogicalURI()) {
+      int port = nameNodeUri.getPort();
+      if (port > 0 &&
+          port != HdfsClientConfigKeys.DFS_NAMENODE_RPC_PORT_DEFAULT) {
+        // Throwing here without any cleanup is fine since we have not
+        // actually created the underlying proxies yet.
+        throw new IOException("Port " + port + " specified in URI "
+            + nameNodeUri + " but host '" + nameNodeUri.getHost()
+            + "' is a logical (HA) namenode"
+            + " and does not use port information.");
+      }
+    }
+    providerNN.setFallbackToSimpleAuth(fallbackToSimpleAuth);
+    return providerNN;
+  }
+}

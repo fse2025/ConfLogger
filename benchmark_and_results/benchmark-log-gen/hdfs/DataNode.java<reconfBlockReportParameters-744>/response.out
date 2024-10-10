@@ -1,0 +1,45 @@
+```java
+String result = null;
+try {
+    LOG.info("Reconfiguring {} to {}", property, newVal);
+    if (property.equals(DFS_BLOCKREPORT_INTERVAL_MSEC_KEY)) {
+        Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+        long intervalMs = newVal == null ? DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT : Long.parseLong(newVal);
+        result = Long.toString(intervalMs);
+        dnConf.setBlockReportInterval(intervalMs);
+        for (BPOfferService bpos : blockPoolManager.getAllNamenodeThreads()) {
+            if (bpos != null) {
+                for (BPServiceActor actor : bpos.getBPServiceActors()) {
+                    actor.getScheduler().setBlockReportIntervalMs(intervalMs);
+                }
+            }
+        }
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter '{}' set to '{}'. Block report interval set to {} ms.", DFS_BLOCKREPORT_INTERVAL_MSEC_KEY, newVal, intervalMs);
+        // ConfLogger Inserted End
+    } else if (property.equals(DFS_BLOCKREPORT_SPLIT_THRESHOLD_KEY)) {
+        Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+        long threshold = newVal == null ? DFS_BLOCKREPORT_SPLIT_THRESHOLD_DEFAULT : Long.parseLong(newVal);
+        result = Long.toString(threshold);
+        dnConf.setBlockReportSplitThreshold(threshold);
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter '{}' set to '{}'. Block report split threshold set to {}.", DFS_BLOCKREPORT_SPLIT_THRESHOLD_KEY, newVal, threshold);
+        // ConfLogger Inserted End
+    } else if (property.equals(DFS_BLOCKREPORT_INITIAL_DELAY_KEY)) {
+        Preconditions.checkNotNull(dnConf, "DNConf has not been initialized.");
+        int initialDelay = newVal == null ? DFS_BLOCKREPORT_INITIAL_DELAY_DEFAULT : Integer.parseInt(newVal);
+        result = Integer.toString(initialDelay);
+        dnConf.setInitBRDelayMs(result);
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter '{}' set to '{}'. Initial block report delay set to {} ms.", DFS_BLOCKREPORT_INITIAL_DELAY_KEY, newVal, initialDelay);
+        // ConfLogger Inserted End
+    }
+    LOG.info("RECONFIGURE* changed {} to {}", property, newVal);
+    return result;
+} catch (IllegalArgumentException e) {
+    // ConfLogger Inserted Start
+    logger.error("Failed to reconfigure parameter '{}'. Invalid value '{}'.", property, newVal);
+    // ConfLogger Inserted End
+    throw new ReconfigurationException(property, newVal, getConf().get(property), e);
+}
+```

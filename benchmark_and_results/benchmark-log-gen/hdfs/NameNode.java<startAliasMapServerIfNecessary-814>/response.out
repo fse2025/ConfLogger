@@ -1,0 +1,22 @@
+```java
+if (conf.getBoolean(DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED,
+DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED_DEFAULT)
+&& conf.getBoolean(DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED,
+DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED_DEFAULT)) {
+    levelDBAliasMapServer = new InMemoryLevelDBAliasMapServer(
+    InMemoryAliasMap::init, namesystem.getBlockPoolId());
+    levelDBAliasMapServer.setConf(conf);
+    levelDBAliasMapServer.start();
+    // ConfLogger Inserted Start
+    logger.info("DFS_NAMENODE_PROVIDED_ENABLED and DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED are both enabled. InMemoryLevelDBAliasMapServer started with configuration: DFS_NAMENODE_PROVIDED_ENABLED={}, DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED={}", 
+                conf.getBoolean(DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED, DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED_DEFAULT), 
+                conf.getBoolean(DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED, DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED_DEFAULT));
+    // ConfLogger Inserted End
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Failed to start InMemoryLevelDBAliasMapServer. Configuration settings: DFS_NAMENODE_PROVIDED_ENABLED={}, DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED={}", 
+                conf.getBoolean(DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED, DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED_DEFAULT), 
+                conf.getBoolean(DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED, DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED_DEFAULT));
+    // ConfLogger Inserted End
+}
+```

@@ -1,0 +1,187 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RMAdminCLI.java	methodSinagture:	org.apache.hadoop.yarn.client.cli.RMAdminCLI.printHelp(Ljava/lang/String;Z)V	methodLines:	265:315
+blockLines:	290:-1
+paras:	yarn.resourcemanager.ha.enabled
+TaintedStat:	NORMAL printHelp:conditional branch(eq, to iindex=17) 2,12 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, printHelp(Ljava/lang/String;Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, run([Ljava/lang/String;)I > Context: Everywhere[17]17 = invokevirtual < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, getBoolean(Ljava/lang/String;Z)Z > 13,14,15 @33 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, run([Ljava/lang/String;)I > Context: Everywhere[17]17 = invokevirtual < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, getBoolean(Ljava/lang/String;Z)Z > 13,14,15 @33 exception:16
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, run([Ljava/lang/String;)I > Context: Everywhere[59]invokestatic < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, printHelp(Ljava/lang/String;Z)V > 94,17 @100 exception:228 v17
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, printHelp(Ljava/lang/String;Z)V > Context: Everywhere v2
+NORMAL printHelp:conditional branch(eq, to iindex=17) 2,12 Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, printHelp(Ljava/lang/String;Z)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static void printHelp(String cmd, boolean isHAEnabled) {
+    StringBuilder summary = new StringBuilder();
+    summary.append("rmadmin is the command to execute YARN administrative " +
+        "commands.\n");
+    summary.append("The full syntax is: \n\n"
+        + "yarn rmadmin"
+        + " [-refreshQueues]"
+        + " [-refreshNodes [-g|graceful [timeout in seconds] -client|server]]"
+        + " [-refreshNodesResources]"
+        + " [-refreshSuperUserGroupsConfiguration]"
+        + " [-refreshUserToGroupsMappings]"
+        + " [-refreshAdminAcls]"
+        + " [-refreshServiceAcl]"
+        + " [-getGroup [username]]"
+        + " [-addToClusterNodeLabels <\"label1(exclusive=true),"
+        + "label2(exclusive=false),label3\">]"
+        + " [-removeFromClusterNodeLabels <label1,label2,label3>]"
+        + " [-replaceLabelsOnNode "
+        + "<\"node1[:port]=label1,label2 node2[:port]=label1\"> "
+        + "[-failOnUnknownNodes]]"
+        + " [-directlyAccessNodeLabelStore]"
+        + " [-refreshClusterMaxPriority]"
+        + " [-updateNodeResource [NodeID] [MemSize] [vCores]"
+        + " ([OvercommitTimeout]) or -updateNodeResource [NodeID] "
+        + "[ResourceTypes] ([OvercommitTimeout])]");
+    if (isHAEnabled) {
+      appendHAUsage(summary);
+    }
+    summary.append(" [-help [cmd]]")
+        .append("\n");
+
+    StringBuilder helpBuilder = new StringBuilder();
+    System.out.println(summary);
+    for (String cmdKey : ADMIN_USAGE.keySet()) {
+      buildHelpMsg(cmdKey, helpBuilder);
+      helpBuilder.append("\n");
+    }
+    if (isHAEnabled) {
+      for (String cmdKey : USAGE.keySet()) {
+        if (!cmdKey.equals("-help")) {
+          buildHelpMsg(cmdKey, helpBuilder);
+          helpBuilder.append("\n");
+        }
+      }
+    }
+    helpBuilder.append("   -help [cmd]: Displays help for the given command or all commands" +
+        " if none is specified.");
+    System.out.println(helpBuilder);
+    System.out.println();
+    ToolRunner.printGenericCommandUsage(System.out);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/cli/RMAdminCLI, run([Ljava/lang/String;)I > Context: Everywhere, blocks=[BB[SSA:57..59]22 - org.apache.hadoop.yarn.client.cli.RMAdminCLI.run([Ljava/lang/String;)I, BB[SSA:50..50]18 - org.apache.hadoop.yarn.client.cli.RMAdminCLI.run([Ljava/lang/String;)I, BB[SSA:60..61]23 - org.apache.hadoop.yarn.client.cli.RMAdminCLI.run([Ljava/lang/String;)I, BB[SSA:-1..-2]162 - org.apache.hadoop.yarn.client.cli.RMAdminCLI.run([Ljava/lang/String;)I], numberOfBasicBlocks=4, firstLineNumber=722, lastLineNumber=727, firstMethodNumber=703, lastMethodNumber=813, isFirstLineValid=true, methodSrcCode=
+  public int run(String[] args) throws Exception {
+    YarnConfiguration yarnConf =
+        getConf() == null ? new YarnConfiguration() : new YarnConfiguration(
+            getConf());
+    boolean isHAEnabled =
+        yarnConf.getBoolean(YarnConfiguration.RM_HA_ENABLED,
+            YarnConfiguration.DEFAULT_RM_HA_ENABLED);
+
+    if (args.length < 1) {
+      printUsage("", isHAEnabled);
+      return -1;
+    }
+
+    int exitCode = -1;
+    int i = 0;
+    String cmd = args[i++];
+
+    exitCode = 0;
+    if ("-help".equals(cmd)) {
+      if (i < args.length) {
+        printUsage(args[i], isHAEnabled);
+      } else {
+        printHelp("", isHAEnabled);
+      }
+      return exitCode;
+    }
+
+    if (USAGE.containsKey(cmd)) {
+      if (isHAEnabled) {
+        return super.run(args);
+      }
+      System.out.println("Cannot run " + cmd
+          + " when ResourceManager HA is not enabled");
+      return -1;
+    }
+
+    //
+    // verify that we have enough command line parameters
+    //
+    if ("-refreshAdminAcls".equals(cmd) || "-refreshQueues".equals(cmd) ||
+        "-refreshNodesResources".equals(cmd) ||
+        "-refreshServiceAcl".equals(cmd) ||
+        "-refreshUserToGroupsMappings".equals(cmd) ||
+        "-refreshSuperUserGroupsConfiguration".equals(cmd)) {
+      if (args.length != 1) {
+        printUsage(cmd, isHAEnabled);
+        return exitCode;
+      }
+    }
+
+    try {
+      if ("-refreshQueues".equals(cmd)) {
+        exitCode = refreshQueues();
+      } else if ("-refreshNodes".equals(cmd)) {
+        exitCode = handleRefreshNodes(args, cmd, isHAEnabled);
+      } else if ("-refreshNodesResources".equals(cmd)) {
+        exitCode = refreshNodesResources();
+      } else if ("-refreshUserToGroupsMappings".equals(cmd)) {
+        exitCode = refreshUserToGroupsMappings();
+      } else if ("-refreshSuperUserGroupsConfiguration".equals(cmd)) {
+        exitCode = refreshSuperUserGroupsConfiguration();
+      } else if ("-refreshAdminAcls".equals(cmd)) {
+        exitCode = refreshAdminAcls();
+      } else if ("-refreshServiceAcl".equals(cmd)) {
+        exitCode = refreshServiceAcls();
+      } else if ("-refreshClusterMaxPriority".equals(cmd)) {
+        exitCode = refreshClusterMaxPriority();
+      } else if ("-getGroups".equals(cmd)) {
+        String[] usernames = Arrays.copyOfRange(args, i, args.length);
+        exitCode = getGroups(usernames);
+      } else if ("-updateNodeResource".equals(cmd)) {
+        exitCode = handleUpdateNodeResource(args, cmd, isHAEnabled);
+      } else if ("-addToClusterNodeLabels".equals(cmd)) {
+        exitCode = handleAddToClusterNodeLabels(args, cmd, isHAEnabled);
+      } else if ("-removeFromClusterNodeLabels".equals(cmd)) {
+        exitCode = handleRemoveFromClusterNodeLabels(args, cmd, isHAEnabled);
+      } else if ("-replaceLabelsOnNode".equals(cmd)) {
+        exitCode = handleReplaceLabelsOnNodes(args, cmd, isHAEnabled);
+      } else {
+        exitCode = -1;
+        System.err.println(cmd.substring(1) + ": Unknown command");
+        printUsage("", isHAEnabled);
+      }
+
+    } catch (IllegalArgumentException arge) {
+      exitCode = -1;
+      System.err.println(cmd.substring(1) + ": " + arge.getLocalizedMessage());
+      printUsage(cmd, isHAEnabled);
+    } catch (RemoteException e) {
+      //
+      // This is a error returned by hadoop server. Print
+      // out the first line of the error message, ignore the stack trace.
+      exitCode = -1;
+      try {
+        String[] content;
+        content = e.getLocalizedMessage().split("\n");
+        System.err.println(cmd.substring(1) + ": "
+                           + content[0]);
+      } catch (Exception ex) {
+        System.err.println(cmd.substring(1) + ": "
+                           + ex.getLocalizedMessage());
+      }
+    } catch (Exception e) {
+      exitCode = -1;
+      System.err.println(cmd.substring(1) + ": "
+                         + e.getLocalizedMessage());
+    }
+    if (null != localNodeLabelsManager) {
+      localNodeLabelsManager.stop();
+    }
+    return exitCode;
+  }
+}

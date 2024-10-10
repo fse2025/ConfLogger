@@ -1,0 +1,152 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	KeyFieldHelper.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.partition.KeyFieldHelper.parseOption(Ljava/lang/String;)V	methodLines:	158:194
+blockLines:	165:-1
+paras:	null
+TaintedStat:	NORMAL parseOption:conditional branch(eq, to iindex=74) 14,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[40]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,16 @82 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[40]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,16 @82 exception:17
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[45]invokevirtual < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > 19,18 @91 exception:20 v18
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere v2
+NORMAL parseOption:conditional branch(eq, to iindex=8) 2,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+NORMAL parseOption:conditional branch(eq, to iindex=9) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+NORMAL parseOption:conditional branch(eq, to iindex=74) 14,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	KeyFieldHelper.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.partition.KeyFieldHelper.parseOption(Ljava/lang/String;)V	methodLines:	158:194
+blockLines:	159:-1
+paras:	null
+TaintedStat:	NORMAL parseOption:conditional branch(eq, to iindex=8) 2,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[19]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,12 @36 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[19]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,12 @36 exception:13
+NORMAL setConf:conditional branch(eq, to iindex=38) 14,15 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,16 @82 exception:17 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[40]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,16 @82 exception:17
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[45]invokevirtual < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > 19,18 @91 exception:20 v18
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere v2
+NORMAL parseOption:conditional branch(eq, to iindex=8) 2,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	KeyFieldHelper.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.partition.KeyFieldHelper.parseOption(Ljava/lang/String;)V	methodLines:	158:194
+blockLines:	185:-1
+paras:	null
+TaintedStat:	NORMAL parseOption:conditional branch(eq, to iindex=102) 39,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedComparator, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[10]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,7,8 @18 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedComparator, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[10]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,7,8 @18 exception:9
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedComparator, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[15]invokevirtual < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, setKeyFieldSeparator(Ljava/lang/String;)V > 11,10 @27 exception:12 v10
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, setKeyFieldSeparator(Ljava/lang/String;)V > Context: Everywhere v2
+NORMAL setKeyFieldSeparator:6 = invokevirtual < Application, Ljava/lang/String, getBytes(Ljava/lang/String;)[B > 2,4 @4 exception:5 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, setKeyFieldSeparator(Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, getBytes(Ljava/lang/String;)[B > Context: Everywhere
+NORMAL getBytes:6 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @14 exception:5 Node: < Primordial, Ljava/lang/String, getBytes(Ljava/lang/String;)[B > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL coder:return 7 Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere[13]8 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @20 exception:7
+NORMAL equals:conditional branch(ne, to iindex=33) 8,10 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 21 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[14]19 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 16,17 @31 exception:18
+NORMAL getCodecClasses:conditional branch(eq, to iindex=23) 19,20 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+NORMAL getCodecClasses:22 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,16 @52 exception:21 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedComparator, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[5]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @9 exception:5
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedComparator, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[19]invokevirtual < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > 13,6 @35 exception:14 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere v2
+NORMAL parseOption:conditional branch(eq, to iindex=8) 2,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+NORMAL parseOption:conditional branch(eq, to iindex=9) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+NORMAL parseOption:conditional branch(eq, to iindex=102) 39,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	KeyFieldHelper.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.partition.KeyFieldHelper.parseOption(Ljava/lang/String;)V	methodLines:	158:194
+blockLines:	191:-1
+paras:	null
+TaintedStat:	NORMAL parseOption:conditional branch(ne, to iindex=112) 50,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedComparator, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[5]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @9 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedComparator, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[5]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @9 exception:5
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedComparator, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[19]invokevirtual < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > 13,6 @35 exception:14 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere v2
+NORMAL parseOption:conditional branch(eq, to iindex=8) 2,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+NORMAL parseOption:conditional branch(eq, to iindex=9) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+NORMAL parseOption:conditional branch(ne, to iindex=112) 50,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldHelper, parseOption(Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void parseOption(String option) {
+    if (option == null || option.equals("")) {
+      //we will have only default comparison
+      return;
+    }
+    StringTokenizer args = new StringTokenizer(option);
+    KeyDescription global = new KeyDescription();
+    while (args.hasMoreTokens()) {
+      String arg = args.nextToken();
+      if (arg.equals("-n")) {  
+        global.numeric = true;
+      }
+      if (arg.equals("-r")) {
+        global.reverse = true;
+      }
+      if (arg.equals("-nr")) {
+        global.numeric = true;
+        global.reverse = true;
+      }
+      if (arg.startsWith("-k")) {
+        KeyDescription k = parseKey(arg, args);
+        if (k != null) {
+          allKeySpecs.add(k);
+          keySpecSeen = true;
+        }
+      }
+    }
+    for (KeyDescription key : allKeySpecs) {
+      if (!(key.reverse | key.numeric)) {
+        key.reverse = global.reverse;
+        key.numeric = global.numeric;
+      }
+    }
+    if (allKeySpecs.size() == 0) {
+      allKeySpecs.add(global);
+    }
+  }
+  
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedComparator, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:18..19]7 - org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedComparator.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:16..17]6 - org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedComparator.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:20..20]8 - org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedComparator.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]9 - org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedComparator.setConf(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=67, lastLineNumber=68, firstMethodNumber=62, lastMethodNumber=68, isFirstLineValid=true, methodSrcCode=
+  public void setConf(Configuration conf) {
+    this.conf = conf;
+    String option = conf.get(COMPARATOR_OPTIONS);
+    String keyFieldSeparator = conf.get(MRJobConfig.MAP_OUTPUT_KEY_FIELD_SEPARATOR,"\t");
+    keyFieldHelper.setKeyFieldSeparator(keyFieldSeparator);
+    keyFieldHelper.parseOption(option);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/KeyFieldBasedPartitioner, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:44..45]19 - org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedPartitioner.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:41..43]18 - org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedPartitioner.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:46..46]20 - org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedPartitioner.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]21 - org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedPartitioner.setConf(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=76, lastLineNumber=79, firstMethodNumber=64, lastMethodNumber=79, isFirstLineValid=true, methodSrcCode=
+  public void setConf(Configuration conf) {
+    this.conf = conf;
+    keyFieldHelper = new KeyFieldHelper();
+    String keyFieldSeparator = 
+      conf.get(MRJobConfig.MAP_OUTPUT_KEY_FIELD_SEPARATOR, "\t");
+    keyFieldHelper.setKeyFieldSeparator(keyFieldSeparator);
+    if (conf.get("num.key.fields.for.partition") != null) {
+      LOG.warn("Using deprecated num.key.fields.for.partition. " +
+      		"Use mapreduce.partition.keypartitioner.options instead");
+      this.numOfPartitionFields = conf.getInt("num.key.fields.for.partition",0);
+      keyFieldHelper.setKeyFieldSpec(1,numOfPartitionFields);
+    } else {
+      String option = conf.get(PARTITIONER_OPTIONS);
+      keyFieldHelper.parseOption(option);
+    }
+  }
+
+}

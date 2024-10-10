@@ -1,0 +1,49 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HistoryServerStateStoreServiceFactory.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.HistoryServerStateStoreServiceFactory.getStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService;	methodLines:	32:46
+blockLines:	41:-1
+paras:	mapreduce.jobhistory.recovery.store.class
+TaintedStat:	NORMAL getStore:conditional branch(ne, to iindex=24) 12,9 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreServiceFactory, getStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreServiceFactory, getStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService; > Context: Everywhere[14]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,8,9,10 @21 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreServiceFactory, getStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService; > Context: Everywhere[14]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,8,9,10 @21 exception:11
+NORMAL getStore:conditional branch(ne, to iindex=24) 12,9 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreServiceFactory, getStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	HistoryServerStateStoreServiceFactory.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.HistoryServerStateStoreServiceFactory.getStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService;	methodLines:	32:46
+blockLines:	38:-1
+paras:	mapreduce.jobhistory.recovery.enable
+TaintedStat:	NORMAL getStore:conditional branch(eq, to iindex=24) 7,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreServiceFactory, getStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreServiceFactory, getStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService; > Context: Everywhere[5]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,4,5 @7 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreServiceFactory, getStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService; > Context: Everywhere[5]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,4,5 @7 exception:6
+NORMAL getStore:conditional branch(eq, to iindex=24) 7,5 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreServiceFactory, getStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static HistoryServerStateStoreService getStore(Configuration conf) {
+    Class<? extends HistoryServerStateStoreService> storeClass =
+        HistoryServerNullStateStoreService.class;
+    boolean recoveryEnabled = conf.getBoolean(
+        JHAdminConfig.MR_HS_RECOVERY_ENABLE,
+        JHAdminConfig.DEFAULT_MR_HS_RECOVERY_ENABLE);
+    if (recoveryEnabled) {
+      storeClass = conf.getClass(JHAdminConfig.MR_HS_STATE_STORE, null,
+          HistoryServerStateStoreService.class);
+      if (storeClass == null) {
+        throw new RuntimeException("Unable to locate storage class, check "
+            + JHAdminConfig.MR_HS_STATE_STORE);
+      }
+    }
+    return ReflectionUtils.newInstance(storeClass, conf);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/JobHistoryServer, createStateStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer.createStateStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService;, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer.createStateStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService;, BB[SSA:2..2]2 - org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer.createStateStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService;, BB[SSA:-1..-2]3 - org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer.createStateStore(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/mapreduce/v2/hs/HistoryServerStateStoreService;], numberOfBasicBlocks=4, firstLineNumber=173, lastLineNumber=174, firstMethodNumber=173, lastMethodNumber=174, isFirstLineValid=false, methodSrcCode=
+      Configuration conf) {
+    return HistoryServerStateStoreServiceFactory.getStore(conf);
+  }
+}

@@ -1,0 +1,19 @@
+```java
+T ret = (T) this;
+ret = setMemoryLoad(onHeap);
+
+if (offHeap != null) {
+    offHeap = offHeap.doubleValue();
+    addResource(Config.TOPOLOGY_COMPONENT_RESOURCES_OFFHEAP_MEMORY_MB, offHeap);
+    ret = addConfiguration(Config.TOPOLOGY_COMPONENT_RESOURCES_OFFHEAP_MEMORY_MB, offHeap);
+    // ConfLogger Inserted Start
+    logger.info("OffHeap memory configuration set. Key: Config.TOPOLOGY_COMPONENT_RESOURCES_OFFHEAP_MEMORY_MB, Value: " + offHeap);
+    // ConfLogger Inserted End
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("OffHeap memory configuration is null. Ensure Config.TOPOLOGY_COMPONENT_RESOURCES_OFFHEAP_MEMORY_MB is properly set.");
+    // ConfLogger Inserted End
+}
+return ret;
+}
+```

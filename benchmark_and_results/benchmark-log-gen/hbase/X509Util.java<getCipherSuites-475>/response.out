@@ -1,0 +1,14 @@
+```java
+String cipherSuitesInput = config.get(TLS_CIPHER_SUITES);
+if (cipherSuitesInput == null) {
+    // ConfLogger Inserted Start
+    logger.info("TLS_CIPHER_SUITES is not set. Using default cipher suites based on useOpenSsl: " + useOpenSsl);
+    // ConfLogger Inserted End
+    return getDefaultCipherSuites(useOpenSsl);
+} else {
+    // ConfLogger Inserted Start
+    logger.info("TLS_CIPHER_SUITES is set. Using provided cipher suites: " + cipherSuitesInput);
+    // ConfLogger Inserted End
+    return cipherSuitesInput.split(",");
+}
+```

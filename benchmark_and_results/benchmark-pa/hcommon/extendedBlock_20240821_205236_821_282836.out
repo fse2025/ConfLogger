@@ -1,0 +1,36 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AbstractFileSystem.java	methodSinagture:	org.apache.hadoop.fs.AbstractFileSystem.createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/AbstractFileSystem;	methodLines:	171:181
+blockLines:	176:-1
+paras:	null
+TaintedStat:	NORMAL createFileSystem:conditional branch(ne, to iindex=39) 14,12 Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/AbstractFileSystem; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/AbstractFileSystem; > Context: Everywhere[13]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > 2,11,12 @20 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/AbstractFileSystem; > Context: Everywhere[13]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > 2,11,12 @20 exception:13
+NORMAL createFileSystem:conditional branch(ne, to iindex=39) 14,12 Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, createFileSystem(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/AbstractFileSystem; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws UnsupportedFileSystemException {
+    final String fsImplConf = String.format("fs.AbstractFileSystem.%s.impl",
+        uri.getScheme());
+
+    Class<?> clazz = conf.getClass(fsImplConf, null);
+    if (clazz == null) {
+      throw new UnsupportedFileSystemException(String.format(
+          "%s=null: %s: %s",
+          fsImplConf, NO_ABSTRACT_FS_ERROR, uri.getScheme()));
+    }
+    return (AbstractFileSystem) newInstance(clazz, uri, conf);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/AbstractFileSystem, get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/AbstractFileSystem; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.fs.AbstractFileSystem.get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/AbstractFileSystem;, BB[SSA:-1..-2]0 - org.apache.hadoop.fs.AbstractFileSystem.get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/AbstractFileSystem;, BB[SSA:3..3]2 - org.apache.hadoop.fs.AbstractFileSystem.get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/AbstractFileSystem;, BB[SSA:-1..-2]3 - org.apache.hadoop.fs.AbstractFileSystem.get(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/fs/AbstractFileSystem;], numberOfBasicBlocks=4, firstLineNumber=265, lastLineNumber=266, firstMethodNumber=265, lastMethodNumber=266, isFirstLineValid=false, methodSrcCode=
+      throws UnsupportedFileSystemException {
+    return createFileSystem(uri, conf);
+  }
+}

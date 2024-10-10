@@ -1,0 +1,85 @@
+```java
+public static Collection<InMemoryAliasMapProtocol> init(Configuration conf) {
+    Collection<InMemoryAliasMapProtocol> aliasMaps = new ArrayList<>();
+    // Try to connect to all configured nameservices as it is not known which
+    // nameservice supports the AliasMap.
+    for (String nsId : getNameServiceIds(conf)) {
+        try {
+            URI namenodeURI = null;
+            Configuration newConf = new Configuration(conf);
+            if (HAUtil.isHAEnabled(conf, nsId)) {
+                // set the failover-proxy provider if HA is enabled.
+                newConf.setClass(
+                    addKeySuffixes(PROXY_PROVIDER_KEY_PREFIX, nsId),
+                    InMemoryAliasMapFailoverProxyProvider.class,
+                    AbstractNNFailoverProxyProvider.class);
+                namenodeURI = new URI(HdfsConstants.HDFS_URI_SCHEME + "://" + nsId);
+            } else {
+                String key =
+                    addKeySuffixes(DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS, nsId);
+                String addr = conf.get(key);
+                if (addr != null) {
+                    namenodeURI = createUri(HdfsConstants.HDFS_URI_SCHEME,
+                        NetUtils.createSocketAddr(addr));
+                }
+            }
+            if (namenodeURI != null) {
+                aliasMaps.add(NameNodeProxies
+                    .createProxy(newConf, namenodeURI, InMemoryAliasMapProtocol.class)
+                    .getProxy());
+                LOG.info("Connected to InMemoryAliasMap at {}", namenodeURI);
+            }
+        } catch (IOException | URISyntaxException e) {
+            LOG.warn("Exception in connecting to InMemoryAliasMap for nameservice "
+                + "{}: {}", nsId, e);
+        }
+    }
+    // if a separate AliasMap is configured using
+    // DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS, try to connect it.
+    if (conf.get(DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS) != null) {
+        URI uri = createUri("hdfs", NetUtils.createSocketAddr(
+            conf.get(DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS)));
+        try {
+            aliasMaps.add(NameNodeProxies
+                .createProxy(conf, uri, InMemoryAliasMapProtocol.class).getProxy());
+            LOG.info("Connected to InMemoryAliasMap at {}", uri);
+        } catch (IOException e) {
+            LOG.warn("Exception in connecting to InMemoryAliasMap at {}: {}", uri,
+                e);
+        }
+    }
+    return aliasMaps;
+}
+
+// ConfLogger Inserted Start
+if (conf.get(DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS) == null) {
+    logger.warn("The configuration parameter 'dfs.provided.aliasmap.inmemory.dnrpc-address' is not set. Ensure this parameter is configured to connect to the AliasMap.");
+}
+// ConfLogger Inserted End
+
+if (addr != null) {
+    namenodeURI = createUri(HdfsConstants.HDFS_URI_SCHEME,
+        NetUtils.createSocketAddr(addr));
+    // ConfLogger Inserted Start
+} else {
+    logger.warn("The address for the nameservice '{}' is not set. Ensure the configuration parameter 'dfs.provided.aliasmap.inmemory.dnrpc-address' is properly configured.", nsId);
+    // ConfLogger Inserted End
+}
+
+if (namenodeURI != null) {
+    aliasMaps.add(NameNodeProxies
+        .createProxy(newConf, namenodeURI, InMemoryAliasMapProtocol.class)
+        .getProxy());
+    LOG.info("Connected to InMemoryAliasMap at {}", namenodeURI); // ConfLogger Skipped: Contains configuration-related information
+}
+```
+
+### Explanation:
+1. **Task 1**: 
+   - The existing log statement `LOG.info("Connected to InMemoryAliasMap at {}", namenodeURI);` in the third `<code-specified>` block is skipped because it already contains configuration-related information (the URI to which it connects).
+   - The existing log statement `LOG.warn("Exception in connecting to InMemoryAliasMap at {}: {}", uri, e);` in the first `<code-specified>` block is not commented out because it provides useful information about the exception.
+
+2. **Task 2**:
+   - For the first `<code-specified>` block, a log statement is inserted to warn if the configuration parameter `dfs.provided.aliasmap.inmemory.dnrpc-address` is not set.
+   - For the second `<code-specified>` block, a log statement is inserted to warn if the address for the nameservice is not set, indicating a potential misconfiguration.
+   - The log level used is `warn` to indicate potential issues with configuration settings.

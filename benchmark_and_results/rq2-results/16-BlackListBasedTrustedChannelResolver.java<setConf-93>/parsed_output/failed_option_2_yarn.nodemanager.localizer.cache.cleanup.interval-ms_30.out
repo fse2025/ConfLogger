@@ -1,0 +1,1 @@
+yarn.nodemanager.localizer.cache.cleanup.interval-ms	600000	[main]	Server variable blacklist enabled. Using variable file: /etc/hadoop/blackList with expiry time: 3600000ms. Configuration key: dfs.datatransfer.server.variableBlackList.enable	30

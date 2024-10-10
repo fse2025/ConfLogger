@@ -1,0 +1,49 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	YarnClientUtils.java	methodSinagture:	org.apache.hadoop.yarn.client.util.YarnClientUtils.getRmPrincipal(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	93:107
+blockLines:	94:-1
+paras:	yarn.resourcemanager.principal
+TaintedStat:	NORMAL getRmPrincipal:conditional branch(ne, to iindex=8) 1,4 Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[11]8 = invokestatic < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > 5,1 @15 exception:7 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL getRmPrincipal:conditional branch(ne, to iindex=8) 1,4 Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    if (rmPrincipal == null) {
+      throw new IllegalArgumentException("RM principal string is null");
+    }
+
+    if (HAUtil.isHAEnabled(conf)) {
+      conf = getYarnConfWithRmHaId(conf);
+    }
+
+    String hostname = conf.getSocketAddr(
+        YarnConfiguration.RM_ADDRESS,
+        YarnConfiguration.DEFAULT_RM_ADDRESS,
+        YarnConfiguration.DEFAULT_RM_PORT).getHostName();
+
+    return SecurityUtil.getServerPrincipal(rmPrincipal, hostname);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/util/YarnClientUtils, getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:9..11]3 - org.apache.hadoop.yarn.client.util.YarnClientUtils.getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:3..8]2 - org.apache.hadoop.yarn.client.util.YarnClientUtils.getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:12..12]4 - org.apache.hadoop.yarn.client.util.YarnClientUtils.getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]6 - org.apache.hadoop.yarn.client.util.YarnClientUtils.getRmPrincipal(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=73, lastLineNumber=77, firstMethodNumber=72, lastMethodNumber=80, isFirstLineValid=true, methodSrcCode=
+  public static String getRmPrincipal(Configuration conf) throws IOException {
+    String principal = conf.get(YarnConfiguration.RM_PRINCIPAL);
+    String prepared = null;
+
+    if (principal != null) {
+      prepared = getRmPrincipal(principal, conf);
+    }
+
+    return prepared;
+  }
+}

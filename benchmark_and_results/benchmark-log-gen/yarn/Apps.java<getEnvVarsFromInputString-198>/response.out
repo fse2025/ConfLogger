@@ -1,0 +1,19 @@
+```java
+Set<String> envSet = new HashSet<>();
+if (envString != null && envString.length() > 0) {
+    // ConfLogger Inserted Start
+    logger.debug("envString is not null and its length is greater than 0. envString: " + envString);
+    // ConfLogger Inserted End
+    Matcher varValMatcher = VARVAL_SPLITTER.matcher(envString);
+    while (varValMatcher.find()) {
+        String envVar = varValMatcher.group(1);
+        envSet.add(envVar);
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("envString is either null or its length is 0. envString: " + envString);
+    // ConfLogger Inserted End
+}
+return envSet;
+}
+```

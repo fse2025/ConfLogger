@@ -1,0 +1,69 @@
+```java
+String providerPath = config.get(
+CredentialProviderFactory.CREDENTIAL_PROVIDER_PATH);
+
+if (providerPath == null) {
+    // ConfLogger Inserted Start
+    logger.warn("The configuration parameter 'hadoop.security.credential.provider.path' is not set. Returning the original configuration without modifications.");
+    // ConfLogger Inserted End
+    return config;
+}
+StringBuffer newProviderPath = new StringBuffer();
+String[] providers = providerPath.split(",");
+Path path = null;
+for (String provider: providers) {
+    try {
+        path = unnestUri(new URI(provider));
+        Class<? extends FileSystem> clazz = null;
+        try {
+            String scheme = path.toUri().getScheme();
+            clazz = FileSystem.getFileSystemClass(scheme, config);
+        } catch (IOException ioe) {
+            // not all providers are filesystem based
+            // for instance user:/// will not be able to
+            // have a filesystem class associated with it.
+            if (newProviderPath.length() > 0) {
+                newProviderPath.append(",");
+            }
+            newProviderPath.append(provider);
+        }
+        if (clazz != null) {
+            if (fileSystemClass.isAssignableFrom(clazz)) {
+                // ConfLogger Inserted Start
+                logger.debug("Provider '{}' with scheme '{}' is a valid filesystem class and will be used.", provider, path.toUri().getScheme());
+                // ConfLogger Inserted End
+            } else {
+                if (newProviderPath.length() > 0) {
+                    newProviderPath.append(",");
+                }
+                newProviderPath.append(provider);
+                // ConfLogger Inserted Start
+                logger.warn("Provider '{}' with scheme '{}' is not assignable from the expected filesystem class. It will be excluded from the effective path.", provider, path.toUri().getScheme());
+                // ConfLogger Inserted End
+            }
+        }
+    } catch (URISyntaxException e) {
+        LOG.warn("Credential Provider URI is invalid: " + provider);
+    }
+}
+
+String effectivePath = newProviderPath.toString();
+if (effectivePath.equals(providerPath)) {
+    return config;
+}
+
+Configuration conf = new Configuration(config);
+if (effectivePath.equals("")) {
+    conf.unset(CredentialProviderFactory.CREDENTIAL_PROVIDER_PATH);
+    // ConfLogger Inserted Start
+    logger.info("All providers were invalid. The configuration parameter 'hadoop.security.credential.provider.path' has been unset.");
+    // ConfLogger Inserted End
+} else {
+    conf.set(CredentialProviderFactory.CREDENTIAL_PROVIDER_PATH,
+    effectivePath);
+    // ConfLogger Inserted Start
+    logger.info("The effective provider path has been updated to '{}'.", effectivePath);
+    // ConfLogger Inserted End
+}
+return conf;
+```

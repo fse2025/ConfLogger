@@ -1,0 +1,90 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Utils.java	methodSinagture:	org.apache.hadoop.hdfs.web.oauth2.Utils.notNull(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String;	methodLines:	33:41
+blockLines:	36:-1
+paras:	null
+TaintedStat:	NORMAL notNull:conditional branch(ne, to iindex=21) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/web/oauth2/Utils, notNull(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/web/oauth2/Utils, notNull(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/web/oauth2/Utils, notNull(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4
+NORMAL notNull:conditional branch(ne, to iindex=21) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/web/oauth2/Utils, notNull(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static String notNull(Configuration conf, String key) {
+    String value = conf.get(key);
+
+    if(value == null) {
+      throw new IllegalArgumentException("No value for " + key +
+          " found in conf file.");
+    }
+
+    return value;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/web/oauth2/OAuth2ConnectionConfigurator, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/authentication/client/ConnectionConfigurator;)V > Context: Everywhere, blocks=[BB[SSA:8..10]4 - org.apache.hadoop.hdfs.web.oauth2.OAuth2ConnectionConfigurator.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/authentication/client/ConnectionConfigurator;)V, BB[SSA:5..7]3 - org.apache.hadoop.hdfs.web.oauth2.OAuth2ConnectionConfigurator.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/authentication/client/ConnectionConfigurator;)V, BB[SSA:11..14]5 - org.apache.hadoop.hdfs.web.oauth2.OAuth2ConnectionConfigurator.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/authentication/client/ConnectionConfigurator;)V, BB[SSA:-1..-2]14 - org.apache.hadoop.hdfs.web.oauth2.OAuth2ConnectionConfigurator.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/authentication/client/ConnectionConfigurator;)V], numberOfBasicBlocks=4, firstLineNumber=53, lastLineNumber=57, firstMethodNumber=51, lastMethodNumber=64, isFirstLineValid=true, methodSrcCode=
+  public OAuth2ConnectionConfigurator(Configuration conf,
+                                      ConnectionConfigurator sslConfigurator) {
+    this.sslConfigurator = sslConfigurator;
+
+    notNull(conf, ACCESS_TOKEN_PROVIDER_KEY);
+
+    Class accessTokenProviderClass = conf.getClass(ACCESS_TOKEN_PROVIDER_KEY,
+        ConfCredentialBasedAccessTokenProvider.class,
+        AccessTokenProvider.class);
+
+    accessTokenProvider = (AccessTokenProvider) ReflectionUtils
+        .newInstance(accessTokenProviderClass, conf);
+    accessTokenProvider.setConf(conf);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/web/oauth2/ConfRefreshTokenBasedAccessTokenProvider, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:3..6]2 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..2]1 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:7..7]3 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]12 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:10..12]5 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:8..9]4 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:13..13]6 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]12 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:14..17]7 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:13..13]6 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:18..18]8 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]12 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:19..22]9 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:18..18]8 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:23..23]10 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]12 - org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=16, firstLineNumber=91, lastLineNumber=92, firstMethodNumber=84, lastMethodNumber=94, isFirstLineValid=true, methodSrcCode=
+  public void setConf(Configuration conf) {
+    super.setConf(conf);
+    refreshToken = notNull(conf, (OAUTH_REFRESH_TOKEN_KEY));
+
+    accessTokenTimer.setExpiresInMSSinceEpoch(
+        notNull(conf, OAUTH_REFRESH_TOKEN_EXPIRES_KEY));
+
+    clientId = notNull(conf, OAUTH_CLIENT_ID_KEY);
+    refreshURL = notNull(conf, OAUTH_REFRESH_URL_KEY);
+
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/web/oauth2/ConfCredentialBasedAccessTokenProvider, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:3..6]2 - org.apache.hadoop.hdfs.web.oauth2.ConfCredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..2]1 - org.apache.hadoop.hdfs.web.oauth2.ConfCredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:7..7]3 - org.apache.hadoop.hdfs.web.oauth2.ConfCredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]5 - org.apache.hadoop.hdfs.web.oauth2.ConfCredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=49, lastLineNumber=50, firstMethodNumber=48, lastMethodNumber=51, isFirstLineValid=true, methodSrcCode=
+  public void setConf(Configuration conf) {
+    super.setConf(conf);
+    credential = notNull(conf, OAUTH_CREDENTIAL_KEY);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/web/oauth2/ConfCredentialBasedAccessTokenProvider, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/hdfs/web/oauth2/ConfCredentialBasedAccessTokenProvider in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/hdfs/web/oauth2/ConfCredentialBasedAccessTokenProvider, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:3..6]2 - org.apache.hadoop.hdfs.web.oauth2.ConfCredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..2]1 - org.apache.hadoop.hdfs.web.oauth2.ConfCredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:7..7]3 - org.apache.hadoop.hdfs.web.oauth2.ConfCredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]5 - org.apache.hadoop.hdfs.web.oauth2.ConfCredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=49, lastLineNumber=50, firstMethodNumber=48, lastMethodNumber=51, isFirstLineValid=true, methodSrcCode=
+  public void setConf(Configuration conf) {
+    super.setConf(conf);
+    credential = notNull(conf, OAUTH_CREDENTIAL_KEY);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/web/oauth2/CredentialBasedAccessTokenProvider, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:3..6]2 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..2]1 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:7..7]3 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]7 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:8..11]4 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:7..7]3 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:12..12]5 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]7 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=8, firstLineNumber=85, lastLineNumber=86, firstMethodNumber=83, lastMethodNumber=87, isFirstLineValid=true, methodSrcCode=
+  public void setConf(Configuration conf) {
+    super.setConf(conf);
+    clientId = notNull(conf, OAUTH_CLIENT_ID_KEY);
+    refreshURL = notNull(conf, OAUTH_REFRESH_URL_KEY);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/web/oauth2/CredentialBasedAccessTokenProvider, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/hdfs/web/oauth2/ConfCredentialBasedAccessTokenProvider in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/hdfs/web/oauth2/ConfCredentialBasedAccessTokenProvider, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:3..6]2 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..2]1 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:7..7]3 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]7 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:8..11]4 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:7..7]3 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:12..12]5 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]7 - org.apache.hadoop.hdfs.web.oauth2.CredentialBasedAccessTokenProvider.setConf(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=8, firstLineNumber=85, lastLineNumber=86, firstMethodNumber=83, lastMethodNumber=87, isFirstLineValid=true, methodSrcCode=
+  public void setConf(Configuration conf) {
+    super.setConf(conf);
+    clientId = notNull(conf, OAUTH_CLIENT_ID_KEY);
+    refreshURL = notNull(conf, OAUTH_REFRESH_URL_KEY);
+  }
+
+}

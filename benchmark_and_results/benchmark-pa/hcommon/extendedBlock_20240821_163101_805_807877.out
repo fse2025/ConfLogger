@@ -1,0 +1,92 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Preconditions.java	methodSinagture:	org.apache.hadoop.util.Preconditions.checkArgument(ZLjava/lang/Object;)V	methodLines:	183:187
+blockLines:	184:-1
+paras:	null
+TaintedStat:	NORMAL checkArgument:conditional branch(ne, to iindex=9) 1,4 Node: < Application, Lorg/apache/hadoop/util/Preconditions, checkArgument(ZLjava/lang/Object;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[10]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[10]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16
+NORMAL setProtocolEngine:conditional branch(ne, to iindex=26) 17,18 Node: < Application, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+NORMAL setProtocolEngine:28 = invokevirtual < Application, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 26 @49 exception:27 Node: < Application, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[22]28 = invokevirtual < Application, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 26 @49 exception:27
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[25]invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, setClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)V > 1,28,3,29 @55 exception:30 v28
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/conf/Configuration, setClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, setClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[24]invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;)V > 1,2,10 @49 exception:11 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[4]invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > 1,2,3,5 @4 exception:6 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere v2
+NORMAL set:conditional branch(eq, to iindex=5) 2,6 Node: < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere:9 = phi  8,7
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[7]invokestatic < Application, Lorg/apache/hadoop/util/Preconditions, checkArgument(ZLjava/lang/Object;)V > 9,10 @11 exception:11 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/Preconditions, checkArgument(ZLjava/lang/Object;)V > Context: Everywhere v1
+NORMAL checkArgument:conditional branch(ne, to iindex=9) 1,4 Node: < Application, Lorg/apache/hadoop/util/Preconditions, checkArgument(ZLjava/lang/Object;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void checkArgument(final boolean expression, final Object errorMessage) {
+    if (!expression) {
+      throw new IllegalArgumentException(String.valueOf(errorMessage));
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/conf/Configuration, set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:6..7]4 - org.apache.hadoop.conf.Configuration.set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:3..4]2 - org.apache.hadoop.conf.Configuration.set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:5..5]3 - org.apache.hadoop.conf.Configuration.set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:8..10]5 - org.apache.hadoop.conf.Configuration.set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]70 - org.apache.hadoop.conf.Configuration.set(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V], numberOfBasicBlocks=5, firstLineNumber=1401, lastLineNumber=1404, firstMethodNumber=1400, lastMethodNumber=1438, isFirstLineValid=true, methodSrcCode=
+  public void set(String name, String value, String source) {
+    Preconditions.checkArgument(
+        name != null,
+        "Property name must not be null");
+    Preconditions.checkArgument(
+        value != null,
+        "The value of property %s must not be null", name);
+    name = name.trim();
+    DeprecationContext deprecations = deprecationContext.get();
+    if (deprecations.getDeprecatedKeyMap().isEmpty()) {
+      getProps();
+    }
+    getOverlay().setProperty(name, value);
+    getProps().setProperty(name, value);
+    String newSource = (source == null ? "programmatically" : source);
+
+    if (!isDeprecated(name)) {
+      putIntoUpdatingResource(name, new String[] {newSource});
+      String[] altNames = getAlternativeNames(name);
+      if(altNames != null) {
+        for(String n: altNames) {
+          if(!n.equals(name)) {
+            getOverlay().setProperty(n, value);
+            getProps().setProperty(n, value);
+            putIntoUpdatingResource(n, new String[] {newSource});
+          }
+        }
+      }
+    }
+    else {
+      String[] names = handleDeprecation(deprecationContext.get(), name);
+      String altSource = "because " + name + " is deprecated";
+      for(String n : names) {
+        getOverlay().setProperty(n, value);
+        getProps().setProperty(n, value);
+        putIntoUpdatingResource(n, new String[] {altSource});
+      }
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/VectoredReadUtils, validateRangeRequest(Lorg/apache/hadoop/fs/FileRange;)V > Context: Everywhere, blocks=[BB[SSA:7..8]5 - org.apache.hadoop.fs.VectoredReadUtils.validateRangeRequest(Lorg/apache/hadoop/fs/FileRange;)V, BB[SSA:4..5]3 - org.apache.hadoop.fs.VectoredReadUtils.validateRangeRequest(Lorg/apache/hadoop/fs/FileRange;)V, BB[SSA:6..6]4 - org.apache.hadoop.fs.VectoredReadUtils.validateRangeRequest(Lorg/apache/hadoop/fs/FileRange;)V, BB[SSA:9..10]6 - org.apache.hadoop.fs.VectoredReadUtils.validateRangeRequest(Lorg/apache/hadoop/fs/FileRange;)V, BB[SSA:-1..-2]12 - org.apache.hadoop.fs.VectoredReadUtils.validateRangeRequest(Lorg/apache/hadoop/fs/FileRange;)V], numberOfBasicBlocks=5, firstLineNumber=51, lastLineNumber=52, firstMethodNumber=50, lastMethodNumber=55, isFirstLineValid=true, methodSrcCode=
+
+    Preconditions.checkArgument(range.getLength() >= 0, "length is negative");
+    if (range.getOffset() < 0) {
+      throw new EOFException("position is negative");
+    }
+  }
+
+}

@@ -1,0 +1,104 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ShortCircuitRegistry.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.ShortCircuitRegistry.<init>(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	156:197
+blockLines:	165:-1
+paras:	dfs.short.circuit.shared.memory.watcher.interrupt.check.ms
+TaintedStat:	NORMAL <init>:conditional branch(gt, to iindex=39) 15,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/ShortCircuitRegistry, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/ShortCircuitRegistry, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[22]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,12,13 @37 exception:14
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/ShortCircuitRegistry, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[22]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,12,13 @37 exception:14
+NORMAL <init>:conditional branch(gt, to iindex=39) 15,6 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/ShortCircuitRegistry, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  
+  public ShortCircuitRegistry(Configuration conf) throws IOException {
+    boolean enabled = false;
+    SharedFileDescriptorFactory shmFactory = null;
+    DomainSocketWatcher watcher = null;
+    try {
+      int interruptCheck = conf.getInt(
+          DFS_SHORT_CIRCUIT_SHARED_MEMORY_WATCHER_INTERRUPT_CHECK_MS,
+          DFS_SHORT_CIRCUIT_SHARED_MEMORY_WATCHER_INTERRUPT_CHECK_MS_DEFAULT);
+      if (interruptCheck <= 0) {
+        throw new IOException(
+            DFS_SHORT_CIRCUIT_SHARED_MEMORY_WATCHER_INTERRUPT_CHECK_MS +
+            " was set to " + interruptCheck);
+      }
+      String[] shmPaths =
+          conf.getTrimmedStrings(DFS_DATANODE_SHARED_FILE_DESCRIPTOR_PATHS);
+      if (shmPaths.length == 0) {
+        shmPaths =
+            DFS_DATANODE_SHARED_FILE_DESCRIPTOR_PATHS_DEFAULT.split(",");
+      }
+      shmFactory = SharedFileDescriptorFactory.
+          create("HadoopShortCircuitShm_", shmPaths);
+      String dswLoadingFailure = DomainSocketWatcher.getLoadingFailureReason();
+      if (dswLoadingFailure != null) {
+        throw new IOException(dswLoadingFailure);
+      }
+      watcher = new DomainSocketWatcher(interruptCheck, "datanode");
+      enabled = true;
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("created new ShortCircuitRegistry with interruptCheck=" +
+                  interruptCheck + ", shmPath=" + shmFactory.getPath());
+      }
+    } catch (IOException e) {
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("Disabling ShortCircuitRegistry", e);
+      }
+    } finally {
+      this.enabled = enabled;
+      this.shmFactory = shmFactory;
+      this.watcher = watcher;
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, initDataXceiver()V > Context: Everywhere, blocks=[BB[SSA:123..123]62 - org.apache.hadoop.hdfs.server.datanode.DataNode.initDataXceiver()V, BB[SSA:120..122]61 - org.apache.hadoop.hdfs.server.datanode.DataNode.initDataXceiver()V, BB[SSA:124..124]63 - org.apache.hadoop.hdfs.server.datanode.DataNode.initDataXceiver()V, BB[SSA:-1..-2]65 - org.apache.hadoop.hdfs.server.datanode.DataNode.initDataXceiver()V], numberOfBasicBlocks=4, firstLineNumber=1499, lastLineNumber=1499, firstMethodNumber=1462, lastMethodNumber=1500, isFirstLineValid=true, methodSrcCode=
+    TcpPeerServer tcpPeerServer;
+    if (secureResources != null) {
+      tcpPeerServer = new TcpPeerServer(secureResources);
+    } else {
+      int backlogLength = getConf().getInt(
+          CommonConfigurationKeysPublic.IPC_SERVER_LISTEN_QUEUE_SIZE_KEY,
+          CommonConfigurationKeysPublic.IPC_SERVER_LISTEN_QUEUE_SIZE_DEFAULT);
+      tcpPeerServer = new TcpPeerServer(dnConf.socketWriteTimeout,
+          DataNode.getStreamingAddr(getConf()), backlogLength);
+    }
+    if (dnConf.getTransferSocketRecvBufferSize() > 0) {
+      tcpPeerServer.setReceiveBufferSize(
+          dnConf.getTransferSocketRecvBufferSize());
+    }
+    streamingAddr = tcpPeerServer.getStreamingAddr();
+    LOG.info("Opened streaming server at {}", streamingAddr);
+    this.threadGroup = new ThreadGroup("dataXceiverServer");
+    xserver = new DataXceiverServer(tcpPeerServer, getConf(), this);
+    this.dataXceiverServer = new Daemon(threadGroup, xserver);
+    this.threadGroup.setDaemon(true); // auto destroy when empty
+
+    if (getConf().getBoolean(
+        HdfsClientConfigKeys.Read.ShortCircuit.KEY,
+        HdfsClientConfigKeys.Read.ShortCircuit.DEFAULT) ||
+        getConf().getBoolean(
+            HdfsClientConfigKeys.DFS_CLIENT_DOMAIN_SOCKET_DATA_TRAFFIC,
+            HdfsClientConfigKeys
+              .DFS_CLIENT_DOMAIN_SOCKET_DATA_TRAFFIC_DEFAULT)) {
+      DomainPeerServer domainPeerServer =
+                getDomainPeerServer(getConf(), streamingAddr.getPort());
+      if (domainPeerServer != null) {
+        this.localDataXceiverServer = new Daemon(threadGroup,
+            new DataXceiverServer(domainPeerServer, getConf(), this));
+        LOG.info("Listening on UNIX domain socket: {}",
+            domainPeerServer.getBindPath());
+      }
+    }
+    this.shortCircuitRegistry = new ShortCircuitRegistry(getConf());
+  }
+
+}

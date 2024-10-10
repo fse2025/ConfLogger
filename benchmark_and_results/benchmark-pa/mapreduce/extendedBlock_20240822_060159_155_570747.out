@@ -1,0 +1,115 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ValueAggregatorJob.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.createValueAggregatorJob(Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Lorg/apache/hadoop/mapreduce/Job;	methodLines:	121:187
+blockLines:	163:-1
+paras:	null
+TaintedStat:	NORMAL createValueAggregatorJob:conditional branch(eq, to iindex=97) 49,25 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJob, createValueAggregatorJob(Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Lorg/apache/hadoop/mapreduce/Job; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJob, createValueAggregatorJob(Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Lorg/apache/hadoop/mapreduce/Job; > Context: Everywhere[88]49 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,47 @146 exception:48
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJob, createValueAggregatorJob(Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Lorg/apache/hadoop/mapreduce/Job; > Context: Everywhere[88]49 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,47 @146 exception:48
+NORMAL createValueAggregatorJob:conditional branch(eq, to iindex=97) 49,25 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJob, createValueAggregatorJob(Lorg/apache/hadoop/conf/Configuration;[Ljava/lang/String;)Lorg/apache/hadoop/mapreduce/Job; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    GenericOptionsParser genericParser 
+      = new GenericOptionsParser(conf, args);
+    args = genericParser.getRemainingArgs();
+    
+    if (args.length < 2) {
+      System.out.println("usage: inputDirs outDir "
+          + "[numOfReducer [textinputformat|seq [specfile [jobName]]]]");
+      GenericOptionsParser.printGenericCommandUsage(System.out);
+      System.exit(2);
+    }
+    String inputDir = args[0];
+    String outputDir = args[1];
+    int numOfReducers = 1;
+    if (args.length > 2) {
+      numOfReducers = Integer.parseInt(args[2]);
+    }
+
+    Class<? extends InputFormat> theInputFormat = null;
+    if (args.length > 3 && 
+        args[3].compareToIgnoreCase("textinputformat") == 0) {
+      theInputFormat = TextInputFormat.class;
+    } else {
+      theInputFormat = SequenceFileInputFormat.class;
+    }
+
+    Path specFile = null;
+
+    if (args.length > 4) {
+      specFile = new Path(args[4]);
+    }
+
+    String jobName = "";
+    
+    if (args.length > 5) {
+      jobName = args[5];
+    }
+
+    if (specFile != null) {
+      conf.addResource(specFile);
+    }
+    String userJarFile = conf.get(ValueAggregatorJobBase.USER_JAR);
+    if (userJarFile != null) {
+      conf.set(MRJobConfig.JAR, userJarFile);
+    }
+
+    Job theJob = Job.getInstance(conf);
+    if (userJarFile == null) {
+      theJob.setJarByClass(ValueAggregator.class);
+    } 
+    theJob.setJobName("ValueAggregatorJob: " + jobName);
+
+    FileInputFormat.addInputPaths(theJob, inputDir);
+
+    theJob.setInputFormatClass(theInputFormat);
+    
+    theJob.setMapperClass(ValueAggregatorMapper.class);
+    FileOutputFormat.setOutputPath(theJob, new Path(outputDir));
+    theJob.setOutputFormatClass(TextOutputFormat.class);
+    theJob.setMapOutputKeyClass(Text.class);
+    theJob.setMapOutputValueClass(Text.class);
+    theJob.setOutputKeyClass(Text.class);
+    theJob.setOutputValueClass(Text.class);
+    theJob.setReducerClass(ValueAggregatorReducer.class);
+    theJob.setCombinerClass(ValueAggregatorCombiner.class);
+    theJob.setNumReduceTasks(numOfReducers);
+    return theJob;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJob, createValueAggregatorJob([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/Job; > Context: Everywhere, blocks=[BB[SSA:2..3]2 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.createValueAggregatorJob([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/Job;, BB[SSA:0..1]1 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.createValueAggregatorJob([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/Job;, BB[SSA:4..4]3 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.createValueAggregatorJob([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/Job;, BB[SSA:-1..-2]4 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.createValueAggregatorJob([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/Job;], numberOfBasicBlocks=4, firstLineNumber=193, lastLineNumber=193, firstMethodNumber=192, lastMethodNumber=193, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    return createValueAggregatorJob(
+             setAggregatorDescriptors(descriptors), args);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJob, createValueAggregatorJobs([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/lib/jobcontrol/JobControl; > Context: Everywhere, blocks=[BB[SSA:19..21]10 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.createValueAggregatorJobs([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/lib/jobcontrol/JobControl;, BB[SSA:12..15]7 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.createValueAggregatorJobs([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/lib/jobcontrol/JobControl;, BB[SSA:18..18]9 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.createValueAggregatorJobs([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/lib/jobcontrol/JobControl;, BB[SSA:22..23]11 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.createValueAggregatorJobs([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/lib/jobcontrol/JobControl;, BB[SSA:-1..-2]15 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.createValueAggregatorJobs([Ljava/lang/String;[Ljava/lang/Class;)Lorg/apache/hadoop/mapreduce/lib/jobcontrol/JobControl;], numberOfBasicBlocks=5, firstLineNumber=93, lastLineNumber=98, firstMethodNumber=90, lastMethodNumber=100, isFirstLineValid=true, methodSrcCode=
+    
+    JobControl theControl = new JobControl("ValueAggregatorJobs");
+    ArrayList<ControlledJob> dependingJobs = new ArrayList<ControlledJob>();
+    Configuration conf = new Configuration();
+    if (descriptors != null) {
+      conf = setAggregatorDescriptors(descriptors);
+    }
+    Job job = createValueAggregatorJob(conf, args);
+    ControlledJob cjob = new ControlledJob(job, dependingJobs);
+    theControl.addJob(cjob);
+    return theControl;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorJob, main([Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:3..4]3 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.main([Ljava/lang/String;)V, BB[SSA:1..2]2 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.main([Ljava/lang/String;)V, BB[SSA:5..8]4 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.main([Ljava/lang/String;)V, BB[SSA:-1..-2]10 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJob.main([Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=217, lastLineNumber=219, firstMethodNumber=216, lastMethodNumber=221, isFirstLineValid=true, methodSrcCode=
+      throws IOException, InterruptedException, ClassNotFoundException {
+    Job job = ValueAggregatorJob.createValueAggregatorJob(
+                new Configuration(), args);
+    int ret = job.waitForCompletion(true) ? 0 : 1;
+    System.exit(ret);
+  }
+}
+}

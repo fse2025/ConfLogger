@@ -1,0 +1,83 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	UserGroupInformation.java	methodSinagture:	org.apache.hadoop.security.UserGroupInformation.initialize(Lorg/apache/hadoop/conf/Configuration;Z)V	methodLines:	311:355
+blockLines:	344:-1
+paras:	hadoop.user.group.metrics.percentiles.intervals
+TaintedStat:	NORMAL initialize:conditional branch(eq, to iindex=114) 46,43 Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, initialize(Lorg/apache/hadoop/conf/Configuration;Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, initialize(Lorg/apache/hadoop/conf/Configuration;Z)V > Context: Everywhere[62]46 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInts(Ljava/lang/String;)[I > 1,44 @130 exception:45
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, initialize(Lorg/apache/hadoop/conf/Configuration;Z)V > Context: Everywhere[62]46 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInts(Ljava/lang/String;)[I > 1,44 @130 exception:45
+NORMAL initialize:conditional branch(eq, to iindex=114) 46,43 Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, initialize(Lorg/apache/hadoop/conf/Configuration;Z)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                              boolean overrideNameRules) {
+    authenticationMethod = SecurityUtil.getAuthenticationMethod(conf);
+    if (overrideNameRules || !HadoopKerberosName.hasRulesBeenSet()) {
+      try {
+        HadoopKerberosName.setConfiguration(conf);
+      } catch (IOException ioe) {
+        throw new RuntimeException(
+            "Problem with Kerberos auth_to_local name configuration", ioe);
+      }
+    }
+    try {
+        kerberosMinSecondsBeforeRelogin = 1000L * conf.getLong(
+                HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN,
+                HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT);
+    }
+    catch(NumberFormatException nfe) {
+        throw new IllegalArgumentException("Invalid attribute value for " +
+                HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN + " of " +
+                conf.get(HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN));
+    }
+
+    kerberosKeyTabLoginRenewalEnabled = conf.getBoolean(
+            HADOOP_KERBEROS_KEYTAB_LOGIN_AUTORENEWAL_ENABLED,
+            HADOOP_KERBEROS_KEYTAB_LOGIN_AUTORENEWAL_ENABLED_DEFAULT);
+
+    // If we haven't set up testing groups, use the configuration to find it
+    if (!(groups instanceof TestingGroups)) {
+      groups = Groups.getUserToGroupsMappingService(conf);
+    }
+    UserGroupInformation.conf = conf;
+
+    if (metrics.getGroupsQuantiles == null) {
+      int[] intervals = conf.getInts(HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS);
+      if (intervals != null && intervals.length > 0) {
+        final int length = intervals.length;
+        MutableQuantiles[] getGroupsQuantiles = new MutableQuantiles[length];
+        for (int i = 0; i < length; i++) {
+          getGroupsQuantiles[i] = metrics.registry.newQuantiles(
+            "getGroups" + intervals[i] + "s",
+            "Get groups", "ops", "latency", intervals[i]);
+        }
+        metrics.getGroupsQuantiles = getGroupsQuantiles;
+      }
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, ensureInitialized()V > Context: Everywhere, blocks=[BB[SSA:13..14]9 - org.apache.hadoop.security.UserGroupInformation.ensureInitialized()V, BB[SSA:11..12]8 - org.apache.hadoop.security.UserGroupInformation.ensureInitialized()V, BB[SSA:15..16]10 - org.apache.hadoop.security.UserGroupInformation.ensureInitialized()V], numberOfBasicBlocks=3, firstLineNumber=300, lastLineNumber=302, firstMethodNumber=296, lastMethodNumber=304, isFirstLineValid=true, methodSrcCode=
+  private static void ensureInitialized() {
+    if (!isInitialized()) {
+      synchronized(UserGroupInformation.class) {
+        if (!isInitialized()) { // someone might have beat us
+          initialize(new Configuration(), false);
+        }
+      }
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, setConfiguration(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.security.UserGroupInformation.setConfiguration(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.security.UserGroupInformation.setConfiguration(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:3..3]2 - org.apache.hadoop.security.UserGroupInformation.setConfiguration(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]3 - org.apache.hadoop.security.UserGroupInformation.setConfiguration(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=365, lastLineNumber=367, firstMethodNumber=365, lastMethodNumber=367, isFirstLineValid=false, methodSrcCode=
+  public static void setConfiguration(Configuration conf) {
+    initialize(conf, true);
+  }
+
+}

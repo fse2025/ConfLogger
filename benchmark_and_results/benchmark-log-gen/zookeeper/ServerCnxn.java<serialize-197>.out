@@ -1,0 +1,108 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ServerCnxn.java	methodSinagture:	org.apache.zookeeper.server.ServerCnxn.serialize(Lorg/apache/zookeeper/proto/ReplyHeader;Lorg/apache/jute/Record;Ljava/lang/String;Ljava/lang/String;Lorg/apache/zookeeper/data/Stat;I)[Ljava/nio/ByteBuffer;	methodLines:	197:255
+blockLines:	220:-1
+paras:	null
+TaintedStat:	NORMAL serialize:conditional branch(eq, to iindex=78) 30,11 Node: < Application, Lorg/apache/zookeeper/server/ServerCnxn, serialize(Lorg/apache/zookeeper/proto/ReplyHeader;Lorg/apache/jute/Record;Ljava/lang/String;Ljava/lang/String;Lorg/apache/zookeeper/data/Stat;I)[Ljava/nio/ByteBuffer; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/ServerCnxn, serialize(Lorg/apache/zookeeper/proto/ReplyHeader;Lorg/apache/jute/Record;Ljava/lang/String;Ljava/lang/String;Lorg/apache/zookeeper/data/Stat;I)[Ljava/nio/ByteBuffer; > Context: Everywhere[19]23 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getReadResponseCache()Lorg/apache/zookeeper/server/ResponseCache; > 21 @56 exception:22
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/ServerCnxn, serialize(Lorg/apache/zookeeper/proto/ReplyHeader;Lorg/apache/jute/Record;Ljava/lang/String;Ljava/lang/String;Lorg/apache/zookeeper/data/Stat;I)[Ljava/nio/ByteBuffer; > Context: Everywhere[19]23 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getReadResponseCache()Lorg/apache/zookeeper/server/ResponseCache; > 21 @56 exception:22
+PHI Node: < Application, Lorg/apache/zookeeper/server/ServerCnxn, serialize(Lorg/apache/zookeeper/proto/ReplyHeader;Lorg/apache/jute/Record;Ljava/lang/String;Ljava/lang/String;Lorg/apache/zookeeper/data/Stat;I)[Ljava/nio/ByteBuffer; > Context: Everywhere:30 = phi  11,23,14
+NORMAL serialize:conditional branch(eq, to iindex=78) 30,11 Node: < Application, Lorg/apache/zookeeper/server/ServerCnxn, serialize(Lorg/apache/zookeeper/proto/ReplyHeader;Lorg/apache/jute/Record;Ljava/lang/String;Ljava/lang/String;Lorg/apache/zookeeper/data/Stat;I)[Ljava/nio/ByteBuffer; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                     String cacheKey, Stat stat, int opCode) throws IOException {
+        byte[] header = serializeRecord(h);
+        byte[] data = null;
+        if (r != null) {
+            ResponseCache cache = null;
+            Counter cacheHit = null, cacheMiss = null;
+            switch (opCode) {
+                case OpCode.getData : {
+                    cache = zkServer.getReadResponseCache();
+                    cacheHit = ServerMetrics.getMetrics().RESPONSE_PACKET_CACHE_HITS;
+                    cacheMiss = ServerMetrics.getMetrics().RESPONSE_PACKET_CACHE_MISSING;
+                    break;
+                }
+                case OpCode.getChildren2 : {
+                    cache = zkServer.getGetChildrenResponseCache();
+                    cacheHit = ServerMetrics.getMetrics().RESPONSE_PACKET_GET_CHILDREN_CACHE_HITS;
+                    cacheMiss = ServerMetrics.getMetrics().RESPONSE_PACKET_GET_CHILDREN_CACHE_MISSING;
+                    break;
+                }
+                default:
+                    // op codes where response cache is not supported.
+            }
+
+            if (cache != null && stat != null && cacheKey != null && !cacheKey.endsWith(Quotas.statNode)) {
+                // Use cache to get serialized data.
+                //
+                // NB: Tag is ignored both during cache lookup and serialization,
+                // since is is not used in read responses, which are being cached.
+                data = cache.get(cacheKey, stat);
+                if (data == null) {
+                    // Cache miss, serialize the response and put it in cache.
+                    data = serializeRecord(r);
+                    cache.put(cacheKey, data, stat);
+                    cacheMiss.add(1);
+                } else {
+                    cacheHit.add(1);
+                }
+            } else {
+                data = serializeRecord(r);
+            }
+        }
+        int dataLength = data == null ? 0 : data.length;
+        int packetLength = header.length + dataLength;
+        ServerStats serverStats = serverStats();
+        if (serverStats != null) {
+            serverStats.updateClientResponseSize(packetLength);
+        }
+        ByteBuffer lengthBuffer = ByteBuffer.allocate(4).putInt(packetLength);
+        lengthBuffer.rewind();
+
+        int bufferLen = data != null ? 3 : 2;
+        ByteBuffer[] buffers = new ByteBuffer[bufferLen];
+
+        buffers[0] = lengthBuffer;
+        buffers[1] = ByteBuffer.wrap(header);
+        if (data != null) {
+            buffers[2] = ByteBuffer.wrap(data);
+        }
+        return buffers;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/NIOServerCnxn, sendResponse(Lorg/apache/zookeeper/proto/ReplyHeader;Lorg/apache/jute/Record;Ljava/lang/String;Ljava/lang/String;Lorg/apache/zookeeper/data/Stat;I)I > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=690, lastMethodNumber=701, isFirstLineValid=true, methodSrcCode=
+    public int sendResponse(ReplyHeader h, Record r, String tag, String cacheKey, Stat stat, int opCode) {
+        int responseSize = 0;
+        try {
+            ByteBuffer[] bb = serialize(h, r, tag, cacheKey, stat, opCode);
+            responseSize = bb[0].getInt();
+            bb[0].rewind();
+            sendBuffer(bb);
+            decrOutstandingAndCheckThrottle(h);
+        } catch (Exception e) {
+            LOG.warn("Unexpected exception. Destruction averted.", e);
+        }
+        return responseSize;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/NettyServerCnxn, sendResponse(Lorg/apache/zookeeper/proto/ReplyHeader;Lorg/apache/jute/Record;Ljava/lang/String;Ljava/lang/String;Lorg/apache/zookeeper/data/Stat;I)I > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=204, lastMethodNumber=213, isFirstLineValid=true, methodSrcCode=
+        // implemented here. Implementation example can be found in NIOServerCnxn.
+        if (closingChannel || !channel.isOpen()) {
+            return 0;
+        }
+        ByteBuffer[] bb = serialize(h, r, tag, cacheKey, stat, opCode);
+        int responseSize = bb[0].getInt();
+        bb[0].rewind();
+        sendBuffer(bb);
+        decrOutstandingAndCheckThrottle(h);
+        return responseSize;
+    }
+}

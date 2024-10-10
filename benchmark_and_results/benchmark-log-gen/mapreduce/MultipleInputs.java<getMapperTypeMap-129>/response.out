@@ -1,0 +1,24 @@
+```java
+Configuration conf = job.getConfiguration();
+if (conf.get(DIR_MAPPERS) == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter '{}' is not set. Returning an empty map.", DIR_MAPPERS);
+    // ConfLogger Inserted End
+    return Collections.emptyMap();
+}
+Map<Path, Class<? extends Mapper>> m =
+new HashMap<Path, Class<? extends Mapper>>();
+String[] pathMappings = conf.get(DIR_MAPPERS).split(",");
+for (String pathMapping : pathMappings) {
+String[] split = pathMapping.split(";");
+Class<? extends Mapper> mapClass;
+try {
+mapClass =
+(Class<? extends Mapper>) conf.getClassByName(split[1]);
+} catch (ClassNotFoundException e) {
+throw new RuntimeException(e);
+}
+m.put(new Path(split[0]), mapClass);
+}
+return m;
+```

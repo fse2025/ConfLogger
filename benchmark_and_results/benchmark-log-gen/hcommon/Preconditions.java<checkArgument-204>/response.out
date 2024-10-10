@@ -1,0 +1,19 @@
+```java
+if (!expression) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration check failed: expression evaluated to false. Please verify the configuration parameters.");
+    // ConfLogger Inserted End
+    String msg;
+    try {
+        msg = String.format(errorMsg, errorMsgArgs);
+    } catch (Exception e) {
+        // ConfLogger Commented: Not Informative
+        // LOG.debug("Error formatting message", e);
+        // ConfLogger Inserted Start
+        logger.debug("Error formatting message for configuration check failure", e);
+        // ConfLogger Inserted End
+        msg = CHECK_ARGUMENT_EX_MESSAGE;
+    }
+    throw new IllegalArgumentException(msg);
+}
+```

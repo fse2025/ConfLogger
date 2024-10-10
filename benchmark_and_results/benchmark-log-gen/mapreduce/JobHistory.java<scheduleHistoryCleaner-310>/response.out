@@ -1,0 +1,20 @@
+```java
+boolean startCleanerService = conf.getBoolean(
+JHAdminConfig.MR_HISTORY_CLEANER_ENABLE, true);
+if (startCleanerService) {
+    cleanerInterval = conf.getLong(
+    JHAdminConfig.MR_HISTORY_CLEANER_INTERVAL_MS,
+    JHAdminConfig.DEFAULT_MR_HISTORY_CLEANER_INTERVAL_MS);
+
+    futureHistoryCleaner = scheduledExecutor.scheduleAtFixedRate(
+    new HistoryCleaner(), getInitDelaySecs() * 1000l, cleanerInterval,
+    TimeUnit.MILLISECONDS);
+    // ConfLogger Inserted Start
+    logger.info("Cleaner service enabled with interval: " + cleanerInterval + "ms. Configuration parameter: " + JHAdminConfig.MR_HISTORY_CLEANER_INTERVAL_MS);
+    // ConfLogger Inserted End
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Cleaner service disabled. Configuration parameter: " + JHAdminConfig.MR_HISTORY_CLEANER_ENABLE);
+    // ConfLogger Inserted End
+}
+```

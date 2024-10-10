@@ -1,0 +1,186 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JournalUtils.java	methodSinagture:	alluxio.master.journal.JournalUtils.handleJournalReplayFailure(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V	methodLines:	179:188
+blockLines:	185:-1
+paras:	null
+TaintedStat:	NORMAL handleJournalReplayFailure:conditional branch(ne, to iindex=38) 35,36 Node: < Application, Lalluxio/master/journal/JournalUtils, handleJournalReplayFailure(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/journal/JournalUtils, handleJournalReplayFailure(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere[30]35 = invokestatic < Application, Lalluxio/conf/Configuration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 33 @69 exception:34
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/journal/JournalUtils, handleJournalReplayFailure(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere[30]35 = invokestatic < Application, Lalluxio/conf/Configuration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 33 @69 exception:34
+NORMAL handleJournalReplayFailure:conditional branch(ne, to iindex=38) 35,36 Node: < Application, Lalluxio/master/journal/JournalUtils, handleJournalReplayFailure(Lorg/slf4j/Logger;Ljava/lang/Throwable;Ljava/lang/String;[Ljava/lang/Object;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String format, Object... args) throws RuntimeException {
+    String message = String.format("Journal replay error: " + format, args);
+    if (t != null) {
+      message += "\n" + Throwables.getStackTraceAsString(t);
+    }
+    logger.error(message);
+    if (!Configuration.getBoolean(PropertyKey.MASTER_JOURNAL_TOLERATE_CORRUPTION)) {
+      throw new RuntimeException(t);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/master/journal/raft/BufferedJournalApplier, applyToMaster(Lalluxio/proto/journal/Journal$JournalEntry;)V > Context: Everywhere, blocks=[BB[SSA:54..54]21 - alluxio.master.journal.raft.BufferedJournalApplier.applyToMaster(Lalluxio/proto/journal/Journal$JournalEntry;)V, BB[SSA:50..53]20 - alluxio.master.journal.raft.BufferedJournalApplier.applyToMaster(Lalluxio/proto/journal/Journal$JournalEntry;)V, BB[SSA:55..57]22 - alluxio.master.journal.raft.BufferedJournalApplier.applyToMaster(Lalluxio/proto/journal/Journal$JournalEntry;)V, BB[SSA:-1..-2]25 - alluxio.master.journal.raft.BufferedJournalApplier.applyToMaster(Lalluxio/proto/journal/Journal$JournalEntry;)V], numberOfBasicBlocks=4, firstLineNumber=246, lastLineNumber=250, firstMethodNumber=234, lastMethodNumber=251, isFirstLineValid=true, methodSrcCode=
+    try {
+      masterName = JournalEntryAssociation.getMasterForEntry(entry);
+    } catch (Exception t) {
+      ProcessUtils.fatalError(LOG, t, "Unrecognized journal entry: %s", entry);
+      throw new IllegalStateException();
+    }
+    try {
+      Journaled master = mJournals.get(masterName).getStateMachine();
+      LOG.trace("Applying entry to master {}: {} ", masterName, entry);
+      master.processJournalEntry(entry);
+      JournalUtils.sinkAppend(mJournalSinks, entry);
+    } catch (Exception t) {
+      JournalUtils.handleJournalReplayFailure(LOG, t,
+          "Failed to apply journal entry to master %s. Entry: %s", masterName, entry);
+    }
+    // Store last applied sequence.
+    mLastAppliedSequence = entry.getSequenceNumber();
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/master/journal/ufs/UfsJournalCheckpointThread, runInternal()V > Context: Everywhere, blocks=[BB[SSA:69..69]34 - alluxio.master.journal.ufs.UfsJournalCheckpointThread.runInternal()V, BB[SSA:65..68]33 - alluxio.master.journal.ufs.UfsJournalCheckpointThread.runInternal()V, BB[SSA:70..70]35 - alluxio.master.journal.ufs.UfsJournalCheckpointThread.runInternal()V, BB[SSA:90..90]42 - alluxio.master.journal.ufs.UfsJournalCheckpointThread.runInternal()V, BB[SSA:86..89]41 - alluxio.master.journal.ufs.UfsJournalCheckpointThread.runInternal()V, BB[SSA:91..93]43 - alluxio.master.journal.ufs.UfsJournalCheckpointThread.runInternal()V, BB[SSA:-1..-2]103 - alluxio.master.journal.ufs.UfsJournalCheckpointThread.runInternal()V], numberOfBasicBlocks=7, firstLineNumber=246, lastLineNumber=248, firstMethodNumber=219, lastMethodNumber=303, isFirstLineValid=true, methodSrcCode=
+
+    LOG.info("{}: Journal checkpoint thread started.", mMaster.getName());
+    // Set to true if it has waited for a quiet period. Reset if a valid journal entry is read.
+    boolean quietPeriodWaited = false;
+    mCatchupState = CatchupState.IN_PROGRESS;
+    while (true) {
+      JournalEntry entry = null;
+      try {
+        switch (mJournalReader.advance()) {
+          case CHECKPOINT:
+            LOG.debug("{}: Restoring from checkpoint", mMaster.getName());
+            mMaster.restoreFromCheckpoint(mJournalReader.getCheckpoint());
+            LOG.debug("{}: Finished restoring from checkpoint", mMaster.getName());
+            break;
+          case LOG:
+            entry = mJournalReader.getEntry();
+            try {
+              if (mMaster.processJournalEntry(entry)) {
+                JournalUtils.sinkAppend(mJournalSinks, entry);
+              } else {
+                JournalUtils.handleJournalReplayFailure(LOG, null,
+                    "%s: Unrecognized journal entry: %s", mMaster.getName(), entry);
+              }
+            } catch (RuntimeException e) {
+              throw e;
+            } catch (Throwable t) {
+              JournalUtils.handleJournalReplayFailure(LOG, t,
+                  "%s: Failed to read or process journal entry %s.", mMaster.getName(), entry);
+            }
+            if (quietPeriodWaited) {
+              LOG.info("Quiet period interrupted by new journal entry");
+              quietPeriodWaited = false;
+            }
+            mLastAppliedSN = entry.getSequenceNumber();
+            break;
+          default:
+            mCatchupState = CatchupState.DONE;
+            break;
+        }
+      } catch (IOException e) {
+        LOG.error("{}: Failed to read or process a journal entry.", mMaster.getName(), e);
+        try {
+          mJournalReader.close();
+        } catch (IOException ee) {
+          LOG.warn("{}: Failed to close the journal reader with error {}.", mMaster.getName(),
+              ee.toString());
+        }
+        long nextSequenceNumber = mJournalReader.getNextSequenceNumber();
+
+        mJournalReader = new UfsJournalReader(mJournal, nextSequenceNumber, false);
+        quietPeriodWaited = false;
+        continue;
+      }
+
+      // Sleep for a while if no entry is found.
+      if (entry == null) {
+        // Only try to checkpoint when it can keep up.
+        maybeCheckpoint();
+        if (mShutdownInitiated) {
+          if (quietPeriodWaited || !mWaitQuietPeriod) {
+            mCatchupState = CatchupState.DONE;
+            LOG.info("{}: Journal checkpoint thread has been shutdown. No new logs have been found "
+                + "during the quiet period.", mMaster.getName());
+            if (mJournalReader != null) {
+              try {
+                mJournalReader.close();
+              } catch (IOException e) {
+                LOG.warn("{}: Failed to close the journal reader with error {}.", mMaster.getName(),
+                    e.toString());
+              }
+            }
+            return;
+          }
+          CommonUtils.sleepMs(LOG, mShutdownQuietWaitTimeMs);
+          quietPeriodWaited = true;
+        } else {
+          CommonUtils.sleepMs(LOG, mJournalCheckpointSleepTimeMs);
+        }
+      }
+      // If mShutdownInitiated then the thread is already shutting down
+      if (Thread.interrupted() && !mShutdownInitiated) {
+        LOG.info("{}: Checkpoint thread interrupted, shutting down", mMaster.getName());
+        return;
+      }
+    }
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/master/journal/ufs/UfsJournal, catchUp(Lalluxio/master/journal/JournalReader;J)J > Context: Everywhere, blocks=[BB[SSA:69..69]36 - alluxio.master.journal.ufs.UfsJournal.catchUp(Lalluxio/master/journal/JournalReader;J)J, BB[SSA:65..68]35 - alluxio.master.journal.ufs.UfsJournal.catchUp(Lalluxio/master/journal/JournalReader;J)J, BB[SSA:70..70]37 - alluxio.master.journal.ufs.UfsJournal.catchUp(Lalluxio/master/journal/JournalReader;J)J, BB[SSA:92..92]46 - alluxio.master.journal.ufs.UfsJournal.catchUp(Lalluxio/master/journal/JournalReader;J)J, BB[SSA:88..91]45 - alluxio.master.journal.ufs.UfsJournal.catchUp(Lalluxio/master/journal/JournalReader;J)J, BB[SSA:93..93]47 - alluxio.master.journal.ufs.UfsJournal.catchUp(Lalluxio/master/journal/JournalReader;J)J, BB[SSA:-1..-2]65 - alluxio.master.journal.ufs.UfsJournal.catchUp(Lalluxio/master/journal/JournalReader;J)J], numberOfBasicBlocks=7, firstLineNumber=618, lastLineNumber=620, firstMethodNumber=587, lastMethodNumber=630, isFirstLineValid=true, methodSrcCode=
+    RetryPolicy retry =
+        ExponentialTimeBoundedRetry.builder()
+            .withInitialSleep(Duration.ofSeconds(1))
+            .withMaxSleep(Duration.ofSeconds(10))
+            .withMaxDuration(Duration.ofDays(365))
+            .build();
+    while (true) {
+      // Finish catching up, if reader is beyond given limit.
+      if (limit != -1 && journalReader.getNextSequenceNumber() > limit) {
+        return journalReader.getNextSequenceNumber();
+      }
+      if (mStopCatchingUp) {
+        return journalReader.getNextSequenceNumber();
+      }
+      try {
+        switch (journalReader.advance()) {
+          case CHECKPOINT:
+            mMaster.restoreFromCheckpoint(journalReader.getCheckpoint());
+            break;
+          case LOG:
+            JournalEntry entry = journalReader.getEntry();
+            try {
+              if (!mMaster.processJournalEntry(entry)) {
+                JournalUtils
+                    .handleJournalReplayFailure(LOG, null, "%s: Unrecognized journal entry: %s",
+                        mMaster.getName(), entry);
+              } else {
+                JournalUtils.sinkAppend(mJournalSinks, entry);
+              }
+            }  catch (Throwable t) {
+              JournalUtils.handleJournalReplayFailure(LOG, t,
+                    "%s: Failed to process journal entry %s", mMaster.getName(), entry);
+            }
+            break;
+          default:
+            return journalReader.getNextSequenceNumber();
+        }
+      } catch (IOException e) {
+        LOG.warn("{}: Failed to read from journal: {}", mMaster.getName(), e);
+        if (retry.attempt()) {
+          continue;
+        }
+        throw new RuntimeException(
+            String.format("%s: failed to catch up journal", mMaster.getName()), e);
+      }
+}

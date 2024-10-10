@@ -1,0 +1,19 @@
+```java
+if (conf.getKeepTaskFilesPattern() != null && jobTempDir != null) {
+    java.nio.file.Path pathName = Paths.get(jobTempDir).getFileName();
+    if (pathName != null) {
+        String jobFileName = pathName.toString();
+        Pattern pattern = Pattern.compile(conf.getKeepTaskFilesPattern());
+        Matcher matcher = pattern.matcher(jobFileName);
+        // ConfLogger Inserted Start
+        logger.debug("Checking if job file name matches the keep task files pattern. Configuration parameter: keepTaskFilesPattern=" + conf.getKeepTaskFilesPattern() + ", jobTempDir=" + jobTempDir + ", jobFileName=" + jobFileName);
+        // ConfLogger Inserted End
+        return matcher.find();
+    }
+}
+// ConfLogger Inserted Start
+logger.debug("Configuration parameter keepTaskFilesPattern is null or jobTempDir is null. keepTaskFilesPattern=" + conf.getKeepTaskFilesPattern() + ", jobTempDir=" + jobTempDir);
+// ConfLogger Inserted End
+return false;
+}
+```

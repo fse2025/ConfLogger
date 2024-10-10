@@ -1,0 +1,57 @@
+```java
+Thread interruptThread = null;
+Process process = null;
+try {
+    process = Runtime.getRuntime().exec(script);
+    final long timeout = ObjectReader.getLong(conf.get(DaemonConfig.STORM_HEALTH_CHECK_TIMEOUT_MS), 5000L);
+    final Thread curThread = Thread.currentThread();
+    // kill process when timeout
+    interruptThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(timeout);
+                curThread.interrupt();
+            } catch (InterruptedException e) {
+                // Ignored
+            }
+        }
+    });
+    interruptThread.start();
+    process.waitFor();
+    interruptThread.interrupt();
+    curThread.interrupted();
+
+    if (process.exitValue() != 0) {
+        String outMessage = readFromStream(process.getInputStream());
+        String errMessage = readFromStream(process.getErrorStream());
+
+        LOG.warn("The healthcheck process {} exited with code: {}; output: {}; err: {}.",
+                script, process.exitValue(), outMessage, errMessage);
+
+        // ConfLogger Skipped
+
+        if (outMessage.startsWith("ERROR")) {
+            // ConfLogger Inserted Start
+            logger.warn("Healthcheck process output starts with 'ERROR'. Configuration parameter: {}. Output: {}", DaemonConfig.STORM_HEALTH_CHECK_TIMEOUT_MS, outMessage);
+            // ConfLogger Inserted End
+            return FAILED;
+        }
+        return FAILED_WITH_EXIT_CODE;
+    }
+    return SUCCESS;
+} catch (InterruptedException | ClosedByInterruptException e) {
+    LOG.warn("Script:  {} timed out.", script);
+    if (process != null) {
+        process.destroyForcibly();
+    }
+    return TIMEOUT;
+} catch (Exception e) {
+    LOG.warn("Script failed with exception: ", e);
+    return FAILED;
+} finally {
+    if (interruptThread != null) {
+        interruptThread.interrupt();
+    }
+}
+```

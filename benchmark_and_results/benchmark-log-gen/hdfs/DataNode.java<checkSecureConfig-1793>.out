@@ -1,0 +1,154 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DataNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DataNode.checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V	methodLines:	1793:1837
+blockLines:	1803:-1
+paras:	dfs.block.access.token.enable
+TaintedStat:	NORMAL checkSecureConfig:conditional branch(ne, to iindex=19) 10,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V > Context: Everywhere[7]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,8,7 @12 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V > Context: Everywhere[7]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,8,7 @12 exception:9
+NORMAL checkSecureConfig:conditional branch(ne, to iindex=19) 10,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, checkSecureConfig(Lorg/apache/hadoop/hdfs/server/datanode/DNConf;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      SecureResources resources) throws RuntimeException {
+    if (!UserGroupInformation.isSecurityEnabled()) {
+      return;
+    }
+
+    // Abort out of inconsistent state if Kerberos is enabled
+    // but block access tokens are not enabled.
+    boolean isEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY,
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_DEFAULT);
+    if (!isEnabled) {
+      String errMessage = "Security is enabled but block access tokens " +
+          "(via " + DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY + ") " +
+          "aren't enabled. This may cause issues " +
+          "when clients attempt to connect to a DataNode. Aborting DataNode";
+      throw new RuntimeException(errMessage);
+    }
+
+    if (dnConf.getIgnoreSecurePortsForTesting()) {
+      return;
+    }
+
+    if (resources != null) {
+      final boolean httpSecured = resources.isHttpPortPrivileged()
+          || DFSUtil.getHttpPolicy(conf) == HttpConfig.Policy.HTTPS_ONLY;
+      final boolean rpcSecured = resources.isRpcPortPrivileged()
+          || resources.isSaslEnabled();
+
+      // Allow secure DataNode to startup if:
+      // 1. Http is secure.
+      // 2. Rpc is secure
+      if (rpcSecured && httpSecured) {
+        return;
+      }
+    } else {
+      // Handle cases when SecureDataNodeStarter#getSecureResources is not
+      // invoked
+      SaslPropertiesResolver saslPropsResolver = dnConf.getSaslPropsResolver();
+      if (saslPropsResolver != null &&
+          DFSUtil.getHttpPolicy(conf) == HttpConfig.Policy.HTTPS_ONLY) {
+        return;
+      }
+    }
+
+    throw new RuntimeException("Cannot start secure DataNode due to incorrect "
+        + "config. See https://cwiki.apache.org/confluence/display/HADOOP/"
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V > Context: Everywhere, blocks=[BB[SSA:28..29]13 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:26..27]12 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:30..31]14 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V, BB[SSA:-1..-2]151 - org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(Ljava/util/List;Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;)V], numberOfBasicBlocks=4, firstLineNumber=1690, lastLineNumber=1692, firstMethodNumber=1684, lastMethodNumber=1769, isFirstLineValid=true, methodSrcCode=
+    // settings global for all BPs in the Data Node
+    this.secureResources = resources;
+    synchronized (this) {
+      this.dataDirs = dataDirectories;
+    }
+    this.dnConf = new DNConf(this);
+    checkSecureConfig(dnConf, getConf(), resources);
+
+    if (dnConf.maxLockedMemory > 0) {
+      if (!NativeIO.POSIX.getCacheManipulator().verifyCanMlock()) {
+        throw new RuntimeException(String.format(
+            "Cannot start datanode because the configured max locked memory" +
+            " size (%s) is greater than zero and native code is not available.",
+            DFS_DATANODE_MAX_LOCKED_MEMORY_KEY));
+      }
+      if (Path.WINDOWS) {
+        NativeIO.Windows.extendWorkingSetSize(dnConf.maxLockedMemory);
+      } else {
+        long ulimit = NativeIO.POSIX.getCacheManipulator().getMemlockLimit();
+        if (dnConf.maxLockedMemory > ulimit) {
+          throw new RuntimeException(String.format(
+            "Cannot start datanode because the configured max locked memory" +
+            " size (%s) of %d bytes is more than the datanode's available" +
+            " RLIMIT_MEMLOCK ulimit of %d bytes.",
+            DFS_DATANODE_MAX_LOCKED_MEMORY_KEY,
+            dnConf.maxLockedMemory,
+            ulimit));
+        }
+      }
+    }
+    LOG.info("Starting DataNode with maxLockedMemory = {}",
+        dnConf.maxLockedMemory);
+
+    int volFailuresTolerated = dnConf.getVolFailuresTolerated();
+    int volsConfigured = dnConf.getVolsConfigured();
+    if (volFailuresTolerated < MAX_VOLUME_FAILURE_TOLERATED_LIMIT
+        || volFailuresTolerated >= volsConfigured) {
+      throw new HadoopIllegalArgumentException("Invalid value configured for "
+          + "dfs.datanode.failed.volumes.tolerated - " + volFailuresTolerated
+          + ". Value configured is either less than -1 or >= "
+          + "to the number of configured volumes (" + volsConfigured + ").");
+    }
+
+    storage = new DataStorage();
+    
+    // global DN settings
+    registerMXBean();
+    initDataXceiver();
+    startInfoServer();
+    pauseMonitor = new JvmPauseMonitor();
+    pauseMonitor.init(getConf());
+    pauseMonitor.start();
+  
+    // BlockPoolTokenSecretManager is required to create ipc server.
+    this.blockPoolTokenSecretManager = new BlockPoolTokenSecretManager();
+
+    // Login is done by now. Set the DN user name.
+    dnUserName = UserGroupInformation.getCurrentUser().getUserName();
+    LOG.info("dnUserName = {}", dnUserName);
+    LOG.info("supergroup = {}", supergroup);
+    initIpcServer();
+
+    metrics = DataNodeMetrics.create(getConf(), getDisplayName());
+    peerMetrics = dnConf.peerStatsEnabled ?
+        DataNodePeerMetrics.create(getDisplayName(), getConf()) : null;
+    metrics.getJvmMetrics().setPauseMonitor(pauseMonitor);
+
+    ecWorker = new ErasureCodingWorker(getConf(), this);
+    blockRecoveryWorker = new BlockRecoveryWorker(this);
+
+    blockPoolManager = new BlockPoolManager(this);
+    blockPoolManager.refreshNamenodes(getConf());
+
+    // Create the ReadaheadPool from the DataNode context so we can
+    // exit without having to explicitly shutdown its thread pool.
+    readaheadPool = ReadaheadPool.getInstance();
+    saslClient = new SaslDataTransferClient(dnConf.getConf(),
+        dnConf.saslPropsResolver, dnConf.trustedChannelResolver);
+    saslServer = new SaslDataTransferServer(dnConf, blockPoolTokenSecretManager);
+    startMetricsLogger();
+
+    if (dnConf.diskStatsEnabled) {
+      diskMetrics = new DataNodeDiskMetrics(this,
+          dnConf.outliersReportIntervalMs, getConf());
+    }
+  }
+
+}

@@ -1,0 +1,100 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileInputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.FileInputFormat.addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;)V	methodLines:	548:554
+blockLines:	553:-1
+paras:	null
+TaintedStat:	NORMAL addInputPath:conditional branch(ne, to iindex=24) 16,17 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[15]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,14 @26 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[15]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,14 @26 exception:15
+NORMAL addInputPath:conditional branch(ne, to iindex=24) 16,17 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                  Path path) throws IOException {
+    Configuration conf = job.getConfiguration();
+    path = path.getFileSystem(conf).makeQualified(path);
+    String dirStr = StringUtils.escapeString(path.toString());
+    String dirs = conf.get(INPUT_DIR);
+    conf.set(INPUT_DIR, dirs == null ? dirStr : dirs + "," + dirStr);
+  }
+  
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/FileInputFormat, addInputPaths(Lorg/apache/hadoop/mapreduce/Job;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:20..20]8 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.addInputPaths(Lorg/apache/hadoop/mapreduce/Job;Ljava/lang/String;)V, BB[SSA:17..19]7 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.addInputPaths(Lorg/apache/hadoop/mapreduce/Job;Ljava/lang/String;)V, BB[SSA:21..25]9 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.addInputPaths(Lorg/apache/hadoop/mapreduce/Job;Ljava/lang/String;)V, BB[SSA:-1..-2]11 - org.apache.hadoop.mapreduce.lib.input.FileInputFormat.addInputPaths(Lorg/apache/hadoop/mapreduce/Job;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=515, lastLineNumber=514, firstMethodNumber=513, lastMethodNumber=517, isFirstLineValid=true, methodSrcCode=
+                                   ) throws IOException {
+    for (String str : getPathStrings(commaSeparatedPaths)) {
+      addInputPath(job, new Path(str));
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/partition/InputSampler, run([Ljava/lang/String;)I > Context: Everywhere, blocks=[BB[SSA:298..298]123 - org.apache.hadoop.mapreduce.lib.partition.InputSampler.run([Ljava/lang/String;)I, BB[SSA:295..297]122 - org.apache.hadoop.mapreduce.lib.partition.InputSampler.run([Ljava/lang/String;)I, BB[SSA:299..299]124 - org.apache.hadoop.mapreduce.lib.partition.InputSampler.run([Ljava/lang/String;)I, BB[SSA:-1..-2]127 - org.apache.hadoop.mapreduce.lib.partition.InputSampler.run([Ljava/lang/String;)I], numberOfBasicBlocks=4, firstLineNumber=403, lastLineNumber=404, firstMethodNumber=346, lastMethodNumber=407, isFirstLineValid=true, methodSrcCode=
+  public int run(String[] args) throws Exception {
+    Job job = Job.getInstance(getConf());
+    ArrayList<String> otherArgs = new ArrayList<String>();
+    Sampler<K,V> sampler = null;
+    for(int i=0; i < args.length; ++i) {
+      try {
+        if ("-r".equals(args[i])) {
+          job.setNumReduceTasks(Integer.parseInt(args[++i]));
+        } else if ("-inFormat".equals(args[i])) {
+          job.setInputFormatClass(
+              Class.forName(args[++i]).asSubclass(InputFormat.class));
+        } else if ("-keyClass".equals(args[i])) {
+          job.setMapOutputKeyClass(
+              Class.forName(args[++i]).asSubclass(WritableComparable.class));
+        } else if ("-splitSample".equals(args[i])) {
+          int numSamples = Integer.parseInt(args[++i]);
+          int maxSplits = Integer.parseInt(args[++i]);
+          if (0 >= maxSplits) maxSplits = Integer.MAX_VALUE;
+          sampler = new SplitSampler<K,V>(numSamples, maxSplits);
+        } else if ("-splitRandom".equals(args[i])) {
+          double pcnt = Double.parseDouble(args[++i]);
+          int numSamples = Integer.parseInt(args[++i]);
+          int maxSplits = Integer.parseInt(args[++i]);
+          if (0 >= maxSplits) maxSplits = Integer.MAX_VALUE;
+          sampler = new RandomSampler<K,V>(pcnt, numSamples, maxSplits);
+        } else if ("-splitInterval".equals(args[i])) {
+          double pcnt = Double.parseDouble(args[++i]);
+          int maxSplits = Integer.parseInt(args[++i]);
+          if (0 >= maxSplits) maxSplits = Integer.MAX_VALUE;
+          sampler = new IntervalSampler<K,V>(pcnt, maxSplits);
+        } else {
+          otherArgs.add(args[i]);
+        }
+      } catch (NumberFormatException except) {
+        System.out.println("ERROR: Integer expected instead of " + args[i]);
+        return printUsage();
+      } catch (ArrayIndexOutOfBoundsException except) {
+        System.out.println("ERROR: Required parameter missing from " +
+            args[i-1]);
+        return printUsage();
+      }
+    }
+    if (job.getNumReduceTasks() <= 1) {
+      System.err.println("Sampler requires more than one reducer");
+      return printUsage();
+    }
+    if (otherArgs.size() < 2) {
+      System.out.println("ERROR: Wrong number of parameters: ");
+      return printUsage();
+    }
+    if (null == sampler) {
+      sampler = new RandomSampler<K,V>(0.1, 10000, 10);
+    }
+
+    Path outf = new Path(otherArgs.remove(otherArgs.size() - 1));
+    TotalOrderPartitioner.setPartitionFile(getConf(), outf);
+    for (String s : otherArgs) {
+      FileInputFormat.addInputPath(job, new Path(s));
+    }
+    InputSampler.<K,V>writePartitionFile(job, sampler);
+
+    return 0;
+  }
+}

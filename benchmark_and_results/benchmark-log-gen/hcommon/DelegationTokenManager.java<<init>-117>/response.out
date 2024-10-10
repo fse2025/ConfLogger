@@ -1,0 +1,16 @@
+```java
+public DelegationTokenManager(Configuration conf, Text tokenKind) {
+    if (conf.getBoolean(ENABLE_ZK_KEY, false)) {
+        this.secretManager = new ZKSecretManager(conf, tokenKind);
+        // ConfLogger Inserted Start
+        logger.info("ZKSecretManager enabled. Configuration parameter: " + ENABLE_ZK_KEY + " = " + conf.getBoolean(ENABLE_ZK_KEY, false));
+        // ConfLogger Inserted End
+    } else {
+        this.secretManager = new DelegationTokenSecretManager(conf, tokenKind);
+        // ConfLogger Inserted Start
+        logger.info("DelegationTokenSecretManager enabled. Configuration parameter: " + ENABLE_ZK_KEY + " = " + conf.getBoolean(ENABLE_ZK_KEY, false));
+        // ConfLogger Inserted End
+    }
+    managedSecretManager = true;
+}
+```

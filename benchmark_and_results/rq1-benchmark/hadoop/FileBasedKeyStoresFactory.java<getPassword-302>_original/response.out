@@ -1,0 +1,20 @@
+```java
+String getPassword(Configuration conf, String alias, String defaultPass) {
+    String password = defaultPass;
+    try {
+        char[] passchars = conf.getPassword(alias);
+        // ConfLogger Inserted Start
+        if (passchars != null) {
+            password = new String(passchars);
+            logger.debug("Password retrieved successfully for alias: " + alias);
+        } else {
+            logger.warn("Password characters are null for alias: " + alias + ". Using default password.");
+        }
+        // ConfLogger Inserted End
+    } catch (IOException ioe) {
+        LOG.warn("Exception while trying to get password for alias " + alias +
+        ": " + ioe.getMessage()); // ConfLogger Skipped: Exception message already includes alias information.
+    }
+    return password;
+}
+```

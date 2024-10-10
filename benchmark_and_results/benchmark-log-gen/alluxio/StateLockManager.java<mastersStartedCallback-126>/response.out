@@ -1,0 +1,17 @@
+```java
+if (mExclusiveOnlyDeadlineMs == -1) {
+    long exclusiveOnlyDurationMs =
+        Configuration.getMs(PropertyKey.MASTER_BACKUP_STATE_LOCK_EXCLUSIVE_DURATION);
+    mExclusiveOnlyDeadlineMs = System.currentTimeMillis() + exclusiveOnlyDurationMs;
+    if (exclusiveOnlyDurationMs > 0) {
+        // ConfLogger Commented: Not Informative
+        // LOG.info("State-lock will remain in exclusive-only mode for {}ms until {}",
+        // exclusiveOnlyDurationMs, new Date(mExclusiveOnlyDeadlineMs).toString());
+        // ConfLogger Inserted Start
+        logger.info("State-lock will remain in exclusive-only mode for {}ms until {}. Configuration parameter: {} = {}",
+            exclusiveOnlyDurationMs, new Date(mExclusiveOnlyDeadlineMs).toString(),
+            "MASTER_BACKUP_STATE_LOCK_EXCLUSIVE_DURATION", exclusiveOnlyDurationMs);
+        // ConfLogger Inserted End
+    }
+}
+```

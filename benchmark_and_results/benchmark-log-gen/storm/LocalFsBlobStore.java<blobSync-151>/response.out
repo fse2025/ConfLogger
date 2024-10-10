@@ -1,0 +1,37 @@
+```java
+if ("distributed".equals(conf.get(Config.STORM_CLUSTER_MODE))) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is set to 'distributed'.", Config.STORM_CLUSTER_MODE);
+    // ConfLogger Inserted End
+    if (!this.leaderElector.isLeader()) {
+        IStormClusterState state = stormClusterState;
+        NimbusInfo nimbusInfo = this.nimbusInfo;
+        BlobStore store = this;
+        Set<String> allKeys = new HashSet<>();
+        for (Iterator<String> it = store.listKeys(); it.hasNext();) {
+            allKeys.add(it.next());
+        }
+        Set<String> zkKeys = new HashSet<>(state.blobstore(() -> {
+            try {
+                this.blobSync();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }));
+        LOG.debug("blob-sync blob-store-keys {} zookeeper-keys {}", allKeys, zkKeys); // ConfLogger Commented: Not Informative
+        // ConfLogger Inserted Start
+        logger.debug("Blob synchronization started with blob-store-keys: {} and zookeeper-keys: {}", allKeys, zkKeys);
+        // ConfLogger Inserted End
+        LocalFsBlobStoreSynchronizer sync = new LocalFsBlobStoreSynchronizer(store, conf);
+        sync.setNimbusInfo(nimbusInfo);
+        sync.setBlobStoreKeySet(allKeys);
+        sync.setZookeeperKeySet(zkKeys);
+        sync.setZkClient(zkClient);
+        sync.syncBlobs();
+    } //else leader (NOOP)
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is not set to 'distributed'. Service will not be enabled.", Config.STORM_CLUSTER_MODE);
+    // ConfLogger Inserted End
+}
+```

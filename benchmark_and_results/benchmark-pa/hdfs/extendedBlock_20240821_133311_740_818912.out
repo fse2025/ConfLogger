@@ -1,0 +1,114 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtilClient.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtilClient.emptyAsSingletonNull(Ljava/util/Collection;)Ljava/util/Collection;	methodLines:	380:384
+blockLines:	381:-1
+paras:	dfs.internal.nameservices
+TaintedStat:	NORMAL emptyAsSingletonNull:conditional branch(eq, to iindex=10) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, emptyAsSingletonNull(Ljava/util/Collection;)Ljava/util/Collection; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNNLifelineRpcAddressesForCluster(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > 1,3 @3 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNNLifelineRpcAddressesForCluster(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > 1,3 @3 exception:4
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNNLifelineRpcAddressesForCluster(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere:36 = phi  35,5
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getNNLifelineRpcAddressesForCluster(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[56]42 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getAddressesForNsIds(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map; > 1,36,37,39 @117 exception:41 v36
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getAddressesForNsIds(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getAddressesForNsIds(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map; > Context: Everywhere[3]9 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, emptyAsSingletonNull(Ljava/util/Collection;)Ljava/util/Collection; > 2 @6 exception:8 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, emptyAsSingletonNull(Ljava/util/Collection;)Ljava/util/Collection; > Context: Everywhere v1
+NORMAL emptyAsSingletonNull:conditional branch(eq, to iindex=7) 1,3 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, emptyAsSingletonNull(Ljava/util/Collection;)Ljava/util/Collection; > Context: Everywhere
+NORMAL emptyAsSingletonNull:conditional branch(eq, to iindex=10) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, emptyAsSingletonNull(Ljava/util/Collection;)Ljava/util/Collection; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static Collection<String> emptyAsSingletonNull(Collection<String> coll) {
+    if (coll == null || coll.isEmpty()) {
+      return Collections.singletonList(null);
+    } else {
+      return coll;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:8..10]2 - org.apache.hadoop.hdfs.DFSUtil.getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String;, BB[SSA:0..7]1 - org.apache.hadoop.hdfs.DFSUtil.getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String;, BB[SSA:11..11]3 - org.apache.hadoop.hdfs.DFSUtil.getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String;, BB[SSA:-1..-2]64 - org.apache.hadoop.hdfs.DFSUtil.getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String;, BB[SSA:33..35]14 - org.apache.hadoop.hdfs.DFSUtil.getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String;, BB[SSA:30..32]13 - org.apache.hadoop.hdfs.DFSUtil.getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String;, BB[SSA:36..36]15 - org.apache.hadoop.hdfs.DFSUtil.getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String;, BB[SSA:-1..-2]64 - org.apache.hadoop.hdfs.DFSUtil.getSuffixIDs(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/DFSUtil$AddressMatcher;)[Ljava/lang/String;], numberOfBasicBlocks=8, firstLineNumber=1225, lastLineNumber=1226, firstMethodNumber=1214, lastMethodNumber=1260, isFirstLineValid=true, methodSrcCode=
+      final AddressMatcher matcher) {
+    String nameserviceId = null;
+    String namenodeId = null;
+    int found = 0;
+    
+    Collection<String> nsIds = DFSUtilClient.getNameServiceIds(conf);
+    for (String nsId : DFSUtilClient.emptyAsSingletonNull(nsIds)) {
+      if (knownNsId != null && !knownNsId.equals(nsId)) {
+        continue;
+      }
+      
+      Collection<String> nnIds = DFSUtilClient.getNameNodeIds(conf, nsId);
+      for (String nnId : DFSUtilClient.emptyAsSingletonNull(nnIds)) {
+        if (LOG.isTraceEnabled()) {
+          LOG.trace(String.format("addressKey: %s nsId: %s nnId: %s",
+              addressKey, nsId, nnId));
+        }
+        if (knownNNId != null && !knownNNId.equals(nnId)) {
+          continue;
+        }
+        String key = addKeySuffixes(addressKey, nsId, nnId);
+        String addr = conf.get(key);
+        if (addr == null) {
+          continue;
+        }
+        InetSocketAddress s = null;
+        try {
+          s = NetUtils.createSocketAddr(addr);
+        } catch (Exception e) {
+          LOG.warn("Exception in creating socket address " + addr, e);
+          continue;
+        }
+        if (!s.isUnresolved() && matcher.match(s)) {
+          nameserviceId = nsId;
+          namenodeId = nnId;
+          found++;
+        }
+      }
+    }
+    if (found > 1) { // Only one address must match the local address
+      String msg = "Configuration has multiple addresses that match "
+          + "local node's address. Please configure the system with "
+          + DFS_NAMESERVICE_ID + " and "
+          + DFS_HA_NAMENODE_ID_KEY;
+      throw new HadoopIllegalArgumentException(msg);
+    }
+    return new String[] { nameserviceId, namenodeId };
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getAddressesForNameserviceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:5..7]3 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNameserviceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;, BB[SSA:3..4]2 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNameserviceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;, BB[SSA:8..8]4 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNameserviceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;, BB[SSA:-1..-2]24 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNameserviceId(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=435, lastLineNumber=437, firstMethodNumber=434, lastMethodNumber=450, isFirstLineValid=true, methodSrcCode=
+      Configuration conf, String nsId, String defaultValue, String... keys) {
+    Collection<String> nnIds = getNameNodeIds(conf, nsId);
+    Map<String, InetSocketAddress> ret = Maps.newLinkedHashMap();
+    for (String nnId : emptyAsSingletonNull(nnIds)) {
+      String suffix = concatSuffixes(nsId, nnId);
+      String address = checkKeysAndProcess(defaultValue, suffix, conf, keys);
+      if (address != null) {
+        InetSocketAddress isa = NetUtils.createSocketAddr(address);
+        if (isa.isUnresolved()) {
+          LOG.warn("Namenode for {} remains unresolved for ID {}. Check your "
+              + "hdfs-site.xml file to ensure namenodes are configured "
+              + "properly.", nsId, nnId);
+        }
+        ret.put(nnId, isa);
+      }
+    }
+    return ret;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtilClient, getAddressesForNsIds(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:1..3]2 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNsIds(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;, BB[SSA:0..0]1 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNsIds(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;, BB[SSA:4..4]3 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNsIds(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;, BB[SSA:-1..-2]16 - org.apache.hadoop.hdfs.DFSUtilClient.getAddressesForNsIds(Lorg/apache/hadoop/conf/Configuration;Ljava/util/Collection;Ljava/lang/String;[Ljava/lang/String;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=422, lastLineNumber=423, firstMethodNumber=421, lastMethodNumber=430, isFirstLineValid=true, methodSrcCode=
+    // across all of the configured nameservices and namenodes.
+    Map<String, Map<String, InetSocketAddress>> ret = Maps.newLinkedHashMap();
+    for (String nsId : emptyAsSingletonNull(nsIds)) {
+      Map<String, InetSocketAddress> isas =
+          getAddressesForNameserviceId(conf, nsId, defaultAddress, keys);
+      if (!isas.isEmpty()) {
+        ret.put(nsId, isas);
+      }
+    }
+    return ret;
+  }
+}

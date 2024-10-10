@@ -1,0 +1,54 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CombineFileRecordReaderWrapper.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReaderWrapper.fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z	methodLines:	72:86
+blockLines:	75:-1
+paras:	null
+TaintedStat:	NORMAL fileSplitIsValid:conditional branch(eq, to iindex=17) 13,14 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper, <init>(Lorg/apache/hadoop/mapreduce/lib/input/CombineFileSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Ljava/lang/Integer;)V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReader.initNextRecordReader()Z@170 ]], B=Everywhere]}>, B=Everywhere]
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper, <init>(Lorg/apache/hadoop/mapreduce/lib/input/CombineFileSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Ljava/lang/Integer;)V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReader.initNextRecordReader()Z@170 ]], B=Everywhere]}>, B=Everywhere][6]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 5,6,7 @11 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper, <init>(Lorg/apache/hadoop/mapreduce/lib/input/CombineFileSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Ljava/lang/Integer;)V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReader.initNextRecordReader()Z@170 ]], B=Everywhere]}>, B=Everywhere][6]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 5,6,7 @11 exception:8
+NORMAL fileSplitIsValid:13 = compare 12,9 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper, <init>(Lorg/apache/hadoop/mapreduce/lib/input/CombineFileSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Ljava/lang/Integer;)V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReader.initNextRecordReader()Z@170 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL fileSplitIsValid:conditional branch(eq, to iindex=17) 13,14 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper, <init>(Lorg/apache/hadoop/mapreduce/lib/input/CombineFileSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Ljava/lang/Integer;)V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReader.initNextRecordReader()Z@170 ]], B=Everywhere]}>, B=Everywhere]
+
+-------------TaintedSinkInfo----------
+fileName:	CombineFileRecordReaderWrapper.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReaderWrapper.fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z	methodLines:	72:86
+blockLines:	79:-1
+paras:	null
+TaintedStat:	NORMAL fileSplitIsValid:conditional branch(eq, to iindex=31) 21,14 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z > Context: Everywhere[20]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 5,15,7 @33 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z > Context: Everywhere[20]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 5,15,7 @33 exception:16
+NORMAL fileSplitIsValid:21 = compare 20,17 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z > Context: Everywhere
+NORMAL fileSplitIsValid:conditional branch(eq, to iindex=31) 21,14 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, fileSplitIsValid(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private boolean fileSplitIsValid(TaskAttemptContext context) {
+    Configuration conf = context.getConfiguration();
+    long offset = conf.getLong(MRJobConfig.MAP_INPUT_START, 0L);
+    if (fileSplit.getStart() != offset) {
+      return false;
+    }
+    long length = conf.getLong(MRJobConfig.MAP_INPUT_PATH, 0L);
+    if (fileSplit.getLength() != length) {
+      return false;
+    }
+    String path = conf.get(MRJobConfig.MAP_INPUT_FILE);
+    if (!fileSplit.getPath().toString().equals(path)) {
+      return false;
+    }
+    return true;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileRecordReaderWrapper, initialize(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineTextInputFormat$TextRecordReaderWrapper, <init>(Lorg/apache/hadoop/mapreduce/lib/input/CombineFileSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Ljava/lang/Integer;)V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReader.initNextRecordReader()Z@170 ]], B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:3..5]2 - org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReaderWrapper.initialize(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)V, BB[SSA:0..2]1 - org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReaderWrapper.initialize(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)V, BB[SSA:6..7]3 - org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReaderWrapper.initialize(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)V, BB[SSA:-1..-2]11 - org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReaderWrapper.initialize(Lorg/apache/hadoop/mapreduce/InputSplit;Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)V], numberOfBasicBlocks=4, firstLineNumber=67, lastLineNumber=67, firstMethodNumber=66, lastMethodNumber=70, isFirstLineValid=true, methodSrcCode=
+    // was created
+    assert fileSplitIsValid(context);
+
+    delegate.initialize(fileSplit, context);
+  }
+
+}

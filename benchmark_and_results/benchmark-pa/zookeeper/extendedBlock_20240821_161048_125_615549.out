@@ -1,0 +1,231 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	PrepRequestProcessor.java	methodSinagture:	org.apache.zookeeper.server.PrepRequestProcessor.rollbackPendingChanges(JLjava/util/Map;)V	methodLines:	260:295
+blockLines:	266:-1
+paras:	null
+TaintedStat:	NORMAL rollbackPendingChanges:conditional branch(ne, to iindex=35) 18,13 Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, rollbackPendingChanges(JLjava/util/Map;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, pRequestHelper(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[152]47 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getNextZxid()J > 45 @838 exception:46
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, pRequestHelper(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[152]47 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getNextZxid()J > 45 @838 exception:46
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, pRequestHelper(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[257]invokevirtual < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, rollbackPendingChanges(JLjava/util/Map;)V > 1,47,49 @1066 exception:108 v47
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, rollbackPendingChanges(JLjava/util/Map;)V > Context: Everywhere v2
+NORMAL rollbackPendingChanges:18 = compare 17,2 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, rollbackPendingChanges(JLjava/util/Map;)V > Context: Everywhere
+NORMAL rollbackPendingChanges:conditional branch(ne, to iindex=35) 18,13 Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, rollbackPendingChanges(JLjava/util/Map;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    void rollbackPendingChanges(long zxid, Map<String, ChangeRecord> pendingChangeRecords) {
+        synchronized (zks.outstandingChanges) {
+            // Grab a list iterator starting at the END of the list so we can iterate in reverse
+            Iterator<ChangeRecord> iter = zks.outstandingChanges.descendingIterator();
+            while (iter.hasNext()) {
+                ChangeRecord c = iter.next();
+                if (c.zxid == zxid) {
+                    iter.remove();
+                    // Remove all outstanding changes for paths of this multi.
+                    // Previous records will be added back later.
+                    zks.outstandingChangesForPath.remove(c.path);
+                } else {
+                    break;
+                }
+            }
+
+            // we don't need to roll back any records because there is nothing left.
+            if (zks.outstandingChanges.isEmpty()) {
+                return;
+            }
+
+            long firstZxid = zks.outstandingChanges.peek().zxid;
+
+            for (ChangeRecord c : pendingChangeRecords.values()) {
+                // Don't apply any prior change records less than firstZxid.
+                // Note that previous outstanding requests might have been removed
+                // once they are completed.
+                if (c.zxid < firstZxid) {
+                    continue;
+                }
+
+                // add previously existing records back.
+                zks.outstandingChangesForPath.put(c.path, c);
+            }
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, pRequestHelper(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere, blocks=[BB[SSA:254..257]126 - org.apache.zookeeper.server.PrepRequestProcessor.pRequestHelper(Lorg/apache/zookeeper/server/Request;)V, BB[SSA:251..253]125 - org.apache.zookeeper.server.PrepRequestProcessor.pRequestHelper(Lorg/apache/zookeeper/server/Request;)V, BB[SSA:258..258]127 - org.apache.zookeeper.server.PrepRequestProcessor.pRequestHelper(Lorg/apache/zookeeper/server/Request;)V, BB[SSA:-1..-2]214 - org.apache.zookeeper.server.PrepRequestProcessor.pRequestHelper(Lorg/apache/zookeeper/server/Request;)V], numberOfBasicBlocks=4, firstLineNumber=854, lastLineNumber=864, firstMethodNumber=769, lastMethodNumber=937, isFirstLineValid=true, methodSrcCode=
+        try {
+            switch (request.type) {
+            case OpCode.createContainer:
+            case OpCode.create:
+            case OpCode.create2:
+                CreateRequest create2Request = request.readRequestRecord(CreateRequest::new);
+                pRequest2Txn(request.type, zks.getNextZxid(), request, create2Request);
+                break;
+            case OpCode.createTTL:
+                CreateTTLRequest createTtlRequest = request.readRequestRecord(CreateTTLRequest::new);
+                pRequest2Txn(request.type, zks.getNextZxid(), request, createTtlRequest);
+                break;
+            case OpCode.deleteContainer:
+                DeleteContainerRequest deleteContainerRequest = request.readRequestRecord(DeleteContainerRequest::new);
+                pRequest2Txn(request.type, zks.getNextZxid(), request, deleteContainerRequest);
+                break;
+            case OpCode.delete:
+                DeleteRequest deleteRequest = request.readRequestRecord(DeleteRequest::new);
+                pRequest2Txn(request.type, zks.getNextZxid(), request, deleteRequest);
+                break;
+            case OpCode.setData:
+                SetDataRequest setDataRequest = request.readRequestRecord(SetDataRequest::new);
+                pRequest2Txn(request.type, zks.getNextZxid(), request, setDataRequest);
+                break;
+            case OpCode.reconfig:
+                ReconfigRequest reconfigRequest = request.readRequestRecord(ReconfigRequest::new);
+                pRequest2Txn(request.type, zks.getNextZxid(), request, reconfigRequest);
+                break;
+            case OpCode.setACL:
+                SetACLRequest setAclRequest = request.readRequestRecord(SetACLRequest::new);
+                pRequest2Txn(request.type, zks.getNextZxid(), request, setAclRequest);
+                break;
+            case OpCode.check:
+                CheckVersionRequest checkRequest = request.readRequestRecord(CheckVersionRequest::new);
+                pRequest2Txn(request.type, zks.getNextZxid(), request, checkRequest);
+                break;
+            case OpCode.multi:
+                MultiOperationRecord multiRequest;
+                try {
+                    multiRequest = request.readRequestRecord(MultiOperationRecord::new);
+                } catch (IOException e) {
+                    request.setHdr(new TxnHeader(request.sessionId, request.cxid, zks.getNextZxid(), Time.currentWallTime(), OpCode.multi));
+                    throw e;
+                }
+                List<Txn> txns = new ArrayList<>();
+                //Each op in a multi-op must have the same zxid!
+                long zxid = zks.getNextZxid();
+                KeeperException ke = null;
+
+                //Store off current pending change records in case we need to rollback
+                Map<String, ChangeRecord> pendingChanges = getPendingChanges(multiRequest);
+                request.setHdr(new TxnHeader(request.sessionId, request.cxid, zxid,
+                        Time.currentWallTime(), request.type));
+
+                for (Op op : multiRequest) {
+                    Record subrequest = op.toRequestRecord();
+                    int type;
+                    Record txn;
+
+                    /* If we've already failed one of the ops, don't bother
+                     * trying the rest as we know it's going to fail and it
+                     * would be confusing in the logfiles.
+                     */
+                    if (ke != null) {
+                        type = OpCode.error;
+                        txn = new ErrorTxn(Code.RUNTIMEINCONSISTENCY.intValue());
+                    } else {
+                        /* Prep the request and convert to a Txn */
+                        try {
+                            pRequest2Txn(op.getType(), zxid, request, subrequest);
+                            type = op.getType();
+                            txn = request.getTxn();
+                        } catch (KeeperException e) {
+                            ke = e;
+                            type = OpCode.error;
+                            txn = new ErrorTxn(e.code().intValue());
+
+                            if (e.code().intValue() > Code.APIERROR.intValue()) {
+                                LOG.info("Got user-level KeeperException when processing {} aborting"
+                                         + " remaining multi ops. Error Path:{} Error:{}",
+                                         request.toString(),
+                                         e.getPath(),
+                                         e.getMessage());
+                            }
+
+                            request.setException(e);
+
+                            /* Rollback change records from failed multi-op */
+                            rollbackPendingChanges(zxid, pendingChanges);
+                        }
+                    }
+
+                    // TODO: I don't want to have to serialize it here and then
+                    //       immediately deserialize in next processor. But I'm
+                    //       not sure how else to get the txn stored into our list.
+                    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                        BinaryOutputArchive boa = BinaryOutputArchive.getArchive(baos);
+                        txn.serialize(boa, "request");
+                        ByteBuffer bb = ByteBuffer.wrap(baos.toByteArray());
+                        txns.add(new Txn(type, bb.array()));
+                    }
+                }
+
+                request.setTxn(new MultiTxn(txns));
+                if (digestEnabled) {
+                    setTxnDigest(request);
+                }
+
+                break;
+
+            //create/close session don't require request record
+            case OpCode.createSession:
+            case OpCode.closeSession:
+                if (!request.isLocalSession()) {
+                    pRequest2Txn(request.type, zks.getNextZxid(), request, null);
+                }
+                break;
+
+            //All the rest don't need to create a Txn - just verify session
+            case OpCode.sync:
+            case OpCode.exists:
+            case OpCode.getData:
+            case OpCode.getACL:
+            case OpCode.getChildren:
+            case OpCode.getAllChildrenNumber:
+            case OpCode.getChildren2:
+            case OpCode.ping:
+            case OpCode.setWatches:
+            case OpCode.setWatches2:
+            case OpCode.checkWatches:
+            case OpCode.removeWatches:
+            case OpCode.getEphemerals:
+            case OpCode.multiRead:
+            case OpCode.addWatch:
+            case OpCode.whoAmI:
+                zks.sessionTracker.checkSession(request.sessionId, request.getOwner());
+                break;
+            default:
+                LOG.warn("unknown type {}", request.type);
+                break;
+            }
+        } catch (KeeperException e) {
+            if (request.getHdr() != null) {
+                request.getHdr().setType(OpCode.error);
+                request.setTxn(new ErrorTxn(e.code().intValue()));
+            }
+
+            if (e.code().intValue() > Code.APIERROR.intValue()) {
+                LOG.info(
+                    "Got user-level KeeperException when processing {} Error Path:{} Error:{}",
+                    request.toString(),
+                    e.getPath(),
+                    e.getMessage());
+            }
+            request.setException(e);
+        } catch (Exception e) {
+            // log at error level as we are returning a marshalling
+            // error to the user
+            LOG.error("Failed to process {}", request, e);
+            String digest = request.requestDigest();
+            LOG.error("Dumping request buffer for request type {}: 0x{}", Request.op2String(request.type), digest);
+            if (request.getHdr() == null) {
+                request.setHdr(new TxnHeader(request.sessionId, request.cxid, zks.getZxid(), Time.currentWallTime(), request.type));
+            }
+
+            request.getHdr().setType(OpCode.error);
+            request.setTxn(new ErrorTxn(Code.MARSHALLINGERROR.intValue()));
+        }
+    }
+
+}

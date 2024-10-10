@@ -1,0 +1,116 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JournalNodeHttpServer.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.server.JournalNodeHttpServer.start()V	methodLines:	58:101
+blockLines:	66:-1
+paras:	dfs.journalnode.https-address
+TaintedStat:	NORMAL start:conditional branch(eq, to iindex=34) 10,11 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 4,5,6 @13 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 4,5,6 @13 exception:7
+NORMAL start:10 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > 8 @18 exception:9 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL createSocketAddr:return 5 Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere[10]10 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > 8 @18 exception:9
+NORMAL start:conditional branch(eq, to iindex=34) 10,11 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	JournalNodeHttpServer.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.server.JournalNodeHttpServer.start()V	methodLines:	58:101
+blockLines:	71:-1
+paras:	dfs.journalnode.https-bind-host
+TaintedStat:	NORMAL start:conditional branch(eq, to iindex=34) 15,11 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere[18]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 12,13 @32 exception:14
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere[18]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 12,13 @32 exception:14
+NORMAL start:conditional branch(eq, to iindex=34) 15,11 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  void start() throws IOException {
+    final InetSocketAddress httpAddr = bindAddress;
+
+    final String httpsAddrString = conf.get(
+        DFSConfigKeys.DFS_JOURNALNODE_HTTPS_ADDRESS_KEY,
+        DFSConfigKeys.DFS_JOURNALNODE_HTTPS_ADDRESS_DEFAULT);
+    InetSocketAddress httpsAddr = NetUtils.createSocketAddr(httpsAddrString);
+
+    if (httpsAddr != null) {
+      // If DFS_JOURNALNODE_HTTPS_BIND_HOST_KEY exists then it overrides the
+      // host name portion of DFS_NAMENODE_HTTPS_ADDRESS_KEY.
+      final String bindHost =
+          conf.getTrimmed(DFSConfigKeys.DFS_JOURNALNODE_HTTPS_BIND_HOST_KEY);
+      if (bindHost != null && !bindHost.isEmpty()) {
+        httpsAddr = new InetSocketAddress(bindHost, httpsAddr.getPort());
+      }
+    }
+
+    HttpServer2.Builder builder = DFSUtil.httpServerTemplateForNNAndJN(conf,
+        httpAddr, httpsAddr, "journal",
+        DFSConfigKeys.DFS_JOURNALNODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY,
+        DFSConfigKeys.DFS_JOURNALNODE_KEYTAB_FILE_KEY);
+
+    httpServer = builder.build();
+    httpServer.setAttribute(JN_ATTRIBUTE_KEY, localJournalNode);
+    httpServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    httpServer.addInternalServlet("getJournal", "/getJournal",
+        GetJournalEditServlet.class, true);
+    httpServer.start();
+
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    int connIdx = 0;
+    if (policy.isHttpEnabled()) {
+      httpAddress = httpServer.getConnectorAddress(connIdx++);
+      conf.set(DFSConfigKeys.DFS_JOURNALNODE_HTTP_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpAddress));
+    }
+
+    if (policy.isHttpsEnabled()) {
+      httpsAddress = httpServer.getConnectorAddress(connIdx);
+      conf.set(DFSConfigKeys.DFS_JOURNALNODE_HTTPS_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpsAddress));
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, start()V > Context: Everywhere, blocks=[BB[SSA:62..62]33 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.start()V, BB[SSA:60..61]32 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.start()V, BB[SSA:63..65]34 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.start()V, BB[SSA:-1..-2]49 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.start()V], numberOfBasicBlocks=4, firstLineNumber=243, lastLineNumber=245, firstMethodNumber=221, lastMethodNumber=255, isFirstLineValid=true, methodSrcCode=
+  public void start() throws IOException {
+    Preconditions.checkState(!isStarted(), "JN already running");
+
+    try {
+
+      for (File journalDir : localDir) {
+        validateAndCreateJournalDir(journalDir);
+      }
+      DefaultMetricsSystem.initialize("JournalNode");
+      JvmMetrics.create("JournalNode",
+          conf.get(DFSConfigKeys.DFS_METRICS_SESSION_ID_KEY),
+          DefaultMetricsSystem.instance());
+
+      InetSocketAddress socAddr = JournalNodeRpcServer.getAddress(conf);
+      SecurityUtil.login(conf, DFSConfigKeys.DFS_JOURNALNODE_KEYTAB_FILE_KEY,
+          DFSConfigKeys.DFS_JOURNALNODE_KERBEROS_PRINCIPAL_KEY,
+          socAddr.getHostName());
+
+      registerJNMXBean();
+
+      httpServer = new JournalNodeHttpServer(conf, this,
+          getHttpServerBindAddress(conf));
+      httpServer.start();
+
+      httpServerURI = httpServer.getServerURI().toString();
+
+      rpcServer = new JournalNodeRpcServer(conf, this);
+      rpcServer.start();
+    } catch (IOException ioe) {
+      //Shutdown JournalNode of JournalNodeRpcServer fails to start
+      LOG.error("Failed to start JournalNode.", ioe);
+      this.stop(1);
+      throw ioe;
+    }
+  }
+
+}

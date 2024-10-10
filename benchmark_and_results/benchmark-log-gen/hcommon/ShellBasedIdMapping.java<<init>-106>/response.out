@@ -1,0 +1,28 @@
+```java
+boolean constructFullMapAtInit) throws IOException {
+    this.constructFullMapAtInit = constructFullMapAtInit;
+    long updateTime = conf.getLong(
+        IdMappingConstant.USERGROUPID_UPDATE_MILLIS_KEY,
+        IdMappingConstant.USERGROUPID_UPDATE_MILLIS_DEFAULT);
+    // Minimal interval is 1 minute
+    if (updateTime < IdMappingConstant.USERGROUPID_UPDATE_MILLIS_MIN) {
+        // ConfLogger Commented: Not Informative
+        // LOG.info("User configured user account update time is less"
+        // + " than 1 minute. Use 1 minute instead.");
+        // ConfLogger Inserted Start
+        logger.warn("User configured user account update time is less than 1 minute. Using default minimum value of 1 minute instead. Configuration key: " 
+                    + IdMappingConstant.USERGROUPID_UPDATE_MILLIS_KEY + ", Configured value: " + updateTime);
+        // ConfLogger Inserted End
+        timeout = IdMappingConstant.USERGROUPID_UPDATE_MILLIS_MIN;
+    } else {
+        timeout = updateTime;
+    }
+
+    String staticFilePath =
+        conf.get(IdMappingConstant.STATIC_ID_MAPPING_FILE_KEY,
+        IdMappingConstant.STATIC_ID_MAPPING_FILE_DEFAULT);
+    staticMappingFile = new File(staticFilePath);
+    updateStaticMapping();
+    updateMaps();
+}
+```

@@ -1,0 +1,44 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	WebHdfsFileSystem.java	methodSinagture:	org.apache.hadoop.hdfs.web.WebHdfsFileSystem.getTrimmedStringList(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;	methodLines:	345:350
+blockLines:	347:-1
+paras:	null
+TaintedStat:	NORMAL getTrimmedStringList:conditional branch(ne, to iindex=12) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/web/WebHdfsFileSystem, getTrimmedStringList(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/web/WebHdfsFileSystem, getTrimmedStringList(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/web/WebHdfsFileSystem, getTrimmedStringList(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @3 exception:5
+NORMAL getTrimmedStringList:conditional branch(ne, to iindex=12) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/web/WebHdfsFileSystem, getTrimmedStringList(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String name, String defaultValue) {
+    String valueString = conf.get(name, defaultValue);
+    if (valueString == null) {
+      return new ArrayList<>();
+    }
+    return new ArrayList<>(StringUtils.getTrimmedStringCollection(valueString));
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/web/WebHdfsFileSystem, initializeRestCsrf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:19..22]9 - org.apache.hadoop.hdfs.web.WebHdfsFileSystem.initializeRestCsrf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:17..18]8 - org.apache.hadoop.hdfs.web.WebHdfsFileSystem.initializeRestCsrf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:23..23]10 - org.apache.hadoop.hdfs.web.WebHdfsFileSystem.initializeRestCsrf(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]15 - org.apache.hadoop.hdfs.web.WebHdfsFileSystem.initializeRestCsrf(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=326, lastLineNumber=326, firstMethodNumber=319, lastMethodNumber=333, isFirstLineValid=true, methodSrcCode=
+  private void initializeRestCsrf(Configuration conf) {
+    if (conf.getBoolean(DFS_WEBHDFS_REST_CSRF_ENABLED_KEY,
+        DFS_WEBHDFS_REST_CSRF_ENABLED_DEFAULT)) {
+      this.restCsrfCustomHeader = conf.getTrimmed(
+          DFS_WEBHDFS_REST_CSRF_CUSTOM_HEADER_KEY,
+          DFS_WEBHDFS_REST_CSRF_CUSTOM_HEADER_DEFAULT);
+      this.restCsrfMethodsToIgnore = new HashSet<>();
+      this.restCsrfMethodsToIgnore.addAll(getTrimmedStringList(conf,
+          DFS_WEBHDFS_REST_CSRF_METHODS_TO_IGNORE_KEY,
+          DFS_WEBHDFS_REST_CSRF_METHODS_TO_IGNORE_DEFAULT));
+    } else {
+      this.restCsrfCustomHeader = null;
+      this.restCsrfMethodsToIgnore = null;
+    }
+  }
+
+}

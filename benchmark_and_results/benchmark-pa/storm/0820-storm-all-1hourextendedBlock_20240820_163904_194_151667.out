@@ -1,0 +1,91 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Container.java	methodSinagture:	org.apache.storm.daemon.supervisor.Container.writeLogMetadata(Ljava/lang/String;)V	methodLines:	310:351
+blockLines:	328:-1
+paras:	logs.users
+TaintedStat:	NORMAL writeLogMetadata:conditional branch(eq, to iindex=80) 49,21 Node: < Application, Lorg/apache/storm/daemon/supervisor/Container, writeLogMetadata(Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Container, writeLogMetadata(Ljava/lang/String;)V > Context: Everywhere[67]49 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 46,47 @162 exception:48
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/Container, writeLogMetadata(Ljava/lang/String;)V > Context: Everywhere[67]49 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 46,47 @162 exception:48
+NORMAL writeLogMetadata:conditional branch(eq, to iindex=80) 49,21 Node: < Application, Lorg/apache/storm/daemon/supervisor/Container, writeLogMetadata(Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    protected void writeLogMetadata(String user) throws IOException {
+        type.assertFull();
+        Map<String, Object> data = new HashMap<>();
+        data.put(Config.TOPOLOGY_SUBMITTER_USER, user);
+        data.put("worker-id", workerId);
+
+        Set<String> logsGroups = new HashSet<>();
+        if (topoConf.get(DaemonConfig.LOGS_GROUPS) != null) {
+            List<String> groups = ObjectReader.getStrings(topoConf.get(DaemonConfig.LOGS_GROUPS));
+            logsGroups.addAll(groups);
+        }
+        if (topoConf.get(Config.TOPOLOGY_GROUPS) != null) {
+            List<String> topGroups = ObjectReader.getStrings(topoConf.get(Config.TOPOLOGY_GROUPS));
+            logsGroups.addAll(topGroups);
+        }
+        data.put(DaemonConfig.LOGS_GROUPS, logsGroups.toArray());
+
+        Set<String> logsUsers = new HashSet<>();
+        if (topoConf.get(DaemonConfig.LOGS_USERS) != null) {
+            List<String> logUsers = ObjectReader.getStrings(topoConf.get(DaemonConfig.LOGS_USERS));
+            logsUsers.addAll(logUsers);
+        }
+        if (topoConf.get(Config.TOPOLOGY_USERS) != null) {
+            List<String> topUsers = ObjectReader.getStrings(topoConf.get(Config.TOPOLOGY_USERS));
+            logsUsers.addAll(topUsers);
+        }
+        data.put(DaemonConfig.LOGS_USERS, logsUsers.toArray());
+
+        if (topoConf.get(Config.TOPOLOGY_WORKER_TIMEOUT_SECS) != null) {
+            int topoTimeout = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_WORKER_TIMEOUT_SECS));
+            int defaultWorkerTimeout = ObjectReader.getInt(conf.get(Config.SUPERVISOR_WORKER_TIMEOUT_SECS));
+            topoTimeout = Math.max(topoTimeout, defaultWorkerTimeout);
+            data.put(Config.TOPOLOGY_WORKER_TIMEOUT_SECS, topoTimeout);
+        }
+
+        File file = ServerConfigUtils.getLogMetaDataFile(conf, topologyId, port);
+
+        Yaml yaml = new Yaml();
+        try (Writer writer = ops.getWriter(file)) {
+            yaml.dump(data, writer);
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Container, setup()V > Context: Everywhere, blocks=[BB[SSA:114..117]63 - org.apache.storm.daemon.supervisor.Container.setup()V, BB[SSA:112..113]62 - org.apache.storm.daemon.supervisor.Container.setup()V, BB[SSA:118..120]64 - org.apache.storm.daemon.supervisor.Container.setup()V, BB[SSA:-1..-2]68 - org.apache.storm.daemon.supervisor.Container.setup()V], numberOfBasicBlocks=4, firstLineNumber=297, lastLineNumber=299, firstMethodNumber=277, lastMethodNumber=302, isFirstLineValid=true, methodSrcCode=
+    protected void setup() throws IOException {
+        type.assertFull();
+        if (!ops.doRequiredTopoFilesExist(conf, topologyId)) {
+            LOG.info("Missing topology storm code, so can't launch  worker with assignment {} for this supervisor {} on port {} with id {}",
+                    assignment,
+                    supervisorId, port, workerId);
+            throw new IllegalStateException("Not all needed files are here!!!!");
+        }
+        LOG.info("Setting up {}:{}", supervisorId, workerId);
+
+        ops.forceMkdir(new File(ConfigUtils.workerPidsRoot(conf, workerId)));
+        ops.forceMkdir(new File(ConfigUtils.workerTmpRoot(conf, workerId)));
+        ops.forceMkdir(new File(ConfigUtils.workerHeartbeatsRoot(conf, workerId)));
+
+        File workerArtifacts = new File(ConfigUtils.workerArtifactsRoot(conf, topologyId, port));
+        if (!ops.fileExists(workerArtifacts)) {
+            ops.forceMkdir(workerArtifacts);
+            ops.setupWorkerArtifactsDir(assignment.get_owner(), workerArtifacts);
+        }
+
+        String user = getWorkerUser();
+        writeLogMetadata(user);
+        saveWorkerUser(user);
+        createArtifactsLink();
+        createBlobstoreLinks();
+    }
+
+}

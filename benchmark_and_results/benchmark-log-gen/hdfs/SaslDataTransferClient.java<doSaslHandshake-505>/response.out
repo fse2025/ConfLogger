@@ -1,0 +1,128 @@
+```java
+DataOutputStream out = new DataOutputStream(underlyingOut);
+DataInputStream in = new DataInputStream(underlyingIn);
+
+SaslParticipant sasl= SaslParticipant.createClientSaslParticipant(userName,
+saslProps, callbackHandler);
+
+out.writeInt(SASL_TRANSFER_MAGIC_NUMBER);
+out.flush();
+
+try {
+// Start of handshake - "initial response" in SASL terminology.
+// The handshake secret can be null, this happens when client is running
+// a new version but the cluster does not have this feature.
+// In which case there will be no encrypted secret sent from NN.
+BlockTokenIdentifier blockTokenIdentifier =
+accessToken.decodeIdentifier();
+if (blockTokenIdentifier != null) {
+byte[] handshakeSecret =
+accessToken.decodeIdentifier().getHandshakeMsg();
+if (handshakeSecret == null || handshakeSecret.length == 0) {
+LOG.debug("Handshake secret is null, "
++ "sending without handshake secret.");
+sendSaslMessage(out, new byte[0]);
+} else {
+LOG.debug("Sending handshake secret.");
+BlockTokenIdentifier identifier = new BlockTokenIdentifier();
+identifier.readFields(new DataInputStream(
+new ByteArrayInputStream(accessToken.getIdentifier())));
+String bpid = identifier.getBlockPoolId();
+sendSaslMessageHandshakeSecret(out, new byte[0],
+handshakeSecret, bpid);
+}
+} else {
+LOG.debug("Block token id is null, sending without handshake secret.");
+sendSaslMessage(out, new byte[0]);
+}
+
+// step 1
+byte[] remoteResponse = readSaslMessage(in);
+byte[] localResponse = sasl.evaluateChallengeOrResponse(remoteResponse);
+List<CipherOption> cipherOptions = null;
+String cipherSuites = conf.get(
+DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY);
+if (requestedQopContainsPrivacy(saslProps)) {
+// Negotiate cipher suites if configured.  Currently, the only supported
+// cipher suite is AES/CTR/NoPadding, but the protocol allows multiple
+// values for future expansion.
+if (cipherSuites != null && !cipherSuites.isEmpty()) {
+if (!cipherSuites.equals(CipherSuite.AES_CTR_NOPADDING.getName())) {
+throw new IOException(String.format("Invalid cipher suite, %s=%s",
+DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY, cipherSuites));
+}
+CipherOption option = new CipherOption(CipherSuite.AES_CTR_NOPADDING);
+cipherOptions = Lists.newArrayListWithCapacity(1);
+cipherOptions.add(option);
+}
+}
+sendSaslMessageAndNegotiationCipherOptions(out, localResponse,
+cipherOptions);
+
+// step 2 (client-side only)
+SaslResponseWithNegotiatedCipherOption response =
+readSaslMessageAndNegotiatedCipherOption(in);
+localResponse = sasl.evaluateChallengeOrResponse(response.payload);
+assert localResponse == null;
+
+// SASL handshake is complete
+checkSaslComplete(sasl, saslProps);
+
+CipherOption cipherOption = null;
+if (sasl.isNegotiatedQopPrivacy()) {
+// Unwrap the negotiated cipher option
+cipherOption = unwrap(response.cipherOption, sasl);
+if (LOG.isDebugEnabled()) {
+if (cipherOption == null) {
+// No cipher suite is negotiated
+if (cipherSuites != null && !cipherSuites.isEmpty()) {
+// the client accepts some cipher suites, but the server does not.
+LOG.debug("Client accepts cipher suites {}, "
++ "but server {} does not accept any of them",
+cipherSuites, addr);
+}
+} else {
+LOG.debug("Client using cipher suite {} with server {}",
+cipherOption.getCipherSuite().getName(), addr);
+}
+}
+}
+
+// If negotiated cipher option is not null, we will use it to create
+// stream pair.
+return cipherOption != null ? createStreamPair(
+conf, cipherOption, underlyingOut, underlyingIn, false) :
+sasl.createStreamPair(out, in);
+} catch (IOException ioe) {
+String message = ioe.getMessage();
+try {
+sendGenericSaslErrorMessage(out, message);
+} catch (Exception e) {
+// If ioe is caused by error response from server, server will close peer connection.
+// So sendGenericSaslErrorMessage might cause IOException due to "Broken pipe".
+// We suppress IOException from sendGenericSaslErrorMessage
+// and always throw `ioe` as top level.
+// `ioe` can be InvalidEncryptionKeyException or InvalidBlockTokenException
+// that indicates refresh key or token and are important for caller.
+LOG.debug("Failed to send generic sasl error to server {} (message: {}), "
++ "suppress exception", addr, message, e);
+ioe.addSuppressed(e);
+}
+throw ioe;
+}
+
+// ConfLogger Inserted Start
+if (cipherSuites != null && !cipherSuites.isEmpty()) {
+if (!cipherSuites.equals(CipherSuite.AES_CTR_NOPADDING.getName())) {
+logger.error("Invalid cipher suite configuration: {}={}, expected: {}. Please set the configuration parameter correctly.", DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY, cipherSuites, CipherSuite.AES_CTR_NOPADDING.getName());
+throw new IOException(String.format("Invalid cipher suite, %s=%s",
+DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY, cipherSuites));
+}
+CipherOption option = new CipherOption(CipherSuite.AES_CTR_NOPADDING);
+cipherOptions = Lists.newArrayListWithCapacity(1);
+cipherOptions.add(option);
+} else {
+logger.warn("Cipher suites configuration is null or empty. Ensure {} is set for privacy.", DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY);
+}
+// ConfLogger Inserted End
+```

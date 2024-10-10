@@ -1,0 +1,12 @@
+```java
+final int v = conf.getInt(key, defaultValue);
+LOG.info(key + " = " + v + " (default=" + defaultValue + ")");
+if (v <= 0) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter '" + key + "' has an invalid value: " + v + ". It must be greater than 0. Default value was: " + defaultValue);
+    // ConfLogger Inserted End
+    throw new HadoopIllegalArgumentException(key + " = " + v  + " <= " + 0);
+}
+return v;
+}
+```

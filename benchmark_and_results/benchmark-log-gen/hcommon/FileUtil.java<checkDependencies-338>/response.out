@@ -1,0 +1,19 @@
+```java
+if (srcFS == dstFS) {
+    String srcq = srcFS.makeQualified(src).toString() + Path.SEPARATOR;
+    String dstq = dstFS.makeQualified(dst).toString() + Path.SEPARATOR;
+    if (dstq.startsWith(srcq)) {
+        if (srcq.length() == dstq.length()) {
+            // ConfLogger Inserted Start
+            logger.error("Configuration Error: Cannot copy {} to itself. src: {}, srcFS: {}, dst: {}, dstFS: {}", src, srcFS, dst, dstFS);
+            // ConfLogger Inserted End
+            throw new IOException("Cannot copy " + src + " to itself.");
+        } else {
+            // ConfLogger Inserted Start
+            logger.error("Configuration Error: Cannot copy {} to its subdirectory {}. src: {}, srcFS: {}, dst: {}, dstFS: {}", src, dst, srcFS, dstFS);
+            // ConfLogger Inserted End
+            throw new IOException("Cannot copy " + src + " to its subdirectory " + dst);
+        }
+    }
+}
+```

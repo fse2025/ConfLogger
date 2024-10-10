@@ -1,0 +1,58 @@
+```java
+String uriStr = "";
+try {
+    uriStr = conf.getTrimmed(DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+
+    if (uriStr == null || uriStr.isEmpty()) {
+        if (nameServiceId != null) {
+            uriStr = conf.getTrimmed(DFSConfigKeys
+                .DFS_NAMENODE_SHARED_EDITS_DIR_KEY + "." + nameServiceId);
+        }
+    }
+
+    if (uriStr == null || uriStr.isEmpty()) {
+        HashSet<String> sharedEditsUri = Sets.newHashSet();
+        if (nameServiceId != null) {
+            Collection<String> nnIds = DFSUtilClient.getNameNodeIds(
+                conf, nameServiceId);
+            for (String nnId : nnIds) {
+                String suffix = nameServiceId + "." + nnId;
+                uriStr = conf.getTrimmed(DFSConfigKeys
+                    .DFS_NAMENODE_SHARED_EDITS_DIR_KEY + "." + suffix);
+                sharedEditsUri.add(uriStr);
+            }
+            if (sharedEditsUri.size() > 1) {
+                uriStr = null;
+                // ConfLogger Commented: Not Informative
+                // LOG.error("The conf property " + DFSConfigKeys
+                // .DFS_NAMENODE_SHARED_EDITS_DIR_KEY + " not set properly, " +
+                // "it has been configured with different journalnode values " +
+                // sharedEditsUri.toString() + " for a" +
+                // " single nameserviceId" + nameServiceId);
+                // ConfLogger Inserted Start
+                logger.error("The configuration property {} is not set properly. It has been configured with different journalnode values {} for a single nameserviceId {}. Please ensure consistent configuration.", DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY, sharedEditsUri.toString(), nameServiceId);
+                // ConfLogger Inserted End
+            }
+        }
+    }
+
+    if (uriStr == null || uriStr.isEmpty()) {
+        // ConfLogger Commented: Not Informative
+        // LOG.error("Could not construct Shared Edits Uri");
+        // ConfLogger Inserted Start
+        logger.error("Could not construct Shared Edits Uri. Please check the configuration property {} and ensure it is set correctly.", DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+        // ConfLogger Inserted End
+        return null;
+    } else {
+        return getJournalAddrList(uriStr);
+    }
+
+} catch (URISyntaxException e) {
+    LOG.error("The conf property " + DFSConfigKeys
+        .DFS_NAMENODE_SHARED_EDITS_DIR_KEY + " not set properly.");
+} catch (IOException e) {
+    LOG.error("Could not parse JournalNode addresses: " + uriStr);
+}
+return null;
+}
+```

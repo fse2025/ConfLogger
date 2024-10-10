@@ -1,0 +1,41 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ConnectionFactory.java	methodSinagture:	org.apache.hadoop.hbase.client.ConnectionFactory.createConnection(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/ExecutorService;Lorg/apache/hadoop/hbase/security/User;Ljava/util/Map;)Lorg/apache/hadoop/hbase/client/Connection;	methodLines:	251:266
+blockLines:	254:-1
+paras:	null
+TaintedStat:	NORMAL createConnection:conditional branch(eq, to iindex=49) 10,11 Node: < Application, Lorg/apache/hadoop/hbase/client/ConnectionFactory, createConnection(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/ExecutorService;Lorg/apache/hadoop/hbase/security/User;Ljava/util/Map;)Lorg/apache/hadoop/hbase/client/Connection; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/client/ConnectionFactory, createConnection(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/ExecutorService;Lorg/apache/hadoop/hbase/security/User;Ljava/util/Map;)Lorg/apache/hadoop/hbase/client/Connection; > Context: Everywhere[4]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,6,7,8 @7 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/client/ConnectionFactory, createConnection(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/ExecutorService;Lorg/apache/hadoop/hbase/security/User;Ljava/util/Map;)Lorg/apache/hadoop/hbase/client/Connection; > Context: Everywhere[4]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,6,7,8 @7 exception:9
+NORMAL createConnection:conditional branch(eq, to iindex=49) 10,11 Node: < Application, Lorg/apache/hadoop/hbase/client/ConnectionFactory, createConnection(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/ExecutorService;Lorg/apache/hadoop/hbase/security/User;Ljava/util/Map;)Lorg/apache/hadoop/hbase/client/Connection; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    final User user, Map<String, byte[]> connectionAttributes) throws IOException {
+    Class<?> clazz = conf.getClass(ConnectionUtils.HBASE_CLIENT_CONNECTION_IMPL,
+      ConnectionOverAsyncConnection.class, Connection.class);
+    if (clazz != ConnectionOverAsyncConnection.class) {
+      try {
+        // Default HCM#HCI is not accessible; make it so before invoking.
+        Constructor<?> constructor = clazz.getDeclaredConstructor(Configuration.class,
+          ExecutorService.class, User.class, Map.class);
+        constructor.setAccessible(true);
+        return user.runAs((PrivilegedExceptionAction<Connection>) () -> (Connection) constructor
+          .newInstance(conf, pool, user, connectionAttributes));
+      } catch (Exception e) {
+        throw new IOException(e);
+      }
+    } else {
+      return FutureUtils.get(createAsyncConnection(conf, user, connectionAttributes))
+        .toConnection();
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/client/ConnectionFactory, createConnection(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/ExecutorService;Lorg/apache/hadoop/hbase/security/User;)Lorg/apache/hadoop/hbase/client/Connection; > Context: Everywhere, blocks=[BB[SSA:4..4]2 - org.apache.hadoop.hbase.client.ConnectionFactory.createConnection(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/ExecutorService;Lorg/apache/hadoop/hbase/security/User;)Lorg/apache/hadoop/hbase/client/Connection;, BB[SSA:0..3]1 - org.apache.hadoop.hbase.client.ConnectionFactory.createConnection(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/ExecutorService;Lorg/apache/hadoop/hbase/security/User;)Lorg/apache/hadoop/hbase/client/Connection;, BB[SSA:5..5]3 - org.apache.hadoop.hbase.client.ConnectionFactory.createConnection(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/ExecutorService;Lorg/apache/hadoop/hbase/security/User;)Lorg/apache/hadoop/hbase/client/Connection;, BB[SSA:-1..-2]4 - org.apache.hadoop.hbase.client.ConnectionFactory.createConnection(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/ExecutorService;Lorg/apache/hadoop/hbase/security/User;)Lorg/apache/hadoop/hbase/client/Connection;], numberOfBasicBlocks=4, firstLineNumber=221, lastLineNumber=221, firstMethodNumber=220, lastMethodNumber=221, isFirstLineValid=true, methodSrcCode=
+    final User user) throws IOException {
+    return createConnection(conf, pool, user, Collections.emptyMap());
+  }
+}

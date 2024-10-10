@@ -1,0 +1,40 @@
+```java
+String jobJar = conf.get(MRJobConfig.JAR);
+if (jobJar != null) {
+    final Path jobJarPath = new Path(jobJar);
+    final FileSystem jobJarFs = FileSystem.get(jobJarPath.toUri(), conf);
+    Path remoteJobJar = jobJarPath.makeQualified(jobJarFs.getUri(),
+            jobJarFs.getWorkingDirectory());
+    LocalResourceVisibility jobJarViz =
+            conf.getBoolean(MRJobConfig.JOBJAR_VISIBILITY,
+                    MRJobConfig.JOBJAR_VISIBILITY_DEFAULT)
+                    ? LocalResourceVisibility.PUBLIC
+                    : LocalResourceVisibility.APPLICATION;
+    // We hard code the job.jar localized symlink in the container directory.
+    // This is because the mapreduce app expects the job.jar to be named
+    // accordingly. Additionally we set the shared cache upload policy to
+    // false. Resources are uploaded by the AM if necessary.
+    LocalResource rc =
+            createLocalResource(jobJarFs, remoteJobJar, MRJobConfig.JOB_JAR,
+                    LocalResourceType.PATTERN, jobJarViz);
+    String pattern = conf.getPattern(JobContext.JAR_UNPACK_PATTERN,
+            JobConf.UNPACK_JAR_PATTERN_DEFAULT).pattern();
+    rc.setPattern(pattern);
+    localResources.put(MRJobConfig.JOB_JAR, rc);
+    LOG.info("The job-jar file on the remote FS is "
+            + remoteJobJar.toUri().toASCIIString());
+} else {
+    // Job jar may be null. For e.g, for pipes, the job jar is the hadoop
+    // mapreduce jar itself which is already on the classpath.
+    LOG.info("Job jar is not present. "
+            + "Not adding any jar to the list of resources.");
+}
+
+// ConfLogger Inserted Start
+if (jobJar != null) {
+    logger.info("Job jar is set with key MRJobConfig.JAR and value: " + jobJar);
+} else {
+    logger.warn("Job jar is not set. Ensure MRJobConfig.JAR is properly configured if required.");
+}
+// ConfLogger Inserted End
+```

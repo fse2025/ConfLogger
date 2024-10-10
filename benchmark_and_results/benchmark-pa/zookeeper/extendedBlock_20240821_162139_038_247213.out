@@ -1,0 +1,837 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FinalRequestProcessor.java	methodSinagture:	org.apache.zookeeper.server.FinalRequestProcessor.processRequest(Lorg/apache/zookeeper/server/Request;)V	methodLines:	146:627
+blockLines:	369:-1
+paras:	null
+TaintedStat:	NORMAL processRequest:conditional branch(eq, to iindex=527) 433,20 Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[507]433 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getNode(Ljava/lang/String;)Lorg/apache/zookeeper/server/DataNode; > 431,426 @1745 exception:432
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[507]433 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getNode(Ljava/lang/String;)Lorg/apache/zookeeper/server/DataNode; > 431,426 @1745 exception:432
+NORMAL processRequest:conditional branch(eq, to iindex=527) 433,20 Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	FinalRequestProcessor.java	methodSinagture:	org.apache.zookeeper.server.FinalRequestProcessor.processRequest(Lorg/apache/zookeeper/server/Request;)V	methodLines:	146:627
+blockLines:	481:-1
+paras:	null
+TaintedStat:	NORMAL processRequest:conditional branch(ne, to iindex=836) 223,20 Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[827]223 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getNode(Ljava/lang/String;)Lorg/apache/zookeeper/server/DataNode; > 221,218 @2487 exception:222
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[827]223 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getNode(Ljava/lang/String;)Lorg/apache/zookeeper/server/DataNode; > 221,218 @2487 exception:222
+NORMAL processRequest:conditional branch(ne, to iindex=836) 223,20 Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	FinalRequestProcessor.java	methodSinagture:	org.apache.zookeeper.server.FinalRequestProcessor.processRequest(Lorg/apache/zookeeper/server/Request;)V	methodLines:	146:627
+blockLines:	431:-1
+paras:	null
+TaintedStat:	NORMAL processRequest:conditional branch(ne, to iindex=673) 267,20 Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[664]267 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getNode(Ljava/lang/String;)Lorg/apache/zookeeper/server/DataNode; > 265,262 @2108 exception:266
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[664]267 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getNode(Ljava/lang/String;)Lorg/apache/zookeeper/server/DataNode; > 265,262 @2108 exception:266
+NORMAL processRequest:conditional branch(ne, to iindex=673) 267,20 Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	FinalRequestProcessor.java	methodSinagture:	org.apache.zookeeper.server.FinalRequestProcessor.processRequest(Lorg/apache/zookeeper/server/Request;)V	methodLines:	146:627
+blockLines:	501:-1
+paras:	null
+TaintedStat:	NORMAL processRequest:conditional branch(ne, to iindex=890) 186,20 Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[881]186 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getNode(Ljava/lang/String;)Lorg/apache/zookeeper/server/DataNode; > 184,181 @2607 exception:185
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere[881]186 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getNode(Ljava/lang/String;)Lorg/apache/zookeeper/server/DataNode; > 184,181 @2607 exception:185
+NORMAL processRequest:conditional branch(ne, to iindex=890) 186,20 Node: < Application, Lorg/apache/zookeeper/server/FinalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public void processRequest(Request request) {
+        LOG.debug("Processing request:: {}", request);
+
+        if (LOG.isTraceEnabled()) {
+            long traceMask = ZooTrace.CLIENT_REQUEST_TRACE_MASK;
+            if (request.type == OpCode.ping) {
+                traceMask = ZooTrace.SERVER_PING_TRACE_MASK;
+            }
+            ZooTrace.logRequest(LOG, traceMask, 'E', request, "");
+        }
+        ProcessTxnResult rc = null;
+        if (!request.isThrottled()) {
+          rc = applyRequest(request);
+        }
+        if (request.cnxn == null) {
+            return;
+        }
+        ServerCnxn cnxn = request.cnxn;
+
+        long lastZxid = zks.getZKDatabase().getDataTreeLastProcessedZxid();
+
+        String lastOp = "NA";
+        // Notify ZooKeeperServer that the request has finished so that it can
+        // update any request accounting/throttling limits
+        zks.decInProcess();
+        zks.requestFinished(request);
+        Code err = Code.OK;
+        Record rsp = null;
+        String path = null;
+        int responseSize = 0;
+        try {
+            if (request.getHdr() != null && request.getHdr().getType() == OpCode.error) {
+                AuditHelper.addAuditLog(request, rc, true);
+                /*
+                 * When local session upgrading is disabled, leader will
+                 * reject the ephemeral node creation due to session expire.
+                 * However, if this is the follower that issue the request,
+                 * it will have the correct error code, so we should use that
+                 * and report to user
+                 */
+                if (request.getException() != null) {
+                    throw request.getException();
+                } else {
+                    throw KeeperException.create(KeeperException.Code.get(((ErrorTxn) request.getTxn()).getErr()));
+                }
+            }
+
+            KeeperException ke = request.getException();
+            if (ke instanceof SessionMovedException) {
+                throw ke;
+            }
+            if (ke != null && request.type != OpCode.multi) {
+                throw ke;
+            }
+
+            LOG.debug("{}", request);
+
+            if (request.isStale()) {
+                ServerMetrics.getMetrics().STALE_REPLIES.add(1);
+            }
+
+            if (request.isThrottled()) {
+              throw KeeperException.create(Code.THROTTLEDOP);
+            }
+
+            AuditHelper.addAuditLog(request, rc);
+
+            switch (request.type) {
+            case OpCode.ping: {
+                lastOp = "PING";
+                updateStats(request, lastOp, lastZxid);
+
+                responseSize = cnxn.sendResponse(new ReplyHeader(ClientCnxn.PING_XID, lastZxid, 0), null, "response");
+                return;
+            }
+            case OpCode.createSession: {
+                lastOp = "SESS";
+                updateStats(request, lastOp, lastZxid);
+
+                zks.finishSessionInit(request.cnxn, true);
+                return;
+            }
+            case OpCode.multi: {
+                lastOp = "MULT";
+                rsp = new MultiResponse();
+
+                for (ProcessTxnResult subTxnResult : rc.multiResult) {
+
+                    OpResult subResult;
+
+                    switch (subTxnResult.type) {
+                    case OpCode.check:
+                        subResult = new CheckResult();
+                        break;
+                    case OpCode.create:
+                        subResult = new CreateResult(subTxnResult.path);
+                        break;
+                    case OpCode.create2:
+                    case OpCode.createTTL:
+                    case OpCode.createContainer:
+                        subResult = new CreateResult(subTxnResult.path, subTxnResult.stat);
+                        break;
+                    case OpCode.delete:
+                    case OpCode.deleteContainer:
+                        subResult = new DeleteResult();
+                        break;
+                    case OpCode.setData:
+                        subResult = new SetDataResult(subTxnResult.stat);
+                        break;
+                    case OpCode.error:
+                        subResult = new ErrorResult(subTxnResult.err);
+                        if (subTxnResult.err == Code.SESSIONMOVED.intValue()) {
+                            throw new SessionMovedException();
+                        }
+                        break;
+                    default:
+                        throw new IOException("Invalid type of op");
+                    }
+
+                    ((MultiResponse) rsp).add(subResult);
+                }
+
+                break;
+            }
+            case OpCode.multiRead: {
+                lastOp = "MLTR";
+                MultiOperationRecord multiReadRecord = request.readRequestRecord(MultiOperationRecord::new);
+                rsp = new MultiResponse();
+                OpResult subResult;
+                for (Op readOp : multiReadRecord) {
+                    try {
+                        Record rec;
+                        switch (readOp.getType()) {
+                        case OpCode.getChildren:
+                            rec = handleGetChildrenRequest(readOp.toRequestRecord(), cnxn, request.authInfo);
+                            subResult = new GetChildrenResult(((GetChildrenResponse) rec).getChildren());
+                            break;
+                        case OpCode.getData:
+                            rec = handleGetDataRequest(readOp.toRequestRecord(), cnxn, request.authInfo);
+                            GetDataResponse gdr = (GetDataResponse) rec;
+                            subResult = new GetDataResult(gdr.getData(), gdr.getStat());
+                            break;
+                        default:
+                            throw new IOException("Invalid type of readOp");
+                        }
+                    } catch (KeeperException e) {
+                        subResult = new ErrorResult(e.code().intValue());
+                    }
+                    ((MultiResponse) rsp).add(subResult);
+                }
+                break;
+            }
+            case OpCode.create: {
+                lastOp = "CREA";
+                rsp = new CreateResponse(rc.path);
+                err = Code.get(rc.err);
+                requestPathMetricsCollector.registerRequest(request.type, rc.path);
+                break;
+            }
+            case OpCode.create2:
+            case OpCode.createTTL:
+            case OpCode.createContainer: {
+                lastOp = "CREA";
+                rsp = new Create2Response(rc.path, rc.stat);
+                err = Code.get(rc.err);
+                requestPathMetricsCollector.registerRequest(request.type, rc.path);
+                break;
+            }
+            case OpCode.delete:
+            case OpCode.deleteContainer: {
+                lastOp = "DELE";
+                err = Code.get(rc.err);
+                requestPathMetricsCollector.registerRequest(request.type, rc.path);
+                break;
+            }
+            case OpCode.setData: {
+                lastOp = "SETD";
+                rsp = new SetDataResponse(rc.stat);
+                err = Code.get(rc.err);
+                requestPathMetricsCollector.registerRequest(request.type, rc.path);
+                break;
+            }
+            case OpCode.reconfig: {
+                lastOp = "RECO";
+                rsp = new GetDataResponse(
+                    ((QuorumZooKeeperServer) zks).self.getQuorumVerifier().toString().getBytes(UTF_8),
+                    rc.stat);
+                err = Code.get(rc.err);
+                break;
+            }
+            case OpCode.setACL: {
+                lastOp = "SETA";
+                rsp = new SetACLResponse(rc.stat);
+                err = Code.get(rc.err);
+                requestPathMetricsCollector.registerRequest(request.type, rc.path);
+                break;
+            }
+            case OpCode.closeSession: {
+                lastOp = "CLOS";
+                err = Code.get(rc.err);
+                break;
+            }
+            case OpCode.sync: {
+                lastOp = "SYNC";
+                SyncRequest syncRequest = request.readRequestRecord(SyncRequest::new);
+                rsp = new SyncResponse(syncRequest.getPath());
+                requestPathMetricsCollector.registerRequest(request.type, syncRequest.getPath());
+                break;
+            }
+            case OpCode.check: {
+                lastOp = "CHEC";
+                rsp = new SetDataResponse(rc.stat);
+                err = Code.get(rc.err);
+                break;
+            }
+            case OpCode.exists: {
+                lastOp = "EXIS";
+                ExistsRequest existsRequest = request.readRequestRecord(ExistsRequest::new);
+                path = existsRequest.getPath();
+                if (path.indexOf('\0') != -1) {
+                    throw new KeeperException.BadArgumentsException();
+                }
+                DataNode n = zks.getZKDatabase().getNode(path);
+                if (n != null) {
+                    zks.checkACL(
+                        request.cnxn,
+                        zks.getZKDatabase().aclForNode(n),
+                        ZooDefs.Perms.READ,
+                        request.authInfo,
+                        path,
+                        null);
+                }
+                Stat stat = zks.getZKDatabase().statNode(path, existsRequest.getWatch() ? cnxn : null);
+                rsp = new ExistsResponse(stat);
+                requestPathMetricsCollector.registerRequest(request.type, path);
+                break;
+            }
+            case OpCode.getData: {
+                lastOp = "GETD";
+                GetDataRequest getDataRequest = request.readRequestRecord(GetDataRequest::new);
+                path = getDataRequest.getPath();
+                rsp = handleGetDataRequest(getDataRequest, cnxn, request.authInfo);
+                requestPathMetricsCollector.registerRequest(request.type, path);
+                break;
+            }
+            case OpCode.setWatches: {
+                lastOp = "SETW";
+                SetWatches setWatches = request.readRequestRecord(SetWatches::new);
+                long relativeZxid = setWatches.getRelativeZxid();
+                zks.getZKDatabase()
+                   .setWatches(
+                       relativeZxid,
+                       setWatches.getDataWatches(),
+                       setWatches.getExistWatches(),
+                       setWatches.getChildWatches(),
+                       Collections.emptyList(),
+                       Collections.emptyList(),
+                       cnxn);
+                break;
+            }
+            case OpCode.setWatches2: {
+                lastOp = "STW2";
+                SetWatches2 setWatches = request.readRequestRecord(SetWatches2::new);
+                long relativeZxid = setWatches.getRelativeZxid();
+                zks.getZKDatabase().setWatches(relativeZxid,
+                        setWatches.getDataWatches(),
+                        setWatches.getExistWatches(),
+                        setWatches.getChildWatches(),
+                        setWatches.getPersistentWatches(),
+                        setWatches.getPersistentRecursiveWatches(),
+                        cnxn);
+                break;
+            }
+            case OpCode.addWatch: {
+                lastOp = "ADDW";
+                AddWatchRequest addWatcherRequest = request.readRequestRecord(AddWatchRequest::new);
+                zks.getZKDatabase().addWatch(addWatcherRequest.getPath(), cnxn, addWatcherRequest.getMode());
+                rsp = new ErrorResponse(0);
+                break;
+            }
+            case OpCode.getACL: {
+                lastOp = "GETA";
+                GetACLRequest getACLRequest = request.readRequestRecord(GetACLRequest::new);
+                path = getACLRequest.getPath();
+                DataNode n = zks.getZKDatabase().getNode(path);
+                if (n == null) {
+                    throw new KeeperException.NoNodeException();
+                }
+                zks.checkACL(
+                    request.cnxn,
+                    zks.getZKDatabase().aclForNode(n),
+                    ZooDefs.Perms.READ | ZooDefs.Perms.ADMIN, request.authInfo, path,
+                    null);
+
+                Stat stat = new Stat();
+                List<ACL> acl = zks.getZKDatabase().getACL(path, stat);
+                requestPathMetricsCollector.registerRequest(request.type, getACLRequest.getPath());
+
+                try {
+                    zks.checkACL(
+                        request.cnxn,
+                        zks.getZKDatabase().aclForNode(n),
+                        ZooDefs.Perms.ADMIN,
+                        request.authInfo,
+                        path,
+                        null);
+                    rsp = new GetACLResponse(acl, stat);
+                } catch (KeeperException.NoAuthException e) {
+                    List<ACL> acl1 = new ArrayList<>(acl.size());
+                    for (ACL a : acl) {
+                        if ("digest".equals(a.getId().getScheme())) {
+                            Id id = a.getId();
+                            Id id1 = new Id(id.getScheme(), id.getId().replaceAll(":.*", ":x"));
+                            acl1.add(new ACL(a.getPerms(), id1));
+                        } else {
+                            acl1.add(a);
+                        }
+                    }
+                    rsp = new GetACLResponse(acl1, stat);
+                }
+                break;
+            }
+            case OpCode.getChildren: {
+                lastOp = "GETC";
+                GetChildrenRequest getChildrenRequest = request.readRequestRecord(GetChildrenRequest::new);
+                path = getChildrenRequest.getPath();
+                rsp = handleGetChildrenRequest(getChildrenRequest, cnxn, request.authInfo);
+                requestPathMetricsCollector.registerRequest(request.type, path);
+                break;
+            }
+            case OpCode.getAllChildrenNumber: {
+                lastOp = "GETACN";
+                GetAllChildrenNumberRequest getAllChildrenNumberRequest = request.readRequestRecord(GetAllChildrenNumberRequest::new);
+                path = getAllChildrenNumberRequest.getPath();
+                DataNode n = zks.getZKDatabase().getNode(path);
+                if (n == null) {
+                    throw new KeeperException.NoNodeException();
+                }
+                zks.checkACL(
+                    request.cnxn,
+                    zks.getZKDatabase().aclForNode(n),
+                    ZooDefs.Perms.READ,
+                    request.authInfo,
+                    path,
+                    null);
+                int number = zks.getZKDatabase().getAllChildrenNumber(path);
+                rsp = new GetAllChildrenNumberResponse(number);
+                break;
+            }
+            case OpCode.getChildren2: {
+                lastOp = "GETC";
+                GetChildren2Request getChildren2Request = request.readRequestRecord(GetChildren2Request::new);
+                Stat stat = new Stat();
+                path = getChildren2Request.getPath();
+                DataNode n = zks.getZKDatabase().getNode(path);
+                if (n == null) {
+                    throw new KeeperException.NoNodeException();
+                }
+                zks.checkACL(
+                    request.cnxn,
+                    zks.getZKDatabase().aclForNode(n),
+                    ZooDefs.Perms.READ,
+                    request.authInfo, path,
+                    null);
+                List<String> children = zks.getZKDatabase()
+                                           .getChildren(path, stat, getChildren2Request.getWatch() ? cnxn : null);
+                rsp = new GetChildren2Response(children, stat);
+                requestPathMetricsCollector.registerRequest(request.type, path);
+                break;
+            }
+            case OpCode.checkWatches: {
+                lastOp = "CHKW";
+                CheckWatchesRequest checkWatches = request.readRequestRecord(CheckWatchesRequest::new);
+                WatcherType type = WatcherType.fromInt(checkWatches.getType());
+                path = checkWatches.getPath();
+                boolean containsWatcher = zks.getZKDatabase().containsWatcher(path, type, cnxn);
+                if (!containsWatcher) {
+                    String msg = String.format(Locale.ENGLISH, "%s (type: %s)", path, type);
+                    throw new KeeperException.NoWatcherException(msg);
+                }
+                requestPathMetricsCollector.registerRequest(request.type, checkWatches.getPath());
+                break;
+            }
+            case OpCode.removeWatches: {
+                lastOp = "REMW";
+                RemoveWatchesRequest removeWatches = request.readRequestRecord(RemoveWatchesRequest::new);
+                WatcherType type = WatcherType.fromInt(removeWatches.getType());
+                path = removeWatches.getPath();
+                boolean removed = zks.getZKDatabase().removeWatch(path, type, cnxn);
+                if (!removed) {
+                    String msg = String.format(Locale.ENGLISH, "%s (type: %s)", path, type);
+                    throw new KeeperException.NoWatcherException(msg);
+                }
+                requestPathMetricsCollector.registerRequest(request.type, removeWatches.getPath());
+                break;
+            }
+            case OpCode.whoAmI: {
+                lastOp = "HOMI";
+                rsp = new WhoAmIResponse(AuthUtil.getClientInfos(request.authInfo));
+                break;
+             }
+            case OpCode.getEphemerals: {
+                lastOp = "GETE";
+                GetEphemeralsRequest getEphemerals = request.readRequestRecord(GetEphemeralsRequest::new);
+                String prefixPath = getEphemerals.getPrefixPath();
+                Set<String> allEphems = zks.getZKDatabase().getDataTree().getEphemerals(request.sessionId);
+                List<String> ephemerals = new ArrayList<>();
+                if (prefixPath == null || prefixPath.trim().isEmpty() || "/".equals(prefixPath.trim())) {
+                    ephemerals.addAll(allEphems);
+                } else {
+                    for (String p : allEphems) {
+                        if (p.startsWith(prefixPath)) {
+                            ephemerals.add(p);
+                        }
+                    }
+                }
+                rsp = new GetEphemeralsResponse(ephemerals);
+                break;
+            }
+            }
+        } catch (SessionMovedException e) {
+            // session moved is a connection level error, we need to tear
+            // down the connection otw ZOOKEEPER-710 might happen
+            // ie client on slow follower starts to renew session, fails
+            // before this completes, then tries the fast follower (leader)
+            // and is successful, however the initial renew is then
+            // successfully fwd/processed by the leader and as a result
+            // the client and leader disagree on where the client is most
+            // recently attached (and therefore invalid SESSION MOVED generated)
+            cnxn.sendCloseSession();
+            return;
+        } catch (KeeperException e) {
+            err = e.code();
+        } catch (Exception e) {
+            // log at error level as we are returning a marshalling
+            // error to the user
+            LOG.error("Failed to process {}", request, e);
+            String digest = request.requestDigest();
+            LOG.error("Dumping request buffer for request type {}: 0x{}", Request.op2String(request.type), digest);
+            err = Code.MARSHALLINGERROR;
+        }
+
+        ReplyHeader hdr = new ReplyHeader(request.cxid, lastZxid, err.intValue());
+
+        updateStats(request, lastOp, lastZxid);
+
+        try {
+            if (path == null || rsp == null) {
+                responseSize = cnxn.sendResponse(hdr, rsp, "response");
+            } else {
+                int opCode = request.type;
+                Stat stat = null;
+                // Serialized read and get children responses could be cached by the connection
+                // object. Cache entries are identified by their path and last modified zxid,
+                // so these values are passed along with the response.
+                switch (opCode) {
+                    case OpCode.getData : {
+                        GetDataResponse getDataResponse = (GetDataResponse) rsp;
+                        stat = getDataResponse.getStat();
+                        responseSize = cnxn.sendResponse(hdr, rsp, "response", path, stat, opCode);
+                        break;
+                    }
+                    case OpCode.getChildren2 : {
+                        GetChildren2Response getChildren2Response = (GetChildren2Response) rsp;
+                        stat = getChildren2Response.getStat();
+                        responseSize = cnxn.sendResponse(hdr, rsp, "response", path, stat, opCode);
+                        break;
+                    }
+                    default:
+                        responseSize = cnxn.sendResponse(hdr, rsp, "response");
+                }
+            }
+
+            if (request.type == OpCode.closeSession) {
+                cnxn.sendCloseSession();
+            }
+        } catch (IOException e) {
+            LOG.error("FIXMSG", e);
+        } finally {
+            ServerMetrics.getMetrics().RESPONSE_BYTES.add(responseSize);
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/PrepRequestProcessor, pRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=750, lastMethodNumber=763, isFirstLineValid=true, methodSrcCode=
+    protected void pRequest(Request request) throws RequestProcessorException {
+        request.setHdr(null);
+        request.setTxn(null);
+
+        if (!request.isThrottled()) {
+          pRequestHelper(request);
+        }
+
+        request.zxid = zks.getZxid();
+        long timeFinishedPrepare = Time.currentElapsedTime();
+        ServerMetrics.getMetrics().PREP_PROCESS_TIME.add(timeFinishedPrepare - request.prepStartTime);
+        nextProcessor.processRequest(request);
+        ServerMetrics.getMetrics().PROPOSAL_PROCESS_TIME.add(Time.currentElapsedTime() - timeFinishedPrepare);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/ObserverRequestProcessor, run()V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=66, lastMethodNumber=130, isFirstLineValid=true, methodSrcCode=
+        try {
+            while (!finished) {
+                ServerMetrics.getMetrics().LEARNER_REQUEST_PROCESSOR_QUEUE_SIZE.add(queuedRequests.size());
+
+                Request request = queuedRequests.take();
+                if (LOG.isTraceEnabled()) {
+                    ZooTrace.logRequest(LOG, ZooTrace.CLIENT_REQUEST_TRACE_MASK, 'F', request, "");
+                }
+                if (request == Request.requestOfDeath) {
+                    break;
+                }
+
+                // Screen quorum requests against ACLs first
+                if (!zks.authWriteRequest(request)) {
+                    continue;
+                }
+
+                // We want to queue the request to be processed before we submit
+                // the request to the leader so that we are ready to receive
+                // the response
+                nextProcessor.processRequest(request);
+
+                if (request.isThrottled()) {
+                    continue;
+                }
+
+                // We now ship the request to the leader. As with all
+                // other quorum operations, sync also follows this code
+                // path, but different from others, we need to keep track
+                // of the sync operations this Observer has pending, so we
+                // add it to pendingSyncs.
+                switch (request.type) {
+                case OpCode.sync:
+                    zks.pendingSyncs.add(request);
+                    zks.getObserver().request(request);
+                    break;
+                case OpCode.create:
+                case OpCode.create2:
+                case OpCode.createTTL:
+                case OpCode.createContainer:
+                case OpCode.delete:
+                case OpCode.deleteContainer:
+                case OpCode.setData:
+                case OpCode.reconfig:
+                case OpCode.setACL:
+                case OpCode.multi:
+                case OpCode.check:
+                    zks.getObserver().request(request);
+                    break;
+                case OpCode.createSession:
+                case OpCode.closeSession:
+                    // Don't forward local sessions to the leader.
+                    if (!request.isLocalSession()) {
+                        zks.getObserver().request(request);
+                    }
+                    break;
+                }
+            }
+        } catch (RuntimeException e) { // spotbugs require explicit catch of RuntimeException
+            handleException(this.getName(), e);
+        } catch (Exception e) {
+            handleException(this.getName(), e);
+        }
+        LOG.info("ObserverRequestProcessor exited loop!");
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/FollowerRequestProcessor, maybeSendRequestToNextProcessor(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=131, lastMethodNumber=137, isFirstLineValid=true, methodSrcCode=
+    private void maybeSendRequestToNextProcessor(Request request) throws RequestProcessorException {
+        if (skipLearnerRequestToNextProcessor && request.isFromLearner()) {
+            ServerMetrics.getMetrics().SKIP_LEARNER_REQUEST_TO_NEXT_PROCESSOR_COUNT.add(1);
+        } else {
+            nextProcessor.processRequest(request);
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, flush()V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=227, lastMethodNumber=252, isFirstLineValid=true, methodSrcCode=
+    private void flush() throws IOException, RequestProcessorException {
+        if (this.toFlush.isEmpty()) {
+            return;
+        }
+
+        ServerMetrics.getMetrics().BATCH_SIZE.add(toFlush.size());
+
+        long flushStartTime = Time.currentElapsedTime();
+        zks.getZKDatabase().commit();
+        ServerMetrics.getMetrics().SYNC_PROCESSOR_FLUSH_TIME.add(Time.currentElapsedTime() - flushStartTime);
+
+        if (this.nextProcessor == null) {
+            this.toFlush.clear();
+        } else {
+            while (!this.toFlush.isEmpty()) {
+                final Request i = this.toFlush.remove();
+                long latency = Time.currentElapsedTime() - i.syncQueueStartTime;
+                ServerMetrics.getMetrics().SYNC_PROCESSOR_QUEUE_AND_FLUSH_TIME.add(latency);
+                this.nextProcessor.processRequest(i);
+            }
+            if (this.nextProcessor instanceof Flushable) {
+                ((Flushable) this.nextProcessor).flush();
+            }
+        }
+        lastFlushTime = Time.currentElapsedTime();
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, run()V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=159, lastMethodNumber=225, isFirstLineValid=true, methodSrcCode=
+            // in the ensemble take a snapshot at the same time
+            resetSnapshotStats();
+            lastFlushTime = Time.currentElapsedTime();
+            while (true) {
+                ServerMetrics.getMetrics().SYNC_PROCESSOR_QUEUE_SIZE.add(queuedRequests.size());
+
+                long pollTime = Math.min(zks.getMaxWriteQueuePollTime(), getRemainingDelay());
+                Request si = queuedRequests.poll(pollTime, TimeUnit.MILLISECONDS);
+                if (si == null) {
+                    /* We timed out looking for more writes to batch, go ahead and flush immediately */
+                    flush();
+                    si = queuedRequests.take();
+                }
+
+                if (si == REQUEST_OF_DEATH) {
+                    break;
+                }
+
+                long startProcessTime = Time.currentElapsedTime();
+                ServerMetrics.getMetrics().SYNC_PROCESSOR_QUEUE_TIME.add(startProcessTime - si.syncQueueStartTime);
+
+                // track the number of records written to the log
+                if (!si.isThrottled() && zks.getZKDatabase().append(si)) {
+                    if (shouldSnapshot()) {
+                        resetSnapshotStats();
+                        // roll the log
+                        zks.getZKDatabase().rollLog();
+                        // take a snapshot
+                        if (!snapThreadMutex.tryAcquire()) {
+                            LOG.warn("Too busy to snap, skipping");
+                        } else {
+                            new ZooKeeperThread("Snapshot Thread") {
+                                public void run() {
+                                    try {
+                                        zks.takeSnapshot();
+                                    } catch (Exception e) {
+                                        LOG.warn("Unexpected exception", e);
+                                    } finally {
+                                        snapThreadMutex.release();
+                                    }
+                                }
+                            }.start();
+                        }
+                    }
+                } else if (toFlush.isEmpty()) {
+                    // optimization for read heavy workloads
+                    // iff this is a read or a throttled request(which doesn't need to be written to the disk),
+                    // and there are no pending flushes (writes), then just pass this to the next processor
+                    if (nextProcessor != null) {
+                        nextProcessor.processRequest(si);
+                        if (nextProcessor instanceof Flushable) {
+                            ((Flushable) nextProcessor).flush();
+                        }
+                    }
+                    continue;
+                }
+                toFlush.add(si);
+                if (shouldFlush()) {
+                    flush();
+                }
+                ServerMetrics.getMetrics().SYNC_PROCESS_TIME.add(Time.currentElapsedTime() - startProcessTime);
+            }
+        } catch (Throwable t) {
+            handleException(this.getName(), t);
+        }
+        LOG.info("SyncRequestProcessor exited!");
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/LeaderRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=49, lastMethodNumber=75, isFirstLineValid=true, methodSrcCode=
+        // Screen quorum requests against ACLs first
+        if (!lzks.authWriteRequest(request)) {
+            return;
+        }
+
+        // Check if this is a local session and we are trying to create
+        // an ephemeral node, in which case we upgrade the session
+        Request upgradeRequest = null;
+        try {
+            upgradeRequest = lzks.checkUpgradeSession(request);
+        } catch (KeeperException ke) {
+            if (request.getHdr() != null) {
+                LOG.debug("Updating header");
+                request.getHdr().setType(OpCode.error);
+                request.setTxn(new ErrorTxn(ke.code().intValue()));
+            }
+            request.setException(ke);
+            LOG.warn("Error creating upgrade request", ke);
+        } catch (IOException ie) {
+            LOG.error("Unexpected error in upgrade", ie);
+        }
+        if (upgradeRequest != null) {
+            nextProcessor.processRequest(upgradeRequest);
+        }
+
+        nextProcessor.processRequest(request);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/ReadOnlyRequestProcessor, run()V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=59, lastMethodNumber=108, isFirstLineValid=true, methodSrcCode=
+        try {
+            while (!finished) {
+                Request request = queuedRequests.take();
+
+                // log request
+                if (LOG.isTraceEnabled()) {
+                    long traceMask = ZooTrace.CLIENT_REQUEST_TRACE_MASK;
+                    if (request.type == OpCode.ping) {
+                        traceMask = ZooTrace.CLIENT_PING_TRACE_MASK;
+                    }
+                    ZooTrace.logRequest(LOG, traceMask, 'R', request, "");
+                }
+                if (Request.requestOfDeath == request) {
+                    break;
+                }
+
+                // filter read requests
+                switch (request.type) {
+                case OpCode.sync:
+                case OpCode.create:
+                case OpCode.create2:
+                case OpCode.createTTL:
+                case OpCode.createContainer:
+                case OpCode.delete:
+                case OpCode.deleteContainer:
+                case OpCode.setData:
+                case OpCode.reconfig:
+                case OpCode.setACL:
+                case OpCode.multi:
+                case OpCode.check:
+                    sendErrorResponse(request);
+                    continue;
+                case OpCode.closeSession:
+                case OpCode.createSession:
+                    if (!request.isLocalSession()) {
+                        sendErrorResponse(request);
+                        continue;
+                    }
+                }
+
+                // proceed to the next processor
+                if (nextProcessor != null) {
+                    nextProcessor.processRequest(request);
+                }
+            }
+        } catch (Exception e) {
+            handleException(this.getName(), e);
+        }
+        LOG.info("ReadOnlyRequestProcessor exited loop!");
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/ProposalRequestProcessor, processRequest(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=75, lastMethodNumber=92, isFirstLineValid=true, methodSrcCode=
+         */
+        if (request instanceof LearnerSyncRequest) {
+            zks.getLeader().processSync((LearnerSyncRequest) request);
+        } else {
+            if (shouldForwardToNextProcessor(request)) {
+                nextProcessor.processRequest(request);
+            }
+            if (request.getHdr() != null) {
+                // We need to sync and get consensus on any transactions
+                try {
+                    zks.getLeader().propose(request);
+                } catch (XidRolloverException e) {
+                    throw new RequestProcessorException(e.getMessage(), e);
+                }
+                syncProcessor.processRequest(request);
+            }
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/CommitProcessor, processWrite(Lorg/apache/zookeeper/server/Request;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=472, lastMethodNumber=478, isFirstLineValid=true, methodSrcCode=
+    private void processWrite(Request request) throws RequestProcessorException {
+        processCommitMetrics(request, true);
+
+        long timeBeforeFinalProc = Time.currentElapsedTime();
+        nextProcessor.processRequest(request);
+        ServerMetrics.getMetrics().WRITE_FINAL_PROC_TIME.add(Time.currentElapsedTime() - timeBeforeFinalProc);
+    }
+
+}

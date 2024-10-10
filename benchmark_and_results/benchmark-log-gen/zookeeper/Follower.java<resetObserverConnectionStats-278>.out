@@ -1,0 +1,25 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Follower.java	methodSinagture:	org.apache.zookeeper.server.quorum.Follower.resetObserverConnectionStats()V	methodLines:	278:282
+blockLines:	279:-1
+paras:	null
+TaintedStat:	NORMAL resetObserverConnectionStats:conditional branch(le, to iindex=12) 7,8 Node: < Application, Lorg/apache/zookeeper/server/quorum/Follower, resetObserverConnectionStats()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/Follower, resetObserverConnectionStats()V > Context: Everywhere[6]7 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/ObserverMaster, getNumActiveObservers()I > 5 @11 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/Follower, resetObserverConnectionStats()V > Context: Everywhere[6]7 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/ObserverMaster, getNumActiveObservers()I > 5 @11 exception:6
+NORMAL resetObserverConnectionStats:conditional branch(le, to iindex=12) 7,8 Node: < Application, Lorg/apache/zookeeper/server/quorum/Follower, resetObserverConnectionStats()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public void resetObserverConnectionStats() {
+        if (om != null && om.getNumActiveObservers() > 0) {
+            om.resetObserverConnectionStats();
+        }
+    }
+
+
+
+====================ctx:=======================

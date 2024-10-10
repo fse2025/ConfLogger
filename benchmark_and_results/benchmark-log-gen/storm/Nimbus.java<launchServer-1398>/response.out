@@ -1,0 +1,25 @@
+```java
+Integer interval = ObjectReader.getInt(conf.get(DaemonConfig.LOGVIEWER_CLEANUP_INTERVAL_SECS), null);
+if (interval != null) {
+    final int lvCleanupAgeMins = ObjectReader.getInt(conf.get(DaemonConfig.LOGVIEWER_CLEANUP_AGE_MINS));
+    timer.scheduleRecurring(0, interval,
+    () -> {
+        try {
+            cleanTopologyHistory(lvCleanupAgeMins);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    });
+    // ConfLogger Inserted Start
+    logger.info("Scheduled topology history cleaner with interval: {} seconds and cleanup age: {} minutes. Configuration parameters: {}={}, {}={}", 
+                interval, lvCleanupAgeMins, 
+                DaemonConfig.LOGVIEWER_CLEANUP_INTERVAL_SECS, interval, 
+                DaemonConfig.LOGVIEWER_CLEANUP_AGE_MINS, lvCleanupAgeMins);
+    // ConfLogger Inserted End
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Topology history cleaner is not scheduled because {} is not set in the configuration.", 
+                DaemonConfig.LOGVIEWER_CLEANUP_INTERVAL_SECS);
+    // ConfLogger Inserted End
+}
+```

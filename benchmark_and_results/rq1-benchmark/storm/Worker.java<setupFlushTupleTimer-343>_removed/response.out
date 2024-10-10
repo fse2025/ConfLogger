@@ -1,0 +1,29 @@
+```java
+private void setupFlushTupleTimer(final Map<String, Object> topologyConf, final List<IRunningExecutor> executors) {
+    final Integer producerBatchSize = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_PRODUCER_BATCH_SIZE));
+    final Integer xferBatchSize = ObjectReader.getInt(topologyConf.get(Config.TOPOLOGY_TRANSFER_BATCH_SIZE));
+    final Long flushIntervalMillis = ObjectReader.getLong(topologyConf.get(Config.TOPOLOGY_BATCH_FLUSH_INTERVAL_MILLIS));
+    
+    if ((producerBatchSize == 1 && xferBatchSize == 1) || flushIntervalMillis == 0) {
+        // ConfLogger Inserted Start
+        logger.info("Flush tuple timer setup skipped due to configuration: producerBatchSize={}, xferBatchSize={}, flushIntervalMillis={}. " +
+                    "Ensure that 'topology.producer.batch.size' and 'topology.transfer.batch.size' are not both set to 1, and 'topology.batch.flush.interval.millis' is not set to 0 for enabling flush tuple timer.",
+                    producerBatchSize, xferBatchSize, flushIntervalMillis);
+        // ConfLogger Inserted End
+        return;
+    }
+
+    workerState.flushTupleTimer.scheduleRecurringMs(flushIntervalMillis, flushIntervalMillis,
+        () -> {
+            // send flush tuple to all local executors
+            for (int i = 0; i < executors.size(); i++) {
+                IRunningExecutor exec = executors.get(i);
+                if (exec.getExecutorId().get(0) != Constants.SYSTEM_TASK_ID) {
+                    exec.publishFlushTuple();
+                }
+            }
+        }
+    );
+    LOG.info("Flush tuple will be generated every {} millis", flushIntervalMillis);
+}
+```

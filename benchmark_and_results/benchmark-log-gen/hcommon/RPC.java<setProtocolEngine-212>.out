@@ -1,0 +1,71 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RPC.java	methodSinagture:	org.apache.hadoop.ipc.RPC.setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V	methodLines:	212:217
+blockLines:	213:-1
+paras:	null
+TaintedStat:	NORMAL setProtocolEngine:conditional branch(ne, to iindex=26) 17,18 Node: < Application, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[10]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[10]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16
+NORMAL setProtocolEngine:conditional branch(ne, to iindex=26) 17,18 Node: < Application, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                Class<?> protocol, Class<?> engine) {
+    if (conf.get(ENGINE_PROP+"."+protocol.getName()) == null) {
+      conf.setClass(ENGINE_PROP+"."+protocol.getName(), engine,
+                    RpcEngine.class);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/ipc/RpcClientUtil, isMethodSupported(Ljava/lang/Object;Ljava/lang/Class;Lorg/apache/hadoop/ipc/RPC$RpcKind;JLjava/lang/String;)Z > Context: Everywhere, blocks=[BB[SSA:20..20]10 - org.apache.hadoop.ipc.RpcClientUtil.isMethodSupported(Ljava/lang/Object;Ljava/lang/Class;Lorg/apache/hadoop/ipc/RPC$RpcKind;JLjava/lang/String;)Z, BB[SSA:19..19]9 - org.apache.hadoop.ipc.RpcClientUtil.isMethodSupported(Ljava/lang/Object;Ljava/lang/Class;Lorg/apache/hadoop/ipc/RPC$RpcKind;JLjava/lang/String;)Z, BB[SSA:21..23]11 - org.apache.hadoop.ipc.RpcClientUtil.isMethodSupported(Ljava/lang/Object;Ljava/lang/Class;Lorg/apache/hadoop/ipc/RPC$RpcKind;JLjava/lang/String;)Z, BB[SSA:-1..-2]42 - org.apache.hadoop.ipc.RpcClientUtil.isMethodSupported(Ljava/lang/Object;Ljava/lang/Class;Lorg/apache/hadoop/ipc/RPC$RpcKind;JLjava/lang/String;)Z], numberOfBasicBlocks=4, firstLineNumber=116, lastLineNumber=118, firstMethodNumber=109, lastMethodNumber=150, isFirstLineValid=true, methodSrcCode=
+      RPC.RpcKind rpcKind, long version, String methodName) throws IOException {
+    InetSocketAddress serverAddress = RPC.getServerAddress(rpcProxy);
+    Map<Long, ProtocolSignature> versionMap = getVersionSignatureMap(
+        serverAddress, protocol.getName(), rpcKind.toString());
+
+    if (versionMap == null) {
+      Configuration conf = new Configuration();
+      RPC.setProtocolEngine(conf, ProtocolMetaInfoPB.class,
+          ProtobufRpcEngine2.class);
+      ProtocolMetaInfoPB protocolInfoProxy = getProtocolMetaInfoProxy(rpcProxy,
+          conf);
+      GetProtocolSignatureRequestProto.Builder builder = 
+          GetProtocolSignatureRequestProto.newBuilder();
+      builder.setProtocol(protocol.getName());
+      builder.setRpcKind(rpcKind.toString());
+      GetProtocolSignatureResponseProto resp;
+      try {
+        resp = protocolInfoProxy.getProtocolSignature(NULL_CONTROLLER,
+            builder.build());
+      } catch (ServiceException se) {
+        throw ProtobufHelper.getRemoteException(se);
+      }
+      versionMap = convertProtocolSignatureProtos(resp
+          .getProtocolSignatureList());
+      putVersionSignatureMap(serverAddress, protocol.getName(),
+          rpcKind.toString(), versionMap);
+    }
+    // Assuming unique method names.
+    Method desiredMethod;
+    Method[] allMethods = protocol.getMethods();
+    desiredMethod = null;
+    for (Method m : allMethods) {
+      if (m.getName().equals(methodName)) {
+        desiredMethod = m;
+        break;
+      }
+    }
+    if (desiredMethod == null) {
+      return false;
+    }
+    int methodHash = ProtocolSignature.getFingerprint(desiredMethod);
+    return methodExists(methodHash, version, versionMap);
+  }
+}

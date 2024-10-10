@@ -1,0 +1,27 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ConnectionBean.java	methodSinagture:	org.apache.zookeeper.server.ConnectionBean.getEphemeralNodes()[Ljava/lang/String;	methodLines:	86:92
+blockLines:	87:-1
+paras:	null
+TaintedStat:	NORMAL getEphemeralNodes:conditional branch(eq, to iindex=20) 5,6 Node: < Application, Lorg/apache/zookeeper/server/ConnectionBean, getEphemeralNodes()[Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/ConnectionBean, getEphemeralNodes()[Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getZKDatabase()Lorg/apache/zookeeper/server/ZKDatabase; > 3 @4 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/ConnectionBean, getEphemeralNodes()[Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getZKDatabase()Lorg/apache/zookeeper/server/ZKDatabase; > 3 @4 exception:4
+NORMAL getEphemeralNodes:conditional branch(eq, to iindex=20) 5,6 Node: < Application, Lorg/apache/zookeeper/server/ConnectionBean, getEphemeralNodes()[Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public String[] getEphemeralNodes() {
+        if (zk.getZKDatabase() != null) {
+            String[] res = zk.getZKDatabase().getEphemerals(sessionId).toArray(new String[0]);
+            Arrays.sort(res);
+            return res;
+        }
+        return null;
+    }
+
+
+====================ctx:=======================

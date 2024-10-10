@@ -1,0 +1,54 @@
+```java
+if (!"false".equals(System.getProperty("zookeeper.admin.enableServer"))) {
+    // ConfLogger Inserted Start
+    logger.info("Attempting to start JettyAdminServer. Configuration parameter: zookeeper.admin.enableServer = {}", System.getProperty("zookeeper.admin.enableServer"));
+    // ConfLogger Inserted End
+    try {
+        Class<?> jettyAdminServerC = Class.forName("org.apache.zookeeper.server.admin.JettyAdminServer");
+        Object adminServer = jettyAdminServerC.getConstructor().newInstance();
+        return (AdminServer) adminServer;
+
+    } catch (ClassNotFoundException e) {
+        // ConfLogger Commented: Not Informative
+        // LOG.warn("Unable to start JettyAdminServer", e);
+        // ConfLogger Inserted Start
+        logger.warn("Unable to start JettyAdminServer due to ClassNotFoundException. Configuration parameter: zookeeper.admin.enableServer = {}", System.getProperty("zookeeper.admin.enableServer"), e);
+        // ConfLogger Inserted End
+    } catch (InstantiationException e) {
+        // ConfLogger Commented: Not Informative
+        // LOG.warn("Unable to start JettyAdminServer", e);
+        // ConfLogger Inserted Start
+        logger.warn("Unable to start JettyAdminServer due to InstantiationException. Configuration parameter: zookeeper.admin.enableServer = {}", System.getProperty("zookeeper.admin.enableServer"), e);
+        // ConfLogger Inserted End
+    } catch (IllegalAccessException e) {
+        // ConfLogger Commented: Not Informative
+        // LOG.warn("Unable to start JettyAdminServer", e);
+        // ConfLogger Inserted Start
+        logger.warn("Unable to start JettyAdminServer due to IllegalAccessException. Configuration parameter: zookeeper.admin.enableServer = {}", System.getProperty("zookeeper.admin.enableServer"), e);
+        // ConfLogger Inserted End
+    } catch (InvocationTargetException e) {
+        // ConfLogger Commented: Not Informative
+        // LOG.warn("Unable to start JettyAdminServer", e);
+        // ConfLogger Inserted Start
+        logger.warn("Unable to start JettyAdminServer due to InvocationTargetException. Configuration parameter: zookeeper.admin.enableServer = {}", System.getProperty("zookeeper.admin.enableServer"), e);
+        // ConfLogger Inserted End
+    } catch (NoSuchMethodException e) {
+        // ConfLogger Commented: Not Informative
+        // LOG.warn("Unable to start JettyAdminServer", e);
+        // ConfLogger Inserted Start
+        logger.warn("Unable to start JettyAdminServer due to NoSuchMethodException. Configuration parameter: zookeeper.admin.enableServer = {}", System.getProperty("zookeeper.admin.enableServer"), e);
+        // ConfLogger Inserted End
+    } catch (NoClassDefFoundError e) {
+        // ConfLogger Commented: Not Informative
+        // LOG.warn("Unable to load jetty, not starting JettyAdminServer", e);
+        // ConfLogger Inserted Start
+        logger.warn("Unable to load jetty, not starting JettyAdminServer due to NoClassDefFoundError. Configuration parameter: zookeeper.admin.enableServer = {}", System.getProperty("zookeeper.admin.enableServer"), e);
+        // ConfLogger Inserted End
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.info("JettyAdminServer is disabled. Configuration parameter: zookeeper.admin.enableServer = {}", System.getProperty("zookeeper.admin.enableServer"));
+    // ConfLogger Inserted End
+}
+return new DummyAdminServer();
+```

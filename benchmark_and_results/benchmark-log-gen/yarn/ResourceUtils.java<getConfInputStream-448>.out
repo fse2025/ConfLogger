@@ -1,0 +1,54 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ResourceUtils.java	methodSinagture:	org.apache.hadoop.yarn.util.resource.ResourceUtils.getConfInputStream(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/io/InputStream;	methodLines:	448:466
+blockLines:	459:-1
+paras:	null
+TaintedStat:	NORMAL getConfInputStream:conditional branch(ne, to iindex=38) 14,12 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getConfInputStream(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/io/InputStream; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getConfInputStream(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/io/InputStream; > Context: Everywhere[23]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getResource(Ljava/lang/String;)Ljava/net/URL; > 2,1 @36 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getConfInputStream(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/io/InputStream; > Context: Everywhere[23]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getResource(Ljava/lang/String;)Ljava/net/URL; > 2,1 @36 exception:13
+NORMAL getConfInputStream:conditional branch(ne, to iindex=38) 14,12 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getConfInputStream(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/io/InputStream; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    ConfigurationProvider provider =
+        ConfigurationProviderFactory.getConfigurationProvider(conf);
+    try {
+      provider.init(conf);
+    } catch (Exception e) {
+      throw new IOException(e);
+    }
+
+    InputStream ris = provider.getConfigurationInputStream(conf, resourceFile);
+    if (ris == null) {
+      if (conf.getResource(resourceFile) == null) {
+        throw new FileNotFoundException("Unable to find " + resourceFile);
+      }
+      throw new IOException(
+          "Unable to open resource types file '" + resourceFile
+              + "'. Using provider " + provider);
+    }
+    return ris;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, addResourcesFileToConf(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.yarn.util.resource.ResourceUtils.addResourcesFileToConf(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.yarn.util.resource.ResourceUtils.addResourcesFileToConf(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:3..7]2 - org.apache.hadoop.yarn.util.resource.ResourceUtils.addResourcesFileToConf(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]24 - org.apache.hadoop.yarn.util.resource.ResourceUtils.addResourcesFileToConf(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=471, lastLineNumber=473, firstMethodNumber=471, lastMethodNumber=482, isFirstLineValid=false, methodSrcCode=
+    try {
+      InputStream ris = getConfInputStream(resourceFile, conf);
+      LOG.debug("Found {}, adding to configuration", resourceFile);
+      conf.addResource(ris);
+    } catch (FileNotFoundException fe) {
+      LOG.info("Unable to find '" + resourceFile + "'.");
+    } catch (IOException | YarnException ex) {
+      LOG.error("Exception trying to read resource types configuration '"
+          + resourceFile + "'.", ex);
+      throw new YarnRuntimeException(ex);
+    }
+  }
+
+}

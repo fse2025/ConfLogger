@@ -1,0 +1,35 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ConfigUtils.java	methodSinagture:	org.apache.storm.utils.ConfigUtils.workerArtifactsRootImpl(Ljava/util/Map;)Ljava/lang/String;	methodLines:	451:459
+blockLines:	453:-1
+paras:	storm.workers.artifacts.dir
+TaintedStat:	NORMAL workerArtifactsRootImpl:conditional branch(ne, to iindex=12) 7,8 Node: < Application, Lorg/apache/storm/utils/ConfigUtils, workerArtifactsRootImpl(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ConfigUtils, workerArtifactsRootImpl(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere[2]6 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,4 @4 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ConfigUtils, workerArtifactsRootImpl(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere[2]6 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,4 @4 exception:5
+NORMAL workerArtifactsRootImpl:7 = checkcast <Application,Ljava/lang/String>6 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/utils/ConfigUtils, workerArtifactsRootImpl(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere
+NORMAL workerArtifactsRootImpl:conditional branch(ne, to iindex=12) 7,8 Node: < Application, Lorg/apache/storm/utils/ConfigUtils, workerArtifactsRootImpl(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public String workerArtifactsRootImpl(Map<String, Object> conf) {
+        String artifactsDir = (String) conf.get(Config.STORM_WORKERS_ARTIFACTS_DIR);
+        if (artifactsDir == null) {
+            return (getLogDir() + FILE_SEPARATOR + "workers-artifacts");
+        } else {
+            if (new File(artifactsDir).isAbsolute()) {
+                return artifactsDir;
+            } else {
+                return (getLogDir() + FILE_SEPARATOR + artifactsDir);
+            }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ConfigUtils, workerArtifactsRoot(Ljava/util/Map;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.storm.utils.ConfigUtils.workerArtifactsRoot(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ConfigUtils.workerArtifactsRoot(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:3..3]2 - org.apache.storm.utils.ConfigUtils.workerArtifactsRoot(Ljava/util/Map;)Ljava/lang/String;, BB[SSA:-1..-2]3 - org.apache.storm.utils.ConfigUtils.workerArtifactsRoot(Ljava/util/Map;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=134, lastLineNumber=135, firstMethodNumber=134, lastMethodNumber=135, isFirstLineValid=false, methodSrcCode=
+    public static String workerArtifactsRoot(Map<String, Object> conf) {
+        return instance.workerArtifactsRootImpl(conf);
+    }
+}

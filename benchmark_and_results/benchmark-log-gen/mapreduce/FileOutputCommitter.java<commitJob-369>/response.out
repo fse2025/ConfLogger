@@ -1,0 +1,27 @@
+```java
+int maxAttemptsOnFailure = isCommitJobRepeatable(context) ?
+context.getConfiguration().getInt(FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS,
+FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS_DEFAULT) : 1;
+int attempt = 0;
+boolean jobCommitNotFinished = true;
+while (jobCommitNotFinished) {
+try {
+commitJobInternal(context);
+jobCommitNotFinished = false;
+} catch (Exception e) {
+if (++attempt >= maxAttemptsOnFailure) {
+    // ConfLogger Inserted Start
+    logger.error("Job commit failed after maximum attempts. Configuration parameter: FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS, Value: " + maxAttemptsOnFailure);
+    // ConfLogger Inserted End
+    throw e;
+} else {
+    // ConfLogger Commented: Not Informative
+    // LOG.warn("Exception get thrown in job commit, retry (" + attempt + ") time.", e);
+    // ConfLogger Inserted Start
+    logger.warn("Exception thrown in job commit, retrying attempt " + attempt + ". Configuration parameter: FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS, Value: " + maxAttemptsOnFailure, e);
+    // ConfLogger Inserted End
+}
+}
+}
+}
+```

@@ -1,0 +1,66 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ZKUtil.java	methodSinagture:	org.apache.hadoop.util.ZKUtil.parseAuth(Ljava/lang/String;)Ljava/util/List;	methodLines:	135:154
+blockLines:	137:-1
+paras:	null
+TaintedStat:	NORMAL parseAuth:conditional branch(ne, to iindex=7) 1,5 Node: < Application, Lorg/apache/hadoop/util/ZKUtil, parseAuth(Ljava/lang/String;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPassword(Ljava/lang/String;)[C > 1,2 @2 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPassword(Ljava/lang/String;)[C > 1,2 @2 exception:4
+NORMAL getZKAuthInfos:conditional branch(eq, to iindex=10) 5,6 Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere:9 = phi  8,6
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[13]11 = invokestatic < Application, Lorg/apache/hadoop/util/ZKUtil, resolveConfIndirection(Ljava/lang/String;)Ljava/lang/String; > 9 @20 exception:10 v9
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/ZKUtil, resolveConfIndirection(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere v1
+NORMAL resolveConfIndirection:return 1 Node: < Application, Lorg/apache/hadoop/util/ZKUtil, resolveConfIndirection(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/hadoop/util/ZKUtil, resolveConfIndirection(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[13]11 = invokestatic < Application, Lorg/apache/hadoop/util/ZKUtil, resolveConfIndirection(Ljava/lang/String;)Ljava/lang/String; > 9 @20 exception:10
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[19]15 = invokestatic < Application, Lorg/apache/hadoop/util/ZKUtil, parseAuth(Ljava/lang/String;)Ljava/util/List; > 11 @29 exception:14 v11
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/util/ZKUtil, parseAuth(Ljava/lang/String;)Ljava/util/List; > Context: Everywhere v1
+NORMAL parseAuth:conditional branch(ne, to iindex=7) 1,5 Node: < Application, Lorg/apache/hadoop/util/ZKUtil, parseAuth(Ljava/lang/String;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      BadAuthFormatException{
+    List<ZKAuthInfo> ret = Lists.newArrayList();
+    if (authString == null) {
+      return ret;
+    }
+    
+    List<String> authComps = Lists.newArrayList(
+        Splitter.on(',').omitEmptyStrings().trimResults()
+        .split(authString));
+    
+    for (String comp : authComps) {
+      String parts[] = comp.split(":", 2);
+      if (parts.length != 2) {
+        throw new BadAuthFormatException(
+            "Auth '" + comp + "' not of expected form scheme:auth");
+      }
+      ret.add(new ZKAuthInfo(parts[0],
+          parts[1].getBytes(Charsets.UTF_8)));
+    }
+    return ret;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/SecurityUtil, getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:18..19]8 - org.apache.hadoop.security.SecurityUtil.getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List;, BB[SSA:14..17]7 - org.apache.hadoop.security.SecurityUtil.getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List;, BB[SSA:20..20]9 - org.apache.hadoop.security.SecurityUtil.getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List;, BB[SSA:-1..-2]14 - org.apache.hadoop.security.SecurityUtil.getZKAuthInfos(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=780, lastLineNumber=782, firstMethodNumber=775, lastMethodNumber=788, isFirstLineValid=true, methodSrcCode=
+      String configKey) throws IOException {
+    char[] zkAuthChars = conf.getPassword(configKey);
+    String zkAuthConf =
+        zkAuthChars != null ? String.valueOf(zkAuthChars) : null;
+    try {
+      zkAuthConf = ZKUtil.resolveConfIndirection(zkAuthConf);
+      if (zkAuthConf != null) {
+        return ZKUtil.parseAuth(zkAuthConf);
+      } else {
+        return Collections.emptyList();
+      }
+    } catch (IOException | ZKUtil.BadAuthFormatException e) {
+      LOG.error("Couldn't read Auth based on {}", configKey);
+      throw e;
+    }
+}

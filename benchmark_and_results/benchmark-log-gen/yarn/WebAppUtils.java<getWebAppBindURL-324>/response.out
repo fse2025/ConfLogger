@@ -1,0 +1,23 @@
+```java
+String host = conf.getTrimmed(hostProperty);
+if (host != null && !host.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.info("Host property is set. hostProperty: " + hostProperty + ", host: " + host);
+    // ConfLogger Inserted End
+    if (webAppURLWithoutScheme.contains(":")) {
+        webAppURLWithoutScheme = host + ":" + webAppURLWithoutScheme.split(":")[1];
+    } else {
+        // ConfLogger Inserted Start
+        logger.error("webAppURLWithoutScheme must include port specification but doesn't. webAppURLWithoutScheme: " + webAppURLWithoutScheme);
+        // ConfLogger Inserted End
+        throw new YarnRuntimeException("webAppURLWithoutScheme must include port specification but doesn't: " + webAppURLWithoutScheme);
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Host property is not set or is empty. hostProperty: " + hostProperty + ", host: " + host);
+    // ConfLogger Inserted End
+}
+
+return webAppURLWithoutScheme;
+}
+```

@@ -1,0 +1,10 @@
+```java
+String addr = conf.getTrimmed(BN_SERVICE_RPC_ADDRESS_KEY);
+if (addr == null || addr.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.warn("BN_SERVICE_RPC_ADDRESS_KEY is not set or is empty. Please provide a valid address.");
+    // ConfLogger Inserted End
+    return null;
+}
+return NetUtils.createSocketAddr(addr);
+```

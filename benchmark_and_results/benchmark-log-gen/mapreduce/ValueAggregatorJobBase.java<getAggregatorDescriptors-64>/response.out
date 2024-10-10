@@ -1,0 +1,21 @@
+```java
+int num = conf.getInt(DESCRIPTOR_NUM, 0);
+ArrayList<ValueAggregatorDescriptor> retv =
+new ArrayList<ValueAggregatorDescriptor>(num);
+for (int i = 0; i < num; i++) {
+    String spec = conf.get(DESCRIPTOR + "." + i);
+    ValueAggregatorDescriptor ad = getValueAggregatorDescriptor(spec, conf);
+    if (ad != null) {
+        // ConfLogger Inserted Start
+        logger.debug("Adding ValueAggregatorDescriptor to the list. Configuration parameter: " + DESCRIPTOR + "." + i + ", Value: " + spec);
+        // ConfLogger Inserted End
+        retv.add(ad);
+    } else {
+        // ConfLogger Inserted Start
+        logger.warn("ValueAggregatorDescriptor is null. Configuration parameter: " + DESCRIPTOR + "." + i + ", Value: " + spec);
+        // ConfLogger Inserted End
+    }
+}
+return retv;
+}
+```

@@ -1,0 +1,33 @@
+```java
+private static double parseDecayFactor(String ns, Configuration conf) {
+    double factor = conf.getDouble(ns + "." +
+    IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY, 0.0);
+    
+    if (factor == 0.0) {
+        // ConfLogger Inserted Start
+        logger.info("Using default decay factor as " + IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_DEFAULT + 
+                    " because " + IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY + " is not set.");
+        // ConfLogger Inserted End
+        factor = conf.getDouble(ns + "." +
+        IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY,
+        IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_DEFAULT);
+    } else if ((factor > 0.0) && (factor < 1)) {
+        // ConfLogger Skipped: The existing log already provides information about the deprecated configuration key.
+        LOG.warn(IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY +
+        " is deprecated. Please use " +
+        IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY + ".");
+    }
+    
+    if (factor <= 0 || factor >= 1) {
+        // ConfLogger Inserted Start
+        logger.error("Invalid decay factor configuration: " + factor + 
+                     ". Decay Factor must be between 0 and 1. Please check the configuration for " + 
+                     IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY + ".");
+        // ConfLogger Inserted End
+        throw new IllegalArgumentException("Decay Factor " +
+        "must be between 0 and 1");
+    }
+
+    return factor;
+}
+```

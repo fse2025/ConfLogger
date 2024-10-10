@@ -1,0 +1,10 @@
+```java
+if (suffixes == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'suffixes' is null. Returning null.");
+    // ConfLogger Inserted End
+    return null;
+}
+return Joiner.on(".").skipNulls().join(suffixes);
+}
+```

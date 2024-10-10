@@ -1,0 +1,161 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Chain.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.chain.Chain.getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration;	methodLines:	576:597
+blockLines:	581:-1
+paras:	null
+TaintedStat:	NORMAL getChainElementConf:conditional branch(eq, to iindex=26) 9,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[13]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,4 @19 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[13]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,4 @19 exception:8
+NORMAL getChainElementConf:conditional branch(eq, to iindex=26) 9,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	Chain.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.chain.Chain.getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration;	methodLines:	576:597
+blockLines:	592:-1
+paras:	null
+TaintedStat:	NORMAL getChainElementConf:conditional branch(eq, to iindex=102) 23,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[22]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,4 @33 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[22]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,4 @33 exception:10
+NORMAL getChainElementConf:13 = invokeinterface < Application, Lorg/apache/hadoop/io/Stringifier, fromString(Ljava/lang/String;)Ljava/lang/Object; > 5,11 @36 exception:12 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/io/DefaultStringifier, fromString(Ljava/lang/String;)Ljava/lang/Object; > Context: Everywhere
+NORMAL fromString:return 15 Node: < Extension, Lorg/apache/hadoop/io/DefaultStringifier, fromString(Ljava/lang/String;)Ljava/lang/Object; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/io/DefaultStringifier, fromString(Ljava/lang/String;)Ljava/lang/Object; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[23]13 = invokeinterface < Application, Lorg/apache/hadoop/io/Stringifier, fromString(Ljava/lang/String;)Ljava/lang/Object; > 5,11 @36 exception:12
+NORMAL getChainElementConf:14 = checkcast <Application,Lorg/apache/hadoop/conf/Configuration>13 <Application,Lorg/apache/hadoop/conf/Configuration> Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere:23 = phi  4,14
+NORMAL getChainElementConf:conditional branch(eq, to iindex=102) 23,4 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, getChainElementConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String confKey) {
+    Configuration conf = null;
+    try (Stringifier<Configuration> stringifier =
+        new DefaultStringifier<Configuration>(jobConf, Configuration.class);) {
+      String confString = jobConf.get(confKey, null);
+      if (confString != null) {
+        conf = stringifier.fromString(jobConf.get(confKey, null));
+      }
+    } catch (IOException ioex) {
+      throw new RuntimeException(ioex);
+    }
+    // we have to do this because the Writable desearialization clears all
+    // values set in the conf making not possible do a
+    // new Configuration(jobConf) in the creation of the conf above
+    jobConf = new Configuration(jobConf);
+
+    if (conf != null) {
+      for (Map.Entry<String, String> entry : conf) {
+        jobConf.set(entry.getKey(), entry.getValue());
+      }
+    }
+    return jobConf;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/lib/Chain, configure(Lorg/apache/hadoop/mapred/JobConf;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=172, lastMethodNumber=212, isFirstLineValid=true, methodSrcCode=
+  public void configure(JobConf jobConf) {
+    String prefix = getPrefix(isMap);
+    chainJobConf = jobConf;
+    SerializationFactory serializationFactory =
+      new SerializationFactory(chainJobConf);
+    int index = jobConf.getInt(prefix + CHAIN_MAPPER_SIZE, 0);
+    for (int i = 0; i < index; i++) {
+      Class<? extends Mapper> klass =
+        jobConf.getClass(prefix + CHAIN_MAPPER_CLASS + i, null, Mapper.class);
+      JobConf mConf = new JobConf(
+        getChainElementConf(jobConf, prefix + CHAIN_MAPPER_CONFIG + i));
+      Mapper mapper = ReflectionUtils.newInstance(klass, mConf);
+      mappers.add(mapper);
+
+      if (mConf.getBoolean(MAPPER_BY_VALUE, true)) {
+        mappersKeySerialization.add(serializationFactory.getSerialization(
+          mConf.getClass(MAPPER_OUTPUT_KEY_CLASS, null)));
+        mappersValueSerialization.add(serializationFactory.getSerialization(
+          mConf.getClass(MAPPER_OUTPUT_VALUE_CLASS, null)));
+      } else {
+        mappersKeySerialization.add(null);
+        mappersValueSerialization.add(null);
+      }
+    }
+    Class<? extends Reducer> klass =
+      jobConf.getClass(prefix + CHAIN_REDUCER_CLASS, null, Reducer.class);
+    if (klass != null) {
+      JobConf rConf = new JobConf(
+        getChainElementConf(jobConf, prefix + CHAIN_REDUCER_CONFIG));
+      reducer = ReflectionUtils.newInstance(klass, rConf);
+      if (rConf.getBoolean(REDUCER_BY_VALUE, true)) {
+        reducerKeySerialization = serializationFactory
+          .getSerialization(rConf.getClass(REDUCER_OUTPUT_KEY_CLASS, null));
+        reducerValueSerialization = serializationFactory
+          .getSerialization(rConf.getClass(REDUCER_OUTPUT_VALUE_CLASS, null));
+      } else {
+        reducerKeySerialization = null;
+        reducerValueSerialization = null;
+      }
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, validateKeyValueTypes(ZLorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;ILjava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:15..15]8 - org.apache.hadoop.mapreduce.lib.chain.Chain.validateKeyValueTypes(ZLorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;ILjava/lang/String;)V, BB[SSA:14..14]7 - org.apache.hadoop.mapreduce.lib.chain.Chain.validateKeyValueTypes(ZLorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;ILjava/lang/String;)V, BB[SSA:16..21]9 - org.apache.hadoop.mapreduce.lib.chain.Chain.validateKeyValueTypes(ZLorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;ILjava/lang/String;)V, BB[SSA:-1..-2]43 - org.apache.hadoop.mapreduce.lib.chain.Chain.validateKeyValueTypes(ZLorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;ILjava/lang/String;)V, BB[SSA:60..60]29 - org.apache.hadoop.mapreduce.lib.chain.Chain.validateKeyValueTypes(ZLorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;ILjava/lang/String;)V, BB[SSA:59..59]28 - org.apache.hadoop.mapreduce.lib.chain.Chain.validateKeyValueTypes(ZLorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;ILjava/lang/String;)V, BB[SSA:61..66]30 - org.apache.hadoop.mapreduce.lib.chain.Chain.validateKeyValueTypes(ZLorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;ILjava/lang/String;)V, BB[SSA:-1..-2]43 - org.apache.hadoop.mapreduce.lib.chain.Chain.validateKeyValueTypes(ZLorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/Class;ILjava/lang/String;)V], numberOfBasicBlocks=8, firstLineNumber=690, lastLineNumber=692, firstMethodNumber=673, lastMethodNumber=703, isFirstLineValid=true, methodSrcCode=
+    // output.
+    if (!isMap && index == 0) {
+      Configuration reducerConf = getChainElementConf(jobConf, prefix
+          + CHAIN_REDUCER_CONFIG);
+      if (!inputKeyClass.isAssignableFrom(reducerConf.getClass(
+          REDUCER_OUTPUT_KEY_CLASS, null))) {
+        throw new IllegalArgumentException("The Reducer output key class does"
+            + " not match the Mapper input key class");
+      }
+      if (!inputValueClass.isAssignableFrom(reducerConf.getClass(
+          REDUCER_OUTPUT_VALUE_CLASS, null))) {
+        throw new IllegalArgumentException("The Reducer output value class"
+            + " does not match the Mapper input value class");
+      }
+    } else if (index > 0) {
+      // check the that the new Mapper in the chain key and value input classes
+      // match those of the previous Mapper output.
+      Configuration previousMapperConf = getChainElementConf(jobConf, prefix
+          + CHAIN_MAPPER_CONFIG + (index - 1));
+      if (!inputKeyClass.isAssignableFrom(previousMapperConf.getClass(
+          MAPPER_OUTPUT_KEY_CLASS, null))) {
+        throw new IllegalArgumentException("The specified Mapper input key class does"
+            + " not match the previous Mapper's output key class.");
+      }
+      if (!inputValueClass.isAssignableFrom(previousMapperConf.getClass(
+          MAPPER_OUTPUT_VALUE_CLASS, null))) {
+        throw new IllegalArgumentException("The specified Mapper input value class"
+            + " does not match the previous Mapper's output value class.");
+      }
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/chain/Chain, setup(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:47..47]25 - org.apache.hadoop.mapreduce.lib.chain.Chain.setup(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:46..46]24 - org.apache.hadoop.mapreduce.lib.chain.Chain.setup(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:48..50]26 - org.apache.hadoop.mapreduce.lib.chain.Chain.setup(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]53 - org.apache.hadoop.mapreduce.lib.chain.Chain.setup(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:95..95]46 - org.apache.hadoop.mapreduce.lib.chain.Chain.setup(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:94..94]45 - org.apache.hadoop.mapreduce.lib.chain.Chain.setup(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:96..96]47 - org.apache.hadoop.mapreduce.lib.chain.Chain.setup(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]53 - org.apache.hadoop.mapreduce.lib.chain.Chain.setup(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=8, firstLineNumber=836, lastLineNumber=836, firstMethodNumber=818, lastMethodNumber=839, isFirstLineValid=true, methodSrcCode=
+  void setup(Configuration jobConf) {
+    String prefix = getPrefix(isMap);
+
+    int index = jobConf.getInt(prefix + CHAIN_MAPPER_SIZE, 0);
+    for (int i = 0; i < index; i++) {
+      Class<? extends Mapper> klass = jobConf.getClass(prefix
+          + CHAIN_MAPPER_CLASS + i, null, Mapper.class);
+      Configuration mConf = getChainElementConf(jobConf, prefix
+          + CHAIN_MAPPER_CONFIG + i);
+      confList.add(mConf);
+      Mapper mapper = ReflectionUtils.newInstance(klass, mConf);
+      mappers.add(mapper);
+
+    }
+
+    Class<? extends Reducer> klass = jobConf.getClass(prefix
+        + CHAIN_REDUCER_CLASS, null, Reducer.class);
+    if (klass != null) {
+      rConf = getChainElementConf(jobConf, prefix + CHAIN_REDUCER_CONFIG);
+      reducer = ReflectionUtils.newInstance(klass, rConf);
+    }
+  }
+
+}

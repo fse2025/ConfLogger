@@ -1,0 +1,1 @@
+hadoop.service.shutdown.timeout	<missing>	INFO	Possible loss of precision converting 50ns to SECONDS for hadoop.service.shutdown.timeout	90

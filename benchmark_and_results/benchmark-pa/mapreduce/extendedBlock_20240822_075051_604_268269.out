@@ -1,0 +1,114 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HistoryFileManager.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.tryCreatingHistoryDirs(Z)Z	methodLines:	674:736
+blockLines:	686:-1
+paras:	null
+TaintedStat:	NORMAL tryCreatingHistoryDirs:conditional branch(eq, to iindex=58) 2,33 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, tryCreatingHistoryDirs(Z)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[22]22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 2,19,20 @44 exception:21
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[22]22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 2,19,20 @44 exception:21
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[28]invokevirtual < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > 1,24,25,22 @56 exception:26 v22
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > Context: Everywhere v4
+NORMAL createHistoryDirs:10 = compare 4,9 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > Context: Everywhere
+NORMAL createHistoryDirs:conditional branch(eq, to iindex=23) 10,8 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > Context: Everywhere:19 = phi  15,8
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > Context: Everywhere[36]21 = invokevirtual < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, tryCreatingHistoryDirs(Z)Z > 1,19 @59 exception:20 v19
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, tryCreatingHistoryDirs(Z)Z > Context: Everywhere v2
+NORMAL tryCreatingHistoryDirs:conditional branch(eq, to iindex=58) 2,33 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, tryCreatingHistoryDirs(Z)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  boolean tryCreatingHistoryDirs(boolean logWait) throws IOException {
+    boolean succeeded = true;
+    String doneDirPrefix = JobHistoryUtils.
+        getConfiguredHistoryServerDoneDirPrefix(conf);
+    try {
+      doneDirPrefixPath = FileContext.getFileContext(conf).makeQualified(
+          new Path(doneDirPrefix));
+      doneDirFc = FileContext.getFileContext(doneDirPrefixPath.toUri(), conf);
+      doneDirFc.setUMask(JobHistoryUtils.HISTORY_DONE_DIR_UMASK);
+      mkdir(doneDirFc, doneDirPrefixPath, new FsPermission(
+          JobHistoryUtils.HISTORY_DONE_DIR_PERMISSION));
+    } catch (ConnectException ex) {
+      if (logWait) {
+        LOG.info("Waiting for FileSystem at " +
+            doneDirPrefixPath.toUri().getAuthority()  + "to be available");
+      }
+      succeeded = false;
+    } catch (IOException e) {
+      if (isNameNodeStillNotStarted(e)) {
+        succeeded = false;
+        if (logWait) {
+          LOG.info("Waiting for FileSystem at " +
+              doneDirPrefixPath.toUri().getAuthority() +
+              "to be out of safe mode");
+        }
+      } else {
+        throw new YarnRuntimeException("Error creating done directory: ["
+            + doneDirPrefixPath + "]", e);
+      }
+    }
+    if (succeeded) {
+      String intermediateDoneDirPrefix = JobHistoryUtils.
+          getConfiguredHistoryIntermediateDoneDirPrefix(conf);
+      try {
+        intermediateDoneDirPath = FileContext.getFileContext(conf).makeQualified(
+            new Path(intermediateDoneDirPrefix));
+        intermediateDoneDirFc = FileContext.getFileContext(
+            intermediateDoneDirPath.toUri(), conf);
+        mkdir(intermediateDoneDirFc, intermediateDoneDirPath, new FsPermission(
+            JobHistoryUtils.HISTORY_INTERMEDIATE_DONE_DIR_PERMISSIONS.toShort()));
+      } catch (ConnectException ex) {
+        succeeded = false;
+        if (logWait) {
+          LOG.info("Waiting for FileSystem at " +
+              intermediateDoneDirPath.toUri().getAuthority() +
+              "to be available");
+        }
+      } catch (IOException e) {
+        if (isNameNodeStillNotStarted(e)) {
+          succeeded = false;
+          if (logWait) {
+            LOG.info("Waiting for FileSystem at " +
+                intermediateDoneDirPath.toUri().getAuthority() +
+                "to be out of safe mode");
+          }
+        } else {
+          throw new YarnRuntimeException(
+              "Error creating intermediate done directory: ["
+              + intermediateDoneDirPath + "]", e);
+        }
+      }
+    }
+    return succeeded;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/HistoryFileManager, createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V > Context: Everywhere, blocks=[BB[SSA:36..36]11 - org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V, BB[SSA:33..34]9 - org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V, BB[SSA:35..35]10 - org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V, BB[SSA:37..40]12 - org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V, BB[SSA:-1..-2]30 - org.apache.hadoop.mapreduce.v2.hs.HistoryFileManager.createHistoryDirs(Lorg/apache/hadoop/yarn/util/Clock;JJ)V], numberOfBasicBlocks=5, firstLineNumber=636, lastLineNumber=637, firstMethodNumber=630, lastMethodNumber=650, isFirstLineValid=true, methodSrcCode=
+      long timeOutMillis) throws IOException {
+    long start = clock.getTime();
+    boolean done = false;
+    int counter = 0;
+    while (!done &&
+        ((timeOutMillis == -1) || (clock.getTime() - start < timeOutMillis))) {
+      done = tryCreatingHistoryDirs(counter++ % 3 == 0); // log every 3 attempts, 30sec
+      if (done) {
+        break;
+      }
+      try {
+        Thread.sleep(intervalCheckMillis);
+      } catch (InterruptedException ex) {
+        throw new YarnRuntimeException(ex);
+      }
+    }
+    if (!done) {
+      throw new YarnRuntimeException("Timed out '" + timeOutMillis+
+              "ms' waiting for FileSystem to become available");
+    }
+  }
+
+}

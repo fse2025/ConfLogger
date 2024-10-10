@@ -1,0 +1,24 @@
+```java
+String jobTempDir = getConfig().get(MRJobConfig.MAPREDUCE_JOB_DIR);
+FileSystem fs = getFileSystem(getConfig());
+try {
+    if (!keepJobFiles(new JobConf(getConfig()), jobTempDir)) {
+        if (jobTempDir == null) {
+            // ConfLogger Skipped
+            LOG.warn("Job Staging directory is null");
+            return;
+        }
+        Path jobTempDirPath = new Path(jobTempDir);
+        // ConfLogger Inserted Start
+        logger.info("Deleting staging directory. Configuration parameter: MRJobConfig.MAPREDUCE_JOB_DIR, Value: " + jobTempDir);
+        // ConfLogger Inserted End
+        LOG.info("Deleting staging directory " + FileSystem.getDefaultUri(getConfig()) + " " + jobTempDir);
+        fs.delete(jobTempDirPath, true);
+    }
+} catch(IOException io) {
+    // ConfLogger Inserted Start
+    logger.error("Failed to cleanup staging dir. Configuration parameter: MRJobConfig.MAPREDUCE_JOB_DIR, Value: " + jobTempDir, io);
+    // ConfLogger Inserted End
+    LOG.error("Failed to cleanup staging dir " + jobTempDir, io);
+}
+```

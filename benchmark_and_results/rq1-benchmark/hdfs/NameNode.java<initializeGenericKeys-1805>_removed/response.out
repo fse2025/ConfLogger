@@ -1,0 +1,54 @@
+```java
+String nameserviceId, String namenodeId) {
+    if ((nameserviceId != null && !nameserviceId.isEmpty()) ||
+        (namenodeId != null && !namenodeId.isEmpty())) {
+        if (nameserviceId != null) {
+            conf.set(DFS_NAMESERVICE_ID, nameserviceId);
+        }
+        if (namenodeId != null) {
+            conf.set(DFS_HA_NAMENODE_ID_KEY, namenodeId);
+        }
+
+        DFSUtil.setGenericConf(conf, nameserviceId, namenodeId,
+            NAMENODE_SPECIFIC_KEYS);
+        DFSUtil.setGenericConf(conf, nameserviceId, null,
+            NAMESERVICE_SPECIFIC_KEYS);
+    }
+
+    // If the RPC address is set use it to (re-)configure the default FS
+    if (conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY) != null) {
+        URI defaultUri = URI.create(HdfsConstants.HDFS_URI_SCHEME + "://"
+            + conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY));
+        conf.set(FS_DEFAULT_NAME_KEY, defaultUri.toString());
+        // ConfLogger Inserted Start
+        logger.info("Configured default FS with RPC address: " + conf.get(DFS_NAMENODE_RPC_ADDRESS_KEY) +
+                    ". Parameter: " + DFS_NAMENODE_RPC_ADDRESS_KEY);
+        // ConfLogger Inserted End
+    } else {
+        // ConfLogger Inserted Start
+        logger.warn("RPC address not set. Default FS configuration skipped. Ensure " +
+                    "parameter " + DFS_NAMENODE_RPC_ADDRESS_KEY + " is properly configured.");
+        // ConfLogger Inserted End
+    }
+}
+```
+
+### Explanation:
+
+1. **Type Identification**:
+   - The first scope checks if either `nameserviceId` or `namenodeId` is set, which is a type 2 scenario (enabling a service based on configuration).
+   - The second scope checks if `DFS_NAMENODE_RPC_ADDRESS_KEY` is set, which is also a type 2 scenario.
+
+2. **Log Insertion**:
+   - For the first scope, no logging is inserted because the provided code snippet does not handle the case where neither `nameserviceId` nor `namenodeId` is set. The focus is on the second scope.
+   - For the second scope, logging is inserted in both the path where the RPC address is set and where it is not set.
+
+3. **Logging Details**:
+   - **Info Level**: When the RPC address is set, it logs the successful configuration of the default FS with the RPC address.
+   - **Warn Level**: When the RPC address is not set, it warns the user to ensure the parameter is properly configured.
+
+4. **Dynamic Variables**:
+   - The logging statements include the configuration parameter value and name (`DFS_NAMENODE_RPC_ADDRESS_KEY`).
+
+5. **Static Text**:
+   - Provides guidance on ensuring the parameter is properly configured when it is not set.

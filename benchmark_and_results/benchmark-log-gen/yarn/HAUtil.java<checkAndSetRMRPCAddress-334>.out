@@ -1,0 +1,106 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HAUtil.java	methodSinagture:	org.apache.hadoop.yarn.conf.HAUtil.checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	334:357
+blockLines:	341:-1
+paras:	null
+TaintedStat:	NORMAL checkAndSetRMRPCAddress:conditional branch(ne, to iindex=37) 14,5 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[17]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 3,12 @27 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[17]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 3,12 @27 exception:13
+NORMAL checkAndSetRMRPCAddress:conditional branch(ne, to iindex=37) 14,5 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	HAUtil.java	methodSinagture:	org.apache.hadoop.yarn.conf.HAUtil.checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	334:357
+blockLines:	338:-1
+paras:	null
+TaintedStat:	NORMAL checkAndSetRMRPCAddress:conditional branch(ne, to iindex=54) 9,5 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[50]25 = invokestatic < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, getRMDefaultPortNumber(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)I > 1,3 @99 exception:24
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[50]25 = invokestatic < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, getRMDefaultPortNumber(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)I > 1,3 @99 exception:24
+NORMAL checkAndSetRMRPCAddress:27 = invokevirtual < Application, Ljava/lang/StringBuilder, append(I)Ljava/lang/StringBuilder; > 23,25 @102 exception:26 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, append(I)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL append:return 1 Node: < Primordial, Ljava/lang/StringBuilder, append(I)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(I)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/StringUTF16, newBytesFor(I)[B > Context: Everywhere[22]20 = invokevirtual < Primordial, Ljava/lang/StringBuilder, append(I)Ljava/lang/StringBuilder; > 18,4 @45 exception:19
+NORMAL newBytesFor:22 = invokevirtual < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 20 @48 exception:21 Node: < Primordial, Ljava/lang/StringUTF16, newBytesFor(I)[B > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere[2]5 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 3 @4 exception:4
+NORMAL handleEndElement:87 = invokevirtual < Extension, Ljava/lang/String, trim()Ljava/lang/String; > 5 @244 exception:86 Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL trim:return 14 Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[10]8 = invokevirtual < Extension, Ljava/lang/String, trim()Ljava/lang/String; > 5 @14 exception:7
+NORMAL getTrimmed:return 8 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[8]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 3,7 @10 exception:8
+NORMAL checkAndSetRMRPCAddress:conditional branch(ne, to iindex=54) 9,5 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, checkAndSetRMRPCAddress(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Configuration conf) {
+    String rpcAddressConfKey = null;
+    try {
+      rpcAddressConfKey = addSuffix(prefix, RMId);
+      if (conf.getTrimmed(rpcAddressConfKey) == null) {
+        String hostNameConfKey = addSuffix(YarnConfiguration.RM_HOSTNAME, RMId);
+        String confVal = conf.getTrimmed(hostNameConfKey);
+        if (confVal == null) {
+          throwBadConfigurationException(getNeedToSetValueMessage(
+              hostNameConfKey + " or " + addSuffix(prefix, RMId)));
+        } else {
+          conf.set(addSuffix(prefix, RMId), confVal + ":"
+              + YarnConfiguration.getRMDefaultPortNumber(prefix, conf));
+        }
+      }
+    } catch (IllegalArgumentException iae) {
+      String errmsg = iae.getMessage();
+      if (rpcAddressConfKey == null) {
+        // Error at addSuffix
+        errmsg = getInvalidValueMessage(YarnConfiguration.RM_HA_ID, RMId);
+      }
+      throwBadConfigurationException(errmsg);
+    }
+  }
+}
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, getConfKeyForRMInstance(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:10..14]6 - org.apache.hadoop.yarn.conf.HAUtil.getConfKeyForRMInstance(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:8..9]5 - org.apache.hadoop.yarn.conf.HAUtil.getConfKeyForRMInstance(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:15..17]7 - org.apache.hadoop.yarn.conf.HAUtil.getConfKeyForRMInstance(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]9 - org.apache.hadoop.yarn.conf.HAUtil.getConfKeyForRMInstance(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=294, lastLineNumber=296, firstMethodNumber=290, lastMethodNumber=296, isFirstLineValid=true, methodSrcCode=
+  static String getConfKeyForRMInstance(String prefix, Configuration conf) {
+    if (!YarnConfiguration.getServiceAddressConfKeys(conf).contains(prefix)) {
+      return prefix;
+    } else {
+      String RMId = getRMHAId(conf);
+      checkAndSetRMRPCAddress(prefix, RMId, conf);
+      return addSuffix(prefix, RMId);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, verifyAndSetRMHAIdsList(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:47..51]27 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetRMHAIdsList(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:46..46]26 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetRMHAIdsList(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:52..52]28 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetRMHAIdsList(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]36 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetRMHAIdsList(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=129, lastLineNumber=131, firstMethodNumber=116, lastMethodNumber=137, isFirstLineValid=true, methodSrcCode=
+  private static void verifyAndSetRMHAIdsList(Configuration conf) {
+    Collection<String> ids =
+      conf.getTrimmedStringCollection(YarnConfiguration.RM_HA_IDS);
+    if (ids.size() < 2) {
+      throwBadConfigurationException(
+        getInvalidValueMessage(YarnConfiguration.RM_HA_IDS,
+          conf.get(YarnConfiguration.RM_HA_IDS) +
+          "\nHA mode requires atleast two RMs"));
+    }
+
+    StringBuilder setValue = new StringBuilder();
+    for (String id: ids) {
+      // verify the RM service addresses configurations for every RMIds
+      for (String prefix : YarnConfiguration.getServiceAddressConfKeys(conf)) {
+        checkAndSetRMRPCAddress(prefix, id, conf);
+      }
+      setValue.append(id)
+          .append(",");
+    }
+    conf.set(YarnConfiguration.RM_HA_IDS,
+      setValue.substring(0, setValue.length() - 1));
+  }
+
+}

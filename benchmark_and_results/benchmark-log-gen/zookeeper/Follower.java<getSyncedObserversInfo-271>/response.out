@@ -1,0 +1,13 @@
+```java
+if (om != null && om.getNumActiveObservers() > 0) {
+    // ConfLogger Inserted Start
+    logger.info("Active observers found. Configuration parameter: om, Number of active observers: " + om.getNumActiveObservers());
+    // ConfLogger Inserted End
+    return om.getActiveObservers();
+}
+// ConfLogger Inserted Start
+logger.info("No active observers found or 'om' is null. Configuration parameter: om");
+// ConfLogger Inserted End
+return Collections.emptySet();
+}
+```

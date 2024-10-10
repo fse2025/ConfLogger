@@ -1,0 +1,38 @@
+```java
+if (fileName != null) {
+    File file = new File(fileName);
+    if (file.exists()) {
+        try (
+            Reader fileReader = new InputStreamReader(
+                Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);
+            BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            List<String> lines = new ArrayList<String>();
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                lines.add(line);
+            }
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Loaded IP list of size = " + lines.size() +
+                          " from file = " + fileName);
+            }
+            return (lines.toArray(new String[lines.size()]));
+        }
+    } else {
+        // ConfLogger Commented: Not Informative
+        // LOG.debug("Missing ip list file : "+ fileName);
+        // ConfLogger Inserted Start
+        logger.warn("IP list file is missing. Please check the configuration parameter 'fileName': " + fileName);
+        // ConfLogger Inserted End
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter 'fileName' is not set. Please provide a valid file name.");
+    // ConfLogger Inserted End
+}
+} catch (IOException ioe) {
+    LOG.error(ioe.toString());
+    throw ioe;
+}
+return null;
+}
+```

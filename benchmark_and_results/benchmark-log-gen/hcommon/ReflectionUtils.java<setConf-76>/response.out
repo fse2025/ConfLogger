@@ -1,0 +1,15 @@
+```java
+if (conf != null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration is not null. Proceeding with setting configuration.");
+    // ConfLogger Inserted End
+    if (theObject instanceof Configurable) {
+        ((Configurable) theObject).setConf(conf);
+    }
+    setJobConf(theObject, conf);
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration is null. Skipping setting configuration.");
+    // ConfLogger Inserted End
+}
+```

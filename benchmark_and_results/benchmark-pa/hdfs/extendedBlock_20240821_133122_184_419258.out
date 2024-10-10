@@ -1,0 +1,32 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	QuorumJournalManager.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.client.QuorumJournalManager.setOutputBufferCapacity(I)V	methodLines:	452:463
+blockLines:	456:-1
+paras:	null
+TaintedStat:	NORMAL setOutputBufferCapacity:conditional branch(lt, to iindex=31) 2,8 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/client/QuorumJournalManager, setOutputBufferCapacity(I)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/client/QuorumJournalManager, setOutputBufferCapacity(I)V > Context: Everywhere[4]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,5,6 @8 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/client/QuorumJournalManager, setOutputBufferCapacity(I)V > Context: Everywhere[4]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,5,6 @8 exception:7
+NORMAL setOutputBufferCapacity:conditional branch(lt, to iindex=31) 2,8 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/client/QuorumJournalManager, setOutputBufferCapacity(I)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setOutputBufferCapacity(int size) {
+    int ipcMaxDataLength = conf.getInt(
+        CommonConfigurationKeys.IPC_MAXIMUM_DATA_LENGTH,
+        CommonConfigurationKeys.IPC_MAXIMUM_DATA_LENGTH_DEFAULT);
+    if (size >= ipcMaxDataLength) {
+      throw new IllegalArgumentException("Attempted to use QJM output buffer "
+          + "capacity (" + size + ") greater than the IPC max data length ("
+          + CommonConfigurationKeys.IPC_MAXIMUM_DATA_LENGTH + " = "
+          + ipcMaxDataLength + "). This will cause journals to reject edits.");
+    }
+    outputBufferCapacity = size;
+  }
+
+
+
+====================ctx:=======================

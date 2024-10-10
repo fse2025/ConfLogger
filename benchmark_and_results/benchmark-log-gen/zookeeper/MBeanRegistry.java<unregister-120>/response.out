@@ -1,0 +1,19 @@
+```java
+if (path == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'path' is null. Ensure 'path' is properly set.");
+    // ConfLogger Inserted End
+    return;
+}
+if (!bean.isHidden()) {
+    final ObjectName objName = makeObjectName(path, bean);
+    // ConfLogger Commented: Not Informative
+    // LOG.debug("Unregister MBean [{}]", objName);
+    // ConfLogger Inserted Start
+    logger.debug("Unregistering MBean with ObjectName [{}] as 'bean.isHidden()' is false.", objName);
+    // ConfLogger Inserted End
+    synchronized (LOCK) {
+        mBeanServer.unregisterMBean(objName);
+    }
+}
+```

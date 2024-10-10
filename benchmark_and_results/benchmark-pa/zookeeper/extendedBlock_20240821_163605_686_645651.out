@@ -1,0 +1,82 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileTxnLog.java	methodSinagture:	org.apache.zookeeper.server.persistence.FileTxnLog.<clinit>()V	methodLines:	101:147
+blockLines:	134:-1
+paras:	zookeeper.fsync.warningthresholdms
+TaintedStat:	NORMAL <clinit>:conditional branch(ne, to iindex=20) 15,16 Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere[11]15 = invokestatic < Application, Ljava/lang/Long, getLong(Ljava/lang/String;)Ljava/lang/Long; > 13 @30 exception:14
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere[11]15 = invokestatic < Application, Ljava/lang/Long, getLong(Ljava/lang/String;)Ljava/lang/Long; > 13 @30 exception:14
+NORMAL <clinit>:conditional branch(ne, to iindex=20) 15,16 Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	FileTxnLog.java	methodSinagture:	org.apache.zookeeper.server.persistence.FileTxnLog.<clinit>()V	methodLines:	101:147
+blockLines:	140:-1
+paras:	zookeeper.txnLogSizeLimitInKb
+TaintedStat:	NORMAL <clinit>:conditional branch(le, to iindex=47) 30,31 Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere[25]26 = invokestatic < Application, Ljava/lang/Long, getLong(Ljava/lang/String;J)Ljava/lang/Long; > 24,9 @59 exception:25
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere[25]26 = invokestatic < Application, Ljava/lang/Long, getLong(Ljava/lang/String;J)Ljava/lang/Long; > 24,9 @59 exception:25
+NORMAL <clinit>:28 = invokevirtual < Application, Ljava/lang/Long, longValue()J > 26 @64 exception:27 Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Long, longValue()J > Context: Everywhere
+NORMAL longValue:return 3 Node: < Primordial, Ljava/lang/Long, longValue()J > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Long, longValue()J > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere[28]28 = invokevirtual < Application, Ljava/lang/Long, longValue()J > 26 @64 exception:27
+NORMAL <clinit>:30 = compare 28,29 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere
+NORMAL <clinit>:conditional branch(le, to iindex=47) 30,31 Node: < Application, Lorg/apache/zookeeper/server/persistence/FileTxnLog, <clinit>()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    public static final int TXNLOG_MAGIC = ByteBuffer.wrap("ZKLG".getBytes()).getInt();
+
+    public static final int VERSION = 2;
+
+    public static final String LOG_FILE_PREFIX = "log";
+
+    static final String FSYNC_WARNING_THRESHOLD_MS_PROPERTY = "fsync.warningthresholdms";
+    static final String ZOOKEEPER_FSYNC_WARNING_THRESHOLD_MS_PROPERTY = "zookeeper." + FSYNC_WARNING_THRESHOLD_MS_PROPERTY;
+
+    /** Maximum time we allow for elapsed fsync before WARNing */
+    private static final long fsyncWarningThresholdMS;
+
+    /**
+     * This parameter limit the size of each txnlog to a given limit (KB).
+     * It does not affect how often the system will take a snapshot [zookeeper.snapCount]
+     * We roll the txnlog when either of the two limits are reached.
+     * Also since we only roll the logs at transaction boundaries, actual file size can exceed
+     * this limit by the maximum size of a serialized transaction.
+     * The feature is disabled by default (-1)
+     */
+    private static final String txnLogSizeLimitSetting = "zookeeper.txnLogSizeLimitInKb";
+
+    /**
+     * The actual txnlog size limit in bytes.
+     */
+    private static long txnLogSizeLimit = -1;
+
+    static {
+        LOG = LoggerFactory.getLogger(FileTxnLog.class);
+
+        /** Local variable to read fsync.warningthresholdms into */
+        Long fsyncWarningThreshold;
+        if ((fsyncWarningThreshold = Long.getLong(ZOOKEEPER_FSYNC_WARNING_THRESHOLD_MS_PROPERTY)) == null) {
+            fsyncWarningThreshold = Long.getLong(FSYNC_WARNING_THRESHOLD_MS_PROPERTY, 1000);
+        }
+        fsyncWarningThresholdMS = fsyncWarningThreshold;
+
+        Long logSize = Long.getLong(txnLogSizeLimitSetting, -1);
+        if (logSize > 0) {
+            LOG.info("{} = {}", txnLogSizeLimitSetting, logSize);
+
+            // Convert to bytes
+            logSize = logSize * 1024;
+            txnLogSizeLimit = logSize;
+        }
+    }
+
+
+
+====================ctx:=======================

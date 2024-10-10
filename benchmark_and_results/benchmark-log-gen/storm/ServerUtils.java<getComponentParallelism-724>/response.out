@@ -1,0 +1,19 @@
+```java
+Map<String, Object> combinedConf = Utils.merge(topoConf, StormCommon.componentConf(component));
+int numTasks = ObjectReader.getInt(combinedConf.get(Config.TOPOLOGY_TASKS), StormCommon.numStartExecutors(component));
+Integer maxParallel = ObjectReader.getInt(combinedConf.get(Config.TOPOLOGY_MAX_TASK_PARALLELISM), null);
+int ret = numTasks;
+if (maxParallel != null) {
+    // ConfLogger Inserted Start
+    logger.debug("Configuration parameter 'TOPOLOGY_MAX_TASK_PARALLELISM' is set. Value: " + maxParallel);
+    logger.debug("Original number of tasks: " + numTasks + ". Adjusted number of tasks: " + Math.min(maxParallel, numTasks));
+    // ConfLogger Inserted End
+    ret = Math.min(maxParallel, numTasks);
+} else {
+    // ConfLogger Inserted Start
+    logger.debug("Configuration parameter 'TOPOLOGY_MAX_TASK_PARALLELISM' is not set. Using default number of tasks: " + numTasks);
+    // ConfLogger Inserted End
+}
+return ret;
+}
+```

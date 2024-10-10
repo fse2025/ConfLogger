@@ -1,0 +1,72 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HDFSBlocksDistribution.java	methodSinagture:	org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlocksLocalityWeightInternal(Ljava/lang/String;Lorg/apache/hadoop/hbase/HDFSBlocksDistribution$Visitor;)J	methodLines:	252:270
+blockLines:	263:-1
+paras:	null
+TaintedStat:	NORMAL getBlocksLocalityWeightInternal:conditional branch(eq, to iindex=30) 19,20 Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlocksLocalityWeightInternal(Ljava/lang/String;Lorg/apache/hadoop/hbase/HDFSBlocksDistribution$Visitor;)J > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlocksLocalityWeightInternal(Ljava/lang/String;Lorg/apache/hadoop/hbase/HDFSBlocksDistribution$Visitor;)J > Context: Everywhere[15]14 = invokestatic < Application, Lorg/apache/hadoop/hbase/util/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 12,12 @30 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlocksLocalityWeightInternal(Ljava/lang/String;Lorg/apache/hadoop/hbase/HDFSBlocksDistribution$Visitor;)J > Context: Everywhere[15]14 = invokestatic < Application, Lorg/apache/hadoop/hbase/util/DNS, getDefaultHost(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 12,12 @30 exception:13
+PHI Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlocksLocalityWeightInternal(Ljava/lang/String;Lorg/apache/hadoop/hbase/HDFSBlocksDistribution$Visitor;)J > Context: Everywhere:17 = phi  14,11
+NORMAL getBlocksLocalityWeightInternal:19 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,17 @43 exception:18 Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlocksLocalityWeightInternal(Ljava/lang/String;Lorg/apache/hadoop/hbase/HDFSBlocksDistribution$Visitor;)J > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlocksLocalityWeightInternal(Ljava/lang/String;Lorg/apache/hadoop/hbase/HDFSBlocksDistribution$Visitor;)J > Context: Everywhere[21]19 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,17 @43 exception:18
+NORMAL getBlocksLocalityWeightInternal:conditional branch(eq, to iindex=30) 19,20 Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlocksLocalityWeightInternal(Ljava/lang/String;Lorg/apache/hadoop/hbase/HDFSBlocksDistribution$Visitor;)J > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private long getBlocksLocalityWeightInternal(String host, Visitor visitor) {
+    long localityIndex = 0;
+    HostAndWeight hostAndWeight = this.hostAndWeights.get(host);
+    // Compatible with local mode, see HBASE-24569
+    if (hostAndWeight == null) {
+      String currentHost = "";
+      try {
+        currentHost = DNS.getDefaultHost("default", "default");
+      } catch (Exception e) {
+        // Just ignore, it's ok, avoid too many log info
+      }
+      if (host.equals(currentHost)) {
+        hostAndWeight = this.hostAndWeights.get(HConstants.LOCALHOST);
+      }
+    }
+    if (hostAndWeight != null && uniqueBlocksTotalWeight != 0) {
+      localityIndex = visitor.visit(hostAndWeight);
+    }
+    return localityIndex;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlockLocalityIndex(Ljava/lang/String;)F > Context: Everywhere, blocks=[BB[SSA:11..11]5 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlockLocalityIndex(Ljava/lang/String;)F, BB[SSA:8..10]4 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlockLocalityIndex(Ljava/lang/String;)F, BB[SSA:12..14]6 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlockLocalityIndex(Ljava/lang/String;)F, BB[SSA:-1..-2]8 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlockLocalityIndex(Ljava/lang/String;)F], numberOfBasicBlocks=4, firstLineNumber=215, lastLineNumber=215, firstMethodNumber=211, lastMethodNumber=215, isFirstLineValid=true, methodSrcCode=
+  public float getBlockLocalityIndex(String host) {
+    if (uniqueBlocksTotalWeight == 0) {
+      return 0.0f;
+    } else {
+      return (float) getBlocksLocalityWeightInternal(host, HostAndWeight::getWeight)
+        / (float) uniqueBlocksTotalWeight;
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlocksLocalWeight(Ljava/lang/String;)J > Context: Everywhere, blocks=[BB[SSA:3..3]2 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlocksLocalWeight(Ljava/lang/String;)J, BB[SSA:0..2]1 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlocksLocalWeight(Ljava/lang/String;)J, BB[SSA:4..4]3 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlocksLocalWeight(Ljava/lang/String;)J, BB[SSA:-1..-2]4 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlocksLocalWeight(Ljava/lang/String;)J], numberOfBasicBlocks=4, firstLineNumber=240, lastLineNumber=240, firstMethodNumber=239, lastMethodNumber=240, isFirstLineValid=true, methodSrcCode=
+  public long getBlocksLocalWeight(String host) {
+    return getBlocksLocalityWeightInternal(host, HostAndWeight::getWeight);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlockLocalityIndexForSsd(Ljava/lang/String;)F > Context: Everywhere, blocks=[BB[SSA:11..11]5 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlockLocalityIndexForSsd(Ljava/lang/String;)F, BB[SSA:8..10]4 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlockLocalityIndexForSsd(Ljava/lang/String;)F, BB[SSA:12..14]6 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlockLocalityIndexForSsd(Ljava/lang/String;)F, BB[SSA:-1..-2]8 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlockLocalityIndexForSsd(Ljava/lang/String;)F], numberOfBasicBlocks=4, firstLineNumber=229, lastLineNumber=229, firstMethodNumber=225, lastMethodNumber=229, isFirstLineValid=true, methodSrcCode=
+  public float getBlockLocalityIndexForSsd(String host) {
+    if (uniqueBlocksTotalWeight == 0) {
+      return 0.0f;
+    } else {
+      return (float) getBlocksLocalityWeightInternal(host, HostAndWeight::getWeightForSsd)
+        / (float) uniqueBlocksTotalWeight;
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/HDFSBlocksDistribution, getBlocksLocalWithSsdWeight(Ljava/lang/String;)J > Context: Everywhere, blocks=[BB[SSA:3..3]2 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlocksLocalWithSsdWeight(Ljava/lang/String;)J, BB[SSA:0..2]1 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlocksLocalWithSsdWeight(Ljava/lang/String;)J, BB[SSA:4..4]3 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlocksLocalWithSsdWeight(Ljava/lang/String;)J, BB[SSA:-1..-2]4 - org.apache.hadoop.hbase.HDFSBlocksDistribution.getBlocksLocalWithSsdWeight(Ljava/lang/String;)J], numberOfBasicBlocks=4, firstLineNumber=249, lastLineNumber=249, firstMethodNumber=248, lastMethodNumber=249, isFirstLineValid=true, methodSrcCode=
+  public long getBlocksLocalWithSsdWeight(String host) {
+    return getBlocksLocalityWeightInternal(host, HostAndWeight::getWeightForSsd);
+  }
+}

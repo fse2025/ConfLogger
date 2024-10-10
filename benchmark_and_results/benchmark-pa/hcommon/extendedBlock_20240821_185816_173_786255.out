@@ -1,0 +1,29 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AvroReflectSerialization.java	methodSinagture:	org.apache.hadoop.io.serializer.avro.AvroReflectSerialization.getPackages()V	methodLines:	65:73
+blockLines:	68:-1
+paras:	null
+TaintedStat:	NORMAL getPackages:conditional branch(eq, to iindex=38) 7,10 Node: < Application, Lorg/apache/hadoop/io/serializer/avro/AvroReflectSerialization, getPackages()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/serializer/avro/AvroReflectSerialization, getPackages()V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 4,5 @6 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/serializer/avro/AvroReflectSerialization, getPackages()V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 4,5 @6 exception:6
+NORMAL getPackages:conditional branch(eq, to iindex=38) 7,10 Node: < Application, Lorg/apache/hadoop/io/serializer/avro/AvroReflectSerialization, getPackages()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void getPackages() {
+    String[] pkgList  = getConf().getStrings(AVRO_REFLECT_PACKAGES);
+    packages = new HashSet<String>();
+    if (pkgList != null) {
+      for (String pkg : pkgList) {
+        packages.add(pkg.trim());
+      }
+    }
+  }
+
+
+
+====================ctx:=======================

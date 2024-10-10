@@ -1,0 +1,29 @@
+```java
+<code-whole>
+boolean oneExecutorPerWorker = (Boolean) topoConf.getOrDefault(Config.TOPOLOGY_RAS_ONE_EXECUTOR_PER_WORKER, false);
+boolean oneComponentPerWorker = (Boolean) topoConf.getOrDefault(Config.TOPOLOGY_RAS_ONE_COMPONENT_PER_WORKER, false);
+
+double topologyWorkerMaxHeapSize =
+ObjectReader.getDouble(topoConf.get(Config.TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB));
+
+int numOfAckerExecutorsPerWorker = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER));
+double maxTopoExecMem = getMaxExecutorMemoryUsageForTopo(topology, topoConf);
+double ackerExecMem = getAckerExecutorMemoryUsageForTopo(topology, topoConf);
+double minMemReqForWorker = maxTopoExecMem + ackerExecMem * numOfAckerExecutorsPerWorker;
+
+// A worker need to have enough resources for a bigest topo executor + topology.acker.executors.per.worker ackers
+if (!oneExecutorPerWorker
+&& !oneComponentPerWorker
+&& topologyWorkerMaxHeapSize < minMemReqForWorker) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration issue detected: The worker does not have enough resources. " +
+                "Ensure that the topology worker max heap size is greater than or equal to the minimum memory required for a worker. " +
+                "Current settings - oneExecutorPerWorker: {}, oneComponentPerWorker: {}, " +
+                "topologyWorkerMaxHeapSize: {}, minMemReqForWorker: {}, " +
+                "topology.ras.acker.executors.per.worker: {}.",
+                oneExecutorPerWorker, oneComponentPerWorker, topologyWorkerMaxHeapSize, minMemReqForWorker, numOfAckerExecutorsPerWorker);
+    // ConfLogger Inserted End
+}
+}
+</code-whole>
+```

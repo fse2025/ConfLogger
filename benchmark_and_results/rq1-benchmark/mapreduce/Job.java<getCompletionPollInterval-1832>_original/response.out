@@ -1,0 +1,14 @@
+```java
+public static int getCompletionPollInterval(Configuration conf) {
+    int completionPollIntervalMillis = conf.getInt(
+        COMPLETION_POLL_INTERVAL_KEY, DEFAULT_COMPLETION_POLL_INTERVAL);
+    if (completionPollIntervalMillis < 1) {
+        // ConfLogger Skipped: The existing log message already contains configuration parameter key and the invalid value handling information.
+        LOG.warn(COMPLETION_POLL_INTERVAL_KEY +
+            " has been set to an invalid value; "
+            + "replacing with " + DEFAULT_COMPLETION_POLL_INTERVAL);
+        completionPollIntervalMillis = DEFAULT_COMPLETION_POLL_INTERVAL;
+    }
+    return completionPollIntervalMillis;
+}
+```

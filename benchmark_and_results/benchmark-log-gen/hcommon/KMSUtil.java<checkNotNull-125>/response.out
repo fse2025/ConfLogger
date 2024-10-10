@@ -1,0 +1,10 @@
+```java
+if (o == null) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter '{}' cannot be null. Please ensure it is properly set.", name);
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException("Parameter '" + name + "' cannot be null");
+}
+return o;
+}
+```

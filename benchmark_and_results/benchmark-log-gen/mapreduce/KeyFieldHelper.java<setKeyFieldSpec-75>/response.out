@@ -1,0 +1,12 @@
+```java
+if (end >= start) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'end' is greater than or equal to 'start'. Values: start={}, end={}", start, end);
+    // ConfLogger Inserted End
+    KeyDescription k = new KeyDescription();
+    k.beginFieldIdx = start;
+    k.endFieldIdx = end;
+    keySpecSeen = true;
+    allKeySpecs.add(k);
+}
+```

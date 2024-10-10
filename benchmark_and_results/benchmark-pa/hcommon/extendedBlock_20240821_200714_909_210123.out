@@ -1,0 +1,100 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Path.java	methodSinagture:	org.apache.hadoop.fs.Path.checkPathArg(Ljava/lang/String;)V	methodLines:	166:175
+blockLines:	167:-1
+paras:	null
+TaintedStat:	NORMAL checkPathArg:conditional branch(ne, to iindex=8) 2,4 Node: < Application, Lorg/apache/hadoop/fs/Path, checkPathArg(Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, removeAcl(Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, getUriPath(Lorg/apache/hadoop/fs/Path;)Ljava/lang/String; > 1,2 @6 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, removeAcl(Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, getUriPath(Lorg/apache/hadoop/fs/Path;)Ljava/lang/String; > 1,2 @6 exception:5
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, removeAcl(Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[6]9 = invokevirtual < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult; > 4,6,7 @10 exception:8 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult; > Context: Everywhere[139]invokespecial < Application, Lorg/apache/hadoop/fs/Path, <init>(Ljava/lang/String;)V > 141,2 @266 exception:142 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/Path, <init>(Ljava/lang/String;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/Path, <init>(Ljava/lang/String;)V > Context: Everywhere[4]invokespecial < Application, Lorg/apache/hadoop/fs/Path, checkPathArg(Ljava/lang/String;)V > 1,2 @6 exception:5 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/Path, checkPathArg(Ljava/lang/String;)V > Context: Everywhere v2
+NORMAL checkPathArg:conditional branch(ne, to iindex=8) 2,4 Node: < Application, Lorg/apache/hadoop/fs/Path, checkPathArg(Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // disallow construction of a Path from an empty string
+    if ( path == null ) {
+      throw new IllegalArgumentException(
+          "Can not create a Path from a null string");
+    }
+    if( path.length() == 0 ) {
+       throw new IllegalArgumentException(
+           "Can not create a Path from an empty string");
+    }   
+  }
+  
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/Path, <init>(Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:2..4]2 - org.apache.hadoop.fs.Path.<init>(Ljava/lang/String;)V, BB[SSA:0..1]1 - org.apache.hadoop.fs.Path.<init>(Ljava/lang/String;)V, BB[SSA:5..6]3 - org.apache.hadoop.fs.Path.<init>(Ljava/lang/String;)V, BB[SSA:-1..-2]34 - org.apache.hadoop.fs.Path.<init>(Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=183, lastLineNumber=190, firstMethodNumber=182, lastMethodNumber=222, isFirstLineValid=true, methodSrcCode=
+   */
+  public Path(String pathString) throws IllegalArgumentException {
+    checkPathArg( pathString );
+    
+    // We can't use 'new URI(String)' directly, since it assumes things are
+    // escaped, which we don't require of Paths. 
+    
+    // add a slash in front of paths with Windows drive letters
+    if (hasWindowsDrive(pathString) && pathString.charAt(0) != '/') {
+      pathString = "/" + pathString;
+    }
+
+    // parse uri components
+    String scheme = null;
+    String authority = null;
+
+    int start = 0;
+
+    // parse uri scheme, if any
+    int colon = pathString.indexOf(':');
+    int slash = pathString.indexOf('/');
+    if ((colon != -1) &&
+        ((slash == -1) || (colon < slash))) {     // has a scheme
+      scheme = pathString.substring(0, colon);
+      start = colon+1;
+    }
+
+    // parse uri authority, if any
+    if (pathString.startsWith("//", start) &&
+        (pathString.length()-start > 2)) {       // has authority
+      int nextSlash = pathString.indexOf('/', start+2);
+      int authEnd = nextSlash > 0 ? nextSlash : pathString.length();
+      authority = pathString.substring(start+2, authEnd);
+      start = authEnd;
+    }
+
+    // uri path is the rest of the string -- query & fragment not supported
+    String path = pathString.substring(start, pathString.length());
+
+    initialize(scheme, authority, path, null);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/Path, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:2..4]2 - org.apache.hadoop.fs.Path.<init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:0..1]1 - org.apache.hadoop.fs.Path.<init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:5..6]3 - org.apache.hadoop.fs.Path.<init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]24 - org.apache.hadoop.fs.Path.<init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=240, lastLineNumber=244, firstMethodNumber=239, lastMethodNumber=255, isFirstLineValid=true, methodSrcCode=
+   */
+  public Path(String scheme, String authority, String path) {
+    checkPathArg( path );
+
+    // add a slash in front of paths with Windows drive letters
+    if (hasWindowsDrive(path) && path.charAt(0) != '/') {
+      path = "/" + path;
+    }
+
+    // add "./" in front of Linux relative paths so that a path containing
+    // a colon e.q. "a:b" will not be interpreted as scheme "a".
+    if (!WINDOWS && path.charAt(0) != '/') {
+      path = "./" + path;
+    }
+
+    initialize(scheme, authority, path, null);
+  }
+
+}

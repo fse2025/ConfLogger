@@ -1,0 +1,30 @@
+```java
+if (!ObjectReader.getBoolean(conf.get(Config.SUPERVISOR_RUN_WORKER_AS_USER), false)) {
+    // ConfLogger Inserted Start
+    logger.info("Service not enabled because {} is set to false or not set.", Config.SUPERVISOR_RUN_WORKER_AS_USER);
+    // ConfLogger Inserted End
+    return;
+}
+String wlCommand = ObjectReader.getString(conf.get(Config.SUPERVISOR_WORKER_LAUNCHER), "");
+if (wlCommand.isEmpty()) {
+    String stormHome = System.getProperty(ConfigUtils.STORM_HOME);
+    wlCommand = stormHome + "/bin/worker-launcher";
+}
+List<String> command = new ArrayList<>(Arrays.asList(wlCommand, user, "blob", path.toString()));
+
+String[] commandArray = command.toArray(new String[command.size()]);
+ShellUtils.ShellCommandExecutor shExec = new ShellUtils.ShellCommandExecutor(commandArray);
+LOG.debug("Setting blob permissions, command: {}", Arrays.toString(commandArray));
+
+try {
+    shExec.execute();
+    LOG.debug("output: {}", shExec.getOutput());
+} catch (ShellUtils.ExitCodeException e) {
+    int exitCode = shExec.getExitCode();
+    LOG.warn("Exit code from worker-launcher is: {}", exitCode, e);
+    LOG.debug("output: {}", shExec.getOutput());
+    throw new IOException("Setting blob permissions failed"
+            + " (exitCode=" + exitCode + ") with output: " + shExec.getOutput(), e);
+}
+}
+```

@@ -1,0 +1,36 @@
+```java
+UserParam.setUserPattern(conf.get(
+HdfsClientConfigKeys.DFS_WEBHDFS_USER_PATTERN_KEY,
+HdfsClientConfigKeys.DFS_WEBHDFS_USER_PATTERN_DEFAULT));
+AclPermissionParam.setAclPermissionPattern(conf.get(
+HdfsClientConfigKeys.DFS_WEBHDFS_ACL_PERMISSION_PATTERN_KEY,
+HdfsClientConfigKeys.DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT));
+
+final String pathSpec = WebHdfsFileSystem.PATH_PREFIX + "/*";
+
+// add REST CSRF prevention filter
+if (conf.getBoolean(DFS_WEBHDFS_REST_CSRF_ENABLED_KEY,
+DFS_WEBHDFS_REST_CSRF_ENABLED_DEFAULT)) {
+    Map<String, String> restCsrfParams = RestCsrfPreventionFilter
+        .getFilterParams(conf, "dfs.webhdfs.rest-csrf.");
+    String restCsrfClassName = RestCsrfPreventionFilter.class.getName();
+    HttpServer2.defineFilter(httpServer2.getWebAppContext(),
+        restCsrfClassName, restCsrfClassName, restCsrfParams,
+        new String[] {pathSpec});
+    // ConfLogger Inserted Start
+    logger.info("REST CSRF prevention filter enabled with parameters: {}", restCsrfParams);
+    // ConfLogger Inserted End
+} else {
+    // ConfLogger Inserted Start
+    logger.info("REST CSRF prevention filter is disabled. Configuration key: {}, default value: {}", DFS_WEBHDFS_REST_CSRF_ENABLED_KEY, DFS_WEBHDFS_REST_CSRF_ENABLED_DEFAULT);
+    // ConfLogger Inserted End
+}
+
+// add webhdfs packages
+final Map<String, String> params = new HashMap<>();
+params.put(ResourceConfig.FEATURE_MATCH_MATRIX_PARAMS, "true");
+httpServer2.addJerseyResourcePackage(
+    jerseyResourcePackage + ";" + Param.class.getPackage().getName(),
+    pathSpec, params);
+}
+```

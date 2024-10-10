@@ -1,0 +1,19 @@
+```java
+if (rmPrincipal == null) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration Error: RM principal string is null. Please set the 'rmPrincipal' configuration parameter properly.");
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException("RM principal string is null");
+}
+
+if (HAUtil.isHAEnabled(conf)) {
+    conf = getYarnConfWithRmHaId(conf);
+}
+
+String hostname = conf.getSocketAddr(
+    YarnConfiguration.RM_ADDRESS,
+    YarnConfiguration.DEFAULT_RM_ADDRESS,
+    YarnConfiguration.DEFAULT_RM_PORT).getHostName();
+
+return SecurityUtil.getServerPrincipal(rmPrincipal, hostname);
+```

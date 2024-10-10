@@ -1,0 +1,51 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Job.java	methodSinagture:	org.apache.hadoop.mapreduce.Job.getCompletionPollInterval(Lorg/apache/hadoop/conf/Configuration;)I	methodLines:	1832:1841
+blockLines:	1835:-1
+paras:	mapreduce.client.completion.pollinterval
+TaintedStat:	NORMAL getCompletionPollInterval:conditional branch(ge, to iindex=13) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/Job, getCompletionPollInterval(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/Job, getCompletionPollInterval(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,3,4 @7 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/Job, getCompletionPollInterval(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,3,4 @7 exception:5
+NORMAL getCompletionPollInterval:conditional branch(ge, to iindex=13) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/Job, getCompletionPollInterval(Lorg/apache/hadoop/conf/Configuration;)I > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static int getCompletionPollInterval(Configuration conf) {
+    int completionPollIntervalMillis = conf.getInt(
+      COMPLETION_POLL_INTERVAL_KEY, DEFAULT_COMPLETION_POLL_INTERVAL);
+    if (completionPollIntervalMillis < 1) { 
+      LOG.warn(COMPLETION_POLL_INTERVAL_KEY + 
+       " has been set to an invalid value; "
+       + "replacing with " + DEFAULT_COMPLETION_POLL_INTERVAL);
+      completionPollIntervalMillis = DEFAULT_COMPLETION_POLL_INTERVAL;
+    }
+    return completionPollIntervalMillis;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/Job, waitForCompletion(Z)Z > Context: Everywhere, blocks=[BB[SSA:16..16]9 - org.apache.hadoop.mapreduce.Job.waitForCompletion(Z)Z, BB[SSA:15..15]8 - org.apache.hadoop.mapreduce.Job.waitForCompletion(Z)Z, BB[SSA:17..17]10 - org.apache.hadoop.mapreduce.Job.waitForCompletion(Z)Z, BB[SSA:-1..-2]18 - org.apache.hadoop.mapreduce.Job.waitForCompletion(Z)Z], numberOfBasicBlocks=4, firstLineNumber=1703, lastLineNumber=1703, firstMethodNumber=1694, lastMethodNumber=1711, isFirstLineValid=true, methodSrcCode=
+                                            ClassNotFoundException {
+    if (state == JobState.DEFINE) {
+      submit();
+    }
+    if (verbose) {
+      monitorAndPrintJob();
+    } else {
+      // get the completion poll interval from the client.
+      int completionPollIntervalMillis = 
+        Job.getCompletionPollInterval(cluster.getConf());
+      while (!isComplete()) {
+        try {
+          Thread.sleep(completionPollIntervalMillis);
+        } catch (InterruptedException ie) {
+        }
+      }
+    }
+    return isSuccessful();
+  }
+}

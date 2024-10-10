@@ -1,0 +1,32 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ManifestCommitterConfig.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitterConfig.createSubmitter(Ljava/lang/String;I)Lorg/apache/hadoop/util/functional/CloseableTaskPoolSubmitter;	methodLines:	365:371
+blockLines:	367:-1
+paras:	null
+TaintedStat:	NORMAL createSubmitter:conditional branch(gt, to iindex=11) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitterConfig, createSubmitter(Ljava/lang/String;I)Lorg/apache/hadoop/util/functional/CloseableTaskPoolSubmitter; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitterConfig, createSubmitter(Ljava/lang/String;I)Lorg/apache/hadoop/util/functional/CloseableTaskPoolSubmitter; > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 5,2,3 @6 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitterConfig, createSubmitter(Ljava/lang/String;I)Lorg/apache/hadoop/util/functional/CloseableTaskPoolSubmitter; > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 5,2,3 @6 exception:6
+NORMAL createSubmitter:conditional branch(gt, to iindex=11) 7,8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitterConfig, createSubmitter(Ljava/lang/String;I)Lorg/apache/hadoop/util/functional/CloseableTaskPoolSubmitter; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public CloseableTaskPoolSubmitter createSubmitter(String key, int defVal) {
+    int numThreads = conf.getInt(key, defVal);
+    if (numThreads <= 0) {
+      // ignore the setting if it is too invalid.
+      numThreads = defVal;
+    }
+    return createCloseableTaskSubmitter(numThreads, getJobAttemptId());
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitterConfig, createSubmitter()Lorg/apache/hadoop/util/functional/CloseableTaskPoolSubmitter; > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitterConfig.createSubmitter()Lorg/apache/hadoop/util/functional/CloseableTaskPoolSubmitter;, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitterConfig.createSubmitter()Lorg/apache/hadoop/util/functional/CloseableTaskPoolSubmitter;, BB[SSA:4..4]2 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitterConfig.createSubmitter()Lorg/apache/hadoop/util/functional/CloseableTaskPoolSubmitter;, BB[SSA:-1..-2]3 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitterConfig.createSubmitter()Lorg/apache/hadoop/util/functional/CloseableTaskPoolSubmitter;], numberOfBasicBlocks=4, firstLineNumber=354, lastLineNumber=355, firstMethodNumber=354, lastMethodNumber=355, isFirstLineValid=false, methodSrcCode=
+  public CloseableTaskPoolSubmitter createSubmitter() {
+    return createSubmitter(
+        OPT_IO_PROCESSORS, OPT_IO_PROCESSORS_DEFAULT);
+}

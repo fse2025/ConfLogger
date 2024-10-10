@@ -1,0 +1,14 @@
+name:dfs.image.parallel.load
+value:true
+relevant log:1-[Time-limited	Parallel Image loading and saving is enabled as dfs.image.compress is set to false. Ensure that parallel processing is supported by your environment.
+explanation: The log indicates that parallel image loading is enabled but the dfs.image.compress is set to false. This could be causing issues if the environment does not support parallel processing. The dfs.image.parallel.load configuration is set to true, which might be causing the anomaly.
+
+name:dfs.edit.log.transfer.bandwidthPerSec
+value:0
+relevant log:1-[Time-limited	Parallel Image loading and saving is enabled as dfs.image.compress is set to false. Ensure that parallel processing is supported by your environment.
+explanation: The dfs.edit.log.transfer.bandwidthPerSec is set to 0, which means throttling is disabled. This could potentially cause issues with the transfer of edit logs between journal nodes for syncing, especially in a parallel processing environment.
+
+name:hadoop.security.crypto.buffer.size
+value:8192
+relevant log:1-[Time-limited	Parallel Image loading and saving is enabled as dfs.image.compress is set to false. Ensure that parallel processing is supported by your environment.
+explanation: The buffer size used by CryptoInputStream and CryptoOutputStream is set to 8192. If the size of the data being processed is larger than this buffer size, it could potentially cause issues. This configuration might be relevant to the anomaly as it relates to data processing.

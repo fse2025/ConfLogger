@@ -1,0 +1,75 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;	methodLines:	2191:2230
+blockLines:	2195:-1
+paras:	null
+TaintedStat:	NORMAL reconfigurePropertyImpl:conditional branch(eq, to iindex=16) 12,13 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[168]72 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 70,2 @279 exception:71
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[168]72 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 70,2 @279 exception:71
+NORMAL reconfigurePropertyImpl:invokespecial < Application, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > 68,2,3,72 @282 exception:73 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL <init>:7 = invokestatic < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,3,4 @4 exception:6 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL constructMessage:13 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 11 @16 exception:12 Node: < Extension, Lorg/apache/hadoop/conf/ReconfigurationException, constructMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere[2]5 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 3 @4 exception:4
+NORMAL handleEndElement:77 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 75,5 @281 exception:76 Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Parser, handleEndElement()V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[7]12 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 2,10 @14 exception:11
+NORMAL reconfigurePropertyImpl:conditional branch(eq, to iindex=16) 12,13 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, reconfigurePropertyImpl(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws ReconfigurationException {
+    final DatanodeManager datanodeManager = namesystem.getBlockManager()
+        .getDatanodeManager();
+
+    if (property.equals(DFS_HEARTBEAT_INTERVAL_KEY)) {
+      return reconfHeartbeatInterval(datanodeManager, property, newVal);
+    } else if (property.equals(DFS_NAMENODE_HEARTBEAT_RECHECK_INTERVAL_KEY)) {
+      return reconfHeartbeatRecheckInterval(datanodeManager, property, newVal);
+    } else if (property.equals(FS_PROTECTED_DIRECTORIES)) {
+      return reconfProtectedDirectories(newVal);
+    } else if (property.equals(HADOOP_CALLER_CONTEXT_ENABLED_KEY)) {
+      return reconfCallerContextEnabled(newVal);
+    } else if (property.equals(ipcClientRPCBackoffEnable)) {
+      return reconfigureIPCBackoffEnabled(newVal);
+    } else if (property.equals(DFS_STORAGE_POLICY_SATISFIER_MODE_KEY)) {
+      return reconfigureSPSModeEvent(newVal, property);
+    } else if (property.equals(DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY)
+        || property.equals(DFS_NAMENODE_REPLICATION_STREAMS_HARD_LIMIT_KEY)
+        || property.equals(
+            DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION)) {
+      return reconfReplicationParameters(newVal, property);
+    } else if (property.equals(DFS_BLOCK_REPLICATOR_CLASSNAME_KEY) || property
+        .equals(DFS_BLOCK_PLACEMENT_EC_CLASSNAME_KEY)) {
+      reconfBlockPlacementPolicy();
+      return newVal;
+    } else if (property.equals(DFS_IMAGE_PARALLEL_LOAD_KEY)) {
+      return reconfigureParallelLoad(newVal);
+    } else if (property.equals(DFS_NAMENODE_AVOID_SLOW_DATANODE_FOR_READ_KEY) || (property.equals(
+        DFS_NAMENODE_BLOCKPLACEMENTPOLICY_EXCLUDE_SLOW_NODES_ENABLED_KEY)) || (property.equals(
+        DFS_NAMENODE_MAX_SLOWPEER_COLLECT_NODES_KEY)) || (property.equals(
+        DFS_DATANODE_PEER_STATS_ENABLED_KEY))) {
+      return reconfigureSlowNodesParameters(datanodeManager, property, newVal);
+    } else if (property.equals(DFS_BLOCK_INVALIDATE_LIMIT_KEY)) {
+      return reconfigureBlockInvalidateLimit(datanodeManager, property, newVal);
+    } else if (property.equals(DFS_NAMENODE_DECOMMISSION_BACKOFF_MONITOR_PENDING_LIMIT) ||
+        (property.equals(DFS_NAMENODE_DECOMMISSION_BACKOFF_MONITOR_PENDING_BLOCKS_PER_LOCK))) {
+      return reconfigureDecommissionBackoffMonitorParameters(datanodeManager, property,
+          newVal);
+    } else {
+      throw new ReconfigurationException(property, newVal, getConf().get(
+          property));
+
+
+====================ctx:=======================

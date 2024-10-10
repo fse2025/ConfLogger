@@ -1,0 +1,33 @@
+```java
+boolean oneExecutorPerWorker = (Boolean) topoConf.getOrDefault(Config.TOPOLOGY_RAS_ONE_EXECUTOR_PER_WORKER, false);
+boolean oneComponentPerWorker = (Boolean) topoConf.getOrDefault(Config.TOPOLOGY_RAS_ONE_COMPONENT_PER_WORKER, false);
+
+double topologyWorkerMaxHeapSize =
+ObjectReader.getDouble(topoConf.get(Config.TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB));
+
+int numOfAckerExecutorsPerWorker = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_RAS_ACKER_EXECUTORS_PER_WORKER));
+double maxTopoExecMem = getMaxExecutorMemoryUsageForTopo(topology, topoConf);
+double ackerExecMem = getAckerExecutorMemoryUsageForTopo(topology, topoConf);
+double minMemReqForWorker = maxTopoExecMem + ackerExecMem * numOfAckerExecutorsPerWorker;
+
+// A worker need to have enough resources for a bigest topo executor + topology.acker.executors.per.worker ackers
+if (!oneExecutorPerWorker
+&& !oneComponentPerWorker
+&& topologyWorkerMaxHeapSize < minMemReqForWorker) {
+// ConfLogger Inserted Start
+String errorMsg = String.format("Configuration issue detected for topology %s. The worker's max on-heap limit (%s MB) is less than the required minimum memory (%s MB) for the biggest topo executor and %s ackers. Consider increasing %s or adjusting %s and %s settings.",
+    topoName, topologyWorkerMaxHeapSize, minMemReqForWorker, numOfAckerExecutorsPerWorker, Config.TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB, Config.TOPOLOGY_RAS_ONE_EXECUTOR_PER_WORKER, Config.TOPOLOGY_RAS_ONE_COMPONENT_PER_WORKER);
+LOG.error(errorMsg);
+// ConfLogger Inserted End
+
+String warnMsg
+= String.format("For topology %s. Worker max on-heap limit %s is %s. "
++ "The biggest topo executor requires %s MB on-heap memory, "
++ "there might not be enough space for %s ackers. "
++ "Real acker-per-worker will be determined by scheduler.",
+topoName, Config.TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB, topologyWorkerMaxHeapSize,
+maxTopoExecMem, numOfAckerExecutorsPerWorker);
+LOG.warn(warnMsg); // ConfLogger Skipped: The warning message already contains configuration parameter details and guides on potential issues.
+}
+}
+```

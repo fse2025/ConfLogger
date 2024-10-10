@@ -1,0 +1,76 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NimbusInfo.java	methodSinagture:	org.apache.storm.nimbus.NimbusInfo.<init>(Ljava/lang/String;IZ)V	methodLines:	33:44
+blockLines:	38:-1
+paras:	nimbus.thrift.port
+TaintedStat:	NORMAL <init>:conditional branch(ge, to iindex=18) 3,8 Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, <init>(Ljava/lang/String;IZ)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo; > Context: Everywhere[24]23 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,21 @58 exception:22
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo; > Context: Everywhere[24]23 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,21 @58 exception:22
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo; > Context: Everywhere[27]28 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 23,26 @69 exception:27 v23
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:30 = checkcast <Application,Ljava/lang/Number>1 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:32 = invokevirtual < Application, Ljava/lang/Number, intValue()I > 30 @32 exception:31 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL intValue:return 3 Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Integer, intValue()I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo; > Context: Everywhere[28]30 = invokevirtual < Application, Ljava/lang/Integer, intValue()I > 28 @72 exception:29
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo; > Context: Everywhere[35]invokespecial < Application, Lorg/apache/storm/nimbus/NimbusInfo, <init>(Ljava/lang/String;IZ)V > 31,20,30,10 @83 exception:32 v30
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, <init>(Ljava/lang/String;IZ)V > Context: Everywhere v3
+NORMAL <init>:conditional branch(ge, to iindex=18) 3,8 Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, <init>(Ljava/lang/String;IZ)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    public NimbusInfo(String host, int port, boolean isLeader) {
+        if (host == null) {
+            throw new NullPointerException("Host cannot be null");
+        }
+        if (port < 0) {
+            throw new IllegalArgumentException("Port cannot be negative");
+        }
+        this.host = host;
+        this.port = port;
+        this.isLeader = isLeader;
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo; > Context: Everywhere, blocks=[BB[SSA:31..35]15 - org.apache.storm.nimbus.NimbusInfo.fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo;, BB[SSA:29..30]14 - org.apache.storm.nimbus.NimbusInfo.fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo;, BB[SSA:36..36]16 - org.apache.storm.nimbus.NimbusInfo.fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo;, BB[SSA:-1..-2]20 - org.apache.storm.nimbus.NimbusInfo.fromConf(Ljava/util/Map;)Lorg/apache/storm/nimbus/NimbusInfo;], numberOfBasicBlocks=4, firstLineNumber=64, lastLineNumber=65, firstMethodNumber=55, lastMethodNumber=68, isFirstLineValid=true, methodSrcCode=
+        try {
+            String host = InetAddress.getLocalHost().getCanonicalHostName();
+            if (conf.containsKey(Config.STORM_LOCAL_HOSTNAME)) {
+                host = (String) conf.get(Config.STORM_LOCAL_HOSTNAME);
+                LOG.info("Overriding nimbus host to storm.local.hostname -> {}", host);
+            } else {
+                LOG.info("Nimbus figures out its name to {}", host);
+            }
+
+            int port = ObjectReader.getInt(conf.get(Config.NIMBUS_THRIFT_PORT), 6627);
+            return new NimbusInfo(host, port, false);
+
+        } catch (UnknownHostException e) {
+            throw new RuntimeException("Something wrong with network/dns config, host cant figure out its name", e);
+        }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/testing/MockLeaderElector, <init>(ZLjava/lang/String;I)V > Context: Everywhere, blocks=[BB[SSA:7..11]4 - org.apache.storm.testing.MockLeaderElector.<init>(ZLjava/lang/String;I)V, BB[SSA:5..6]3 - org.apache.storm.testing.MockLeaderElector.<init>(ZLjava/lang/String;I)V, BB[SSA:12..12]5 - org.apache.storm.testing.MockLeaderElector.<init>(ZLjava/lang/String;I)V, BB[SSA:-1..-2]7 - org.apache.storm.testing.MockLeaderElector.<init>(ZLjava/lang/String;I)V], numberOfBasicBlocks=4, firstLineNumber=36, lastLineNumber=36, firstMethodNumber=33, lastMethodNumber=37, isFirstLineValid=true, methodSrcCode=
+
+    public MockLeaderElector(boolean isLeader, String host, int port) {
+        this.isLeader = isLeader;
+        this.leaderAddress = new NimbusInfo(host, port, true);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/nimbus/NimbusInfo, parse(Ljava/lang/String;)Lorg/apache/storm/nimbus/NimbusInfo; > Context: Everywhere, blocks=[BB[SSA:24..25]13 - org.apache.storm.nimbus.NimbusInfo.parse(Ljava/lang/String;)Lorg/apache/storm/nimbus/NimbusInfo;, BB[SSA:23..23]12 - org.apache.storm.nimbus.NimbusInfo.parse(Ljava/lang/String;)Lorg/apache/storm/nimbus/NimbusInfo;, BB[SSA:26..26]14 - org.apache.storm.nimbus.NimbusInfo.parse(Ljava/lang/String;)Lorg/apache/storm/nimbus/NimbusInfo;, BB[SSA:-1..-2]15 - org.apache.storm.nimbus.NimbusInfo.parse(Ljava/lang/String;)Lorg/apache/storm/nimbus/NimbusInfo;], numberOfBasicBlocks=4, firstLineNumber=51, lastLineNumber=51, firstMethodNumber=46, lastMethodNumber=51, isFirstLineValid=true, methodSrcCode=
+    public static NimbusInfo parse(String nimbusInfo) {
+        Matcher m = HOST_PORT_PATTERN.matcher(nimbusInfo);
+        if (!m.matches()) {
+            throw new RuntimeException("nimbusInfo should have format of host:port, invalid string " + nimbusInfo);
+        }
+        return new NimbusInfo(m.group(1), Integer.valueOf(m.group(2)), false);
+    }
+}

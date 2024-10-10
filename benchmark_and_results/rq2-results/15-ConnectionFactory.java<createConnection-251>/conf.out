@@ -1,0 +1,3 @@
+String param = ConnectionUtils.HBASE_CLIENT_CONNECTION_IMPL;
+param,"org.apache.hadoop.hbase.client.Connection"
+Hbase

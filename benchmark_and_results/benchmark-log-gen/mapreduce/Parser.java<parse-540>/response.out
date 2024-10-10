@@ -1,0 +1,32 @@
+```java
+if (null == expr) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration error: Expression is null. Please ensure the 'expr' parameter is properly set.");
+    // ConfLogger Inserted End
+    throw new IOException("Expression is null");
+}
+Class<? extends WritableComparator> cmpcl = conf.getClass(
+        CompositeInputFormat.JOIN_COMPARATOR, null, WritableComparator.class);
+Lexer lex = new Lexer(expr);
+Stack<Token> st = new Stack<Token>();
+Token tok;
+while ((tok = lex.next()) != null) {
+    if (TType.RPAREN.equals(tok.getType())) {
+        st.push(reduce(st, conf));
+    } else {
+        st.push(tok);
+    }
+}
+if (st.size() == 1 && TType.CIF.equals(st.peek().getType())) {
+    Node ret = st.pop().getNode();
+    if (cmpcl != null) {
+        // ConfLogger Inserted Start
+        logger.info("Setting key comparator with class: " + cmpcl.getName() + ". Ensure 'CompositeInputFormat.JOIN_COMPARATOR' is correctly configured.");
+        // ConfLogger Inserted End
+        ret.setKeyComparator(cmpcl);
+    }
+    return ret;
+}
+throw new IOException("Missing ')'");
+}
+```

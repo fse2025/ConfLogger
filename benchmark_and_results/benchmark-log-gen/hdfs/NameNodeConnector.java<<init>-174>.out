@@ -1,0 +1,116 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNodeConnector.java	methodSinagture:	org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.<init>(Ljava/lang/String;Ljava/net/URI;Lorg/apache/hadoop/fs/Path;Ljava/util/List;Lorg/apache/hadoop/conf/Configuration;I)V	methodLines:	174:215
+blockLines:	184:-1
+paras:	dfs.namenode.get-blocks.max-qps
+TaintedStat:	NORMAL <init>:conditional branch(le, to iindex=71) 31,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector, <init>(Ljava/lang/String;Ljava/net/URI;Lorg/apache/hadoop/fs/Path;Ljava/util/List;Lorg/apache/hadoop/conf/Configuration;I)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector, <init>(Ljava/lang/String;Ljava/net/URI;Lorg/apache/hadoop/fs/Path;Ljava/util/List;Lorg/apache/hadoop/conf/Configuration;I)V > Context: Everywhere[54]31 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 6,28,29 @108 exception:30
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector, <init>(Ljava/lang/String;Ljava/net/URI;Lorg/apache/hadoop/fs/Path;Ljava/util/List;Lorg/apache/hadoop/conf/Configuration;I)V > Context: Everywhere[54]31 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 6,28,29 @108 exception:30
+NORMAL <init>:conditional branch(le, to iindex=71) 31,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector, <init>(Ljava/lang/String;Ljava/net/URI;Lorg/apache/hadoop/fs/Path;Ljava/util/List;Lorg/apache/hadoop/conf/Configuration;I)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                           int maxNotChangedIterations)
+      throws IOException {
+    this.nameNodeUri = nameNodeUri;
+    this.idPath = idPath;
+    this.targetPaths = targetPaths == null || targetPaths.isEmpty() ? Arrays
+        .asList(new Path("/")) : targetPaths;
+    this.maxNotChangedIterations = maxNotChangedIterations;
+    int getBlocksMaxQps = conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_DEFAULT);
+    if (getBlocksMaxQps > 0) {
+      LOG.info("getBlocks calls for {} will be rate-limited to {} per second",
+          nameNodeUri, getBlocksMaxQps);
+      this.getBlocksRateLimiter = RateLimiter.create(getBlocksMaxQps);
+    } else {
+      this.getBlocksRateLimiter = null;
+    }
+
+    this.namenode = NameNodeProxies.createProxy(conf, nameNodeUri,
+        BalancerProtocols.class, fallbackToSimpleAuth).getProxy();
+    this.requestToStandby = conf.getBoolean(
+        DFSConfigKeys.DFS_HA_ALLOW_STALE_READ_KEY,
+        DFSConfigKeys.DFS_HA_ALLOW_STALE_READ_DEFAULT);
+    this.config = conf;
+
+    this.fs = (DistributedFileSystem)FileSystem.get(nameNodeUri, conf);
+
+    final NamespaceInfo namespaceinfo = namenode.versionRequest();
+    this.blockpoolID = namespaceinfo.getBlockPoolID();
+
+    final FsServerDefaults defaults = fs.getServerDefaults(new Path("/"));
+    this.keyManager = new KeyManager(blockpoolID, namenode,
+        defaults.getEncryptDataTransfer(), conf);
+    // if it is for test, we do not create the id file
+    if (checkOtherInstanceRunning) {
+      out = checkAndMarkRunning();
+      if (out == null) {
+        // Exit if there is another one running.
+        throw new IOException("Another " + name + " is running.");
+      }
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector, <init>(Ljava/lang/String;Ljava/net/URI;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Ljava/util/List;Lorg/apache/hadoop/conf/Configuration;I)V > Context: Everywhere, blocks=[BB[SSA:0..7]1 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.<init>(Ljava/lang/String;Ljava/net/URI;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Ljava/util/List;Lorg/apache/hadoop/conf/Configuration;I)V, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.<init>(Ljava/lang/String;Ljava/net/URI;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Ljava/util/List;Lorg/apache/hadoop/conf/Configuration;I)V, BB[SSA:8..10]2 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.<init>(Ljava/lang/String;Ljava/net/URI;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Ljava/util/List;Lorg/apache/hadoop/conf/Configuration;I)V, BB[SSA:-1..-2]4 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.<init>(Ljava/lang/String;Ljava/net/URI;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Ljava/util/List;Lorg/apache/hadoop/conf/Configuration;I)V], numberOfBasicBlocks=4, firstLineNumber=220, lastLineNumber=222, firstMethodNumber=220, lastMethodNumber=223, isFirstLineValid=false, methodSrcCode=
+      throws IOException {
+    this(name, nameNodeUri, idPath, targetPaths, conf, maxNotChangedIterations);
+    this.nsId = nsId;
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/diskbalancer/connectors/DBNameNodeConnector, <init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:6..13]4 - org.apache.hadoop.hdfs.server.diskbalancer.connectors.DBNameNodeConnector.<init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:4..5]3 - org.apache.hadoop.hdfs.server.diskbalancer.connectors.DBNameNodeConnector.<init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:14..14]5 - org.apache.hadoop.hdfs.server.diskbalancer.connectors.DBNameNodeConnector.<init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]17 - org.apache.hadoop.hdfs.server.diskbalancer.connectors.DBNameNodeConnector.<init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=65, lastLineNumber=65, firstMethodNumber=56, lastMethodNumber=73, isFirstLineValid=true, methodSrcCode=
+  public DBNameNodeConnector(URI clusterURI, Configuration conf) throws
+      IOException, URISyntaxException {
+
+    // we don't care how many instances of disk balancers run.
+    // The admission is controlled at the data node, where we will
+    // execute only one plan at a given time.
+    NameNodeConnector.setWrite2IdFile(false);
+
+    try {
+      connector = new NameNodeConnector("DiskBalancer",
+          clusterURI, DISKBALANCER_ID_PATH, null, conf, 1);
+    } catch (IOException ex) {
+      LOG.error("Unable to connect to NameNode " + ex.toString());
+      throw ex;
+    }
+
+    this.clusterURI = clusterURI;
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector, newNameNodeConnectors(Ljava/util/Collection;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;I)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:18..25]11 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.newNameNodeConnectors(Ljava/util/Collection;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;I)Ljava/util/List;, BB[SSA:16..17]10 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.newNameNodeConnectors(Ljava/util/Collection;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;I)Ljava/util/List;, BB[SSA:26..28]12 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.newNameNodeConnectors(Ljava/util/Collection;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;I)Ljava/util/List;, BB[SSA:-1..-2]17 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.newNameNodeConnectors(Ljava/util/Collection;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;I)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=87, lastLineNumber=90, firstMethodNumber=84, lastMethodNumber=93, isFirstLineValid=true, methodSrcCode=
+      int maxIdleIterations) throws IOException {
+    final List<NameNodeConnector> connectors = new ArrayList<NameNodeConnector>(
+        namenodes.size());
+    for (URI uri : namenodes) {
+      NameNodeConnector nnc = new NameNodeConnector(name, uri, idPath,
+          null, conf, maxIdleIterations);
+      nnc.getKeyManager().startBlockKeyUpdater();
+      connectors.add(nnc);
+    }
+    return connectors;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector, newNameNodeConnectors(Ljava/util/Map;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;I)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:28..30]16 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.newNameNodeConnectors(Ljava/util/Map;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;I)Ljava/util/List;, BB[SSA:27..27]15 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.newNameNodeConnectors(Ljava/util/Map;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;I)Ljava/util/List;, BB[SSA:31..33]17 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.newNameNodeConnectors(Ljava/util/Map;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;I)Ljava/util/List;, BB[SSA:-1..-2]22 - org.apache.hadoop.hdfs.server.balancer.NameNodeConnector.newNameNodeConnectors(Ljava/util/Map;Ljava/lang/String;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;I)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=103, lastLineNumber=104, firstMethodNumber=98, lastMethodNumber=107, isFirstLineValid=true, methodSrcCode=
+      Configuration conf, int maxIdleIterations) throws IOException {
+    final List<NameNodeConnector> connectors = new ArrayList<NameNodeConnector>(
+        namenodes.size());
+    for (Map.Entry<URI, List<Path>> entry : namenodes.entrySet()) {
+      NameNodeConnector nnc = new NameNodeConnector(name, entry.getKey(),
+          idPath, entry.getValue(), conf, maxIdleIterations);
+      nnc.getKeyManager().startBlockKeyUpdater();
+      connectors.add(nnc);
+    }
+    return connectors;
+  }
+}

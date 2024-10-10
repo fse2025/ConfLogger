@@ -1,0 +1,110 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SharedCacheConfig.java	methodSinagture:	org.apache.hadoop.mapreduce.SharedCacheConfig.init(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	45:85
+blockLines:	46:-1
+paras:	mapreduce.framework.name
+TaintedStat:	NORMAL init:conditional branch(ne, to iindex=8) 9,10 Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,5 @5 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,5 @5 exception:6
+NORMAL init:9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 4,7 @8 exception:8 Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[4]9 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 4,7 @8 exception:8
+NORMAL init:conditional branch(ne, to iindex=8) 9,10 Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	SharedCacheConfig.java	methodSinagture:	org.apache.hadoop.mapreduce.SharedCacheConfig.init(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	45:85
+blockLines:	61:-1
+paras:	mapreduce.job.sharedcache.mode
+TaintedStat:	NORMAL init:conditional branch(eq, to iindex=29) 22,10 Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[18]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,14,15 @31 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[18]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,14,15 @31 exception:16
+NORMAL init:19 = invokestatic < Application, Lorg/apache/hadoop/util/StringUtils, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > 17 @34 exception:18 Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere
+NORMAL getTrimmedStringCollection:5 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > 1 @5 exception:4 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStringCollection(Ljava/lang/String;)Ljava/util/Collection; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmedStrings:conditional branch(eq, to iindex=8) 3,1 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmedStrings:7 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 5 @9 exception:6 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere[8]9 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 6 @12 exception:8
+NORMAL getBoolean:conditional branch(eq, to iindex=13) 9,10 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[11]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,11,10 @19 exception:12
+NORMAL init:conditional branch(ne, to iindex=15) 13,10 Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL init:conditional branch(eq, to iindex=29) 22,10 Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	SharedCacheConfig.java	methodSinagture:	org.apache.hadoop.mapreduce.SharedCacheConfig.init(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	45:85
+blockLines:	52:-1
+paras:	null
+TaintedStat:	NORMAL init:conditional branch(ne, to iindex=15) 13,10 Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[11]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,11,10 @19 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[11]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,11,10 @19 exception:12
+NORMAL init:conditional branch(ne, to iindex=15) 13,10 Node: < Application, Lorg/apache/hadoop/mapreduce/SharedCacheConfig, init(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void init(Configuration conf) {
+    if (!MRConfig.YARN_FRAMEWORK_NAME.equals(conf.get(
+        MRConfig.FRAMEWORK_NAME))) {
+      // Shared cache is only valid if the job runs on yarn
+      return;
+    }
+
+    if(!conf.getBoolean(YarnConfiguration.SHARED_CACHE_ENABLED,
+        YarnConfiguration.DEFAULT_SHARED_CACHE_ENABLED)) {
+      return;
+    }
+
+
+    Collection<String> configs = StringUtils.getTrimmedStringCollection(
+        conf.get(MRJobConfig.SHARED_CACHE_MODE,
+            MRJobConfig.SHARED_CACHE_MODE_DEFAULT));
+    if (configs.contains("files")) {
+      this.sharedCacheFilesEnabled = true;
+    }
+    if (configs.contains("libjars")) {
+      this.sharedCacheLibjarsEnabled = true;
+    }
+    if (configs.contains("archives")) {
+      this.sharedCacheArchivesEnabled = true;
+    }
+    if (configs.contains("jobjar")) {
+      this.sharedCacheJobjarEnabled = true;
+    }
+    if (configs.contains("enabled")) {
+      this.sharedCacheFilesEnabled = true;
+      this.sharedCacheLibjarsEnabled = true;
+      this.sharedCacheArchivesEnabled = true;
+      this.sharedCacheJobjarEnabled = true;
+    }
+    if (configs.contains("disabled")) {
+      this.sharedCacheFilesEnabled = false;
+      this.sharedCacheLibjarsEnabled = false;
+      this.sharedCacheArchivesEnabled = false;
+      this.sharedCacheJobjarEnabled = false;
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, initSharedCache(Lorg/apache/hadoop/mapreduce/JobID;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:2..3]2 - org.apache.hadoop.mapreduce.JobResourceUploader.initSharedCache(Lorg/apache/hadoop/mapreduce/JobID;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:0..1]1 - org.apache.hadoop.mapreduce.JobResourceUploader.initSharedCache(Lorg/apache/hadoop/mapreduce/JobID;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:4..5]3 - org.apache.hadoop.mapreduce.JobResourceUploader.initSharedCache(Lorg/apache/hadoop/mapreduce/JobID;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]11 - org.apache.hadoop.mapreduce.JobResourceUploader.initSharedCache(Lorg/apache/hadoop/mapreduce/JobID;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=76, lastLineNumber=77, firstMethodNumber=75, lastMethodNumber=81, isFirstLineValid=true, methodSrcCode=
+  private void initSharedCache(JobID jobid, Configuration conf) {
+    this.scConfig.init(conf);
+    if (this.scConfig.isSharedCacheEnabled()) {
+      this.scClient = createSharedCacheClient(conf);
+      appId = jobIDToAppId(jobid);
+    }
+  }
+
+}

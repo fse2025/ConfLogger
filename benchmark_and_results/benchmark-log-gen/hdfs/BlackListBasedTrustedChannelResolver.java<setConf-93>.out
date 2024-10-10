@@ -1,0 +1,93 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BlackListBasedTrustedChannelResolver.java	methodSinagture:	org.apache.hadoop.hdfs.protocol.datatransfer.BlackListBasedTrustedChannelResolver.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	93:129
+blockLines:	101:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=30) 14,12 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[6]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,5,6 @10 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[6]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,5,6 @10 exception:7
+NORMAL setConf:31 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,29,8 @72 exception:30 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 23 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory, init(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere][75]51 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 48,47,49 @153 exception:50
+NORMAL init:53 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 51 @160 exception:52 Node: < Extension, Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory, init(Lorg/apache/hadoop/security/ssl/SSLFactory$Mode;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/ssl/FileBasedKeyStoresFactory, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere[8]9 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 6 @12 exception:8
+NORMAL getBoolean:conditional branch(eq, to iindex=13) 9,10 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[15]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,11,12 @23 exception:13
+NORMAL setConf:conditional branch(eq, to iindex=30) 14,12 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	BlackListBasedTrustedChannelResolver.java	methodSinagture:	org.apache.hadoop.hdfs.protocol.datatransfer.BlackListBasedTrustedChannelResolver.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	93:129
+blockLines:	118:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=63) 34,12 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[15]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,11,12 @23 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[15]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,11,12 @23 exception:13
+NORMAL setConf:conditional branch(eq, to iindex=30) 14,12 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 2,19,20 @44 exception:21 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > Context: Everywhere
+NORMAL getLong:6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmed:conditional branch(ne, to iindex=9) 6,5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmed:return 6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere[2]6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5
+NORMAL getBoolean:conditional branch(eq, to iindex=11) 7,6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[48]34 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,32,12 @83 exception:33
+NORMAL setConf:conditional branch(eq, to iindex=63) 34,12 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/BlackListBasedTrustedChannelResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setConf(Configuration conf) {
+    super.setConf(conf);
+    String fixedFile = conf.get(DFS_DATATRANSFER_SERVER_FIXED_BLACK_LIST_FILE,
+        FIXED_BLACK_LIST_DEFAULT_LOCATION);
+    String variableFile = null;
+    long expiryTime = 0;
+
+    if (conf
+        .getBoolean(DFS_DATATRANSFER_SERVER_VARIABLE_BLACK_LIST_ENABLE,
+            false)) {
+      variableFile = conf.get(DFS_DATATRANSFER_SERVER_VARIABLE_BLACK_LIST_FILE,
+          VARIABLE_BLACK_LIST_DEFAULT_LOCATION);
+      expiryTime =
+          conf.getLong(DFS_DATATRANSFER_SERVER_VARIABLE_BLACK_LIST_CACHE_SECS,
+              3600) * 1000;
+    }
+
+    blackListForServer = new CombinedIPList(fixedFile, variableFile,
+        expiryTime);
+
+    fixedFile = conf
+        .get(DFS_DATATRANSFER_CLIENT_FIXED_BLACK_LIST_FILE, fixedFile);
+    expiryTime = 0;
+
+    if (conf
+        .getBoolean(DFS_DATATRANSFER_CLIENT_VARIABLE_BLACK_LIST_ENABLE,
+            false)) {
+      variableFile = conf
+          .get(DFS_DATATRANSFER_CLIENT_VARIABLE_BLACK_LIST_FILE, variableFile);
+      expiryTime =
+          conf.getLong(DFS_DATATRANSFER_CLIENT_VARIABLE_BLACK_LIST_CACHE_SECS,
+              3600) * 1000;
+    }
+
+    blackListForClient = new CombinedIPList(fixedFile, variableFile,
+        expiryTime);
+  }
+
+
+
+====================ctx:=======================

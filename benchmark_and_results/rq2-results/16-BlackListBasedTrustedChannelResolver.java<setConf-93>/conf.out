@@ -1,0 +1,3 @@
+BlackListBasedTrustedChannelResolver.DFS_DATATRANSFER_SERVER_VARIABLE_BLACK_LIST_ENABLE
+conf.set(param,"true");
+HDFS

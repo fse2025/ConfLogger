@@ -1,0 +1,33 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FollowerZooKeeperServer.java	methodSinagture:	org.apache.zookeeper.server.quorum.FollowerZooKeeperServer.getGlobalOutstandingLimit()I	methodLines:	137:140
+blockLines:	138:-1
+paras:	null
+TaintedStat:	NORMAL getGlobalOutstandingLimit:conditional branch(le, to iindex=11) 5,6 Node: < Application, Lorg/apache/zookeeper/server/quorum/FollowerZooKeeperServer, getGlobalOutstandingLimit()I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FollowerZooKeeperServer, getGlobalOutstandingLimit()I > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getQuorumSize()I > 3 @4 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/FollowerZooKeeperServer, getGlobalOutstandingLimit()I > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getQuorumSize()I > 3 @4 exception:4
+NORMAL getGlobalOutstandingLimit:conditional branch(le, to iindex=11) 5,6 Node: < Application, Lorg/apache/zookeeper/server/quorum/FollowerZooKeeperServer, getGlobalOutstandingLimit()I > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public int getGlobalOutstandingLimit() {
+        int divisor = self.getQuorumSize() > 2 ? self.getQuorumSize() - 1 : 1;
+        int globalOutstandingLimit = super.getGlobalOutstandingLimit() / divisor;
+        return globalOutstandingLimit;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, shouldThrottle(J)Z > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=1583, lastMethodNumber=1588, isFirstLineValid=true, methodSrcCode=
+    public boolean shouldThrottle(long outStandingCount) {
+        int globalOutstandingLimit = getGlobalOutstandingLimit();
+        if (globalOutstandingLimit < getInflight() || globalOutstandingLimit < getInProcess()) {
+            return outStandingCount > 0;
+        }
+        return false;
+    }
+}

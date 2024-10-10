@@ -1,0 +1,16 @@
+```java
+JvmMetrics(String processName, String sessionId, boolean useThreadMXBean) {
+    this.processName = processName;
+    this.sessionId = sessionId;
+    if (useThreadMXBean) {
+        this.threadMXBean = ManagementFactory.getThreadMXBean();
+        // ConfLogger Inserted Start
+        logger.info("ThreadMXBean is enabled. Configuration parameter: useThreadMXBean=" + useThreadMXBean);
+        // ConfLogger Inserted End
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("ThreadMXBean is disabled. Configuration parameter: useThreadMXBean=" + useThreadMXBean);
+        // ConfLogger Inserted End
+    }
+}
+```

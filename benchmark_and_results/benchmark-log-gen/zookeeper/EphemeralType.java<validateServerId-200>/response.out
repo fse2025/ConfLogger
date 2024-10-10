@@ -1,0 +1,12 @@
+```java
+if (extendedEphemeralTypesEnabled()) {
+    if (serverId > EphemeralType.MAX_EXTENDED_SERVER_ID) {
+        // ConfLogger Inserted Start
+        logger.error("Configuration Error: extendedTypesEnabled is true but Server ID ({}) is too large. Cannot be larger than {}. Please check the configuration parameter 'serverId'.", serverId, EphemeralType.MAX_EXTENDED_SERVER_ID);
+        // ConfLogger Inserted End
+        throw new RuntimeException(
+            "extendedTypesEnabled is true but Server ID is too large. Cannot be larger than "
+            + EphemeralType.MAX_EXTENDED_SERVER_ID);
+    }
+}
+```

@@ -1,0 +1,158 @@
+```java
+FileAlreadyExistsException, IOException {
+String mountTableName = viewName;
+if (mountTableName == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Mount table name is null. Using default mount table name from configuration.");
+    // ConfLogger Inserted End
+    mountTableName = ConfigUtil.getDefaultMountTableName(config);
+}
+homedirPrefix = ConfigUtil.getHomeDirValue(config, mountTableName);
+
+boolean isMergeSlashConfigured = false;
+String mergeSlashTarget = null;
+List<LinkEntry> linkEntries = new LinkedList<>();
+
+final String mountTablePrefix =
+Constants.CONFIG_VIEWFS_PREFIX + "." + mountTableName + ".";
+final String linkPrefix = Constants.CONFIG_VIEWFS_LINK + ".";
+final String linkFallbackPrefix = Constants.CONFIG_VIEWFS_LINK_FALLBACK;
+final String linkMergePrefix = Constants.CONFIG_VIEWFS_LINK_MERGE + ".";
+final String linkMergeSlashPrefix =
+Constants.CONFIG_VIEWFS_LINK_MERGE_SLASH;
+boolean gotMountTableEntry = false;
+final UserGroupInformation ugi = UserGroupInformation.getCurrentUser();
+for (Entry<String, String> si : config) {
+    final String key = si.getKey();
+    if (!key.startsWith(mountTablePrefix)) {
+        continue;
+    }
+
+    gotMountTableEntry = true;
+    LinkType linkType;
+    String src = key.substring(mountTablePrefix.length());
+    String settings = null;
+    if (src.startsWith(linkPrefix)) {
+        src = src.substring(linkPrefix.length());
+        if (src.equals(SlashPath.toString())) {
+            throw new UnsupportedFileSystemException("Unexpected mount table "
+                + "link entry '" + key + "'. Use "
+                + Constants.CONFIG_VIEWFS_LINK_MERGE_SLASH  + " instead!");
+        }
+        linkType = LinkType.SINGLE;
+    } else if (src.startsWith(linkFallbackPrefix)) {
+        checkMntEntryKeyEqualsTarget(src, linkFallbackPrefix);
+        linkType = LinkType.SINGLE_FALLBACK;
+    } else if (src.startsWith(linkMergePrefix)) { // A merge link
+        src = src.substring(linkMergePrefix.length());
+        linkType = LinkType.MERGE;
+    } else if (src.startsWith(linkMergeSlashPrefix)) {
+        // This is a LinkMergeSlash entry. This entry should
+        // not have any additional source path.
+        checkMntEntryKeyEqualsTarget(src, linkMergeSlashPrefix);
+        linkType = LinkType.MERGE_SLASH;
+    } else if (src.startsWith(Constants.CONFIG_VIEWFS_LINK_NFLY)) {
+        // prefix.settings.src
+        src = src.substring(Constants.CONFIG_VIEWFS_LINK_NFLY.length() + 1);
+        // settings.src
+        settings = src.substring(0, src.indexOf('.'));
+        // settings
+
+        // settings.src
+        src = src.substring(settings.length() + 1);
+        // src
+
+        linkType = LinkType.NFLY;
+    } else if (src.startsWith(Constants.CONFIG_VIEWFS_LINK_REGEX)) {
+        linkEntries.add(
+            buildLinkRegexEntry(config, ugi, src, si.getValue()));
+        continue;
+    } else if (src.startsWith(Constants.CONFIG_VIEWFS_HOMEDIR)) {
+        // ignore - we set home dir from config
+        continue;
+    } else {
+        throw new IOException("ViewFs: Cannot initialize: Invalid entry in " +
+            "Mount table in config: " + src);
+    }
+
+    final String target = si.getValue();
+    if (linkType != LinkType.MERGE_SLASH) {
+        if (isMergeSlashConfigured) {
+            throw new IOException("Mount table " + mountTableName
+                + " has already been configured with a merge slash link. "
+                + "A regular link should not be added.");
+        }
+        linkEntries.add(
+            new LinkEntry(src, target, linkType, settings, ugi, config));
+    } else {
+        if (!linkEntries.isEmpty()) {
+            throw new IOException("Mount table " + mountTableName
+                + " has already been configured with regular links. "
+                + "A merge slash link should not be configured.");
+        }
+        if (isMergeSlashConfigured) {
+            throw new IOException("Mount table " + mountTableName
+                + " has already been configured with a merge slash link. "
+                + "Multiple merge slash links for the same mount table is "
+                + "not allowed.");
+        }
+        isMergeSlashConfigured = true;
+        mergeSlashTarget = target;
+    }
+} // End of for loop.
+
+if (isMergeSlashConfigured) {
+    Preconditions.checkNotNull(mergeSlashTarget);
+    root = new INodeLink<T>(mountTableName, ugi,
+        initAndGetTargetFs(), mergeSlashTarget);
+    mountPoints.add(new MountPoint<T>("/", (INodeLink<T>) root));
+    rootFallbackLink = null;
+} else {
+    root = new INodeDir<T>("/", UserGroupInformation.getCurrentUser());
+    getRootDir().setInternalDirFs(getTargetFileSystem(getRootDir()));
+    getRootDir().setRoot(true);
+    INodeLink<T> fallbackLink = null;
+    for (LinkEntry le : linkEntries) {
+        switch (le.getLinkType()) {
+            case SINGLE_FALLBACK:
+                if (fallbackLink != null) {
+                    throw new IOException("Mount table " + mountTableName
+                        + " has already been configured with a link fallback. "
+                        + "Multiple fallback links for the same mount table is "
+                        + "not allowed.");
+                }
+                fallbackLink = new INodeLink<T>(mountTableName, ugi,
+                    initAndGetTargetFs(), le.getTarget());
+                continue;
+            case REGEX:
+                addRegexMountEntry(le);
+                continue;
+            default:
+                createLink(le.getSrc(), le.getTarget(), le.getLinkType(),
+                    le.getSettings(), le.getUgi(), le.getConfig());
+        }
+    }
+    rootFallbackLink = fallbackLink;
+    getRootDir().addFallbackLink(rootFallbackLink);
+}
+
+if (!gotMountTableEntry) {
+    if (!initingUriAsFallbackOnNoMounts) {
+        // ConfLogger Inserted Start
+        logger.error("ViewFs: Cannot initialize: Empty Mount table in config for scheme: " + theUri.getScheme() + " and mount table name: " + mountTableName);
+        // ConfLogger Inserted End
+        throw new IOException(new StringBuilder(
+            "ViewFs: Cannot initialize: Empty Mount table in config for ")
+            .append(theUri.getScheme()).append("://").append(mountTableName)
+            .append("/").toString());
+    }
+    StringBuilder msg =
+        new StringBuilder("Empty mount table detected for ").append(theUri)
+        .append(" and considering itself as a linkFallback.");
+    FileSystem.LOG.info(msg.toString());
+    rootFallbackLink = new INodeLink<T>(mountTableName, ugi,
+        initAndGetTargetFs(), theUri.toString());
+    getRootDir().addFallbackLink(rootFallbackLink);
+}
+}
+```

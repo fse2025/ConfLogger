@@ -1,0 +1,170 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	LogAggregationFileControllerFactory.java	methodSinagture:	org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileControllerFactory.<init>(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	63:140
+blockLines:	94:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=106) 66,52 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[95]66 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,64 @199 exception:65
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[95]66 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,64 @199 exception:65
+NORMAL <init>:conditional branch(eq, to iindex=106) 66,52 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	LogAggregationFileControllerFactory.java	methodSinagture:	org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileControllerFactory.<init>(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	63:140
+blockLines:	121:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=212) 109,52 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[203]109 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,107 @442 exception:108
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[203]109 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,107 @442 exception:108
+NORMAL <init>:conditional branch(eq, to iindex=212) 109,52 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	LogAggregationFileControllerFactory.java	methodSinagture:	org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileControllerFactory.<init>(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	63:140
+blockLines:	84:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=84) 54,21 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[66]51 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,49 @146 exception:50
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[66]51 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,49 @146 exception:50
+NORMAL <init>:conditional branch(eq, to iindex=77) 51,52 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL <init>:conditional branch(eq, to iindex=84) 54,21 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	LogAggregationFileControllerFactory.java	methodSinagture:	org.apache.hadoop.yarn.logaggregation.filecontroller.LogAggregationFileControllerFactory.<init>(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	63:140
+blockLines:	128:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=249) 116,52 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[232]116 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,107,52,114 @503 exception:115
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[232]116 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,107,52,114 @503 exception:115
+NORMAL <init>:conditional branch(ne, to iindex=249) 116,52 Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileControllerFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+   */
+  public LogAggregationFileControllerFactory(Configuration conf) {
+    this.conf = conf;
+    Collection<String> fileControllers = conf.getStringCollection(
+        YarnConfiguration.LOG_AGGREGATION_FILE_FORMATS);
+    List<String> controllerClassName = new ArrayList<>();
+
+    Map<String, String> controllerChecker = new HashMap<>();
+
+    for (String fileController : fileControllers) {
+      Preconditions.checkArgument(validateAggregatedFileControllerName(
+          fileController), "The FileControllerName: " + fileController
+          + " set in " + YarnConfiguration.LOG_AGGREGATION_FILE_FORMATS
+          +" is invalid." + "The valid File Controller name should only "
+          + "contain a-zA-Z0-9_ and can not start with numbers");
+
+      String remoteDirStr = String.format(
+          YarnConfiguration.LOG_AGGREGATION_REMOTE_APP_LOG_DIR_FMT,
+          fileController);
+      String remoteDir = conf.get(remoteDirStr);
+      boolean defaultRemoteDir = false;
+      if (remoteDir == null || remoteDir.isEmpty()) {
+        remoteDir = conf.get(YarnConfiguration.NM_REMOTE_APP_LOG_DIR,
+            YarnConfiguration.DEFAULT_NM_REMOTE_APP_LOG_DIR);
+        defaultRemoteDir = true;
+      }
+      String suffixStr = String.format(
+          YarnConfiguration.LOG_AGGREGATION_REMOTE_APP_LOG_DIR_SUFFIX_FMT,
+          fileController);
+      String suffix = conf.get(suffixStr);
+      boolean defaultSuffix = false;
+      if (suffix == null || suffix.isEmpty()) {
+        suffix = conf.get(YarnConfiguration.NM_REMOTE_APP_LOG_DIR_SUFFIX,
+            YarnConfiguration.DEFAULT_NM_REMOTE_APP_LOG_DIR_SUFFIX);
+        defaultSuffix = true;
+      }
+      String dirSuffix = remoteDir + "-" + suffix;
+      if (controllerChecker.containsKey(dirSuffix)) {
+        if (defaultRemoteDir && defaultSuffix) {
+          String fileControllerStr = controllerChecker.get(dirSuffix);
+          List<String> controllersList = new ArrayList<>();
+          controllersList.add(fileControllerStr);
+          controllersList.add(fileController);
+          fileControllerStr = StringUtils.join(controllersList, ",");
+          controllerChecker.put(dirSuffix, fileControllerStr);
+        } else {
+          String conflictController = controllerChecker.get(dirSuffix);
+          throw new RuntimeException("The combined value of " + remoteDirStr
+              + " and " + suffixStr + " should not be the same as the value"
+              + " set for " + conflictController);
+        }
+      } else {
+        controllerChecker.put(dirSuffix, fileController);
+      }
+      String classKey = String.format(
+          YarnConfiguration.LOG_AGGREGATION_FILE_CONTROLLER_FMT,
+          fileController);
+      String className = conf.get(classKey);
+      if (className == null || className.isEmpty()) {
+        throw new RuntimeException("No class configured for "
+            + fileController);
+      }
+      controllerClassName.add(className);
+      Class<? extends LogAggregationFileController> sClass = conf.getClass(
+          classKey, null, LogAggregationFileController.class);
+      if (sClass == null) {
+        throw new RuntimeException("No class defined for " + fileController);
+      }
+      LogAggregationFileController s = ReflectionUtils.newInstance(
+          sClass, conf);
+      if (s == null) {
+        throw new RuntimeException("No object created for "
+            + controllerClassName);
+      }
+      s.initialize(conf, fileController);
+      controllers.add(s);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/LogCLIHelpers, getOwnerForAppIdOrNull(Lorg/apache/hadoop/yarn/api/records/ApplicationId;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:1..3]2 - org.apache.hadoop.yarn.logaggregation.LogCLIHelpers.getOwnerForAppIdOrNull(Lorg/apache/hadoop/yarn/api/records/ApplicationId;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:0..0]1 - org.apache.hadoop.yarn.logaggregation.LogCLIHelpers.getOwnerForAppIdOrNull(Lorg/apache/hadoop/yarn/api/records/ApplicationId;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:4..6]3 - org.apache.hadoop.yarn.logaggregation.LogCLIHelpers.getOwnerForAppIdOrNull(Lorg/apache/hadoop/yarn/api/records/ApplicationId;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]22 - org.apache.hadoop.yarn.logaggregation.LogCLIHelpers.getOwnerForAppIdOrNull(Lorg/apache/hadoop/yarn/api/records/ApplicationId;Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=154, lastLineNumber=157, firstMethodNumber=153, lastMethodNumber=177, isFirstLineValid=true, methodSrcCode=
+      Configuration conf) {
+    LogAggregationFileControllerFactory factory =
+        new LogAggregationFileControllerFactory(conf);
+    List<LogAggregationFileController> fileControllers = factory
+        .getConfiguredLogAggregationFileControllerList();
+
+    if (fileControllers != null && !fileControllers.isEmpty()) {
+      String owner = null;
+      for (LogAggregationFileController fileFormat : fileControllers) {
+        try {
+          owner = guessOwnerWithFileFormat(fileFormat, appId, bestGuess, conf);
+          if (owner != null) {
+            return owner;
+          }
+        } catch (IOException e) {
+          return null;
+        }
+      }
+    } else {
+      System.err.println("Can not find any valid fileControllers. " +
+          " The configurated fileControllers: " +
+          YarnConfiguration.LOG_AGGREGATION_FILE_FORMATS);
+    }
+
+    return null;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/logaggregation/LogCLIHelpers, getFileController(Lorg/apache/hadoop/yarn/api/records/ApplicationId;Ljava/lang/String;)Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController; > Context: Everywhere, blocks=[BB[SSA:9..9]5 - org.apache.hadoop.yarn.logaggregation.LogCLIHelpers.getFileController(Lorg/apache/hadoop/yarn/api/records/ApplicationId;Ljava/lang/String;)Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController;, BB[SSA:6..8]4 - org.apache.hadoop.yarn.logaggregation.LogCLIHelpers.getFileController(Lorg/apache/hadoop/yarn/api/records/ApplicationId;Ljava/lang/String;)Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController;, BB[SSA:10..10]6 - org.apache.hadoop.yarn.logaggregation.LogCLIHelpers.getFileController(Lorg/apache/hadoop/yarn/api/records/ApplicationId;Ljava/lang/String;)Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController;, BB[SSA:-1..-2]10 - org.apache.hadoop.yarn.logaggregation.LogCLIHelpers.getFileController(Lorg/apache/hadoop/yarn/api/records/ApplicationId;Ljava/lang/String;)Lorg/apache/hadoop/yarn/logaggregation/filecontroller/LogAggregationFileController;], numberOfBasicBlocks=4, firstLineNumber=438, lastLineNumber=438, firstMethodNumber=436, lastMethodNumber=440, isFirstLineValid=true, methodSrcCode=
+      String appOwner) throws IOException {
+    if (factory == null) {
+      factory = new LogAggregationFileControllerFactory(conf);
+    }
+    return factory.getFileControllerForRead(appId, appOwner);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/webapp/log/AggregatedLogsBlock, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:7..9]4 - org.apache.hadoop.yarn.webapp.log.AggregatedLogsBlock.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:5..6]3 - org.apache.hadoop.yarn.webapp.log.AggregatedLogsBlock.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:10..10]5 - org.apache.hadoop.yarn.webapp.log.AggregatedLogsBlock.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]7 - org.apache.hadoop.yarn.webapp.log.AggregatedLogsBlock.<init>(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=48, lastLineNumber=48, firstMethodNumber=45, lastMethodNumber=49, isFirstLineValid=true, methodSrcCode=
+  @Inject
+  AggregatedLogsBlock(Configuration conf) {
+    this.conf = conf;
+    factory = new LogAggregationFileControllerFactory(conf);
+  }
+
+}

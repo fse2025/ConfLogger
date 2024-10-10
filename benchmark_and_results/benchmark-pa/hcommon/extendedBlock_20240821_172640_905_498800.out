@@ -1,0 +1,74 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CompressionCodecFactory.java	methodSinagture:	org.apache.hadoop.io.compress.CompressionCodecFactory.getCodecClasses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;	methodLines:	112:146
+blockLines:	126:-1
+paras:	io.compression.codecs
+TaintedStat:	NORMAL getCodecClasses:conditional branch(eq, to iindex=105) 21,22 Node: < Application, Lorg/apache/hadoop/io/compress/CompressionCodecFactory, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/compress/CompressionCodecFactory, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[35]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @71 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/compress/CompressionCodecFactory, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[35]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @71 exception:20
+NORMAL getCodecClasses:conditional branch(eq, to iindex=105) 21,22 Node: < Application, Lorg/apache/hadoop/io/compress/CompressionCodecFactory, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Configuration conf) {
+    List<Class<? extends CompressionCodec>> result
+      = new ArrayList<Class<? extends CompressionCodec>>();
+    // Add codec classes discovered via service loading
+    synchronized (CODEC_PROVIDERS) {
+      // CODEC_PROVIDERS is a lazy collection. Synchronize so it is
+      // thread-safe. See HADOOP-8406.
+      for (CompressionCodec codec : CODEC_PROVIDERS) {
+        result.add(codec.getClass());
+      }
+    }
+    // Add codec classes from configuration
+    String codecsString = conf.get(
+        CommonConfigurationKeys.IO_COMPRESSION_CODECS_KEY);
+    if (codecsString != null) {
+      StringTokenizer codecSplit = new StringTokenizer(codecsString, ",");
+      while (codecSplit.hasMoreElements()) {
+        String codecSubstring = codecSplit.nextToken().trim();
+        if (codecSubstring.length() != 0) {
+          try {
+            Class<?> cls = conf.getClassByName(codecSubstring);
+            if (!CompressionCodec.class.isAssignableFrom(cls)) {
+              throw new IllegalArgumentException("Class " + codecSubstring +
+                                                 " is not a CompressionCodec");
+            }
+            result.add(cls.asSubclass(CompressionCodec.class));
+          } catch (ClassNotFoundException ex) {
+            throw new IllegalArgumentException("Compression codec " + 
+                                               codecSubstring + " not found.",
+                                               ex);
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/io/compress/CompressionCodecFactory, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:26..27]14 - org.apache.hadoop.io.compress.CompressionCodecFactory.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:25..25]13 - org.apache.hadoop.io.compress.CompressionCodecFactory.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:28..31]15 - org.apache.hadoop.io.compress.CompressionCodecFactory.<init>(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]36 - org.apache.hadoop.io.compress.CompressionCodecFactory.<init>(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=180, lastLineNumber=183, firstMethodNumber=176, lastMethodNumber=191, isFirstLineValid=true, methodSrcCode=
+   */
+  public CompressionCodecFactory(Configuration conf) {
+    codecs = new TreeMap<String, CompressionCodec>();
+    codecsByClassName = new HashMap<String, CompressionCodec>();
+    codecsByName = new HashMap<String, CompressionCodec>();
+    List<Class<? extends CompressionCodec>> codecClasses =
+        getCodecClasses(conf);
+    if (codecClasses == null || codecClasses.isEmpty()) {
+      addCodec(new GzipCodec());
+      addCodec(new DefaultCodec());      
+    } else {
+      for (Class<? extends CompressionCodec> codecClass : codecClasses) {
+        addCodec(ReflectionUtils.newInstance(codecClass, conf));
+      }
+    }
+  }
+  
+}

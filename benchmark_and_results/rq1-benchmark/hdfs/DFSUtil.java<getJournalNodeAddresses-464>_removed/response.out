@@ -1,0 +1,66 @@
+```java
+Configuration conf) throws URISyntaxException, IOException {
+    Set<String> journalNodeList = new HashSet<>();
+    String journalsUri = "";
+    try {
+        journalsUri = conf.get(DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+        if (journalsUri == null) {
+            Collection<String> nameserviceIds = DFSUtilClient.getNameServiceIds(conf);
+            for (String nsId : nameserviceIds) {
+                journalsUri = DFSUtilClient.getConfValue(null, nsId, conf, DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+                if (journalsUri == null) {
+                    Collection<String> nnIds = DFSUtilClient.getNameNodeIds(conf, nsId);
+                    for (String nnId : nnIds) {
+                        String suffix = DFSUtilClient.concatSuffixes(nsId, nnId);
+                        journalsUri = DFSUtilClient.getConfValue(null, suffix, conf, DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+                        if (journalsUri == null || !journalsUri.startsWith("qjournal://")) {
+                            // ConfLogger Inserted Start
+                            logger.warn("The configuration parameter '{}' is not set or does not start with 'qjournal://'. Returning empty journal node list. Please ensure it is properly set.", DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+                            // ConfLogger Inserted End
+                            return journalNodeList;
+                        } else {
+                            URI uri = new URI(journalsUri);
+                            List<InetSocketAddress> socketAddresses = Util.getAddressesList(uri);
+                            for (InetSocketAddress is : socketAddresses) {
+                                journalNodeList.add(is.getHostName());
+                            }
+                        }
+                    }
+                } else if (!journalsUri.startsWith("qjournal://")) {
+                    // ConfLogger Inserted Start
+                    logger.warn("The configuration parameter '{}' does not start with 'qjournal://'. Returning empty journal node list. Please ensure it is properly set.", DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+                    // ConfLogger Inserted End
+                    return journalNodeList;
+                } else {
+                    URI uri = new URI(journalsUri);
+                    List<InetSocketAddress> socketAddresses = Util.getAddressesList(uri);
+                    for (InetSocketAddress is : socketAddresses) {
+                        journalNodeList.add(is.getHostName());
+                    }
+                }
+            }
+        } else {
+            if (!journalsUri.startsWith("qjournal://")) {
+                // ConfLogger Inserted Start
+                logger.warn("The configuration parameter '{}' does not start with 'qjournal://'. Returning empty journal node list. Please ensure it is properly set.", DFS_NAMENODE_SHARED_EDITS_DIR_KEY);
+                // ConfLogger Inserted End
+                return journalNodeList;
+            } else {
+                URI uri = new URI(journalsUri);
+                List<InetSocketAddress> socketAddresses = Util.getAddressesList(uri);
+                for (InetSocketAddress is : socketAddresses) {
+                    journalNodeList.add(is.getHostName());
+                }
+            }
+        }
+    } catch (UnknownHostException e) {
+        throw new UnknownHostException(journalsUri);
+    } catch (URISyntaxException e) {
+        throw new URISyntaxException(journalsUri, "The conf property " +
+                DFS_NAMENODE_SHARED_EDITS_DIR_KEY + " is not" +
+                " properly set with correct journal node uri");
+    }
+
+    return journalNodeList;
+}
+```

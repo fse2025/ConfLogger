@@ -1,0 +1,43 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobConf.java	methodSinagture:	org.apache.hadoop.mapred.JobConf.getMapOutputCompressorClass(Ljava/lang/Class;)Ljava/lang/Class;	methodLines:	807:818
+blockLines:	810:-1
+paras:	mapreduce.map.output.compress.codec
+TaintedStat:	NORMAL getMapOutputCompressorClass:conditional branch(eq, to iindex=32) 6,7 Node: < Application, Lorg/apache/hadoop/mapred/JobConf, getMapOutputCompressorClass(Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/JobConf, getMapOutputCompressorClass(Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @5 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/JobConf, getMapOutputCompressorClass(Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, get(Ljava/lang/String;)Ljava/lang/String; > 1,4 @5 exception:5
+NORMAL getMapOutputCompressorClass:conditional branch(eq, to iindex=32) 6,7 Node: < Application, Lorg/apache/hadoop/mapred/JobConf, getMapOutputCompressorClass(Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  getMapOutputCompressorClass(Class<? extends CompressionCodec> defaultValue) {
+    Class<? extends CompressionCodec> codecClass = defaultValue;
+    String name = get(JobContext.MAP_OUTPUT_COMPRESS_CODEC);
+    if (name != null) {
+      try {
+        codecClass = getClassByName(name).asSubclass(CompressionCodec.class);
+      } catch (ClassNotFoundException e) {
+        throw new IllegalArgumentException("Compression codec " + name + 
+                                           " was not found.", e);
+      }
+    }
+    return codecClass;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/ReduceTask, initCodec()Lorg/apache/hadoop/io/compress/CompressionCodec; > Context: Everywhere, blocks=[BB[SSA:8..8]6 - org.apache.hadoop.mapred.ReduceTask.initCodec()Lorg/apache/hadoop/io/compress/CompressionCodec;, BB[SSA:7..7]5 - org.apache.hadoop.mapred.ReduceTask.initCodec()Lorg/apache/hadoop/io/compress/CompressionCodec;, BB[SSA:9..12]7 - org.apache.hadoop.mapred.ReduceTask.initCodec()Lorg/apache/hadoop/io/compress/CompressionCodec;, BB[SSA:-1..-2]12 - org.apache.hadoop.mapred.ReduceTask.initCodec()Lorg/apache/hadoop/io/compress/CompressionCodec;], numberOfBasicBlocks=4, firstLineNumber=156, lastLineNumber=158, firstMethodNumber=154, lastMethodNumber=161, isFirstLineValid=true, methodSrcCode=
+    // check if map-outputs are to be compressed
+    if (conf.getCompressMapOutput()) {
+      Class<? extends CompressionCodec> codecClass =
+        conf.getMapOutputCompressorClass(DefaultCodec.class);
+      return ReflectionUtils.newInstance(codecClass, conf);
+    } 
+
+    return null;
+  }
+}

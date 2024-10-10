@@ -1,0 +1,22 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FeatureUtils.java	methodSinagture:	alluxio.util.FeatureUtils.isEmbeddedJournal()Z	methodLines:	29:30
+blockLines:	30:-1
+paras:	null
+TaintedStat:	NORMAL isEmbeddedJournal:conditional branch(ne, to iindex=6) 2,5 Node: < Application, Lalluxio/util/FeatureUtils, isEmbeddedJournal()Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/FeatureUtils, isEmbeddedJournal()Z > Context: Everywhere[2]5 = invokestatic < Application, Lalluxio/conf/Configuration, get(Lalluxio/conf/PropertyKey;)Ljava/lang/Object; > 3 @6 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/FeatureUtils, isEmbeddedJournal()Z > Context: Everywhere[2]5 = invokestatic < Application, Lalluxio/conf/Configuration, get(Lalluxio/conf/PropertyKey;)Ljava/lang/Object; > 3 @6 exception:4
+NORMAL isEmbeddedJournal:conditional branch(ne, to iindex=6) 2,5 Node: < Application, Lalluxio/util/FeatureUtils, isEmbeddedJournal()Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static boolean isEmbeddedJournal() {
+    return JournalType.EMBEDDED == Configuration.get(PropertyKey.MASTER_JOURNAL_TYPE);
+  }
+
+
+====================ctx:=======================

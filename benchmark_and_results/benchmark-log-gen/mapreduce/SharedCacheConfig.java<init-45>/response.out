@@ -1,0 +1,64 @@
+```java
+if (!MRConfig.YARN_FRAMEWORK_NAME.equals(conf.get(
+MRConfig.FRAMEWORK_NAME))) {
+    // ConfLogger Inserted Start
+    logger.warn("Shared cache is only valid if the job runs on YARN. Current framework: " + conf.get(MRConfig.FRAMEWORK_NAME));
+    // ConfLogger Inserted End
+    return;
+}
+
+if(!conf.getBoolean(YarnConfiguration.SHARED_CACHE_ENABLED,
+YarnConfiguration.DEFAULT_SHARED_CACHE_ENABLED)) {
+    // ConfLogger Inserted Start
+    logger.info("Shared cache is disabled. Configuration parameter: " + YarnConfiguration.SHARED_CACHE_ENABLED + ", Value: " + conf.getBoolean(YarnConfiguration.SHARED_CACHE_ENABLED, YarnConfiguration.DEFAULT_SHARED_CACHE_ENABLED));
+    // ConfLogger Inserted End
+    return;
+}
+
+Collection<String> configs = StringUtils.getTrimmedStringCollection(
+conf.get(MRJobConfig.SHARED_CACHE_MODE,
+MRJobConfig.SHARED_CACHE_MODE_DEFAULT));
+if (configs.contains("files")) {
+    this.sharedCacheFilesEnabled = true;
+    // ConfLogger Inserted Start
+    logger.debug("Shared cache for files is enabled. Configuration parameter: " + MRJobConfig.SHARED_CACHE_MODE + ", Value: " + configs);
+    // ConfLogger Inserted End
+}
+if (configs.contains("libjars")) {
+    this.sharedCacheLibjarsEnabled = true;
+    // ConfLogger Inserted Start
+    logger.debug("Shared cache for libjars is enabled. Configuration parameter: " + MRJobConfig.SHARED_CACHE_MODE + ", Value: " + configs);
+    // ConfLogger Inserted End
+}
+if (configs.contains("archives")) {
+    this.sharedCacheArchivesEnabled = true;
+    // ConfLogger Inserted Start
+    logger.debug("Shared cache for archives is enabled. Configuration parameter: " + MRJobConfig.SHARED_CACHE_MODE + ", Value: " + configs);
+    // ConfLogger Inserted End
+}
+if (configs.contains("jobjar")) {
+    this.sharedCacheJobjarEnabled = true;
+    // ConfLogger Inserted Start
+    logger.debug("Shared cache for jobjar is enabled. Configuration parameter: " + MRJobConfig.SHARED_CACHE_MODE + ", Value: " + configs);
+    // ConfLogger Inserted End
+}
+if (configs.contains("enabled")) {
+    this.sharedCacheFilesEnabled = true;
+    this.sharedCacheLibjarsEnabled = true;
+    this.sharedCacheArchivesEnabled = true;
+    this.sharedCacheJobjarEnabled = true;
+    // ConfLogger Inserted Start
+    logger.info("All shared cache options are enabled. Configuration parameter: " + MRJobConfig.SHARED_CACHE_MODE + ", Value: " + configs);
+    // ConfLogger Inserted End
+}
+if (configs.contains("disabled")) {
+    this.sharedCacheFilesEnabled = false;
+    this.sharedCacheLibjarsEnabled = false;
+    this.sharedCacheArchivesEnabled = false;
+    this.sharedCacheJobjarEnabled = false;
+    // ConfLogger Inserted Start
+    logger.info("All shared cache options are disabled. Configuration parameter: " + MRJobConfig.SHARED_CACHE_MODE + ", Value: " + configs);
+    // ConfLogger Inserted End
+}
+}
+```

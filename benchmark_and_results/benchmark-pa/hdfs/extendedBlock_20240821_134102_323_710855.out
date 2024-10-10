@@ -1,0 +1,80 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HAUtil.java	methodSinagture:	org.apache.hadoop.hdfs.HAUtil.getNameNodeIdOfOtherNodes(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List;	methodLines:	162:189
+blockLines:	180:-1
+paras:	dfs.ha.namenode.id
+TaintedStat:	NORMAL getNameNodeIdOfOtherNodes:conditional branch(eq, to iindex=65) 14,4 Node: < Application, Lorg/apache/hadoop/hdfs/HAUtil, getNameNodeIdOfOtherNodes(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/HAUtil, getNameNodeIdOfOtherNodes(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[14]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,12 @23 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/HAUtil, getNameNodeIdOfOtherNodes(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere[14]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,12 @23 exception:13
+NORMAL getNameNodeIdOfOtherNodes:conditional branch(eq, to iindex=65) 14,4 Node: < Application, Lorg/apache/hadoop/hdfs/HAUtil, getNameNodeIdOfOtherNodes(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static List<String> getNameNodeIdOfOtherNodes(Configuration conf, String nsId) {
+    Preconditions.checkArgument(nsId != null,
+        "Could not determine namespace id. Please ensure that this " +
+        "machine is one of the machines listed as a NN RPC address, " +
+        "or configure " + DFSConfigKeys.DFS_NAMESERVICE_ID);
+    
+    Collection<String> nnIds = DFSUtilClient.getNameNodeIds(conf, nsId);
+    String myNNId = conf.get(DFSConfigKeys.DFS_HA_NAMENODE_ID_KEY);
+    Preconditions.checkArgument(nnIds != null,
+        "Could not determine namenode ids in namespace '%s'. " +
+        "Please configure " +
+        DFSUtil.addKeySuffixes(DFSConfigKeys.DFS_HA_NAMENODES_KEY_PREFIX,
+            nsId),
+        nsId);
+    Preconditions.checkArgument(nnIds.size() >= 2,
+        "Expected at least 2 NameNodes in namespace '%s'. " +
+          "Instead, got only %s (NN ids were '%s')",
+          nsId, nnIds.size(), Joiner.on("','").join(nnIds));
+    Preconditions.checkState(myNNId != null && !myNNId.isEmpty(),
+        "Could not determine own NN ID in namespace '%s'. Please " +
+        "ensure that this node is one of the machines listed as an " +
+        "NN RPC address, or configure " + DFSConfigKeys.DFS_HA_NAMENODE_ID_KEY,
+        nsId);
+
+    ArrayList<String> namenodes = Lists.newArrayList(nnIds);
+    namenodes.remove(myNNId);
+    assert namenodes.size() >= 1;
+    return namenodes;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/HAUtil, getConfForOtherNodes(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:2..5]2 - org.apache.hadoop.hdfs.HAUtil.getConfForOtherNodes(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;, BB[SSA:0..1]1 - org.apache.hadoop.hdfs.HAUtil.getConfForOtherNodes(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;, BB[SSA:6..7]3 - org.apache.hadoop.hdfs.HAUtil.getConfForOtherNodes(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;, BB[SSA:-1..-2]26 - org.apache.hadoop.hdfs.HAUtil.getConfForOtherNodes(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=202, lastLineNumber=206, firstMethodNumber=201, lastMethodNumber=217, isFirstLineValid=true, methodSrcCode=
+    
+    String nsId = DFSUtil.getNamenodeNameServiceId(myConf);
+    List<String> otherNodes = getNameNodeIdOfOtherNodes(myConf, nsId);
+
+    // Look up the address of the other NNs
+    List<Configuration> confs = new ArrayList<Configuration>(otherNodes.size());
+    myConf = new Configuration(myConf);
+    // unset independent properties
+    for (String idpKey : HA_SPECIAL_INDEPENDENT_KEYS) {
+      myConf.unset(idpKey);
+    }
+    for (String nn : otherNodes) {
+      Configuration confForOtherNode = new Configuration(myConf);
+      NameNode.initializeGenericKeys(confForOtherNode, nsId, nn);
+      confs.add(confForOtherNode);
+    }
+    return confs;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/tools/DFSZKFailoverController, getAllOtherNodes()Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:6..7]4 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.getAllOtherNodes()Ljava/util/List;, BB[SSA:3..5]3 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.getAllOtherNodes()Ljava/util/List;, BB[SSA:8..9]5 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.getAllOtherNodes()Ljava/util/List;, BB[SSA:-1..-2]20 - org.apache.hadoop.hdfs.tools.DFSZKFailoverController.getAllOtherNodes()Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=288, lastLineNumber=291, firstMethodNumber=287, lastMethodNumber=295, isFirstLineValid=true, methodSrcCode=
+  public List<HAServiceTarget> getAllOtherNodes() {
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    List<String> otherNn = HAUtil.getNameNodeIdOfOtherNodes(conf, nsId);
+
+    List<HAServiceTarget> targets = new ArrayList<HAServiceTarget>(otherNn.size());
+    for (String nnId : otherNn) {
+      targets.add(new NNHAServiceTarget(conf, nsId, nnId));
+    }
+    return targets;
+  }
+}

@@ -1,0 +1,453 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DataTransferSaslUtil.java	methodSinagture:	org.apache.hadoop.hdfs.protocol.datatransfer.sasl.DataTransferSaslUtil.getSaslPropertiesResolver(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/security/SaslPropertiesResolver;	methodLines:	182:206
+blockLines:	184:-1
+paras:	null
+TaintedStat:	NORMAL getSaslPropertiesResolver:conditional branch(eq, to iindex=11) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, getSaslPropertiesResolver(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/security/SaslPropertiesResolver; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, getSaslPropertiesResolver(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/security/SaslPropertiesResolver; > Context: Everywhere[30]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,14,15,16 @55 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, getSaslPropertiesResolver(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/security/SaslPropertiesResolver; > Context: Everywhere[30]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,14,15,16 @55 exception:17
+NORMAL getSaslPropertiesResolver:22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 1,19,18,20 @65 exception:21 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, getSaslPropertiesResolver(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/security/SaslPropertiesResolver; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+NORMAL getClass:7 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > 1,2,3 @3 exception:6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+NORMAL getClass:6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmed:5 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, getSaslPropertiesResolver(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/security/SaslPropertiesResolver; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,3 @3 exception:4
+NORMAL getSaslPropertiesResolver:conditional branch(eq, to iindex=11) 5,6 Node: < Application, Lorg/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil, getSaslPropertiesResolver(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/security/SaslPropertiesResolver; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Configuration conf) {
+    String qops = conf.get(DFS_DATA_TRANSFER_PROTECTION_KEY);
+    if (qops == null || qops.isEmpty()) {
+      LOG.debug("DataTransferProtocol not using SaslPropertiesResolver, no " +
+          "QOP found in configuration for {}",
+          DFS_DATA_TRANSFER_PROTECTION_KEY);
+      return null;
+    }
+    Configuration saslPropsResolverConf = new Configuration(conf);
+    saslPropsResolverConf.set(HADOOP_RPC_PROTECTION, qops);
+    Class<? extends SaslPropertiesResolver> resolverClass = conf.getClass(
+        HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS,
+        SaslPropertiesResolver.class, SaslPropertiesResolver.class);
+    resolverClass =
+        conf.getClass(DFS_DATA_TRANSFER_SASL_PROPS_RESOLVER_CLASS_KEY,
+        resolverClass, SaslPropertiesResolver.class);
+    saslPropsResolverConf.setClass(HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS,
+        resolverClass, SaslPropertiesResolver.class);
+    SaslPropertiesResolver resolver = SaslPropertiesResolver.getInstance(
+        saslPropsResolverConf);
+    LOG.debug("DataTransferProtocol using SaslPropertiesResolver, configured " +
+            "QOP {} = {}, configured class {} = {}",
+        DFS_DATA_TRANSFER_PROTECTION_KEY, qops,
+        DFS_DATA_TRANSFER_SASL_PROPS_RESOLVER_CLASS_KEY, resolverClass);
+    return resolver;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/sps/ExternalSPSBlockMoveTaskHandler, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;)V > Context: Everywhere, blocks=[BB[SSA:24..27]11 - org.apache.hadoop.hdfs.server.sps.ExternalSPSBlockMoveTaskHandler.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;)V, BB[SSA:22..23]10 - org.apache.hadoop.hdfs.server.sps.ExternalSPSBlockMoveTaskHandler.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;)V, BB[SSA:28..29]12 - org.apache.hadoop.hdfs.server.sps.ExternalSPSBlockMoveTaskHandler.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;)V, BB[SSA:-1..-2]30 - org.apache.hadoop.hdfs.server.sps.ExternalSPSBlockMoveTaskHandler.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;)V], numberOfBasicBlocks=4, firstLineNumber=91, lastLineNumber=93, firstMethodNumber=84, lastMethodNumber=107, isFirstLineValid=true, methodSrcCode=
+  public ExternalSPSBlockMoveTaskHandler(Configuration conf,
+      NameNodeConnector nnc, SPSService spsService) {
+    int moverThreads = conf.getInt(DFSConfigKeys.DFS_MOVER_MOVERTHREADS_KEY,
+        DFSConfigKeys.DFS_MOVER_MOVERTHREADS_DEFAULT);
+    moveExecutor = initializeBlockMoverThreadPool(moverThreads);
+    mCompletionServ = new ExecutorCompletionService<>(moveExecutor);
+    this.nnc = nnc;
+    this.saslClient = new SaslDataTransferClient(conf,
+        DataTransferSaslUtil.getSaslPropertiesResolver(conf),
+        TrustedChannelResolver.getInstance(conf),
+        nnc.getFallbackToSimpleAuth());
+    this.blkMovementTracker = new BlockStorageMovementTracker(
+        mCompletionServ, new ExternalBlocksMovementsStatusHandler());
+    this.service = spsService;
+
+    boolean connectToDnViaHostname = conf.getBoolean(
+        HdfsClientConfigKeys.DFS_CLIENT_USE_DN_HOSTNAME,
+        HdfsClientConfigKeys.DFS_CLIENT_USE_DN_HOSTNAME_DEFAULT);
+    int ioFileBufferSize = DFSUtilClient.getIoFileBufferSize(conf);
+    blkDispatcher = new BlockDispatcher(HdfsConstants.READ_TIMEOUT,
+        ioFileBufferSize, connectToDnViaHostname);
+
+    startMovementTracker();
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSClient, <init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V > Context: Everywhere, blocks=[BB[SSA:307..310]150 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V, BB[SSA:305..306]149 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V, BB[SSA:311..312]151 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V, BB[SSA:-1..-2]155 - org.apache.hadoop.hdfs.DFSClient.<init>(Ljava/net/URI;Lorg/apache/hadoop/hdfs/protocol/ClientProtocol;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem$Statistics;)V], numberOfBasicBlocks=4, firstLineNumber=416, lastLineNumber=418, firstMethodNumber=320, lastMethodNumber=419, isFirstLineValid=true, methodSrcCode=
+  public DFSClient(URI nameNodeUri, ClientProtocol rpcNamenode,
+      Configuration conf, FileSystem.Statistics stats) throws IOException {
+    // Copy only the required DFSClient configuration
+    this.tracer = FsTracer.get(conf);
+    this.dfsClientConf = new DfsClientConf(conf);
+    this.conf = conf;
+    this.stats = stats;
+    this.socketFactory = NetUtils.getSocketFactory(conf, ClientProtocol.class);
+    this.dtpReplaceDatanodeOnFailure = ReplaceDatanodeOnFailure.get(conf);
+    this.smallBufferSize = DFSUtilClient.getSmallBufferSize(conf);
+    this.dtpReplaceDatanodeOnFailureReplication = (short) conf
+        .getInt(HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+                MIN_REPLICATION,
+            HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+                MIN_REPLICATION_DEFAULT);
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(
+          "Sets " + HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+              MIN_REPLICATION + " to "
+              + dtpReplaceDatanodeOnFailureReplication);
+    }
+    this.ugi = UserGroupInformation.getCurrentUser();
+
+    this.namenodeUri = nameNodeUri;
+    this.clientName = "DFSClient_" + dfsClientConf.getTaskId() + "_" +
+        ThreadLocalRandom.current().nextInt()  + "_" +
+        Thread.currentThread().getId();
+    int numResponseToDrop = conf.getInt(
+        DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY,
+        DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT);
+    ProxyAndInfo<ClientProtocol> proxyInfo = null;
+    AtomicBoolean nnFallbackToSimpleAuth = new AtomicBoolean(false);
+
+    if (numResponseToDrop > 0) {
+      // This case is used for testing.
+      LOG.warn(DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
+          + " is set to " + numResponseToDrop
+          + ", this hacked client will proactively drop responses");
+      proxyInfo = NameNodeProxiesClient.createProxyWithLossyRetryHandler(conf,
+          nameNodeUri, ClientProtocol.class, numResponseToDrop,
+          nnFallbackToSimpleAuth);
+    }
+
+    if (proxyInfo != null) {
+      this.dtService = proxyInfo.getDelegationTokenService();
+      this.namenode = proxyInfo.getProxy();
+    } else if (rpcNamenode != null) {
+      // This case is used for testing.
+      Preconditions.checkArgument(nameNodeUri == null);
+      this.namenode = rpcNamenode;
+      dtService = null;
+    } else {
+      Preconditions.checkArgument(nameNodeUri != null,
+          "null URI");
+      proxyInfo = NameNodeProxiesClient.createProxyWithClientProtocol(conf,
+          nameNodeUri, nnFallbackToSimpleAuth);
+      this.dtService = proxyInfo.getDelegationTokenService();
+      this.namenode = proxyInfo.getProxy();
+    }
+
+    String localInterfaces[] =
+        conf.getTrimmedStrings(DFS_CLIENT_LOCAL_INTERFACES);
+    localInterfaceAddrs = getLocalInterfaceAddrs(localInterfaces);
+    if (LOG.isDebugEnabled() && 0 != localInterfaces.length) {
+      LOG.debug("Using local interfaces [" +
+          Joiner.on(',').join(localInterfaces)+ "] with addresses [" +
+          Joiner.on(',').join(localInterfaceAddrs) + "]");
+    }
+
+    Boolean readDropBehind =
+        (conf.get(DFS_CLIENT_CACHE_DROP_BEHIND_READS) == null) ?
+            null : conf.getBoolean(DFS_CLIENT_CACHE_DROP_BEHIND_READS, false);
+    Long readahead = (conf.get(DFS_CLIENT_CACHE_READAHEAD) == null) ?
+        null : conf.getLongBytes(DFS_CLIENT_CACHE_READAHEAD, 0);
+    this.serverDefaultsValidityPeriod = conf.getTimeDuration(
+        DFS_CLIENT_SERVER_DEFAULTS_VALIDITY_PERIOD_MS_KEY,
+        DFS_CLIENT_SERVER_DEFAULTS_VALIDITY_PERIOD_MS_DEFAULT,
+        TimeUnit.MILLISECONDS);
+    Boolean writeDropBehind =
+        (conf.get(DFS_CLIENT_CACHE_DROP_BEHIND_WRITES) == null) ?
+            null : conf.getBoolean(DFS_CLIENT_CACHE_DROP_BEHIND_WRITES, false);
+    this.defaultReadCachingStrategy =
+        new CachingStrategy(readDropBehind, readahead);
+    this.defaultWriteCachingStrategy =
+        new CachingStrategy(writeDropBehind, readahead);
+    this.clientContext = ClientContext.get(
+        conf.get(DFS_CLIENT_CONTEXT, DFS_CLIENT_CONTEXT_DEFAULT),
+        dfsClientConf, conf);
+
+    if (dfsClientConf.getHedgedReadThreadpoolSize() > 0) {
+      this.initThreadsNumForHedgedReads(dfsClientConf.
+          getHedgedReadThreadpoolSize());
+    }
+
+    this.initThreadsNumForStripedReads(dfsClientConf.
+        getStripedReadThreadpoolSize());
+    this.saslClient = new SaslDataTransferClient(
+        conf, DataTransferSaslUtil.getSaslPropertiesResolver(conf),
+        TrustedChannelResolver.getInstance(conf), nnFallbackToSimpleAuth);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DNConf, <init>(Lorg/apache/hadoop/conf/Configurable;)V > Context: Everywhere, blocks=[BB[SSA:272..272]112 - org.apache.hadoop.hdfs.server.datanode.DNConf.<init>(Lorg/apache/hadoop/conf/Configurable;)V, BB[SSA:269..271]111 - org.apache.hadoop.hdfs.server.datanode.DNConf.<init>(Lorg/apache/hadoop/conf/Configurable;)V, BB[SSA:273..273]113 - org.apache.hadoop.hdfs.server.datanode.DNConf.<init>(Lorg/apache/hadoop/conf/Configurable;)V, BB[SSA:-1..-2]151 - org.apache.hadoop.hdfs.server.datanode.DNConf.<init>(Lorg/apache/hadoop/conf/Configurable;)V], numberOfBasicBlocks=4, firstLineNumber=254, lastLineNumber=254, firstMethodNumber=142, lastMethodNumber=300, isFirstLineValid=true, methodSrcCode=
+
+  public DNConf(final Configurable dn) {
+    this.dn = dn;
+    socketTimeout = getConf().getInt(DFS_CLIENT_SOCKET_TIMEOUT_KEY,
+        HdfsConstants.READ_TIMEOUT);
+    socketWriteTimeout = getConf().getInt(DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY,
+        HdfsConstants.WRITE_TIMEOUT);
+    socketKeepaliveTimeout = getConf().getInt(
+        DFSConfigKeys.DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_KEY,
+        DFSConfigKeys.DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_DEFAULT);
+    ecChecksumSocketTimeout = getConf().getInt(
+        DFS_CHECKSUM_EC_SOCKET_TIMEOUT_KEY,
+        DFS_CHECKSUM_EC_SOCKET_TIMEOUT_DEFAULT);
+    this.transferSocketSendBufferSize = getConf().getInt(
+        DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_SEND_BUFFER_SIZE_KEY,
+        DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_SEND_BUFFER_SIZE_DEFAULT);
+    this.transferSocketRecvBufferSize = getConf().getInt(
+        DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_RECV_BUFFER_SIZE_KEY,
+        DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_RECV_BUFFER_SIZE_DEFAULT);
+    this.tcpNoDelay = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATA_TRANSFER_SERVER_TCPNODELAY,
+        DFSConfigKeys.DFS_DATA_TRANSFER_SERVER_TCPNODELAY_DEFAULT);
+
+    /* Based on results on different platforms, we might need set the default
+     * to false on some of them. */
+    transferToAllowed = getConf().getBoolean(
+        DFS_DATANODE_TRANSFERTO_ALLOWED_KEY,
+        DFS_DATANODE_TRANSFERTO_ALLOWED_DEFAULT);
+
+    readaheadLength = getConf().getLong(
+        HdfsClientConfigKeys.DFS_DATANODE_READAHEAD_BYTES_KEY,
+        HdfsClientConfigKeys.DFS_DATANODE_READAHEAD_BYTES_DEFAULT);
+    maxDataLength = getConf().getInt(DFSConfigKeys.IPC_MAXIMUM_DATA_LENGTH,
+        DFSConfigKeys.IPC_MAXIMUM_DATA_LENGTH_DEFAULT);
+    dropCacheBehindWrites = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_WRITES_KEY,
+        DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_WRITES_DEFAULT);
+    syncBehindWrites = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_KEY,
+        DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_DEFAULT);
+    syncBehindWritesInBackground = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_IN_BACKGROUND_KEY,
+        DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_IN_BACKGROUND_DEFAULT);
+    dropCacheBehindReads = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_READS_KEY,
+        DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_READS_DEFAULT);
+    connectToDnViaHostname = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_USE_DN_HOSTNAME,
+        DFSConfigKeys.DFS_DATANODE_USE_DN_HOSTNAME_DEFAULT);
+    this.blockReportInterval = getConf().getLong(
+        DFS_BLOCKREPORT_INTERVAL_MSEC_KEY,
+        DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT);
+    this.peerStatsEnabled = getConf().getBoolean(
+        DFSConfigKeys.DFS_DATANODE_PEER_STATS_ENABLED_KEY,
+        DFSConfigKeys.DFS_DATANODE_PEER_STATS_ENABLED_DEFAULT);
+    this.diskStatsEnabled = Util.isDiskStatsEnabled(getConf().getInt(
+        DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY,
+        DFSConfigKeys.
+            DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_DEFAULT));
+    this.outliersReportIntervalMs = getConf().getTimeDuration(
+        DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_KEY,
+        DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_DEFAULT,
+        TimeUnit.MILLISECONDS);
+    this.ibrInterval = getConf().getLong(
+        DFSConfigKeys.DFS_BLOCKREPORT_INCREMENTAL_INTERVAL_MSEC_KEY,
+        DFSConfigKeys.DFS_BLOCKREPORT_INCREMENTAL_INTERVAL_MSEC_DEFAULT);
+    this.blockReportSplitThreshold = getConf().getLong(
+        DFS_BLOCKREPORT_SPLIT_THRESHOLD_KEY,
+        DFS_BLOCKREPORT_SPLIT_THRESHOLD_DEFAULT);
+    this.cacheReportInterval = getConf().getLong(
+        DFS_CACHEREPORT_INTERVAL_MSEC_KEY,
+        DFS_CACHEREPORT_INTERVAL_MSEC_DEFAULT);
+
+    this.datanodeSlowIoWarningThresholdMs = getConf().getLong(
+        DFSConfigKeys.DFS_DATANODE_SLOW_IO_WARNING_THRESHOLD_KEY,
+        DFSConfigKeys.DFS_DATANODE_SLOW_IO_WARNING_THRESHOLD_DEFAULT);
+    initBlockReportDelay();
+    heartBeatInterval = getConf().getTimeDuration(DFS_HEARTBEAT_INTERVAL_KEY,
+        DFS_HEARTBEAT_INTERVAL_DEFAULT, TimeUnit.SECONDS,
+        TimeUnit.MILLISECONDS);
+    long confLifelineIntervalMs =
+        getConf().getLong(DFS_DATANODE_LIFELINE_INTERVAL_SECONDS_KEY,
+        3 * getConf().getTimeDuration(DFS_HEARTBEAT_INTERVAL_KEY,
+        DFS_HEARTBEAT_INTERVAL_DEFAULT, TimeUnit.SECONDS,
+            TimeUnit.MILLISECONDS));
+    if (confLifelineIntervalMs <= heartBeatInterval) {
+      confLifelineIntervalMs = 3 * heartBeatInterval;
+      DataNode.LOG.warn(
+          String.format("%s must be set to a value greater than %s.  " +
+              "Resetting value to 3 * %s, which is %d milliseconds.",
+              DFS_DATANODE_LIFELINE_INTERVAL_SECONDS_KEY,
+              DFS_HEARTBEAT_INTERVAL_KEY, DFS_HEARTBEAT_INTERVAL_KEY,
+              confLifelineIntervalMs));
+    }
+    lifelineIntervalMs = confLifelineIntervalMs;
+    
+    // do we need to sync block file contents to disk when blockfile is closed?
+    this.syncOnClose = getConf().getBoolean(DFS_DATANODE_SYNCONCLOSE_KEY,
+        DFS_DATANODE_SYNCONCLOSE_DEFAULT);
+
+    this.minimumNameNodeVersion = getConf().get(
+        DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_KEY,
+        DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_DEFAULT);
+    
+    this.encryptDataTransfer = getConf().getBoolean(
+        DFS_ENCRYPT_DATA_TRANSFER_KEY,
+        DFS_ENCRYPT_DATA_TRANSFER_DEFAULT);
+    this.overwriteDownstreamDerivedQOP = getConf().getBoolean(
+        DFS_ENCRYPT_DATA_OVERWRITE_DOWNSTREAM_DERIVED_QOP_KEY,
+        DFS_ENCRYPT_DATA_OVERWRITE_DOWNSTREAM_DERIVED_QOP_DEFAULT);
+    this.encryptionAlgorithm = getConf().get(DFS_DATA_ENCRYPTION_ALGORITHM_KEY);
+    this.trustedChannelResolver = TrustedChannelResolver.getInstance(getConf());
+    this.saslPropsResolver = DataTransferSaslUtil.getSaslPropertiesResolver(
+      getConf());
+    this.ignoreSecurePortsForTesting = getConf().getBoolean(
+        IGNORE_SECURE_PORTS_FOR_TESTING_KEY,
+        IGNORE_SECURE_PORTS_FOR_TESTING_DEFAULT);
+    
+    this.xceiverStopTimeout = getConf().getLong(
+        DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY,
+        DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT);
+
+    this.maxLockedMemory = getConf().getLongBytes(
+        DFS_DATANODE_MAX_LOCKED_MEMORY_KEY,
+        DFS_DATANODE_MAX_LOCKED_MEMORY_DEFAULT);
+
+    this.pmemDirs = getConf().getTrimmedStrings(
+        DFS_DATANODE_PMEM_CACHE_DIRS_KEY);
+
+    this.restartReplicaExpiry = getConf().getLong(
+        DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY,
+        DFS_DATANODE_RESTART_REPLICA_EXPIRY_DEFAULT) * 1000L;
+
+    this.allowNonLocalLazyPersist = getConf().getBoolean(
+        DFS_DATANODE_NON_LOCAL_LAZY_PERSIST,
+        DFS_DATANODE_NON_LOCAL_LAZY_PERSIST_DEFAULT);
+
+    this.bpReadyTimeout = getConf().getTimeDuration(
+        DFS_DATANODE_BP_READY_TIMEOUT_KEY,
+        DFS_DATANODE_BP_READY_TIMEOUT_DEFAULT, TimeUnit.SECONDS);
+
+    this.volFailuresTolerated =
+        getConf().getInt(
+            DFSConfigKeys.DFS_DATANODE_FAILED_VOLUMES_TOLERATED_KEY,
+            DFSConfigKeys.DFS_DATANODE_FAILED_VOLUMES_TOLERATED_DEFAULT);
+    String[] dataDirs =
+        getConf().getTrimmedStrings(DFSConfigKeys.DFS_DATANODE_DATA_DIR_KEY);
+    this.volsConfigured = (dataDirs == null) ? 0 : dataDirs.length;
+
+    this.pmemCacheRecoveryEnabled = getConf().getBoolean(
+        DFS_DATANODE_PMEM_CACHE_RECOVERY_KEY,
+        DFS_DATANODE_PMEM_CACHE_RECOVERY_DEFAULT);
+
+    this.processCommandsThresholdMs = getConf().getTimeDuration(
+        DFS_DATANODE_PROCESS_COMMANDS_THRESHOLD_KEY,
+        DFS_DATANODE_PROCESS_COMMANDS_THRESHOLD_DEFAULT,
+        TimeUnit.MILLISECONDS
+    );
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Dispatcher, <init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Ljava/util/Set;Ljava/util/Set;JIIIJJIIJLorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:78..81]36 - org.apache.hadoop.hdfs.server.balancer.Dispatcher.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Ljava/util/Set;Ljava/util/Set;JIIIJJIIJLorg/apache/hadoop/conf/Configuration;)V, BB[SSA:76..77]35 - org.apache.hadoop.hdfs.server.balancer.Dispatcher.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Ljava/util/Set;Ljava/util/Set;JIIIJJIIJLorg/apache/hadoop/conf/Configuration;)V, BB[SSA:82..83]37 - org.apache.hadoop.hdfs.server.balancer.Dispatcher.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Ljava/util/Set;Ljava/util/Set;JIIIJJIIJLorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]51 - org.apache.hadoop.hdfs.server.balancer.Dispatcher.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Ljava/util/Set;Ljava/util/Set;JIIIJJIIJLorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=1094, lastLineNumber=1096, firstMethodNumber=1074, lastMethodNumber=1103, isFirstLineValid=true, methodSrcCode=
+      long getBlocksSize, long getBlocksMinBlockSize, int blockMoveTimeout,
+      int maxNoMoveInterval, long maxIterationTime, Configuration conf) {
+    this.nnc = nnc;
+    this.excludedNodes = excludedNodes;
+    this.includedNodes = includedNodes;
+    this.movedBlocks = new MovedBlocks<StorageGroup>(movedWinWidth);
+
+    this.cluster = NetworkTopology.getInstance(conf);
+
+    this.dispatchExecutor = dispatcherThreads == 0? null
+        : Executors.newFixedThreadPool(dispatcherThreads);
+    this.moverThreadAllocator = new Allocator(moverThreads);
+    this.maxMoverThreads = moverThreads;
+    this.maxConcurrentMovesPerNode = maxConcurrentMovesPerNode;
+
+    this.getBlocksSize = getBlocksSize;
+    this.getBlocksMinBlockSize = getBlocksMinBlockSize;
+    this.blockMoveTimeout = blockMoveTimeout;
+    this.maxNoMoveInterval = maxNoMoveInterval;
+
+    this.saslClient = new SaslDataTransferClient(conf,
+        DataTransferSaslUtil.getSaslPropertiesResolver(conf),
+        TrustedChannelResolver.getInstance(conf), nnc.fallbackToSimpleAuth);
+    this.ioFileBufferSize = DFSUtilClient.getIoFileBufferSize(conf);
+    this.connectToDnViaHostname = conf.getBoolean(
+        HdfsClientConfigKeys.DFS_CLIENT_USE_DN_HOSTNAME,
+        HdfsClientConfigKeys.DFS_CLIENT_USE_DN_HOSTNAME_DEFAULT);
+    placementPolicies = new BlockPlacementPolicies(conf, null, cluster, null);
+    this.maxIterationTime = maxIterationTime;
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter, getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources; > Context: Everywhere, blocks=[BB[SSA:2..4]2 - org.apache.hadoop.hdfs.server.datanode.SecureDataNodeStarter.getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;, BB[SSA:0..1]1 - org.apache.hadoop.hdfs.server.datanode.SecureDataNodeStarter.getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;, BB[SSA:5..6]3 - org.apache.hadoop.hdfs.server.datanode.SecureDataNodeStarter.getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;, BB[SSA:-1..-2]100 - org.apache.hadoop.hdfs.server.datanode.SecureDataNodeStarter.getSecureResources(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/datanode/SecureDataNodeStarter$SecureResources;], numberOfBasicBlocks=4, firstLineNumber=114, lastLineNumber=116, firstMethodNumber=113, lastMethodNumber=181, isFirstLineValid=true, methodSrcCode=
+      throws Exception {
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    boolean isSaslEnabled =
+        DataTransferSaslUtil.getSaslPropertiesResolver(conf) != null;
+    boolean isRpcPrivileged;
+    boolean isHttpPrivileged = false;
+
+    System.err.println("isSaslEnabled:" + isSaslEnabled);
+    // Obtain secure port for data streaming to datanode
+    InetSocketAddress streamingAddr  = DataNode.getStreamingAddr(conf);
+    int socketWriteTimeout = conf.getInt(
+        DFSConfigKeys.DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY,
+        HdfsConstants.WRITE_TIMEOUT);
+    int backlogLength = conf.getInt(
+        CommonConfigurationKeysPublic.IPC_SERVER_LISTEN_QUEUE_SIZE_KEY,
+        CommonConfigurationKeysPublic.IPC_SERVER_LISTEN_QUEUE_SIZE_DEFAULT);
+
+    ServerSocket ss = (socketWriteTimeout > 0) ? 
+        ServerSocketChannel.open().socket() : new ServerSocket();
+    try {
+      ss.bind(streamingAddr, backlogLength);
+    } catch (BindException e) {
+      BindException newBe = appendMessageToBindException(e,
+          streamingAddr.toString());
+      throw newBe;
+    }
+
+    // Check that we got the port we need
+    if (ss.getLocalPort() != streamingAddr.getPort()) {
+      throw new RuntimeException(
+          "Unable to bind on specified streaming port in secure "
+              + "context. Needed " + streamingAddr.getPort() + ", got "
+              + ss.getLocalPort());
+    }
+    isRpcPrivileged = SecurityUtil.isPrivilegedPort(ss.getLocalPort());
+    System.err.println("Opened streaming server at " + streamingAddr);
+
+    // Bind a port for the web server. The code intends to bind HTTP server to
+    // privileged port only, as the client can authenticate the server using
+    // certificates if they are communicating through SSL.
+    final ServerSocketChannel httpChannel;
+    if (policy.isHttpEnabled()) {
+      httpChannel = ServerSocketChannel.open();
+      InetSocketAddress infoSocAddr = DataNode.getInfoAddr(conf);
+      try {
+        httpChannel.socket().bind(infoSocAddr);
+      } catch (BindException e) {
+        BindException newBe = appendMessageToBindException(e,
+            infoSocAddr.toString());
+        throw newBe;
+      }
+      InetSocketAddress localAddr = (InetSocketAddress) httpChannel.socket()
+        .getLocalSocketAddress();
+
+      if (localAddr.getPort() != infoSocAddr.getPort()) {
+        throw new RuntimeException("Unable to bind on specified info port in " +
+            "secure context. Needed " + infoSocAddr.getPort() + ", got " +
+             ss.getLocalPort());
+      }
+      System.err.println("Successfully obtained privileged resources (streaming port = "
+          + ss + " ) (http listener port = " + localAddr.getPort() +")");
+
+      isHttpPrivileged = SecurityUtil.isPrivilegedPort(localAddr.getPort());
+      System.err.println("Opened info server at " + infoSocAddr);
+    } else {
+      httpChannel = null;
+    }
+
+    return new SecureResources(ss, httpChannel, isSaslEnabled,
+        isRpcPrivileged, isHttpPrivileged);
+}

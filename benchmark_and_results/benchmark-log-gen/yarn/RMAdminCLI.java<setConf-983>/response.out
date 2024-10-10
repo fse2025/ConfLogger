@@ -1,0 +1,13 @@
+```java
+if (conf != null) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration is not null. Adding security configuration.");
+    // ConfLogger Inserted End
+    conf = addSecurityConfiguration(conf);
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration is null. Skipping security configuration.");
+    // ConfLogger Inserted End
+}
+super.setConf(conf);
+```

@@ -1,0 +1,16 @@
+```java
+String doneDirPrefix = conf
+.get(JHAdminConfig.MR_HISTORY_INTERMEDIATE_DONE_DIR);
+if (doneDirPrefix == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter '{}' is not set. Defaulting to '{}'.", 
+                JHAdminConfig.MR_HISTORY_INTERMEDIATE_DONE_DIR, 
+                MRJobConfig.MR_AM_STAGING_DIR + "/history/done_intermediate");
+    // ConfLogger Inserted End
+    doneDirPrefix = conf.get(MRJobConfig.MR_AM_STAGING_DIR,
+    MRJobConfig.DEFAULT_MR_AM_STAGING_DIR)
+    + "/history/done_intermediate";
+}
+return ensurePathInDefaultFileSystem(doneDirPrefix, conf);
+}
+```

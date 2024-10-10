@@ -1,0 +1,17 @@
+```java
+String className = null;
+IStateStorage stateStorage = null;
+if (config.get(Config.STORM_CLUSTER_STATE_STORE) != null) {
+    className = (String) config.get(Config.STORM_CLUSTER_STATE_STORE);
+} else {
+    className = "org.apache.storm.cluster.ZKStateStorageFactory";
+    // ConfLogger Inserted Start
+    logger.info("Config parameter 'Config.STORM_CLUSTER_STATE_STORE' is not set. Defaulting to 'org.apache.storm.cluster.ZKStateStorageFactory'.");
+    // ConfLogger Inserted End
+}
+Class clazz = Class.forName(className);
+StateStorageFactory storageFactory = (StateStorageFactory) clazz.newInstance();
+stateStorage = storageFactory.mkStore(config, authConf, context);
+return stateStorage;
+}
+```

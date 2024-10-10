@@ -1,0 +1,50 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	QuotaMetricsUtils.java	methodSinagture:	org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaLimitOrUsage(Lorg/apache/zookeeper/server/DataTree;Lorg/apache/zookeeper/server/util/QuotaMetricsUtils$QUOTA_LIMIT_USAGE_METRIC_TYPE;)Ljava/util/Map;	methodLines:	89:94
+blockLines:	91:-1
+paras:	null
+TaintedStat:	NORMAL getQuotaLimitOrUsage:conditional branch(eq, to iindex=12) 1,6 Node: < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaLimitOrUsage(Lorg/apache/zookeeper/server/DataTree;Lorg/apache/zookeeper/server/util/QuotaMetricsUtils$QUOTA_LIMIT_USAGE_METRIC_TYPE;)Ljava/util/Map; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, lambda$registerMetrics$2()Ljava/util/Map; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getDataTree()Lorg/apache/zookeeper/server/DataTree; > 3 @4 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, lambda$registerMetrics$2()Ljava/util/Map; > Context: Everywhere[2]5 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getDataTree()Lorg/apache/zookeeper/server/DataTree; > 3 @4 exception:4
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, lambda$registerMetrics$2()Ljava/util/Map; > Context: Everywhere[3]7 = invokestatic < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaCountLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map; > 5 @7 exception:6 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaCountLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaCountLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map; > Context: Everywhere[2]5 = invokestatic < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaLimitOrUsage(Lorg/apache/zookeeper/server/DataTree;Lorg/apache/zookeeper/server/util/QuotaMetricsUtils$QUOTA_LIMIT_USAGE_METRIC_TYPE;)Ljava/util/Map; > 1,3 @4 exception:4 v1
+PARAM_CALLEE:Node: < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaLimitOrUsage(Lorg/apache/zookeeper/server/DataTree;Lorg/apache/zookeeper/server/util/QuotaMetricsUtils$QUOTA_LIMIT_USAGE_METRIC_TYPE;)Ljava/util/Map; > Context: Everywhere v1
+NORMAL getQuotaLimitOrUsage:conditional branch(eq, to iindex=12) 1,6 Node: < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaLimitOrUsage(Lorg/apache/zookeeper/server/DataTree;Lorg/apache/zookeeper/server/util/QuotaMetricsUtils$QUOTA_LIMIT_USAGE_METRIC_TYPE;)Ljava/util/Map; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                                            final QUOTA_LIMIT_USAGE_METRIC_TYPE type) {
+        final Map<String, Number> metricsMap = new ConcurrentHashMap<>();
+        if (dataTree != null) {
+            getQuotaLimitOrUsage(Quotas.quotaZookeeper, metricsMap, type, dataTree);
+        }
+        return metricsMap;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaCountUsage(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaCountUsage(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:-1..-2]0 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaCountUsage(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:3..3]2 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaCountUsage(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:-1..-2]3 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaCountUsage(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=72, lastLineNumber=73, firstMethodNumber=72, lastMethodNumber=73, isFirstLineValid=false, methodSrcCode=
+    public static Map<String, Number> getQuotaCountUsage(final DataTree dataTree) {
+        return getQuotaLimitOrUsage(dataTree, QUOTA_LIMIT_USAGE_METRIC_TYPE.QUOTA_COUNT_USAGE);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaBytesLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaBytesLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:-1..-2]0 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaBytesLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:3..3]2 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaBytesLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:-1..-2]3 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaBytesLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=61, lastLineNumber=62, firstMethodNumber=61, lastMethodNumber=62, isFirstLineValid=false, methodSrcCode=
+    public static Map<String, Number> getQuotaBytesLimit(final DataTree dataTree) {
+        return getQuotaLimitOrUsage(dataTree, QUOTA_LIMIT_USAGE_METRIC_TYPE.QUOTA_BYTES_LIMIT);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaBytesUsage(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaBytesUsage(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:-1..-2]0 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaBytesUsage(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:3..3]2 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaBytesUsage(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:-1..-2]3 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaBytesUsage(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=83, lastLineNumber=84, firstMethodNumber=83, lastMethodNumber=84, isFirstLineValid=false, methodSrcCode=
+    public static Map<String, Number> getQuotaBytesUsage(final DataTree dataTree) {
+        return getQuotaLimitOrUsage(dataTree, QUOTA_LIMIT_USAGE_METRIC_TYPE.QUOTA_BYTES_USAGE);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/util/QuotaMetricsUtils, getQuotaCountLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaCountLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:-1..-2]0 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaCountLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:3..3]2 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaCountLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;, BB[SSA:-1..-2]3 - org.apache.zookeeper.server.util.QuotaMetricsUtils.getQuotaCountLimit(Lorg/apache/zookeeper/server/DataTree;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=50, lastLineNumber=51, firstMethodNumber=50, lastMethodNumber=51, isFirstLineValid=false, methodSrcCode=
+    public static Map<String, Number> getQuotaCountLimit(final DataTree dataTree) {
+        return getQuotaLimitOrUsage(dataTree, QUOTA_LIMIT_USAGE_METRIC_TYPE.QUOTA_COUNT_LIMIT);
+    }
+}

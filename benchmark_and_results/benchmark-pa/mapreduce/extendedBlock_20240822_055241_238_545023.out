@@ -1,0 +1,165 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TaskAttemptListenerImpl.java	methodSinagture:	org.apache.hadoop.mapred.TaskAttemptListenerImpl.statusUpdate(Lorg/apache/hadoop/mapred/TaskAttemptID;Lorg/apache/hadoop/mapred/TaskStatus;)Lorg/apache/hadoop/mapred/AMFeedback;	methodLines:	378:483
+blockLines:	400:-1
+paras:	null
+TaintedStat:	NORMAL statusUpdate:conditional branch(eq, to iindex=72) 21,19 Node: < Application, Lorg/apache/hadoop/mapred/TaskAttemptListenerImpl, statusUpdate(Lorg/apache/hadoop/mapred/TaskAttemptID;Lorg/apache/hadoop/mapred/TaskStatus;)Lorg/apache/hadoop/mapred/AMFeedback; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/TaskAttemptListenerImpl, statusUpdate(Lorg/apache/hadoop/mapred/TaskAttemptID;Lorg/apache/hadoop/mapred/TaskStatus;)Lorg/apache/hadoop/mapred/AMFeedback; > Context: Everywhere[44]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 17,18,19 @94 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/TaskAttemptListenerImpl, statusUpdate(Lorg/apache/hadoop/mapred/TaskAttemptID;Lorg/apache/hadoop/mapred/TaskStatus;)Lorg/apache/hadoop/mapred/AMFeedback; > Context: Everywhere[44]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 17,18,19 @94 exception:20
+NORMAL statusUpdate:conditional branch(eq, to iindex=72) 21,19 Node: < Application, Lorg/apache/hadoop/mapred/TaskAttemptListenerImpl, statusUpdate(Lorg/apache/hadoop/mapred/TaskAttemptID;Lorg/apache/hadoop/mapred/TaskStatus;)Lorg/apache/hadoop/mapred/AMFeedback; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	TaskAttemptListenerImpl.java	methodSinagture:	org.apache.hadoop.mapred.TaskAttemptListenerImpl.statusUpdate(Lorg/apache/hadoop/mapred/TaskAttemptID;Lorg/apache/hadoop/mapred/TaskStatus;)Lorg/apache/hadoop/mapred/AMFeedback;	methodLines:	378:483
+blockLines:	413:-1
+paras:	mapreduce.task.ping-for-liveliness-check.enabled
+TaintedStat:	NORMAL statusUpdate:conditional branch(eq, to iindex=101) 136,19 Node: < Application, Lorg/apache/hadoop/mapred/TaskAttemptListenerImpl, statusUpdate(Lorg/apache/hadoop/mapred/TaskAttemptID;Lorg/apache/hadoop/mapred/TaskStatus;)Lorg/apache/hadoop/mapred/AMFeedback; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/TaskAttemptListenerImpl, statusUpdate(Lorg/apache/hadoop/mapred/TaskAttemptID;Lorg/apache/hadoop/mapred/TaskStatus;)Lorg/apache/hadoop/mapred/AMFeedback; > Context: Everywhere[94]136 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 133,134,19 @213 exception:135
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/TaskAttemptListenerImpl, statusUpdate(Lorg/apache/hadoop/mapred/TaskAttemptID;Lorg/apache/hadoop/mapred/TaskStatus;)Lorg/apache/hadoop/mapred/AMFeedback; > Context: Everywhere[94]136 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 133,134,19 @213 exception:135
+NORMAL statusUpdate:conditional branch(eq, to iindex=101) 136,19 Node: < Application, Lorg/apache/hadoop/mapred/TaskAttemptListenerImpl, statusUpdate(Lorg/apache/hadoop/mapred/TaskAttemptID;Lorg/apache/hadoop/mapred/TaskStatus;)Lorg/apache/hadoop/mapred/AMFeedback; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    org.apache.hadoop.mapreduce.v2.api.records.TaskAttemptId yarnAttemptID =
+        TypeConverter.toYarn(taskAttemptID);
+
+    AMFeedback feedback = new AMFeedback();
+    feedback.setTaskFound(true);
+
+    AtomicReference<TaskAttemptStatus> lastStatusRef =
+        attemptIdToStatus.get(yarnAttemptID);
+    if (lastStatusRef == null) {
+      // The task is not known, but it could be in the process of tearing
+      // down gracefully or receiving a thread dump signal. Tolerate unknown
+      // tasks as long as they have unregistered recently.
+      if (!taskHeartbeatHandler.hasRecentlyUnregistered(yarnAttemptID)) {
+        LOG.error("Status update was called with illegal TaskAttemptId: "
+            + yarnAttemptID);
+        feedback.setTaskFound(false);
+      }
+      return feedback;
+    }
+
+    // Propagating preemption to the task if TASK_PREEMPTION is enabled
+    if (getConfig().getBoolean(MRJobConfig.TASK_PREEMPTION, false)
+        && preemptionPolicy.isPreempted(yarnAttemptID)) {
+      feedback.setPreemption(true);
+      LOG.info("Setting preemption bit for task: "+ yarnAttemptID
+          + " of type " + yarnAttemptID.getTaskId().getTaskType());
+    }
+
+    if (taskStatus == null) {
+      //We are using statusUpdate only as a simple ping
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("Ping from " + taskAttemptID.toString());
+      }
+      // Consider ping from the tasks for liveliness check
+      if (getConfig().getBoolean(MRJobConfig.MR_TASK_ENABLE_PING_FOR_LIVELINESS_CHECK,
+          MRJobConfig.DEFAULT_MR_TASK_ENABLE_PING_FOR_LIVELINESS_CHECK)) {
+        taskHeartbeatHandler.progressing(yarnAttemptID);
+      }
+      return feedback;
+    }
+
+    // if we are here there is an actual status update to be processed
+
+    taskHeartbeatHandler.progressing(yarnAttemptID);
+    TaskAttemptStatus taskAttemptStatus =
+        new TaskAttemptStatus();
+    taskAttemptStatus.id = yarnAttemptID;
+    // Task sends the updated progress to the TT.
+    taskAttemptStatus.progress = taskStatus.getProgress();
+    // log the new progress
+    taskAttemptLogProgressStamps.computeIfAbsent(taskAttemptID,
+        k -> new TaskProgressLogPair(taskAttemptID))
+        .update(taskStatus.getProgress());
+    // Task sends the updated state-string to the TT.
+    taskAttemptStatus.stateString = taskStatus.getStateString();
+    // Task sends the updated phase to the TT.
+    taskAttemptStatus.phase = TypeConverter.toYarn(taskStatus.getPhase());
+    // Counters are updated by the task. Convert counters into new format as
+    // that is the primary storage format inside the AM to avoid multiple
+    // conversions and unnecessary heap usage.
+    taskAttemptStatus.counters = new org.apache.hadoop.mapreduce.Counters(
+      taskStatus.getCounters());
+
+    // Map Finish time set by the task (map only)
+    if (taskStatus.getIsMap() && taskStatus.getMapFinishTime() != 0) {
+      taskAttemptStatus.mapFinishTime = taskStatus.getMapFinishTime();
+    }
+
+    // Shuffle Finish time set by the task (reduce only).
+    if (!taskStatus.getIsMap() && taskStatus.getShuffleFinishTime() != 0) {
+      taskAttemptStatus.shuffleFinishTime = taskStatus.getShuffleFinishTime();
+    }
+
+    // Sort finish time set by the task (reduce only).
+    if (!taskStatus.getIsMap() && taskStatus.getSortFinishTime() != 0) {
+      taskAttemptStatus.sortFinishTime = taskStatus.getSortFinishTime();
+    }
+
+    // Not Setting the task state. Used by speculation - will be set in TaskAttemptImpl
+    //taskAttemptStatus.taskState =  TypeConverter.toYarn(taskStatus.getRunState());
+    
+    //set the fetch failures
+    if (taskStatus.getFetchFailedMaps() != null 
+        && taskStatus.getFetchFailedMaps().size() > 0) {
+      taskAttemptStatus.fetchFailedMaps = 
+        new ArrayList<org.apache.hadoop.mapreduce.v2.api.records.TaskAttemptId>();
+      for (TaskAttemptID failedMapId : taskStatus.getFetchFailedMaps()) {
+        taskAttemptStatus.fetchFailedMaps.add(
+            TypeConverter.toYarn(failedMapId));
+      }
+    }
+
+ // Task sends the information about the nextRecordRange to the TT
+    
+//    TODO: The following are not needed here, but needed to be set somewhere inside AppMaster.
+//    taskStatus.getRunState(); // Set by the TT/JT. Transform into a state TODO
+//    taskStatus.getStartTime(); // Used to be set by the TaskTracker. This should be set by getTask().
+//    taskStatus.getFinishTime(); // Used to be set by TT/JT. Should be set when task finishes
+//    // This was used by TT to do counter updates only once every minute. So this
+//    // isn't ever changed by the Task itself.
+//    taskStatus.getIncludeCounters();
+
+    coalesceStatusUpdate(yarnAttemptID, taskAttemptStatus, lastStatusRef);
+
+    return feedback;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/Task, statusUpdate(Lorg/apache/hadoop/mapred/TaskUmbilicalProtocol;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=1312, lastMethodNumber=1338, isFirstLineValid=true, methodSrcCode=
+  throws IOException {
+    int retries = MAX_RETRIES;
+
+    while (true) {
+      try {
+        if (!umbilical.statusUpdate(getTaskID(), taskStatus).getTaskFound()) {
+          if (uberized) {
+            LOG.warn("Task no longer available: " + taskId);
+            break;
+          } else {
+            LOG.warn("Parent died.  Exiting " + taskId);
+            ExitUtil.terminate(66);
+          }
+        }
+        taskStatus.clearStatus();
+        return;
+      } catch (InterruptedException ie) {
+        Thread.currentThread().interrupt(); // interrupt ourself
+      } catch (IOException ie) {
+        LOG.warn("Failure sending status update: " + 
+                  StringUtils.stringifyException(ie));
+        if (--retries == 0) {
+          throw ie;
+        }
+      }
+    }
+  }
+  
+}

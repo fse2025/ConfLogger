@@ -1,0 +1,30 @@
+```java
+Class<?> clazz = conf.getClass(ConnectionUtils.HBASE_CLIENT_CONNECTION_IMPL,
+ConnectionOverAsyncConnection.class, Connection.class);
+if (clazz != ConnectionOverAsyncConnection.class) {
+    try {
+        // Default HCM#HCI is not accessible; make it so before invoking.
+        Constructor<?> constructor = clazz.getDeclaredConstructor(Configuration.class,
+        ExecutorService.class, User.class, Map.class);
+        constructor.setAccessible(true);
+        // ConfLogger Inserted Start
+        logger.info("Using custom connection implementation: " + clazz.getName() + 
+                    ". Ensure that the class is accessible and properly configured.");
+        // ConfLogger Inserted End
+        return user.runAs((PrivilegedExceptionAction<Connection>) () -> (Connection) constructor
+        .newInstance(conf, pool, user, connectionAttributes));
+    } catch (Exception e) {
+        // ConfLogger Inserted Start
+        logger.error("Failed to instantiate custom connection implementation: " + clazz.getName() + 
+                     ". Ensure that the constructor is correct and accessible.", e);
+        // ConfLogger Inserted End
+        throw new IOException(e);
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Using default async connection implementation.");
+    // ConfLogger Inserted End
+    return FutureUtils.get(createAsyncConnection(conf, user, connectionAttributes))
+    .toConnection();
+}
+```

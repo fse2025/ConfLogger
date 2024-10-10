@@ -1,0 +1,54 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	PollingMasterInquireClient.java	methodSinagture:	alluxio.master.PollingMasterInquireClient.getAddress()Ljava/net/InetSocketAddress;	methodLines:	137:149
+blockLines:	146:-1
+paras:	null
+TaintedStat:	NORMAL getAddress:conditional branch(eq, to iindex=28) 21,7 Node: < Application, Lalluxio/master/PollingMasterInquireClient, getAddress()Ljava/net/InetSocketAddress; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/PollingMasterInquireClient, getAddress()Ljava/net/InetSocketAddress; > Context: Everywhere[21]21 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 18,19 @48 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/PollingMasterInquireClient, getAddress()Ljava/net/InetSocketAddress; > Context: Everywhere[21]21 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 18,19 @48 exception:20
+NORMAL getAddress:conditional branch(eq, to iindex=28) 21,7 Node: < Application, Lalluxio/master/PollingMasterInquireClient, getAddress()Ljava/net/InetSocketAddress; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	PollingMasterInquireClient.java	methodSinagture:	alluxio.master.PollingMasterInquireClient.getAddress()Ljava/net/InetSocketAddress;	methodLines:	137:149
+blockLines:	138:-1
+paras:	null
+TaintedStat:	NORMAL getAddress:conditional branch(eq, to iindex=14) 6,7 Node: < Application, Lalluxio/master/PollingMasterInquireClient, getAddress()Ljava/net/InetSocketAddress; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/PollingMasterInquireClient, getAddress()Ljava/net/InetSocketAddress; > Context: Everywhere[3]6 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 3,4 @7 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/PollingMasterInquireClient, getAddress()Ljava/net/InetSocketAddress; > Context: Everywhere[3]6 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 3,4 @7 exception:5
+NORMAL getAddress:conditional branch(eq, to iindex=14) 6,7 Node: < Application, Lalluxio/master/PollingMasterInquireClient, getAddress()Ljava/net/InetSocketAddress; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    List<InetSocketAddress> addresses;
+    if (mConfiguration.getBoolean(PropertyKey.USER_RPC_SHUFFLE_MASTERS_ENABLED)) {
+      addresses =
+          Lists.newArrayList(mConnectDetails.getAddresses());
+      Collections.shuffle(addresses);
+    } else {
+      addresses = mConnectDetails.getAddresses();
+    }
+
+    if (mConfiguration.getBoolean(PropertyKey.USER_MASTER_POLLING_CONCURRENT)) {
+      return findActiveAddressConcurrent(addresses);
+    } else {
+      return findActiveAddress(addresses);
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/master/PollingMasterInquireClient, getPrimaryRpcAddress()Ljava/net/InetSocketAddress; > Context: Everywhere, blocks=[BB[SSA:9..10]7 - alluxio.master.PollingMasterInquireClient.getPrimaryRpcAddress()Ljava/net/InetSocketAddress;, BB[SSA:7..8]6 - alluxio.master.PollingMasterInquireClient.getPrimaryRpcAddress()Ljava/net/InetSocketAddress;, BB[SSA:11..14]8 - alluxio.master.PollingMasterInquireClient.getPrimaryRpcAddress()Ljava/net/InetSocketAddress;, BB[SSA:-1..-2]22 - alluxio.master.PollingMasterInquireClient.getPrimaryRpcAddress()Ljava/net/InetSocketAddress;], numberOfBasicBlocks=4, firstLineNumber=123, lastLineNumber=125, firstMethodNumber=121, lastMethodNumber=129, isFirstLineValid=true, methodSrcCode=
+  public InetSocketAddress getPrimaryRpcAddress() throws UnavailableException {
+    RetryPolicy retry = mRetryPolicySupplier.get();
+    while (retry.attempt()) {
+      InetSocketAddress address = getAddress();
+      if (address != null) {
+        return address;
+      }
+    }
+    throw new UnavailableException(String.format(
+        "Failed to determine primary master rpc address after polling each of %s %d times",
+}

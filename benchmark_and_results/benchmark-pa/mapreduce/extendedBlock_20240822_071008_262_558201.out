@@ -1,0 +1,105 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CachedHistoryStorage.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.CachedHistoryStorage.createLoadedJobCache(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	79:143
+blockLines:	89:-1
+paras:	mapreduce.jobhistory.loadedtasks.cache.size
+TaintedStat:	NORMAL createLoadedJobCache:conditional branch(eq, to iindex=25) 11,12 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, createLoadedJobCache(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, createLoadedJobCache(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere][11]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,9 @19 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, createLoadedJobCache(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere][11]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,9 @19 exception:10
+NORMAL createLoadedJobCache:conditional branch(eq, to iindex=25) 11,12 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, createLoadedJobCache(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // Set property for old "loaded jobs" cache
+    loadedJobCacheSize = conf.getInt(
+        JHAdminConfig.MR_HISTORY_LOADED_JOB_CACHE_SIZE,
+        JHAdminConfig.DEFAULT_MR_HISTORY_LOADED_JOB_CACHE_SIZE);
+
+    // Check property for new "loaded tasks" cache perform sanity checking
+    useLoadedTasksCache = false;
+    try {
+      String taskSizeString = conf
+          .get(JHAdminConfig.MR_HISTORY_LOADED_TASKS_CACHE_SIZE);
+      if (taskSizeString != null) {
+        loadedTasksCacheSize = Math.max(Integer.parseInt(taskSizeString), 1);
+        useLoadedTasksCache = true;
+      }
+    } catch (NumberFormatException nfe) {
+      LOG.error("The property " +
+          JHAdminConfig.MR_HISTORY_LOADED_TASKS_CACHE_SIZE +
+          " is not an integer value.  Please set it to a positive" +
+          " integer value.");
+    }
+
+    CacheLoader<JobId, Job> loader;
+    loader = new CacheLoader<JobId, Job>() {
+      @Override
+      public Job load(JobId key) throws Exception {
+        return loadJob(key);
+      }
+    };
+
+    if (!useLoadedTasksCache) {
+      loadedJobCache = CacheBuilder.newBuilder()
+          .maximumSize(loadedJobCacheSize)
+          .initialCapacity(loadedJobCacheSize)
+          .concurrencyLevel(1)
+          .build(loader);
+    } else {
+      Weigher<JobId, Job> weightByTasks;
+      weightByTasks = new Weigher<JobId, Job>() {
+        /**
+         * Method for calculating Job weight by total task count.  If
+         * the total task count is greater than the size of the tasks
+         * cache, then cap it at the cache size.  This allows the cache
+         * to always hold one large job.
+         * @param key JobId object
+         * @param value Job object
+         * @return Weight of the job as calculated by total task count
+         */
+        @Override
+        public int weigh(JobId key, Job value) {
+          int taskCount = Math.min(loadedTasksCacheSize,
+              value.getTotalMaps() + value.getTotalReduces());
+          return taskCount;
+        }
+      };
+      // Keep concurrencyLevel at 1.  Otherwise, two problems:
+      // 1) The largest job that can be initially loaded is
+      //    cache size / 4.
+      // 2) Unit tests are not deterministic.
+      loadedJobCache = CacheBuilder.newBuilder()
+          .maximumWeight(loadedTasksCacheSize)
+          .weigher(weightByTasks)
+          .concurrencyLevel(1)
+          .build(loader);
+    }
+  }
+  
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:6..8]3 - org.apache.hadoop.mapreduce.v2.hs.CachedHistoryStorage.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:3..5]2 - org.apache.hadoop.mapreduce.v2.hs.CachedHistoryStorage.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:9..9]4 - org.apache.hadoop.mapreduce.v2.hs.CachedHistoryStorage.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]5 - org.apache.hadoop.mapreduce.v2.hs.CachedHistoryStorage.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=72, lastLineNumber=75, firstMethodNumber=70, lastMethodNumber=75, isFirstLineValid=true, methodSrcCode=
+  public void serviceInit(Configuration conf) throws Exception {
+    super.serviceInit(conf);
+    LOG.info("CachedHistoryStorage Init");
+
+    createLoadedJobCache(conf);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, refreshLoadedJobCache()V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/v2/hs/CachedHistoryStorage, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:11..11]6 - org.apache.hadoop.mapreduce.v2.hs.CachedHistoryStorage.refreshLoadedJobCache()V, BB[SSA:8..10]5 - org.apache.hadoop.mapreduce.v2.hs.CachedHistoryStorage.refreshLoadedJobCache()V, BB[SSA:12..12]7 - org.apache.hadoop.mapreduce.v2.hs.CachedHistoryStorage.refreshLoadedJobCache()V, BB[SSA:-1..-2]10 - org.apache.hadoop.mapreduce.v2.hs.CachedHistoryStorage.refreshLoadedJobCache()V], numberOfBasicBlocks=4, firstLineNumber=148, lastLineNumber=148, firstMethodNumber=145, lastMethodNumber=152, isFirstLineValid=true, methodSrcCode=
+  public void refreshLoadedJobCache() {
+    if (getServiceState() == STATE.STARTED) {
+      setConfig(createConf());
+      createLoadedJobCache(getConfig());
+    } else {
+      LOG.warn("Failed to execute refreshLoadedJobCache: CachedHistoryStorage is not started");
+    }
+  }
+  
+}

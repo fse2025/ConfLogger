@@ -1,0 +1,20 @@
+```java
+for (String key : keys) {
+    String value = conf.get(addKeySuffixes(key, nameserviceId, nnId));
+    if (value != null) {
+        conf.set(key, value);
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter set: key=" + key + ", value=" + value + " using nameserviceId=" + nameserviceId + " and nnId=" + nnId);
+        // ConfLogger Inserted End
+        continue;
+    }
+    value = conf.get(addKeySuffixes(key, nameserviceId));
+    if (value != null) {
+        conf.set(key, value);
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter set: key=" + key + ", value=" + value + " using nameserviceId=" + nameserviceId);
+        // ConfLogger Inserted End
+    }
+}
+}
+```

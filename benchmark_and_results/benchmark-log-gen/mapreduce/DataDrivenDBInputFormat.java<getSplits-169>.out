@@ -1,0 +1,76 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DataDrivenDBInputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.db.DataDrivenDBInputFormat.getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List;	methodLines:	169:224
+blockLines:	171:-1
+paras:	mapreduce.job.maps
+TaintedStat:	NORMAL getSplits:conditional branch(ne, to iindex=23) 7,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DataDrivenDBInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DataDrivenDBInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[4]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 5,6,7 @9 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DataDrivenDBInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[4]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 5,6,7 @9 exception:8
+NORMAL getSplits:conditional branch(ne, to iindex=23) 7,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/db/DataDrivenDBInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    int targetNumTasks = job.getConfiguration().getInt(MRJobConfig.NUM_MAPS, 1);
+    if (1 == targetNumTasks) {
+      // There's no need to run a bounding vals query; just return a split
+      // that separates nothing. This can be considerably more optimal for a
+      // large table with no index.
+      List<InputSplit> singletonSplit = new ArrayList<InputSplit>();
+      singletonSplit.add(new DataDrivenDBInputSplit("1=1", "1=1"));
+      return singletonSplit;
+    }
+
+    ResultSet results = null;
+    Statement statement = null;
+    try {
+      statement = connection.createStatement();
+
+      results = statement.executeQuery(getBoundingValsQuery());
+      results.next();
+
+      // Based on the type of the results, use a different mechanism
+      // for interpolating split points (i.e., numeric splits, text splits,
+      // dates, etc.)
+      int sqlDataType = results.getMetaData().getColumnType(1);
+      DBSplitter splitter = getSplitter(sqlDataType);
+      if (null == splitter) {
+        throw new IOException("Unknown SQL data type: " + sqlDataType);
+      }
+
+      return splitter.split(job.getConfiguration(), results, getDBConf().getInputOrderBy());
+    } catch (SQLException e) {
+      throw new IOException(e.getMessage());
+    } finally {
+      // More-or-less ignore SQL exceptions here, but log in case we need it.
+      try {
+        if (null != results) {
+          results.close();
+        }
+      } catch (SQLException se) {
+        LOG.debug("SQLException closing resultset: " + se.toString());
+      }
+
+      try {
+        if (null != statement) {
+          statement.close();
+        }
+      } catch (SQLException se) {
+        LOG.debug("SQLException closing statement: " + se.toString());
+      }
+
+      try {
+        connection.commit();
+        closeConnection();
+      } catch (SQLException se) {
+        LOG.debug("SQLException committing split transaction: " + se.toString());
+      }
+    }
+  }
+
+
+====================ctx:=======================

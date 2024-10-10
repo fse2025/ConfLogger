@@ -1,0 +1,25 @@
+```java
+String mode = (String) conf.get(Config.STORM_CLUSTER_MODE);
+if (mode != null) {
+    if ("local".equals(mode)) {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter 'Config.STORM_CLUSTER_MODE' is set to 'local'. Service will run in local mode.");
+        // ConfLogger Inserted End
+        return true;
+    }
+    if ("distributed".equals(mode)) {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter 'Config.STORM_CLUSTER_MODE' is set to 'distributed'. Service will run in distributed mode.");
+        // ConfLogger Inserted End
+        return false;
+    }
+    // ConfLogger Commented: Not Informative
+    // throw new IllegalArgumentException("Illegal cluster mode in conf: " + mode);
+    // ConfLogger Inserted Start
+    logger.error("Illegal configuration parameter value for 'Config.STORM_CLUSTER_MODE': " + mode + ". Expected 'local' or 'distributed'.");
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException("Illegal cluster mode in conf: " + mode);
+}
+return true;
+}
+```

@@ -1,0 +1,14 @@
+```java
+super(conf);
+
+if (conf instanceof JobConf) {
+    JobConf that = (JobConf)conf;
+    credentials = that.credentials;
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'credentials' set from JobConf instance. Value: " + credentials);
+    // ConfLogger Inserted End
+}
+
+checkAndWarnDeprecation();
+}
+```

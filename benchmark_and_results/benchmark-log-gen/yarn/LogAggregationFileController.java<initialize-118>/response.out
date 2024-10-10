@@ -1,0 +1,33 @@
+```java
+this.conf = conf;
+int configuredRetentionSize = conf.getInt(
+YarnConfiguration.NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP,
+YarnConfiguration
+.DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP);
+if (configuredRetentionSize <= 0) {
+    // ConfLogger Inserted Start
+    logger.warn("Configured retention size is less than or equal to 0. Using default value: " + 
+                YarnConfiguration.DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP + 
+                ". Configuration parameter: " + 
+                YarnConfiguration.NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP + 
+                ", Value: " + configuredRetentionSize);
+    // ConfLogger Inserted End
+    this.retentionSize =
+    YarnConfiguration
+    .DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP;
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Configured retention size is set to: " + configuredRetentionSize + 
+                ". Configuration parameter: " + 
+                YarnConfiguration.NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP);
+    // ConfLogger Inserted End
+    this.retentionSize = configuredRetentionSize;
+}
+this.fileControllerName = controllerName;
+
+extractRemoteRootLogDir();
+extractRemoteRootLogDirSuffix();
+
+initInternal(conf);
+}
+```

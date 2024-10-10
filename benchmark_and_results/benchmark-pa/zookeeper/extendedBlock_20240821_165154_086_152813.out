@@ -1,0 +1,75 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RequestThrottler.java	methodSinagture:	org.apache.zookeeper.server.RequestThrottler.run()V	methodLines:	142:196
+blockLines:	166:-1
+paras:	null
+TaintedStat:	NORMAL run:conditional branch(ge, to iindex=49) 19,20 Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, run()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, run()V > Context: Everywhere[45]19 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getInProcess()I > 17 @93 exception:18
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, run()V > Context: Everywhere[45]19 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZooKeeperServer, getInProcess()I > 17 @93 exception:18
+NORMAL run:conditional branch(ge, to iindex=49) 19,20 Node: < Application, Lorg/apache/zookeeper/server/RequestThrottler, run()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+            while (true) {
+                if (killed) {
+                    break;
+                }
+
+                Request request = submittedRequests.take();
+                if (Request.requestOfDeath == request) {
+                    break;
+                }
+
+                if (request.mustDrop()) {
+                    continue;
+                }
+
+                // Throttling is disabled when maxRequests = 0
+                if (maxRequests > 0) {
+                    while (!killed) {
+                        if (dropStaleRequests && request.isStale()) {
+                            // Note: this will close the connection
+                            dropRequest(request);
+                            ServerMetrics.getMetrics().STALE_REQUESTS_DROPPED.add(1);
+                            request = null;
+                            break;
+                        }
+                        if (zks.getInProcess() < maxRequests) {
+                            break;
+                        }
+                        throttleSleep(stallTime);
+                    }
+                }
+
+                if (killed) {
+                    break;
+                }
+
+                // A dropped stale request will be null
+                if (request != null) {
+                    if (request.isStale()) {
+                        ServerMetrics.getMetrics().STALE_REQUESTS.add(1);
+                    }
+                    final long elapsedTime = Time.currentElapsedTime() - request.requestThrottleQueueTime;
+                    ServerMetrics.getMetrics().REQUEST_THROTTLE_QUEUE_TIME.add(elapsedTime);
+                    if (shouldThrottleOp(request, elapsedTime)) {
+                      request.setIsThrottled(true);
+                      ServerMetrics.getMetrics().THROTTLED_OPS.add(1);
+                    }
+                    zks.submitRequestNow(request);
+                }
+            }
+        } catch (InterruptedException e) {
+            LOG.error("Unexpected interruption", e);
+        }
+        int dropped = drainQueue();
+        LOG.info("RequestThrottler shutdown. Dropped {} requests", dropped);
+    }
+
+
+
+====================ctx:=======================

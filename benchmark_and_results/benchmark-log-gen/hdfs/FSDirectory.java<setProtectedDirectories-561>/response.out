@@ -1,0 +1,16 @@
+```java
+if (protectedDirsString == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'protectedDirsString' is null. Initializing 'protectedDirectories' as an empty TreeSet.");
+    // ConfLogger Inserted End
+    protectedDirectories = new TreeSet<>();
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'protectedDirsString' is set. Parsing 'protectedDirectories' using the provided value.");
+    logger.debug("Parsing 'protectedDirsString': " + protectedDirsString);
+    // ConfLogger Inserted End
+    protectedDirectories = parseProtectedDirectories(protectedDirsString);
+}
+
+return Joiner.on(",").skipNulls().join(protectedDirectories);
+```

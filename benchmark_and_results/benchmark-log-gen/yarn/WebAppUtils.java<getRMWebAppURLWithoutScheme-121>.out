@@ -1,0 +1,60 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	WebAppUtils.java	methodSinagture:	org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithoutScheme(Lorg/apache/hadoop/conf/Configuration;ZI)Ljava/lang/String;	methodLines:	121:145
+blockLines:	126:-1
+paras:	yarn.resourcemanager.ha.id
+TaintedStat:	NORMAL getRMWebAppURLWithoutScheme:conditional branch(eq, to iindex=19) 10,11 Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getRMWebAppURLWithoutScheme(Lorg/apache/hadoop/conf/Configuration;ZI)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getRMWebAppURLWithoutScheme(Lorg/apache/hadoop/conf/Configuration;ZI)Ljava/lang/String; > Context: Everywhere[10]10 = invokevirtual < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, get(Ljava/lang/String;)Ljava/lang/String; > 5,8 @16 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getRMWebAppURLWithoutScheme(Lorg/apache/hadoop/conf/Configuration;ZI)Ljava/lang/String; > Context: Everywhere[10]10 = invokevirtual < Application, Lorg/apache/hadoop/yarn/conf/YarnConfiguration, get(Ljava/lang/String;)Ljava/lang/String; > 5,8 @16 exception:9
+NORMAL getRMWebAppURLWithoutScheme:conditional branch(eq, to iindex=19) 10,11 Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getRMWebAppURLWithoutScheme(Lorg/apache/hadoop/conf/Configuration;ZI)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      boolean isHAEnabled, int haIdIndex)  {
+    YarnConfiguration yarnConfig = new YarnConfiguration(conf);
+    // set RM_ID if we have not configure it.
+    if (isHAEnabled) {
+      String rmId = yarnConfig.get(YarnConfiguration.RM_HA_ID);
+      if (rmId == null || rmId.isEmpty()) {
+        List<String> rmIds = new ArrayList<>(HAUtil.getRMHAIds(conf));
+        if (rmIds != null && !rmIds.isEmpty()) {
+          yarnConfig.set(YarnConfiguration.RM_HA_ID, rmIds.get(haIdIndex));
+        }
+      }
+    }
+    if (YarnConfiguration.useHttps(yarnConfig)) {
+      if (isHAEnabled) {
+        return HAUtil.getConfValueForRMInstance(
+            YarnConfiguration.RM_WEBAPP_HTTPS_ADDRESS, yarnConfig);
+      }
+      return yarnConfig.get(YarnConfiguration.RM_WEBAPP_HTTPS_ADDRESS,
+          YarnConfiguration.DEFAULT_RM_WEBAPP_HTTPS_ADDRESS);
+    }else {
+      if (isHAEnabled) {
+        return HAUtil.getConfValueForRMInstance(
+            YarnConfiguration.RM_WEBAPP_ADDRESS, yarnConfig);
+      }
+      return yarnConfig.get(YarnConfiguration.RM_WEBAPP_ADDRESS,
+          YarnConfiguration.DEFAULT_RM_WEBAPP_ADDRESS);
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getRMWebAppURLWithScheme(Lorg/apache/hadoop/conf/Configuration;I)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:9..10]6 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithScheme(Lorg/apache/hadoop/conf/Configuration;I)Ljava/lang/String;, BB[SSA:6..8]5 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithScheme(Lorg/apache/hadoop/conf/Configuration;I)Ljava/lang/String;, BB[SSA:11..11]7 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithScheme(Lorg/apache/hadoop/conf/Configuration;I)Ljava/lang/String;, BB[SSA:-1..-2]10 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithScheme(Lorg/apache/hadoop/conf/Configuration;I)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=152, lastLineNumber=152, firstMethodNumber=151, lastMethodNumber=152, isFirstLineValid=true, methodSrcCode=
+      int haIdIndex) {
+    return getHttpSchemePrefix(conf) + getRMWebAppURLWithoutScheme(
+        conf, HAUtil.isHAEnabled(conf), haIdIndex);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getRMWebAppURLWithScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:9..10]6 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:6..8]5 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:11..11]7 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]10 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=157, lastLineNumber=157, firstMethodNumber=156, lastMethodNumber=157, isFirstLineValid=true, methodSrcCode=
+  public static String getRMWebAppURLWithScheme(Configuration conf) {
+    return getHttpSchemePrefix(conf) + getRMWebAppURLWithoutScheme(
+        conf, HAUtil.isHAEnabled(conf), 0);
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getRMWebAppURLWithoutScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithoutScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]0 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithoutScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:4..4]2 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithoutScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]3 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.getRMWebAppURLWithoutScheme(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=161, lastLineNumber=162, firstMethodNumber=161, lastMethodNumber=162, isFirstLineValid=false, methodSrcCode=
+  public static String getRMWebAppURLWithoutScheme(Configuration conf) {
+    return getRMWebAppURLWithoutScheme(conf, false, 0);
+  }
+}

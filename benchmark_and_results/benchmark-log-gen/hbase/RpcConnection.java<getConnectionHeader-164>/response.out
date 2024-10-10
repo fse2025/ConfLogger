@@ -1,0 +1,37 @@
+```java
+final ConnectionHeader.Builder builder = ConnectionHeader.newBuilder();
+builder.setServiceName(remoteId.getServiceName());
+final UserInformation userInfoPB = provider.getUserInfo(remoteId.ticket);
+if (userInfoPB != null) {
+    // ConfLogger Inserted Start
+    logger.info("User information is set. Configuration parameter: remoteId.ticket, Value: {}", remoteId.ticket);
+    // ConfLogger Inserted End
+    builder.setUserInfo(userInfoPB);
+}
+if (this.codec != null) {
+    builder.setCellBlockCodecClass(this.codec.getClass().getCanonicalName());
+}
+if (this.compressor != null) {
+    builder.setCellBlockCompressorClass(this.compressor.getClass().getCanonicalName());
+}
+if (connectionAttributes != null && !connectionAttributes.isEmpty()) {
+    HBaseProtos.NameBytesPair.Builder attributeBuilder = HBaseProtos.NameBytesPair.newBuilder();
+    for (Map.Entry<String, byte[]> attribute : connectionAttributes.entrySet()) {
+        attributeBuilder.setName(attribute.getKey());
+        attributeBuilder.setValue(UnsafeByteOperations.unsafeWrap(attribute.getValue()));
+        builder.addAttribute(attributeBuilder.build());
+    }
+}
+builder.setVersionInfo(ProtobufUtil.getVersionInfo());
+boolean isCryptoAESEnable = conf.getBoolean(CRYPTO_AES_ENABLED_KEY, CRYPTO_AES_ENABLED_DEFAULT);
+// if Crypto AES enable, setup Cipher transformation
+if (isCryptoAESEnable) {
+    // ConfLogger Inserted Start
+    logger.info("Crypto AES is enabled. Configuration parameter: {}, Value: {}", CRYPTO_AES_ENABLED_KEY, isCryptoAESEnable);
+    logger.info("Setting RPC Crypto Cipher Transformation. Configuration parameter: hbase.rpc.crypto.encryption.aes.cipher.transform, Value: {}", conf.get("hbase.rpc.crypto.encryption.aes.cipher.transform", "AES/CTR/NoPadding"));
+    // ConfLogger Inserted End
+    builder.setRpcCryptoCipherTransformation(
+        conf.get("hbase.rpc.crypto.encryption.aes.cipher.transform", "AES/CTR/NoPadding"));
+}
+return builder.build();
+```

@@ -1,0 +1,119 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ContainerLauncher.java	methodSinagture:	org.apache.storm.daemon.supervisor.ContainerLauncher.make(Ljava/util/Map;Ljava/lang/String;ILorg/apache/storm/messaging/IContext;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Lorg/apache/storm/generated/Supervisor$Iface;)Lorg/apache/storm/daemon/supervisor/ContainerLauncher;	methodLines:	56:75
+blockLines:	63:-1
+paras:	storm.resource.isolation.plugin.enable
+TaintedStat:	NORMAL make:conditional branch(eq, to iindex=37) 16,11 Node: < Application, Lorg/apache/storm/daemon/supervisor/ContainerLauncher, make(Ljava/util/Map;Ljava/lang/String;ILorg/apache/storm/messaging/IContext;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Lorg/apache/storm/generated/Supervisor$Iface;)Lorg/apache/storm/daemon/supervisor/ContainerLauncher; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/ContainerLauncher, make(Ljava/util/Map;Ljava/lang/String;ILorg/apache/storm/messaging/IContext;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Lorg/apache/storm/generated/Supervisor$Iface;)Lorg/apache/storm/daemon/supervisor/ContainerLauncher; > Context: Everywhere[17]14 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,12 @28 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/ContainerLauncher, make(Ljava/util/Map;Ljava/lang/String;ILorg/apache/storm/messaging/IContext;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Lorg/apache/storm/generated/Supervisor$Iface;)Lorg/apache/storm/daemon/supervisor/ContainerLauncher; > Context: Everywhere[17]14 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,12 @28 exception:13
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/ContainerLauncher, make(Ljava/util/Map;Ljava/lang/String;ILorg/apache/storm/messaging/IContext;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Lorg/apache/storm/generated/Supervisor$Iface;)Lorg/apache/storm/daemon/supervisor/ContainerLauncher; > Context: Everywhere[19]16 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > 14,11 @34 exception:15 v14
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere v1
+NORMAL getBoolean:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 2 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/ContainerLauncher, make(Ljava/util/Map;Ljava/lang/String;ILorg/apache/storm/messaging/IContext;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Lorg/apache/storm/generated/Supervisor$Iface;)Lorg/apache/storm/daemon/supervisor/ContainerLauncher; > Context: Everywhere[19]16 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > 14,11 @34 exception:15
+NORMAL make:conditional branch(eq, to iindex=37) 16,11 Node: < Application, Lorg/apache/storm/daemon/supervisor/ContainerLauncher, make(Ljava/util/Map;Ljava/lang/String;ILorg/apache/storm/messaging/IContext;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;Lorg/apache/storm/generated/Supervisor$Iface;)Lorg/apache/storm/daemon/supervisor/ContainerLauncher; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                         org.apache.storm.generated.Supervisor.Iface localSupervisor) throws IOException {
+        if (ConfigUtils.isLocalMode(conf)) {
+            return new LocalContainerLauncher(conf, supervisorId, supervisorPort, sharedContext, metricsRegistry, containerMemoryTracker,
+                localSupervisor);
+        }
+
+        ResourceIsolationInterface resourceIsolationManager;
+        if (ObjectReader.getBoolean(conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN_ENABLE), false)) {
+            resourceIsolationManager = ReflectionUtils.newInstance((String) conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN));
+            LOG.info("Using resource isolation plugin {}: {}", conf.get(DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN),
+                resourceIsolationManager);
+        } else {
+            resourceIsolationManager = new DefaultResourceIsolationManager();
+            LOG.info("{} is false. Using default resource isolation plugin: {}", DaemonConfig.STORM_RESOURCE_ISOLATION_PLUGIN_ENABLE,
+                resourceIsolationManager);
+        }
+
+        resourceIsolationManager.prepare(conf);
+
+        return new BasicContainerLauncher(conf, supervisorId, supervisorPort, resourceIsolationManager, metricsRegistry, 
+            containerMemoryTracker);
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Supervisor, shutdownAllWorkers(Ljava/util/function/BiConsumer;Lorg/apache/storm/daemon/supervisor/UniFunc;)V > Context: Everywhere, blocks=[BB[SSA:24..24]13 - org.apache.storm.daemon.supervisor.Supervisor.shutdownAllWorkers(Ljava/util/function/BiConsumer;Lorg/apache/storm/daemon/supervisor/UniFunc;)V, BB[SSA:22..23]12 - org.apache.storm.daemon.supervisor.Supervisor.shutdownAllWorkers(Ljava/util/function/BiConsumer;Lorg/apache/storm/daemon/supervisor/UniFunc;)V, BB[SSA:25..28]14 - org.apache.storm.daemon.supervisor.Supervisor.shutdownAllWorkers(Ljava/util/function/BiConsumer;Lorg/apache/storm/daemon/supervisor/UniFunc;)V, BB[SSA:-1..-2]21 - org.apache.storm.daemon.supervisor.Supervisor.shutdownAllWorkers(Ljava/util/function/BiConsumer;Lorg/apache/storm/daemon/supervisor/UniFunc;)V], numberOfBasicBlocks=4, firstLineNumber=562, lastLineNumber=564, firstMethodNumber=556, lastMethodNumber=569, isFirstLineValid=true, methodSrcCode=
+    public void shutdownAllWorkers(BiConsumer<Slot, Long> onWarnTimeout, UniFunc<Slot> onErrorTimeout) {
+        if (readState != null) {
+            readState.shutdownAllWorkers(onWarnTimeout, onErrorTimeout);
+        } else {
+            try {
+                ContainerLauncher launcher = ContainerLauncher.make(getConf(), getId(), getThriftServerPort(),
+                                                                    getSharedContext(), getMetricsRegistry(), getContainerMemoryTracker(),
+                                                                    supervisorThriftInterface);
+                killWorkers(SupervisorUtils.supervisorWorkerIds(conf), launcher);
+            } catch (Exception e) {
+                throw Utils.wrapInRuntime(e);
+            }
+        }
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/ReadClusterState, <init>(Lorg/apache/storm/daemon/supervisor/Supervisor;)V > Context: Everywhere, blocks=[BB[SSA:75..75]39 - org.apache.storm.daemon.supervisor.ReadClusterState.<init>(Lorg/apache/storm/daemon/supervisor/Supervisor;)V, BB[SSA:73..74]38 - org.apache.storm.daemon.supervisor.ReadClusterState.<init>(Lorg/apache/storm/daemon/supervisor/Supervisor;)V, BB[SSA:76..76]40 - org.apache.storm.daemon.supervisor.ReadClusterState.<init>(Lorg/apache/storm/daemon/supervisor/Supervisor;)V, BB[SSA:-1..-2]93 - org.apache.storm.daemon.supervisor.ReadClusterState.<init>(Lorg/apache/storm/daemon/supervisor/Supervisor;)V], numberOfBasicBlocks=4, firstLineNumber=88, lastLineNumber=87, firstMethodNumber=73, lastMethodNumber=125, isFirstLineValid=true, methodSrcCode=
+
+    public ReadClusterState(Supervisor supervisor) throws Exception {
+        this.superConf = supervisor.getConf();
+        this.stormClusterState = supervisor.getStormClusterState();
+        this.assignmentId = supervisor.getAssignmentId();
+        this.supervisorPort = supervisor.getThriftServerPort();
+        this.supervisor = supervisor.getiSupervisor();
+        this.localizer = supervisor.getAsyncLocalizer();
+        this.host = supervisor.getHostName();
+        this.localState = supervisor.getLocalState();
+        this.cachedAssignments = supervisor.getCurrAssignment();
+        this.metricsExec = new OnlyLatestExecutor<>(supervisor.getHeartbeatExecutor());
+        this.slotMetrics = supervisor.getSlotMetrics();
+
+        this.launcher = ContainerLauncher.make(superConf, assignmentId, supervisorPort,
+            supervisor.getSharedContext(), supervisor.getMetricsRegistry(), supervisor.getContainerMemoryTracker(),
+            supervisor.getSupervisorThriftInterface());
+
+        this.metricsProcessor = null;
+        try {
+            this.metricsProcessor = MetricStoreConfig.configureMetricProcessor(superConf);
+        } catch (Exception e) {
+            // the metrics processor is not critical to the operation of the cluster, allow Supervisor to come up
+            LOG.error("Failed to initialize metric processor", e);
+        }
+
+        @SuppressWarnings("unchecked")
+        List<Integer> ports = SupervisorUtils.getSlotsPorts(superConf);
+        for (Integer port : ports) {
+            slots.put(port, mkSlot(port));
+        }
+
+        try {
+            Collection<String> detachedRunningWorkers = SupervisorUtils.supervisorWorkerIds(superConf);
+            for (Slot slot : slots.values()) {
+                String workerId = slot.getWorkerId();
+                // We ignore workers that are still bound to a slot, which is monitored by a supervisor
+                if (workerId != null) {
+                    detachedRunningWorkers.remove(workerId);
+                }
+            }
+            if (!detachedRunningWorkers.isEmpty()) {
+                LOG.info("Killing detached workers {}", detachedRunningWorkers);
+                supervisor.killWorkers(detachedRunningWorkers, launcher);
+            }
+        } catch (Exception e) {
+            LOG.warn("Error trying to clean up old workers", e);
+        }
+
+        for (Slot slot : slots.values()) {
+            slot.start();
+        }
+    }
+
+}

@@ -1,0 +1,38 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JvmMetrics.java	methodSinagture:	org.apache.hadoop.metrics2.source.JvmMetrics.<init>(Ljava/lang/String;Ljava/lang/String;Z)V	methodLines:	96:103
+blockLines:	100:-1
+paras:	hadoop.metrics.jvm.use-thread-mxbean
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=31) 4,14 Node: < Application, Lorg/apache/hadoop/metrics2/source/JvmMetrics, <init>(Ljava/lang/String;Ljava/lang/String;Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/metrics2/source/JvmMetrics, create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics; > Context: Everywhere[5]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 5,7,8 @10 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/metrics2/source/JvmMetrics, create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics; > Context: Everywhere[5]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 5,7,8 @10 exception:9
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/metrics2/source/JvmMetrics, create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics; > Context: Everywhere[17]invokespecial < Application, Lorg/apache/hadoop/metrics2/source/JvmMetrics, <init>(Ljava/lang/String;Ljava/lang/String;Z)V > 17,1,2,10 @34 exception:18 v10
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/metrics2/source/JvmMetrics, <init>(Ljava/lang/String;Ljava/lang/String;Z)V > Context: Everywhere v4
+NORMAL <init>:conditional branch(eq, to iindex=31) 4,14 Node: < Application, Lorg/apache/hadoop/metrics2/source/JvmMetrics, <init>(Ljava/lang/String;Ljava/lang/String;Z)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  @VisibleForTesting
+  JvmMetrics(String processName, String sessionId, boolean useThreadMXBean) {
+    this.processName = processName;
+    this.sessionId = sessionId;
+    if (useThreadMXBean) {
+      this.threadMXBean = ManagementFactory.getThreadMXBean();
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/metrics2/source/JvmMetrics, create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics; > Context: Everywhere, blocks=[BB[SSA:13..17]7 - org.apache.hadoop.metrics2.source.JvmMetrics.create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics;, BB[SSA:12..12]6 - org.apache.hadoop.metrics2.source.JvmMetrics.create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics;, BB[SSA:18..18]8 - org.apache.hadoop.metrics2.source.JvmMetrics.create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics;, BB[SSA:-1..-2]11 - org.apache.hadoop.metrics2.source.JvmMetrics.create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics;], numberOfBasicBlocks=4, firstLineNumber=123, lastLineNumber=123, firstMethodNumber=119, lastMethodNumber=123, isFirstLineValid=true, methodSrcCode=
+    // so that the overall cost is not expensive.
+    boolean useThreadMXBean = new Configuration().getBoolean(
+        CommonConfigurationKeys.HADOOP_METRICS_JVM_USE_THREAD_MXBEAN,
+        CommonConfigurationKeys.HADOOP_METRICS_JVM_USE_THREAD_MXBEAN_DEFAULT);
+    return ms.register(JvmMetrics.name(), JvmMetrics.description(),
+                       new JvmMetrics(processName, sessionId, useThreadMXBean));
+}

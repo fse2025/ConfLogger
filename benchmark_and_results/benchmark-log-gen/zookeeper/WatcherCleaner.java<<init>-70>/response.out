@@ -1,0 +1,29 @@
+```java
+public WatcherCleaner(IDeadWatcherListener listener, int watcherCleanThreshold, int watcherCleanIntervalInSeconds, int watcherCleanThreadsNum, int maxInProcessingDeadWatchers) {
+    this.listener = listener;
+    this.watcherCleanThreshold = watcherCleanThreshold;
+    this.watcherCleanIntervalInSeconds = watcherCleanIntervalInSeconds;
+    int suggestedMaxInProcessingThreshold = watcherCleanThreshold * watcherCleanThreadsNum;
+    if (maxInProcessingDeadWatchers > 0 && maxInProcessingDeadWatchers < suggestedMaxInProcessingThreshold) {
+        maxInProcessingDeadWatchers = suggestedMaxInProcessingThreshold;
+        // ConfLogger Commented: Not Informative
+        // LOG.info(
+        // "The maxInProcessingDeadWatchers config is smaller than the suggested one, change it to use {}",
+        // maxInProcessingDeadWatchers);
+        // ConfLogger Inserted Start
+        logger.info("The maxInProcessingDeadWatchers config (key: maxInProcessingDeadWatchers) is smaller than the suggested one ({}), changing it to use the suggested value. Original value: {}, Suggested value: {}", suggestedMaxInProcessingThreshold, maxInProcessingDeadWatchers, suggestedMaxInProcessingThreshold);
+        // ConfLogger Inserted End
+    }
+    this.maxInProcessingDeadWatchers = maxInProcessingDeadWatchers;
+    this.deadWatchers = new HashSet<>();
+    this.cleaners = new WorkerService("DeadWatcherCleanner", watcherCleanThreadsNum, false);
+
+    LOG.info(
+        "watcherCleanThreshold={}, watcherCleanIntervalInSeconds={}"
+        + ", watcherCleanThreadsNum={}, maxInProcessingDeadWatchers={}",
+        watcherCleanThreshold,
+        watcherCleanIntervalInSeconds,
+        watcherCleanThreadsNum,
+        maxInProcessingDeadWatchers);
+}
+```

@@ -1,0 +1,82 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BootstrapStandby.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.parseProvidedConfigurations(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	459:474
+blockLines:	466:-1
+paras:	dfs.provided.aliasmap.inmemory.enabled
+TaintedStat:	NORMAL parseProvidedConfigurations:conditional branch(eq, to iindex=25) 10,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/BootstrapStandby, parseProvidedConfigurations(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/BootstrapStandby, parseProvidedConfigurations(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[8]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,8,5 @12 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/BootstrapStandby, parseProvidedConfigurations(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[8]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,8,5 @12 exception:9
+NORMAL parseProvidedConfigurations:conditional branch(eq, to iindex=25) 10,5 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/BootstrapStandby, parseProvidedConfigurations(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // get the aliasmap location.
+    boolean providedEnabled = configuration.getBoolean(
+        DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED,
+        DFSConfigKeys.DFS_NAMENODE_PROVIDED_ENABLED_DEFAULT);
+    boolean inmemoryAliasmapConfigured = configuration.getBoolean(
+        DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED,
+        DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_ENABLED_DEFAULT);
+    if (providedEnabled && inmemoryAliasmapConfigured) {
+      inMemoryAliasMapEnabled = true;
+      aliasMapPath = configuration.get(
+          DFSConfigKeys.DFS_PROVIDED_ALIASMAP_INMEMORY_LEVELDB_DIR);
+    } else {
+      inMemoryAliasMapEnabled = false;
+      aliasMapPath = null;
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/BootstrapStandby, parseConfAndFindOtherNN()V > Context: Everywhere, blocks=[BB[SSA:140..142]77 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.parseConfAndFindOtherNN()V, BB[SSA:139..139]76 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.parseConfAndFindOtherNN()V, BB[SSA:143..143]78 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.parseConfAndFindOtherNN()V, BB[SSA:-1..-2]79 - org.apache.hadoop.hdfs.server.namenode.ha.BootstrapStandby.parseConfAndFindOtherNN()V], numberOfBasicBlocks=4, firstLineNumber=451, lastLineNumber=454, firstMethodNumber=412, lastMethodNumber=454, isFirstLineValid=true, methodSrcCode=
+  private void parseConfAndFindOtherNN() throws IOException {
+    Configuration conf = getConf();
+    nsId = DFSUtil.getNamenodeNameServiceId(conf);
+
+    if (!HAUtil.isHAEnabled(conf, nsId)) {
+      throw new HadoopIllegalArgumentException(
+          "HA is not enabled for this namenode.");
+    }
+    nnId = HAUtil.getNameNodeId(conf, nsId);
+    NameNode.initializeGenericKeys(conf, nsId, nnId);
+
+    if (!HAUtil.usesSharedEditsDir(conf)) {
+      throw new HadoopIllegalArgumentException(
+        "Shared edits storage is not enabled for this namenode.");
+    }
+
+
+    remoteNNs = RemoteNameNodeInfo.getRemoteNameNodes(conf, nsId);
+    // validate the configured NNs
+    List<RemoteNameNodeInfo> remove = new ArrayList<RemoteNameNodeInfo>(remoteNNs.size());
+    for (RemoteNameNodeInfo info : remoteNNs) {
+      InetSocketAddress address = info.getIpcAddress();
+      LOG.info("Found nn: " + info.getNameNodeID() + ", ipc: " + info.getIpcAddress());
+      if (address.getPort() == 0 || address.getAddress().isAnyLocalAddress()) {
+        LOG.error("Could not determine valid IPC address for other NameNode ("
+            + info.getNameNodeID() + ") , got: " + address);
+        remove.add(info);
+      }
+    }
+
+    // remove any invalid nns
+    remoteNNs.removeAll(remove);
+
+    // make sure we have at least one left to read
+    Preconditions.checkArgument(!remoteNNs.isEmpty(), "Could not find any valid namenodes!");
+
+    dirsToFormat = FSNamesystem.getNamespaceDirs(conf);
+    editUrisToFormat = FSNamesystem.getNamespaceEditsDirs(
+        conf, false);
+    sharedEditsUris = FSNamesystem.getSharedEditsDirs(conf);
+
+    parseProvidedConfigurations(conf);
+  }
+
+}

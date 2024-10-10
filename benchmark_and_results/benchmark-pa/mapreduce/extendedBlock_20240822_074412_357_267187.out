@@ -1,0 +1,91 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ManifestCommitterSupport.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.output.committer.manifest.impl.ManifestCommitterSupport.buildJobUUID(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/JobID;)Lorg/apache/commons/lang3/tuple/Pair;	methodLines:	115:121
+blockLines:	117:-1
+paras:	null
+TaintedStat:	NORMAL buildJobUUID:conditional branch(eq, to iindex=16) 9,10 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/impl/ManifestCommitterSupport, buildJobUUID(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/JobID;)Lorg/apache/commons/lang3/tuple/Pair; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/impl/ManifestCommitterSupport, buildJobUUID(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/JobID;)Lorg/apache/commons/lang3/tuple/Pair; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,4,5 @5 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/impl/ManifestCommitterSupport, buildJobUUID(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/JobID;)Lorg/apache/commons/lang3/tuple/Pair; > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,4,5 @5 exception:6
+NORMAL buildJobUUID:9 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 7 @10 exception:8 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/impl/ManifestCommitterSupport, buildJobUUID(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/JobID;)Lorg/apache/commons/lang3/tuple/Pair; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/impl/ManifestCommitterSupport, buildJobUUID(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/JobID;)Lorg/apache/commons/lang3/tuple/Pair; > Context: Everywhere[6]9 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 7 @10 exception:8
+NORMAL buildJobUUID:conditional branch(eq, to iindex=16) 9,10 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/impl/ManifestCommitterSupport, buildJobUUID(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/JobID;)Lorg/apache/commons/lang3/tuple/Pair; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      JobID jobId) {
+    String jobUUID = conf.getTrimmed(SPARK_WRITE_UUID, "");
+    if (jobUUID.isEmpty()) {
+      jobUUID = jobId.toString();
+      return Pair.of(jobUUID, JOB_ID_SOURCE_MAPREDUCE);
+    } else {
+      return Pair.of(jobUUID, SPARK_WRITE_UUID);
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/ManifestCommitterConfig, <init>(Lorg/apache/hadoop/fs/Path;Ljava/lang/String;Lorg/apache/hadoop/mapreduce/JobContext;Lorg/apache/hadoop/fs/statistics/impl/IOStatisticsStore;Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/StageEventCallbacks;)V > Context: Everywhere, blocks=[BB[SSA:25..25]11 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitterConfig.<init>(Lorg/apache/hadoop/fs/Path;Ljava/lang/String;Lorg/apache/hadoop/mapreduce/JobContext;Lorg/apache/hadoop/fs/statistics/impl/IOStatisticsStore;Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/StageEventCallbacks;)V, BB[SSA:23..24]10 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitterConfig.<init>(Lorg/apache/hadoop/fs/Path;Ljava/lang/String;Lorg/apache/hadoop/mapreduce/JobContext;Lorg/apache/hadoop/fs/statistics/impl/IOStatisticsStore;Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/StageEventCallbacks;)V, BB[SSA:26..29]12 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitterConfig.<init>(Lorg/apache/hadoop/fs/Path;Ljava/lang/String;Lorg/apache/hadoop/mapreduce/JobContext;Lorg/apache/hadoop/fs/statistics/impl/IOStatisticsStore;Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/StageEventCallbacks;)V, BB[SSA:-1..-2]77 - org.apache.hadoop.mapreduce.lib.output.committer.manifest.ManifestCommitterConfig.<init>(Lorg/apache/hadoop/fs/Path;Ljava/lang/String;Lorg/apache/hadoop/mapreduce/JobContext;Lorg/apache/hadoop/fs/statistics/impl/IOStatisticsStore;Lorg/apache/hadoop/mapreduce/lib/output/committer/manifest/stages/StageEventCallbacks;)V], numberOfBasicBlocks=4, firstLineNumber=178, lastLineNumber=179, firstMethodNumber=169, lastMethodNumber=224, isFirstLineValid=true, methodSrcCode=
+      final IOStatisticsStore iostatistics,
+      final StageEventCallbacks stageEventCallbacks) {
+    this.role = role;
+    this.jobContext = context;
+    this.conf = context.getConfiguration();
+    this.destinationDir = outputPath;
+    this.iostatistics = iostatistics;
+    this.stageEventCallbacks = stageEventCallbacks;
+
+    Pair<String, String> pair = buildJobUUID(conf, context.getJobID());
+    this.jobUniqueId = pair.getLeft();
+    this.jobUniqueIdSource = pair.getRight();
+    this.jobAttemptNumber = getAppAttemptId(context);
+    this.jobAttemptId = this.jobUniqueId + "_" + jobAttemptNumber;
+
+    // build directories
+    this.dirs = new ManifestCommitterSupport.AttemptDirectories(outputPath,
+        this.jobUniqueId, jobAttemptNumber);
+
+    // read in configuration options
+    this.createJobMarker = conf.getBoolean(
+        SUCCESSFUL_JOB_OUTPUT_DIR_MARKER,
+        DEFAULT_CREATE_SUCCESSFUL_JOB_DIR_MARKER);
+    this.validateOutput = conf.getBoolean(
+        OPT_VALIDATE_OUTPUT,
+        OPT_VALIDATE_OUTPUT_DEFAULT);
+    this.deleteTargetPaths = conf.getBoolean(
+        OPT_DELETE_TARGET_FILES,
+        OPT_DELETE_TARGET_FILES_DEFAULT);
+    this.writerQueueCapacity = conf.getInt(
+        OPT_WRITER_QUEUE_CAPACITY,
+        DEFAULT_WRITER_QUEUE_CAPACITY);
+
+    // if constructed with a task attempt, build the task ID and path.
+    if (context instanceof TaskAttemptContext) {
+      // it's a task
+      final TaskAttemptContext tac = (TaskAttemptContext) context;
+      TaskAttemptID taskAttempt = Objects.requireNonNull(
+          tac.getTaskAttemptID());
+      taskAttemptId = taskAttempt.toString();
+      taskId = taskAttempt.getTaskID().toString();
+      // Task attempt dir; must be different across instances
+      taskAttemptDir = dirs.getTaskAttemptPath(taskAttemptId);
+      // the context is also the progress callback.
+      progressable = tac;
+      name = String.format(InternalConstants.NAME_FORMAT_TASK_ATTEMPT, taskAttemptId);
+
+    } else {
+      // it's a job
+      taskId = "";
+      taskAttemptId = "";
+      taskAttemptDir = null;
+      progressable = null;
+      name = String.format(InternalConstants.NAME_FORMAT_JOB_ATTEMPT, jobAttemptId);
+    }
+  }
+
+}

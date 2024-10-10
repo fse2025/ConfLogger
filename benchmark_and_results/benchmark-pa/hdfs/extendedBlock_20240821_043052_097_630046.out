@@ -1,0 +1,90 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.getBindAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/net/InetSocketAddress;	methodLines:	1177:1194
+blockLines:	1191:-1
+paras:	null
+TaintedStat:	NORMAL getBindAddress:conditional branch(eq, to iindex=60) 32,17 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getBindAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getBindAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere[41]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @72 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getBindAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere[41]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,2,3 @72 exception:9
+NORMAL getBindAddress:12 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > 10 @75 exception:11 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getBindAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL createSocketAddr:5 = invokestatic < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;I)Ljava/net/InetSocketAddress; > 1,3 @2 exception:4 Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;I)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL createSocketAddr:6 = invokestatic < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress; > 1,2,4 @3 exception:5 Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;I)Ljava/net/InetSocketAddress; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL createSocketAddr:7 = invokestatic < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > 1,2,3,5 @4 exception:6 Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL createSocketAddr:22 = invokevirtual < Extension, Ljava/lang/String, trim()Ljava/lang/String; > 1 @67 exception:21 Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/InetSocketAddress; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL trim:return 14 Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, trim()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[4]5 = invokevirtual < Extension, Ljava/lang/String, trim()Ljava/lang/String; > 1 @6 exception:4
+NORMAL getTrimmedStrings:7 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 5 @9 exception:6 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getBindAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere[54]32 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 30 @98 exception:31
+NORMAL getBindAddress:conditional branch(eq, to iindex=60) 32,17 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getBindAddress(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    InetSocketAddress address;
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    String bindHostActualKey;
+    if (nsId != null) {
+      String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+      address = DFSUtilClient.getAddressesForNameserviceId(
+          conf, nsId, null, confKey).get(namenodeId);
+      bindHostActualKey = DFSUtil.addKeySuffixes(bindHostKey, nsId, namenodeId);
+    } else {
+      address = NetUtils.createSocketAddr(conf.get(confKey, defaultValue));
+      bindHostActualKey = bindHostKey;
+    }
+
+    String bindHost = conf.get(bindHostActualKey);
+    if (bindHost == null || bindHost.isEmpty()) {
+      bindHost = address.getHostName();
+    }
+    return new InetSocketAddress(bindHost, address.getPort());
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/aliasmap/InMemoryLevelDBAliasMapServer, start()V > Context: Everywhere, blocks=[BB[SSA:15..18]9 - org.apache.hadoop.hdfs.server.aliasmap.InMemoryLevelDBAliasMapServer.start()V, BB[SSA:12..14]8 - org.apache.hadoop.hdfs.server.aliasmap.InMemoryLevelDBAliasMapServer.start()V, BB[SSA:19..21]10 - org.apache.hadoop.hdfs.server.aliasmap.InMemoryLevelDBAliasMapServer.start()V, BB[SSA:-1..-2]30 - org.apache.hadoop.hdfs.server.aliasmap.InMemoryLevelDBAliasMapServer.start()V], numberOfBasicBlocks=4, firstLineNumber=80, lastLineNumber=87, firstMethodNumber=72, lastMethodNumber=102, isFirstLineValid=true, methodSrcCode=
+  public void start() throws IOException {
+    RPC.setProtocolEngine(getConf(), AliasMapProtocolPB.class,
+        ProtobufRpcEngine2.class);
+    AliasMapProtocolServerSideTranslatorPB aliasMapProtocolXlator =
+        new AliasMapProtocolServerSideTranslatorPB(this);
+
+    BlockingService aliasMapProtocolService =
+        AliasMapProtocolService
+            .newReflectiveBlockingService(aliasMapProtocolXlator);
+
+    InetSocketAddress rpcAddress = getBindAddress(conf,
+        DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS,
+        DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS_DEFAULT,
+        DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_BIND_HOST);
+
+    boolean setVerbose = conf.getBoolean(
+        DFS_PROVIDED_ALIASMAP_INMEMORY_SERVER_LOG,
+        DFS_PROVIDED_ALIASMAP_INMEMORY_SERVER_LOG_DEFAULT);
+
+    aliasMapServer = new RPC.Builder(conf)
+        .setProtocol(AliasMapProtocolPB.class)
+        .setInstance(aliasMapProtocolService)
+        .setBindAddress(rpcAddress.getHostName())
+        .setPort(rpcAddress.getPort())
+        .setNumHandlers(1)
+        .setVerbose(setVerbose)
+        .build();
+
+    LOG.info("Starting InMemoryLevelDBAliasMapServer on {}", rpcAddress);
+    aliasMapServer.start();
+  }
+
+}

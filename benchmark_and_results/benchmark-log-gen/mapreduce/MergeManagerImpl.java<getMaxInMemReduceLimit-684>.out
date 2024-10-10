@@ -1,0 +1,170 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MergeManagerImpl.java	methodSinagture:	org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl.getMaxInMemReduceLimit()J	methodLines:	684:692
+blockLines:	687:-1
+paras:	mapreduce.reduce.input.buffer.percent
+TaintedStat:	NORMAL getMaxInMemReduceLimit:conditional branch(gt, to iindex=18) 10,11 Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, getMaxInMemReduceLimit()J > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager; >:Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, getMaxInMemReduceLimit()J > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager; >:Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere][4]7 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getFloat(Ljava/lang/String;F)F > 3,4,5 @7 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, getMaxInMemReduceLimit()J > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager; >:Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere][4]7 = invokevirtual < Application, Lorg/apache/hadoop/mapred/JobConf, getFloat(Ljava/lang/String;F)F > 3,4,5 @7 exception:6
+NORMAL getMaxInMemReduceLimit:8 = conversion(D) 7 Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, getMaxInMemReduceLimit()J > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager; >:Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]
+NORMAL getMaxInMemReduceLimit:10 = compare 8,9 opcode=cmpl Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, getMaxInMemReduceLimit()J > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager; >:Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]
+NORMAL getMaxInMemReduceLimit:conditional branch(gt, to iindex=18) 10,11 Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, getMaxInMemReduceLimit()J > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager; >:Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere]
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  final long getMaxInMemReduceLimit() {
+    final float maxRedPer =
+        jobConf.getFloat(MRJobConfig.REDUCE_INPUT_BUFFER_PERCENT, 0f);
+    if (maxRedPer > 1.0 || maxRedPer < 0.0) {
+      throw new RuntimeException(maxRedPer + ": "
+          + MRJobConfig.REDUCE_INPUT_BUFFER_PERCENT
+          + " must be a float between 0 and 1.0");
+    }
+    return (long)(memoryLimit * maxRedPer);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, finalMerge(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Ljava/util/List;Ljava/util/List;)Lorg/apache/hadoop/mapred/RawKeyValueIterator; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager; >:Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere], blocks=[BB[SSA:18..19]12 - org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl.finalMerge(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Ljava/util/List;Ljava/util/List;)Lorg/apache/hadoop/mapred/RawKeyValueIterator;, BB[SSA:17..17]11 - org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl.finalMerge(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Ljava/util/List;Ljava/util/List;)Lorg/apache/hadoop/mapred/RawKeyValueIterator;, BB[SSA:20..22]13 - org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl.finalMerge(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Ljava/util/List;Ljava/util/List;)Lorg/apache/hadoop/mapred/RawKeyValueIterator;, BB[SSA:-1..-2]176 - org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl.finalMerge(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Ljava/util/List;Ljava/util/List;)Lorg/apache/hadoop/mapred/RawKeyValueIterator;], numberOfBasicBlocks=4, firstLineNumber=699, lastLineNumber=704, firstMethodNumber=698, lastMethodNumber=833, isFirstLineValid=true, methodSrcCode=
+                                       ) throws IOException {
+    LOG.info("finalMerge called with " +
+        inMemoryMapOutputs.size() + " in-memory map-outputs and " +
+        onDiskMapOutputs.size() + " on-disk map-outputs");
+    final long maxInMemReduce = getMaxInMemReduceLimit();
+    // merge config params
+    Class<K> keyClass = (Class<K>)job.getMapOutputKeyClass();
+    Class<V> valueClass = (Class<V>)job.getMapOutputValueClass();
+    boolean keepInputs = job.getKeepFailedTaskFiles();
+    final Path tmpDir = new Path(reduceId.toString());
+    final RawComparator<K> comparator =
+      (RawComparator<K>)job.getOutputKeyComparator();
+
+    // segments required to vacate memory
+    List<Segment<K,V>> memDiskSegments = new ArrayList<Segment<K,V>>();
+    long inMemToDiskBytes = 0;
+    boolean mergePhaseFinished = false;
+    if (inMemoryMapOutputs.size() > 0) {
+      TaskID mapId = inMemoryMapOutputs.get(0).getMapId().getTaskID();
+      inMemToDiskBytes = createInMemorySegments(inMemoryMapOutputs, 
+                                                memDiskSegments,
+                                                maxInMemReduce);
+      final int numMemDiskSegments = memDiskSegments.size();
+      if (numMemDiskSegments > 0 &&
+            ioSortFactor > onDiskMapOutputs.size()) {
+        
+        // If we reach here, it implies that we have less than io.sort.factor
+        // disk segments and this will be incremented by 1 (result of the 
+        // memory segments merge). Since this total would still be 
+        // <= io.sort.factor, we will not do any more intermediate merges,
+        // the merge of all these disk segments would be directly fed to the
+        // reduce method
+        
+        mergePhaseFinished = true;
+        // must spill to disk, but can't retain in-mem for intermediate merge
+        final Path outputPath = 
+          mapOutputFile.getInputFileForWrite(mapId,
+                                             inMemToDiskBytes).suffix(
+                                                 Task.MERGED_OUTPUT_PREFIX);
+        final RawKeyValueIterator rIter = Merger.merge(job, fs,
+            keyClass, valueClass, memDiskSegments, numMemDiskSegments,
+            tmpDir, comparator, reporter, spilledRecordsCounter, null, 
+            mergePhase);
+
+        FSDataOutputStream out =
+            IntermediateEncryptedStream.wrapIfNecessary(job,
+                fs.create(outputPath), outputPath);
+        Writer<K, V> writer = new Writer<K, V>(job, out, keyClass, valueClass,
+            codec, null, true);
+        try {
+          Merger.writeFile(rIter, writer, reporter, job);
+          writer.close();
+          onDiskMapOutputs.add(new CompressAwarePath(outputPath,
+              writer.getRawLength(), writer.getCompressedLength()));
+          writer = null;
+          // add to list of final disk outputs.
+        } catch (IOException e) {
+          if (null != outputPath) {
+            try {
+              fs.delete(outputPath, true);
+            } catch (IOException ie) {
+              // NOTHING
+            }
+          }
+          throw e;
+        } finally {
+          if (null != writer) {
+            writer.close();
+          }
+        }
+        LOG.info("Merged " + numMemDiskSegments + " segments, " +
+                 inMemToDiskBytes + " bytes to disk to satisfy " +
+                 "reduce memory limit");
+        inMemToDiskBytes = 0;
+        memDiskSegments.clear();
+      } else if (inMemToDiskBytes != 0) {
+        LOG.info("Keeping " + numMemDiskSegments + " segments, " +
+                 inMemToDiskBytes + " bytes in memory for " +
+                 "intermediate, on-disk merge");
+      }
+    }
+
+    // segments on disk
+    List<Segment<K,V>> diskSegments = new ArrayList<Segment<K,V>>();
+    long onDiskBytes = inMemToDiskBytes;
+    long rawBytes = inMemToDiskBytes;
+    CompressAwarePath[] onDisk = onDiskMapOutputs.toArray(
+        new CompressAwarePath[onDiskMapOutputs.size()]);
+    for (CompressAwarePath file : onDisk) {
+      long fileLength = fs.getFileStatus(file).getLen();
+      onDiskBytes += fileLength;
+      rawBytes += (file.getRawDataLength() > 0) ? file.getRawDataLength() : fileLength;
+
+      LOG.debug("Disk file: " + file + " Length is " + fileLength);
+      diskSegments.add(new Segment<K, V>(job, fs, file, codec, keepInputs,
+                                         (file.toString().endsWith(
+                                             Task.MERGED_OUTPUT_PREFIX) ?
+                                          null : mergedMapOutputsCounter), file.getRawDataLength()
+                                        ));
+    }
+    LOG.info("Merging " + onDisk.length + " files, " +
+             onDiskBytes + " bytes from disk");
+    Collections.sort(diskSegments, new Comparator<Segment<K,V>>() {
+      public int compare(Segment<K, V> o1, Segment<K, V> o2) {
+        if (o1.getLength() == o2.getLength()) {
+          return 0;
+        }
+        return o1.getLength() < o2.getLength() ? -1 : 1;
+      }
+    });
+
+    // build final list of segments from merged backed by disk + in-mem
+    List<Segment<K,V>> finalSegments = new ArrayList<Segment<K,V>>();
+    long inMemBytes = createInMemorySegments(inMemoryMapOutputs, 
+                                             finalSegments, 0);
+    LOG.info("Merging " + finalSegments.size() + " segments, " +
+             inMemBytes + " bytes from memory into reduce");
+    if (0 != onDiskBytes) {
+      final int numInMemSegments = memDiskSegments.size();
+      diskSegments.addAll(0, memDiskSegments);
+      memDiskSegments.clear();
+      // Pass mergePhase only if there is a going to be intermediate
+      // merges. See comment where mergePhaseFinished is being set
+      Progress thisPhase = (mergePhaseFinished) ? null : mergePhase; 
+      RawKeyValueIterator diskMerge = Merger.merge(
+          job, fs, keyClass, valueClass, codec, diskSegments,
+          ioSortFactor, numInMemSegments, tmpDir, comparator,
+          reporter, false, spilledRecordsCounter, null, thisPhase);
+      diskSegments.clear();
+      if (0 == finalSegments.size()) {
+        return diskMerge;
+      }
+      finalSegments.add(new Segment<K,V>(
+            new RawKVIteratorReader(diskMerge, onDiskBytes), true, rawBytes));
+    }
+    return Merger.merge(job, fs, keyClass, valueClass,
+                 finalSegments, finalSegments.size(), tmpDir,
+}

@@ -1,0 +1,60 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BackupStore.java	methodSinagture:	org.apache.hadoop.mapred.BackupStore.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V	methodLines:	91:119
+blockLines:	107:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(le, to iindex=92) 37,8 Node: < Application, Lorg/apache/hadoop/mapred/BackupStore, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/BackupStore, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V > Context: Everywhere[85]37 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,35,8 @152 exception:36
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/BackupStore, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V > Context: Everywhere[85]37 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,35,8 @152 exception:36
+NORMAL <init>:conditional branch(le, to iindex=92) 37,8 Node: < Application, Lorg/apache/hadoop/mapred/BackupStore, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	BackupStore.java	methodSinagture:	org.apache.hadoop.mapred.BackupStore.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V	methodLines:	91:119
+blockLines:	97:-1
+paras:	mapreduce.reduce.markreset.buffer.percent
+TaintedStat:	NORMAL <init>:conditional branch(gt, to iindex=61) 21,8 Node: < Application, Lorg/apache/hadoop/mapred/BackupStore, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/BackupStore, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V > Context: Everywhere[47]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getFloat(Ljava/lang/String;F)F > 2,15,16 @86 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/BackupStore, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V > Context: Everywhere[47]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getFloat(Ljava/lang/String;F)F > 2,15,16 @86 exception:17
+NORMAL <init>:19 = conversion(D) 18 Node: < Application, Lorg/apache/hadoop/mapred/BackupStore, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V > Context: Everywhere
+NORMAL <init>:21 = compare 19,20 opcode=cmpl Node: < Application, Lorg/apache/hadoop/mapred/BackupStore, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V > Context: Everywhere
+NORMAL <init>:conditional branch(gt, to iindex=61) 21,8 Node: < Application, Lorg/apache/hadoop/mapred/BackupStore, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/mapreduce/TaskAttemptID;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public BackupStore(Configuration conf, TaskAttemptID taskid)
+  throws IOException {
+    
+    final float bufferPercent =
+      conf.getFloat(JobContext.REDUCE_MARKRESET_BUFFER_PERCENT, 0f);
+
+    if (bufferPercent > 1.0 || bufferPercent < 0.0) {
+      throw new IOException(JobContext.REDUCE_MARKRESET_BUFFER_PERCENT +
+          bufferPercent);
+    }
+
+    int maxSize = (int)Math.min(
+        Runtime.getRuntime().maxMemory() * bufferPercent, Integer.MAX_VALUE);
+
+    // Support an absolute size also.
+    int tmp = conf.getInt(JobContext.REDUCE_MARKRESET_BUFFER_SIZE, 0);
+    if (tmp >  0) {
+      maxSize = tmp;
+    }
+
+    memCache = new MemoryCache(maxSize);
+    fileCache = new FileCache(conf);
+    tid = taskid;
+    
+    this.conf = conf;
+    
+    LOG.info("Created a new BackupStore with a memory of " + maxSize);
+
+  }
+
+
+
+====================ctx:=======================

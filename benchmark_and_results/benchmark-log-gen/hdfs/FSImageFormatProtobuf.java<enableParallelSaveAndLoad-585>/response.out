@@ -1,0 +1,20 @@
+```java
+boolean loadInParallel = enableParallelLoad;
+boolean compressionEnabled = conf.getBoolean(
+DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY,
+DFSConfigKeys.DFS_IMAGE_COMPRESS_DEFAULT);
+
+if (loadInParallel) {
+    if (compressionEnabled) {
+        // ConfLogger Commented: Not Informative
+        // LOG.warn("Parallel Image loading and saving is not supported when {}" +
+        // " is set to true. Parallel will be disabled.",
+        // DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY);
+        // ConfLogger Inserted Start
+        logger.warn("Parallel Image loading and saving is not supported when DFS_IMAGE_COMPRESS_KEY is set to true. Parallel will be disabled. Configuration parameter: {} = {}", DFSConfigKeys.DFS_IMAGE_COMPRESS_KEY, compressionEnabled);
+        // ConfLogger Inserted End
+        loadInParallel = false;
+    }
+}
+return loadInParallel;
+```

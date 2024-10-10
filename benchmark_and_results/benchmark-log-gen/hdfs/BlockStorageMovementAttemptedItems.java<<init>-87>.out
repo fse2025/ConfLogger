@@ -1,0 +1,53 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BlockStorageMovementAttemptedItems.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.sps.BlockStorageMovementAttemptedItems.<init>(Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementNeeded;Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V	methodLines:	87:105
+blockLines:	93:-1
+paras:	dfs.storage.policy.satisfier.recheck.timeout.millis
+TaintedStat:	NORMAL <init>:conditional branch(le, to iindex=35) 18,19 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementAttemptedItems, <init>(Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementNeeded;Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementAttemptedItems, <init>(Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementNeeded;Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V > Context: Everywhere[22]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 13,14,10 @47 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementAttemptedItems, <init>(Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementNeeded;Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V > Context: Everywhere[22]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 13,14,10 @47 exception:15
+NORMAL <init>:18 = compare 16,17 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementAttemptedItems, <init>(Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementNeeded;Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V > Context: Everywhere
+NORMAL <init>:conditional branch(le, to iindex=35) 18,19 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementAttemptedItems, <init>(Lorg/apache/hadoop/hdfs/server/namenode/sps/SPSService;Lorg/apache/hadoop/hdfs/server/namenode/sps/BlockStorageMovementNeeded;Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      BlockStorageMovementNeeded unsatisfiedStorageMovementFiles,
+      Context context) {
+    this.service = service;
+    long recheckTimeout = this.service.getConf().getLong(
+        DFS_STORAGE_POLICY_SATISFIER_RECHECK_TIMEOUT_MILLIS_KEY,
+        DFS_STORAGE_POLICY_SATISFIER_RECHECK_TIMEOUT_MILLIS_DEFAULT);
+    if (recheckTimeout > 0) {
+      this.minCheckTimeout = Math.min(minCheckTimeout, recheckTimeout);
+    }
+
+    this.selfRetryTimeout = this.service.getConf().getLong(
+        DFS_STORAGE_POLICY_SATISFIER_SELF_RETRY_TIMEOUT_MILLIS_KEY,
+        DFS_STORAGE_POLICY_SATISFIER_SELF_RETRY_TIMEOUT_MILLIS_DEFAULT);
+    this.blockStorageMovementNeeded = unsatisfiedStorageMovementFiles;
+    storageMovementAttemptedItems = new ArrayList<>();
+    scheduledBlkLocs = new HashMap<>();
+    movementFinishedBlocks = new LinkedBlockingQueue<>();
+    this.context = context;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/sps/StoragePolicySatisfier, init(Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V > Context: Everywhere, blocks=[BB[SSA:15..16]7 - org.apache.hadoop.hdfs.server.namenode.sps.StoragePolicySatisfier.init(Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V, BB[SSA:11..14]6 - org.apache.hadoop.hdfs.server.namenode.sps.StoragePolicySatisfier.init(Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V, BB[SSA:17..17]8 - org.apache.hadoop.hdfs.server.namenode.sps.StoragePolicySatisfier.init(Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V, BB[SSA:-1..-2]16 - org.apache.hadoop.hdfs.server.namenode.sps.StoragePolicySatisfier.init(Lorg/apache/hadoop/hdfs/server/namenode/sps/Context;)V], numberOfBasicBlocks=4, firstLineNumber=140, lastLineNumber=140, firstMethodNumber=137, lastMethodNumber=146, isFirstLineValid=true, methodSrcCode=
+  public void init(final Context context) {
+    this.ctxt = context;
+    this.storageMovementNeeded = new BlockStorageMovementNeeded(context);
+    this.storageMovementsMonitor = new BlockStorageMovementAttemptedItems(
+        this, storageMovementNeeded, context);
+    this.spsWorkMultiplier = getSPSWorkMultiplier(getConf());
+    this.blockMovementMaxRetry = getConf().getInt(
+        DFSConfigKeys.DFS_STORAGE_POLICY_SATISFIER_MAX_RETRY_ATTEMPTS_KEY,
+        DFSConfigKeys.DFS_STORAGE_POLICY_SATISFIER_MAX_RETRY_ATTEMPTS_DEFAULT);
+  }
+
+}

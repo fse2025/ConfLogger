@@ -1,0 +1,73 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	RollingFileSystemSink.java	methodSinagture:	org.apache.hadoop.metrics2.sink.RollingFileSystemSink.stringifySecurityProperty(Ljava/lang/String;)Ljava/lang/String;	methodLines:	316:332
+blockLines:	321:-1
+paras:	null
+TaintedStat:	NORMAL stringifySecurityProperty:conditional branch(eq, to iindex=45) 25,26 Node: < Application, Lorg/apache/hadoop/metrics2/sink/RollingFileSystemSink, stringifySecurityProperty(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/metrics2/sink/RollingFileSystemSink, stringifySecurityProperty(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[17]25 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 20,23 @32 exception:24
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/metrics2/sink/RollingFileSystemSink, stringifySecurityProperty(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[17]25 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 20,23 @32 exception:24
+NORMAL stringifySecurityProperty:conditional branch(eq, to iindex=45) 25,26 Node: < Application, Lorg/apache/hadoop/metrics2/sink/RollingFileSystemSink, stringifySecurityProperty(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    if (properties.containsKey(property)) {
+      String propertyValue = properties.getString(property);
+      String confValue = conf.get(properties.getString(property));
+
+      if (confValue != null) {
+        securityProperty = property + "=" + propertyValue
+            + ", " + properties.getString(property) + "=" + confValue;
+      } else {
+        securityProperty = property + "=" + propertyValue
+            + ", " + properties.getString(property) + "=<NOT SET>";
+      }
+    } else {
+      securityProperty = property + "=<NOT SET>";
+    }
+
+    return securityProperty;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/metrics2/sink/RollingFileSystemSink, initFs()Z > Context: Everywhere, blocks=[BB[SSA:50..52]26 - org.apache.hadoop.metrics2.sink.RollingFileSystemSink.initFs()Z, BB[SSA:48..49]25 - org.apache.hadoop.metrics2.sink.RollingFileSystemSink.initFs()Z, BB[SSA:53..53]27 - org.apache.hadoop.metrics2.sink.RollingFileSystemSink.initFs()Z, BB[SSA:-1..-2]50 - org.apache.hadoop.metrics2.sink.RollingFileSystemSink.initFs()Z, BB[SSA:56..58]29 - org.apache.hadoop.metrics2.sink.RollingFileSystemSink.initFs()Z, BB[SSA:54..55]28 - org.apache.hadoop.metrics2.sink.RollingFileSystemSink.initFs()Z, BB[SSA:59..59]30 - org.apache.hadoop.metrics2.sink.RollingFileSystemSink.initFs()Z, BB[SSA:-1..-2]50 - org.apache.hadoop.metrics2.sink.RollingFileSystemSink.initFs()Z], numberOfBasicBlocks=8, firstLineNumber=287, lastLineNumber=288, firstMethodNumber=271, lastMethodNumber=303, isFirstLineValid=true, methodSrcCode=
+  private boolean initFs() {
+    boolean success = false;
+
+    fileSystem = getFileSystem();
+
+    // This step isn't strictly necessary, but it makes debugging issues much
+    // easier. We try to create the base directory eagerly and fail with
+    // copious debug info if it fails.
+    try {
+      fileSystem.mkdirs(basePath);
+      success = true;
+    } catch (Exception ex) {
+      if (!ignoreError) {
+        throw new MetricsException("Failed to create " + basePath + "["
+            + SOURCE_KEY + "=" + source + ", "
+            + ALLOW_APPEND_KEY + "=" + allowAppend + ", "
+            + stringifySecurityProperty(KEYTAB_PROPERTY_KEY) + ", "
+            + stringifySecurityProperty(USERNAME_PROPERTY_KEY)
+            + "] -- " + ex.toString(), ex);
+      }
+    }
+
+    if (success) {
+      // If we're permitted to append, check if we actually can
+      if (allowAppend) {
+        allowAppend = checkAppend(fileSystem);
+      }
+
+      flushTimer = new Timer("RollingFileSystemSink Flusher", true);
+      setInitialFlushTime(new Date());
+    }
+
+    return success;
+  }
+}

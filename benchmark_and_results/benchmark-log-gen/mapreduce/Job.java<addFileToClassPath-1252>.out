@@ -1,0 +1,127 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Job.java	methodSinagture:	org.apache.hadoop.mapreduce.Job.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V	methodLines:	1252:1260
+blockLines:	1254:-1
+paras:	null
+TaintedStat:	NORMAL addFileToClassPath:conditional branch(ne, to iindex=12) 8,9 Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V > Context: Everywhere[2]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,6 @3 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V > Context: Everywhere[2]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,6 @3 exception:7
+NORMAL addFileToClassPath:conditional branch(ne, to iindex=12) 8,9 Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      boolean addToCache) {
+    String classpath = conf.get(MRJobConfig.CLASSPATH_FILES);
+    conf.set(MRJobConfig.CLASSPATH_FILES,
+        classpath == null ? file.toString() : classpath + "," + file.toString());
+    if (addToCache) {
+      URI uri = fs.makeQualified(file).toUri();
+      Job.addCacheFile(uri, conf);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V > Context: Everywhere, blocks=[BB[SSA:146..147]62 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:143..145]61 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:148..150]63 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V, BB[SSA:-1..-2]95 - org.apache.hadoop.mapreduce.JobResourceUploader.uploadLibJars(Lorg/apache/hadoop/mapreduce/Job;Ljava/util/Collection;Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/fs/permission/FsPermission;SLjava/util/Map;Ljava/util/Map;)V], numberOfBasicBlocks=4, firstLineNumber=335, lastLineNumber=336, firstMethodNumber=285, lastMethodNumber=361, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    Configuration conf = job.getConfiguration();
+    Path libjarsDir = JobSubmissionFiles.getJobDistCacheLibjars(submitJobDir);
+    if (!libjars.isEmpty()) {
+      mkdirs(jtFs, libjarsDir, mapredSysPerms);
+      Collection<URI> libjarURIs = new LinkedList<>();
+      boolean foundFragment = false;
+      for (String tmpjars : libjars) {
+        URI tmpURI = null;
+        try {
+          tmpURI = new URI(tmpjars);
+        } catch (URISyntaxException e) {
+          throw new IllegalArgumentException("Error parsing libjars argument."
+              + " Argument must be a valid URI: " + tmpjars, e);
+        }
+        Path tmp = new Path(tmpURI);
+        URI newURI = null;
+        boolean uploadToSharedCache = false;
+        boolean fromSharedCache = false;
+        if (scConfig.isSharedCacheLibjarsEnabled()) {
+          newURI = useSharedCache(tmpURI, tmp.getName(), statCache, conf, true);
+          if (newURI == null) {
+            uploadToSharedCache = true;
+          } else {
+            fromSharedCache = true;
+          }
+        }
+
+        if (newURI == null) {
+          Path newPath =
+              copyRemoteFiles(libjarsDir, tmp, conf, submitReplication);
+          try {
+            newURI = getPathURI(newPath, tmpURI.getFragment());
+          } catch (URISyntaxException ue) {
+            // should not throw a uri exception
+            throw new IOException(
+                "Failed to create a URI (URISyntaxException) for the"
+                    + " remote path " + newPath
+                    + ". This was based on the libjar parameter: " + tmpjars,
+                ue);
+          }
+        }
+
+        if (!foundFragment) {
+          // We do not count shared cache paths containing fragments as a
+          // "foundFragment." This is because these resources are not in the
+          // staging directory and will be added to the distributed cache
+          // separately.
+          foundFragment = (newURI.getFragment() != null) && !fromSharedCache;
+        }
+        Job.addFileToClassPath(new Path(newURI.getPath()), conf, jtFs, false);
+        if (fromSharedCache) {
+          // We simply add this URI to the distributed cache. It will not come
+          // from the staging directory (it is in the shared cache), so we
+          // must add it to the cache regardless of the wildcard feature.
+          Job.addCacheFile(newURI, conf);
+        } else {
+          libjarURIs.add(newURI);
+        }
+
+        if (scConfig.isSharedCacheLibjarsEnabled()) {
+          fileSCUploadPolicies.put(newURI.toString(), uploadToSharedCache);
+        }
+      }
+
+      if (useWildcard && !foundFragment) {
+        // Add the whole directory to the cache using a wild card
+        Path libJarsDirWildcard =
+            jtFs.makeQualified(new Path(libjarsDir, DistributedCache.WILDCARD));
+        Job.addCacheFile(libJarsDirWildcard.toUri(), conf);
+      } else {
+        for (URI uri : libjarURIs) {
+          Job.addCacheFile(uri, conf);
+        }
+      }
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/Job, addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.mapreduce.Job.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.Job.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V, BB[SSA:5..5]2 - org.apache.hadoop.mapreduce.Job.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V, BB[SSA:-1..-2]3 - org.apache.hadoop.mapreduce.Job.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V], numberOfBasicBlocks=4, firstLineNumber=1238, lastLineNumber=1240, firstMethodNumber=1238, lastMethodNumber=1240, isFirstLineValid=false, methodSrcCode=
+  public static void addFileToClassPath(Path file, Configuration conf, FileSystem fs) {
+    addFileToClassPath(file, conf, fs, true);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V, BB[SSA:5..5]2 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V, BB[SSA:-1..-2]3 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;Z)V], numberOfBasicBlocks=4, firstLineNumber=333, lastLineNumber=335, firstMethodNumber=333, lastMethodNumber=335, isFirstLineValid=false, methodSrcCode=
+      FileSystem fs, boolean addToCache) {
+    Job.addFileToClassPath(file, conf, fs, addToCache);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/filecache/DistributedCache, addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V, BB[SSA:5..5]2 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V, BB[SSA:-1..-2]3 - org.apache.hadoop.mapreduce.filecache.DistributedCache.addFileToClassPath(Lorg/apache/hadoop/fs/Path;Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/fs/FileSystem;)V], numberOfBasicBlocks=4, firstLineNumber=316, lastLineNumber=318, firstMethodNumber=316, lastMethodNumber=318, isFirstLineValid=false, methodSrcCode=
+      FileSystem fs) {
+    Job.addFileToClassPath(file, conf, fs, true);
+  }
+
+}

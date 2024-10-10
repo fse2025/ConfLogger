@@ -1,0 +1,41 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ServerUtils.java	methodSinagture:	org.apache.storm.utils.ServerUtils.getNimbusBlobStore(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore;	methodLines:	149:163
+blockLines:	151:-1
+paras:	nimbus.blobstore.class
+TaintedStat:	NORMAL getNimbusBlobStore:conditional branch(ne, to iindex=11) 9,10 Node: < Application, Lorg/apache/storm/utils/ServerUtils, getNimbusBlobStore(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ServerUtils, getNimbusBlobStore(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore; > Context: Everywhere[2]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,6 @3 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ServerUtils, getNimbusBlobStore(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore; > Context: Everywhere[2]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,6 @3 exception:7
+NORMAL getNimbusBlobStore:9 = checkcast <Application,Ljava/lang/String>8 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/utils/ServerUtils, getNimbusBlobStore(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore; > Context: Everywhere
+NORMAL getNimbusBlobStore:conditional branch(ne, to iindex=11) 9,10 Node: < Application, Lorg/apache/storm/utils/ServerUtils, getNimbusBlobStore(Ljava/util/Map;Ljava/lang/String;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+            ILeaderElector leaderElector) {
+        String type = (String) conf.get(DaemonConfig.NIMBUS_BLOBSTORE);
+        if (type == null) {
+            type = LocalFsBlobStore.class.getName();
+        }
+        BlobStore store = (BlobStore) ReflectionUtils.newInstance(type);
+        Map<String, Object> nconf = new HashMap<>(conf);
+        // only enable cleanup of blobstore on nimbus
+        nconf.put(Config.BLOBSTORE_CLEANUP_ENABLE, Boolean.TRUE);
+
+        if (store != null) {
+            // store can be null during testing when mocking utils.
+            store.prepare(nconf, baseDir, nimbusInfo, leaderElector);
+        }
+        return store;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ServerUtils, getNimbusBlobStore(Ljava/util/Map;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.storm.utils.ServerUtils.getNimbusBlobStore(Ljava/util/Map;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore;, BB[SSA:-1..-2]0 - org.apache.storm.utils.ServerUtils.getNimbusBlobStore(Ljava/util/Map;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore;, BB[SSA:5..5]2 - org.apache.storm.utils.ServerUtils.getNimbusBlobStore(Ljava/util/Map;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore;, BB[SSA:-1..-2]3 - org.apache.storm.utils.ServerUtils.getNimbusBlobStore(Ljava/util/Map;Lorg/apache/storm/nimbus/NimbusInfo;Lorg/apache/storm/nimbus/ILeaderElector;)Lorg/apache/storm/blobstore/BlobStore;], numberOfBasicBlocks=4, firstLineNumber=142, lastLineNumber=143, firstMethodNumber=142, lastMethodNumber=143, isFirstLineValid=false, methodSrcCode=
+            ILeaderElector leaderElector) {
+        return getNimbusBlobStore(conf, null, nimbusInfo, leaderElector);
+    }
+}

@@ -1,0 +1,20 @@
+```java
+private URI createKeyProviderURI(Configuration conf) {
+    final String providerUriStr = conf.getTrimmed(
+        CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH);
+    // No provider set in conf
+    if (providerUriStr == null || providerUriStr.isEmpty()) {
+        // ConfLogger Inserted Start
+        logger.warn("The configuration parameter 'HADOOP_SECURITY_KEY_PROVIDER_PATH' is not set or is empty. Please ensure it is properly configured to enable key provider functionality.");
+        // ConfLogger Inserted End
+        return null;
+    }
+    final URI providerUri;
+    try {
+        providerUri = new URI(providerUriStr);
+    } catch (URISyntaxException e) {
+        return null;
+    }
+    return providerUri;
+}
+```

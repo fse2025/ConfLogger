@@ -1,0 +1,2 @@
+2024-09-04 20:45:07,945 [main] ERROR ConfLogger (ReplaceDatanodeOnFailure.java:getPolicy(189)) - Illegal configuration value for dfs.client.block.write.replace-datanode-on-failure.policy: . Please set it to one of the valid policies: [DISABLE, NEVER, DEFAULT, ALWAYS].
+org.apache.hadoop.HadoopIllegalArgumentException: Illegal configuration value for dfs.client.block.write.replace-datanode-on-failure.policy

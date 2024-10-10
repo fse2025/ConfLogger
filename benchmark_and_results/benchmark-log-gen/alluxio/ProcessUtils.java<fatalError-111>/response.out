@@ -1,0 +1,17 @@
+```java
+String message = String.format("Fatal error: " + format, args);
+if (t != null) {
+    message += "\n" + Throwables.getStackTraceAsString(t);
+}
+if (Configuration.getBoolean(PropertyKey.TEST_MODE)) {
+    // ConfLogger Inserted Start
+    logger.error("Test mode is enabled. PropertyKey.TEST_MODE: " + Configuration.getBoolean(PropertyKey.TEST_MODE));
+    // ConfLogger Inserted End
+    throw new RuntimeException(message);
+}
+logger.error(message);
+
+dumpInformationOnExit();
+
+System.exit(-1);
+```

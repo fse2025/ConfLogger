@@ -1,0 +1,15 @@
+```java
+String jobUUID = conf.getTrimmed(SPARK_WRITE_UUID, "");
+if (jobUUID.isEmpty()) {
+    jobUUID = jobId.toString();
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is empty. Using jobId '{}' as jobUUID.", SPARK_WRITE_UUID, jobUUID);
+    // ConfLogger Inserted End
+    return Pair.of(jobUUID, JOB_ID_SOURCE_MAPREDUCE);
+} else {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is set. Using '{}' as jobUUID.", SPARK_WRITE_UUID, jobUUID);
+    // ConfLogger Inserted End
+    return Pair.of(jobUUID, SPARK_WRITE_UUID);
+}
+```

@@ -1,0 +1,28 @@
+```java
+Configuration conf = getConfig();
+if (!conf.getBoolean(YarnConfiguration.LOG_AGGREGATION_ENABLED,
+YarnConfiguration.DEFAULT_LOG_AGGREGATION_ENABLED)) {
+    // Log aggregation is not enabled so don't bother
+    // ConfLogger Skipped
+    return;
+}
+long retentionSecs = conf.getLong(
+YarnConfiguration.LOG_AGGREGATION_RETAIN_SECONDS,
+YarnConfiguration.DEFAULT_LOG_AGGREGATION_RETAIN_SECONDS);
+if (retentionSecs < 0) {
+    // ConfLogger Commented: Not Informative
+    // LOG.info("Log Aggregation deletion is disabled because retention is"
+    // + " too small (" + retentionSecs + ")");
+    // ConfLogger Inserted Start
+    logger.info("Log Aggregation deletion is disabled because retention is too small. Configuration parameter: " 
+                + YarnConfiguration.LOG_AGGREGATION_RETAIN_SECONDS + ", Value: " + retentionSecs 
+                + ". Ensure the retention period is set to a non-negative value.");
+    // ConfLogger Inserted End
+    return;
+}
+setLogAggCheckIntervalMsecs(retentionSecs);
+task = new LogDeletionTask(conf, retentionSecs, createRMClient());
+timer = new Timer();
+timer.scheduleAtFixedRate(task, 0, checkIntervalMsecs);
+}
+```

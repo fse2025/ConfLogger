@@ -1,0 +1,1 @@
+dfs.datatransfer.server.variableBlackList.enable	true	[main]	Client variable blacklist not enabled. Defaulting to fixed file: /etc/hadoop/fixedBlackList. Configuration key: dfs.datatransfer.client.variableBlackList.enable	30

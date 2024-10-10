@@ -1,0 +1,17 @@
+```java
+final boolean isEnabled;
+if (fileIOSamplingPercentage <= 0) {
+    isEnabled = false;
+    // ConfLogger Inserted Start
+    logger.warn("Service disabled due to non-positive fileIOSamplingPercentage. Ensure 'dfs.datanode.lifeline.interval.seconds' is set to a positive value. Current value: " + fileIOSamplingPercentage);
+    // ConfLogger Inserted End
+} else {
+    isEnabled = true;
+    // ConfLogger Inserted Start
+    logger.info("Service enabled with fileIOSamplingPercentage: " + fileIOSamplingPercentage + ". Ensure 'dfs.datanode.lifeline.interval.seconds' is set correctly.");
+    // ConfLogger Inserted End
+}
+
+return isEnabled;
+}
+```

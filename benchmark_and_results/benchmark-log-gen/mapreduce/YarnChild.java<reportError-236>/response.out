@@ -1,0 +1,23 @@
+```java
+boolean fastFailJob = false;
+boolean hasClusterStorageCapacityExceededException =
+ExceptionUtils.indexOfType(exception,
+ClusterStorageCapacityExceededException.class) != -1;
+if (hasClusterStorageCapacityExceededException) {
+    boolean killJobWhenExceedClusterStorageCapacity = task.getConf()
+        .getBoolean(MRJobConfig.JOB_DFS_STORAGE_CAPACITY_KILL_LIMIT_EXCEED,
+        MRJobConfig.DEFAULT_JOB_DFS_STORAGE_CAPACITY_KILL_LIMIT_EXCEED);
+    if (killJobWhenExceedClusterStorageCapacity) {
+        // ConfLogger Commented: Not Informative
+        // LOG.error(
+        // "Fast fail the job because the cluster storage capacity was exceeded.");
+        // ConfLogger Inserted Start
+        logger.error("Fast fail the job because the cluster storage capacity was exceeded. Configuration parameter: " + MRJobConfig.JOB_DFS_STORAGE_CAPACITY_KILL_LIMIT_EXCEED + " = " + killJobWhenExceedClusterStorageCapacity);
+        // ConfLogger Inserted End
+        fastFailJob = true;
+    }
+}
+umbilical.fatalError(taskid, StringUtils.stringifyException(exception),
+fastFailJob);
+}
+```

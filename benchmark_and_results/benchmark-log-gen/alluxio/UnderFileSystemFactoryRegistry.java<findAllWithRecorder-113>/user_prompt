@@ -1,0 +1,34 @@
+<code-whole>
+List<UnderFileSystemFactory> eligibleFactories =
+sRegistryInstance.findAllWithRecorder(path, ufsConf, recorder);
+if (eligibleFactories.isEmpty() && ufsConf.isSet(PropertyKey.UNDERFS_VERSION)) {
+String configuredVersion = ufsConf.getString(PropertyKey.UNDERFS_VERSION);
+List<String> supportedVersions = getSupportedVersions(path, ufsConf);
+if (!supportedVersions.isEmpty()) {
+String message = String.format(
+"Versions [%s] are supported for path %s but you have configured version: %s",
+StringUtils.join(supportedVersions, ","), path,
+configuredVersion);
+recorder.record(message);
+LOG.warn(message);
+}
+} else if (ufsConf.getBoolean(PropertyKey.UNDERFS_STRICT_VERSION_MATCH_ENABLED)
+&& !eligibleFactories.isEmpty()
+&& ufsConf.isSet(PropertyKey.UNDERFS_VERSION)) {
+String configuredVersion = ufsConf.getString(PropertyKey.UNDERFS_VERSION);
+Iterator<UnderFileSystemFactory> it = eligibleFactories.iterator();
+while (it.hasNext()) {
+if (!configuredVersion.equals(it.next().getVersion())) {
+it.remove();
+}
+}
+}
+return eligibleFactories;
+}
+</code-whole>
+
+<code-specified>
+if (!configuredVersion.equals(it.next().getVersion())) {
+it.remove();
+}
+</code-specified>

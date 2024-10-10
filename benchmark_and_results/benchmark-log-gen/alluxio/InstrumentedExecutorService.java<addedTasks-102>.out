@@ -1,0 +1,50 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	InstrumentedExecutorService.java	methodSinagture:	alluxio.metrics.InstrumentedExecutorService.addedTasks(I)V	methodLines:	102:110
+blockLines:	106:-1
+paras:	null
+TaintedStat:	NORMAL addedTasks:conditional branch(lt, to iindex=31) 21,22 Node: < Application, Lalluxio/metrics/InstrumentedExecutorService, addedTasks(I)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/metrics/InstrumentedExecutorService, addedTasks(I)V > Context: Everywhere[18]19 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getInt(Lalluxio/conf/PropertyKey;)I > 16,17 @34 exception:18
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/metrics/InstrumentedExecutorService, addedTasks(I)V > Context: Everywhere[18]19 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getInt(Lalluxio/conf/PropertyKey;)I > 16,17 @34 exception:18
+NORMAL addedTasks:20 = conversion(J) 19 Node: < Application, Lalluxio/metrics/InstrumentedExecutorService, addedTasks(I)V > Context: Everywhere
+NORMAL addedTasks:21 = compare 12,20 opcode=cmp Node: < Application, Lalluxio/metrics/InstrumentedExecutorService, addedTasks(I)V > Context: Everywhere
+NORMAL addedTasks:conditional branch(lt, to iindex=31) 21,22 Node: < Application, Lalluxio/metrics/InstrumentedExecutorService, addedTasks(I)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void addedTasks(int count) {
+    long activeCount = mSubmitted.getCount() - mCompleted.getCount() + count;
+    mHist.update(activeCount);
+    if (activeCount >= Configuration.global()
+        .getInt(PropertyKey.METRICS_EXECUTOR_TASK_WARN_SIZE)) {
+      mSamplingLog.warn("Number of active tasks (queued and running) for executor {} is {}",
+          mName, activeCount);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/metrics/InstrumentedExecutorService, execute(Ljava/lang/Runnable;)V > Context: Everywhere, blocks=[BB[SSA:0..2]1 - alluxio.metrics.InstrumentedExecutorService.execute(Ljava/lang/Runnable;)V, BB[SSA:-1..-2]0 - alluxio.metrics.InstrumentedExecutorService.execute(Ljava/lang/Runnable;)V, BB[SSA:3..4]2 - alluxio.metrics.InstrumentedExecutorService.execute(Ljava/lang/Runnable;)V, BB[SSA:-1..-2]5 - alluxio.metrics.InstrumentedExecutorService.execute(Ljava/lang/Runnable;)V], numberOfBasicBlocks=4, firstLineNumber=113, lastLineNumber=115, firstMethodNumber=113, lastMethodNumber=116, isFirstLineValid=false, methodSrcCode=
+  public void execute(@Nonnull Runnable runnable) {
+    addedTasks(1);
+    mDelegate.execute(runnable);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/metrics/InstrumentedExecutorService, submit(Ljava/lang/Runnable;Ljava/lang/Object;)Ljava/util/concurrent/Future; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - alluxio.metrics.InstrumentedExecutorService.submit(Ljava/lang/Runnable;Ljava/lang/Object;)Ljava/util/concurrent/Future;, BB[SSA:-1..-2]0 - alluxio.metrics.InstrumentedExecutorService.submit(Ljava/lang/Runnable;Ljava/lang/Object;)Ljava/util/concurrent/Future;, BB[SSA:3..4]2 - alluxio.metrics.InstrumentedExecutorService.submit(Ljava/lang/Runnable;Ljava/lang/Object;)Ljava/util/concurrent/Future;, BB[SSA:-1..-2]5 - alluxio.metrics.InstrumentedExecutorService.submit(Ljava/lang/Runnable;Ljava/lang/Object;)Ljava/util/concurrent/Future;], numberOfBasicBlocks=4, firstLineNumber=125, lastLineNumber=127, firstMethodNumber=125, lastMethodNumber=127, isFirstLineValid=false, methodSrcCode=
+  public <T> Future<T> submit(@Nonnull Runnable runnable, T result) {
+    addedTasks(1);
+    return mDelegate.submit(runnable, result);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lalluxio/metrics/InstrumentedExecutorService, submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - alluxio.metrics.InstrumentedExecutorService.submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;, BB[SSA:-1..-2]0 - alluxio.metrics.InstrumentedExecutorService.submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;, BB[SSA:3..4]2 - alluxio.metrics.InstrumentedExecutorService.submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;, BB[SSA:-1..-2]5 - alluxio.metrics.InstrumentedExecutorService.submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;], numberOfBasicBlocks=4, firstLineNumber=119, lastLineNumber=121, firstMethodNumber=119, lastMethodNumber=121, isFirstLineValid=false, methodSrcCode=
+  public Future<?> submit(@Nonnull Runnable runnable) {
+    addedTasks(1);
+    return mDelegate.submit(runnable);
+  }
+}

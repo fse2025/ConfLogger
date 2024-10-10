@@ -1,0 +1,339 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;	methodLines:	1672:1732
+blockLines:	1720:-1
+paras:	dfs.namenode.https-bind-host
+TaintedStat:	NORMAL httpServerTemplateForNNAndJN:conditional branch(eq, to iindex=218) 3,143 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere[26]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 18,19 @52 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere[26]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 18,19 @52 exception:20
+NORMAL start:conditional branch(eq, to iindex=42) 21,17 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere:29 = phi  16,16,16,25
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere[49]35 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > 30,9,29,31,32,33 @99 exception:34 v29
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere v3
+NORMAL httpServerTemplateForNNAndJN:conditional branch(eq, to iindex=218) 3,143 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;	methodLines:	1672:1732
+blockLines:	1684:-1
+paras:	null
+TaintedStat:	NORMAL httpServerTemplateForNNAndJN:conditional branch(ne, to iindex=56) 33,20 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere[119]93 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,5 @271 exception:92
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere[119]93 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,5 @271 exception:92
+NORMAL httpServerTemplateForNNAndJN:97 = invokestatic < Application, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 93,95 @278 exception:96 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getServerPrincipal:conditional branch(eq, to iindex=17) 5,6 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getServerPrincipal:conditional branch(ne, to iindex=17) 7,8 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getServerPrincipal:13 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 10,11 @20 exception:12 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, getServerPrincipal(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere[44]33 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 23,31 @95 exception:32
+NORMAL httpServerTemplateForNNAndJN:conditional branch(ne, to iindex=56) 33,20 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;	methodLines:	1672:1732
+blockLines:	1724:-1
+paras:	dfs.namenode.https-address
+TaintedStat:	NORMAL httpServerTemplateForNNAndJN:conditional branch(ne, to iindex=189) 149,20 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere[15]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 10,11,12 @29 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere[15]14 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 10,11,12 @29 exception:13
+NORMAL start:16 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > 14 @36 exception:15 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL createSocketAddr:return 5 Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere[18]16 = invokestatic < Application, Lorg/apache/hadoop/net/NetUtils, createSocketAddr(Ljava/lang/String;)Ljava/net/InetSocketAddress; > 14 @36 exception:15
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere:29 = phi  16,16,16,25
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere[49]35 = invokestatic < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > 30,9,29,31,32,33 @99 exception:34 v29
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere v3
+NORMAL httpServerTemplateForNNAndJN:conditional branch(eq, to iindex=218) 3,143 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+NORMAL httpServerTemplateForNNAndJN:conditional branch(ne, to iindex=189) 149,20 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;	methodLines:	1672:1732
+blockLines:	1682:-1
+paras:	dfs.cluster.administrators
+TaintedStat:	NORMAL httpServerTemplateForNNAndJN:conditional branch(ne, to iindex=56) 28,20 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere[96]70 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,67,68 @215 exception:69
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere[96]70 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,67,68 @215 exception:69
+NORMAL httpServerTemplateForNNAndJN:invokespecial < Application, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;)V > 66,70 @218 exception:71 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;)V > Context: Everywhere
+NORMAL <init>:12 = invokevirtual < Extension, Ljava/lang/String, split(Ljava/lang/String;I)[Ljava/lang/String; > 2,9,10 @23 exception:11 Node: < Extension, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, split(Ljava/lang/String;I)[Ljava/lang/String; > Context: Everywhere
+NORMAL split:7 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @3 exception:6 Node: < Primordial, Ljava/lang/String, split(Ljava/lang/String;I)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:6 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @6 exception:5 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL coder:return 7 Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere[13]8 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @20 exception:7
+NORMAL equals:conditional branch(ne, to iindex=33) 8,10 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 21 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere[38]28 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 23,26 @81 exception:27
+NORMAL httpServerTemplateForNNAndJN:conditional branch(ne, to iindex=56) 28,20 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;	methodLines:	1672:1732
+blockLines:	1686:-1
+paras:	null
+TaintedStat:	NORMAL httpServerTemplateForNNAndJN:conditional branch(eq, to iindex=52) 35,20 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere[8]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,10,11 @16 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere[8]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,10,11 @16 exception:12
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere[12]16 = invokevirtual < Application, Ljava/lang/String, split(Ljava/lang/String;)[Ljava/lang/String; > 13,14 @26 exception:15 v13
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/String, split(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere v1
+PARAM_CALLER:Node: < Primordial, Ljava/lang/String, split(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[3]6 = invokevirtual < Primordial, Ljava/lang/String, split(Ljava/lang/String;I)[Ljava/lang/String; > 1,2,4 @3 exception:5 v1
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/String, split(Ljava/lang/String;I)[Ljava/lang/String; > Context: Everywhere v1
+PARAM_CALLER:Node: < Primordial, Ljava/lang/String, split(Ljava/lang/String;I)[Ljava/lang/String; > Context: Everywhere[97]56 = invokevirtual < Primordial, Ljava/lang/String, substring(II)Ljava/lang/String; > 1,60,51 @161 exception:55 v1
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/String, substring(II)Ljava/lang/String; > Context: Everywhere v1
+NORMAL substring:return 1 Node: < Primordial, Ljava/lang/String, substring(II)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, substring(II)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/Shell, checkHadoopHomeInner(Ljava/lang/String;)Ljava/io/File; > Context: Everywhere[29]18 = invokevirtual < Extension, Ljava/lang/String, substring(II)Ljava/lang/String; > 19,7,16 @49 exception:17
+PHI Node: < Extension, Lorg/apache/hadoop/util/Shell, checkHadoopHomeInner(Ljava/lang/String;)Ljava/io/File; > Context: Everywhere:19 = phi  11,18
+NORMAL checkHadoopHomeInner:21 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 19 @57 exception:20 Node: < Extension, Lorg/apache/hadoop/util/Shell, checkHadoopHomeInner(Ljava/lang/String;)Ljava/io/File; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere[48]35 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 23 @103 exception:34
+NORMAL httpServerTemplateForNNAndJN:conditional branch(eq, to iindex=52) 35,20 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String spnegoKeytabFileKey) throws IOException {
+    HttpConfig.Policy policy = getHttpPolicy(conf);
+
+    String filterInitializerConfKey = "hadoop.http.filter.initializers";
+    String initializers = conf.get(filterInitializerConfKey, "");
+
+    String[] parts = initializers.split(",");
+    Set<String> target = new LinkedHashSet<String>();
+    for (String filterInitializer : parts) {
+      filterInitializer = filterInitializer.trim();
+      if (filterInitializer.equals(
+          AuthenticationFilterInitializer.class.getName()) ||
+          filterInitializer.equals(
+          ProxyUserAuthenticationFilterInitializer.class.getName()) ||
+          filterInitializer.isEmpty()) {
+        continue;
+      }
+      target.add(filterInitializer);
+    }
+    target.add(AuthFilterInitializer.class.getName());
+    initializers = StringUtils.join(target, ",");
+    conf.set(filterInitializerConfKey, initializers);
+
+    LOG.info("Filter initializers set : " + initializers);
+
+    HttpServer2.Builder builder = new HttpServer2.Builder().setName(name)
+        .setConf(conf).setACL(new AccessControlList(conf.get(DFS_ADMIN, " ")))
+        .setSecurityEnabled(UserGroupInformation.isSecurityEnabled())
+        .setUsernameConfKey(spnegoUserNameKey)
+        .setKeytabConfKey(getSpnegoKeytabKey(conf, spnegoKeytabFileKey));
+
+    // initialize the webserver for uploading/downloading files.
+    if (UserGroupInformation.isSecurityEnabled()) {
+      LOG.info("Starting web server as: "
+          + SecurityUtil.getServerPrincipal(conf.get(spnegoUserNameKey),
+              httpAddr.getHostName()));
+    }
+
+    if (policy.isHttpEnabled()) {
+      if (httpAddr.getPort() == 0) {
+        builder.setFindPort(true);
+      }
+
+      URI uri = URI.create("http://" + NetUtils.getHostPortString(httpAddr));
+      builder.addEndpoint(uri);
+      LOG.info("Starting Web-server for " + name + " at: " + uri);
+    }
+
+    if (policy.isHttpsEnabled() && httpsAddr != null) {
+      Configuration sslConf = loadSslConfiguration(conf);
+      loadSslConfToHttpServerBuilder(builder, sslConf);
+
+      if (httpsAddr.getPort() == 0) {
+        builder.setFindPort(true);
+      }
+
+      URI uri = URI.create("https://" + NetUtils.getHostPortString(httpsAddr));
+      builder.addEndpoint(uri);
+      LOG.info("Starting Web-server for " + name + " at: " + uri);
+    }
+    return builder;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, startInfoServer()V > Context: Everywhere, blocks=[BB[SSA:15..20]7 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.startInfoServer()V, BB[SSA:12..14]6 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.startInfoServer()V, BB[SSA:21..23]8 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.startInfoServer()V, BB[SSA:-1..-2]47 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.startInfoServer()V], numberOfBasicBlocks=4, firstLineNumber=475, lastLineNumber=482, firstMethodNumber=470, lastMethodNumber=517, isFirstLineValid=true, methodSrcCode=
+  public void startInfoServer() throws IOException {
+    final InetSocketAddress httpAddr = getHttpAddress(conf);
+    final String httpsAddrString = conf.getTrimmed(
+        DFSConfigKeys.DFS_NAMENODE_SECONDARY_HTTPS_ADDRESS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_SECONDARY_HTTPS_ADDRESS_DEFAULT);
+    InetSocketAddress httpsAddr = NetUtils.createSocketAddr(httpsAddrString);
+
+    HttpServer2.Builder builder = DFSUtil.httpServerTemplateForNNAndJN(conf,
+        httpAddr, httpsAddr, "secondary", DFSConfigKeys.
+            DFS_SECONDARY_NAMENODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY,
+        DFSConfigKeys.DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY);
+
+    final boolean xFrameEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED,
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED_DEFAULT);
+
+    final String xFrameOptionValue = conf.getTrimmed(
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE,
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE_DEFAULT);
+
+    builder.configureXFrame(xFrameEnabled).setXFrameOption(xFrameOptionValue);
+
+    infoServer = builder.build();
+    infoServer.setAttribute("secondary.name.node", this);
+    infoServer.setAttribute("name.system.image", checkpointImage);
+    infoServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    infoServer.addInternalServlet("imagetransfer", ImageServlet.PATH_SPEC,
+        ImageServlet.class, true);
+    infoServer.start();
+
+    LOG.info("Web server init done");
+
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    int connIdx = 0;
+    if (policy.isHttpEnabled()) {
+      InetSocketAddress httpAddress =
+          infoServer.getConnectorAddress(connIdx++);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpAddress));
+    }
+
+    if (policy.isHttpsEnabled()) {
+      InetSocketAddress httpsAddress =
+          infoServer.getConnectorAddress(connIdx);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_SECONDARY_HTTPS_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpsAddress));
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNodeHttpServer, start()V > Context: Everywhere, blocks=[BB[SSA:44..49]20 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:42..43]19 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:50..52]21 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V, BB[SSA:-1..-2]85 - org.apache.hadoop.hdfs.server.namenode.NameNodeHttpServer.start()V], numberOfBasicBlocks=4, firstLineNumber=137, lastLineNumber=142, firstMethodNumber=117, lastMethodNumber=184, isFirstLineValid=true, methodSrcCode=
+  void start() throws IOException {
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    final String infoHost = bindAddress.getHostName();
+
+    final InetSocketAddress httpAddr = bindAddress;
+    final String httpsAddrString = conf.getTrimmed(
+        DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_DEFAULT);
+    InetSocketAddress httpsAddr = NetUtils.createSocketAddr(httpsAddrString);
+
+    if (httpsAddr != null) {
+      // If DFS_NAMENODE_HTTPS_BIND_HOST_KEY exists then it overrides the
+      // host name portion of DFS_NAMENODE_HTTPS_ADDRESS_KEY.
+      final String bindHost =
+          conf.getTrimmed(DFSConfigKeys.DFS_NAMENODE_HTTPS_BIND_HOST_KEY);
+      if (bindHost != null && !bindHost.isEmpty()) {
+        httpsAddr = new InetSocketAddress(bindHost, httpsAddr.getPort());
+      }
+    }
+
+    HttpServer2.Builder builder = DFSUtil.httpServerTemplateForNNAndJN(conf,
+        httpAddr, httpsAddr, "hdfs",
+        DFSConfigKeys.DFS_NAMENODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY,
+        DFSConfigKeys.DFS_NAMENODE_KEYTAB_FILE_KEY);
+
+    final boolean xFrameEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED,
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED_DEFAULT);
+
+    final String xFrameOptionValue = conf.getTrimmed(
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE,
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE_DEFAULT);
+
+    builder.configureXFrame(xFrameEnabled).setXFrameOption(xFrameOptionValue);
+
+    httpServer = builder.build();
+
+    if (policy.isHttpsEnabled()) {
+      // assume same ssl port for all datanodes
+      InetSocketAddress datanodeSslPort = NetUtils.createSocketAddr(conf.getTrimmed(
+          DFSConfigKeys.DFS_DATANODE_HTTPS_ADDRESS_KEY, infoHost + ":"
+              + DFSConfigKeys.DFS_DATANODE_HTTPS_DEFAULT_PORT));
+      httpServer.setAttribute(DFSConfigKeys.DFS_DATANODE_HTTPS_PORT_KEY,
+          datanodeSslPort.getPort());
+    }
+    String httpKeytab = conf.get(DFSUtil.getSpnegoKeytabKey(conf,
+        DFSConfigKeys.DFS_NAMENODE_KEYTAB_FILE_KEY));
+    initWebHdfs(conf, bindAddress.getHostName(), httpKeytab, httpServer,
+        NamenodeWebHdfsMethods.class.getPackage().getName());
+
+    httpServer.setAttribute(NAMENODE_ATTRIBUTE_KEY, nn);
+    httpServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    setupServlets(httpServer);
+    httpServer.start();
+
+    int connIdx = 0;
+    if (policy.isHttpEnabled()) {
+      httpAddress = httpServer.getConnectorAddress(connIdx++);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_HTTP_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpAddress));
+    }
+
+    if (policy.isHttpsEnabled()) {
+      httpsAddress = httpServer.getConnectorAddress(connIdx);
+      conf.set(DFSConfigKeys.DFS_NAMENODE_HTTPS_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpsAddress));
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNodeHttpServer, start()V > Context: Everywhere, blocks=[BB[SSA:36..41]16 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeHttpServer.start()V, BB[SSA:34..35]15 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeHttpServer.start()V, BB[SSA:42..45]17 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeHttpServer.start()V, BB[SSA:-1..-2]51 - org.apache.hadoop.hdfs.qjournal.server.JournalNodeHttpServer.start()V], numberOfBasicBlocks=4, firstLineNumber=76, lastLineNumber=81, firstMethodNumber=58, lastMethodNumber=101, isFirstLineValid=true, methodSrcCode=
+  void start() throws IOException {
+    final InetSocketAddress httpAddr = bindAddress;
+
+    final String httpsAddrString = conf.get(
+        DFSConfigKeys.DFS_JOURNALNODE_HTTPS_ADDRESS_KEY,
+        DFSConfigKeys.DFS_JOURNALNODE_HTTPS_ADDRESS_DEFAULT);
+    InetSocketAddress httpsAddr = NetUtils.createSocketAddr(httpsAddrString);
+
+    if (httpsAddr != null) {
+      // If DFS_JOURNALNODE_HTTPS_BIND_HOST_KEY exists then it overrides the
+      // host name portion of DFS_NAMENODE_HTTPS_ADDRESS_KEY.
+      final String bindHost =
+          conf.getTrimmed(DFSConfigKeys.DFS_JOURNALNODE_HTTPS_BIND_HOST_KEY);
+      if (bindHost != null && !bindHost.isEmpty()) {
+        httpsAddr = new InetSocketAddress(bindHost, httpsAddr.getPort());
+      }
+    }
+
+    HttpServer2.Builder builder = DFSUtil.httpServerTemplateForNNAndJN(conf,
+        httpAddr, httpsAddr, "journal",
+        DFSConfigKeys.DFS_JOURNALNODE_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY,
+        DFSConfigKeys.DFS_JOURNALNODE_KEYTAB_FILE_KEY);
+
+    httpServer = builder.build();
+    httpServer.setAttribute(JN_ATTRIBUTE_KEY, localJournalNode);
+    httpServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    httpServer.addInternalServlet("getJournal", "/getJournal",
+        GetJournalEditServlet.class, true);
+    httpServer.start();
+
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    int connIdx = 0;
+    if (policy.isHttpEnabled()) {
+      httpAddress = httpServer.getConnectorAddress(connIdx++);
+      conf.set(DFSConfigKeys.DFS_JOURNALNODE_HTTP_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpAddress));
+    }
+
+    if (policy.isHttpsEnabled()) {
+      httpsAddress = httpServer.getConnectorAddress(connIdx);
+      conf.set(DFSConfigKeys.DFS_JOURNALNODE_HTTPS_ADDRESS_KEY,
+          NetUtils.getHostPortString(httpsAddress));
+    }
+  }
+
+}

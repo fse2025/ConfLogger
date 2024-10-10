@@ -1,0 +1,267 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.NameNode.getServiceAddress(Lorg/apache/hadoop/conf/Configuration;Z)Ljava/net/InetSocketAddress;	methodLines:	544:549
+blockLines:	546:-1
+paras:	dfs.namenode.servicerpc-address
+TaintedStat:	NORMAL getServiceAddress:conditional branch(eq, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, getServiceAddress(Lorg/apache/hadoop/conf/Configuration;Z)Ljava/net/InetSocketAddress; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, getServiceAddress(Lorg/apache/hadoop/conf/Configuration;Z)Ljava/net/InetSocketAddress; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, getServiceAddress(Lorg/apache/hadoop/conf/Configuration;Z)Ljava/net/InetSocketAddress; > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,4 @3 exception:5
+NORMAL getServiceAddress:conditional branch(eq, to iindex=11) 6,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, getServiceAddress(Lorg/apache/hadoop/conf/Configuration;Z)Ljava/net/InetSocketAddress; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                                                        boolean fallback) {
+    String addr = conf.getTrimmed(DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY);
+    if (addr == null || addr.isEmpty()) {
+      return fallback ? DFSUtilClient.getNNAddress(conf) : null;
+    }
+    return DFSUtilClient.getNNAddress(addr);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/RemoteNameNodeInfo, getRemoteNameNodes(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List; > Context: Everywhere, blocks=[BB[SSA:26..29]14 - org.apache.hadoop.hdfs.server.namenode.ha.RemoteNameNodeInfo.getRemoteNameNodes(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List;, BB[SSA:22..25]13 - org.apache.hadoop.hdfs.server.namenode.ha.RemoteNameNodeInfo.getRemoteNameNodes(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List;, BB[SSA:30..32]15 - org.apache.hadoop.hdfs.server.namenode.ha.RemoteNameNodeInfo.getRemoteNameNodes(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List;, BB[SSA:-1..-2]24 - org.apache.hadoop.hdfs.server.namenode.ha.RemoteNameNodeInfo.getRemoteNameNodes(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/util/List;], numberOfBasicBlocks=4, firstLineNumber=53, lastLineNumber=59, firstMethodNumber=46, lastMethodNumber=65, isFirstLineValid=true, methodSrcCode=
+    // there is only a single NN configured (and no federation) so we don't have any more NNs
+    if (nsId == null) {
+      return Collections.emptyList();
+    }
+    List<Configuration> otherNodes = HAUtil.getConfForOtherNodes(conf);
+    List<RemoteNameNodeInfo> nns = new ArrayList<RemoteNameNodeInfo>();
+
+    for (Configuration otherNode : otherNodes) {
+      String otherNNId = HAUtil.getNameNodeId(otherNode, nsId);
+      // don't do any validation here as in some cases, it can be overwritten later
+      InetSocketAddress otherIpcAddr = NameNode.getServiceAddress(otherNode, true);
+
+
+      final String scheme = DFSUtil.getHttpClientScheme(conf);
+      URL otherHttpAddr = DFSUtil.getInfoServerWithDefaultHost(otherIpcAddr.getHostName(),
+          otherNode, scheme).toURL();
+
+      nns.add(new RemoteNameNodeInfo(otherNode, otherNNId, otherIpcAddr, otherHttpAddr));
+    }
+    return nns;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/EditLogTailer, <init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:77..78]34 - org.apache.hadoop.hdfs.server.namenode.ha.EditLogTailer.<init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:74..76]33 - org.apache.hadoop.hdfs.server.namenode.ha.EditLogTailer.<init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:79..81]35 - org.apache.hadoop.hdfs.server.namenode.ha.EditLogTailer.<init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]101 - org.apache.hadoop.hdfs.server.namenode.ha.EditLogTailer.<init>(Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=196, lastLineNumber=200, firstMethodNumber=174, lastMethodNumber=262, isFirstLineValid=true, methodSrcCode=
+
+  public EditLogTailer(FSNamesystem namesystem, Configuration conf) {
+    this.tailerThread = new EditLogTailerThread();
+    this.conf = conf;
+    this.namesystem = namesystem;
+    this.editLog = namesystem.getEditLog();
+    
+    lastLoadTimeMs = monotonicNow();
+    lastRollTimeMs = monotonicNow();
+
+    logRollPeriodMs = conf.getTimeDuration(
+        DFSConfigKeys.DFS_HA_LOGROLL_PERIOD_KEY,
+        DFSConfigKeys.DFS_HA_LOGROLL_PERIOD_DEFAULT,
+        TimeUnit.SECONDS, TimeUnit.MILLISECONDS);
+    List<RemoteNameNodeInfo> nns = Collections.emptyList();
+    if (logRollPeriodMs >= 0) {
+      try {
+        nns = RemoteNameNodeInfo.getRemoteNameNodes(conf);
+      } catch (IOException e) {
+        throw new IllegalArgumentException("Remote NameNodes not correctly configured!", e);
+      }
+
+      for (RemoteNameNodeInfo info : nns) {
+        // overwrite the socket address, if we need to
+        InetSocketAddress ipc = NameNode.getServiceAddress(info.getConfiguration(), true);
+        // sanity check the ipc address
+        Preconditions.checkArgument(ipc.getPort() > 0,
+            "Active NameNode must have an IPC port configured. " + "Got address '%s'", ipc);
+        info.setIpcAddress(ipc);
+      }
+
+      LOG.info("Will roll logs on active node every " +
+          (logRollPeriodMs / 1000) + " seconds.");
+    } else {
+      LOG.info("Not going to trigger log rolls on active node because " +
+          DFSConfigKeys.DFS_HA_LOGROLL_PERIOD_KEY + " is negative.");
+    }
+    
+    sleepTimeMs = conf.getTimeDuration(
+        DFSConfigKeys.DFS_HA_TAILEDITS_PERIOD_KEY,
+        DFSConfigKeys.DFS_HA_TAILEDITS_PERIOD_DEFAULT,
+        TimeUnit.SECONDS, TimeUnit.MILLISECONDS);
+    long maxSleepTimeMsTemp = conf.getTimeDuration(
+        DFSConfigKeys.DFS_HA_TAILEDITS_PERIOD_BACKOFF_MAX_KEY,
+        DFSConfigKeys.DFS_HA_TAILEDITS_PERIOD_BACKOFF_MAX_DEFAULT,
+        TimeUnit.SECONDS, TimeUnit.MILLISECONDS);
+    if (maxSleepTimeMsTemp > 0 && maxSleepTimeMsTemp < sleepTimeMs) {
+      LOG.warn("{} was configured to be {} ms, but this is less than {}."
+              + "Disabling backoff when tailing edit logs.",
+          DFSConfigKeys.DFS_HA_TAILEDITS_PERIOD_BACKOFF_MAX_KEY,
+          maxSleepTimeMsTemp, DFSConfigKeys.DFS_HA_TAILEDITS_PERIOD_KEY);
+      maxSleepTimeMs = 0;
+    } else {
+      maxSleepTimeMs = maxSleepTimeMsTemp;
+    }
+
+    rollEditsTimeoutMs = conf.getTimeDuration(
+        DFSConfigKeys.DFS_HA_TAILEDITS_ROLLEDITS_TIMEOUT_KEY,
+        DFSConfigKeys.DFS_HA_TAILEDITS_ROLLEDITS_TIMEOUT_DEFAULT,
+        TimeUnit.SECONDS, TimeUnit.MILLISECONDS);
+
+    rollEditsRpcExecutor = Executors.newSingleThreadExecutor(
+        new ThreadFactoryBuilder().setDaemon(true).build());
+
+    maxRetries = conf.getInt(DFSConfigKeys.DFS_HA_TAILEDITS_ALL_NAMESNODES_RETRY_KEY,
+      DFSConfigKeys.DFS_HA_TAILEDITS_ALL_NAMESNODES_RETRY_DEFAULT);
+    if (maxRetries <= 0) {
+      LOG.error("Specified a non-positive number of retries for the number of retries for the " +
+          "namenode connection when manipulating the edit log (" +
+          DFSConfigKeys.DFS_HA_TAILEDITS_ALL_NAMESNODES_RETRY_KEY + "), setting to default: " +
+          DFSConfigKeys.DFS_HA_TAILEDITS_ALL_NAMESNODES_RETRY_DEFAULT);
+      maxRetries = DFSConfigKeys.DFS_HA_TAILEDITS_ALL_NAMESNODES_RETRY_DEFAULT;
+    }
+
+    inProgressOk = conf.getBoolean(
+        DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_KEY,
+        DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_DEFAULT);
+
+    this.maxTxnsPerLock = conf.getLong(
+        DFS_HA_TAILEDITS_MAX_TXNS_PER_LOCK_KEY,
+        DFS_HA_TAILEDITS_MAX_TXNS_PER_LOCK_DEFAULT);
+
+    nnCount = nns.size();
+    // setup the iterator to endlessly loop the nns
+    this.nnLookup = Iterators.cycle(nns);
+
+    LOG.debug("logRollPeriodMs=" + logRollPeriodMs +
+        " sleepTime=" + sleepTimeMs);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/FSNamesystem, startCommonServices(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAContext;)V > Context: Everywhere, blocks=[BB[SSA:76..78]37 - org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startCommonServices(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAContext;)V, BB[SSA:75..75]36 - org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startCommonServices(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAContext;)V, BB[SSA:79..83]38 - org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startCommonServices(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAContext;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.hdfs.server.namenode.FSNamesystem.startCommonServices(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/ha/HAContext;)V], numberOfBasicBlocks=4, firstLineNumber=1324, lastLineNumber=1326, firstMethodNumber=1300, lastMethodNumber=1328, isFirstLineValid=true, methodSrcCode=
+  void startCommonServices(Configuration conf, HAContext haContext) throws IOException {
+    this.registerMBean(); // register the MBean for the FSNamesystemState
+    writeLock();
+    this.haContext = haContext;
+    try {
+      nnResourceChecker = new NameNodeResourceChecker(conf);
+      checkAvailableResources();
+      assert !blockManager.isPopulatingReplQueues();
+      StartupProgress prog = NameNode.getStartupProgress();
+      prog.beginPhase(Phase.SAFEMODE);
+      long completeBlocksTotal = getCompleteBlocksTotal();
+      prog.setTotal(Phase.SAFEMODE, STEP_AWAITING_REPORTED_BLOCKS,
+          completeBlocksTotal);
+      blockManager.activate(conf, completeBlocksTotal);
+    } finally {
+      writeUnlock("startCommonServices");
+    }
+    
+    registerMXBean();
+    DefaultMetricsSystem.instance().register(this);
+    if (inodeAttributeProvider != null) {
+      inodeAttributeProvider.start();
+      dir.setINodeAttributeProvider(inodeAttributeProvider);
+    }
+    snapshotManager.registerMXBean();
+    InetSocketAddress serviceAddress = NameNode.getServiceAddress(conf, true);
+    this.nameNodeHostName = (serviceAddress != null) ?
+        serviceAddress.getHostName() : "";
+  }
+  
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V > Context: Everywhere, blocks=[BB[SSA:29..32]12 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V, BB[SSA:25..28]11 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V, BB[SSA:33..33]13 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V, BB[SSA:-1..-2]76 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V], numberOfBasicBlocks=4, firstLineNumber=225, lastLineNumber=231, firstMethodNumber=214, lastMethodNumber=264, isFirstLineValid=true, methodSrcCode=
+      CommandLineOpts commandLineOpts) throws IOException {
+    final InetSocketAddress infoSocAddr = getHttpAddress(conf);
+    final String infoBindAddress = infoSocAddr.getHostName();
+    UserGroupInformation.setConfiguration(conf);
+    if (UserGroupInformation.isSecurityEnabled()) {
+      SecurityUtil.login(conf,
+          DFSConfigKeys.DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY,
+          DFSConfigKeys.DFS_SECONDARY_NAMENODE_KERBEROS_PRINCIPAL_KEY, infoBindAddress);
+    }
+    // initiate Java VM metrics
+    DefaultMetricsSystem.initialize("SecondaryNameNode");
+    JvmMetrics.create("SecondaryNameNode",
+        conf.get(DFSConfigKeys.DFS_METRICS_SESSION_ID_KEY),
+        DefaultMetricsSystem.instance());
+
+    // Create connection to the namenode.
+    shouldRun = true;
+    nameNodeAddr = NameNode.getServiceAddress(conf, true);
+
+    this.conf = conf;
+    this.namenode = NameNodeProxies.createNonHAProxy(conf, nameNodeAddr, 
+        NamenodeProtocol.class, UserGroupInformation.getCurrentUser(),
+        true).getProxy();
+
+    // initialize checkpoint directories
+    fsName = getInfoServer();
+    checkpointDirs = FSImage.getCheckpointDirs(conf,
+                                  "/tmp/hadoop/dfs/namesecondary");
+    checkpointEditsDirs = FSImage.getCheckpointEditsDirs(conf, 
+                                  "/tmp/hadoop/dfs/namesecondary");    
+    checkpointImage = new CheckpointStorage(conf, checkpointDirs, checkpointEditsDirs);
+    checkpointImage.recoverCreate(commandLineOpts.shouldFormat());
+    checkpointImage.deleteTempEdits();
+    
+    namesystem = new FSNamesystem(conf, checkpointImage, true);
+
+    // Disable quota checks
+    namesystem.dir.disableQuotaChecks();
+
+    // Initialize other scheduling parameters from the configuration
+    checkpointConf = new CheckpointConf(conf);
+    nameNodeStatusBeanName = MBeans.register("SecondaryNameNode",
+            "SecondaryNameNodeInfo", this);
+
+    legacyOivImageDir = conf.get(
+        DFSConfigKeys.DFS_NAMENODE_LEGACY_OIV_IMAGE_DIR_KEY);
+
+    LOG.info("Checkpoint Period   :" + checkpointConf.getPeriod() + " secs "
+        + "(" + checkpointConf.getPeriod() / 60 + " min)");
+    LOG.info("Log Size Trigger    :" + checkpointConf.getTxnCount() + " txns");
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/BackupNode, handshake(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.hdfs.server.namenode.BackupNode.handshake(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.server.namenode.BackupNode.handshake(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;, BB[SSA:3..7]2 - org.apache.hadoop.hdfs.server.namenode.BackupNode.handshake(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;, BB[SSA:-1..-2]31 - org.apache.hadoop.hdfs.server.namenode.BackupNode.handshake(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;], numberOfBasicBlocks=4, firstLineNumber=320, lastLineNumber=322, firstMethodNumber=320, lastMethodNumber=343, isFirstLineValid=false, methodSrcCode=
+    // connect to name node
+    InetSocketAddress nnAddress = NameNode.getServiceAddress(conf, true);
+    this.namenode = NameNodeProxies.createNonHAProxy(conf, nnAddress,
+        NamenodeProtocol.class, UserGroupInformation.getCurrentUser(),
+        true).getProxy();
+    this.nnRpcAddress = NetUtils.getHostPortString(nnAddress);
+    this.nnHttpAddress = DFSUtil.getInfoServer(nnAddress, conf,
+        DFSUtil.getHttpClientScheme(conf)).toURL();
+    // get version and id info from the name-node
+    NamespaceInfo nsInfo = null;
+    while(!isStopRequested()) {
+      try {
+        nsInfo = handshake(namenode);
+        break;
+      } catch(SocketTimeoutException e) {  // name-node is busy
+        LOG.info("Problem connecting to server: " + nnAddress);
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException ie) {
+          LOG.warn("Encountered exception ", e);
+        }
+      }
+    }
+    return nsInfo;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, getServiceRpcServerAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.hdfs.server.namenode.NameNode.getServiceRpcServerAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.server.namenode.NameNode.getServiceRpcServerAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress;, BB[SSA:3..3]2 - org.apache.hadoop.hdfs.server.namenode.NameNode.getServiceRpcServerAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress;, BB[SSA:-1..-2]3 - org.apache.hadoop.hdfs.server.namenode.NameNode.getServiceRpcServerAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/InetSocketAddress;], numberOfBasicBlocks=4, firstLineNumber=586, lastLineNumber=587, firstMethodNumber=586, lastMethodNumber=587, isFirstLineValid=false, methodSrcCode=
+  protected InetSocketAddress getServiceRpcServerAddress(Configuration conf) {
+    return NameNode.getServiceAddress(conf, false);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/ha/StandbyCheckpointer, getHttpAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URL; > Context: Everywhere, blocks=[BB[SSA:2..5]2 - org.apache.hadoop.hdfs.server.namenode.ha.StandbyCheckpointer.getHttpAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URL;, BB[SSA:0..1]1 - org.apache.hadoop.hdfs.server.namenode.ha.StandbyCheckpointer.getHttpAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URL;, BB[SSA:6..6]3 - org.apache.hadoop.hdfs.server.namenode.ha.StandbyCheckpointer.getHttpAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URL;, BB[SSA:-1..-2]7 - org.apache.hadoop.hdfs.server.namenode.ha.StandbyCheckpointer.getHttpAddress(Lorg/apache/hadoop/conf/Configuration;)Ljava/net/URL;], numberOfBasicBlocks=4, firstLineNumber=157, lastLineNumber=158, firstMethodNumber=156, lastMethodNumber=160, isFirstLineValid=true, methodSrcCode=
+  private URL getHttpAddress(Configuration conf) throws IOException {
+    final String scheme = DFSUtil.getHttpClientScheme(conf);
+    String defaultHost = NameNode.getServiceAddress(conf, true).getHostName();
+    URI addr = DFSUtil.getInfoServerWithDefaultHost(defaultHost, conf, scheme);
+    return addr.toURL();
+  }
+}

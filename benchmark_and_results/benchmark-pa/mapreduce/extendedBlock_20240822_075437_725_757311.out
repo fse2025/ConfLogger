@@ -1,0 +1,61 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobHistoryUtils.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.jobhistory.JobHistoryUtils.getDefaultFileContext()Lorg/apache/hadoop/fs/FileContext;	methodLines:	262:287
+blockLines:	268:-1
+paras:	null
+TaintedStat:	NORMAL getDefaultFileContext:conditional branch(eq, to iindex=58) 7,2 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobHistoryUtils, getDefaultFileContext()Lorg/apache/hadoop/fs/FileContext; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobHistoryUtils, getDefaultFileContext()Lorg/apache/hadoop/fs/FileContext; > Context: Everywhere[8]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPropertySources(Ljava/lang/String;)[Ljava/lang/String; > 3,5 @13 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobHistoryUtils, getDefaultFileContext()Lorg/apache/hadoop/fs/FileContext; > Context: Everywhere[8]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPropertySources(Ljava/lang/String;)[Ljava/lang/String; > 3,5 @13 exception:6
+NORMAL getDefaultFileContext:conditional branch(eq, to iindex=58) 7,2 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobHistoryUtils, getDefaultFileContext()Lorg/apache/hadoop/fs/FileContext; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // case to exploit this functionality it should create core-site.xml
+    FileContext fc = null;
+    Configuration defaultConf = new Configuration();
+    String[] sources;
+    sources = defaultConf.getPropertySources(
+        CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY);
+    if (sources != null &&
+        (!Arrays.asList(sources).contains("core-default.xml") ||
+        sources.length > 1)) {
+      try {
+        fc = FileContext.getFileContext(defaultConf);
+        LOG.info("Default file system [" +
+                  fc.getDefaultFileSystem().getUri() + "]");
+      } catch (UnsupportedFileSystemException e) {
+        LOG.error("Unable to create default file context [" +
+            defaultConf.get(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY) +
+            "]",
+            e);
+      }
+    }
+    else {
+      LOG.info("Default file system is set solely " +
+          "by core-default.xml therefore -  ignoring");
+    }
+
+    return fc;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/v2/jobhistory/JobHistoryUtils, ensurePathInDefaultFileSystem(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:4..5]3 - org.apache.hadoop.mapreduce.v2.jobhistory.JobHistoryUtils.ensurePathInDefaultFileSystem(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:1..3]2 - org.apache.hadoop.mapreduce.v2.jobhistory.JobHistoryUtils.ensurePathInDefaultFileSystem(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:6..9]4 - org.apache.hadoop.mapreduce.v2.jobhistory.JobHistoryUtils.ensurePathInDefaultFileSystem(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]21 - org.apache.hadoop.mapreduce.v2.jobhistory.JobHistoryUtils.ensurePathInDefaultFileSystem(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=301, lastLineNumber=303, firstMethodNumber=300, lastMethodNumber=311, isFirstLineValid=true, methodSrcCode=
+  private static String ensurePathInDefaultFileSystem(String sourcePath, Configuration conf) {
+    Path path = new Path(sourcePath);
+    FileContext fc = getDefaultFileContext();
+    if (fc == null ||
+        fc.getDefaultFileSystem().getUri().toString().equals(
+            conf.get(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY, "")) ||
+        path.toUri().getAuthority() != null ||
+        path.toUri().getScheme()!= null) {
+      return sourcePath;
+    }
+
+    return fc.makeQualified(path).toString();
+  }
+}

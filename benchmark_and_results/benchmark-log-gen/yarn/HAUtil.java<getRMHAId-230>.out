@@ -1,0 +1,157 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HAUtil.java	methodSinagture:	org.apache.hadoop.yarn.conf.HAUtil.getRMHAId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	230:258
+blockLines:	237:-1
+paras:	null
+TaintedStat:	NORMAL getRMHAId:conditional branch(ne, to iindex=33) 21,7 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, getRMHAId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, getRMHAId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[27]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @55 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, getRMHAId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[27]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,19 @55 exception:20
+NORMAL getRMHAId:conditional branch(ne, to iindex=33) 21,7 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, getRMHAId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	HAUtil.java	methodSinagture:	org.apache.hadoop.yarn.conf.HAUtil.getRMHAId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;	methodLines:	230:258
+blockLines:	233:-1
+paras:	yarn.resourcemanager.ha.id
+TaintedStat:	NORMAL getRMHAId:conditional branch(ne, to iindex=67) 6,7 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, getRMHAId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, getRMHAId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,4 @5 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, getRMHAId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,4 @5 exception:5
+NORMAL getRMHAId:conditional branch(ne, to iindex=67) 6,7 Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, getRMHAId(Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static String getRMHAId(Configuration conf) {
+    int found = 0;
+    String currentRMId = conf.getTrimmed(YarnConfiguration.RM_HA_ID);
+    if(currentRMId == null) {
+      for(String rmId : getRMHAIds(conf)) {
+        String key = addSuffix(YarnConfiguration.RM_ADDRESS, rmId);
+        String addr = conf.get(key);
+        if (addr == null) {
+          continue;
+        }
+        InetSocketAddress s;
+        try {
+          s = NetUtils.createSocketAddr(addr);
+        } catch (Exception e) {
+          LOG.warn("Exception in creating socket address " + addr, e);
+          continue;
+        }
+        if (!s.isUnresolved() && NetUtils.isLocalAddress(s.getAddress())) {
+          currentRMId = rmId.trim();
+          found++;
+        }
+      }
+    }
+    if (found > 1) { // Only one address must match the local address
+      String msg = "The HA Configuration has multiple addresses that match "
+          + "local node's address.";
+      throw new HadoopIllegalArgumentException(msg);
+    }
+    return currentRMId;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, verifyAndSetCurrentRMHAId(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetCurrentRMHAId(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetCurrentRMHAId(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:2..5]2 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetCurrentRMHAId(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]29 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetCurrentRMHAId(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=139, lastLineNumber=141, firstMethodNumber=139, lastMethodNumber=160, isFirstLineValid=false, methodSrcCode=
+  private static void verifyAndSetCurrentRMHAId(Configuration conf) {
+    String rmId = getRMHAId(conf);
+    if (rmId == null) {
+      StringBuilder msg = new StringBuilder();
+      msg.append("Can not find valid RM_HA_ID. None of ");
+      for (String id : conf
+          .getTrimmedStringCollection(YarnConfiguration.RM_HA_IDS)) {
+        msg.append(addSuffix(YarnConfiguration.RM_ADDRESS, id)).append(" ");
+      }
+      msg.append(" are matching" +
+          " the local address OR " + YarnConfiguration.RM_HA_ID + " is not" +
+          " specified in HA Configuration");
+      throwBadConfigurationException(msg.toString());
+    } else {
+      Collection<String> ids = getRMHAIds(conf);
+      if (!ids.contains(rmId)) {
+        throwBadConfigurationException(
+          getRMHAIdNeedToBeIncludedMessage(ids.toString(), rmId));
+      }
+    }
+    conf.set(YarnConfiguration.RM_HA_ID, rmId);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, getConfKeyForRMInstance(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:8..9]5 - org.apache.hadoop.yarn.conf.HAUtil.getConfKeyForRMInstance(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:4..5]3 - org.apache.hadoop.yarn.conf.HAUtil.getConfKeyForRMInstance(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:10..14]6 - org.apache.hadoop.yarn.conf.HAUtil.getConfKeyForRMInstance(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;, BB[SSA:-1..-2]9 - org.apache.hadoop.yarn.conf.HAUtil.getConfKeyForRMInstance(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String;], numberOfBasicBlocks=4, firstLineNumber=291, lastLineNumber=295, firstMethodNumber=290, lastMethodNumber=296, isFirstLineValid=true, methodSrcCode=
+  static String getConfKeyForRMInstance(String prefix, Configuration conf) {
+    if (!YarnConfiguration.getServiceAddressConfKeys(conf).contains(prefix)) {
+      return prefix;
+    } else {
+      String RMId = getRMHAId(conf);
+      checkAndSetRMRPCAddress(prefix, RMId, conf);
+      return addSuffix(prefix, RMId);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/conf/HAUtil, verifyAndSetConfValue(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:24..26]7 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetConfValue(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:27..27]8 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetConfValue(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]14 - org.apache.hadoop.yarn.conf.HAUtil.verifyAndSetConfValue(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=3, firstLineNumber=188, lastLineNumber=202, firstMethodNumber=188, lastMethodNumber=210, isFirstLineValid=false, methodSrcCode=
+  private static void verifyAndSetConfValue(String prefix, Configuration conf) {
+    String confKey = null;
+    String confValue = null;
+    try {
+      confKey = getConfKeyForRMInstance(prefix, conf);
+      confValue = getConfValueForRMInstance(prefix, conf);
+      conf.set(prefix, confValue);
+    } catch (YarnRuntimeException yre) {
+      // Error at getRMHAId()
+      throw yre;
+    } catch (IllegalArgumentException iae) {
+      String errmsg;
+      if (confKey == null) {
+        // Error at addSuffix
+        errmsg = getInvalidValueMessage(YarnConfiguration.RM_HA_ID,
+          getRMHAId(conf));
+      } else {
+        // Error at Configuration#set.
+        errmsg = getNeedToSetValueMessage(confKey);
+      }
+      throwBadConfigurationException(errmsg);
+    }
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/RequestHedgingRMFailoverProxyProvider, createRetriableProxy()Ljava/lang/Object; > Context: Everywhere, blocks=[BB[SSA:37..37]18 - org.apache.hadoop.yarn.client.RequestHedgingRMFailoverProxyProvider.createRetriableProxy()Ljava/lang/Object;, BB[SSA:35..36]17 - org.apache.hadoop.yarn.client.RequestHedgingRMFailoverProxyProvider.createRetriableProxy()Ljava/lang/Object;, BB[SSA:38..38]19 - org.apache.hadoop.yarn.client.RequestHedgingRMFailoverProxyProvider.createRetriableProxy()Ljava/lang/Object;, BB[SSA:-1..-2]23 - org.apache.hadoop.yarn.client.RequestHedgingRMFailoverProxyProvider.createRetriableProxy()Ljava/lang/Object;], numberOfBasicBlocks=4, firstLineNumber=101, lastLineNumber=102, firstMethodNumber=95, lastMethodNumber=103, isFirstLineValid=true, methodSrcCode=
+      // Create proxy that can retry exceptions properly.
+      RetryPolicy retryPolicy = RMProxy.createRetryPolicy(conf, false);
+      InetSocketAddress rmAddress = rmProxy.getRMAddress(conf, protocol);
+      T proxy = rmProxy.getProxy(conf, protocol, rmAddress);
+      return (T) RetryProxy.create(protocol, proxy, retryPolicy);
+    } catch (IOException ioe) {
+      LOG.error("Unable to create proxy to the ResourceManager "
+          + HAUtil.getRMHAId(conf), ioe);
+      return null;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/RequestHedgingRMFailoverProxyProvider, init(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/RMProxy;Ljava/lang/Class;)V > Context: Everywhere, blocks=[BB[SSA:11..11]5 - org.apache.hadoop.yarn.client.RequestHedgingRMFailoverProxyProvider.init(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/RMProxy;Ljava/lang/Class;)V, BB[SSA:8..10]4 - org.apache.hadoop.yarn.client.RequestHedgingRMFailoverProxyProvider.init(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/RMProxy;Ljava/lang/Class;)V, BB[SSA:12..14]6 - org.apache.hadoop.yarn.client.RequestHedgingRMFailoverProxyProvider.init(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/RMProxy;Ljava/lang/Class;)V, BB[SSA:-1..-2]42 - org.apache.hadoop.yarn.client.RequestHedgingRMFailoverProxyProvider.init(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/RMProxy;Ljava/lang/Class;)V], numberOfBasicBlocks=4, firstLineNumber=70, lastLineNumber=73, firstMethodNumber=68, lastMethodNumber=90, isFirstLineValid=true, methodSrcCode=
+      Class<T> protocol) {
+    super.init(configuration, rmProxy, protocol);
+    Map<String, ProxyInfo<T>> retriableProxies = new HashMap<>();
+
+    String originalId = HAUtil.getRMHAId(conf);
+    for (String rmId : rmServiceIds) {
+      conf.set(YarnConfiguration.RM_HA_ID, rmId);
+      nonRetriableProxy.put(rmId, super.getProxyInternal());
+
+      T proxy = createRetriableProxy();
+      ProxyInfo<T> pInfo = new ProxyInfo<T>(proxy, rmId);
+      retriableProxies.put(rmId, pInfo);
+    }
+    conf.set(YarnConfiguration.RM_HA_ID, originalId);
+
+    T proxyInstance = (T) Proxy.newProxyInstance(
+        RMRequestHedgingInvocationHandler.class.getClassLoader(),
+        new Class<?>[] {protocol},
+        new RMRequestHedgingInvocationHandler(retriableProxies));
+    String combinedInfo = Arrays.toString(rmServiceIds);
+    wrappedProxy = new ProxyInfo<T>(proxyInstance, combinedInfo);
+    LOG.info("Created wrapped proxy for " + combinedInfo);
+  }
+
+}

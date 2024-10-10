@@ -1,0 +1,82 @@
+```java
+final DatanodeManager datanodeManager = namesystem.getBlockManager()
+.getDatanodeManager();
+
+if (property.equals(DFS_HEARTBEAT_INTERVAL_KEY)) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring DFS_HEARTBEAT_INTERVAL_KEY with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfHeartbeatInterval(datanodeManager, property, newVal);
+} else if (property.equals(DFS_NAMENODE_HEARTBEAT_RECHECK_INTERVAL_KEY)) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring DFS_NAMENODE_HEARTBEAT_RECHECK_INTERVAL_KEY with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfHeartbeatRecheckInterval(datanodeManager, property, newVal);
+} else if (property.equals(FS_PROTECTED_DIRECTORIES)) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring FS_PROTECTED_DIRECTORIES with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfProtectedDirectories(newVal);
+} else if (property.equals(HADOOP_CALLER_CONTEXT_ENABLED_KEY)) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring HADOOP_CALLER_CONTEXT_ENABLED_KEY with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfCallerContextEnabled(newVal);
+} else if (property.equals(ipcClientRPCBackoffEnable)) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring ipcClientRPCBackoffEnable with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfigureIPCBackoffEnabled(newVal);
+} else if (property.equals(DFS_STORAGE_POLICY_SATISFIER_MODE_KEY)) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring DFS_STORAGE_POLICY_SATISFIER_MODE_KEY with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfigureSPSModeEvent(newVal, property);
+} else if (property.equals(DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY)
+|| property.equals(DFS_NAMENODE_REPLICATION_STREAMS_HARD_LIMIT_KEY)
+|| property.equals(
+DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION)) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring replication parameters with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfReplicationParameters(newVal, property);
+} else if (property.equals(DFS_BLOCK_REPLICATOR_CLASSNAME_KEY) || property
+.equals(DFS_BLOCK_PLACEMENT_EC_CLASSNAME_KEY)) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring block placement policy with new value: {}", newVal);
+    // ConfLogger Inserted End
+    reconfBlockPlacementPolicy();
+    return newVal;
+} else if (property.equals(DFS_IMAGE_PARALLEL_LOAD_KEY)) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring DFS_IMAGE_PARALLEL_LOAD_KEY with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfigureParallelLoad(newVal);
+} else if (property.equals(DFS_NAMENODE_AVOID_SLOW_DATANODE_FOR_READ_KEY) || (property.equals(
+DFS_NAMENODE_BLOCKPLACEMENTPOLICY_EXCLUDE_SLOW_NODES_ENABLED_KEY)) || (property.equals(
+DFS_NAMENODE_MAX_SLOWPEER_COLLECT_NODES_KEY)) || (property.equals(
+DFS_DATANODE_PEER_STATS_ENABLED_KEY))) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring slow nodes parameters with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfigureSlowNodesParameters(datanodeManager, property, newVal);
+} else if (property.equals(DFS_BLOCK_INVALIDATE_LIMIT_KEY)) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring DFS_BLOCK_INVALIDATE_LIMIT_KEY with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfigureBlockInvalidateLimit(datanodeManager, property, newVal);
+} else if (property.equals(DFS_NAMENODE_DECOMMISSION_BACKOFF_MONITOR_PENDING_LIMIT) ||
+(property.equals(DFS_NAMENODE_DECOMMISSION_BACKOFF_MONITOR_PENDING_BLOCKS_PER_LOCK))) {
+    // ConfLogger Inserted Start
+    logger.info("Reconfiguring decommission backoff monitor parameters with new value: {}", newVal);
+    // ConfLogger Inserted End
+    return reconfigureDecommissionBackoffMonitorParameters(datanodeManager, property,
+    newVal);
+} else {
+    // ConfLogger Inserted Start
+    logger.error("Reconfiguration failed for property: {} with new value: {}", property, newVal);
+    // ConfLogger Inserted End
+    throw new ReconfigurationException(property, newVal, getConf().get(
+    property));
+}
+```

@@ -1,0 +1,46 @@
+```java
+synchronized (commonContainerSpecLock) {
+    if (commonContainerSpec == null) {
+        commonContainerSpec = createCommonContainerLaunchContext(
+            applicationACLs, conf, jobToken, oldJobId, credentials);
+    }
+}
+
+// Fill in the fields needed per-container that are missing in the common
+// spec.
+
+boolean userClassesTakesPrecedence =
+    conf.getBoolean(MRJobConfig.MAPREDUCE_JOB_USER_CLASSPATH_FIRST, false);
+
+// Setup environment by cloning from common env.
+Map<String, String> env = commonContainerSpec.getEnvironment();
+Map<String, String> myEnv = new HashMap<String, String>(env.size());
+myEnv.putAll(env);
+if (userClassesTakesPrecedence) {
+    myEnv.put(Environment.CLASSPATH_PREPEND_DISTCACHE.name(), "true");
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is set to '{}'. CLASSPATH_PREPEND_DISTCACHE is set to true.", 
+                MRJobConfig.MAPREDUCE_JOB_USER_CLASSPATH_FIRST, userClassesTakesPrecedence);
+    // ConfLogger Inserted End
+}
+MapReduceChildJVM.setVMEnv(myEnv, remoteTask);
+
+// Set up the launch command
+List<String> commands = MapReduceChildJVM.getVMCommand(
+    taskAttemptListener.getAddress(), remoteTask, jvmID);
+
+// Duplicate the ByteBuffers for access by multiple containers.
+Map<String, ByteBuffer> myServiceData = new HashMap<String, ByteBuffer>();
+for (Entry<String, ByteBuffer> entry : commonContainerSpec
+    .getServiceData().entrySet()) {
+    myServiceData.put(entry.getKey(), entry.getValue().duplicate());
+}
+
+// Construct the actual Container
+ContainerLaunchContext container = ContainerLaunchContext.newInstance(
+    commonContainerSpec.getLocalResources(), myEnv, commands,
+    myServiceData, commonContainerSpec.getTokens().duplicate(),
+    applicationACLs);
+
+return container;
+```

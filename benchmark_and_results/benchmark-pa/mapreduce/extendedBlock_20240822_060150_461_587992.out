@@ -1,0 +1,38 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MRAppMaster.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.app.MRAppMaster.cleanupStagingDir()V	methodLines:	617:634
+blockLines:	622:-1
+paras:	null
+TaintedStat:	NORMAL cleanupStagingDir:conditional branch(ne, to iindex=27) 7,19 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, cleanupStagingDir()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, cleanupStagingDir()V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,5 @6 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, cleanupStagingDir()V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,5 @6 exception:6
+NORMAL cleanupStagingDir:conditional branch(ne, to iindex=27) 7,19 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/app/MRAppMaster, cleanupStagingDir()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    /* make sure we clean the staging files */
+    String jobTempDir = getConfig().get(MRJobConfig.MAPREDUCE_JOB_DIR);
+    FileSystem fs = getFileSystem(getConfig());
+    try {
+      if (!keepJobFiles(new JobConf(getConfig()), jobTempDir)) {
+        if (jobTempDir == null) {
+          LOG.warn("Job Staging directory is null");
+          return;
+        }
+        Path jobTempDirPath = new Path(jobTempDir);
+        LOG.info("Deleting staging directory " + FileSystem.getDefaultUri(getConfig()) +
+            " " + jobTempDir);
+        fs.delete(jobTempDirPath, true);
+      }
+    } catch(IOException io) {
+      LOG.error("Failed to cleanup staging dir " + jobTempDir, io);
+    }
+  }
+  
+
+
+====================ctx:=======================

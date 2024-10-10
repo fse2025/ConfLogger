@@ -1,0 +1,25 @@
+```java
+IGroupMappingServiceProvider gmsp = null;
+try {
+    String gmspClassName = (String) conf.get(Config.STORM_GROUP_MAPPING_SERVICE_PROVIDER_PLUGIN);
+    if (gmspClassName == null) {
+        // ConfLogger Skipped
+        LOG.warn("No group mapper given {}", Config.STORM_GROUP_MAPPING_SERVICE_PROVIDER_PLUGIN);
+    } else {
+        gmsp = ReflectionUtils.newInstance(gmspClassName);
+        if (gmsp != null) {
+            gmsp.prepare(conf);
+        } else {
+            // ConfLogger Inserted Start
+            logger.error("Failed to instantiate group mapping service provider. Class name: {}", gmspClassName);
+            // ConfLogger Inserted End
+        }
+    }
+} catch (Exception e) {
+    // ConfLogger Inserted Start
+    logger.error("Exception occurred while initializing group mapping service provider. Class name: {}", gmspClassName, e);
+    // ConfLogger Inserted End
+    throw new RuntimeException(e);
+}
+return gmsp;
+```

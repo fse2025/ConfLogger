@@ -1,0 +1,13 @@
+```java
+String value = conf.get(key);
+
+if(value == null) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration error: No value for key '" + key + "' found in conf file.");
+    // ConfLogger Inserted End
+    throw new IllegalArgumentException("No value for " + key + " found in conf file.");
+}
+
+return value;
+}
+```

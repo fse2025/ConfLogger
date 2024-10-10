@@ -1,0 +1,1 @@
+yarn.nodemanager.log-aggregation.num-log-files-per-app	-1	WARN	Configured retention size is less than or equal to 0. Using default retention size: 30. Please set 'yarn.nodemanager.log-aggregation.num-log-files-per-app' to a positive integer.	95

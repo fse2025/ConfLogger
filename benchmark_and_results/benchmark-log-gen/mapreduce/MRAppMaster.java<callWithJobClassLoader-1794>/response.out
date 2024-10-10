@@ -1,0 +1,23 @@
+```java
+ClassLoader currentClassLoader = conf.getClassLoader();
+boolean setJobClassLoader =
+jobClassLoader != null && currentClassLoader != jobClassLoader;
+if (setJobClassLoader) {
+    // ConfLogger Inserted Start
+    logger.info("Setting job class loader. jobClassLoader: " + jobClassLoader + ", currentClassLoader: " + currentClassLoader);
+    // ConfLogger Inserted End
+    MRApps.setClassLoader(jobClassLoader, conf);
+}
+try {
+    return action.call(conf);
+} finally {
+    if (setJobClassLoader) {
+        // restore the original classloader
+        // ConfLogger Inserted Start
+        logger.info("Restoring the original class loader. currentClassLoader: " + currentClassLoader);
+        // ConfLogger Inserted End
+        MRApps.setClassLoader(currentClassLoader, conf);
+    }
+}
+}
+```

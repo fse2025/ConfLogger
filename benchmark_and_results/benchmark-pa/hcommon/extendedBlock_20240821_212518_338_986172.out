@@ -1,0 +1,32 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	PassthroughCodec.java	methodSinagture:	org.apache.hadoop.io.compress.PassthroughCodec.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	96:102
+blockLines:	101:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=16) 10,11 Node: < Application, Lorg/apache/hadoop/io/compress/PassthroughCodec, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/compress/PassthroughCodec, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[6]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,4,5 @10 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/compress/PassthroughCodec, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[6]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,4,5 @10 exception:6
+NORMAL setConf:10 = invokevirtual < Application, Ljava/lang/String, startsWith(Ljava/lang/String;)Z > 7,8 @18 exception:9 Node: < Application, Lorg/apache/hadoop/io/compress/PassthroughCodec, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, startsWith(Ljava/lang/String;)Z > Context: Everywhere
+NORMAL startsWith:return 6 Node: < Primordial, Ljava/lang/String, startsWith(Ljava/lang/String;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, startsWith(Ljava/lang/String;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/io/compress/PassthroughCodec, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[11]10 = invokevirtual < Application, Ljava/lang/String, startsWith(Ljava/lang/String;)Z > 7,8 @18 exception:9
+NORMAL setConf:conditional branch(eq, to iindex=16) 10,11 Node: < Application, Lorg/apache/hadoop/io/compress/PassthroughCodec, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setConf(final Configuration conf) {
+    this.conf = conf;
+    // update the default extension value at this point, adding
+    // a dot prefix if needed.
+    String ex = conf.getTrimmed(OPT_EXTENSION, DEFAULT_EXTENSION);
+    extension = ex.startsWith(".") ? ex : ("." + ex);
+  }
+
+
+
+====================ctx:=======================

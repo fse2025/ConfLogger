@@ -1,0 +1,50 @@
+```java
+// add tokens and secrets coming from a token storage file
+String binaryTokenFilename =
+conf.get(MRJobConfig.MAPREDUCE_JOB_CREDENTIALS_BINARY);
+if (binaryTokenFilename != null) {
+    // ConfLogger Inserted Start
+    logger.info("Adding tokens from binary token storage file. Configuration parameter: " + MRJobConfig.MAPREDUCE_JOB_CREDENTIALS_BINARY + ", Value: " + binaryTokenFilename);
+    // ConfLogger Inserted End
+    Credentials binary = Credentials.readTokenStorageFile(
+        FileSystem.getLocal(conf).makeQualified(
+            new Path(binaryTokenFilename)),
+        conf);
+    credentials.addAll(binary);
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("Binary token storage file is not set. Configuration parameter: " + MRJobConfig.MAPREDUCE_JOB_CREDENTIALS_BINARY + " is null. Tokens will not be added from binary storage.");
+    // ConfLogger Inserted End
+}
+
+// add secret keys coming from a json file
+String tokensFileName = conf.get("mapreduce.job.credentials.json");
+if(tokensFileName != null) {
+    // ConfLogger Commented: Lacks configuration parameter information
+    // LOG.info("loading user's secret keys from " + tokensFileName);
+    // ConfLogger Inserted Start
+    logger.info("Loading user's secret keys from JSON file. Configuration parameter: mapreduce.job.credentials.json, Value: " + tokensFileName);
+    // ConfLogger Inserted End
+    String localFileName = new Path(tokensFileName).toUri().getPath();
+
+    try {
+        // read JSON
+        Map<String, String> nm = JsonSerialization.mapReader().readValue(
+            new File(localFileName));
+
+        for(Map.Entry<String, String> ent: nm.entrySet()) {
+            credentials.addSecretKey(new Text(ent.getKey()), ent.getValue()
+            .getBytes(Charsets.UTF_8));
+        }
+    } catch (JsonMappingException | JsonParseException e) {
+        // ConfLogger Skipped: Contains configuration-related information
+        LOG.warn("couldn't parse Token Cache JSON file with user secret keys");
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("JSON file for secret keys is not set. Configuration parameter: mapreduce.job.credentials.json is null. Secret keys will not be loaded.");
+    // ConfLogger Inserted End
+}
+```
+
+In this updated code, I've inserted logging statements to provide detailed configuration-related information. The existing log statement in the second scope was commented out because it lacked configuration parameter information. New log statements were added to both scopes to provide insights into the configuration parameters and their values, as well as guidance on what happens when these parameters are not set.

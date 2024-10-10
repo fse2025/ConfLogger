@@ -1,0 +1,30 @@
+```java
+validateIds(topology);
+
+for (StormTopology._Fields field : Thrift.getSpoutFields()) {
+    Map<String, Object> spoutComponents = (Map<String, Object>) topology.getFieldValue(field);
+    if (spoutComponents != null) {
+        for (Object obj : spoutComponents.values()) {
+            ComponentCommon common = getComponentCommon(obj);
+            if (!isEmptyInputs(common)) {
+                throw new WrappedInvalidTopologyException("May not declare inputs for a spout");
+            }
+        }
+    }
+}
+
+Map<String, Object> componentMap = allComponents(topology);
+for (Object componentObj : componentMap.values()) {
+    Map<String, Object> conf = componentConf(componentObj);
+    ComponentCommon common = getComponentCommon(componentObj);
+    int parallelismHintNum = Thrift.getParallelismHint(common);
+    Integer taskNum = ObjectReader.getInt(conf.get(Config.TOPOLOGY_TASKS), 0);
+    if (taskNum > 0 && parallelismHintNum <= 0) {
+        // ConfLogger Inserted Start
+        logger.error("Configuration Error: Number of executors (parallelismHintNum) must be greater than 0 when number of tasks (taskNum) is greater than 0. Config.TOPOLOGY_TASKS: {}, parallelismHintNum: {}", taskNum, parallelismHintNum);
+        // ConfLogger Inserted End
+        throw new WrappedInvalidTopologyException(
+            "Number of executors must be greater than 0 when number of tasks is greater than 0");
+    }
+}
+```

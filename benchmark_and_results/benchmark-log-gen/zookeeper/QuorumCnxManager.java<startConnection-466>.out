@@ -1,0 +1,166 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	QuorumCnxManager.java	methodSinagture:	org.apache.zookeeper.server.quorum.QuorumCnxManager.startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z	methodLines:	466:539
+blockLines:	513:-1
+paras:	null
+TaintedStat:	NORMAL startConnection:conditional branch(le, to iindex=138) 92,23 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere[8]10 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getMyId()J > 8 @14 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere[8]10 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getMyId()J > 8 @14 exception:9
+NORMAL startConnection:12 = invokestatic < Application, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > 10 @17 exception:11 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL valueOf:conditional branch(lt, to iindex=19) 5,6 Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL valueOf:return 9 Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/Long, valueOf(Ljava/lang/String;I)Ljava/lang/Long; > Context: Everywhere[3]7 = invokestatic < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > 5 @5 exception:6
+NORMAL valueOf:return 7 Node: < Primordial, Ljava/lang/Long, valueOf(Ljava/lang/String;I)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Long, valueOf(Ljava/lang/String;I)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/Long, decode(Ljava/lang/String;)Ljava/lang/Long; > Context: Everywhere[107]48 = invokestatic < Primordial, Ljava/lang/Long, valueOf(Ljava/lang/String;I)Ljava/lang/Long; > 46,37 @166 exception:47
+NORMAL decode:50 = invokevirtual < Primordial, Ljava/lang/Long, longValue()J > 48 @177 exception:49 Node: < Primordial, Ljava/lang/Long, decode(Ljava/lang/String;)Ljava/lang/Long; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Long, longValue()J > Context: Everywhere
+NORMAL longValue:return 3 Node: < Primordial, Ljava/lang/Long, longValue()J > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Long, longValue()J > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere[119]88 = invokevirtual < Application, Ljava/lang/Long, longValue()J > 3 @270 exception:87
+NORMAL startConnection:92 = compare 88,91 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere
+NORMAL startConnection:conditional branch(le, to iindex=138) 92,23 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	QuorumCnxManager.java	methodSinagture:	org.apache.zookeeper.server.quorum.QuorumCnxManager.startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z	methodLines:	466:539
+blockLines:	525:-1
+paras:	null
+TaintedStat:	NORMAL startConnection:conditional branch(eq, to iindex=177) 109,5 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere[122]91 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getMyId()J > 89 @277 exception:90
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere[122]91 = invokevirtual < Application, Lorg/apache/zookeeper/server/quorum/QuorumPeer, getMyId()J > 89 @277 exception:90
+NORMAL startConnection:92 = compare 88,91 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere
+NORMAL startConnection:conditional branch(le, to iindex=138) 92,23 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere
+NORMAL startConnection:conditional branch(eq, to iindex=177) 109,5 Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, startConnection(Ljava/net/Socket;Ljava/lang/Long;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private boolean startConnection(Socket sock, Long sid) throws IOException {
+        DataOutputStream dout = null;
+        DataInputStream din = null;
+        LOG.debug("startConnection (myId:{} --> sid:{})", self.getMyId(), sid);
+        try {
+            // Use BufferedOutputStream to reduce the number of IP packets. This is
+            // important for x-DC scenarios.
+            BufferedOutputStream buf = new BufferedOutputStream(sock.getOutputStream());
+            dout = new DataOutputStream(buf);
+
+            // Sending id and challenge
+
+            // First sending the protocol version (in other words - message type).
+            // For backward compatibility reasons we stick to the old protocol version, unless the MultiAddress
+            // feature is enabled. During rolling upgrade, we must make sure that all the servers can
+            // understand the protocol version we use to avoid multiple partitions. see ZOOKEEPER-3720
+            long protocolVersion = self.isMultiAddressEnabled() ? PROTOCOL_VERSION_V2 : PROTOCOL_VERSION_V1;
+            dout.writeLong(protocolVersion);
+            dout.writeLong(self.getMyId());
+
+            // now we send our election address. For the new protocol version, we can send multiple addresses.
+            Collection<InetSocketAddress> addressesToSend = protocolVersion == PROTOCOL_VERSION_V2
+                    ? self.getElectionAddress().getAllAddresses()
+                    : Arrays.asList(self.getElectionAddress().getOne());
+
+            String addr = addressesToSend.stream()
+                    .map(NetUtils::formatInetAddr).collect(Collectors.joining("|"));
+            byte[] addr_bytes = addr.getBytes();
+            dout.writeInt(addr_bytes.length);
+            dout.write(addr_bytes);
+            dout.flush();
+
+            din = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
+        } catch (IOException e) {
+            LOG.warn("Ignoring exception reading or writing challenge: ", e);
+            closeSocket(sock);
+            return false;
+        }
+
+        // authenticate learner
+        QuorumPeer.QuorumServer qps = self.getVotingView().get(sid);
+        if (qps != null) {
+            // TODO - investigate why reconfig makes qps null.
+            authLearner.authenticate(sock, qps.hostname);
+        }
+
+        // If lost the challenge, then drop the new connection
+        if (sid > self.getMyId()) {
+            LOG.info("Have smaller server identifier, so dropping the connection: (myId:{} --> sid:{})", self.getMyId(), sid);
+            closeSocket(sock);
+            // Otherwise proceed with the connection
+        } else {
+            LOG.debug("Have larger server identifier, so keeping the connection: (myId:{} --> sid:{})", self.getMyId(), sid);
+            SendWorker sw = new SendWorker(sock, sid);
+            RecvWorker rw = new RecvWorker(sock, din, sid, sw);
+            sw.setRecv(rw);
+
+            SendWorker vsw = senderWorkerMap.get(sid);
+
+            if (vsw != null) {
+                vsw.finish();
+            }
+
+            senderWorkerMap.put(sid, sw);
+
+            queueSendMap.putIfAbsent(sid, new CircularBlockingQueue<>(SEND_CAPACITY));
+
+            sw.start();
+            rw.start();
+
+            return true;
+
+        }
+        return false;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/quorum/QuorumCnxManager, initiateConnection(Lorg/apache/zookeeper/server/quorum/MultipleAddresses;Ljava/lang/Long;)V > Context: Everywhere, blocks=[BB[SSA:126..129]52 - org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(Lorg/apache/zookeeper/server/quorum/MultipleAddresses;Ljava/lang/Long;)V, BB[SSA:81..81]37 - org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(Lorg/apache/zookeeper/server/quorum/MultipleAddresses;Ljava/lang/Long;)V, BB[SSA:130..131]53 - org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(Lorg/apache/zookeeper/server/quorum/MultipleAddresses;Ljava/lang/Long;)V, BB[SSA:-1..-2]62 - org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(Lorg/apache/zookeeper/server/quorum/MultipleAddresses;Ljava/lang/Long;)V], numberOfBasicBlocks=4, firstLineNumber=404, lastLineNumber=415, firstMethodNumber=374, lastMethodNumber=416, isFirstLineValid=true, methodSrcCode=
+    public void initiateConnection(final MultipleAddresses electionAddr, final Long sid) {
+        Socket sock = null;
+        try {
+            LOG.debug("Opening channel to server {}", sid);
+            if (self.isSslQuorum()) {
+                sock = self.getX509Util().createSSLSocket();
+            } else {
+                sock = SOCKET_FACTORY.get();
+            }
+            setSockOpts(sock);
+            sock.connect(electionAddr.getReachableOrOne(), cnxTO);
+            if (sock instanceof SSLSocket) {
+                SSLSocket sslSock = (SSLSocket) sock;
+                sslSock.startHandshake();
+                LOG.info("SSL handshake complete with {} - {} - {}",
+                         sslSock.getRemoteSocketAddress(),
+                         sslSock.getSession().getProtocol(),
+                         sslSock.getSession().getCipherSuite());
+            }
+
+            LOG.debug("Connected to server {} using election address: {}:{}",
+                      sid, sock.getInetAddress(), sock.getPort());
+        } catch (X509Exception e) {
+            LOG.warn("Cannot open secure channel to {} at election address {}", sid, electionAddr, e);
+            closeSocket(sock);
+            return;
+        } catch (UnresolvedAddressException | IOException e) {
+            LOG.warn("Cannot open channel to {} at election address {}", sid, electionAddr, e);
+            closeSocket(sock);
+            return;
+        }
+
+        try {
+            startConnection(sock, sid);
+        } catch (IOException e) {
+            LOG.error(
+              "Exception while connecting, id: {}, addr: {}, closing learner connection",
+              sid,
+              sock.getRemoteSocketAddress(),
+              e);
+            closeSocket(sock);
+        }
+    }
+
+}

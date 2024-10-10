@@ -1,0 +1,17 @@
+```java
+Set<String> idleTopologies = new HashSet<>();
+long topologyDeletionDelay = ObjectReader.getInt(
+conf.get(DaemonConfig.NIMBUS_TOPOLOGY_BLOBSTORE_DELETION_DELAY_MS), 5 * 60 * 1000);
+for (String topologyId : toposToClean) {
+    if (Math.max(0, Time.currentTimeMillis() - getTopologyCleanupDetectedTime(topologyId)) >= topologyDeletionDelay) {
+        // ConfLogger Inserted Start
+        logger.debug("Adding topology to idleTopologies. Configuration parameter: NIMBUS_TOPOLOGY_BLOBSTORE_DELETION_DELAY_MS, Value: " + topologyDeletionDelay + ", Topology ID: " + topologyId);
+        // ConfLogger Inserted End
+        idleTopologies.add(topologyId);
+    }
+}
+
+rotateTopologyCleanupMap(topologyDeletionDelay);
+
+return idleTopologies;
+```

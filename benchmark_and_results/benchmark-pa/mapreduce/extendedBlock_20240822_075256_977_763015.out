@@ -1,0 +1,309 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.generateResourceRequests()Ljava/util/List;	methodLines:	668:790
+blockLines:	704:-1
+paras:	yarn.app.mapreduce.am.resource.mb
+TaintedStat:	NORMAL generateResourceRequests:conditional branch(eq, to iindex=198) 44,45 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[69]84 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 82,46 @159 exception:83
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[69]84 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 82,46 @159 exception:83
+NORMAL generateResourceRequests:conditional branch(eq, to iindex=103) 84,45 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+NORMAL generateResourceRequests:113 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 111,46 @233 exception:112 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[123]44 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 41,42 @296 exception:43
+NORMAL generateResourceRequests:conditional branch(eq, to iindex=198) 44,45 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.generateResourceRequests()Ljava/util/List;	methodLines:	668:790
+blockLines:	676:-1
+paras:	yarn.app.mapreduce.am.resource.mb
+TaintedStat:	NORMAL generateResourceRequests:conditional branch(ne, to iindex=38) 24,8 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[97]113 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 111,46 @233 exception:112
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[97]113 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 111,46 @233 exception:112
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[98]115 = invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 110,113 @236 exception:114 v113
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere v2
+PARAM_CALLER:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere[2]5 = invokespecial < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > 1,2 @2 exception:4 v2
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > Context: Everywhere v2
+NORMAL append:6 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @10 exception:5 Node: < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:6 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @6 exception:5 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL coder:return 7 Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere[13]8 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @20 exception:7
+NORMAL equals:conditional branch(ne, to iindex=33) 8,10 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 21 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[30]24 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 22,21 @74 exception:23
+NORMAL generateResourceRequests:conditional branch(ne, to iindex=38) 24,8 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.generateResourceRequests()Ljava/util/List;	methodLines:	668:790
+blockLines:	692:-1
+paras:	yarn.app.mapreduce.am.resource.cpu-vcores
+TaintedStat:	NORMAL generateResourceRequests:conditional branch(eq, to iindex=103) 84,45 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[151]147 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 145,42 @370 exception:146
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[151]147 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 145,42 @370 exception:146
+NORMAL generateResourceRequests:149 = invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 144,147 @373 exception:148 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL append:return 1 Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere[24]25 = invokevirtual < Extension, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 21,23 @48 exception:24
+NORMAL getClass:27 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 25 @51 exception:26 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere[10]16 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 14 @23 exception:15
+NORMAL getCodecClasses:22 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,16 @52 exception:21 Node: < Extension, Lorg/apache/hadoop/crypto/CryptoCodec, getCodecClasses(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/crypto/CipherSuite;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[69]84 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 82,46 @159 exception:83
+NORMAL generateResourceRequests:conditional branch(eq, to iindex=103) 84,45 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	YARNRunner.java	methodSinagture:	org.apache.hadoop.mapred.YARNRunner.generateResourceRequests()Ljava/util/List;	methodLines:	668:790
+blockLines:	679:-1
+paras:	yarn.app.mapreduce.am.resource.cpu-vcores
+TaintedStat:	NORMAL generateResourceRequests:conditional branch(eq, to iindex=46) 167,8 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[123]44 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 41,42 @296 exception:43
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere[123]44 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 41,42 @296 exception:43
+NORMAL generateResourceRequests:conditional branch(eq, to iindex=198) 44,45 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere:164 = phi  40,167,167,167,167,167
+PHI Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere:167 = phi  164,8
+NORMAL generateResourceRequests:conditional branch(eq, to iindex=46) 167,8 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, generateResourceRequests()Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private List<ResourceRequest> generateResourceRequests() throws IOException {
+    Resource capability = recordFactory.newRecordInstance(Resource.class);
+    boolean memorySet = false;
+    boolean cpuVcoresSet = false;
+    List<ResourceInformation> resourceRequests = ResourceUtils
+        .getRequestedResourcesFromConfig(conf, MR_AM_RESOURCE_PREFIX);
+    for (ResourceInformation resourceReq : resourceRequests) {
+      String resourceName = resourceReq.getName();
+      if (MRJobConfig.RESOURCE_TYPE_NAME_MEMORY.equals(resourceName) ||
+          MRJobConfig.RESOURCE_TYPE_ALTERNATIVE_NAME_MEMORY.equals(
+              resourceName)) {
+        if (memorySet) {
+          throw new IllegalArgumentException(
+              "Only one of the following keys " +
+                  "can be specified for a single job: " +
+                  MRJobConfig.RESOURCE_TYPE_ALTERNATIVE_NAME_MEMORY + ", " +
+                  MRJobConfig.RESOURCE_TYPE_NAME_MEMORY);
+        }
+        String units = isEmpty(resourceReq.getUnits()) ?
+            ResourceUtils.getDefaultUnit(ResourceInformation.MEMORY_URI) :
+              resourceReq.getUnits();
+        capability.setMemorySize(
+            UnitsConversionUtil.convert(units, "Mi", resourceReq.getValue()));
+        memorySet = true;
+        if (conf.get(MRJobConfig.MR_AM_VMEM_MB) != null) {
+          LOG.warn("Configuration " + MR_AM_RESOURCE_PREFIX +
+              resourceName + "=" + resourceReq.getValue() +
+              resourceReq.getUnits() + " is overriding the " +
+              MRJobConfig.MR_AM_VMEM_MB + "=" +
+              conf.get(MRJobConfig.MR_AM_VMEM_MB) + " configuration");
+        }
+      } else if (MRJobConfig.RESOURCE_TYPE_NAME_VCORE.equals(resourceName)) {
+        capability.setVirtualCores(
+            (int) UnitsConversionUtil.convert(resourceReq.getUnits(), "",
+                resourceReq.getValue()));
+        cpuVcoresSet = true;
+        if (conf.get(MRJobConfig.MR_AM_CPU_VCORES) != null) {
+          LOG.warn("Configuration " + MR_AM_RESOURCE_PREFIX +
+              resourceName + "=" + resourceReq.getValue() +
+              resourceReq.getUnits() + " is overriding the " +
+              MRJobConfig.MR_AM_CPU_VCORES + "=" +
+              conf.get(MRJobConfig.MR_AM_CPU_VCORES) + " configuration");
+        }
+      } else if (!MRJobConfig.MR_AM_VMEM_MB.equals(
+          MR_AM_RESOURCE_PREFIX + resourceName) &&
+          !MRJobConfig.MR_AM_CPU_VCORES.equals(
+              MR_AM_RESOURCE_PREFIX + resourceName)) {
+        // the "mb", "cpu-vcores" resource types are not processed here
+        // since the yarn.app.mapreduce.am.resource.mb,
+        // yarn.app.mapreduce.am.resource.cpu-vcores keys are used for
+        // backward-compatibility - which is handled after this loop
+        ResourceInformation resourceInformation = capability
+            .getResourceInformation(resourceName);
+        resourceInformation.setUnits(resourceReq.getUnits());
+        resourceInformation.setValue(resourceReq.getValue());
+        capability.setResourceInformation(resourceName, resourceInformation);
+      }
+    }
+    if (!memorySet) {
+      capability.setMemorySize(
+          conf.getInt(
+              MRJobConfig.MR_AM_VMEM_MB, MRJobConfig.DEFAULT_MR_AM_VMEM_MB
+          )
+      );
+    }
+    if (!cpuVcoresSet) {
+      capability.setVirtualCores(
+          conf.getInt(
+              MRJobConfig.MR_AM_CPU_VCORES, MRJobConfig.DEFAULT_MR_AM_CPU_VCORES
+          )
+      );
+    }
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("AppMaster capability = " + capability);
+    }
+
+    List<ResourceRequest> amResourceRequests = new ArrayList<>();
+    // Always have an ANY request
+    ResourceRequest amAnyResourceRequest =
+        createAMResourceRequest(ResourceRequest.ANY, capability);
+    Map<String, ResourceRequest> rackRequests = new HashMap<>();
+    amResourceRequests.add(amAnyResourceRequest);
+    Collection<String> amStrictResources = conf.getStringCollection(
+        MRJobConfig.AM_STRICT_LOCALITY);
+    for (String amStrictResource : amStrictResources) {
+      amAnyResourceRequest.setRelaxLocality(false);
+      Matcher matcher = RACK_NODE_PATTERN.matcher(amStrictResource);
+      if (matcher.matches()) {
+        String nodeName;
+        String rackName = matcher.group(RACK_GROUP);
+        if (rackName == null) {
+          rackName = "/default-rack";
+          nodeName = matcher.group(NODE_IF_NO_RACK_GROUP);
+        } else {
+          nodeName = matcher.group(NODE_IF_RACK_GROUP);
+        }
+        ResourceRequest amRackResourceRequest = rackRequests.get(rackName);
+        if (amRackResourceRequest == null) {
+          amRackResourceRequest = createAMResourceRequest(rackName, capability);
+          amResourceRequests.add(amRackResourceRequest);
+          rackRequests.put(rackName, amRackResourceRequest);
+        }
+        if (nodeName != null) {
+          amRackResourceRequest.setRelaxLocality(false);
+          ResourceRequest amNodeResourceRequest =
+              createAMResourceRequest(nodeName, capability);
+          amResourceRequests.add(amNodeResourceRequest);
+        }
+      } else {
+        String errMsg =
+            "Invalid resource name: " + amStrictResource + " specified.";
+        LOG.warn(errMsg);
+        throw new IOException(errMsg);
+      }
+    }
+    if (LOG.isDebugEnabled()) {
+      for (ResourceRequest amResourceRequest : amResourceRequests) {
+        LOG.debug("ResourceRequest: resource = "
+            + amResourceRequest.getResourceName() + ", locality = "
+            + amResourceRequest.getRelaxLocality());
+      }
+    }
+    return amResourceRequests;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext; > Context: Everywhere, blocks=[BB[SSA:151..152]64 - org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;, BB[SSA:150..150]63 - org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;, BB[SSA:153..156]65 - org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;, BB[SSA:-1..-2]99 - org.apache.hadoop.mapred.YARNRunner.createApplicationSubmissionContext(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Lorg/apache/hadoop/security/Credentials;)Lorg/apache/hadoop/yarn/api/records/ApplicationSubmissionContext;], numberOfBasicBlocks=4, firstLineNumber=629, lastLineNumber=635, firstMethodNumber=569, lastMethodNumber=665, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    ApplicationId applicationId = resMgrDelegate.getApplicationId();
+
+    // Setup LocalResources
+    Map<String, LocalResource> localResources =
+        setupLocalResources(jobConf, jobSubmitDir);
+
+    // Setup security tokens
+    DataOutputBuffer dob = new DataOutputBuffer();
+    ts.writeTokenStorageToStream(dob);
+    ByteBuffer securityTokens =
+        ByteBuffer.wrap(dob.getData(), 0, dob.getLength());
+
+    // Setup ContainerLaunchContext for AM container
+    List<String> vargs = setupAMCommand(jobConf);
+    ContainerLaunchContext amContainer = setupContainerLaunchContextForAM(
+        jobConf, localResources, securityTokens, vargs);
+
+    String regex = conf.get(MRJobConfig.MR_JOB_SEND_TOKEN_CONF);
+    if (regex != null && !regex.isEmpty()) {
+      setTokenRenewerConf(amContainer, conf, regex);
+    }
+
+
+    Collection<String> tagsFromConf =
+        jobConf.getTrimmedStringCollection(MRJobConfig.JOB_TAGS);
+
+    // Set up the ApplicationSubmissionContext
+    ApplicationSubmissionContext appContext =
+        recordFactory.newRecordInstance(ApplicationSubmissionContext.class);
+    appContext.setApplicationId(applicationId);                // ApplicationId
+    appContext.setQueue(                                       // Queue name
+        jobConf.get(JobContext.QUEUE_NAME,
+        YarnConfiguration.DEFAULT_QUEUE_NAME));
+    // add reservationID if present
+    ReservationId reservationID = null;
+    try {
+      reservationID =
+          ReservationId.parseReservationId(jobConf
+              .get(JobContext.RESERVATION_ID));
+    } catch (NumberFormatException e) {
+      // throw exception as reservationid as is invalid
+      String errMsg =
+          "Invalid reservationId: " + jobConf.get(JobContext.RESERVATION_ID)
+              + " specified for the app: " + applicationId;
+      LOG.warn(errMsg);
+      throw new IOException(errMsg);
+    }
+    if (reservationID != null) {
+      appContext.setReservationID(reservationID);
+      LOG.info("SUBMITTING ApplicationSubmissionContext app:" + applicationId
+          + " to queue:" + appContext.getQueue() + " with reservationId:"
+          + appContext.getReservationID());
+    }
+    appContext.setApplicationName(                             // Job name
+        jobConf.get(JobContext.JOB_NAME,
+        YarnConfiguration.DEFAULT_APPLICATION_NAME));
+    appContext.setCancelTokensWhenComplete(
+        conf.getBoolean(MRJobConfig.JOB_CANCEL_DELEGATION_TOKEN, true));
+    appContext.setAMContainerSpec(amContainer);         // AM Container
+    appContext.setMaxAppAttempts(
+        conf.getInt(MRJobConfig.MR_AM_MAX_ATTEMPTS,
+            MRJobConfig.DEFAULT_MR_AM_MAX_ATTEMPTS));
+
+    // Setup the AM ResourceRequests
+    List<ResourceRequest> amResourceRequests = generateResourceRequests();
+    appContext.setAMContainerResourceRequests(amResourceRequests);
+
+    // set labels for the AM container requests if present
+    String amNodelabelExpression = conf.get(MRJobConfig.AM_NODE_LABEL_EXP);
+    if (null != amNodelabelExpression
+        && amNodelabelExpression.trim().length() != 0) {
+      for (ResourceRequest amResourceRequest : amResourceRequests) {
+        amResourceRequest.setNodeLabelExpression(amNodelabelExpression.trim());
+      }
+    }
+    // set labels for the Job containers
+    appContext.setNodeLabelExpression(jobConf
+        .get(JobContext.JOB_NODE_LABEL_EXP));
+
+    appContext.setApplicationType(MRJobConfig.MR_APPLICATION_TYPE);
+    if (tagsFromConf != null && !tagsFromConf.isEmpty()) {
+      appContext.setApplicationTags(new HashSet<>(tagsFromConf));
+    }
+
+    String jobPriority = jobConf.get(MRJobConfig.PRIORITY);
+    if (jobPriority != null) {
+      int iPriority;
+      try {
+        iPriority = TypeConverter.toYarnApplicationPriority(jobPriority);
+      } catch (IllegalArgumentException e) {
+        iPriority = Integer.parseInt(jobPriority);
+      }
+      appContext.setPriority(Priority.newInstance(iPriority));
+    }
+
+    return appContext;
+  }
+}

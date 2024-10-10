@@ -1,0 +1,207 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DatanodeHttpServer.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.web.DatanodeHttpServer.getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler;	methodLines:	253:292
+blockLines:	263:-1
+paras:	dfs.datanode.httpserver.filter.handlers
+TaintedStat:	NORMAL getFilterHandlers:conditional branch(ne, to iindex=20) 9,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClasses(Ljava/lang/String;[Ljava/lang/Class;)[Ljava/lang/Class; > 2,5,7 @13 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClasses(Ljava/lang/String;[Ljava/lang/Class;)[Ljava/lang/Class; > 2,5,7 @13 exception:8
+NORMAL getFilterHandlers:conditional branch(ne, to iindex=20) 9,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	DatanodeHttpServer.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.web.DatanodeHttpServer.getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler;	methodLines:	253:292
+blockLines:	271:-1
+paras:	null
+TaintedStat:	NORMAL getFilterHandlers:conditional branch(ne, to iindex=25) 14,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler; > Context: Everywhere[18]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClasses(Ljava/lang/String;[Ljava/lang/Class;)[Ljava/lang/Class; > 2,10,11 @28 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler; > Context: Everywhere[18]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClasses(Ljava/lang/String;[Ljava/lang/Class;)[Ljava/lang/Class; > 2,10,11 @28 exception:12
+PHI Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler; > Context: Everywhere:14 = phi  9,13
+NORMAL getFilterHandlers:conditional branch(ne, to iindex=25) 14,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, getFilterHandlers(Lorg/apache/hadoop/conf/Configuration;)[Lio/netty/channel/ChannelHandler; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private ChannelHandler[] getFilterHandlers(Configuration configuration) {
+    if (configuration == null) {
+      return null;
+    }
+    // If the hdfs-site.xml has the proper configs for filter classes, use them.
+    Class<?>[] classes =
+        configuration.getClasses(
+            DFSConfigKeys.DFS_DATANODE_HTTPSERVER_FILTER_HANDLERS);
+
+    // else use the hard coded class from the default configuration.
+    if (classes == null) {
+      classes =
+          configuration.getClasses(
+              DFSConfigKeys.DFS_DATANODE_HTTPSERVER_FILTER_HANDLERS_DEFAULT);
+    }
+
+    // if we are not able to find any handlers, let us fail since running
+    // with Csrf will is a security hole. Let us abort the startup.
+    if(classes == null)  {
+      return null;
+    }
+
+    ChannelHandler[] handlers = new ChannelHandler[classes.length];
+    for (int i = 0; i < classes.length; i++) {
+      LOG.debug("Loading filter handler {}", classes[i].getName());
+      try {
+        Method initializeState = classes[i].getDeclaredMethod("initializeState",
+            Configuration.class);
+        Constructor<?> constructor =
+            classes[i].getDeclaredConstructor(initializeState.getReturnType());
+        handlers[i] = (ChannelHandler) constructor.newInstance(
+            initializeState.invoke(null, configuration));
+      } catch (NoSuchMethodException | InvocationTargetException
+          | IllegalAccessException | InstantiationException
+          | IllegalArgumentException e) {
+        LOG.error("Failed to initialize handler {}", classes[i].toString());
+        throw new RuntimeException(e);
+      }
+    }
+    return (handlers);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Ljava/nio/channels/ServerSocketChannel;)V > Context: Everywhere, blocks=[BB[SSA:135..138]60 - org.apache.hadoop.hdfs.server.datanode.web.DatanodeHttpServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Ljava/nio/channels/ServerSocketChannel;)V, BB[SSA:133..134]59 - org.apache.hadoop.hdfs.server.datanode.web.DatanodeHttpServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Ljava/nio/channels/ServerSocketChannel;)V, BB[SSA:139..141]61 - org.apache.hadoop.hdfs.server.datanode.web.DatanodeHttpServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Ljava/nio/channels/ServerSocketChannel;)V, BB[SSA:-1..-2]118 - org.apache.hadoop.hdfs.server.datanode.web.DatanodeHttpServer.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/datanode/DataNode;Ljava/nio/channels/ServerSocketChannel;)V], numberOfBasicBlocks=4, firstLineNumber=148, lastLineNumber=151, firstMethodNumber=100, lastMethodNumber=233, isFirstLineValid=true, methodSrcCode=
+        final ServerSocketChannel externalHttpChannel)
+        throws IOException {
+    this.conf = conf;
+
+    Configuration confForInfoServer = new Configuration(conf);
+    confForInfoServer.setInt(HttpServer2.HTTP_MAX_THREADS_KEY,
+        HTTP_MAX_THREADS);
+    confForInfoServer.setInt(HttpServer2.HTTP_SELECTOR_COUNT_KEY,
+        HTTP_SELECTOR_THREADS);
+    confForInfoServer.setInt(HttpServer2.HTTP_ACCEPTOR_COUNT_KEY,
+        HTTP_ACCEPTOR_THREADS);
+    int proxyPort =
+        confForInfoServer.getInt(DFS_DATANODE_HTTP_INTERNAL_PROXY_PORT, 0);
+    HttpServer2.Builder builder = new HttpServer2.Builder()
+        .setName("datanode")
+        .setConf(confForInfoServer)
+        .setACL(new AccessControlList(conf.get(DFS_ADMIN, " ")))
+        .hostName(getHostnameForSpnegoPrincipal(confForInfoServer))
+        .addEndpoint(URI.create("http://localhost:" + proxyPort))
+        .setFindPort(true);
+
+    final boolean xFrameEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED,
+        DFSConfigKeys.DFS_XFRAME_OPTION_ENABLED_DEFAULT);
+
+    final String xFrameOptionValue = conf.getTrimmed(
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE,
+        DFSConfigKeys.DFS_XFRAME_OPTION_VALUE_DEFAULT);
+
+    builder.configureXFrame(xFrameEnabled).setXFrameOption(xFrameOptionValue);
+
+    this.infoServer = builder.build();
+
+    this.infoServer.setAttribute(HttpServer2.CONF_CONTEXT_ATTRIBUTE, conf);
+    this.infoServer.setAttribute("datanode", datanode);
+    this.infoServer.setAttribute(JspHelper.CURRENT_CONF, conf);
+    this.infoServer.addServlet(null, "/blockScannerReport",
+        BlockScanner.Servlet.class);
+    DataNodeUGIProvider.init(conf);
+    this.infoServer.start();
+    final InetSocketAddress jettyAddr = infoServer.getConnectorAddress(0);
+
+    this.confForCreate = new Configuration(conf);
+    confForCreate.set(FsPermission.UMASK_LABEL, "000");
+
+    this.bossGroup = new NioEventLoopGroup();
+    this.workerGroup = new NioEventLoopGroup();
+    this.externalHttpChannel = externalHttpChannel;
+    HttpConfig.Policy policy = DFSUtil.getHttpPolicy(conf);
+    final ChannelHandler[] handlers = getFilterHandlers(conf);
+
+    if (policy.isHttpEnabled()) {
+      this.httpServer = new ServerBootstrap().group(bossGroup, workerGroup)
+            .childHandler(new ChannelInitializer<SocketChannel>() {
+              @Override
+              protected void initChannel(SocketChannel ch) throws Exception {
+                ChannelPipeline p = ch.pipeline();
+                p.addLast(new HttpRequestDecoder(),
+                    new HttpResponseEncoder());
+                if (handlers != null) {
+                  for (ChannelHandler c : handlers) {
+                    p.addLast(c);
+                  }
+                }
+                p.addLast(
+                    new ChunkedWriteHandler(),
+                    new URLDispatcher(jettyAddr, conf, confForCreate));
+              }
+            });
+
+      this.httpServer.childOption(
+          ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK,
+          conf.getInt(
+              DFSConfigKeys.DFS_WEBHDFS_NETTY_HIGH_WATERMARK,
+              DFSConfigKeys.DFS_WEBHDFS_NETTY_HIGH_WATERMARK_DEFAULT));
+      this.httpServer.childOption(
+          ChannelOption.WRITE_BUFFER_LOW_WATER_MARK,
+          conf.getInt(
+              DFSConfigKeys.DFS_WEBHDFS_NETTY_LOW_WATERMARK,
+              DFSConfigKeys.DFS_WEBHDFS_NETTY_LOW_WATERMARK_DEFAULT));
+
+      if (externalHttpChannel == null) {
+        httpServer.channel(NioServerSocketChannel.class);
+      } else {
+        httpServer.channelFactory(new ChannelFactory<NioServerSocketChannel>() {
+          @Override
+          public NioServerSocketChannel newChannel() {
+            return new NioServerSocketChannel(externalHttpChannel) {
+              // The channel has been bounded externally via JSVC,
+              // thus bind() becomes a no-op.
+              @Override
+              protected void doBind(SocketAddress localAddress)
+                  throws Exception {
+              }
+            };
+          }
+        });
+      }
+    } else {
+      this.httpServer = null;
+    }
+
+    if (policy.isHttpsEnabled()) {
+      this.sslFactory = new SSLFactory(SSLFactory.Mode.SERVER, conf);
+      try {
+        sslFactory.init();
+      } catch (GeneralSecurityException e) {
+        throw new IOException(e);
+      }
+      this.httpsServer = new ServerBootstrap().group(bossGroup, workerGroup)
+          .channel(NioServerSocketChannel.class)
+          .childHandler(new ChannelInitializer<SocketChannel>() {
+            @Override
+            protected void initChannel(SocketChannel ch) throws Exception {
+              ChannelPipeline p = ch.pipeline();
+              p.addLast(
+                  new SslHandler(sslFactory.createSSLEngine()),
+                  new HttpRequestDecoder(),
+                  new HttpResponseEncoder());
+              if (handlers != null) {
+                for (ChannelHandler c : handlers) {
+                  p.addLast(c);
+                }
+              }
+              p.addLast(
+                  new ChunkedWriteHandler(),
+                  new URLDispatcher(jettyAddr, conf, confForCreate));
+            }
+          });
+    } else {
+      this.httpsServer = null;
+      this.sslFactory = null;
+    }
+  }
+
+}

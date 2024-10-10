@@ -1,0 +1,24 @@
+```java
+if (clazz != null) {
+    // ConfLogger Inserted Start
+    logger.info("Attempting to instantiate ResourceCalculatorPlugin with class: " + clazz.getName());
+    // ConfLogger Inserted End
+    return ReflectionUtils.newInstance(clazz, conf);
+}
+try {
+    return new ResourceCalculatorPlugin();
+} catch (UnsupportedOperationException ue) {
+    // ConfLogger Commented: Not Informative
+    // LOG.warn("Failed to instantiate default resource calculator. " + ue.getMessage());
+    // ConfLogger Inserted Start
+    logger.warn("Failed to instantiate default resource calculator due to unsupported operation. Ensure the configuration parameter 'clazz' is set correctly. Exception: " + ue.getMessage());
+    // ConfLogger Inserted End
+} catch (Throwable t) {
+    // ConfLogger Commented: Not Informative
+    // LOG.warn(t + ": Failed to instantiate default resource calculator.", t);
+    // ConfLogger Inserted Start
+    logger.warn("Failed to instantiate default resource calculator. Ensure the configuration parameter 'clazz' is set correctly. Exception: " + t.getMessage(), t);
+    // ConfLogger Inserted End
+}
+return null;
+```

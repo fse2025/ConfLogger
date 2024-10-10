@@ -1,0 +1,144 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Task.java	methodSinagture:	org.apache.hadoop.mapred.Task.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	1516:1539
+blockLines:	1531:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(ge, to iindex=75) 39,24 Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[20]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,9,10,11 @41 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[20]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,9,10,11 @41 exception:12
+NORMAL setConf:15 = invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 13,2 @45 exception:14 Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+NORMAL newInstance:invokestatic < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > 21,2 @65 exception:25 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=14) 2,4 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(eq, to iindex=11) 5,6 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:invokeinterface < Extension, Lorg/apache/hadoop/conf/Configurable, setConf(Lorg/apache/hadoop/conf/Configuration;)V > 7,2 @16 exception:8 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/SaslPropertiesResolver in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL setConf:14 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > 2,6,8 @32 exception:13 Node: < Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/security/SaslPropertiesResolver in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/security/SaslPropertiesResolver, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmedStrings:6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[2]5 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4
+NORMAL getStrings:7 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 5 @7 exception:6 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL getStrings:return 5 Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere[5]7 = invokestatic < Extension, Lorg/apache/hadoop/util/StringUtils, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 5 @7 exception:6
+NORMAL getStrings:return 7 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[33]22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 2,20 @72 exception:21
+NORMAL setConf:conditional branch(eq, to iindex=75) 22,23 Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL setConf:conditional branch(ge, to iindex=75) 39,24 Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	Task.java	methodSinagture:	org.apache.hadoop.mapred.Task.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	1516:1539
+blockLines:	1530:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=75) 22,23 Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[33]22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 2,20 @72 exception:21
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[33]22 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getStrings(Ljava/lang/String;)[Ljava/lang/String; > 2,20 @72 exception:21
+NORMAL setConf:conditional branch(eq, to iindex=75) 22,23 Node: < Application, Lorg/apache/hadoop/mapred/Task, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setConf(Configuration conf) {
+    if (conf instanceof JobConf) {
+      this.conf = (JobConf) conf;
+    } else {
+      this.conf = new JobConf(conf);
+    }
+    this.mapOutputFile = ReflectionUtils.newInstance(
+        conf.getClass(MRConfig.TASK_LOCAL_OUTPUT_CLASS,
+          MROutputFiles.class, MapOutputFile.class), conf);
+    this.lDirAlloc = new LocalDirAllocator(MRConfig.LOCAL_DIR);
+    // add the static resolutions (this is required for the junit to
+    // work on testcases that simulate multiple nodes on a single physical
+    // node.
+    String hostToResolved[] = conf.getStrings(MRConfig.STATIC_RESOLUTIONS);
+    if (hostToResolved != null) {
+      for (String str : hostToResolved) {
+        String name = str.substring(0, str.indexOf('='));
+        String resolvedName = str.substring(str.indexOf('=') + 1);
+        NetUtils.addStaticResolution(name, resolvedName);
+      }
+    }
+
+    uberized = conf.getBoolean("mapreduce.task.uberized", false);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/YarnChild, configureTask(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/security/token/Token;)V > Context: Everywhere, blocks=[BB[SSA:74..76]36 - org.apache.hadoop.mapred.YarnChild.configureTask(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/security/token/Token;)V, BB[SSA:73..73]35 - org.apache.hadoop.mapred.YarnChild.configureTask(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/security/token/Token;)V, BB[SSA:77..77]37 - org.apache.hadoop.mapred.YarnChild.configureTask(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/security/token/Token;)V, BB[SSA:-1..-2]38 - org.apache.hadoop.mapred.YarnChild.configureTask(Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/security/token/Token;)V], numberOfBasicBlocks=4, firstLineNumber=356, lastLineNumber=358, firstMethodNumber=315, lastMethodNumber=358, isFirstLineValid=true, methodSrcCode=
+      Credentials credentials, Token<JobTokenIdentifier> jt) throws IOException {
+    job.setCredentials(credentials);
+
+    ApplicationAttemptId appAttemptId = ContainerId.fromString(
+        System.getenv(Environment.CONTAINER_ID.name()))
+        .getApplicationAttemptId();
+    LOG.debug("APPLICATION_ATTEMPT_ID: " + appAttemptId);
+    // Set it in conf, so as to be able to be used the the OutputCommitter.
+    job.setInt(MRJobConfig.APPLICATION_ATTEMPT_ID,
+        appAttemptId.getAttemptId());
+
+    // set tcp nodelay
+    job.setBoolean("ipc.client.tcpnodelay", true);
+    job.setClass(MRConfig.TASK_LOCAL_OUTPUT_CLASS,
+        YarnOutputFiles.class, MapOutputFile.class);
+    // set the jobToken and shuffle secrets into task
+    task.setJobTokenSecret(
+        JobTokenSecretManager.createSecretKey(jt.getPassword()));
+    byte[] shuffleSecret = TokenCache.getShuffleSecretKey(credentials);
+    if (shuffleSecret == null) {
+      LOG.warn("Shuffle secret missing from task credentials."
+          + " Using job token secret as shuffle secret.");
+      shuffleSecret = jt.getPassword();
+    }
+    task.setShuffleSecret(
+        JobTokenSecretManager.createSecretKey(shuffleSecret));
+
+    // setup the child's MRConfig.LOCAL_DIR.
+    configureLocalDirs(task, job);
+
+    // setup the child's attempt directories
+    // Do the task-type specific localization
+    task.localizeConfiguration(job);
+
+    // Set up the DistributedCache related configs
+    MRApps.setupDistributedCacheLocal(job);
+
+    // Overwrite the localized task jobconf which is linked to in the current
+    // work-dir.
+    Path localTaskFile = new Path(MRJobConfig.JOB_CONF_FILE);
+    writeLocalJobFile(localTaskFile, job);
+    task.setJobFile(localTaskFile.toString());
+    task.setConf(job);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/ReduceTaskAttemptImpl, createRemoteTask()Lorg/apache/hadoop/mapred/Task; > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=54, lastMethodNumber=60, isFirstLineValid=true, methodSrcCode=
+  //job file name is set in TaskAttempt, setting it null here
+    ReduceTask reduceTask =
+      new ReduceTask("", TypeConverter.fromYarn(getID()), partition,
+          numMapTasks, 1); // YARN doesn't have the concept of slots per task, set it as 1.
+  reduceTask.setUser(conf.get(MRJobConfig.USER_NAME));
+  reduceTask.setConf(conf);
+    return reduceTask;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/MapTaskAttemptImpl, createRemoteTask()Lorg/apache/hadoop/mapred/Task; > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=55, lastMethodNumber=61, isFirstLineValid=true, methodSrcCode=
+    //job file name is set in TaskAttempt, setting it null here
+    MapTask mapTask =
+      new MapTask("", TypeConverter.fromYarn(getID()), partition,
+          splitInfo.getSplitIndex(), 1); // YARN doesn't have the concept of slots per task, set it as 1.
+    mapTask.setUser(conf.get(MRJobConfig.USER_NAME));
+    mapTask.setConf(conf);
+    return mapTask;
+  }
+}

@@ -1,0 +1,10 @@
+```java
+if(credentials == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration issue: 'credentials' is null. Ensure that the 'credentials' parameter is properly set.");
+    // ConfLogger Inserted End
+    return null;
+}
+return credentials.getSecretKey(alias);
+}
+```

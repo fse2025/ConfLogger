@@ -1,0 +1,30 @@
+```java
+assert bean != null;
+String path = null;
+if (parent != null) {
+    path = mapBean2Path.get(parent);
+    assert path != null;
+    // ConfLogger Inserted Start
+    logger.debug("Configuration parameter 'parent' is not null. Retrieved path: {}", path);
+    // ConfLogger Inserted End
+}
+path = makeFullPath(path, parent);
+if (bean.isHidden()) {
+    return;
+}
+ObjectName oname = makeObjectName(path, bean);
+try {
+    synchronized (LOCK) {
+        mBeanServer.registerMBean(bean, oname);
+        mapBean2Path.put(bean, path);
+    }
+} catch (JMException e) {
+    // ConfLogger Commented: Not Informative
+    // LOG.warn("Failed to register MBean {}", bean.getName());
+    // ConfLogger Inserted Start
+    logger.warn("Failed to register MBean. Bean name: {}, Path: {}", bean.getName(), path);
+    // ConfLogger Inserted End
+    throw e;
+}
+}
+```

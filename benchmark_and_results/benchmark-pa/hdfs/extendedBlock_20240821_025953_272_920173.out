@@ -1,0 +1,112 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MetricsLoggerTask.java	methodSinagture:	org.apache.hadoop.hdfs.server.common.MetricsLoggerTask.makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V	methodLines:	153:175
+blockLines:	154:-1
+paras:	dfs.namenode.metrics.logger.period.seconds
+TaintedStat:	NORMAL makeMetricsLoggerAsync:conditional branch(ne, to iindex=8) 3,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,4,5 @6 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 2,4,5 @6 exception:6
+NORMAL startMetricsLogger:8 = conversion(J) 7 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL startMetricsLogger:10 = compare 8,9 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL startMetricsLogger:conditional branch(gt, to iindex=12) 10,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL startMetricsLogger:12 = getstatic < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, MetricsLog, <Application,Lorg/apache/commons/logging/Log> > Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[13]invokestatic < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > 12 @21 exception:13 v12
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > Context: Everywhere v1
+NORMAL makeMetricsLoggerAsync:3 = instanceof 1 <Application,Lorg/apache/commons/logging/impl/Log4JLogger> Node: < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > Context: Everywhere
+NORMAL makeMetricsLoggerAsync:conditional branch(ne, to iindex=8) 3,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	MetricsLoggerTask.java	methodSinagture:	org.apache.hadoop.hdfs.server.common.MetricsLoggerTask.makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V	methodLines:	153:175
+blockLines:	165:-1
+paras:	dfs.datanode.metrics.logger.period.seconds
+TaintedStat:	NORMAL makeMetricsLoggerAsync:conditional branch(ne, to iindex=54) 14,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere[4]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,5,6 @10 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere[4]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 4,5,6 @10 exception:7
+NORMAL startMetricsLogger:9 = conversion(J) 8 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere
+NORMAL startMetricsLogger:11 = compare 9,10 opcode=cmp Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere
+NORMAL startMetricsLogger:conditional branch(gt, to iindex=13) 11,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere
+NORMAL startMetricsLogger:13 = getstatic < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, METRICS_LOG, <Application,Lorg/apache/commons/logging/Log> > Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere[14]invokestatic < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > 13 @25 exception:14 v13
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > Context: Everywhere v1
+NORMAL makeMetricsLoggerAsync:3 = instanceof 1 <Application,Lorg/apache/commons/logging/impl/Log4JLogger> Node: < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > Context: Everywhere
+NORMAL makeMetricsLoggerAsync:conditional branch(ne, to iindex=8) 3,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > Context: Everywhere
+NORMAL makeMetricsLoggerAsync:conditional branch(ne, to iindex=54) 14,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/common/MetricsLoggerTask, makeMetricsLoggerAsync(Lorg/apache/commons/logging/Log;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void makeMetricsLoggerAsync(Log metricsLog) {
+    if (!(metricsLog instanceof Log4JLogger)) {
+      LOG.warn("Metrics logging will not be async since "
+          + "the logger is not log4j");
+      return;
+    }
+    org.apache.log4j.Logger logger = ((Log4JLogger) metricsLog).getLogger();
+    logger.setAdditivity(false); // Don't pollute actual logs with metrics dump
+
+    @SuppressWarnings("unchecked")
+    List<Appender> appenders = Collections.list(logger.getAllAppenders());
+    // failsafe against trying to async it more than once
+    if (!appenders.isEmpty() && !(appenders.get(0) instanceof AsyncAppender)) {
+      AsyncAppender asyncAppender = new AsyncAppender();
+      // change logger to have an async appender containing all the
+      // previously configured appenders
+      for (Appender appender : appenders) {
+        logger.removeAppender(appender);
+        asyncAppender.addAppender(appender);
+      }
+      logger.addAppender(asyncAppender);
+    }
+  }
+}
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DataNode, startMetricsLogger()V > Context: Everywhere, blocks=[BB[SSA:13..14]5 - org.apache.hadoop.hdfs.server.datanode.DataNode.startMetricsLogger()V, BB[SSA:5..11]3 - org.apache.hadoop.hdfs.server.datanode.DataNode.startMetricsLogger()V, BB[SSA:15..16]6 - org.apache.hadoop.hdfs.server.datanode.DataNode.startMetricsLogger()V, BB[SSA:-1..-2]16 - org.apache.hadoop.hdfs.server.datanode.DataNode.startMetricsLogger()V], numberOfBasicBlocks=4, firstLineNumber=3914, lastLineNumber=3925, firstMethodNumber=3913, lastMethodNumber=3930, isFirstLineValid=true, methodSrcCode=
+  protected void startMetricsLogger() {
+    long metricsLoggerPeriodSec = getConf().getInt(
+        DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_KEY,
+        DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_DEFAULT);
+
+    if (metricsLoggerPeriodSec <= 0) {
+      return;
+    }
+
+    MetricsLoggerTask.makeMetricsLoggerAsync(METRICS_LOG);
+
+    // Schedule the periodic logging.
+    metricsLoggerTimer = new ScheduledThreadPoolExecutor(1);
+    metricsLoggerTimer.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+    metricsLoggerTimer.scheduleWithFixedDelay(new MetricsLoggerTask(METRICS_LOG,
+        "DataNode", (short) 0), metricsLoggerPeriodSec, metricsLoggerPeriodSec,
+        TimeUnit.SECONDS);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/NameNode, startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:12..13]4 - org.apache.hadoop.hdfs.server.namenode.NameNode.startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:4..10]2 - org.apache.hadoop.hdfs.server.namenode.NameNode.startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:14..15]5 - org.apache.hadoop.hdfs.server.namenode.NameNode.startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]15 - org.apache.hadoop.hdfs.server.namenode.NameNode.startMetricsLogger(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=845, lastLineNumber=855, firstMethodNumber=843, lastMethodNumber=863, isFirstLineValid=true, methodSrcCode=
+  protected void startMetricsLogger(Configuration conf) {
+    long metricsLoggerPeriodSec =
+        conf.getInt(DFS_NAMENODE_METRICS_LOGGER_PERIOD_SECONDS_KEY,
+            DFS_NAMENODE_METRICS_LOGGER_PERIOD_SECONDS_DEFAULT);
+
+    if (metricsLoggerPeriodSec <= 0) {
+      return;
+    }
+
+    MetricsLoggerTask.makeMetricsLoggerAsync(MetricsLog);
+
+    // Schedule the periodic logging.
+    metricsLoggerTimer = new ScheduledThreadPoolExecutor(1);
+    metricsLoggerTimer.setExecuteExistingDelayedTasksAfterShutdownPolicy(
+        false);
+    metricsLoggerTimer.scheduleWithFixedDelay(new MetricsLoggerTask(MetricsLog,
+        "NameNode", (short) 128),
+        metricsLoggerPeriodSec,
+        metricsLoggerPeriodSec,
+        TimeUnit.SECONDS);
+  }
+
+}

@@ -1,0 +1,114 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	X509Util.java	methodSinagture:	org.apache.hadoop.hbase.io.crypto.tls.X509Util.createTrustManager(Ljava/lang/String;[CLjava/lang/String;ZZZZ)Ljavax/net/ssl/X509TrustManager;	methodLines:	425:463
+blockLines:	426:-1
+paras:	null
+TaintedStat:	NORMAL createTrustManager:conditional branch(ne, to iindex=5) 2,9 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createTrustManager(Ljava/lang/String;[CLjava/lang/String;ZZZZ)Ljavax/net/ssl/X509TrustManager; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[42]32 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPassword(Ljava/lang/String;)[C > 1,30 @83 exception:31
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[42]32 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPassword(Ljava/lang/String;)[C > 1,30 @83 exception:31
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[85]52 = invokestatic < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createTrustManager(Ljava/lang/String;[CLjava/lang/String;ZZZZ)Ljavax/net/ssl/X509TrustManager; > 29,32,35,38,41,45,48 @170 exception:51 v32
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createTrustManager(Ljava/lang/String;[CLjava/lang/String;ZZZZ)Ljavax/net/ssl/X509TrustManager; > Context: Everywhere v2
+NORMAL createTrustManager:conditional branch(ne, to iindex=5) 2,9 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createTrustManager(Ljava/lang/String;[CLjava/lang/String;ZZZZ)Ljavax/net/ssl/X509TrustManager; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	X509Util.java	methodSinagture:	org.apache.hadoop.hbase.io.crypto.tls.X509Util.createTrustManager(Ljava/lang/String;[CLjava/lang/String;ZZZZ)Ljavax/net/ssl/X509TrustManager;	methodLines:	425:463
+blockLines:	438:-1
+paras:	null
+TaintedStat:	NORMAL createTrustManager:conditional branch(eq, to iindex=53) 5,28 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createTrustManager(Ljava/lang/String;[CLjava/lang/String;ZZZZ)Ljavax/net/ssl/X509TrustManager; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[57]41 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,39,19 @111 exception:40
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[57]41 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,39,19 @111 exception:40
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[85]52 = invokestatic < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createTrustManager(Ljava/lang/String;[CLjava/lang/String;ZZZZ)Ljavax/net/ssl/X509TrustManager; > 29,32,35,38,41,45,48 @170 exception:51 v41
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createTrustManager(Ljava/lang/String;[CLjava/lang/String;ZZZZ)Ljavax/net/ssl/X509TrustManager; > Context: Everywhere v5
+NORMAL createTrustManager:conditional branch(eq, to iindex=53) 5,28 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createTrustManager(Ljava/lang/String;[CLjava/lang/String;ZZZZ)Ljavax/net/ssl/X509TrustManager; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    if (trustStorePassword == null) {
+      trustStorePassword = EMPTY_CHAR_ARRAY;
+    }
+
+    try {
+      KeyStoreFileType storeFileType =
+        KeyStoreFileType.fromPropertyValueOrFileName(trustStoreType, trustStoreLocation);
+      KeyStore ts = FileKeyStoreLoaderBuilderProvider.getBuilderForKeyStoreFileType(storeFileType)
+        .setTrustStorePath(trustStoreLocation).setTrustStorePassword(trustStorePassword).build()
+        .loadTrustStore();
+
+      PKIXBuilderParameters pbParams = new PKIXBuilderParameters(ts, new X509CertSelector());
+      if (crlEnabled || ocspEnabled) {
+        pbParams.setRevocationEnabled(true);
+        System.setProperty("com.sun.net.ssl.checkRevocation", "true");
+        if (crlEnabled) {
+          System.setProperty("com.sun.security.enableCRLDP", "true");
+        }
+        if (ocspEnabled) {
+          Security.setProperty("ocsp.enable", "true");
+        }
+      } else {
+        pbParams.setRevocationEnabled(false);
+      }
+
+      // Revocation checking is only supported with the PKIX algorithm
+      TrustManagerFactory tmf = TrustManagerFactory.getInstance("PKIX");
+      tmf.init(new CertPathTrustManagerParameters(pbParams));
+
+      for (final TrustManager tm : tmf.getTrustManagers()) {
+        if (tm instanceof X509ExtendedTrustManager) {
+          return new HBaseTrustManager((X509ExtendedTrustManager) tm, verifyHostName,
+            allowReverseDnsLookup);
+        }
+      }
+      throw new TrustManagerException("Couldn't find X509TrustManager");
+    } catch (IOException | GeneralSecurityException | IllegalArgumentException e) {
+      throw new TrustManagerException(e);
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere, blocks=[BB[SSA:77..85]24 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext;, BB[SSA:71..72]21 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext;, BB[SSA:86..86]25 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext;, BB[SSA:-1..-2]35 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.createSslContextForClient(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext;], numberOfBasicBlocks=4, firstLineNumber=283, lastLineNumber=287, firstMethodNumber=257, lastMethodNumber=295, isFirstLineValid=true, methodSrcCode=
+
+    SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
+
+    boolean useOpenSsl = configureOpenSslIfAvailable(sslContextBuilder, config);
+    String keyStoreLocation = config.get(TLS_CONFIG_KEYSTORE_LOCATION, "");
+    char[] keyStorePassword = config.getPassword(TLS_CONFIG_KEYSTORE_PASSWORD);
+    String keyStoreType = config.get(TLS_CONFIG_KEYSTORE_TYPE, "");
+
+    if (keyStoreLocation.isEmpty()) {
+      LOG.warn(TLS_CONFIG_KEYSTORE_LOCATION + " not specified");
+    } else {
+      sslContextBuilder
+        .keyManager(createKeyManager(keyStoreLocation, keyStorePassword, keyStoreType));
+    }
+
+    String trustStoreLocation = config.get(TLS_CONFIG_TRUSTSTORE_LOCATION, "");
+    char[] trustStorePassword = config.getPassword(TLS_CONFIG_TRUSTSTORE_PASSWORD);
+    String trustStoreType = config.get(TLS_CONFIG_TRUSTSTORE_TYPE, "");
+
+    boolean sslCrlEnabled = config.getBoolean(TLS_CONFIG_CLR, false);
+    boolean sslOcspEnabled = config.getBoolean(TLS_CONFIG_OCSP, false);
+
+    boolean verifyServerHostname =
+      config.getBoolean(HBASE_CLIENT_NETTY_TLS_VERIFY_SERVER_HOSTNAME, true);
+    boolean allowReverseDnsLookup = config.getBoolean(TLS_CONFIG_REVERSE_DNS_LOOKUP_ENABLED, true);
+
+    if (trustStoreLocation.isEmpty()) {
+      LOG.warn(TLS_CONFIG_TRUSTSTORE_LOCATION + " not specified");
+    } else {
+      sslContextBuilder
+        .trustManager(createTrustManager(trustStoreLocation, trustStorePassword, trustStoreType,
+          sslCrlEnabled, sslOcspEnabled, verifyServerHostname, allowReverseDnsLookup));
+    }
+
+    sslContextBuilder.enableOcsp(sslOcspEnabled);
+    sslContextBuilder.protocols(getEnabledProtocols(config));
+    sslContextBuilder.ciphers(Arrays.asList(getCipherSuites(config, useOpenSsl)));
+
+    return sslContextBuilder.build();
+  }
+}

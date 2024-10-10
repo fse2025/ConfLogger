@@ -1,0 +1,256 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	InodeTree.java	methodSinagture:	org.apache.hadoop.fs.viewfs.InodeTree.breakIntoPathComponents(Ljava/lang/String;)[Ljava/lang/String;	methodLines:	115:116
+blockLines:	116:-1
+paras:	null
+TaintedStat:	NORMAL breakIntoPathComponents:conditional branch(ne, to iindex=5) 1,3 Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, breakIntoPathComponents(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, removeAcl(Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, getUriPath(Lorg/apache/hadoop/fs/Path;)Ljava/lang/String; > 1,2 @6 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, removeAcl(Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, getUriPath(Lorg/apache/hadoop/fs/Path;)Ljava/lang/String; > 1,2 @6 exception:5
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, removeAcl(Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere[6]9 = invokevirtual < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult; > 4,6,7 @10 exception:8 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult; > Context: Everywhere[3]7 = invokestatic < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, breakIntoPathComponents(Ljava/lang/String;)[Ljava/lang/String; > 2 @3 exception:6 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, breakIntoPathComponents(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere v1
+NORMAL breakIntoPathComponents:conditional branch(ne, to iindex=5) 1,3 Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, breakIntoPathComponents(Ljava/lang/String;)[Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static String[] breakIntoPathComponents(final String path) {
+    return path == null ? null : path.split(Path.SEPARATOR);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, createLink(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/viewfs/InodeTree$LinkType;Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:21..22]13 - org.apache.hadoop.fs.viewfs.InodeTree.createLink(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/viewfs/InodeTree$LinkType;Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:7..8]4 - org.apache.hadoop.fs.viewfs.InodeTree.createLink(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/viewfs/InodeTree$LinkType;Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:23..25]14 - org.apache.hadoop.fs.viewfs.InodeTree.createLink(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/viewfs/InodeTree$LinkType;Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]115 - org.apache.hadoop.fs.viewfs.InodeTree.createLink(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/fs/viewfs/InodeTree$LinkType;Ljava/lang/String;Lorg/apache/hadoop/security/UserGroupInformation;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=362, lastLineNumber=369, firstMethodNumber=360, lastMethodNumber=429, isFirstLineValid=true, methodSrcCode=
+    // Validate that src is valid absolute path
+    final Path srcPath = new Path(src);
+    if (!srcPath.isAbsoluteAndSchemeAuthorityNull()) {
+      throw new IOException("ViewFs: Non absolute mount name in config:" + src);
+    }
+
+    final String[] srcPaths = breakIntoPathComponents(src);
+    // Make sure root is of INodeDir type before
+    // adding any regular links to it.
+    Preconditions.checkState(root.isInternalDir());
+    INodeDir<T> curInode = getRootDir();
+    int i;
+    // Ignore first initial slash, process all except last component
+    for (i = 1; i < srcPaths.length - 1; i++) {
+      final String iPath = srcPaths[i];
+      INode<T> nextInode = curInode.resolveInternal(iPath);
+      if (nextInode == null) {
+        INodeDir<T> newDir = curInode.addDir(iPath, aUgi);
+        newDir.setInternalDirFs(getTargetFileSystem(newDir));
+        nextInode = newDir;
+      }
+      if (nextInode.isLink()) {
+        // Error - expected a dir but got a link
+        throw new FileAlreadyExistsException("Path " + nextInode.fullPath +
+            " already exists as link");
+      } else {
+        assert(nextInode.isInternalDir());
+        curInode = (INodeDir<T>) nextInode;
+      }
+    }
+
+    // Now process the last component
+    // Add the link in 2 cases: does not exist or a link exists
+    String iPath = srcPaths[i];// last component
+    if (curInode.resolveInternal(iPath) != null) {
+      //  directory/link already exists
+      StringBuilder strB = new StringBuilder(srcPaths[0]);
+      for (int j = 1; j <= i; ++j) {
+        strB.append('/').append(srcPaths[j]);
+      }
+      throw new FileAlreadyExistsException("Path " + strB +
+          " already exists as dir; cannot create link here");
+    }
+
+    final INodeLink<T> newLink;
+    final String fullPath = curInode.fullPath + (curInode == root ? "" : "/")
+        + iPath;
+    switch (linkType) {
+    case SINGLE:
+      newLink = new INodeLink<T>(fullPath, aUgi,
+          initAndGetTargetFs(), target);
+      break;
+    case SINGLE_FALLBACK:
+    case MERGE_SLASH:
+      // Link fallback and link merge slash configuration
+      // are handled specially at InodeTree.
+      throw new IllegalArgumentException("Unexpected linkType: " + linkType);
+    case MERGE:
+    case NFLY:
+      final String[] targetUris = StringUtils.getStrings(target);
+      newLink = new INodeLink<T>(fullPath, aUgi,
+          getTargetFileSystem(settings, StringUtils.stringToURI(targetUris)),
+          targetUris);
+      break;
+    default:
+      throw new IllegalArgumentException(linkType + ": Infeasible linkType");
+    }
+    curInode.addLink(iPath, newLink);
+    mountPoints.add(new MountPoint<T>(src, newLink));
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystemUtil, getStatus(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:58..58]26 - org.apache.hadoop.fs.viewfs.ViewFileSystemUtil.getStatus(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/util/Map;, BB[SSA:57..57]25 - org.apache.hadoop.fs.viewfs.ViewFileSystemUtil.getStatus(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/util/Map;, BB[SSA:59..61]27 - org.apache.hadoop.fs.viewfs.ViewFileSystemUtil.getStatus(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/util/Map;, BB[SSA:-1..-2]61 - org.apache.hadoop.fs.viewfs.ViewFileSystemUtil.getStatus(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/util/Map;, BB[SSA:59..61]27 - org.apache.hadoop.fs.viewfs.ViewFileSystemUtil.getStatus(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/util/Map;, BB[SSA:58..58]26 - org.apache.hadoop.fs.viewfs.ViewFileSystemUtil.getStatus(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/util/Map;, BB[SSA:62..64]28 - org.apache.hadoop.fs.viewfs.ViewFileSystemUtil.getStatus(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/util/Map;, BB[SSA:-1..-2]61 - org.apache.hadoop.fs.viewfs.ViewFileSystemUtil.getStatus(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/Path;)Ljava/util/Map;], numberOfBasicBlocks=8, firstLineNumber=120, lastLineNumber=126, firstMethodNumber=107, lastMethodNumber=158, isFirstLineValid=true, methodSrcCode=
+      FileSystem fileSystem, Path path) throws IOException {
+    if (!(isViewFileSystem(fileSystem)
+        || isViewFileSystemOverloadScheme(fileSystem))) {
+      throw new UnsupportedFileSystemException("FileSystem '"
+          + fileSystem.getUri() + "'is not a ViewFileSystem.");
+    }
+    ViewFileSystem viewFileSystem = (ViewFileSystem) fileSystem;
+    String viewFsUriPath = viewFileSystem.getUriPath(path);
+    boolean isPathOverMountPoint = false;
+    boolean isPathLeadingToMountPoint = false;
+    boolean isPathIncludesAllMountPoint = false;
+    Map<MountPoint, FsStatus> mountPointMap = new HashMap<>();
+    for (MountPoint mountPoint : viewFileSystem.getMountPoints()) {
+      String[] mountPointPathComponents = InodeTree.breakIntoPathComponents(
+          mountPoint.getMountedOnPath().toString());
+      String[] incomingPathComponents =
+          InodeTree.breakIntoPathComponents(viewFsUriPath);
+
+      int pathCompIndex;
+      for (pathCompIndex = 0; pathCompIndex < mountPointPathComponents.length &&
+          pathCompIndex < incomingPathComponents.length; pathCompIndex++) {
+        if (!mountPointPathComponents[pathCompIndex].equals(
+            incomingPathComponents[pathCompIndex])) {
+          break;
+        }
+      }
+
+      if (pathCompIndex >= mountPointPathComponents.length) {
+        // Patch matches or over a valid mount point
+        isPathOverMountPoint = true;
+        mountPointMap.clear();
+        updateMountPointFsStatus(viewFileSystem, mountPointMap, mountPoint,
+            new Path(viewFsUriPath));
+        break;
+      } else {
+        if (pathCompIndex > 1) {
+          // Path is in the mount tree
+          isPathLeadingToMountPoint = true;
+        } else if (incomingPathComponents.length <= 1) {
+          // Special case of "/" path
+          isPathIncludesAllMountPoint = true;
+        }
+        updateMountPointFsStatus(viewFileSystem, mountPointMap, mountPoint,
+            mountPoint.getMountedOnPath());
+      }
+    }
+
+    if (!isPathOverMountPoint && !isPathLeadingToMountPoint &&
+        !isPathIncludesAllMountPoint) {
+      throw new NotInMountpointException(path, "getStatus");
+    }
+    return mountPointMap;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult; > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.fs.viewfs.InodeTree.resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult;, BB[SSA:-1..-2]0 - org.apache.hadoop.fs.viewfs.InodeTree.resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult;, BB[SSA:4..6]2 - org.apache.hadoop.fs.viewfs.InodeTree.resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult;, BB[SSA:-1..-2]145 - org.apache.hadoop.fs.viewfs.InodeTree.resolve(Ljava/lang/String;Z)Lorg/apache/hadoop/fs/viewfs/InodeTree$ResolveResult;], numberOfBasicBlocks=4, firstLineNumber=791, lastLineNumber=794, firstMethodNumber=791, lastMethodNumber=889, isFirstLineValid=false, methodSrcCode=
+      throws IOException {
+    ResolveResult<T> resolveResult = null;
+    String[] path = breakIntoPathComponents(p);
+    if (path.length <= 1) { // special case for when path is "/"
+      T targetFs = root.isInternalDir() ?
+          getRootDir().getInternalDirFs()
+          : getRootLink().getTargetFileSystem();
+      resolveResult = new ResolveResult<T>(ResultKind.INTERNAL_DIR,
+          targetFs, root.fullPath, SlashPath, false);
+      return resolveResult;
+    }
+
+    /**
+     * linkMergeSlash has been configured. The root of this mount table has
+     * been linked to the root directory of a file system.
+     * The first non-slash path component should be name of the mount table.
+     */
+    if (root.isLink()) {
+      Path remainingPath;
+      StringBuilder remainingPathStr = new StringBuilder();
+      // ignore first slash
+      for (int i = 1; i < path.length; i++) {
+        remainingPathStr.append("/").append(path[i]);
+      }
+      remainingPath = new Path(remainingPathStr.toString());
+      resolveResult = new ResolveResult<T>(ResultKind.EXTERNAL_DIR,
+          getRootLink().getTargetFileSystem(), root.fullPath, remainingPath,
+          true);
+      return resolveResult;
+    }
+    Preconditions.checkState(root.isInternalDir());
+    INodeDir<T> curInode = getRootDir();
+
+    // Try to resolve path in the regex mount point
+    resolveResult = tryResolveInRegexMountpoint(p, resolveLastComponent);
+    if (resolveResult != null) {
+      return resolveResult;
+    }
+
+    int i;
+    // ignore first slash
+    for (i = 1; i < path.length - (resolveLastComponent ? 0 : 1); i++) {
+      INode<T> nextInode = curInode.resolveInternal(path[i]);
+      if (nextInode == null) {
+        if (hasFallbackLink()) {
+          resolveResult = new ResolveResult<T>(ResultKind.EXTERNAL_DIR,
+              getRootFallbackLink().getTargetFileSystem(), root.fullPath,
+              new Path(p), false);
+          return resolveResult;
+        } else {
+          StringBuilder failedAt = new StringBuilder(path[0]);
+          for (int j = 1; j <= i; ++j) {
+            failedAt.append('/').append(path[j]);
+          }
+          throw (new FileNotFoundException(
+              "File/Directory does not exist: " + failedAt.toString()));
+        }
+      }
+
+      if (nextInode.isLink()) {
+        final INodeLink<T> link = (INodeLink<T>) nextInode;
+        final Path remainingPath;
+        if (i >= path.length - 1) {
+          remainingPath = SlashPath;
+        } else {
+          StringBuilder remainingPathStr =
+              new StringBuilder("/" + path[i + 1]);
+          for (int j = i + 2; j < path.length; ++j) {
+            remainingPathStr.append('/').append(path[j]);
+          }
+          remainingPath = new Path(remainingPathStr.toString());
+        }
+        resolveResult = new ResolveResult<T>(ResultKind.EXTERNAL_DIR,
+            link.getTargetFileSystem(), nextInode.fullPath, remainingPath,
+            true);
+        return resolveResult;
+      } else if (nextInode.isInternalDir()) {
+        curInode = (INodeDir<T>) nextInode;
+      }
+    }
+
+    // We have resolved to an internal dir in mount table.
+    Path remainingPath;
+    if (resolveLastComponent) {
+      remainingPath = SlashPath;
+    } else {
+      // note we have taken care of when path is "/" above
+      // for internal dirs rem-path does not start with / since the lookup
+      // that follows will do a children.get(remaningPath) and will have to
+      // strip-out the initial /
+      StringBuilder remainingPathStr = new StringBuilder("/" + path[i]);
+      for (int j = i + 1; j < path.length; ++j) {
+        remainingPathStr.append('/').append(path[j]);
+      }
+      remainingPath = new Path(remainingPathStr.toString());
+    }
+    resolveResult = new ResolveResult<T>(ResultKind.INTERNAL_DIR,
+        curInode.getInternalDirFs(), curInode.fullPath, remainingPath, false);
+    return resolveResult;
+  }
+}

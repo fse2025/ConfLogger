@@ -1,0 +1,51 @@
+```java
+String passwordProperty = resolvePropertyName(mode,
+SSL_TRUSTSTORE_PASSWORD_TPL_KEY);
+String truststorePassword = getPassword(conf, passwordProperty, "");
+if (truststorePassword.isEmpty()) {
+// An empty trust store password is legal; the trust store password
+// is only required when writing to a trust store. Otherwise it's
+// an optional integrity check.
+truststorePassword = null;
+}
+
+// Check if obsolete truststore specific reload interval is present for backward compatible
+long truststoreReloadInterval =
+conf.getLong(
+resolvePropertyName(mode, SSL_TRUSTSTORE_RELOAD_INTERVAL_TPL_KEY),
+storesReloadInterval);
+
+if (LOG.isDebugEnabled()) {
+LOG.debug(mode.toString() + " TrustStore: " + truststoreLocation +
+", reloading at " + truststoreReloadInterval + " millis.");
+}
+
+trustManager = new ReloadingX509TrustManager(
+truststoreType,
+truststoreLocation,
+truststorePassword);
+
+if (truststoreReloadInterval > 0) {
+fileMonitoringTimer.schedule(
+new FileMonitoringTimerTask(
+Paths.get(truststoreLocation),
+path -> trustManager.loadFrom(path),
+exception -> LOG.error(ReloadingX509TrustManager.RELOAD_ERROR_MESSAGE, exception)),
+truststoreReloadInterval,
+truststoreReloadInterval);
+
+// ConfLogger Inserted Start
+logger.info("TrustStore reloading enabled with interval: " + truststoreReloadInterval + " millis. Configuration parameter: " + SSL_TRUSTSTORE_RELOAD_INTERVAL_TPL_KEY + " = " + truststoreReloadInterval);
+// ConfLogger Inserted End
+} else {
+// ConfLogger Inserted Start
+logger.warn("TrustStore reloading is disabled. Configuration parameter: " + SSL_TRUSTSTORE_RELOAD_INTERVAL_TPL_KEY + " = " + truststoreReloadInterval + ". Ensure this is intended.");
+// ConfLogger Inserted End
+}
+
+if (LOG.isDebugEnabled()) {
+LOG.debug(mode.toString() + " Loaded TrustStore: " + truststoreLocation);
+}
+trustManagers = new TrustManager[]{trustManager};
+}
+```

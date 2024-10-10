@@ -1,0 +1,46 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	PacemakerClientPool.java	methodSinagture:	org.apache.storm.pacemaker.PacemakerClientPool.<init>(Ljava/util/Map;)V	methodLines:	33:48
+blockLines:	37:-1
+paras:	pacemaker.servers
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=23) 10,11 Node: < Application, Lorg/apache/storm/pacemaker/PacemakerClientPool, <init>(Ljava/util/Map;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/pacemaker/PacemakerClientPool, <init>(Ljava/util/Map;)V > Context: Everywhere[12]9 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,7 @23 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/pacemaker/PacemakerClientPool, <init>(Ljava/util/Map;)V > Context: Everywhere[12]9 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,7 @23 exception:8
+NORMAL <init>:10 = checkcast <Application,Ljava/util/List>9 <Application,Ljava/util/List> Node: < Application, Lorg/apache/storm/pacemaker/PacemakerClientPool, <init>(Ljava/util/Map;)V > Context: Everywhere
+NORMAL <init>:conditional branch(ne, to iindex=23) 10,11 Node: < Application, Lorg/apache/storm/pacemaker/PacemakerClientPool, <init>(Ljava/util/Map;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    public PacemakerClientPool(Map<String, Object> config) {
+        this.config = config;
+        List<String> serverList = (List<String>) config.get(Config.PACEMAKER_SERVERS);
+        if (serverList == null) {
+            serverList = new ArrayList<>();
+        } else {
+            serverList = new ArrayList<>(serverList);
+        }
+        Collections.shuffle(serverList);
+        if (serverList != null) {
+            servers = new ConcurrentLinkedQueue<>(serverList);
+        } else {
+            servers = new ConcurrentLinkedQueue<>();
+        }
+    }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/cluster/PaceMakerStateStorageFactory, mkStore(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage; > Context: Everywhere, blocks=[BB[SSA:13..15]6 - org.apache.storm.cluster.PaceMakerStateStorageFactory.mkStore(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage;, BB[SSA:11..12]5 - org.apache.storm.cluster.PaceMakerStateStorageFactory.mkStore(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage;, BB[SSA:16..17]7 - org.apache.storm.cluster.PaceMakerStateStorageFactory.mkStore(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage;, BB[SSA:-1..-2]11 - org.apache.storm.cluster.PaceMakerStateStorageFactory.mkStore(Ljava/util/Map;Ljava/util/Map;Lorg/apache/storm/cluster/ClusterStateContext;)Lorg/apache/storm/cluster/IStateStorage;], numberOfBasicBlocks=4, firstLineNumber=31, lastLineNumber=31, firstMethodNumber=28, lastMethodNumber=33, isFirstLineValid=true, methodSrcCode=
+        try {
+            ZKStateStorageFactory zkfact = new ZKStateStorageFactory();
+            IStateStorage zkState = zkfact.mkStore(config, authConf, context);
+            return new PaceMakerStateStorage(new PacemakerClientPool(config), zkState);
+        } catch (Exception e) {
+            throw Utils.wrapInRuntime(e);
+        }
+}

@@ -1,0 +1,127 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.loadSslConfiguration(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/conf/Configuration;	methodLines:	1635:1661
+blockLines:	1651:-1
+paras:	dfs.https.server.keystore.resource
+TaintedStat:	NORMAL loadSslConfiguration:conditional branch(ne, to iindex=65) 23,24 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, loadSslConfiguration(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, loadSslConfiguration(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,6,7 @17 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, loadSslConfiguration(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[9]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,6,7 @17 exception:8
+NORMAL loadSslConfiguration:invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, addResource(Ljava/lang/String;)V > 3,9 @20 exception:10 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, loadSslConfiguration(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, addResource(Ljava/lang/String;)V > Context: Everywhere
+NORMAL addResource:invokespecial < Extension, Lorg/apache/hadoop/conf/Configuration$Resource, <init>(Ljava/lang/Object;)V > 4,2 @6 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, addResource(Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Resource, <init>(Ljava/lang/Object;)V > Context: Everywhere
+NORMAL <init>:5 = invokevirtual < Extension, Ljava/lang/Object, toString()Ljava/lang/String; > 2 @3 exception:4 Node: < Extension, Lorg/apache/hadoop/conf/Configuration$Resource, <init>(Ljava/lang/Object;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/fs/Path, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:64 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 3 @156 exception:63 Node: < Extension, Lorg/apache/hadoop/fs/Path, toString()Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere[9]15 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 13 @20 exception:14
+NORMAL setProtocolEngine:17 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,15 @23 exception:16 Node: < Extension, Lorg/apache/hadoop/ipc/RPC, setProtocolEngine(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, loadSslConfiguration(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere[46]23 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 3,21 @73 exception:22
+NORMAL loadSslConfiguration:conditional branch(ne, to iindex=65) 23,24 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, loadSslConfiguration(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static Configuration loadSslConfiguration(Configuration conf) {
+    Configuration sslConf = new Configuration(false);
+
+    sslConf.addResource(conf.get(
+        DFSConfigKeys.DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_KEY,
+        DFSConfigKeys.DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_DEFAULT));
+
+    final String[] reqSslProps = {
+        DFSConfigKeys.DFS_SERVER_HTTPS_TRUSTSTORE_LOCATION_KEY,
+        DFSConfigKeys.DFS_SERVER_HTTPS_KEYSTORE_LOCATION_KEY,
+        DFSConfigKeys.DFS_SERVER_HTTPS_KEYSTORE_PASSWORD_KEY,
+        DFSConfigKeys.DFS_SERVER_HTTPS_KEYPASSWORD_KEY
+    };
+
+    // Check if the required properties are included
+    for (String sslProp : reqSslProps) {
+      if (sslConf.get(sslProp) == null) {
+        LOG.warn("SSL config " + sslProp + " is missing. If " +
+            DFSConfigKeys.DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_KEY +
+            " is specified, make sure it is a relative path");
+      }
+    }
+
+    boolean requireClientAuth = conf.getBoolean(DFS_CLIENT_HTTPS_NEED_AUTH_KEY,
+        DFS_CLIENT_HTTPS_NEED_AUTH_DEFAULT);
+    sslConf.setBoolean(DFS_CLIENT_HTTPS_NEED_AUTH_KEY, requireClientAuth);
+    return sslConf;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere, blocks=[BB[SSA:174..175]85 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:171..173]84 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:176..179]86 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]108 - org.apache.hadoop.hdfs.DFSUtil.httpServerTemplateForNNAndJN(Lorg/apache/hadoop/conf/Configuration;Ljava/net/InetSocketAddress;Ljava/net/InetSocketAddress;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/http/HttpServer2$Builder;], numberOfBasicBlocks=4, firstLineNumber=1720, lastLineNumber=1722, firstMethodNumber=1672, lastMethodNumber=1732, isFirstLineValid=true, methodSrcCode=
+      String spnegoKeytabFileKey) throws IOException {
+    HttpConfig.Policy policy = getHttpPolicy(conf);
+
+    String filterInitializerConfKey = "hadoop.http.filter.initializers";
+    String initializers = conf.get(filterInitializerConfKey, "");
+
+    String[] parts = initializers.split(",");
+    Set<String> target = new LinkedHashSet<String>();
+    for (String filterInitializer : parts) {
+      filterInitializer = filterInitializer.trim();
+      if (filterInitializer.equals(
+          AuthenticationFilterInitializer.class.getName()) ||
+          filterInitializer.equals(
+          ProxyUserAuthenticationFilterInitializer.class.getName()) ||
+          filterInitializer.isEmpty()) {
+        continue;
+      }
+      target.add(filterInitializer);
+    }
+    target.add(AuthFilterInitializer.class.getName());
+    initializers = StringUtils.join(target, ",");
+    conf.set(filterInitializerConfKey, initializers);
+
+    LOG.info("Filter initializers set : " + initializers);
+
+    HttpServer2.Builder builder = new HttpServer2.Builder().setName(name)
+        .setConf(conf).setACL(new AccessControlList(conf.get(DFS_ADMIN, " ")))
+        .setSecurityEnabled(UserGroupInformation.isSecurityEnabled())
+        .setUsernameConfKey(spnegoUserNameKey)
+        .setKeytabConfKey(getSpnegoKeytabKey(conf, spnegoKeytabFileKey));
+
+    // initialize the webserver for uploading/downloading files.
+    if (UserGroupInformation.isSecurityEnabled()) {
+      LOG.info("Starting web server as: "
+          + SecurityUtil.getServerPrincipal(conf.get(spnegoUserNameKey),
+              httpAddr.getHostName()));
+    }
+
+    if (policy.isHttpEnabled()) {
+      if (httpAddr.getPort() == 0) {
+        builder.setFindPort(true);
+      }
+
+      URI uri = URI.create("http://" + NetUtils.getHostPortString(httpAddr));
+      builder.addEndpoint(uri);
+      LOG.info("Starting Web-server for " + name + " at: " + uri);
+    }
+
+    if (policy.isHttpsEnabled() && httpsAddr != null) {
+      Configuration sslConf = loadSslConfiguration(conf);
+      loadSslConfToHttpServerBuilder(builder, sslConf);
+
+      if (httpsAddr.getPort() == 0) {
+        builder.setFindPort(true);
+      }
+
+      URI uri = URI.create("https://" + NetUtils.getHostPortString(httpsAddr));
+      builder.addEndpoint(uri);
+      LOG.info("Starting Web-server for " + name + " at: " + uri);
+    }
+    return builder;
+  }
+}

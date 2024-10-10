@@ -1,0 +1,68 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	UniqValueCount.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.aggregate.UniqValueCount.<init>(J)V	methodLines:	57:65
+blockLines:	62:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(le, to iindex=30) 10,11 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/UniqValueCount, <init>(J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorReducer, reduce(Lorg/apache/hadoop/io/Text;Ljava/lang/Iterable;Lorg/apache/hadoop/mapreduce/Reducer$Context;)V > Context: Everywhere[23]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 20,21,22 @49 exception:23
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorReducer, reduce(Lorg/apache/hadoop/io/Text;Ljava/lang/Iterable;Lorg/apache/hadoop/mapreduce/Reducer$Context;)V > Context: Everywhere[23]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 20,21,22 @49 exception:23
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorReducer, reduce(Lorg/apache/hadoop/io/Text;Ljava/lang/Iterable;Lorg/apache/hadoop/mapreduce/Reducer$Context;)V > Context: Everywhere[27]26 = invokestatic < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorBaseDescriptor, generateValueAggregator(Ljava/lang/String;J)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregator; > 13,24 @58 exception:25 v24
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorBaseDescriptor, generateValueAggregator(Ljava/lang/String;J)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregator; > Context: Everywhere v2
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorBaseDescriptor, generateValueAggregator(Ljava/lang/String;J)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregator; > Context: Everywhere[62]invokespecial < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/UniqValueCount, <init>(J)V > 32,2 @116 exception:33 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/UniqValueCount, <init>(J)V > Context: Everywhere v2
+NORMAL <init>:10 = compare 2,6 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/UniqValueCount, <init>(J)V > Context: Everywhere
+NORMAL <init>:conditional branch(le, to iindex=30) 10,11 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/UniqValueCount, <init>(J)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+   */
+  public UniqValueCount(long maxNum) {
+    uniqItems = new TreeMap<Object, Object>();
+    this.numItems = 0;
+    maxNumItems = Long.MAX_VALUE;
+    if (maxNum > 0 ) {
+      this.maxNumItems = maxNum;
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/lib/aggregate/UniqValueCount, <init>(J)V > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.mapred.lib.aggregate.UniqValueCount.<init>(J)V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapred.lib.aggregate.UniqValueCount.<init>(J)V, BB[SSA:3..3]2 - org.apache.hadoop.mapred.lib.aggregate.UniqValueCount.<init>(J)V, BB[SSA:-1..-2]3 - org.apache.hadoop.mapred.lib.aggregate.UniqValueCount.<init>(J)V], numberOfBasicBlocks=4, firstLineNumber=45, lastLineNumber=47, firstMethodNumber=45, lastMethodNumber=47, isFirstLineValid=false, methodSrcCode=
+  public UniqValueCount(long maxNum) {
+    super(maxNum);
+  }
+}
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregatorBaseDescriptor, generateValueAggregator(Ljava/lang/String;J)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregator; > Context: Everywhere, blocks=[BB[SSA:60..62]34 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorBaseDescriptor.generateValueAggregator(Ljava/lang/String;J)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregator;, BB[SSA:59..59]33 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorBaseDescriptor.generateValueAggregator(Ljava/lang/String;J)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregator;, BB[SSA:63..63]35 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorBaseDescriptor.generateValueAggregator(Ljava/lang/String;J)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregator;, BB[SSA:-1..-2]42 - org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorBaseDescriptor.generateValueAggregator(Ljava/lang/String;J)Lorg/apache/hadoop/mapreduce/lib/aggregate/ValueAggregator;], numberOfBasicBlocks=4, firstLineNumber=116, lastLineNumber=116, firstMethodNumber=102, lastMethodNumber=120, isFirstLineValid=true, methodSrcCode=
+  static public ValueAggregator generateValueAggregator(String type, long uniqCount) {
+    if (type.compareToIgnoreCase(LONG_VALUE_SUM) == 0) {
+      return new LongValueSum();
+    } if (type.compareToIgnoreCase(LONG_VALUE_MAX) == 0) {
+      return new LongValueMax();
+    } else if (type.compareToIgnoreCase(LONG_VALUE_MIN) == 0) {
+      return new LongValueMin();
+    } else if (type.compareToIgnoreCase(STRING_VALUE_MAX) == 0) {
+      return new StringValueMax();
+    } else if (type.compareToIgnoreCase(STRING_VALUE_MIN) == 0) {
+      return new StringValueMin();
+    } else if (type.compareToIgnoreCase(DOUBLE_VALUE_SUM) == 0) {
+      return new DoubleValueSum();
+    } else if (type.compareToIgnoreCase(UNIQ_VALUE_COUNT) == 0) {
+      return new UniqValueCount(uniqCount);
+    } else if (type.compareToIgnoreCase(VALUE_HISTOGRAM) == 0) {
+      return new ValueHistogram();
+    }
+    return null;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/aggregate/UniqValueCount, <init>()V > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.mapreduce.lib.aggregate.UniqValueCount.<init>()V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.lib.aggregate.UniqValueCount.<init>()V, BB[SSA:3..3]2 - org.apache.hadoop.mapreduce.lib.aggregate.UniqValueCount.<init>()V, BB[SSA:-1..-2]3 - org.apache.hadoop.mapreduce.lib.aggregate.UniqValueCount.<init>()V], numberOfBasicBlocks=4, firstLineNumber=49, lastLineNumber=51, firstMethodNumber=49, lastMethodNumber=51, isFirstLineValid=false, methodSrcCode=
+  public UniqValueCount() {
+    this(Long.MAX_VALUE);
+  }
+  
+}

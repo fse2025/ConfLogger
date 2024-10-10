@@ -1,0 +1,24 @@
+```java
+Context context) {
+    this.service = service;
+    long recheckTimeout = this.service.getConf().getLong(
+        DFS_STORAGE_POLICY_SATISFIER_RECHECK_TIMEOUT_MILLIS_KEY,
+        DFS_STORAGE_POLICY_SATISFIER_RECHECK_TIMEOUT_MILLIS_DEFAULT);
+    if (recheckTimeout > 0) {
+        this.minCheckTimeout = Math.min(minCheckTimeout, recheckTimeout);
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter '{}' is set to {}. 'minCheckTimeout' is updated to the minimum of 'minCheckTimeout' and 'recheckTimeout' which is {}.",
+            DFS_STORAGE_POLICY_SATISFIER_RECHECK_TIMEOUT_MILLIS_KEY, recheckTimeout, this.minCheckTimeout);
+        // ConfLogger Inserted End
+    }
+
+    this.selfRetryTimeout = this.service.getConf().getLong(
+        DFS_STORAGE_POLICY_SATISFIER_SELF_RETRY_TIMEOUT_MILLIS_KEY,
+        DFS_STORAGE_POLICY_SATISFIER_SELF_RETRY_TIMEOUT_MILLIS_DEFAULT);
+    this.blockStorageMovementNeeded = unsatisfiedStorageMovementFiles;
+    storageMovementAttemptedItems = new ArrayList<>();
+    scheduledBlkLocs = new HashMap<>();
+    movementFinishedBlocks = new LinkedBlockingQueue<>();
+    this.context = context;
+}
+```

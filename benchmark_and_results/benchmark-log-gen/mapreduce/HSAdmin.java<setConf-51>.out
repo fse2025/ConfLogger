@@ -1,0 +1,55 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HSAdmin.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.client.HSAdmin.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	51:56
+blockLines:	52:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(eq, to iindex=7) 2,4 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/client/HSAdmin, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[112]89 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,86,87 @247 exception:88
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[112]89 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,86,87 @247 exception:88
+NORMAL setupAMCommand:conditional branch(eq, to iindex=141) 89,87 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+NORMAL setupAMCommand:conditional branch(eq, to iindex=141) 93,39 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+NORMAL setupAMCommand:105 = invokevirtual < Application, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 103 @295 exception:104 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL toString:return 14 Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[41]30 = invokevirtual < Extension, Ljava/lang/StringBuilder, toString()Ljava/lang/String; > 28 @70 exception:29
+PHI Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere:31 = phi  22,30
+NORMAL getHexDigits:return 31 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere[11]9 = invokespecial < Extension, Lorg/apache/hadoop/conf/Configuration, getHexDigits(Ljava/lang/String;)Ljava/lang/String; > 1,6 @14 exception:8
+NORMAL getInt:conditional branch(eq, to iindex=20) 9,7 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL getInt:return 14 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/fs/FileSystem, open(Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FSDataInputStream; > Context: Everywhere[6]9 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 5,6,7 @11 exception:8
+NORMAL open:11 = invokevirtual < Extension, Lorg/apache/hadoop/fs/FileSystem, open(Lorg/apache/hadoop/fs/Path;I)Lorg/apache/hadoop/fs/FSDataInputStream; > 1,2,9 @14 exception:10 Node: < Extension, Lorg/apache/hadoop/fs/FileSystem, open(Lorg/apache/hadoop/fs/Path;)Lorg/apache/hadoop/fs/FSDataInputStream; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, open(Lorg/apache/hadoop/fs/Path;I)Lorg/apache/hadoop/fs/FSDataInputStream; > Context: Everywhere
+NORMAL open:6 = invokespecial < Extension, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, connect()Lorg/apache/commons/net/ftp/FTPClient; > 1 @1 exception:5 Node: < Extension, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, open(Lorg/apache/hadoop/fs/Path;I)Lorg/apache/hadoop/fs/FSDataInputStream; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, connect()Lorg/apache/commons/net/ftp/FTPClient; > Context: Everywhere
+NORMAL connect:5 = invokevirtual < Extension, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @3 exception:4 Node: < Extension, Lorg/apache/hadoop/fs/ftp/FTPFileSystem, connect()Lorg/apache/commons/net/ftp/FTPClient; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL getConf:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configured, getConf()Lorg/apache/hadoop/conf/Configuration; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[1]5 = invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, getConf()Lorg/apache/hadoop/conf/Configuration; > 1 @1 exception:4
+NORMAL run:7 = invokestatic < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > 5,1,2 @8 exception:6 Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere
+PHI Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere:17 = phi  1,15
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ToolRunner, run(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Tool;[Ljava/lang/String;)I > Context: Everywhere[28]invokeinterface < Extension, Lorg/apache/hadoop/util/Tool, setConf(Lorg/apache/hadoop/conf/Configuration;)V > 2,17 @51 exception:20 v17
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/client/HSAdmin, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere v2
+NORMAL setConf:conditional branch(eq, to iindex=7) 2,4 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/client/HSAdmin, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setConf(Configuration conf) {
+    if (conf != null) {
+      conf = addSecurityConfiguration(conf);
+    }
+    super.setConf(conf);
+  }
+
+
+
+====================ctx:=======================

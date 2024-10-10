@@ -1,0 +1,85 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	YarnRPC.java	methodSinagture:	org.apache.hadoop.yarn.ipc.YarnRPC.create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/ipc/YarnRPC;	methodLines:	59:69
+blockLines:	63:-1
+paras:	yarn.ipc.rpc.class
+TaintedStat:	NORMAL create:conditional branch(ne, to iindex=15) 10,11 Node: < Application, Lorg/apache/hadoop/yarn/ipc/YarnRPC, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/ipc/YarnRPC; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/ipc/YarnRPC, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/ipc/YarnRPC; > Context: Everywhere[8]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,5 @19 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/ipc/YarnRPC, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/ipc/YarnRPC; > Context: Everywhere[8]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,5 @19 exception:9
+NORMAL create:conditional branch(ne, to iindex=15) 10,11 Node: < Application, Lorg/apache/hadoop/yarn/ipc/YarnRPC, create(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/ipc/YarnRPC; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static YarnRPC create(Configuration conf) {
+    LOG.debug("Creating YarnRPC for {}",
+        conf.get(YarnConfiguration.IPC_RPC_IMPL));
+    String clazzName = conf.get(YarnConfiguration.IPC_RPC_IMPL);
+    if (clazzName == null) {
+      clazzName = YarnConfiguration.DEFAULT_IPC_RPC_IMPL;
+    }
+    try {
+      return (YarnRPC) Class.forName(clazzName).newInstance();
+    } catch (Exception e) {
+      throw new YarnRuntimeException(e);
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/SCMAdmin, createSCMAdminProtocol()Lorg/apache/hadoop/yarn/server/api/SCMAdminProtocol; > Context: Everywhere, blocks=[BB[SSA:11..13]5 - org.apache.hadoop.yarn.client.SCMAdmin.createSCMAdminProtocol()Lorg/apache/hadoop/yarn/server/api/SCMAdminProtocol;, BB[SSA:5..10]4 - org.apache.hadoop.yarn.client.SCMAdmin.createSCMAdminProtocol()Lorg/apache/hadoop/yarn/server/api/SCMAdminProtocol;, BB[SSA:14..16]6 - org.apache.hadoop.yarn.client.SCMAdmin.createSCMAdminProtocol()Lorg/apache/hadoop/yarn/server/api/SCMAdminProtocol;, BB[SSA:-1..-2]10 - org.apache.hadoop.yarn.client.SCMAdmin.createSCMAdminProtocol()Lorg/apache/hadoop/yarn/server/api/SCMAdminProtocol;], numberOfBasicBlocks=4, firstLineNumber=96, lastLineNumber=104, firstMethodNumber=95, lastMethodNumber=106, isFirstLineValid=true, methodSrcCode=
+    // Get the current configuration
+    final YarnConfiguration conf = new YarnConfiguration(getConf());
+
+    // Create the admin client
+    final InetSocketAddress addr = conf.getSocketAddr(
+        YarnConfiguration.SCM_ADMIN_ADDRESS,
+        YarnConfiguration.DEFAULT_SCM_ADMIN_ADDRESS,
+        YarnConfiguration.DEFAULT_SCM_ADMIN_PORT);
+    final YarnRPC rpc = YarnRPC.create(conf);
+    SCMAdminProtocol scmAdminProtocol =
+        (SCMAdminProtocol) rpc.getProxy(SCMAdminProtocol.class, addr, conf);
+    return scmAdminProtocol;
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/api/impl/ContainerManagementProtocolProxy, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/api/NMTokenCache;)V > Context: Everywhere, blocks=[BB[SSA:61..63]33 - org.apache.hadoop.yarn.client.api.impl.ContainerManagementProtocolProxy.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/api/NMTokenCache;)V, BB[SSA:52..52]28 - org.apache.hadoop.yarn.client.api.impl.ContainerManagementProtocolProxy.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/api/NMTokenCache;)V, BB[SSA:58..60]32 - org.apache.hadoop.yarn.client.api.impl.ContainerManagementProtocolProxy.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/api/NMTokenCache;)V, BB[SSA:64..64]34 - org.apache.hadoop.yarn.client.api.impl.ContainerManagementProtocolProxy.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/api/NMTokenCache;)V, BB[SSA:-1..-2]36 - org.apache.hadoop.yarn.client.api.impl.ContainerManagementProtocolProxy.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/yarn/client/api/NMTokenCache;)V], numberOfBasicBlocks=5, firstLineNumber=87, lastLineNumber=97, firstMethodNumber=69, lastMethodNumber=98, isFirstLineValid=true, methodSrcCode=
+  public ContainerManagementProtocolProxy(Configuration conf,
+      NMTokenCache nmTokenCache) {
+    this.conf = new Configuration(conf);
+    this.nmTokenCache = nmTokenCache;
+
+    maxConnectedNMs =
+        conf.getInt(YarnConfiguration.NM_CLIENT_MAX_NM_PROXIES,
+            YarnConfiguration.DEFAULT_NM_CLIENT_MAX_NM_PROXIES);
+    if (maxConnectedNMs < 0) {
+      throw new YarnRuntimeException(
+          YarnConfiguration.NM_CLIENT_MAX_NM_PROXIES
+              + " (" + maxConnectedNMs + ") can not be less than 0.");
+    }
+
+    LOG.debug("{} : {}", YarnConfiguration.NM_CLIENT_MAX_NM_PROXIES,
+        maxConnectedNMs);
+
+    if (maxConnectedNMs > 0) {
+      cmProxy =
+          new LinkedHashMap<String, ContainerManagementProtocolProxyData>();
+    } else {
+      cmProxy = Collections.emptyMap();
+      // Connections are not being cached so ensure connections close quickly
+      // to avoid creating thousands of RPC client threads on large clusters.
+      this.conf.setInt(
+          CommonConfigurationKeysPublic.IPC_CLIENT_CONNECTION_MAXIDLETIME_KEY,
+          0);
+    }
+    rpc = YarnRPC.create(conf);
+  }
+  
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/client/api/impl/SharedCacheClientImpl, createClientProxy()Lorg/apache/hadoop/yarn/api/ClientSCMProtocol; > Context: Everywhere, blocks=[BB[SSA:2..2]2 - org.apache.hadoop.yarn.client.api.impl.SharedCacheClientImpl.createClientProxy()Lorg/apache/hadoop/yarn/api/ClientSCMProtocol;, BB[SSA:0..1]1 - org.apache.hadoop.yarn.client.api.impl.SharedCacheClientImpl.createClientProxy()Lorg/apache/hadoop/yarn/api/ClientSCMProtocol;, BB[SSA:3..5]3 - org.apache.hadoop.yarn.client.api.impl.SharedCacheClientImpl.createClientProxy()Lorg/apache/hadoop/yarn/api/ClientSCMProtocol;, BB[SSA:-1..-2]9 - org.apache.hadoop.yarn.client.api.impl.SharedCacheClientImpl.createClientProxy()Lorg/apache/hadoop/yarn/api/ClientSCMProtocol;], numberOfBasicBlocks=4, firstLineNumber=99, lastLineNumber=100, firstMethodNumber=98, lastMethodNumber=100, isFirstLineValid=true, methodSrcCode=
+  protected ClientSCMProtocol createClientProxy() {
+    YarnRPC rpc = YarnRPC.create(getConfig());
+    return (ClientSCMProtocol) rpc.getProxy(ClientSCMProtocol.class,
+        this.scmAddress, getConfig());
+}

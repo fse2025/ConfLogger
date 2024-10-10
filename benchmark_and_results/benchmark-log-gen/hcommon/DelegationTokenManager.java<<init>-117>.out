@@ -1,0 +1,29 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DelegationTokenManager.java	methodSinagture:	org.apache.hadoop.security.token.delegation.web.DelegationTokenManager.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/io/Text;)V	methodLines:	117:125
+blockLines:	119:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=19) 10,8 Node: < Application, Lorg/apache/hadoop/security/token/delegation/web/DelegationTokenManager, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/io/Text;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/token/delegation/web/DelegationTokenManager, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/io/Text;)V > Context: Everywhere[8]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,7,8 @13 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/token/delegation/web/DelegationTokenManager, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/io/Text;)V > Context: Everywhere[8]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,7,8 @13 exception:9
+NORMAL <init>:conditional branch(eq, to iindex=19) 10,8 Node: < Application, Lorg/apache/hadoop/security/token/delegation/web/DelegationTokenManager, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/io/Text;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+  public DelegationTokenManager(Configuration conf, Text tokenKind) {
+    if (conf.getBoolean(ENABLE_ZK_KEY, false)) {
+      this.secretManager = new ZKSecretManager(conf, tokenKind);
+    } else {
+      this.secretManager = new DelegationTokenSecretManager(conf, tokenKind);
+    }
+    managedSecretManager = true;
+  }
+
+
+
+====================ctx:=======================

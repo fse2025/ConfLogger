@@ -1,0 +1,165 @@
+```java
+public DNConf(final Configurable dn) {
+this.dn = dn;
+socketTimeout = getConf().getInt(DFS_CLIENT_SOCKET_TIMEOUT_KEY,
+HdfsConstants.READ_TIMEOUT);
+socketWriteTimeout = getConf().getInt(DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY,
+HdfsConstants.WRITE_TIMEOUT);
+socketKeepaliveTimeout = getConf().getInt(
+DFSConfigKeys.DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_KEY,
+DFSConfigKeys.DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_DEFAULT);
+ecChecksumSocketTimeout = getConf().getInt(
+DFS_CHECKSUM_EC_SOCKET_TIMEOUT_KEY,
+DFS_CHECKSUM_EC_SOCKET_TIMEOUT_DEFAULT);
+this.transferSocketSendBufferSize = getConf().getInt(
+DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_SEND_BUFFER_SIZE_KEY,
+DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_SEND_BUFFER_SIZE_DEFAULT);
+this.transferSocketRecvBufferSize = getConf().getInt(
+DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_RECV_BUFFER_SIZE_KEY,
+DFSConfigKeys.DFS_DATANODE_TRANSFER_SOCKET_RECV_BUFFER_SIZE_DEFAULT);
+this.tcpNoDelay = getConf().getBoolean(
+DFSConfigKeys.DFS_DATA_TRANSFER_SERVER_TCPNODELAY,
+DFSConfigKeys.DFS_DATA_TRANSFER_SERVER_TCPNODELAY_DEFAULT);
+
+/* Based on results on different platforms, we might need set the default
+* to false on some of them. */
+transferToAllowed = getConf().getBoolean(
+DFS_DATANODE_TRANSFERTO_ALLOWED_KEY,
+DFS_DATANODE_TRANSFERTO_ALLOWED_DEFAULT);
+
+readaheadLength = getConf().getLong(
+HdfsClientConfigKeys.DFS_DATANODE_READAHEAD_BYTES_KEY,
+HdfsClientConfigKeys.DFS_DATANODE_READAHEAD_BYTES_DEFAULT);
+maxDataLength = getConf().getInt(DFSConfigKeys.IPC_MAXIMUM_DATA_LENGTH,
+DFSConfigKeys.IPC_MAXIMUM_DATA_LENGTH_DEFAULT);
+dropCacheBehindWrites = getConf().getBoolean(
+DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_WRITES_KEY,
+DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_WRITES_DEFAULT);
+syncBehindWrites = getConf().getBoolean(
+DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_KEY,
+DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_DEFAULT);
+syncBehindWritesInBackground = getConf().getBoolean(
+DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_IN_BACKGROUND_KEY,
+DFSConfigKeys.DFS_DATANODE_SYNC_BEHIND_WRITES_IN_BACKGROUND_DEFAULT);
+dropCacheBehindReads = getConf().getBoolean(
+DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_READS_KEY,
+DFSConfigKeys.DFS_DATANODE_DROP_CACHE_BEHIND_READS_DEFAULT);
+connectToDnViaHostname = getConf().getBoolean(
+DFSConfigKeys.DFS_DATANODE_USE_DN_HOSTNAME,
+DFSConfigKeys.DFS_DATANODE_USE_DN_HOSTNAME_DEFAULT);
+this.blockReportInterval = getConf().getLong(
+DFS_BLOCKREPORT_INTERVAL_MSEC_KEY,
+DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT);
+this.peerStatsEnabled = getConf().getBoolean(
+DFSConfigKeys.DFS_DATANODE_PEER_STATS_ENABLED_KEY,
+DFSConfigKeys.DFS_DATANODE_PEER_STATS_ENABLED_DEFAULT);
+this.diskStatsEnabled = Util.isDiskStatsEnabled(getConf().getInt(
+DFSConfigKeys.DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY,
+DFSConfigKeys.
+DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_DEFAULT));
+this.outliersReportIntervalMs = getConf().getTimeDuration(
+DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_KEY,
+DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_DEFAULT,
+TimeUnit.MILLISECONDS);
+this.ibrInterval = getConf().getLong(
+DFSConfigKeys.DFS_BLOCKREPORT_INCREMENTAL_INTERVAL_MSEC_KEY,
+DFSConfigKeys.DFS_BLOCKREPORT_INCREMENTAL_INTERVAL_MSEC_DEFAULT);
+this.blockReportSplitThreshold = getConf().getLong(
+DFS_BLOCKREPORT_SPLIT_THRESHOLD_KEY,
+DFS_BLOCKREPORT_SPLIT_THRESHOLD_DEFAULT);
+this.cacheReportInterval = getConf().getLong(
+DFS_CACHEREPORT_INTERVAL_MSEC_KEY,
+DFS_CACHEREPORT_INTERVAL_MSEC_DEFAULT);
+
+this.datanodeSlowIoWarningThresholdMs = getConf().getLong(
+DFSConfigKeys.DFS_DATANODE_SLOW_IO_WARNING_THRESHOLD_KEY,
+DFSConfigKeys.DFS_DATANODE_SLOW_IO_WARNING_THRESHOLD_DEFAULT);
+initBlockReportDelay();
+heartBeatInterval = getConf().getTimeDuration(DFS_HEARTBEAT_INTERVAL_KEY,
+DFS_HEARTBEAT_INTERVAL_DEFAULT, TimeUnit.SECONDS,
+TimeUnit.MILLISECONDS);
+long confLifelineIntervalMs =
+getConf().getLong(DFS_DATANODE_LIFELINE_INTERVAL_SECONDS_KEY,
+3 * getConf().getTimeDuration(DFS_HEARTBEAT_INTERVAL_KEY,
+DFS_HEARTBEAT_INTERVAL_DEFAULT, TimeUnit.SECONDS,
+TimeUnit.MILLISECONDS));
+if (confLifelineIntervalMs <= heartBeatInterval) {
+confLifelineIntervalMs = 3 * heartBeatInterval;
+// ConfLogger Commented: Not Informative
+// DataNode.LOG.warn(
+// String.format("%s must be set to a value greater than %s.  " +
+// "Resetting value to 3 * %s, which is %d milliseconds.",
+// DFS_DATANODE_LIFELINE_INTERVAL_SECONDS_KEY,
+// DFS_HEARTBEAT_INTERVAL_KEY, DFS_HEARTBEAT_INTERVAL_KEY,
+// confLifelineIntervalMs));
+// ConfLogger Inserted Start
+logger.warn(String.format("Configuration parameter %s must be set to a value greater than %s. Resetting value to 3 * %s, which is %d milliseconds. Current value: %d",
+DFS_DATANODE_LIFELINE_INTERVAL_SECONDS_KEY, DFS_HEARTBEAT_INTERVAL_KEY, DFS_HEARTBEAT_INTERVAL_KEY, confLifelineIntervalMs, confLifelineIntervalMs));
+// ConfLogger Inserted End
+}
+lifelineIntervalMs = confLifelineIntervalMs;
+
+// do we need to sync block file contents to disk when blockfile is closed?
+this.syncOnClose = getConf().getBoolean(DFS_DATANODE_SYNCONCLOSE_KEY,
+DFS_DATANODE_SYNCONCLOSE_DEFAULT);
+
+this.minimumNameNodeVersion = getConf().get(
+DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_KEY,
+DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_DEFAULT);
+
+this.encryptDataTransfer = getConf().getBoolean(
+DFS_ENCRYPT_DATA_TRANSFER_KEY,
+DFS_ENCRYPT_DATA_TRANSFER_DEFAULT);
+this.overwriteDownstreamDerivedQOP = getConf().getBoolean(
+DFS_ENCRYPT_DATA_OVERWRITE_DOWNSTREAM_DERIVED_QOP_KEY,
+DFS_ENCRYPT_DATA_OVERWRITE_DOWNSTREAM_DERIVED_QOP_DEFAULT);
+this.encryptionAlgorithm = getConf().get(DFS_DATA_ENCRYPTION_ALGORITHM_KEY);
+this.trustedChannelResolver = TrustedChannelResolver.getInstance(getConf());
+this.saslPropsResolver = DataTransferSaslUtil.getSaslPropertiesResolver(
+getConf());
+this.ignoreSecurePortsForTesting = getConf().getBoolean(
+IGNORE_SECURE_PORTS_FOR_TESTING_KEY,
+IGNORE_SECURE_PORTS_FOR_TESTING_DEFAULT);
+
+this.xceiverStopTimeout = getConf().getLong(
+DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY,
+DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT);
+
+this.maxLockedMemory = getConf().getLongBytes(
+DFS_DATANODE_MAX_LOCKED_MEMORY_KEY,
+DFS_DATANODE_MAX_LOCKED_MEMORY_DEFAULT);
+
+this.pmemDirs = getConf().getTrimmedStrings(
+DFS_DATANODE_PMEM_CACHE_DIRS_KEY);
+
+this.restartReplicaExpiry = getConf().getLong(
+DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY,
+DFS_DATANODE_RESTART_REPLICA_EXPIRY_DEFAULT) * 1000L;
+
+this.allowNonLocalLazyPersist = getConf().getBoolean(
+DFS_DATANODE_NON_LOCAL_LAZY_PERSIST,
+DFS_DATANODE_NON_LOCAL_LAZY_PERSIST_DEFAULT);
+
+this.bpReadyTimeout = getConf().getTimeDuration(
+DFS_DATANODE_BP_READY_TIMEOUT_KEY,
+DFS_DATANODE_BP_READY_TIMEOUT_DEFAULT, TimeUnit.SECONDS);
+
+this.volFailuresTolerated =
+getConf().getInt(
+DFSConfigKeys.DFS_DATANODE_FAILED_VOLUMES_TOLERATED_KEY,
+DFSConfigKeys.DFS_DATANODE_FAILED_VOLUMES_TOLERATED_DEFAULT);
+String[] dataDirs =
+getConf().getTrimmedStrings(DFSConfigKeys.DFS_DATANODE_DATA_DIR_KEY);
+this.volsConfigured = (dataDirs == null) ? 0 : dataDirs.length;
+
+this.pmemCacheRecoveryEnabled = getConf().getBoolean(
+DFS_DATANODE_PMEM_CACHE_RECOVERY_KEY,
+DFS_DATANODE_PMEM_CACHE_RECOVERY_DEFAULT);
+
+this.processCommandsThresholdMs = getConf().getTimeDuration(
+DFS_DATANODE_PROCESS_COMMANDS_THRESHOLD_KEY,
+DFS_DATANODE_PROCESS_COMMANDS_THRESHOLD_DEFAULT,
+TimeUnit.MILLISECONDS
+);
+}
+```

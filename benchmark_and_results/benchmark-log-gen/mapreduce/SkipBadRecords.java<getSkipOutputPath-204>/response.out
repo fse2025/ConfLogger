@@ -1,0 +1,15 @@
+```java
+String name =  conf.get(OUT_PATH);
+if(name!=null) {
+    // ConfLogger Inserted Start
+    if("none".equals(name)) {
+        logger.info("Configuration parameter OUT_PATH is set to 'none', returning null. Parameter key: OUT_PATH, Parameter value: " + name);
+        return null;
+    }
+    logger.info("Configuration parameter OUT_PATH is set to a valid path. Parameter key: OUT_PATH, Parameter value: " + name);
+    // ConfLogger Inserted End
+    return new Path(name);
+}
+Path outPath = FileOutputFormat.getOutputPath(new JobConf(conf));
+return outPath==null ? null : new Path(outPath, "_logs"+Path.SEPARATOR+"skip");
+```

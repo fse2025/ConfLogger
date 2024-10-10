@@ -1,0 +1,116 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CommandWithDestination.java	methodSinagture:	org.apache.hadoop.fs.shell.CommandWithDestination.preserveAttributes(Lorg/apache/hadoop/fs/shell/PathData;Lorg/apache/hadoop/fs/shell/PathData;Z)V	methodLines:	447:490
+blockLines:	479:-1
+paras:	null
+TaintedStat:	NORMAL preserveAttributes:conditional branch(eq, to iindex=136) 69,70 Node: < Application, Lorg/apache/hadoop/fs/shell/CommandWithDestination, preserveAttributes(Lorg/apache/hadoop/fs/shell/PathData;Lorg/apache/hadoop/fs/shell/PathData;Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/shell/CommandWithDestination, preserveAttributes(Lorg/apache/hadoop/fs/shell/PathData;Lorg/apache/hadoop/fs/shell/PathData;Z)V > Context: Everywhere[95]69 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getXAttrs(Lorg/apache/hadoop/fs/Path;)Ljava/util/Map; > 66,67 @201 exception:68
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/shell/CommandWithDestination, preserveAttributes(Lorg/apache/hadoop/fs/shell/PathData;Lorg/apache/hadoop/fs/shell/PathData;Z)V > Context: Everywhere[95]69 = invokevirtual < Application, Lorg/apache/hadoop/fs/FileSystem, getXAttrs(Lorg/apache/hadoop/fs/Path;)Ljava/util/Map; > 66,67 @201 exception:68
+NORMAL preserveAttributes:conditional branch(eq, to iindex=136) 69,70 Node: < Application, Lorg/apache/hadoop/fs/shell/CommandWithDestination, preserveAttributes(Lorg/apache/hadoop/fs/shell/PathData;Lorg/apache/hadoop/fs/shell/PathData;Z)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    if (shouldPreserve(FileAttribute.TIMESTAMPS)) {
+      target.fs.setTimes(
+          target.path,
+          src.stat.getModificationTime(),
+          src.stat.getAccessTime());
+    }
+    if (shouldPreserve(FileAttribute.OWNERSHIP)) {
+      target.fs.setOwner(
+          target.path,
+          src.stat.getOwner(),
+          src.stat.getGroup());
+    }
+    if (shouldPreserve(FileAttribute.PERMISSION) ||
+        shouldPreserve(FileAttribute.ACL)) {
+      target.fs.setPermission(
+          target.path,
+          src.stat.getPermission());
+    }
+    if (shouldPreserve(FileAttribute.ACL)) {
+      if (src.stat.hasAcl()) {
+        FsPermission perm = src.stat.getPermission();
+        List<AclEntry> srcEntries =
+            src.fs.getAclStatus(src.path).getEntries();
+        List<AclEntry> srcFullEntries =
+            AclUtil.getAclFromPermAndEntries(perm, srcEntries);
+        target.fs.setAcl(target.path, srcFullEntries);
+      }
+    }
+    final boolean preserveXAttrs = shouldPreserve(FileAttribute.XATTR);
+    if (preserveXAttrs || preserveRawXAttrs) {
+      Map<String, byte[]> srcXAttrs = src.fs.getXAttrs(src.path);
+      if (srcXAttrs != null) {
+        Iterator<Entry<String, byte[]>> iter = srcXAttrs.entrySet().iterator();
+        while (iter.hasNext()) {
+          Entry<String, byte[]> entry = iter.next();
+          final String xattrName = entry.getKey();
+          if (xattrName.startsWith(RAW) || preserveXAttrs) {
+            target.fs.setXAttr(target.path, entry.getKey(), entry.getValue());
+          }
+        }
+      }
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/shell/CommandWithDestination, copyFileToTarget(Lorg/apache/hadoop/fs/shell/PathData;Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere, blocks=[BB[SSA:34..38]18 - org.apache.hadoop.fs.shell.CommandWithDestination.copyFileToTarget(Lorg/apache/hadoop/fs/shell/PathData;Lorg/apache/hadoop/fs/shell/PathData;)V, BB[SSA:29..33]17 - org.apache.hadoop.fs.shell.CommandWithDestination.copyFileToTarget(Lorg/apache/hadoop/fs/shell/PathData;Lorg/apache/hadoop/fs/shell/PathData;)V, BB[SSA:39..40]19 - org.apache.hadoop.fs.shell.CommandWithDestination.copyFileToTarget(Lorg/apache/hadoop/fs/shell/PathData;Lorg/apache/hadoop/fs/shell/PathData;)V], numberOfBasicBlocks=3, firstLineNumber=357, lastLineNumber=365, firstMethodNumber=351, lastMethodNumber=367, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    final boolean preserveRawXattrs =
+        checkPathsForReservedRaw(src.path, target.path);
+    src.fs.setVerifyChecksum(verifyChecksum);
+    InputStream in = null;
+    try {
+      in = awaitFuture(src.fs.openFile(src.path)
+          .withFileStatus(src.stat)
+          .opt(FS_OPTION_OPENFILE_READ_POLICY,
+              FS_OPTION_OPENFILE_READ_POLICY_WHOLE_FILE)
+          .build());
+      copyStreamToTarget(in, target);
+      preserveAttributes(src, target, preserveRawXattrs);
+    } finally {
+      IOUtils.closeStream(in);
+    }
+  }
+  
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/fs/shell/CommandWithDestination, recursePath(Lorg/apache/hadoop/fs/shell/PathData;)V > Context: Everywhere, blocks=[BB[SSA:72..73]41 - org.apache.hadoop.fs.shell.CommandWithDestination.recursePath(Lorg/apache/hadoop/fs/shell/PathData;)V, BB[SSA:68..71]40 - org.apache.hadoop.fs.shell.CommandWithDestination.recursePath(Lorg/apache/hadoop/fs/shell/PathData;)V, BB[SSA:74..76]42 - org.apache.hadoop.fs.shell.CommandWithDestination.recursePath(Lorg/apache/hadoop/fs/shell/PathData;)V], numberOfBasicBlocks=3, firstLineNumber=323, lastLineNumber=326, firstMethodNumber=300, lastMethodNumber=328, isFirstLineValid=true, methodSrcCode=
+  protected void recursePath(PathData src) throws IOException {
+    PathData savedDst = dst;
+    try {
+      // modify dst as we descend to append the basename of the
+      // current directory being processed
+      dst = getTargetPath(src);
+      final boolean preserveRawXattrs =
+          checkPathsForReservedRaw(src.path, dst.path);
+      if (dst.exists) {
+        if (!dst.stat.isDirectory()) {
+          throw new PathIsNotDirectoryException(dst.toString());
+        }
+      } else {
+        if (!dst.fs.mkdirs(dst.path)) {
+          // too bad we have no clue what failed
+          PathIOException e = new PathIOException(dst.toString());
+          e.setOperation("mkdir");
+          throw e;
+        }    
+        dst.refreshStatus(); // need to update stat to know it exists now
+      }      
+      super.recursePath(src);
+      if (dst.stat.isDirectory()) {
+        preserveAttributes(src, dst, preserveRawXattrs);
+      }
+    } finally {
+      dst = savedDst;
+    }
+  }
+  
+}

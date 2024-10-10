@@ -1,0 +1,88 @@
+```java
+DataOutputStream dout = null;
+DataInputStream din = null;
+LOG.debug("startConnection (myId:{} --> sid:{})", self.getMyId(), sid);
+try {
+// Use BufferedOutputStream to reduce the number of IP packets. This is
+// important for x-DC scenarios.
+BufferedOutputStream buf = new BufferedOutputStream(sock.getOutputStream());
+dout = new DataOutputStream(buf);
+
+// Sending id and challenge
+
+// First sending the protocol version (in other words - message type).
+// For backward compatibility reasons we stick to the old protocol version, unless the MultiAddress
+// feature is enabled. During rolling upgrade, we must make sure that all the servers can
+// understand the protocol version we use to avoid multiple partitions. see ZOOKEEPER-3720
+long protocolVersion = self.isMultiAddressEnabled() ? PROTOCOL_VERSION_V2 : PROTOCOL_VERSION_V1;
+dout.writeLong(protocolVersion);
+dout.writeLong(self.getMyId());
+
+// now we send our election address. For the new protocol version, we can send multiple addresses.
+Collection<InetSocketAddress> addressesToSend = protocolVersion == PROTOCOL_VERSION_V2
+? self.getElectionAddress().getAllAddresses()
+: Arrays.asList(self.getElectionAddress().getOne());
+
+String addr = addressesToSend.stream()
+.map(NetUtils::formatInetAddr).collect(Collectors.joining("|"));
+byte[] addr_bytes = addr.getBytes();
+dout.writeInt(addr_bytes.length);
+dout.write(addr_bytes);
+dout.flush();
+
+din = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
+} catch (IOException e) {
+LOG.warn("Ignoring exception reading or writing challenge: ", e);
+closeSocket(sock);
+return false;
+}
+
+// authenticate learner
+QuorumPeer.QuorumServer qps = self.getVotingView().get(sid);
+if (qps != null) {
+// TODO - investigate why reconfig makes qps null.
+authLearner.authenticate(sock, qps.hostname);
+}
+
+// If lost the challenge, then drop the new connection
+if (sid > self.getMyId()) {
+LOG.info("Have smaller server identifier, so dropping the connection: (myId:{} --> sid:{})", self.getMyId(), sid);
+closeSocket(sock);
+// ConfLogger Inserted Start
+logger.info("Configuration check: sid ({}) is greater than self.getMyId ({}). Dropping the connection.", sid, self.getMyId());
+// ConfLogger Inserted End
+// Otherwise proceed with the connection
+} else {
+LOG.debug("Have larger server identifier, so keeping the connection: (myId:{} --> sid:{})", self.getMyId(), sid);
+SendWorker sw = new SendWorker(sock, sid);
+RecvWorker rw = new RecvWorker(sock, din, sid, sw);
+sw.setRecv(rw);
+
+SendWorker vsw = senderWorkerMap.get(sid);
+
+// ConfLogger Inserted Start
+if (vsw != null) {
+    logger.debug("Configuration check: Existing SendWorker found for sid ({}). Finishing the existing worker.", sid);
+    vsw.finish();
+} else {
+    logger.debug("Configuration check: No existing SendWorker found for sid ({}). Proceeding to create a new one.", sid);
+}
+// ConfLogger Inserted End
+
+senderWorkerMap.put(sid, sw);
+
+queueSendMap.putIfAbsent(sid, new CircularBlockingQueue<>(SEND_CAPACITY));
+
+sw.start();
+rw.start();
+
+// ConfLogger Inserted Start
+logger.info("Configuration check: Connection established successfully with sid ({}).", sid);
+// ConfLogger Inserted End
+
+return true;
+
+}
+return false;
+}
+```

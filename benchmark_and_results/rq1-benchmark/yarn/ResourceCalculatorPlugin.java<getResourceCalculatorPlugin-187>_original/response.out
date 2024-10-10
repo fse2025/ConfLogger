@@ -1,0 +1,26 @@
+```java
+<code-whole>
+if (clazz != null) {
+    // ConfLogger Inserted Start
+    logger.debug("Attempting to instantiate resource calculator using the provided class: " + clazz.getName() + " with configuration: " + conf.get("yarn.nodemanager.resource-calculator.class"));
+    // ConfLogger Inserted End
+    return ReflectionUtils.newInstance(clazz, conf);
+}
+// ConfLogger Inserted Start
+else {
+    logger.warn("No class provided for resource calculator instantiation. Falling back to default implementation. Ensure 'yarn.nodemanager.resource-calculator.class' is correctly set if a specific implementation is desired.");
+}
+// ConfLogger Inserted End
+try {
+    return new ResourceCalculatorPlugin();
+} catch (UnsupportedOperationException ue) {
+    // ConfLogger Skipped: The warning message already contains the exception message which provides context on the failure.
+    LOG.warn("Failed to instantiate default resource calculator. " + ue.getMessage());
+} catch (Throwable t) {
+    // ConfLogger Skipped: The warning message already contains the exception message which provides context on the failure.
+    LOG.warn(t + ": Failed to instantiate default resource calculator.", t);
+}
+return null;
+}
+</code-whole>
+```

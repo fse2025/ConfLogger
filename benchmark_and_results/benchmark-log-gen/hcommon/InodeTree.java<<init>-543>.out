@@ -1,0 +1,211 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	InodeTree.java	methodSinagture:	org.apache.hadoop.fs.viewfs.InodeTree.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V	methodLines:	543:693
+blockLines:	546:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=20) 3,12 Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, initialize(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[39]25 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 21,22,23 @72 exception:24
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, initialize(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[39]25 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 21,22,23 @72 exception:24
+NORMAL initialize:conditional branch(eq, to iindex=45) 25,23 Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, initialize(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, initialize(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere:28 = phi  17,17,27
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem, initialize(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[69]invokespecial < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem$1, <init>(Lorg/apache/hadoop/fs/viewfs/ViewFileSystem;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;ZLorg/apache/hadoop/fs/viewfs/FsGetter;)V > 37,1,3,28,38,36,13 @127 exception:39 v28
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem$1, <init>(Lorg/apache/hadoop/fs/viewfs/ViewFileSystem;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;ZLorg/apache/hadoop/fs/viewfs/FsGetter;)V > Context: Everywhere v4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem$1, <init>(Lorg/apache/hadoop/fs/viewfs/ViewFileSystem;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;ZLorg/apache/hadoop/fs/viewfs/FsGetter;)V > Context: Everywhere[11]invokespecial < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > 1,3,4,5,6 @18 exception:9 v4
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > Context: Everywhere v3
+NORMAL <init>:conditional branch(ne, to iindex=20) 3,12 Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	InodeTree.java	methodSinagture:	org.apache.hadoop.fs.viewfs.InodeTree.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V	methodLines:	543:693
+blockLines:	679:-1
+paras:	fs.viewfs.rename.strategy
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=448) 5,18 Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFs, <init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[55]34 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 3,29,32 @104 exception:33
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFs, <init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[55]34 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 3,29,32 @104 exception:33
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFs, <init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[56]36 = invokestatic < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem$RenameStrategy, valueOf(Ljava/lang/String;)Lorg/apache/hadoop/fs/viewfs/ViewFileSystem$RenameStrategy; > 34 @107 exception:35 v34
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem$RenameStrategy, valueOf(Ljava/lang/String;)Lorg/apache/hadoop/fs/viewfs/ViewFileSystem$RenameStrategy; > Context: Everywhere v1
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFileSystem$RenameStrategy, valueOf(Ljava/lang/String;)Lorg/apache/hadoop/fs/viewfs/ViewFileSystem$RenameStrategy; > Context: Everywhere[2]5 = invokestatic < Application, Ljava/lang/Enum, valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; > 3,1 @3 exception:4 v1
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/Enum, valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; > Context: Everywhere v2
+PARAM_CALLER:Node: < Primordial, Ljava/lang/Enum, valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; > Context: Everywhere[32]24 = invokevirtual < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 22,2 @63 exception:23 v2
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere v2
+PARAM_CALLER:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere[2]5 = invokespecial < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > 1,2 @2 exception:4 v2
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > Context: Everywhere v2
+NORMAL append:6 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @10 exception:5 Node: < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:6 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @6 exception:5 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL coder:return 7 Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere[13]8 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @20 exception:7
+NORMAL equals:conditional branch(ne, to iindex=33) 8,10 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 21 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFs, <init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[33]25 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 5,23 @64 exception:24
+NORMAL <init>:conditional branch(ne, to iindex=38) 25,6 Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFs, <init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+PHI Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFs, <init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere:26 = phi  17,6
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFs, <init>(Ljava/net/URI;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[48]invokespecial < Application, Lorg/apache/hadoop/fs/viewfs/ViewFs$1, <init>(Lorg/apache/hadoop/fs/viewfs/ViewFs;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > 27,1,3,21,2,26 @88 exception:28 v26
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFs$1, <init>(Lorg/apache/hadoop/fs/viewfs/ViewFs;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > Context: Everywhere v6
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/fs/viewfs/ViewFs$1, <init>(Lorg/apache/hadoop/fs/viewfs/ViewFs;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > Context: Everywhere[8]invokespecial < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > 1,3,4,5,6 @12 exception:8 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > Context: Everywhere v5
+NORMAL <init>:conditional branch(ne, to iindex=448) 5,18 Node: < Application, Lorg/apache/hadoop/fs/viewfs/InodeTree, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/net/URI;Z)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws UnsupportedFileSystemException, URISyntaxException,
+      FileAlreadyExistsException, IOException {
+    String mountTableName = viewName;
+    if (mountTableName == null) {
+      mountTableName = ConfigUtil.getDefaultMountTableName(config);
+    }
+    homedirPrefix = ConfigUtil.getHomeDirValue(config, mountTableName);
+
+    boolean isMergeSlashConfigured = false;
+    String mergeSlashTarget = null;
+    List<LinkEntry> linkEntries = new LinkedList<>();
+
+    final String mountTablePrefix =
+        Constants.CONFIG_VIEWFS_PREFIX + "." + mountTableName + ".";
+    final String linkPrefix = Constants.CONFIG_VIEWFS_LINK + ".";
+    final String linkFallbackPrefix = Constants.CONFIG_VIEWFS_LINK_FALLBACK;
+    final String linkMergePrefix = Constants.CONFIG_VIEWFS_LINK_MERGE + ".";
+    final String linkMergeSlashPrefix =
+        Constants.CONFIG_VIEWFS_LINK_MERGE_SLASH;
+    boolean gotMountTableEntry = false;
+    final UserGroupInformation ugi = UserGroupInformation.getCurrentUser();
+    for (Entry<String, String> si : config) {
+      final String key = si.getKey();
+      if (!key.startsWith(mountTablePrefix)) {
+        continue;
+      }
+
+      gotMountTableEntry = true;
+      LinkType linkType;
+      String src = key.substring(mountTablePrefix.length());
+      String settings = null;
+      if (src.startsWith(linkPrefix)) {
+        src = src.substring(linkPrefix.length());
+        if (src.equals(SlashPath.toString())) {
+          throw new UnsupportedFileSystemException("Unexpected mount table "
+              + "link entry '" + key + "'. Use "
+              + Constants.CONFIG_VIEWFS_LINK_MERGE_SLASH  + " instead!");
+        }
+        linkType = LinkType.SINGLE;
+      } else if (src.startsWith(linkFallbackPrefix)) {
+        checkMntEntryKeyEqualsTarget(src, linkFallbackPrefix);
+        linkType = LinkType.SINGLE_FALLBACK;
+      } else if (src.startsWith(linkMergePrefix)) { // A merge link
+        src = src.substring(linkMergePrefix.length());
+        linkType = LinkType.MERGE;
+      } else if (src.startsWith(linkMergeSlashPrefix)) {
+        // This is a LinkMergeSlash entry. This entry should
+        // not have any additional source path.
+        checkMntEntryKeyEqualsTarget(src, linkMergeSlashPrefix);
+        linkType = LinkType.MERGE_SLASH;
+      } else if (src.startsWith(Constants.CONFIG_VIEWFS_LINK_NFLY)) {
+        // prefix.settings.src
+        src = src.substring(Constants.CONFIG_VIEWFS_LINK_NFLY.length() + 1);
+        // settings.src
+        settings = src.substring(0, src.indexOf('.'));
+        // settings
+
+        // settings.src
+        src = src.substring(settings.length() + 1);
+        // src
+
+        linkType = LinkType.NFLY;
+      } else if (src.startsWith(Constants.CONFIG_VIEWFS_LINK_REGEX)) {
+        linkEntries.add(
+            buildLinkRegexEntry(config, ugi, src, si.getValue()));
+        continue;
+      } else if (src.startsWith(Constants.CONFIG_VIEWFS_HOMEDIR)) {
+        // ignore - we set home dir from config
+        continue;
+      } else {
+        throw new IOException("ViewFs: Cannot initialize: Invalid entry in " +
+            "Mount table in config: " + src);
+      }
+
+      final String target = si.getValue();
+      if (linkType != LinkType.MERGE_SLASH) {
+        if (isMergeSlashConfigured) {
+          throw new IOException("Mount table " + mountTableName
+              + " has already been configured with a merge slash link. "
+              + "A regular link should not be added.");
+        }
+        linkEntries.add(
+            new LinkEntry(src, target, linkType, settings, ugi, config));
+      } else {
+        if (!linkEntries.isEmpty()) {
+          throw new IOException("Mount table " + mountTableName
+              + " has already been configured with regular links. "
+              + "A merge slash link should not be configured.");
+        }
+        if (isMergeSlashConfigured) {
+          throw new IOException("Mount table " + mountTableName
+              + " has already been configured with a merge slash link. "
+              + "Multiple merge slash links for the same mount table is "
+              + "not allowed.");
+        }
+        isMergeSlashConfigured = true;
+        mergeSlashTarget = target;
+      }
+    } // End of for loop.
+
+    if (isMergeSlashConfigured) {
+      Preconditions.checkNotNull(mergeSlashTarget);
+      root = new INodeLink<T>(mountTableName, ugi,
+          initAndGetTargetFs(), mergeSlashTarget);
+      mountPoints.add(new MountPoint<T>("/", (INodeLink<T>) root));
+      rootFallbackLink = null;
+    } else {
+      root = new INodeDir<T>("/", UserGroupInformation.getCurrentUser());
+      getRootDir().setInternalDirFs(getTargetFileSystem(getRootDir()));
+      getRootDir().setRoot(true);
+      INodeLink<T> fallbackLink = null;
+      for (LinkEntry le : linkEntries) {
+        switch (le.getLinkType()) {
+        case SINGLE_FALLBACK:
+          if (fallbackLink != null) {
+            throw new IOException("Mount table " + mountTableName
+                + " has already been configured with a link fallback. "
+                + "Multiple fallback links for the same mount table is "
+                + "not allowed.");
+          }
+          fallbackLink = new INodeLink<T>(mountTableName, ugi,
+              initAndGetTargetFs(), le.getTarget());
+          continue;
+        case REGEX:
+          addRegexMountEntry(le);
+          continue;
+        default:
+          createLink(le.getSrc(), le.getTarget(), le.getLinkType(),
+              le.getSettings(), le.getUgi(), le.getConfig());
+        }
+      }
+      rootFallbackLink = fallbackLink;
+      getRootDir().addFallbackLink(rootFallbackLink);
+    }
+
+    if (!gotMountTableEntry) {
+      if (!initingUriAsFallbackOnNoMounts) {
+        throw new IOException(new StringBuilder(
+            "ViewFs: Cannot initialize: Empty Mount table in config for ")
+            .append(theUri.getScheme()).append("://").append(mountTableName)
+            .append("/").toString());
+      }
+      StringBuilder msg =
+          new StringBuilder("Empty mount table detected for ").append(theUri)
+              .append(" and considering itself as a linkFallback.");
+      FileSystem.LOG.info(msg.toString());
+      rootFallbackLink = new INodeLink<T>(mountTableName, ugi,
+          initAndGetTargetFs(), theUri.toString());
+      getRootDir().addFallbackLink(rootFallbackLink);
+    }
+  }
+
+
+
+====================ctx:=======================

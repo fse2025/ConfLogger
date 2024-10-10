@@ -1,0 +1,140 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ExecutorServiceBuilder.java	methodSinagture:	alluxio.executor.ExecutorServiceBuilder.buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService;	methodLines:	55:140
+blockLines:	80:-1
+paras:	null
+TaintedStat:	NORMAL buildExecutorService:conditional branch(ne, to iindex=229) 15,72 Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere[10]14 = invokestatic < Application, Lalluxio/conf/Configuration, getEnum(Lalluxio/conf/PropertyKey;Ljava/lang/Class;)Ljava/lang/Enum; > 11,12 @19 exception:13
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere[10]14 = invokestatic < Application, Lalluxio/conf/Configuration, getEnum(Lalluxio/conf/PropertyKey;Ljava/lang/Class;)Ljava/lang/Enum; > 11,12 @19 exception:13
+NORMAL buildExecutorService:15 = checkcast <Application,Lalluxio/executor/RpcExecutorType>14 <Application,Lalluxio/executor/RpcExecutorType> Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere
+NORMAL buildExecutorService:conditional branch(ne, to iindex=229) 15,72 Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ExecutorServiceBuilder.java	methodSinagture:	alluxio.executor.ExecutorServiceBuilder.buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService;	methodLines:	55:140
+blockLines:	70:-1
+paras:	null
+TaintedStat:	NORMAL buildExecutorService:conditional branch(le, to iindex=73) 55,7 Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere[64]53 = invokestatic < Application, Lalluxio/conf/Configuration, getMs(Lalluxio/conf/PropertyKey;)J > 51 @123 exception:52
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere[64]53 = invokestatic < Application, Lalluxio/conf/Configuration, getMs(Lalluxio/conf/PropertyKey;)J > 51 @123 exception:52
+NORMAL buildExecutorService:55 = compare 53,54 opcode=cmp Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere
+NORMAL buildExecutorService:conditional branch(le, to iindex=73) 55,7 Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ExecutorServiceBuilder.java	methodSinagture:	alluxio.executor.ExecutorServiceBuilder.buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService;	methodLines:	55:140
+blockLines:	96:-1
+paras:	null
+TaintedStat:	NORMAL buildExecutorService:conditional branch(gt, to iindex=175) 124,45 Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere[53]45 = invokestatic < Application, Lalluxio/conf/Configuration, getInt(Lalluxio/conf/PropertyKey;)I > 43 @101 exception:44
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere[53]45 = invokestatic < Application, Lalluxio/conf/Configuration, getInt(Lalluxio/conf/PropertyKey;)I > 43 @101 exception:44
+NORMAL buildExecutorService:conditional branch(gt, to iindex=175) 124,45 Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ExecutorServiceBuilder.java	methodSinagture:	alluxio.executor.ExecutorServiceBuilder.buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService;	methodLines:	55:140
+blockLines:	89:-1
+paras:	null
+TaintedStat:	NORMAL buildExecutorService:conditional branch(le, to iindex=143) 124,7 Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere[114]124 = invokestatic < Application, Lalluxio/conf/Configuration, getInt(Lalluxio/conf/PropertyKey;)I > 122 @211 exception:123
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere[114]124 = invokestatic < Application, Lalluxio/conf/Configuration, getInt(Lalluxio/conf/PropertyKey;)I > 122 @211 exception:123
+NORMAL buildExecutorService:conditional branch(le, to iindex=143) 124,7 Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;Lcom/codahale/metrics/Counter;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // Get executor type for given host.
+    RpcExecutorType executorType = Configuration.getEnum(
+        PropertyKey.Template.RPC_EXECUTOR_TYPE.format(executorHost.toString()),
+        RpcExecutorType.class);
+    // Build thread name format.
+    String threadNameFormat =
+        String.format("%s-rpc-executor-%s-thread", executorHost, executorType) + "-%d";
+    // Read shared configuration for all supported executors.
+    int corePoolSize = Configuration
+        .getInt(PropertyKey.Template.RPC_EXECUTOR_CORE_POOL_SIZE.format(executorHost.toString()));
+    int maxPoolSize = Configuration
+        .getInt(PropertyKey.Template.RPC_EXECUTOR_MAX_POOL_SIZE.format(executorHost.toString()));
+    long keepAliveMs = Configuration
+        .getMs(PropertyKey.Template.RPC_EXECUTOR_KEEPALIVE.format(executorHost.toString()));
+    // Property validation.
+    Preconditions.checkArgument(keepAliveMs > 0L,
+        String.format(
+            "Cannot start Alluxio %s gRPC thread pool with %s=%s. "
+                + "The keepalive time must be greater than 0!",
+            executorHost,
+            PropertyKey.Template.RPC_EXECUTOR_KEEPALIVE.format(executorHost.toString()),
+            keepAliveMs));
+
+    // Create the executor service.
+    ExecutorService executorService = null;
+    if (executorType == RpcExecutorType.FJP) {
+      // Read FJP specific configurations.
+      int parallelism = Configuration.getInt(
+          PropertyKey.Template.RPC_EXECUTOR_FJP_PARALLELISM.format(executorHost.toString()));
+      int minRunnable = Configuration.getInt(
+          PropertyKey.Template.RPC_EXECUTOR_FJP_MIN_RUNNABLE.format(executorHost.toString()));
+      boolean isAsync = Configuration
+          .getBoolean(PropertyKey.Template.RPC_EXECUTOR_FJP_ASYNC.format(executorHost.toString()));
+      // Property validation.
+      Preconditions.checkArgument(parallelism > 0,
+          String.format(
+              "Cannot start Alluxio %s gRPC thread pool with %s=%s! "
+                  + "The parallelism must be greater than 0!",
+              executorHost,
+              PropertyKey.Template.RPC_EXECUTOR_FJP_PARALLELISM.format(executorHost.toString()),
+              parallelism));
+      Preconditions.checkArgument(parallelism <= maxPoolSize,
+          String.format(
+              "Cannot start Alluxio %s gRPC thread pool with " + "%s=%s greater than %s=%s!",
+              executorHost,
+              PropertyKey.Template.RPC_EXECUTOR_FJP_PARALLELISM.format(executorHost.toString()),
+              parallelism, PropertyKey.MASTER_RPC_EXECUTOR_MAX_POOL_SIZE.toString(), maxPoolSize));
+      // Create ForkJoinPool.
+      executorService = new ForkJoinPool(parallelism,
+          ThreadFactoryUtils.buildFjp(threadNameFormat, true), null, isAsync, corePoolSize,
+          maxPoolSize, minRunnable, null, keepAliveMs, TimeUnit.MILLISECONDS);
+    } else { // TPE
+      // Read TPE specific configuration.
+      boolean allowCoreThreadsTimeout = Configuration
+          .getBoolean(PropertyKey.Template.RPC_EXECUTOR_TPE_ALLOW_CORE_THREADS_TIMEOUT
+              .format(executorHost.toString()));
+      // Read TPE queue type.
+      ThreadPoolExecutorQueueType queueType = Configuration.getEnum(
+          PropertyKey.Template.RPC_EXECUTOR_TPE_QUEUE_TYPE.format(executorHost.toString()),
+          ThreadPoolExecutorQueueType.class);
+      // Create internal queue.
+      BlockingQueue<Runnable> queue = null;
+      switch (queueType) {
+        case LINKED_BLOCKING_QUEUE:
+          queue = new LinkedBlockingQueue<>();
+          break;
+        case LINKED_BLOCKING_QUEUE_WITH_CAP:
+          queue = new LinkedBlockingQueue<>(maxPoolSize);
+          break;
+        case ARRAY_BLOCKING_QUEUE:
+          queue = new ArrayBlockingQueue<>(maxPoolSize);
+          break;
+        case SYNCHRONOUS_BLOCKING_QUEUE:
+          queue = new SynchronousQueue<>();
+          break;
+        default:
+          throw new IllegalArgumentException(
+              String.format("Unsupported internal queue type: %s", queueType));
+      }
+      // Create ThreadPoolExecutor.
+      executorService = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveMs,
+          TimeUnit.MILLISECONDS, queue, ThreadFactoryUtils.build(threadNameFormat, true));
+      // Post settings.
+      ((ThreadPoolExecutor) executorService).allowCoreThreadTimeOut(allowCoreThreadsTimeout);
+    }
+    return new AlluxioExecutorService(executorService, rpcCounter);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/executor/ExecutorServiceBuilder, buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;)Lalluxio/master/AlluxioExecutorService; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - alluxio.executor.ExecutorServiceBuilder.buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;)Lalluxio/master/AlluxioExecutorService;, BB[SSA:-1..-2]0 - alluxio.executor.ExecutorServiceBuilder.buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;)Lalluxio/master/AlluxioExecutorService;, BB[SSA:3..3]2 - alluxio.executor.ExecutorServiceBuilder.buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;)Lalluxio/master/AlluxioExecutorService;, BB[SSA:-1..-2]3 - alluxio.executor.ExecutorServiceBuilder.buildExecutorService(Lalluxio/executor/ExecutorServiceBuilder$RpcExecutorHost;)Lalluxio/master/AlluxioExecutorService;], numberOfBasicBlocks=4, firstLineNumber=42, lastLineNumber=43, firstMethodNumber=42, lastMethodNumber=43, isFirstLineValid=false, methodSrcCode=
+  public static AlluxioExecutorService buildExecutorService(RpcExecutorHost executorHost) {
+    return buildExecutorService(executorHost, null);
+  }
+}

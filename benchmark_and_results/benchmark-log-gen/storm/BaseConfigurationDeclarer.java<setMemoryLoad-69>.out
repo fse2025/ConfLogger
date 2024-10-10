@@ -1,0 +1,35 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BaseConfigurationDeclarer.java	methodSinagture:	org.apache.storm.topology.BaseConfigurationDeclarer.setMemoryLoad(Ljava/lang/Number;Ljava/lang/Number;)Lorg/apache/storm/topology/ComponentConfigurationDeclarer;	methodLines:	69:78
+blockLines:	73:-1
+paras:	topology.component.resources.offheap.memory.mb
+TaintedStat:	NORMAL setMemoryLoad:conditional branch(eq, to iindex=23) 3,7 Node: < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setMemoryLoad(Ljava/lang/Number;Ljava/lang/Number;)Lorg/apache/storm/topology/ComponentConfigurationDeclarer; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/trident/topology/TridentTopologyBuilder, buildTopology(Ljava/util/Map;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere[259]169 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,167 @647 exception:168
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/trident/topology/TridentTopologyBuilder, buildTopology(Ljava/util/Map;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere[259]169 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 2,167 @647 exception:168
+NORMAL buildTopology:170 = checkcast <Application,Ljava/lang/Number>169 <Application,Ljava/lang/Number> Node: < Application, Lorg/apache/storm/trident/topology/TridentTopologyBuilder, buildTopology(Ljava/util/Map;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/trident/topology/TridentTopologyBuilder, buildTopology(Ljava/util/Map;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere[307]198 = invokeinterface < Application, Lorg/apache/storm/topology/SpoutDeclarer, setMemoryLoad(Ljava/lang/Number;Ljava/lang/Number;)Lorg/apache/storm/topology/ResourceDeclarer; > 195,166,170 @770 exception:197 v170
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setMemoryLoad(Ljava/lang/Number;Ljava/lang/Number;)Lorg/apache/storm/topology/ResourceDeclarer; > Context: Everywhere v3
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setMemoryLoad(Ljava/lang/Number;Ljava/lang/Number;)Lorg/apache/storm/topology/ResourceDeclarer; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setMemoryLoad(Ljava/lang/Number;Ljava/lang/Number;)Lorg/apache/storm/topology/ComponentConfigurationDeclarer; > 1,2,3 @3 exception:5 v3
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setMemoryLoad(Ljava/lang/Number;Ljava/lang/Number;)Lorg/apache/storm/topology/ComponentConfigurationDeclarer; > Context: Everywhere v3
+NORMAL setMemoryLoad:conditional branch(eq, to iindex=23) 3,7 Node: < Application, Lorg/apache/storm/topology/BaseConfigurationDeclarer, setMemoryLoad(Ljava/lang/Number;Ljava/lang/Number;)Lorg/apache/storm/topology/ComponentConfigurationDeclarer; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+        @SuppressWarnings("unchecked")
+        T ret = (T) this;
+        ret = setMemoryLoad(onHeap);
+
+        if (offHeap != null) {
+            offHeap = offHeap.doubleValue();
+            addResource(Config.TOPOLOGY_COMPONENT_RESOURCES_OFFHEAP_MEMORY_MB, offHeap);
+            ret = addConfiguration(Config.TOPOLOGY_COMPONENT_RESOURCES_OFFHEAP_MEMORY_MB, offHeap);
+        }
+        return ret;
+    }
+
+
+====================ctx:=======================

@@ -1,0 +1,23 @@
+```java
+if (path == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'path' is null. Please ensure 'path' is properly set.");
+    // ConfLogger Inserted End
+    return null;
+}
+StringBuilder beanName = new StringBuilder(DOMAIN + ":");
+int counter = 0;
+counter = tokenize(beanName, path, counter);
+tokenize(beanName, bean.getName(), counter);
+beanName.deleteCharAt(beanName.length() - 1);
+try {
+    return new ObjectName(beanName.toString());
+} catch (MalformedObjectNameException e) {
+    // ConfLogger Commented: Not Informative
+    // LOG.warn("Invalid name \"{}\" for class {}", beanName, bean.getClass());
+    // ConfLogger Inserted Start
+    logger.warn("Invalid name \"{}\" for class {}. Please check the configuration parameters 'path' and 'bean.getName()'.", beanName, bean.getClass());
+    // ConfLogger Inserted End
+    throw e;
+}
+```

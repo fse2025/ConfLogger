@@ -1,0 +1,15 @@
+```java
+if (Utils.isOnWindows()) {
+    return new AdvancedWindowsFSOps(conf);
+}
+// ConfLogger Inserted Start
+if (ObjectReader.getBoolean(conf.get(Config.SUPERVISOR_RUN_WORKER_AS_USER), false)) {
+    logger.info("Configuration parameter 'SUPERVISOR_RUN_WORKER_AS_USER' is set to true. Initializing AdvancedRunAsUserFSOps.");
+    return new AdvancedRunAsUserFSOps(conf);
+} else {
+    logger.info("Configuration parameter 'SUPERVISOR_RUN_WORKER_AS_USER' is set to false or not set. Initializing AdvancedFSOps.");
+}
+// ConfLogger Inserted End
+return new AdvancedFSOps(conf);
+}
+```

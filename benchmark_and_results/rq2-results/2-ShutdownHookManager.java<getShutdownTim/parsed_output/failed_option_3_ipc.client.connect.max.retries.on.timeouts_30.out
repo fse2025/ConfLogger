@@ -1,0 +1,1 @@
+ipc.client.connect.max.retries.on.timeouts	45	INFO	Possible loss of precision converting 50ns to SECONDS for hadoop.service.shutdown.timeout	30

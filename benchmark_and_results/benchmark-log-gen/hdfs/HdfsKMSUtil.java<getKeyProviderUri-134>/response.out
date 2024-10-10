@@ -1,0 +1,43 @@
+```java
+URI keyProviderUri = null;
+// Lookup the secret in credentials object for namenodeuri.
+Credentials credentials = ugi.getCredentials();
+Text credsKey = getKeyProviderMapKey(namenodeUri);
+byte[] keyProviderUriBytes =
+credentials.getSecretKey(credsKey);
+if(keyProviderUriBytes != null) {
+    keyProviderUri =
+    URI.create(DFSUtilClient.bytes2String(keyProviderUriBytes));
+}
+if (keyProviderUri == null) {
+    // Check if NN provided uri is not null and ignore property is false.
+    if (keyProviderUriStr != null && !conf.getBoolean(
+        DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI,
+        DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI_DEFAULT)) {
+        if (!keyProviderUriStr.isEmpty()) {
+            keyProviderUri = URI.create(keyProviderUriStr);
+        }
+    }
+    // Fallback to configuration.
+    if (keyProviderUri == null) {
+        // Either NN is old and doesn't report provider or ignore NN KMS
+        // provider property is set to true, so use conf.
+        keyProviderUri = KMSUtil.getKeyProviderUri(conf, keyProviderUriKeyName);
+    }
+    if (keyProviderUri != null) {
+        credentials.addSecretKey(
+        credsKey, DFSUtilClient.string2Bytes(keyProviderUri.toString()));
+    }
+}
+
+// ConfLogger Inserted Start
+if (keyProviderUri == null) {
+    logger.warn("KeyProvider URI is null. Configuration parameters: keyProviderUriStr={}, DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI={}, DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI_DEFAULT={}", keyProviderUriStr, conf.getBoolean(DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI, DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI_DEFAULT), DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI_DEFAULT);
+} else {
+    logger.info("KeyProvider URI successfully set. Configuration parameters: keyProviderUriStr={}, DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI={}, DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI_DEFAULT={}", keyProviderUriStr, conf.getBoolean(DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI, DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI_DEFAULT), DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI_DEFAULT);
+}
+// ConfLogger Inserted End
+
+return keyProviderUri;
+}
+```

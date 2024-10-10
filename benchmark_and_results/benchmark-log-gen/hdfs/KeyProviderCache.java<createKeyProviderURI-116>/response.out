@@ -1,0 +1,27 @@
+```java
+final String providerUriStr = conf.getTrimmed(
+CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH);
+// No provider set in conf
+if (providerUriStr == null || providerUriStr.isEmpty()) {
+    // ConfLogger Skipped
+    LOG.error("Could not find uri with key ["
+    + CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH
+    + "] to create a keyProvider !!");
+    return null;
+}
+final URI providerUri;
+try {
+    providerUri = new URI(providerUriStr);
+} catch (URISyntaxException e) {
+    // ConfLogger Commented: Not Informative
+    // LOG.error("KeyProvider URI string is invalid [" + providerUriStr + "]!!", e.getCause());
+    // ConfLogger Inserted Start
+    logger.error("KeyProvider URI string is invalid. Please check the configuration parameter: " 
+                 + CommonConfigurationKeysPublic.HADOOP_SECURITY_KEY_PROVIDER_PATH 
+                 + " with value [" + providerUriStr + "]!!", e.getCause());
+    // ConfLogger Inserted End
+    return null;
+}
+return providerUri;
+}
+```

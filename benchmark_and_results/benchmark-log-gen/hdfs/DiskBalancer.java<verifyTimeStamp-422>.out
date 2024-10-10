@@ -1,0 +1,55 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DiskBalancer.java	methodSinagture:	org.apache.hadoop.hdfs.server.datanode.DiskBalancer.verifyTimeStamp(Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;)V	methodLines:	422:439
+blockLines:	430:-1
+paras:	dfs.disk.balancer.plan.valid.interval
+TaintedStat:	NORMAL verifyTimeStamp:conditional branch(eq, to iindex=33) 19,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DiskBalancer, verifyTimeStamp(Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DiskBalancer, verifyTimeStamp(Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;)V > Context: Everywhere[17]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 12,13,14 @30 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DiskBalancer, verifyTimeStamp(Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;)V > Context: Everywhere[17]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 12,13,14 @30 exception:15
+NORMAL verifyTimeStamp:19 = invokevirtual < Application, Ljava/lang/String, matches(Ljava/lang/String;)Z > 16,17 @39 exception:18 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DiskBalancer, verifyTimeStamp(Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, matches(Ljava/lang/String;)Z > Context: Everywhere
+NORMAL matches:return 5 Node: < Primordial, Ljava/lang/String, matches(Ljava/lang/String;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, matches(Ljava/lang/String;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DiskBalancer, verifyTimeStamp(Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;)V > Context: Everywhere[21]19 = invokevirtual < Application, Ljava/lang/String, matches(Ljava/lang/String;)Z > 16,17 @39 exception:18
+NORMAL verifyTimeStamp:conditional branch(eq, to iindex=33) 19,11 Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DiskBalancer, verifyTimeStamp(Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void verifyTimeStamp(NodePlan plan) throws DiskBalancerException {
+    long now = Time.now();
+    long planTime = plan.getTimeStamp();
+
+    if ((planTime + planValidityInterval) < now) {
+      String planValidity = config.get(
+          DFSConfigKeys.DFS_DISK_BALANCER_PLAN_VALID_INTERVAL,
+          DFSConfigKeys.DFS_DISK_BALANCER_PLAN_VALID_INTERVAL_DEFAULT);
+      if (planValidity.matches("[0-9]$")) {
+        planValidity += "ms";
+      }
+      String errorString = "Plan was generated more than " + planValidity
+          + " ago";
+      LOG.error("Disk Balancer - " + errorString);
+      throw new DiskBalancerException(errorString,
+          DiskBalancerException.Result.OLD_PLAN_SUBMITTED);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/datanode/DiskBalancer, verifyPlan(Ljava/lang/String;JLjava/lang/String;Z)Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan; > Context: Everywhere, blocks=[BB[SSA:15..17]7 - org.apache.hadoop.hdfs.server.datanode.DiskBalancer.verifyPlan(Ljava/lang/String;JLjava/lang/String;Z)Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;, BB[SSA:11..14]6 - org.apache.hadoop.hdfs.server.datanode.DiskBalancer.verifyPlan(Ljava/lang/String;JLjava/lang/String;Z)Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;, BB[SSA:18..20]8 - org.apache.hadoop.hdfs.server.datanode.DiskBalancer.verifyPlan(Ljava/lang/String;JLjava/lang/String;Z)Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;, BB[SSA:-1..-2]10 - org.apache.hadoop.hdfs.server.datanode.DiskBalancer.verifyPlan(Ljava/lang/String;JLjava/lang/String;Z)Lorg/apache/hadoop/hdfs/server/diskbalancer/planner/NodePlan;], numberOfBasicBlocks=4, firstLineNumber=360, lastLineNumber=364, firstMethodNumber=357, lastMethodNumber=365, isFirstLineValid=true, methodSrcCode=
+
+    Preconditions.checkState(lock.isHeldByCurrentThread());
+    verifyPlanVersion(planVersion);
+    NodePlan nodePlan = verifyPlanHash(planID, plan);
+    if (!force) {
+      verifyTimeStamp(nodePlan);
+    }
+    verifyNodeUUID(nodePlan);
+    return nodePlan;
+  }
+}

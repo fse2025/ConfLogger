@@ -1,0 +1,56 @@
+```java
+if (isFirstAttempt()) {
+    return false;  // no need to recover on the first attempt
+}
+
+boolean recoveryEnabled = getConfig().getBoolean(
+    MRJobConfig.MR_AM_JOB_RECOVERY_ENABLE,
+    MRJobConfig.MR_AM_JOB_RECOVERY_ENABLE_DEFAULT);
+if (!recoveryEnabled) {
+    // ConfLogger Commented: Not Informative
+    // LOG.info("Not attempting to recover. Recovery disabled. To enable " +
+    // "recovery, set " + MRJobConfig.MR_AM_JOB_RECOVERY_ENABLE);
+    // ConfLogger Inserted Start
+    logger.info("Recovery disabled. To enable recovery, set " + MRJobConfig.MR_AM_JOB_RECOVERY_ENABLE + " to true. Current value: " + recoveryEnabled);
+    // ConfLogger Inserted End
+    return false;
+}
+
+boolean recoverySupportedByCommitter = isRecoverySupported();
+if (!recoverySupportedByCommitter) {
+    LOG.info("Not attempting to recover. Recovery is not supported by " +
+    committer.getClass() + ". Use an OutputCommitter that supports" +
+    " recovery.");
+    return false;
+}
+
+int reducerCount = getConfig().getInt(MRJobConfig.NUM_REDUCES, 0);
+
+// If a shuffle secret was not provided by the job client, one will be
+// generated in this job attempt. However, that disables recovery if
+// there are reducers as the shuffle secret would be job attempt specific.
+boolean shuffleKeyValidForRecovery =
+    TokenCache.getShuffleSecretKey(jobCredentials) != null;
+if (reducerCount > 0 && !shuffleKeyValidForRecovery) {
+    // ConfLogger Commented: Not Informative
+    // LOG.info("Not attempting to recover. The shuffle key is invalid for " +
+    // "recovery.");
+    // ConfLogger Inserted Start
+    logger.info("Recovery disabled. The shuffle key is invalid for recovery. Reducer count: " + reducerCount + ", Shuffle key valid: " + shuffleKeyValidForRecovery);
+    // ConfLogger Inserted End
+    return false;
+}
+
+// If the intermediate data is encrypted, recovering the job requires the
+// access to the key. Until the encryption key is persisted, we should
+// avoid attempts to recover.
+boolean spillEncrypted = CryptoUtils.isEncryptedSpillEnabled(getConfig());
+if (reducerCount > 0 && spillEncrypted) {
+    LOG.info("Not attempting to recover. Intermediate spill encryption" +
+    " is enabled.");
+    return false;
+}
+
+return true;
+}
+```

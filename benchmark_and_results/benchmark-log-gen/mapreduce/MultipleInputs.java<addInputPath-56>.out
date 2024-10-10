@@ -1,0 +1,44 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MultipleInputs.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.MultipleInputs.addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;)V	methodLines:	56:66
+blockLines:	61:-1
+paras:	null
+TaintedStat:	NORMAL addInputPath:conditional branch(ne, to iindex=27) 24,25 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;)V > Context: Everywhere[18]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 21,22 @40 exception:23
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;)V > Context: Everywhere[18]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 21,22 @40 exception:23
+NORMAL addInputPath:conditional branch(ne, to iindex=27) 24,25 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Class<? extends InputFormat> inputFormatClass) {
+    String inputFormatMapping = path.toString() + ";"
+       + inputFormatClass.getName();
+    Configuration conf = job.getConfiguration();
+    String inputFormats = conf.get(DIR_FORMATS);
+    conf.set(DIR_FORMATS,
+       inputFormats == null ? inputFormatMapping : inputFormats + ","
+           + inputFormatMapping);
+
+    job.setInputFormatClass(DelegatingInputFormat.class);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/MultipleInputs, addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;Ljava/lang/Class;)V > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.hadoop.mapreduce.lib.input.MultipleInputs.addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;Ljava/lang/Class;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.mapreduce.lib.input.MultipleInputs.addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;Ljava/lang/Class;)V, BB[SSA:4..5]2 - org.apache.hadoop.mapreduce.lib.input.MultipleInputs.addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;Ljava/lang/Class;)V, BB[SSA:-1..-2]24 - org.apache.hadoop.mapreduce.lib.input.MultipleInputs.addInputPath(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;Ljava/lang/Class;Ljava/lang/Class;)V], numberOfBasicBlocks=4, firstLineNumber=81, lastLineNumber=83, firstMethodNumber=81, lastMethodNumber=90, isFirstLineValid=false, methodSrcCode=
+
+    addInputPath(job, path, inputFormatClass);
+    Configuration conf = job.getConfiguration();
+    String mapperMapping = path.toString() + ";" + mapperClass.getName();
+    String mappers = conf.get(DIR_MAPPERS);
+    conf.set(DIR_MAPPERS, mappers == null ? mapperMapping
+       : mappers + "," + mapperMapping);
+
+    job.setMapperClass(DelegatingMapper.class);
+  }
+
+}

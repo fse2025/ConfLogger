@@ -1,0 +1,130 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ZKDelegationTokenSecretManager.java	methodSinagture:	org.apache.hadoop.security.token.delegation.ZKDelegationTokenSecretManager.<init>(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	154:233
+blockLines:	183:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=93) 54,51 Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[52]156 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,102,103 @109 exception:155
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[52]156 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,102,103 @109 exception:155
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[53]158 = invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > 153,156 @112 exception:157 v156
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere v2
+PARAM_CALLER:Node: < Primordial, Ljava/lang/StringBuilder, append(Ljava/lang/String;)Ljava/lang/StringBuilder; > Context: Everywhere[2]5 = invokespecial < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > 1,2 @2 exception:4 v2
+PARAM_CALLEE:Node: < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > Context: Everywhere v2
+NORMAL append:6 = invokevirtual < Primordial, Ljava/lang/String, length()I > 2 @10 exception:5 Node: < Primordial, Ljava/lang/AbstractStringBuilder, append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+NORMAL length:6 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @6 exception:5 Node: < Primordial, Ljava/lang/String, length()I > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL coder:return 7 Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, coder()B > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere[13]8 = invokevirtual < Primordial, Ljava/lang/String, coder()B > 1 @20 exception:7
+NORMAL equals:conditional branch(ne, to iindex=33) 8,10 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 21 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[88]54 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 44,52 @184 exception:53
+NORMAL <init>:conditional branch(eq, to iindex=93) 54,51 Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ZKDelegationTokenSecretManager.java	methodSinagture:	org.apache.hadoop.security.token.delegation.ZKDelegationTokenSecretManager.<init>(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	154:233
+blockLines:	189:-1
+paras:	null
+TaintedStat:	NORMAL <init>:conditional branch(eq, to iindex=127) 59,51 Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[75]44 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,42 @161 exception:43
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[75]44 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,42 @161 exception:43
+NORMAL <init>:50 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 44,48 @175 exception:49 Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[102]59 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 44,48 @209 exception:58
+NORMAL <init>:conditional branch(eq, to iindex=127) 59,51 Node: < Application, Lorg/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public ZKDelegationTokenSecretManager(Configuration conf) {
+    super(conf.getLong(DelegationTokenManager.UPDATE_INTERVAL,
+        DelegationTokenManager.UPDATE_INTERVAL_DEFAULT) * 1000,
+        conf.getLong(DelegationTokenManager.MAX_LIFETIME,
+            DelegationTokenManager.MAX_LIFETIME_DEFAULT) * 1000,
+        conf.getLong(DelegationTokenManager.RENEW_INTERVAL,
+            DelegationTokenManager.RENEW_INTERVAL_DEFAULT) * 1000,
+        conf.getLong(DelegationTokenManager.REMOVAL_SCAN_INTERVAL,
+            DelegationTokenManager.REMOVAL_SCAN_INTERVAL_DEFAULT) * 1000);
+    seqNumBatchSize = conf.getInt(ZK_DTSM_TOKEN_SEQNUM_BATCH_SIZE,
+        ZK_DTSM_TOKEN_SEQNUM_BATCH_SIZE_DEFAULT);
+    isTokenWatcherEnabled = conf.getBoolean(ZK_DTSM_TOKEN_WATCHER_ENABLED,
+        ZK_DTSM_TOKEN_WATCHER_ENABLED_DEFAULT);
+    if (CURATOR_TL.get() != null) {
+      zkClient =
+          CURATOR_TL.get().usingNamespace(
+              conf.get(ZK_DTSM_ZNODE_WORKING_PATH,
+                  ZK_DTSM_ZNODE_WORKING_PATH_DEAFULT)
+                  + "/" + ZK_DTSM_NAMESPACE);
+      isExternalClient = true;
+    } else {
+      String connString = conf.get(ZK_DTSM_ZK_CONNECTION_STRING);
+      Preconditions.checkNotNull(connString,
+          "Zookeeper connection string cannot be null");
+      String authType = conf.get(ZK_DTSM_ZK_AUTH_TYPE);
+
+      // AuthType has to be explicitly set to 'none' or 'sasl'
+      Preconditions.checkNotNull(authType, "Zookeeper authType cannot be null !!");
+      Preconditions.checkArgument(
+          authType.equals("sasl") || authType.equals("none"),
+          "Zookeeper authType must be one of [none, sasl]");
+
+      Builder builder = null;
+      try {
+        ACLProvider aclProvider = null;
+        if (authType.equals("sasl")) {
+          LOG.info("Connecting to ZooKeeper with SASL/Kerberos"
+              + "and using 'sasl' ACLs");
+          String principal = setJaasConfiguration(conf);
+          System.setProperty(ZKClientConfig.LOGIN_CONTEXT_NAME_KEY,
+                             JAAS_LOGIN_ENTRY_NAME);
+          System.setProperty("zookeeper.authProvider.1",
+              "org.apache.zookeeper.server.auth.SASLAuthenticationProvider");
+          aclProvider = new SASLOwnerACLProvider(principal);
+        } else { // "none"
+          LOG.info("Connecting to ZooKeeper without authentication");
+          aclProvider = new DefaultACLProvider(); // open to everyone
+        }
+        int sessionT =
+            conf.getInt(ZK_DTSM_ZK_SESSION_TIMEOUT,
+                ZK_DTSM_ZK_SESSION_TIMEOUT_DEFAULT);
+        int numRetries =
+            conf.getInt(ZK_DTSM_ZK_NUM_RETRIES, ZK_DTSM_ZK_NUM_RETRIES_DEFAULT);
+        builder =
+            CuratorFrameworkFactory
+                .builder()
+                .zookeeperFactory(new ZKCuratorManager.HadoopZookeeperFactory(
+                    conf.get(ZK_DTSM_ZK_KERBEROS_SERVER_PRINCIPAL)))
+                .aclProvider(aclProvider)
+                .namespace(
+                    conf.get(ZK_DTSM_ZNODE_WORKING_PATH,
+                        ZK_DTSM_ZNODE_WORKING_PATH_DEAFULT)
+                        + "/"
+                        + ZK_DTSM_NAMESPACE
+                )
+                .sessionTimeoutMs(sessionT)
+                .connectionTimeoutMs(
+                    conf.getInt(ZK_DTSM_ZK_CONNECTION_TIMEOUT,
+                        ZK_DTSM_ZK_CONNECTION_TIMEOUT_DEFAULT)
+                )
+                .retryPolicy(
+                    new RetryNTimes(numRetries, sessionT / numRetries));
+      } catch (Exception ex) {
+        throw new RuntimeException("Could not Load ZK acls or auth: " + ex, ex);
+      }
+      zkClient = builder.ensembleProvider(new FixedEnsembleProvider(connString))
+          .build();
+      isExternalClient = false;
+    }
+  }
+
+
+
+====================ctx:=======================

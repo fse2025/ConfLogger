@@ -1,0 +1,19 @@
+```java
+this.conf = conf;
+keyFieldHelper = new KeyFieldHelper();
+String keyFieldSeparator =
+conf.get(MRJobConfig.MAP_OUTPUT_KEY_FIELD_SEPARATOR, "\t");
+keyFieldHelper.setKeyFieldSeparator(keyFieldSeparator);
+if (conf.get("num.key.fields.for.partition") != null) {
+LOG.warn("Using deprecated num.key.fields.for.partition. " +
+"Use mapreduce.partition.keypartitioner.options instead"); // ConfLogger Skipped
+this.numOfPartitionFields = conf.getInt("num.key.fields.for.partition",0);
+keyFieldHelper.setKeyFieldSpec(1,numOfPartitionFields);
+} else {
+String option = conf.get(PARTITIONER_OPTIONS);
+keyFieldHelper.parseOption(option);
+// ConfLogger Inserted Start
+logger.info("Configuration parameter 'PARTITIONER_OPTIONS' is set with value: " + option);
+// ConfLogger Inserted End
+}
+```

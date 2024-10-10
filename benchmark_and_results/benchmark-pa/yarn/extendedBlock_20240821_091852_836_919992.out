@@ -1,0 +1,44 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	WebAppUtils.java	methodSinagture:	org.apache.hadoop.yarn.webapp.util.WebAppUtils.getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String;	methodLines:	486:497
+blockLines:	490:-1
+paras:	null
+TaintedStat:	NORMAL getPassword:conditional branch(eq, to iindex=14) 6,4 Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPassword(Ljava/lang/String;)[C > 1,2 @4 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[4]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getPassword(Ljava/lang/String;)[C > 1,2 @4 exception:5
+NORMAL getPassword:conditional branch(eq, to iindex=14) 6,4 Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, getPassword(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static String getPassword(Configuration conf, String alias) {
+    String password = null;
+    try {
+      char[] passchars = conf.getPassword(alias);
+      if (passchars != null) {
+        password = new String(passchars);
+      }
+    }
+    catch (IOException ioe) {
+      password = null;
+    }
+    return password;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere, blocks=[BB[SSA:19..21]7 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:14..18]6 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:22..22]8 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]20 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:26..28]10 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:23..25]9 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:29..32]11 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]20 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:37..39]14 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:34..36]13 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:40..43]15 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]20 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;], numberOfBasicBlocks=12, firstLineNumber=468, lastLineNumber=465, firstMethodNumber=457, lastMethodNumber=465, isFirstLineValid=true, methodSrcCode=
+
+    Configuration sslConf = new Configuration(false);
+
+    sslConf.addResource(YarnConfiguration.YARN_SSL_SERVER_RESOURCE_DEFAULT);
+    if (conf != null) {
+      sslConf.addResource(conf);
+    }
+    boolean needsClientAuth = YarnConfiguration.YARN_SSL_CLIENT_HTTPS_NEED_AUTH_DEFAULT;
+    return builder
+        .needsClientAuth(needsClientAuth)
+}

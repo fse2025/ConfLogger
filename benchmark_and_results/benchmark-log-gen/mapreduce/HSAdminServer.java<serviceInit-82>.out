@@ -1,0 +1,65 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	HSAdminServer.java	methodSinagture:	org.apache.hadoop.mapreduce.v2.hs.server.HSAdminServer.serviceInit(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	82:126
+blockLines:	117:-1
+paras:	null
+TaintedStat:	NORMAL serviceInit:conditional branch(eq, to iindex=80) 53,42 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/server/HSAdminServer, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/server/HSAdminServer, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[70]53 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,51,42 @143 exception:52
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/server/HSAdminServer, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[70]53 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,51,42 @143 exception:52
+NORMAL serviceInit:conditional branch(eq, to iindex=80) 53,42 Node: < Application, Lorg/apache/hadoop/mapreduce/v2/hs/server/HSAdminServer, serviceInit(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void serviceInit(Configuration conf) throws Exception {
+    RPC.setProtocolEngine(conf, RefreshUserMappingsProtocolPB.class,
+        ProtobufRpcEngine2.class);
+
+    RefreshUserMappingsProtocolServerSideTranslatorPB refreshUserMappingXlator = new RefreshUserMappingsProtocolServerSideTranslatorPB(
+        this);
+    BlockingService refreshUserMappingService = RefreshUserMappingsProtocolService
+        .newReflectiveBlockingService(refreshUserMappingXlator);
+
+    GetUserMappingsProtocolServerSideTranslatorPB getUserMappingXlator = new GetUserMappingsProtocolServerSideTranslatorPB(
+        this);
+    BlockingService getUserMappingService = GetUserMappingsProtocolService
+        .newReflectiveBlockingService(getUserMappingXlator);
+
+    HSAdminRefreshProtocolServerSideTranslatorPB refreshHSAdminProtocolXlator = new HSAdminRefreshProtocolServerSideTranslatorPB(
+        this);
+    BlockingService refreshHSAdminProtocolService = HSAdminRefreshProtocolService
+        .newReflectiveBlockingService(refreshHSAdminProtocolXlator);
+
+    clientRpcAddress = conf.getSocketAddr(
+        JHAdminConfig.MR_HISTORY_BIND_HOST,
+        JHAdminConfig.JHS_ADMIN_ADDRESS,
+        JHAdminConfig.DEFAULT_JHS_ADMIN_ADDRESS,
+        JHAdminConfig.DEFAULT_JHS_ADMIN_PORT);
+    clientRpcServer = new RPC.Builder(conf)
+        .setProtocol(RefreshUserMappingsProtocolPB.class)
+        .setInstance(refreshUserMappingService)
+        .setBindAddress(clientRpcAddress.getHostName())
+        .setPort(clientRpcAddress.getPort()).setVerbose(false).build();
+
+    addProtocol(conf, GetUserMappingsProtocolPB.class, getUserMappingService);
+    addProtocol(conf, HSAdminRefreshProtocolPB.class,
+        refreshHSAdminProtocolService);
+
+    // Enable service authorization?
+    if (conf.getBoolean(
+        CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHORIZATION,
+        false)) {
+      clientRpcServer.refreshServiceAcl(conf, new ClientHSPolicyProvider());
+    }
+
+    adminAcl = new AccessControlList(conf.get(JHAdminConfig.JHS_ADMIN_ACL,
+        JHAdminConfig.DEFAULT_JHS_ADMIN_ACL));
+
+  }
+
+
+
+====================ctx:=======================

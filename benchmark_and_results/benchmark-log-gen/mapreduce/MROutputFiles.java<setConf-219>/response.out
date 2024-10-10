@@ -1,0 +1,9 @@
+```java
+if (!(conf instanceof JobConf)) {
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'conf' is not an instance of JobConf. Creating a new JobConf instance from the provided configuration.");
+    // ConfLogger Inserted End
+    conf = new JobConf(conf);
+}
+super.setConf(conf);
+```

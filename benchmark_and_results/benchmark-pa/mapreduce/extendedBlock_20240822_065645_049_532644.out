@@ -1,0 +1,61 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	TokenCache.java	methodSinagture:	org.apache.hadoop.mapreduce.security.TokenCache.mergeBinaryTokens(Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	152:168
+blockLines:	155:-1
+paras:	null
+TaintedStat:	NORMAL mergeBinaryTokens:conditional branch(eq, to iindex=27) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, mergeBinaryTokens(Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, mergeBinaryTokens(Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, mergeBinaryTokens(Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[2]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,4 @3 exception:5
+NORMAL mergeBinaryTokens:conditional branch(eq, to iindex=27) 6,7 Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, mergeBinaryTokens(Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static void mergeBinaryTokens(Credentials creds, Configuration conf) {
+    String binaryTokenFilename =
+        conf.get(MRJobConfig.MAPREDUCE_JOB_CREDENTIALS_BINARY);
+    if (binaryTokenFilename != null) {
+      Credentials binary;
+      try {
+        binary = Credentials.readTokenStorageFile(
+            FileSystem.getLocal(conf).makeQualified(
+                new Path(binaryTokenFilename)),
+            conf);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      // supplement existing tokens with the tokens in the binary file
+      creds.mergeAll(binary);
+    }
+  }
+  
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/security/TokenCache, obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:18..20]9 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:5..6]2 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:16..17]8 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:21..24]10 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V, BB[SSA:-1..-2]27 - org.apache.hadoop.mapreduce.security.TokenCache.obtainTokensForNamenodesInternal(Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/security/Credentials;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)V], numberOfBasicBlocks=5, firstLineNumber=132, lastLineNumber=143, firstMethodNumber=130, lastMethodNumber=150, isFirstLineValid=true, methodSrcCode=
+    // RM skips renewing token with empty renewer
+    String delegTokenRenewer = "";
+    if (!isTokenRenewalExcluded(fs, conf)) {
+      if (StringUtils.isEmpty(renewer)) {
+        throw new IOException(
+            "Can't get Master Kerberos principal for use as renewer");
+      } else {
+        delegTokenRenewer = renewer;
+      }
+    }
+
+    mergeBinaryTokens(credentials, conf);
+
+    final Token<?> tokens[] = fs.addDelegationTokens(delegTokenRenewer,
+                                                     credentials);
+    if (tokens != null) {
+      for (Token<?> token : tokens) {
+        LOG.info("Got dt for " + fs.getUri() + "; "+token);
+      }
+    }
+  }
+
+}

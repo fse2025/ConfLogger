@@ -1,0 +1,244 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	MROutputFiles.java	methodSinagture:	org.apache.hadoop.mapred.MROutputFiles.setConf(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	219:224
+blockLines:	220:-1
+paras:	null
+TaintedStat:	NORMAL setConf:conditional branch(ne, to iindex=9) 4,5 Node: < Application, Lorg/apache/hadoop/mapred/MROutputFiles, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapred/MROutputFiles in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapred/MROutputFiles, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[112]89 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,86,87 @247 exception:88
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere[112]89 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,86,87 @247 exception:88
+NORMAL setupAMCommand:conditional branch(eq, to iindex=141) 89,87 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+NORMAL setupAMCommand:93 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,90,91 @258 exception:92 Node: < Application, Lorg/apache/hadoop/mapred/YARNRunner, setupAMCommand(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/List; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 23 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/authorize/ServiceAuthorizationManager, refreshWithLoadedConfiguration(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/authorize/PolicyProvider;)V > Context: Everywhere[65]42 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 2,40,12 @132 exception:41
+NORMAL refreshWithLoadedConfiguration:invokespecial < Extension, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;)V > 38,42 @135 exception:43 Node: < Extension, Lorg/apache/hadoop/security/authorize/ServiceAuthorizationManager, refreshWithLoadedConfiguration(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/security/authorize/PolicyProvider;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;)V > Context: Everywhere
+NORMAL <init>:5 = new <Extension,Lorg/apache/hadoop/conf/Configuration>@5 Node: < Extension, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;)V > Context: Everywhere
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/security/authorize/AccessControlList, <init>(Ljava/lang/String;)V > Context: Everywhere[6]8 = invokestatic < Extension, Lorg/apache/hadoop/security/Groups, getUserToGroupsMappingService(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/security/Groups; > 5 @12 exception:7 v5
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/security/Groups, getUserToGroupsMappingService(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/security/Groups; > Context: Everywhere v1
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/security/Groups, getUserToGroupsMappingService(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/security/Groups; > Context: Everywhere[13]invokespecial < Extension, Lorg/apache/hadoop/security/Groups, <init>(Lorg/apache/hadoop/conf/Configuration;)V > 12,1 @32 exception:13 v1
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/security/Groups, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/security/Groups, <init>(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[5]invokespecial < Extension, Lorg/apache/hadoop/security/Groups, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;)V > 1,2,4 @9 exception:6 v2
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/security/Groups, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/security/Groups, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;)V > Context: Everywhere[38]23 = invokestatic < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 21,2 @75 exception:22 v2
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere v2
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere[34]invokestatic < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > 21,2 @65 exception:25 v2
+PARAM_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere v2
+PARAM_CALLER:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, setConf(Ljava/lang/Object;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[10]invokeinterface < Extension, Lorg/apache/hadoop/conf/Configurable, setConf(Lorg/apache/hadoop/conf/Configuration;)V > 7,2 @16 exception:8 v2
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapred/MROutputFiles, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapred/MROutputFiles in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapred/MROutputFiles, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere] v2
+NORMAL setConf:4 = instanceof 2 <Application,Lorg/apache/hadoop/mapred/JobConf> Node: < Application, Lorg/apache/hadoop/mapred/MROutputFiles, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapred/MROutputFiles in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapred/MROutputFiles, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL setConf:conditional branch(ne, to iindex=9) 4,5 Node: < Application, Lorg/apache/hadoop/mapred/MROutputFiles, setConf(Lorg/apache/hadoop/conf/Configuration;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapred/MROutputFiles in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapred/MROutputFiles, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public void setConf(Configuration conf) {
+    if (!(conf instanceof JobConf)) {
+      conf = new JobConf(conf);
+    }
+    super.setConf(conf);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=145, lastMethodNumber=239, isFirstLineValid=true, methodSrcCode=
+                      ExceptionReporter exceptionReporter,
+                      Progress mergePhase, MapOutputFile mapOutputFile) {
+    this.reduceId = reduceId;
+    this.jobConf = jobConf;
+    this.localDirAllocator = localDirAllocator;
+    this.exceptionReporter = exceptionReporter;
+    
+    this.reporter = reporter;
+    this.codec = codec;
+    this.combinerClass = combinerClass;
+    this.combineCollector = combineCollector;
+    this.reduceCombineInputCounter = reduceCombineInputCounter;
+    this.spilledRecordsCounter = spilledRecordsCounter;
+    this.mergedMapOutputsCounter = mergedMapOutputsCounter;
+    this.mapOutputFile = mapOutputFile;
+    this.mapOutputFile.setConf(jobConf);
+    
+    this.localFS = localFS;
+    this.rfs = ((LocalFileSystem)localFS).getRaw();
+    
+    final float maxInMemCopyUse =
+      jobConf.getFloat(MRJobConfig.SHUFFLE_INPUT_BUFFER_PERCENT,
+          MRJobConfig.DEFAULT_SHUFFLE_INPUT_BUFFER_PERCENT);
+    if (maxInMemCopyUse > 1.0 || maxInMemCopyUse < 0.0) {
+      throw new IllegalArgumentException("Invalid value for " +
+          MRJobConfig.SHUFFLE_INPUT_BUFFER_PERCENT + ": " +
+          maxInMemCopyUse);
+    }
+
+    // Allow unit tests to fix Runtime memory
+    this.memoryLimit = (long)(jobConf.getLong(
+        MRJobConfig.REDUCE_MEMORY_TOTAL_BYTES,
+        Runtime.getRuntime().maxMemory()) * maxInMemCopyUse);
+
+    this.ioSortFactor = jobConf.getInt(MRJobConfig.IO_SORT_FACTOR,
+        MRJobConfig.DEFAULT_IO_SORT_FACTOR);
+
+    final float singleShuffleMemoryLimitPercent =
+        jobConf.getFloat(MRJobConfig.SHUFFLE_MEMORY_LIMIT_PERCENT,
+            DEFAULT_SHUFFLE_MEMORY_LIMIT_PERCENT);
+    if (singleShuffleMemoryLimitPercent < 0.0f
+        || singleShuffleMemoryLimitPercent > 1.0f) {
+      throw new IllegalArgumentException("Invalid value for "
+          + MRJobConfig.SHUFFLE_MEMORY_LIMIT_PERCENT + ": "
+          + singleShuffleMemoryLimitPercent);
+    }
+
+    usedMemory = 0L;
+    commitMemory = 0L;
+    long maxSingleShuffleLimitConfiged =
+        (long)(memoryLimit * singleShuffleMemoryLimitPercent);
+    if(maxSingleShuffleLimitConfiged > Integer.MAX_VALUE) {
+      maxSingleShuffleLimitConfiged = Integer.MAX_VALUE;
+      LOG.info("The max number of bytes for a single in-memory shuffle cannot" +
+          " be larger than Integer.MAX_VALUE. Setting it to Integer.MAX_VALUE");
+    }
+    this.maxSingleShuffleLimit = maxSingleShuffleLimitConfiged;
+    this.memToMemMergeOutputsThreshold =
+        jobConf.getInt(MRJobConfig.REDUCE_MEMTOMEM_THRESHOLD, ioSortFactor);
+    this.mergeThreshold = (long)(this.memoryLimit * 
+                          jobConf.getFloat(
+                            MRJobConfig.SHUFFLE_MERGE_PERCENT,
+                            MRJobConfig.DEFAULT_SHUFFLE_MERGE_PERCENT));
+    LOG.info("MergerManager: memoryLimit=" + memoryLimit + ", " +
+             "maxSingleShuffleLimit=" + maxSingleShuffleLimit + ", " +
+             "mergeThreshold=" + mergeThreshold + ", " + 
+             "ioSortFactor=" + ioSortFactor + ", " +
+             "memToMemMergeOutputsThreshold=" + memToMemMergeOutputsThreshold);
+
+    if (this.maxSingleShuffleLimit >= this.mergeThreshold) {
+      throw new RuntimeException("Invalid configuration: "
+          + "maxSingleShuffleLimit should be less than mergeThreshold "
+          + "maxSingleShuffleLimit: " + this.maxSingleShuffleLimit
+          + "mergeThreshold: " + this.mergeThreshold);
+    }
+
+    boolean allowMemToMemMerge = 
+      jobConf.getBoolean(MRJobConfig.REDUCE_MEMTOMEM_ENABLED, false);
+    if (allowMemToMemMerge) {
+      this.memToMemMerger = 
+        new IntermediateMemoryToMemoryMerger(this,
+                                             memToMemMergeOutputsThreshold);
+      this.memToMemMerger.start();
+    } else {
+      this.memToMemMerger = null;
+    }
+    
+    this.inMemoryMerger = createInMemoryMerger();
+    this.inMemoryMerger.start();
+    
+    this.onDiskMerger = new OnDiskMerger(this);
+    this.onDiskMerger.start();
+    
+    this.mergePhase = mergePhase;
+  }
+  
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl, <init>(Lorg/apache/hadoop/mapreduce/TaskAttemptID;Lorg/apache/hadoop/mapred/JobConf;Lorg/apache/hadoop/fs/FileSystem;Lorg/apache/hadoop/fs/LocalDirAllocator;Lorg/apache/hadoop/mapred/Reporter;Lorg/apache/hadoop/io/compress/CompressionCodec;Ljava/lang/Class;Lorg/apache/hadoop/mapred/Task$CombineOutputCollector;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapred/Counters$Counter;Lorg/apache/hadoop/mapreduce/task/reduce/ExceptionReporter;Lorg/apache/hadoop/util/Progress;Lorg/apache/hadoop/mapred/MapOutputFile;)V > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, createMergeManager(Lorg/apache/hadoop/mapred/ShuffleConsumerPlugin$Context;)Lorg/apache/hadoop/mapreduce/task/reduce/MergeManager; >:Lorg/apache/hadoop/mapreduce/task/reduce/MergeManagerImpl in DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/task/reduce/Shuffle, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]}>, B=Everywhere], blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=145, lastMethodNumber=239, isFirstLineValid=true, methodSrcCode=
+                      ExceptionReporter exceptionReporter,
+                      Progress mergePhase, MapOutputFile mapOutputFile) {
+    this.reduceId = reduceId;
+    this.jobConf = jobConf;
+    this.localDirAllocator = localDirAllocator;
+    this.exceptionReporter = exceptionReporter;
+    
+    this.reporter = reporter;
+    this.codec = codec;
+    this.combinerClass = combinerClass;
+    this.combineCollector = combineCollector;
+    this.reduceCombineInputCounter = reduceCombineInputCounter;
+    this.spilledRecordsCounter = spilledRecordsCounter;
+    this.mergedMapOutputsCounter = mergedMapOutputsCounter;
+    this.mapOutputFile = mapOutputFile;
+    this.mapOutputFile.setConf(jobConf);
+    
+    this.localFS = localFS;
+    this.rfs = ((LocalFileSystem)localFS).getRaw();
+    
+    final float maxInMemCopyUse =
+      jobConf.getFloat(MRJobConfig.SHUFFLE_INPUT_BUFFER_PERCENT,
+          MRJobConfig.DEFAULT_SHUFFLE_INPUT_BUFFER_PERCENT);
+    if (maxInMemCopyUse > 1.0 || maxInMemCopyUse < 0.0) {
+      throw new IllegalArgumentException("Invalid value for " +
+          MRJobConfig.SHUFFLE_INPUT_BUFFER_PERCENT + ": " +
+          maxInMemCopyUse);
+    }
+
+    // Allow unit tests to fix Runtime memory
+    this.memoryLimit = (long)(jobConf.getLong(
+        MRJobConfig.REDUCE_MEMORY_TOTAL_BYTES,
+        Runtime.getRuntime().maxMemory()) * maxInMemCopyUse);
+
+    this.ioSortFactor = jobConf.getInt(MRJobConfig.IO_SORT_FACTOR,
+        MRJobConfig.DEFAULT_IO_SORT_FACTOR);
+
+    final float singleShuffleMemoryLimitPercent =
+        jobConf.getFloat(MRJobConfig.SHUFFLE_MEMORY_LIMIT_PERCENT,
+            DEFAULT_SHUFFLE_MEMORY_LIMIT_PERCENT);
+    if (singleShuffleMemoryLimitPercent < 0.0f
+        || singleShuffleMemoryLimitPercent > 1.0f) {
+      throw new IllegalArgumentException("Invalid value for "
+          + MRJobConfig.SHUFFLE_MEMORY_LIMIT_PERCENT + ": "
+          + singleShuffleMemoryLimitPercent);
+    }
+
+    usedMemory = 0L;
+    commitMemory = 0L;
+    long maxSingleShuffleLimitConfiged =
+        (long)(memoryLimit * singleShuffleMemoryLimitPercent);
+    if(maxSingleShuffleLimitConfiged > Integer.MAX_VALUE) {
+      maxSingleShuffleLimitConfiged = Integer.MAX_VALUE;
+      LOG.info("The max number of bytes for a single in-memory shuffle cannot" +
+          " be larger than Integer.MAX_VALUE. Setting it to Integer.MAX_VALUE");
+    }
+    this.maxSingleShuffleLimit = maxSingleShuffleLimitConfiged;
+    this.memToMemMergeOutputsThreshold =
+        jobConf.getInt(MRJobConfig.REDUCE_MEMTOMEM_THRESHOLD, ioSortFactor);
+    this.mergeThreshold = (long)(this.memoryLimit * 
+                          jobConf.getFloat(
+                            MRJobConfig.SHUFFLE_MERGE_PERCENT,
+                            MRJobConfig.DEFAULT_SHUFFLE_MERGE_PERCENT));
+    LOG.info("MergerManager: memoryLimit=" + memoryLimit + ", " +
+             "maxSingleShuffleLimit=" + maxSingleShuffleLimit + ", " +
+             "mergeThreshold=" + mergeThreshold + ", " + 
+             "ioSortFactor=" + ioSortFactor + ", " +
+             "memToMemMergeOutputsThreshold=" + memToMemMergeOutputsThreshold);
+
+    if (this.maxSingleShuffleLimit >= this.mergeThreshold) {
+      throw new RuntimeException("Invalid configuration: "
+          + "maxSingleShuffleLimit should be less than mergeThreshold "
+          + "maxSingleShuffleLimit: " + this.maxSingleShuffleLimit
+          + "mergeThreshold: " + this.mergeThreshold);
+    }
+
+    boolean allowMemToMemMerge = 
+      jobConf.getBoolean(MRJobConfig.REDUCE_MEMTOMEM_ENABLED, false);
+    if (allowMemToMemMerge) {
+      this.memToMemMerger = 
+        new IntermediateMemoryToMemoryMerger(this,
+                                             memToMemMergeOutputsThreshold);
+      this.memToMemMerger.start();
+    } else {
+      this.memToMemMerger = null;
+    }
+    
+    this.inMemoryMerger = createInMemoryMerger();
+    this.inMemoryMerger.start();
+    
+    this.onDiskMerger = new OnDiskMerger(this);
+    this.onDiskMerger.start();
+    
+    this.mergePhase = mergePhase;
+  }
+  
+}

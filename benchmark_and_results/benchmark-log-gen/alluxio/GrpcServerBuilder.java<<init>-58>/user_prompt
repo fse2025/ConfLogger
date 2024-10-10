@@ -1,0 +1,27 @@
+<code-whole>
+AuthenticationServer authenticationServer, AlluxioConfiguration conf) {
+mNettyServerBuilder = NettyServerBuilder.forAddress(serverAddress.getSocketAddress());
+mConfiguration = conf;
+mGrpcReflectionEnabled = conf.getBoolean(PropertyKey.GRPC_REFLECTION_ENABLED);
+
+if (conf.getBoolean(alluxio.conf.PropertyKey.NETWORK_TLS_ENABLED)) {
+sslContext(SslContextProvider.Factory.create(mConfiguration).getServerSSLContext());
+}
+
+if (SecurityUtils.isAuthenticationEnabled(mConfiguration)) {
+if (authenticationServer == null) {
+authenticationServer =
+new DefaultAuthenticationServer(serverAddress.getHostName(), mConfiguration);
+}
+addService(new GrpcService(authenticationServer).disableAuthentication()
+.withCloseable(authenticationServer));
+}
+mAuthenticationServer = authenticationServer;
+}
+</code-whole>
+
+<code-specified>
+if (conf.getBoolean(alluxio.conf.PropertyKey.NETWORK_TLS_ENABLED)) {
+sslContext(SslContextProvider.Factory.create(mConfiguration).getServerSSLContext());
+}
+</code-specified>

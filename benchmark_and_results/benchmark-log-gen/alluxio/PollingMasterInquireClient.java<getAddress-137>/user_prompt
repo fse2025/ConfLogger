@@ -1,0 +1,32 @@
+<code-whole>
+if (mConfiguration.getBoolean(PropertyKey.USER_RPC_SHUFFLE_MASTERS_ENABLED)) {
+addresses =
+Lists.newArrayList(mConnectDetails.getAddresses());
+Collections.shuffle(addresses);
+} else {
+addresses = mConnectDetails.getAddresses();
+}
+
+if (mConfiguration.getBoolean(PropertyKey.USER_MASTER_POLLING_CONCURRENT)) {
+return findActiveAddressConcurrent(addresses);
+} else {
+return findActiveAddress(addresses);
+}
+</code-whole>
+
+<code-specified>
+if (mConfiguration.getBoolean(PropertyKey.USER_MASTER_POLLING_CONCURRENT)) {
+return findActiveAddressConcurrent(addresses);
+} else {
+return findActiveAddress(addresses);
+}
+</code-specified>
+<code-specified>
+if (mConfiguration.getBoolean(PropertyKey.USER_RPC_SHUFFLE_MASTERS_ENABLED)) {
+addresses =
+Lists.newArrayList(mConnectDetails.getAddresses());
+Collections.shuffle(addresses);
+} else {
+addresses = mConnectDetails.getAddresses();
+}
+</code-specified>

@@ -1,0 +1,71 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JobResourceUploader.java	methodSinagture:	org.apache.hadoop.mapreduce.JobResourceUploader.copyLog4jPropertyFile(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;S)V	methodLines:	822:854
+blockLines:	841:-1
+paras:	mapreduce.job.log4j-properties-file
+TaintedStat:	NORMAL copyLog4jPropertyFile:conditional branch(eq, to iindex=91) 12,39 Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, copyLog4jPropertyFile(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;S)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, copyLog4jPropertyFile(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;S)V > Context: Everywhere[6]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 7,8 @11 exception:9
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, copyLog4jPropertyFile(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;S)V > Context: Everywhere[6]10 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 7,8 @11 exception:9
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, copyLog4jPropertyFile(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;S)V > Context: Everywhere[8]12 = invokespecial < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, validateFilePath(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > 1,10,7 @16 exception:11 v10
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, validateFilePath(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere v2
+NORMAL validateFilePath:conditional branch(ne, to iindex=5) 2,5 Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, validateFilePath(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+NORMAL validateFilePath:return 5 Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, validateFilePath(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, validateFilePath(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, copyLog4jPropertyFile(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;S)V > Context: Everywhere[8]12 = invokespecial < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, validateFilePath(Ljava/lang/String;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/String; > 1,10,7 @16 exception:11
+NORMAL copyLog4jPropertyFile:conditional branch(eq, to iindex=91) 12,39 Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, copyLog4jPropertyFile(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;S)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      short replication) throws IOException {
+    Configuration conf = job.getConfiguration();
+
+    String file =
+        validateFilePath(
+            conf.get(MRJobConfig.MAPREDUCE_JOB_LOG4J_PROPERTIES_FILE), conf);
+    LOG.debug("default FileSystem: " + jtFs.getUri());
+    FsPermission mapredSysPerms =
+        new FsPermission(JobSubmissionFiles.JOB_DIR_PERMISSION);
+    try {
+      jtFs.getFileStatus(submitJobDir);
+    } catch (FileNotFoundException e) {
+      throw new IOException("Cannot find job submission directory! "
+          + "It should just be created, so something wrong here.", e);
+    }
+
+    Path fileDir = JobSubmissionFiles.getJobLog4jFile(submitJobDir);
+
+    // first copy local log4j.properties file to HDFS under submitJobDir
+    if (file != null) {
+      FileSystem.mkdirs(jtFs, fileDir, mapredSysPerms);
+      URI tmpURI = null;
+      try {
+        tmpURI = new URI(file);
+      } catch (URISyntaxException e) {
+        throw new IllegalArgumentException(e);
+      }
+      Path tmp = new Path(tmpURI);
+      Path newPath = copyRemoteFiles(fileDir, tmp, conf, replication);
+      Path path = new Path(newPath.toUri().getPath());
+      Job.addFileToClassPath(path, conf, path.getFileSystem(conf));
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/JobResourceUploader, addLog4jToDistributedCache(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;)V > Context: Everywhere, blocks=[BB[SSA:16..22]6 - org.apache.hadoop.mapreduce.JobResourceUploader.addLog4jToDistributedCache(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;)V, BB[SSA:12..15]5 - org.apache.hadoop.mapreduce.JobResourceUploader.addLog4jToDistributedCache(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;)V, BB[SSA:23..23]7 - org.apache.hadoop.mapreduce.JobResourceUploader.addLog4jToDistributedCache(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;)V, BB[SSA:-1..-2]8 - org.apache.hadoop.mapreduce.JobResourceUploader.addLog4jToDistributedCache(Lorg/apache/hadoop/mapreduce/Job;Lorg/apache/hadoop/fs/Path;)V], numberOfBasicBlocks=4, firstLineNumber=799, lastLineNumber=802, firstMethodNumber=794, lastMethodNumber=802, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    Configuration conf = job.getConfiguration();
+    String log4jPropertyFile =
+        conf.get(MRJobConfig.MAPREDUCE_JOB_LOG4J_PROPERTIES_FILE, "");
+    if (!log4jPropertyFile.isEmpty()) {
+      short replication = (short) conf.getInt(Job.SUBMIT_REPLICATION, 10);
+      copyLog4jPropertyFile(job, jobSubmitDir, replication);
+    }
+  }
+
+}

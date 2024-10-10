@@ -1,0 +1,4 @@
+conf.set(param,"-80");
+public String param = OPT_IO_PROCESSORS;
+mapreduce
+mapreduce.manifest.committer.io.threads

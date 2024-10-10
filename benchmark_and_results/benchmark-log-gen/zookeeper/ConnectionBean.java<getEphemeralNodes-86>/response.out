@@ -1,0 +1,15 @@
+```java
+if (zk.getZKDatabase() != null) {
+    // ConfLogger Inserted Start
+    logger.debug("ZKDatabase is not null. Fetching ephemerals for sessionId: " + sessionId);
+    // ConfLogger Inserted End
+    String[] res = zk.getZKDatabase().getEphemerals(sessionId).toArray(new String[0]);
+    Arrays.sort(res);
+    return res;
+}
+// ConfLogger Inserted Start
+logger.warn("ZKDatabase is null. Returning null for sessionId: " + sessionId);
+// ConfLogger Inserted End
+return null;
+}
+```

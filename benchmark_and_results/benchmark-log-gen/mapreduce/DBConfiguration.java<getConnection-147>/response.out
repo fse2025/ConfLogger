@@ -1,0 +1,19 @@
+```java
+Class.forName(conf.get(DBConfiguration.DRIVER_CLASS_PROPERTY));
+
+if(conf.get(DBConfiguration.USERNAME_PROPERTY) == null) {
+    // ConfLogger Inserted Start
+    logger.info("DB connection initiated without username. URL: " + conf.get(DBConfiguration.URL_PROPERTY));
+    // ConfLogger Inserted End
+    return DriverManager.getConnection(
+        conf.get(DBConfiguration.URL_PROPERTY));
+} else {
+    // ConfLogger Inserted Start
+    logger.info("DB connection initiated with username. URL: " + conf.get(DBConfiguration.URL_PROPERTY) + ", Username: " + conf.get(DBConfiguration.USERNAME_PROPERTY));
+    // ConfLogger Inserted End
+    return DriverManager.getConnection(
+        conf.get(DBConfiguration.URL_PROPERTY),
+        conf.get(DBConfiguration.USERNAME_PROPERTY),
+        conf.get(DBConfiguration.PASSWORD_PROPERTY));
+}
+```

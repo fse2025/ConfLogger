@@ -1,0 +1,23 @@
+```java
+/* make sure we clean the staging files */
+String jobTempDir = getConfig().get(MRJobConfig.MAPREDUCE_JOB_DIR);
+FileSystem fs = getFileSystem(getConfig());
+try {
+    if (!keepJobFiles(new JobConf(getConfig()), jobTempDir)) {
+        if (jobTempDir == null) {
+            // ConfLogger Skipped: The log message already indicates that the Job Staging directory is null, which is a configuration-related condition.
+            LOG.warn("Job Staging directory is null");
+            return;
+        }
+        Path jobTempDirPath = new Path(jobTempDir);
+        // ConfLogger Skipped: The log message already indicates the action of deleting the staging directory, which is related to the configuration parameter.
+        LOG.info("Deleting staging directory " + FileSystem.getDefaultUri(getConfig()) + " " + jobTempDir);
+        fs.delete(jobTempDirPath, true);
+    }
+} catch(IOException io) {
+    // ConfLogger Skipped: The log message already indicates the failure to cleanup the staging directory, which is related to the configuration parameter.
+    LOG.error("Failed to cleanup staging dir " + jobTempDir, io);
+}
+```
+
+In this code snippet, the existing log messages already provide sufficient information about the configuration-related conditions and actions. Therefore, no additional logging code is needed. The existing logs are skipped as they already fulfill the requirements of exposing configuration-related execution information.

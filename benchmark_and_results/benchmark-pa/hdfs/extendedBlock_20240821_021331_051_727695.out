@@ -1,0 +1,55 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	DFSUtil.java	methodSinagture:	org.apache.hadoop.hdfs.DFSUtil.getSuffixedConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;	methodLines:	1057:1062
+blockLines:	1059:-1
+paras:	null
+TaintedStat:	NORMAL getSuffixedConf:conditional branch(eq, to iindex=11) 9,10 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSuffixedConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSuffixedConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[4]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @6 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSuffixedConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere[4]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,7 @6 exception:8
+NORMAL getSuffixedConf:conditional branch(eq, to iindex=11) 9,10 Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getSuffixedConf(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      String key, String defaultVal, String[] suffixes) {
+    String ret = conf.get(DFSUtil.addKeySuffixes(key, suffixes));
+    if (ret != null) {
+      return ret;
+    }
+    return conf.get(key, defaultVal);
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/DFSUtil, getInfoServer(Ljava/net/InetSocketAddress;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI; > Context: Everywhere, blocks=[BB[SSA:24..28]9 - org.apache.hadoop.hdfs.DFSUtil.getInfoServer(Ljava/net/InetSocketAddress;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI;, BB[SSA:22..23]8 - org.apache.hadoop.hdfs.DFSUtil.getInfoServer(Ljava/net/InetSocketAddress;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI;, BB[SSA:29..30]10 - org.apache.hadoop.hdfs.DFSUtil.getInfoServer(Ljava/net/InetSocketAddress;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI;, BB[SSA:-1..-2]35 - org.apache.hadoop.hdfs.DFSUtil.getInfoServer(Ljava/net/InetSocketAddress;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI;, BB[SSA:36..40]13 - org.apache.hadoop.hdfs.DFSUtil.getInfoServer(Ljava/net/InetSocketAddress;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI;, BB[SSA:34..35]12 - org.apache.hadoop.hdfs.DFSUtil.getInfoServer(Ljava/net/InetSocketAddress;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI;, BB[SSA:41..42]14 - org.apache.hadoop.hdfs.DFSUtil.getInfoServer(Ljava/net/InetSocketAddress;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI;, BB[SSA:-1..-2]35 - org.apache.hadoop.hdfs.DFSUtil.getInfoServer(Ljava/net/InetSocketAddress;Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;)Ljava/net/URI;], numberOfBasicBlocks=8, firstLineNumber=985, lastLineNumber=986, firstMethodNumber=971, lastMethodNumber=996, isFirstLineValid=true, methodSrcCode=
+      Configuration conf, String scheme) throws IOException {
+    String[] suffixes = null;
+    if (namenodeAddr != null) {
+      // if non-default namenode, try reverse look up 
+      // the nameServiceID if it is available
+      suffixes = getSuffixIDs(conf, namenodeAddr,
+          DFSConfigKeys.DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY,
+          DFSConfigKeys.DFS_NAMENODE_RPC_ADDRESS_KEY);
+    }
+
+    String authority;
+    if ("http".equals(scheme)) {
+      authority = getSuffixedConf(conf, DFS_NAMENODE_HTTP_ADDRESS_KEY,
+          DFS_NAMENODE_HTTP_ADDRESS_DEFAULT, suffixes);
+    } else if ("https".equals(scheme)) {
+      authority = getSuffixedConf(conf, DFS_NAMENODE_HTTPS_ADDRESS_KEY,
+          DFS_NAMENODE_HTTPS_ADDRESS_DEFAULT, suffixes);
+    } else {
+      throw new IllegalArgumentException("Invalid scheme:" + scheme);
+    }
+
+    if (namenodeAddr != null) {
+      authority = substituteForWildcardAddress(authority,
+          namenodeAddr.getHostName());
+    }
+    return URI.create(scheme + "://" + authority);
+  }
+}

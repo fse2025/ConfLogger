@@ -1,0 +1,26 @@
+<code-whole>
+Set<String> credentials = new HashSet<>();
+try {
+Class clazz = Class.forName(propertyClass);
+Field[] fields = clazz.getFields();
+for (Field field : fields) {
+if (field.getType() == PropertyKey.class && Modifier.isStatic(field.getModifiers())) {
+PropertyKey tmp = (PropertyKey) field.get(null);
+if (tmp.getDisplayType() == PropertyKey.DisplayType.CREDENTIALS) {
+credentials.add(tmp.getName());
+}
+}
+}
+} catch (ClassNotFoundException | IllegalAccessException e) {
+LOG.error("Failed to parse class alluxio.conf.PropertyKey", e);
+}
+
+return Collections.unmodifiableSet(credentials);
+}
+</code-whole>
+
+<code-specified>
+if (tmp.getDisplayType() == PropertyKey.DisplayType.CREDENTIALS) {
+credentials.add(tmp.getName());
+}
+</code-specified>

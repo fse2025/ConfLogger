@@ -1,0 +1,2 @@
+System.setProperty(paramEnable,"false");
+String paramEnable = "zookeeper.admin.enableServer";

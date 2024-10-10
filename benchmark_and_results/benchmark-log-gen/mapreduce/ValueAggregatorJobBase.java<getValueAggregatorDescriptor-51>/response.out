@@ -1,0 +1,18 @@
+```java
+if (spec == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'spec' is null. Please provide a valid 'spec' value.");
+    // ConfLogger Inserted End
+    return null;
+}
+String[] segments = spec.split(",", -1);
+String type = segments[0];
+if (type.compareToIgnoreCase("UserDefined") == 0) {
+    String className = segments[1];
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'spec' indicates a 'UserDefined' type with className: " + className);
+    // ConfLogger Inserted End
+    return new UserDefinedValueAggregatorDescriptor(className, conf);
+}
+return null;
+```

@@ -1,0 +1,57 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ServerUtils.java	methodSinagture:	org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I	methodLines:	724:732
+blockLines:	729:-1
+paras:	topology.max.task.parallelism
+TaintedStat:	NORMAL getComponentParallelism:conditional branch(eq, to iindex=30) 24,22 Node: < Application, Lorg/apache/storm/utils/ServerUtils, getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ServerUtils, getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I > Context: Everywhere[16]21 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 7,19 @36 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ServerUtils, getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I > Context: Everywhere[16]21 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 7,19 @36 exception:20
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/utils/ServerUtils, getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I > Context: Everywhere[18]24 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 21,22 @42 exception:23 v21
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere v1
+NORMAL getInt:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL getInt:return 2 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/utils/ServerUtils, getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I > Context: Everywhere[18]24 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getInt(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer; > 21,22 @42 exception:23
+NORMAL getComponentParallelism:conditional branch(eq, to iindex=30) 24,22 Node: < Application, Lorg/apache/storm/utils/ServerUtils, getComponentParallelism(Ljava/util/Map;Ljava/lang/Object;)I > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static int getComponentParallelism(Map<String, Object> topoConf, Object component) throws InvalidTopologyException {
+        Map<String, Object> combinedConf = Utils.merge(topoConf, StormCommon.componentConf(component));
+        int numTasks = ObjectReader.getInt(combinedConf.get(Config.TOPOLOGY_TASKS), StormCommon.numStartExecutors(component));
+        Integer maxParallel = ObjectReader.getInt(combinedConf.get(Config.TOPOLOGY_MAX_TASK_PARALLELISM), null);
+        int ret = numTasks;
+        if (maxParallel != null) {
+            ret = Math.min(maxParallel, numTasks);
+        }
+        return ret;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/utils/ServerUtils, getComponentParallelism(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map; > Context: Everywhere, blocks=[BB[SSA:26..26]14 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:23..25]13 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:27..27]15 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;, BB[SSA:-1..-2]19 - org.apache.storm.utils.ServerUtils.getComponentParallelism(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Ljava/util/Map;], numberOfBasicBlocks=4, firstLineNumber=719, lastLineNumber=719, firstMethodNumber=715, lastMethodNumber=721, isFirstLineValid=true, methodSrcCode=
+        throws InvalidTopologyException {
+        Map<String, Integer> ret = new HashMap<>();
+        Map<String, Object> components = StormCommon.allComponents(topology);
+        for (Map.Entry<String, Object> entry : components.entrySet()) {
+            ret.put(entry.getKey(), getComponentParallelism(topoConf, entry.getValue()));
+        }
+        return ret;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/nimbus/Nimbus, normalizeTopology(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere, blocks=[BB[SSA:17..22]10 - org.apache.storm.daemon.nimbus.Nimbus.normalizeTopology(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:14..16]9 - org.apache.storm.daemon.nimbus.Nimbus.normalizeTopology(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:23..23]11 - org.apache.storm.daemon.nimbus.Nimbus.normalizeTopology(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:-1..-2]18 - org.apache.storm.daemon.nimbus.Nimbus.normalizeTopology(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;], numberOfBasicBlocks=4, firstLineNumber=1111, lastLineNumber=1113, firstMethodNumber=1109, lastMethodNumber=1117, isFirstLineValid=true, methodSrcCode=
+        throws InvalidTopologyException {
+        StormTopology ret = topology.deepCopy();
+        for (Object comp : StormCommon.allComponents(ret).values()) {
+            Map<String, Object> mergedConf = StormCommon.componentConf(comp);
+            mergedConf.put(Config.TOPOLOGY_TASKS, ServerUtils.getComponentParallelism(topoConf, comp));
+            String jsonConf = JSONValue.toJSONString(mergedConf);
+            StormCommon.getComponentCommon(comp).set_json_conf(jsonConf);
+        }
+        return ret;
+    }
+}

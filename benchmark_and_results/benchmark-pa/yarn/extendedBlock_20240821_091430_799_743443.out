@@ -1,0 +1,100 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ResourceUtils.java	methodSinagture:	org.apache.hadoop.yarn.util.resource.ResourceUtils.getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map;	methodLines:	252:303
+blockLines:	270:-1
+paras:	null
+TaintedStat:	NORMAL getResourceInformationMapFromConfig:conditional branch(eq, to iindex=101) 27,8 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[41]27 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,24,25 @74 exception:26
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[41]27 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,24,25 @74 exception:26
+NORMAL getResourceInformationMapFromConfig:conditional branch(eq, to iindex=101) 27,8 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ResourceUtils.java	methodSinagture:	org.apache.hadoop.yarn.util.resource.ResourceUtils.getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map;	methodLines:	252:303
+blockLines:	257:-1
+paras:	yarn.resource-types
+TaintedStat:	NORMAL getResourceInformationMapFromConfig:conditional branch(eq, to iindex=196) 7,8 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[6]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,5 @11 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere[6]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getTrimmedStrings(Ljava/lang/String;)[Ljava/lang/String; > 1,5 @11 exception:6
+NORMAL getResourceInformationMapFromConfig:conditional branch(eq, to iindex=196) 7,8 Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, getResourceInformationMapFromConfig(Lorg/apache/hadoop/conf/Configuration;)Ljava/util/Map; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      Configuration conf) {
+    Map<String, ResourceInformation> resourceInformationMap = new HashMap<>();
+    String[] resourceNames =
+        conf.getTrimmedStrings(YarnConfiguration.RESOURCE_TYPES);
+
+    if (resourceNames != null && resourceNames.length != 0) {
+      for (String resourceName : resourceNames) {
+        String resourceUnits = conf.get(
+            YarnConfiguration.RESOURCE_TYPES + "." + resourceName + UNITS, "");
+        String resourceTypeName = conf.get(
+            YarnConfiguration.RESOURCE_TYPES + "." + resourceName + TYPE,
+            ResourceTypes.COUNTABLE.toString());
+        Long minimumAllocation = conf.getLong(
+            YarnConfiguration.RESOURCE_TYPES + "." + resourceName
+                + MINIMUM_ALLOCATION, 0L);
+        Long maximumAllocation = conf.getLong(
+            YarnConfiguration.RESOURCE_TYPES + "." + resourceName
+                + MAXIMUM_ALLOCATION, Long.MAX_VALUE);
+        if (resourceName == null || resourceName.isEmpty()
+            || resourceUnits == null || resourceTypeName == null) {
+          throw new YarnRuntimeException(
+              "Incomplete configuration for resource type '" + resourceName
+                  + "'. One of name, units or type is configured incorrectly.");
+        }
+        ResourceTypes resourceType = ResourceTypes.valueOf(resourceTypeName);
+        String[] resourceTags = conf.getTrimmedStrings(
+            YarnConfiguration.RESOURCE_TYPES + "." + resourceName + TAGS);
+        Set<String> resourceTagSet = new HashSet<>();
+        Collections.addAll(resourceTagSet, resourceTags);
+        LOG.info("Adding resource type - name = " + resourceName + ", units = "
+            + resourceUnits + ", type = " + resourceTypeName);
+        if (resourceInformationMap.containsKey(resourceName)) {
+          throw new YarnRuntimeException(
+              "Error in config, key '" + resourceName + "' specified twice");
+        }
+        resourceInformationMap.put(resourceName, ResourceInformation
+            .newInstance(resourceName, resourceUnits, 0L, resourceType,
+                minimumAllocation, maximumAllocation, resourceTagSet, null));
+      }
+    }
+
+    // Validate names of resource information map.
+    for (String name : resourceInformationMap.keySet()) {
+      validateNameOfResourceNameAndThrowException(name);
+    }
+
+    checkSpecialResources(resourceInformationMap);
+    addMandatoryResources(resourceInformationMap);
+
+    setAllocationForMandatoryResources(resourceInformationMap, conf);
+
+    return resourceInformationMap;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, initializeResourcesMap(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.yarn.util.resource.ResourceUtils.initializeResourcesMap(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.yarn.util.resource.ResourceUtils.initializeResourcesMap(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:2..4]2 - org.apache.hadoop.yarn.util.resource.ResourceUtils.initializeResourcesMap(Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]4 - org.apache.hadoop.yarn.util.resource.ResourceUtils.initializeResourcesMap(Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=307, lastLineNumber=310, firstMethodNumber=307, lastMethodNumber=311, isFirstLineValid=false, methodSrcCode=
+  static void initializeResourcesMap(Configuration conf) {
+    Map<String, ResourceInformation> resourceInformationMap =
+        getResourceInformationMapFromConfig(conf);
+    initializeResourcesFromResourceInformationMap(resourceInformationMap);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/util/resource/ResourceUtils, fetchMaximumAllocationFromConfig(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/api/records/Resource; > Context: Everywhere, blocks=[BB[SSA:0..1]1 - org.apache.hadoop.yarn.util.resource.ResourceUtils.fetchMaximumAllocationFromConfig(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/api/records/Resource;, BB[SSA:-1..-2]0 - org.apache.hadoop.yarn.util.resource.ResourceUtils.fetchMaximumAllocationFromConfig(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/api/records/Resource;, BB[SSA:2..5]2 - org.apache.hadoop.yarn.util.resource.ResourceUtils.fetchMaximumAllocationFromConfig(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/api/records/Resource;, BB[SSA:-1..-2]15 - org.apache.hadoop.yarn.util.resource.ResourceUtils.fetchMaximumAllocationFromConfig(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/yarn/api/records/Resource;], numberOfBasicBlocks=4, firstLineNumber=241, lastLineNumber=244, firstMethodNumber=241, lastMethodNumber=248, isFirstLineValid=false, methodSrcCode=
+  public static Resource fetchMaximumAllocationFromConfig(Configuration conf) {
+    Map<String, ResourceInformation> resourceInformationMap =
+        getResourceInformationMapFromConfig(conf);
+    Resource ret = Resource.newInstance(0, 0);
+    for (ResourceInformation entry : resourceInformationMap.values()) {
+      ret.setResourceValue(entry.getName(), entry.getMaximumAllocation());
+    }
+    return ret;
+  }
+}

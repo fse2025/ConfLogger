@@ -1,0 +1,12 @@
+```java
+public void setSampleRangeMax(int fileIOSamplingPercentage) {
+    isEnabled = Util.isDiskStatsEnabled(fileIOSamplingPercentage);
+    if (fileIOSamplingPercentage > 100) {
+        // ConfLogger Inserted Start
+        logger.warn("The provided fileIOSamplingPercentage exceeds 100. Adjusting to maximum allowed value of 100. Ensure that the configuration parameter 'dfs.namenode.checkpoint.txns' is set correctly to avoid this adjustment. Current value: " + fileIOSamplingPercentage);
+        // ConfLogger Inserted End
+        fileIOSamplingPercentage = 100;
+    }
+    sampleRangeMax = (int) ((double) fileIOSamplingPercentage / 100 * Integer.MAX_VALUE);
+}
+```

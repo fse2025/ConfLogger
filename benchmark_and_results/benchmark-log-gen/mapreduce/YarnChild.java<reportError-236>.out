@@ -1,0 +1,197 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	YarnChild.java	methodSinagture:	org.apache.hadoop.mapred.YarnChild.reportError(Ljava/lang/Exception;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/mapred/TaskUmbilicalProtocol;)V	methodLines:	236:253
+blockLines:	245:-1
+paras:	mapreduce.job.dfs.storage.capacity.kill-limit-exceed
+TaintedStat:	NORMAL reportError:conditional branch(eq, to iindex=28) 16,5 Node: < Application, Lorg/apache/hadoop/mapred/YarnChild, reportError(Ljava/lang/Exception;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/mapred/TaskUmbilicalProtocol;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YarnChild, reportError(Ljava/lang/Exception;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/mapred/TaskUmbilicalProtocol;)V > Context: Everywhere[18]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 13,14,5 @31 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapred/YarnChild, reportError(Ljava/lang/Exception;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/mapred/TaskUmbilicalProtocol;)V > Context: Everywhere[18]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 13,14,5 @31 exception:15
+NORMAL reportError:conditional branch(eq, to iindex=28) 16,5 Node: < Application, Lorg/apache/hadoop/mapred/YarnChild, reportError(Ljava/lang/Exception;Lorg/apache/hadoop/mapred/Task;Lorg/apache/hadoop/mapred/TaskUmbilicalProtocol;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      TaskUmbilicalProtocol umbilical) throws IOException {
+    boolean fastFailJob = false;
+    boolean hasClusterStorageCapacityExceededException =
+        ExceptionUtils.indexOfType(exception,
+            ClusterStorageCapacityExceededException.class) != -1;
+    if (hasClusterStorageCapacityExceededException) {
+      boolean killJobWhenExceedClusterStorageCapacity = task.getConf()
+          .getBoolean(MRJobConfig.JOB_DFS_STORAGE_CAPACITY_KILL_LIMIT_EXCEED,
+              MRJobConfig.DEFAULT_JOB_DFS_STORAGE_CAPACITY_KILL_LIMIT_EXCEED);
+      if (killJobWhenExceedClusterStorageCapacity) {
+        LOG.error(
+            "Fast fail the job because the cluster storage capacity was exceeded.");
+        fastFailJob = true;
+      }
+    }
+    umbilical.fatalError(taskid, StringUtils.stringifyException(exception),
+        fastFailJob);
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapred/YarnChild, main([Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:316..319]147 - org.apache.hadoop.mapred.YarnChild.main([Ljava/lang/String;)V, BB[SSA:314..315]146 - org.apache.hadoop.mapred.YarnChild.main([Ljava/lang/String;)V, BB[SSA:320..321]148 - org.apache.hadoop.mapred.YarnChild.main([Ljava/lang/String;)V], numberOfBasicBlocks=3, firstLineNumber=211, lastLineNumber=232, firstMethodNumber=77, lastMethodNumber=232, isFirstLineValid=true, methodSrcCode=
+  public static void main(String[] args) throws Throwable {
+    Thread.setDefaultUncaughtExceptionHandler(new YarnUncaughtExceptionHandler());
+    LOG.debug("Child starting");
+
+    final JobConf job = new JobConf(MRJobConfig.JOB_CONF_FILE);
+    // Initing with our JobConf allows us to avoid loading confs twice
+    Limits.init(job);
+    UserGroupInformation.setConfiguration(job);
+    // MAPREDUCE-6565: need to set configuration for SecurityUtil.
+    SecurityUtil.setConfiguration(job);
+
+    String host = args[0];
+    int port = Integer.parseInt(args[1]);
+    final InetSocketAddress address =
+        NetUtils.createSocketAddrForHost(host, port);
+    final TaskAttemptID firstTaskid = TaskAttemptID.forName(args[2]);
+    long jvmIdLong = Long.parseLong(args[3]);
+    JVMId jvmId = new JVMId(firstTaskid.getJobID(),
+        firstTaskid.getTaskType() == TaskType.MAP, jvmIdLong);
+    
+    CallerContext.setCurrent(
+        new CallerContext.Builder("mr_" + firstTaskid.toString()).build());
+
+    // initialize metrics
+    DefaultMetricsSystem.initialize(
+        StringUtils.camelize(firstTaskid.getTaskType().name()) +"Task");
+
+    // Security framework already loaded the tokens into current ugi
+    Credentials credentials =
+        UserGroupInformation.getCurrentUser().getCredentials();
+    LOG.info("Executing with tokens: {}", credentials.getAllTokens());
+
+    // Create TaskUmbilicalProtocol as actual task owner.
+    UserGroupInformation taskOwner =
+      UserGroupInformation.createRemoteUser(firstTaskid.getJobID().toString());
+    Token<JobTokenIdentifier> jt = TokenCache.getJobToken(credentials);
+    SecurityUtil.setTokenService(jt, address);
+    taskOwner.addToken(jt);
+    final TaskUmbilicalProtocol umbilical =
+      taskOwner.doAs(new PrivilegedExceptionAction<TaskUmbilicalProtocol>() {
+      @Override
+      public TaskUmbilicalProtocol run() throws Exception {
+        return (TaskUmbilicalProtocol)RPC.getProxy(TaskUmbilicalProtocol.class,
+            TaskUmbilicalProtocol.versionID, address, job);
+      }
+    });
+
+    // report non-pid to application master
+    JvmContext context = new JvmContext(jvmId, "-1000");
+    LOG.debug("PID: " + System.getenv().get("JVM_PID"));
+    Task task = null;
+    UserGroupInformation childUGI = null;
+    ScheduledExecutorService logSyncer = null;
+
+    try {
+      int idleLoopCount = 0;
+      JvmTask myTask = null;
+      // poll for new task
+      for (int idle = 0; null == myTask; ++idle) {
+        long sleepTimeMilliSecs = Math.min(idle * 500, 1500);
+        LOG.info("Sleeping for " + sleepTimeMilliSecs
+            + "ms before retrying again. Got null now.");
+        MILLISECONDS.sleep(sleepTimeMilliSecs);
+        myTask = umbilical.getTask(context);
+      }
+      if (myTask.shouldDie()) {
+        return;
+      }
+
+      task = myTask.getTask();
+      YarnChild.taskid = task.getTaskID();
+
+      // Create the job-conf and set credentials
+      configureTask(job, task, credentials, jt);
+
+      // log the system properties
+      String systemPropsToLog = MRApps.getSystemPropertiesToLog(job);
+      if (systemPropsToLog != null) {
+        LOG.info(systemPropsToLog);
+      }
+
+      // Initiate Java VM metrics
+      JvmMetrics.initSingleton(jvmId.toString(), job.getSessionId());
+      childUGI = UserGroupInformation.createRemoteUser(System
+          .getenv(ApplicationConstants.Environment.USER.toString()));
+      // Add tokens to new user so that it may execute its task correctly.
+      childUGI.addCredentials(credentials);
+
+      // set job classloader if configured before invoking the task
+      MRApps.setJobClassLoader(job);
+
+      logSyncer = TaskLog.createLogSyncer();
+
+      // Create a final reference to the task for the doAs block
+      final Task taskFinal = task;
+      childUGI.doAs(new PrivilegedExceptionAction<Object>() {
+        @Override
+        public Object run() throws Exception {
+          // use job-specified working directory
+          setEncryptedSpillKeyIfRequired(taskFinal);
+          FileSystem.get(job).setWorkingDirectory(job.getWorkingDirectory());
+          taskFinal.run(job, umbilical); // run the task
+          return null;
+        }
+      });
+    } catch (FSError e) {
+      LOG.error("FSError from child", e);
+      if (!ShutdownHookManager.get().isShutdownInProgress()) {
+        umbilical.fsError(taskid, e.getMessage());
+      }
+    } catch (Exception exception) {
+      LOG.warn("Exception running child : "
+          + StringUtils.stringifyException(exception));
+      try {
+        if (task != null) {
+          // do cleanup for the task
+          if (childUGI == null) { // no need to job into doAs block
+            task.taskCleanup(umbilical);
+          } else {
+            final Task taskFinal = task;
+            childUGI.doAs(new PrivilegedExceptionAction<Object>() {
+              @Override
+              public Object run() throws Exception {
+                taskFinal.taskCleanup(umbilical);
+                return null;
+              }
+            });
+          }
+        }
+      } catch (Exception e) {
+        LOG.info("Exception cleaning up: " + StringUtils.stringifyException(e));
+      }
+      // Report back any failures, for diagnostic purposes
+      if (taskid != null) {
+        if (!ShutdownHookManager.get().isShutdownInProgress()) {
+          reportError(exception, task, umbilical);
+        }
+      }
+    } catch (Throwable throwable) {
+      LOG.error("Error running child : "
+    	        + StringUtils.stringifyException(throwable));
+      if (taskid != null) {
+        if (!ShutdownHookManager.get().isShutdownInProgress()) {
+          Throwable tCause = throwable.getCause();
+          String cause =
+              tCause == null ? throwable.getMessage() : StringUtils
+                  .stringifyException(tCause);
+          umbilical.fatalError(taskid, cause, false);
+        }
+      }
+    } finally {
+      RPC.stopProxy(umbilical);
+      DefaultMetricsSystem.shutdown();
+      TaskLog.syncLogsShutdown(logSyncer);
+    }
+  }
+
+}

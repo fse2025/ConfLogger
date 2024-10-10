@@ -1,0 +1,64 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ZKCuratorManager.java	methodSinagture:	org.apache.hadoop.util.curator.ZKCuratorManager.start(Ljava/util/List;)V	methodLines:	136:173
+blockLines:	138:-1
+paras:	hadoop.zk.address
+TaintedStat:	NORMAL start:conditional branch(ne, to iindex=13) 7,8 Node: < Application, Lorg/apache/hadoop/util/curator/ZKCuratorManager, start(Ljava/util/List;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/curator/ZKCuratorManager, start(Ljava/util/List;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,5 @6 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/util/curator/ZKCuratorManager, start(Ljava/util/List;)V > Context: Everywhere[3]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 4,5 @6 exception:6
+NORMAL start:conditional branch(ne, to iindex=13) 7,8 Node: < Application, Lorg/apache/hadoop/util/curator/ZKCuratorManager, start(Ljava/util/List;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    // Connect to the ZooKeeper ensemble
+    String zkHostPort = conf.get(CommonConfigurationKeys.ZK_ADDRESS);
+    if (zkHostPort == null) {
+      throw new IOException(
+          CommonConfigurationKeys.ZK_ADDRESS + " is not configured.");
+    }
+    int numRetries = conf.getInt(CommonConfigurationKeys.ZK_NUM_RETRIES,
+        CommonConfigurationKeys.ZK_NUM_RETRIES_DEFAULT);
+    int zkSessionTimeout = conf.getInt(CommonConfigurationKeys.ZK_TIMEOUT_MS,
+        CommonConfigurationKeys.ZK_TIMEOUT_MS_DEFAULT);
+    int zkRetryInterval = conf.getInt(
+        CommonConfigurationKeys.ZK_RETRY_INTERVAL_MS,
+        CommonConfigurationKeys.ZK_RETRY_INTERVAL_MS_DEFAULT);
+    RetryNTimes retryPolicy = new RetryNTimes(numRetries, zkRetryInterval);
+
+    // Set up ZK auths
+    List<ZKUtil.ZKAuthInfo> zkAuths = getZKAuths(conf);
+    if (authInfos == null) {
+      authInfos = new ArrayList<>();
+    }
+    for (ZKUtil.ZKAuthInfo zkAuth : zkAuths) {
+      authInfos.add(new AuthInfo(zkAuth.getScheme(), zkAuth.getAuth()));
+    }
+
+    CuratorFramework client = CuratorFrameworkFactory.builder()
+        .connectString(zkHostPort)
+        .zookeeperFactory(new HadoopZookeeperFactory(
+            conf.get(CommonConfigurationKeys.ZK_SERVER_PRINCIPAL),
+            conf.get(CommonConfigurationKeys.ZK_KERBEROS_PRINCIPAL),
+            conf.get(CommonConfigurationKeys.ZK_KERBEROS_KEYTAB)))
+        .sessionTimeoutMs(zkSessionTimeout)
+        .retryPolicy(retryPolicy)
+        .authorization(authInfos)
+        .build();
+    client.start();
+
+    this.curator = client;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/util/curator/ZKCuratorManager, start()V > Context: Everywhere, blocks=[BB[SSA:4..4]3 - org.apache.hadoop.util.curator.ZKCuratorManager.start()V, BB[SSA:2..3]2 - org.apache.hadoop.util.curator.ZKCuratorManager.start()V, BB[SSA:5..5]4 - org.apache.hadoop.util.curator.ZKCuratorManager.start()V, BB[SSA:-1..-2]5 - org.apache.hadoop.util.curator.ZKCuratorManager.start()V], numberOfBasicBlocks=4, firstLineNumber=126, lastLineNumber=127, firstMethodNumber=125, lastMethodNumber=127, isFirstLineValid=true, methodSrcCode=
+  public void start() throws IOException {
+    this.start(new ArrayList<>());
+  }
+
+}

@@ -1,0 +1,80 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	UfsJournalGarbageCollector.java	methodSinagture:	alluxio.master.journal.ufs.UfsJournalGarbageCollector.gcFileIfStale(Lalluxio/master/journal/ufs/UfsJournalFile;J)V	methodLines:	113:137
+blockLines:	134:-1
+paras:	null
+TaintedStat:	NORMAL gcFileIfStale:conditional branch(le, to iindex=58) 41,8 Node: < Application, Lalluxio/master/journal/ufs/UfsJournalGarbageCollector, gcFileIfStale(Lalluxio/master/journal/ufs/UfsJournalFile;J)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/journal/ufs/UfsJournalGarbageCollector, gcFileIfStale(Lalluxio/master/journal/ufs/UfsJournalFile;J)V > Context: Everywhere[44]31 = invokestatic < Application, Lalluxio/conf/Configuration, getMs(Lalluxio/conf/PropertyKey;)J > 29 @97 exception:30
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/master/journal/ufs/UfsJournalGarbageCollector, gcFileIfStale(Lalluxio/master/journal/ufs/UfsJournalFile;J)V > Context: Everywhere[44]31 = invokestatic < Application, Lalluxio/conf/Configuration, getMs(Lalluxio/conf/PropertyKey;)J > 29 @97 exception:30
+PHI Node: < Application, Lalluxio/master/journal/ufs/UfsJournalGarbageCollector, gcFileIfStale(Lalluxio/master/journal/ufs/UfsJournalFile;J)V > Context: Everywhere:35 = phi  34,31
+NORMAL gcFileIfStale:41 = compare 40,35 opcode=cmp Node: < Application, Lalluxio/master/journal/ufs/UfsJournalGarbageCollector, gcFileIfStale(Lalluxio/master/journal/ufs/UfsJournalFile;J)V > Context: Everywhere
+NORMAL gcFileIfStale:conditional branch(le, to iindex=58) 41,8 Node: < Application, Lalluxio/master/journal/ufs/UfsJournalGarbageCollector, gcFileIfStale(Lalluxio/master/journal/ufs/UfsJournalFile;J)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void gcFileIfStale(UfsJournalFile file, long checkpointSequenceNumber) {
+    if (file.getEnd() > checkpointSequenceNumber && !file.isTmpCheckpoint()) {
+      return;
+    }
+
+    Long lastModifiedTimeMs;
+    try {
+      lastModifiedTimeMs = mUfs.getFileStatus(file.getLocation().toString()).getLastModifiedTime();
+    } catch (IOException e) {
+      LOG.warn("Failed to get the last modified time for {}.", file.getLocation());
+      return;
+    }
+    if (lastModifiedTimeMs == null) {
+      LOG.warn("Failed to get the last modified time for {}.", file.getLocation());
+      return;
+    }
+
+    long thresholdMs = file.isTmpCheckpoint()
+        ? Configuration.getMs(PropertyKey.MASTER_JOURNAL_TEMPORARY_FILE_GC_THRESHOLD_MS)
+        : Configuration.getMs(PropertyKey.MASTER_JOURNAL_GC_THRESHOLD_MS);
+
+    if (System.currentTimeMillis() - lastModifiedTimeMs > thresholdMs) {
+      deleteNoException(file.getLocation());
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/master/journal/ufs/UfsJournalGarbageCollector, gc()V > Context: Everywhere, blocks=[BB[SSA:56..57]26 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:55..55]25 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:58..62]27 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:-1..-2]47 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:74..78]35 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:73..73]34 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:79..79]36 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:-1..-2]47 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:91..95]44 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:90..90]43 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:96..96]45 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V, BB[SSA:-1..-2]47 - alluxio.master.journal.ufs.UfsJournalGarbageCollector.gc()V], numberOfBasicBlocks=12, firstLineNumber=102, lastLineNumber=104, firstMethodNumber=76, lastMethodNumber=105, isFirstLineValid=true, methodSrcCode=
+    try {
+      snapshot = UfsJournalSnapshot.getSnapshot(mJournal);
+    } catch (IOException e) {
+      LOG.warn("Failed to get journal snapshot with error {}.", e.toString());
+      return;
+    }
+    long checkpointSequenceNumber = 0;
+
+    // Checkpoint.
+    List<UfsJournalFile> checkpoints = snapshot.getCheckpoints();
+    if (!checkpoints.isEmpty()) {
+      checkpointSequenceNumber = checkpoints.get(checkpoints.size() - 1).getEnd();
+    }
+    for (int i = 0; i < checkpoints.size() - 1; i++) {
+      // Only keep at most 2 checkpoints.
+      if (i < checkpoints.size() - 2) {
+        deleteNoException(checkpoints.get(i).getLocation());
+      }
+      // For the the second last checkpoint. Check whether it has been there for a long time.
+      gcFileIfStale(checkpoints.get(i), checkpointSequenceNumber);
+    }
+
+    for (UfsJournalFile log : snapshot.getLogs()) {
+      gcFileIfStale(log, checkpointSequenceNumber);
+    }
+
+    for (UfsJournalFile tmpCheckpoint : snapshot.getTemporaryCheckpoints()) {
+      gcFileIfStale(tmpCheckpoint, checkpointSequenceNumber);
+    }
+  }
+
+}

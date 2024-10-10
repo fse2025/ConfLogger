@@ -1,0 +1,50 @@
+```java
+int maxNotChangedIterations)
+throws IOException {
+this.nameNodeUri = nameNodeUri;
+this.idPath = idPath;
+this.targetPaths = targetPaths == null || targetPaths.isEmpty() ? Arrays
+.asList(new Path("/")) : targetPaths;
+this.maxNotChangedIterations = maxNotChangedIterations;
+int getBlocksMaxQps = conf.getInt(
+DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_KEY,
+DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_DEFAULT);
+<code-specified>
+if (getBlocksMaxQps > 0) {
+LOG.info("getBlocks calls for {} will be rate-limited to {} per second",
+nameNodeUri, getBlocksMaxQps); // ConfLogger Skipped: The log already contains configuration parameter key and value.
+this.getBlocksRateLimiter = RateLimiter.create(getBlocksMaxQps);
+} else {
+this.getBlocksRateLimiter = null;
+// ConfLogger Inserted Start
+logger.warn("Rate limiting for getBlocks calls is disabled. To enable, set a positive value for {}. Current value: {}",
+    DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_KEY, getBlocksMaxQps);
+// ConfLogger Inserted End
+}
+</code-specified>
+
+this.namenode = NameNodeProxies.createProxy(conf, nameNodeUri,
+BalancerProtocols.class, fallbackToSimpleAuth).getProxy();
+this.requestToStandby = conf.getBoolean(
+DFSConfigKeys.DFS_HA_ALLOW_STALE_READ_KEY,
+DFSConfigKeys.DFS_HA_ALLOW_STALE_READ_DEFAULT);
+this.config = conf;
+
+this.fs = (DistributedFileSystem)FileSystem.get(nameNodeUri, conf);
+
+final NamespaceInfo namespaceinfo = namenode.versionRequest();
+this.blockpoolID = namespaceinfo.getBlockPoolID();
+
+final FsServerDefaults defaults = fs.getServerDefaults(new Path("/"));
+this.keyManager = new KeyManager(blockpoolID, namenode,
+defaults.getEncryptDataTransfer(), conf);
+// if it is for test, we do not create the id file
+if (checkOtherInstanceRunning) {
+out = checkAndMarkRunning();
+if (out == null) {
+// Exit if there is another one running.
+throw new IOException("Another " + name + " is running.");
+}
+}
+}
+```

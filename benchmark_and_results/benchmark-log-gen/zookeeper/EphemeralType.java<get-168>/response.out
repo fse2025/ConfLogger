@@ -1,0 +1,46 @@
+```java
+if (extendedEphemeralTypesEnabled()) {
+    // ConfLogger Inserted Start
+    logger.debug("Extended ephemeral types are enabled.");
+    // ConfLogger Inserted End
+
+    if (Boolean.getBoolean(TTL_3_5_3_EMULATION_PROPERTY)) {
+        // ConfLogger Inserted Start
+        logger.debug("TTL 3.5.3 emulation property is enabled. Property: " + TTL_3_5_3_EMULATION_PROPERTY);
+        // ConfLogger Inserted End
+
+        if (EphemeralTypeEmulate353.get(ephemeralOwner) == EphemeralTypeEmulate353.TTL) {
+            // ConfLogger Inserted Start
+            logger.info("Ephemeral owner matches TTL 3.5.3 emulation. Returning TTL. EphemeralOwner: " + ephemeralOwner);
+            // ConfLogger Inserted End
+            return TTL;
+        }
+    }
+
+    if ((ephemeralOwner & EXTENDED_MASK) == EXTENDED_MASK) {
+        long extendedFeatureBit = getExtendedFeatureBit(ephemeralOwner);
+        EphemeralType ephemeralType = extendedFeatureMap.get(extendedFeatureBit);
+        if (ephemeralType == null) {
+            // ConfLogger Inserted Start
+            logger.error("Invalid ephemeralOwner. No matching ephemeral type found. EphemeralOwner: " + Long.toHexString(ephemeralOwner));
+            // ConfLogger Inserted End
+            throw new IllegalArgumentException(String.format("Invalid ephemeralOwner. [%s]", Long.toHexString(ephemeralOwner)));
+        }
+        // ConfLogger Inserted Start
+        logger.info("Returning ephemeral type based on extended feature bit. EphemeralType: " + ephemeralType + ", ExtendedFeatureBit: " + extendedFeatureBit);
+        // ConfLogger Inserted End
+        return ephemeralType;
+    }
+}
+if (ephemeralOwner == CONTAINER_EPHEMERAL_OWNER) {
+    // ConfLogger Inserted Start
+    logger.info("Ephemeral owner matches container ephemeral owner. Returning CONTAINER. EphemeralOwner: " + ephemeralOwner);
+    // ConfLogger Inserted End
+    return CONTAINER;
+}
+// ConfLogger Inserted Start
+logger.info("Returning default ephemeral type based on ephemeral owner. EphemeralOwner: " + ephemeralOwner);
+logger.debug("Ephemeral owner is " + (ephemeralOwner == 0 ? "VOID" : "NORMAL") + ". EphemeralOwner: " + ephemeralOwner);
+// ConfLogger Inserted End
+return (ephemeralOwner == 0) ? VOID : NORMAL;
+```

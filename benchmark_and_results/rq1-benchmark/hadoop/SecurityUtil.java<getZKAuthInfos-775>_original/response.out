@@ -1,0 +1,24 @@
+```java
+String configKey) throws IOException {
+    char[] zkAuthChars = conf.getPassword(configKey);
+    String zkAuthConf =
+        zkAuthChars != null ? String.valueOf(zkAuthChars) : null;
+    try {
+        zkAuthConf = ZKUtil.resolveConfIndirection(zkAuthConf);
+        // ConfLogger Inserted Start
+        if (zkAuthConf != null) {
+            // Log the successful parsing of the authentication configuration
+            logger.info("Successfully resolved and parsed authentication configuration for key: {}", configKey);
+            return ZKUtil.parseAuth(zkAuthConf);
+        } else {
+            // Log the absence of authentication configuration
+            logger.warn("No authentication configuration found for key: {}. Returning empty list.", configKey);
+            return Collections.emptyList();
+        }
+        // ConfLogger Inserted End
+    } catch (IOException | ZKUtil.BadAuthFormatException e) {
+        LOG.error("Couldn't read Auth based on {}", configKey); // ConfLogger Skipped: Contains configuration parameter key
+        throw e;
+    }
+}
+```

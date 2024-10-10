@@ -1,0 +1,14 @@
+```java
+if (conf.getBoolean(DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_KEY,
+    DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_DEFAULT)) {
+    // ConfLogger Inserted Start
+    logger.info("DFS HA Tail Edits In Progress is enabled. Configuration key: " + DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_KEY + ", value: true");
+    // ConfLogger Inserted End
+    return new JournaledEditsCache(conf);
+} else {
+    // ConfLogger Inserted Start
+    logger.info("DFS HA Tail Edits In Progress is disabled. Configuration key: " + DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_KEY + ", value: false");
+    // ConfLogger Inserted End
+    return null;
+}
+```

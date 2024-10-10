@@ -1,0 +1,22 @@
+```java
+SocketFactory factory = null;
+
+String propValue =
+conf.get("hadoop.rpc.socket.factory.class." + clazz.getSimpleName());
+if ((propValue != null) && (propValue.length() > 0)) {
+    factory = getSocketFactoryFromProperty(conf, propValue);
+    // ConfLogger Inserted Start
+    logger.info("Using custom socket factory from property: hadoop.rpc.socket.factory.class." + clazz.getSimpleName() + " with value: " + propValue);
+    // ConfLogger Inserted End
+}
+
+if (factory == null) {
+    factory = getDefaultSocketFactory(conf);
+    // ConfLogger Inserted Start
+    logger.info("Using default socket factory as no custom factory was specified or the specified factory could not be loaded.");
+    // ConfLogger Inserted End
+}
+
+return factory;
+}
+```

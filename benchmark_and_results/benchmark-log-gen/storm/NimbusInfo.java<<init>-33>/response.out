@@ -1,0 +1,16 @@
+```java
+public NimbusInfo(String host, int port, boolean isLeader) {
+    if (host == null) {
+        throw new NullPointerException("Host cannot be null");
+    }
+    // ConfLogger Inserted Start
+    if (port < 0) {
+        logger.error("Invalid configuration: Port cannot be negative. Provided port: " + port);
+        throw new IllegalArgumentException("Port cannot be negative");
+    }
+    // ConfLogger Inserted End
+    this.host = host;
+    this.port = port;
+    this.isLeader = isLeader;
+}
+```

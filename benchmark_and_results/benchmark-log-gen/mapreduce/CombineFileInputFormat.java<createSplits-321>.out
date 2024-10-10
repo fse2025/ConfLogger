@@ -1,0 +1,310 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	CombineFileInputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat.createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V	methodLines:	321:536
+blockLines:	395:-1
+paras:	null
+TaintedStat:	NORMAL createSplits:conditional branch(eq, to iindex=147) 72,26 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[22]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 6,10,4 @38 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[22]12 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 6,10,4 @38 exception:11
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere:14 = phi  13,12
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[203]invokespecial < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V > 1,2,51,28,14,21,39 @408 exception:67 v14
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V > Context: Everywhere v5
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V > Context: Everywhere[75]invokevirtual < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > 1,15,13,11,42,4,5,6,7 @161 exception:43 v5
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere v7
+NORMAL createSplits:72 = compare 7,13 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere
+NORMAL createSplits:conditional branch(eq, to iindex=147) 72,26 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	CombineFileInputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat.createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V	methodLines:	321:536
+blockLines:	488:-1
+paras:	null
+TaintedStat:	NORMAL createSplits:conditional branch(eq, to iindex=318) 172,26 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[37]19 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 6,17,4 @65 exception:18
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[37]19 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 6,17,4 @65 exception:18
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere:21 = phi  20,19
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[203]invokespecial < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V > 1,2,51,28,14,21,39 @408 exception:67 v21
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V > Context: Everywhere v6
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V > Context: Everywhere[75]invokevirtual < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > 1,15,13,11,42,4,5,6,7 @161 exception:43 v6
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere v8
+NORMAL createSplits:172 = compare 8,13 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere
+NORMAL createSplits:conditional branch(eq, to iindex=318) 172,26 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	CombineFileInputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat.createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V	methodLines:	321:536
+blockLines:	365:-1
+paras:	null
+TaintedStat:	NORMAL createSplits:conditional branch(eq, to iindex=108) 54,26 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[52]26 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 6,24,4 @93 exception:25
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[52]26 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 6,24,4 @93 exception:25
+PHI Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere:28 = phi  27,26
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getSplits(Lorg/apache/hadoop/mapreduce/JobContext;)Ljava/util/List; > Context: Everywhere[203]invokespecial < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V > 1,2,51,28,14,21,39 @408 exception:67 v28
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V > Context: Everywhere v4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V > Context: Everywhere[75]invokevirtual < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > 1,15,13,11,42,4,5,6,7 @161 exception:43 v4
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere v6
+NORMAL createSplits:54 = compare 6,13 opcode=cmp Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere
+NORMAL createSplits:conditional branch(eq, to iindex=108) 54,26 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, createSplits(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;JJJJLjava/util/List;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                    ) {
+    ArrayList<OneBlockInfo> validBlocks = new ArrayList<OneBlockInfo>();
+    long curSplitSize = 0;
+    
+    int totalNodes = nodeToBlocks.size();
+    long totalLength = totLength;
+
+    Multiset<String> splitsPerNode = HashMultiset.create();
+    Set<String> completedNodes = new HashSet<String>();
+    
+    while(true) {
+      for (Iterator<Map.Entry<String, Set<OneBlockInfo>>> iter = nodeToBlocks
+          .entrySet().iterator(); iter.hasNext();) {
+        Map.Entry<String, Set<OneBlockInfo>> one = iter.next();
+        
+        String node = one.getKey();
+        
+        // Skip the node if it has previously been marked as completed.
+        if (completedNodes.contains(node)) {
+          continue;
+        }
+
+        Set<OneBlockInfo> blocksInCurrentNode = one.getValue();
+
+        // for each block, copy it into validBlocks. Delete it from
+        // blockToNodes so that the same block does not appear in
+        // two different splits.
+        Iterator<OneBlockInfo> oneBlockIter = blocksInCurrentNode.iterator();
+        while (oneBlockIter.hasNext()) {
+          OneBlockInfo oneblock = oneBlockIter.next();
+          
+          // Remove all blocks which may already have been assigned to other
+          // splits.
+          if(!blockToNodes.containsKey(oneblock)) {
+            oneBlockIter.remove();
+            continue;
+          }
+        
+          validBlocks.add(oneblock);
+          blockToNodes.remove(oneblock);
+          curSplitSize += oneblock.length;
+
+          // if the accumulated split size exceeds the maximum, then
+          // create this split.
+          if (maxSize != 0 && curSplitSize >= maxSize) {
+            // create an input split and add it to the splits array
+            addCreatedSplit(splits, Collections.singleton(node), validBlocks);
+            totalLength -= curSplitSize;
+            curSplitSize = 0;
+
+            splitsPerNode.add(node);
+
+            // Remove entries from blocksInNode so that we don't walk these
+            // again.
+            blocksInCurrentNode.removeAll(validBlocks);
+            validBlocks.clear();
+
+            // Done creating a single split for this node. Move on to the next
+            // node so that splits are distributed across nodes.
+            break;
+          }
+
+        }
+        if (validBlocks.size() != 0) {
+          // This implies that the last few blocks (or all in case maxSize=0)
+          // were not part of a split. The node is complete.
+          
+          // if there were any blocks left over and their combined size is
+          // larger than minSplitNode, then combine them into one split.
+          // Otherwise add them back to the unprocessed pool. It is likely
+          // that they will be combined with other blocks from the
+          // same rack later on.
+          // This condition also kicks in when max split size is not set. All
+          // blocks on a node will be grouped together into a single split.
+          if (minSizeNode != 0 && curSplitSize >= minSizeNode
+              && splitsPerNode.count(node) == 0) {
+            // haven't created any split on this machine. so its ok to add a
+            // smaller one for parallelism. Otherwise group it in the rack for
+            // balanced size create an input split and add it to the splits
+            // array
+            addCreatedSplit(splits, Collections.singleton(node), validBlocks);
+            totalLength -= curSplitSize;
+            splitsPerNode.add(node);
+            // Remove entries from blocksInNode so that we don't walk this again.
+            blocksInCurrentNode.removeAll(validBlocks);
+            // The node is done. This was the last set of blocks for this node.
+          } else {
+            // Put the unplaced blocks back into the pool for later rack-allocation.
+            for (OneBlockInfo oneblock : validBlocks) {
+              blockToNodes.put(oneblock, oneblock.hosts);
+            }
+          }
+          validBlocks.clear();
+          curSplitSize = 0;
+          completedNodes.add(node);
+        } else { // No in-flight blocks.
+          if (blocksInCurrentNode.size() == 0) {
+            // Node is done. All blocks were fit into node-local splits.
+            completedNodes.add(node);
+          } // else Run through the node again.
+        }
+      }
+
+      // Check if node-local assignments are complete.
+      if (completedNodes.size() == totalNodes || totalLength == 0) {
+        // All nodes have been walked over and marked as completed or all blocks
+        // have been assigned. The rest should be handled via rackLock assignment.
+        LOG.debug("Terminated node allocation with : CompletedNodes: {}, size left: {}",
+            completedNodes.size(), totalLength);
+        break;
+      }
+    }
+
+    // if blocks in a rack are below the specified minimum size, then keep them
+    // in 'overflow'. After the processing of all racks is complete, these 
+    // overflow blocks will be combined into splits.
+    ArrayList<OneBlockInfo> overflowBlocks = new ArrayList<OneBlockInfo>();
+    Set<String> racks = new HashSet<String>();
+
+    // Process all racks over and over again until there is no more work to do.
+    while (blockToNodes.size() > 0) {
+
+      // Create one split for this rack before moving over to the next rack. 
+      // Come back to this rack after creating a single split for each of the 
+      // remaining racks.
+      // Process one rack location at a time, Combine all possible blocks that
+      // reside on this rack as one split. (constrained by minimum and maximum
+      // split size).
+
+      // iterate over all racks 
+      for (Iterator<Map.Entry<String, List<OneBlockInfo>>> iter = 
+           rackToBlocks.entrySet().iterator(); iter.hasNext();) {
+
+        Map.Entry<String, List<OneBlockInfo>> one = iter.next();
+        racks.add(one.getKey());
+        List<OneBlockInfo> blocks = one.getValue();
+
+        // for each block, copy it into validBlocks. Delete it from 
+        // blockToNodes so that the same block does not appear in 
+        // two different splits.
+        boolean createdSplit = false;
+        for (OneBlockInfo oneblock : blocks) {
+          if (blockToNodes.containsKey(oneblock)) {
+            validBlocks.add(oneblock);
+            blockToNodes.remove(oneblock);
+            curSplitSize += oneblock.length;
+      
+            // if the accumulated split size exceeds the maximum, then 
+            // create this split.
+            if (maxSize != 0 && curSplitSize >= maxSize) {
+              // create an input split and add it to the splits array
+              addCreatedSplit(splits, getHosts(racks), validBlocks);
+              createdSplit = true;
+              break;
+            }
+          }
+        }
+
+        // if we created a split, then just go to the next rack
+        if (createdSplit) {
+          curSplitSize = 0;
+          validBlocks.clear();
+          racks.clear();
+          continue;
+        }
+
+        if (!validBlocks.isEmpty()) {
+          if (minSizeRack != 0 && curSplitSize >= minSizeRack) {
+            // if there is a minimum size specified, then create a single split
+            // otherwise, store these blocks into overflow data structure
+            addCreatedSplit(splits, getHosts(racks), validBlocks);
+          } else {
+            // There were a few blocks in this rack that 
+        	// remained to be processed. Keep them in 'overflow' block list. 
+        	// These will be combined later.
+            overflowBlocks.addAll(validBlocks);
+          }
+        }
+        curSplitSize = 0;
+        validBlocks.clear();
+        racks.clear();
+      }
+    }
+
+    assert blockToNodes.isEmpty();
+    assert curSplitSize == 0;
+    assert validBlocks.isEmpty();
+    assert racks.isEmpty();
+
+    // Process all overflow blocks
+    for (OneBlockInfo oneblock : overflowBlocks) {
+      validBlocks.add(oneblock);
+      curSplitSize += oneblock.length;
+
+      // This might cause an exiting rack location to be re-added,
+      // but it should be ok.
+      for (int i = 0; i < oneblock.racks.length; i++) {
+        racks.add(oneblock.racks[i]);
+      }
+
+      // if the accumulated split size exceeds the maximum, then 
+      // create this split.
+      if (maxSize != 0 && curSplitSize >= maxSize) {
+        // create an input split and add it to the splits array
+        addCreatedSplit(splits, getHosts(racks), validBlocks);
+        curSplitSize = 0;
+        validBlocks.clear();
+        racks.clear();
+      }
+    }
+
+    // Process any remaining blocks, if any.
+    if (!validBlocks.isEmpty()) {
+      addCreatedSplit(splits, getHosts(racks), validBlocks);
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/input/CombineFileInputFormat, getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V > Context: Everywhere, blocks=[BB[SSA:66..75]28 - org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat.getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V, BB[SSA:33..34]16 - org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat.getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V, BB[SSA:76..76]29 - org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat.getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V, BB[SSA:-1..-2]30 - org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat.getMoreSplits(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/util/List;JJJLjava/util/List;)V], numberOfBasicBlocks=4, firstLineNumber=282, lastLineNumber=290, firstMethodNumber=256, lastMethodNumber=290, isFirstLineValid=true, methodSrcCode=
+    throws IOException {
+    Configuration conf = job.getConfiguration();
+
+    // all blocks for all the files in input set
+    OneFileInfo[] files;
+  
+    // mapping from a rack name to the list of blocks it has
+    HashMap<String, List<OneBlockInfo>> rackToBlocks = 
+                              new HashMap<String, List<OneBlockInfo>>();
+
+    // mapping from a block to the nodes on which it has replicas
+    HashMap<OneBlockInfo, String[]> blockToNodes = 
+                              new HashMap<OneBlockInfo, String[]>();
+
+    // mapping from a node to the list of blocks that it contains
+    HashMap<String, Set<OneBlockInfo>> nodeToBlocks = 
+                              new HashMap<String, Set<OneBlockInfo>>();
+    
+    files = new OneFileInfo[stats.size()];
+    if (stats.size() == 0) {
+      return; 
+    }
+
+    // populate all the blocks for all files
+    long totLength = 0;
+    int i = 0;
+    for (FileStatus stat : stats) {
+      files[i] = new OneFileInfo(stat, conf, isSplitable(job, stat.getPath()),
+                                 rackToBlocks, blockToNodes, nodeToBlocks,
+                                 rackToNodes, maxSize);
+      totLength += files[i].getLength();
+    }
+    createSplits(nodeToBlocks, blockToNodes, rackToBlocks, totLength, 
+                 maxSize, minSizeNode, minSizeRack, splits);
+  }
+
+}

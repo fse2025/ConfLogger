@@ -1,0 +1,58 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	X509Util.java	methodSinagture:	org.apache.hadoop.hbase.io.crypto.tls.X509Util.newFileChangeWatcher(Ljava/lang/String;Ljava/lang/Runnable;)Lorg/apache/hadoop/hbase/io/FileChangeWatcher;	methodLines:	507:521
+blockLines:	508:-1
+paras:	null
+TaintedStat:	NORMAL newFileChangeWatcher:conditional branch(ne, to iindex=12) 2,4 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, newFileChangeWatcher(Ljava/lang/String;Ljava/lang/Runnable;)Lorg/apache/hadoop/hbase/io/FileChangeWatcher; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcClient, getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[39]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 21,22,14 @76 exception:23
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcClient, getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[39]24 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 21,22,14 @76 exception:23
+NORMAL getSslContext:conditional branch(eq, to iindex=51) 24,14 Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcClient, getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere
+NORMAL getSslContext:[invokedynamic] 29 = invokestatic < Application, Ljava/lang/invoke/LambdaMetafactory, run(Lorg/apache/hadoop/hbase/ipc/NettyRpcClient;)Ljava/lang/Runnable; > 1 @95 exception:28 Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcClient, getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere
+METHOD_ENTRY:Node: synthetic < Application, Ljava/lang/invoke/LambdaMetafactory, run$org$apache$hadoop$hbase$ipc$NettyRpcClient$0(Lorg/apache/hadoop/hbase/ipc/NettyRpcClient;)Ljava/lang/Runnable; > Context: Everywhere
+NORMAL run$org$apache$hadoop$hbase$ipc$NettyRpcClient$0:return 3 Node: synthetic < Application, Ljava/lang/invoke/LambdaMetafactory, run$org$apache$hadoop$hbase$ipc$NettyRpcClient$0(Lorg/apache/hadoop/hbase/ipc/NettyRpcClient;)Ljava/lang/Runnable; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: synthetic < Application, Ljava/lang/invoke/LambdaMetafactory, run$org$apache$hadoop$hbase$ipc$NettyRpcClient$0(Lorg/apache/hadoop/hbase/ipc/NettyRpcClient;)Ljava/lang/Runnable; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcClient, getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[49][invokedynamic] 29 = invokestatic < Application, Ljava/lang/invoke/LambdaMetafactory, run(Lorg/apache/hadoop/hbase/ipc/NettyRpcClient;)Ljava/lang/Runnable; > 1 @95 exception:28
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ipc/NettyRpcClient, getSslContext()Lorg/apache/hbase/thirdparty/io/netty/handler/ssl/SslContext; > Context: Everywhere[50]invokestatic < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V > 25,26,27,29 @100 exception:30 v29
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V > Context: Everywhere v4
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V > Context: Everywhere[8]11 = invokestatic < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, newFileChangeWatcher(Ljava/lang/String;Ljava/lang/Runnable;)Lorg/apache/hadoop/hbase/io/FileChangeWatcher; > 9,4 @14 exception:10 v4
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, newFileChangeWatcher(Ljava/lang/String;Ljava/lang/Runnable;)Lorg/apache/hadoop/hbase/io/FileChangeWatcher; > Context: Everywhere v2
+NORMAL newFileChangeWatcher:conditional branch(ne, to iindex=12) 2,4 Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, newFileChangeWatcher(Ljava/lang/String;Ljava/lang/Runnable;)Lorg/apache/hadoop/hbase/io/FileChangeWatcher; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    throws IOException {
+    if (fileLocation == null || fileLocation.isEmpty() || resetContext == null) {
+      return null;
+    }
+    final Path filePath = Paths.get(fileLocation).toAbsolutePath();
+    Path parentPath = filePath.getParent();
+    if (parentPath == null) {
+      throw new IOException("Key/trust store path does not have a parent: " + filePath);
+    }
+    FileChangeWatcher fileChangeWatcher =
+      new FileChangeWatcher(parentPath, Objects.toString(filePath.getFileName()), watchEvent -> {
+        handleWatchEvent(filePath, watchEvent, resetContext);
+      });
+    fileChangeWatcher.start();
+    return fileChangeWatcher;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/io/crypto/tls/X509Util, enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V > Context: Everywhere, blocks=[BB[SSA:4..8]2 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V, BB[SSA:0..3]1 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V, BB[SSA:9..9]3 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V, BB[SSA:-1..-2]10 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V, BB[SSA:20..23]7 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V, BB[SSA:18..19]6 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V, BB[SSA:24..24]8 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V, BB[SSA:-1..-2]10 - org.apache.hadoop.hbase.io.crypto.tls.X509Util.enableCertFileReloading(Lorg/apache/hadoop/conf/Configuration;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Runnable;)V], numberOfBasicBlocks=8, firstLineNumber=501, lastLineNumber=502, firstMethodNumber=495, lastMethodNumber=504, isFirstLineValid=true, methodSrcCode=
+    throws IOException {
+    String keyStoreLocation = config.get(TLS_CONFIG_KEYSTORE_LOCATION, "");
+    keystoreWatcher.set(newFileChangeWatcher(keyStoreLocation, resetContext));
+    String trustStoreLocation = config.get(TLS_CONFIG_TRUSTSTORE_LOCATION, "");
+    // we are using the same callback for both. there's no reason to kick off two
+    // threads if keystore/truststore are both at the same location
+    if (!keyStoreLocation.equals(trustStoreLocation)) {
+      trustStoreWatcher.set(newFileChangeWatcher(trustStoreLocation, resetContext));
+    }
+  }
+
+}

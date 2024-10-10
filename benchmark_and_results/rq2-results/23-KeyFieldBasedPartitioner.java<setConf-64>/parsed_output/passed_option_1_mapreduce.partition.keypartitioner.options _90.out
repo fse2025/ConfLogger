@@ -1,0 +1,1 @@
+mapreduce.partition.keypartitioner.options 	-1;93	INFO	Configuration parameter 'PARTITIONER_OPTIONS' is set with value: -1;93. Parsing options for key field specification.	90

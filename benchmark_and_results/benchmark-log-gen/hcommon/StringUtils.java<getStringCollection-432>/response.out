@@ -1,0 +1,15 @@
+```java
+List<String> values = new ArrayList<String>();
+if (str == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'str' is null. Ensure that the 'str' parameter is properly set.");
+    // ConfLogger Inserted End
+    return values;
+}
+StringTokenizer tokenizer = new StringTokenizer(str, delim);
+while (tokenizer.hasMoreTokens()) {
+    values.add(tokenizer.nextToken());
+}
+return values;
+}
+```

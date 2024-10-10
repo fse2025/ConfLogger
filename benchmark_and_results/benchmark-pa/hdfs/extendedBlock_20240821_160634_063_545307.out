@@ -1,0 +1,111 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SecondaryNameNode.java	methodSinagture:	org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V	methodLines:	214:264
+blockLines:	218:-1
+paras:	null
+TaintedStat:	NORMAL initialize:conditional branch(eq, to iindex=16) 11,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V > Context: Everywhere[22]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,19 @42 exception:20
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V > Context: Everywhere[22]21 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 2,19 @42 exception:20
+NORMAL initialize:25 = invokestatic < Application, Lorg/apache/hadoop/metrics2/source/JvmMetrics, create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics; > 16,21,23 @48 exception:24 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/metrics2/source/JvmMetrics, create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics; > Context: Everywhere
+NORMAL create:10 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 5,7,8 @10 exception:9 Node: < Extension, Lorg/apache/hadoop/metrics2/source/JvmMetrics, create(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/metrics2/MetricsSystem;)Lorg/apache/hadoop/metrics2/source/JvmMetrics; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:6 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:5 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL getTrimmed:5 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @2 exception:4 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getTrimmed(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere[6]10 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 1,2 @9 exception:9
+NORMAL login:invokestatic < Extension, Lorg/apache/hadoop/security/UserGroupInformation, loginUserFromKeytab(Ljava/lang/String;Ljava/lang/String;)V > 20,10 @61 exception:21 Node: < Extension, Lorg/apache/hadoop/security/SecurityUtil, login(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/UserGroupInformation, loginUserFromKeytab(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+NORMAL loginUserFromKeytab:5 = invokestatic < Extension, Lorg/apache/hadoop/security/UserGroupInformation, isSecurityEnabled()Z > @0 exception:4 Node: < Extension, Lorg/apache/hadoop/security/UserGroupInformation, loginUserFromKeytab(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/security/UserGroupInformation, isSecurityEnabled()Z > Context: Everywhere
+NORMAL isSecurityEnabled:return 7 Node: < Extension, Lorg/apache/hadoop/security/UserGroupInformation, isSecurityEnabled()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/security/UserGroupInformation, isSecurityEnabled()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V > Context: Everywhere[8]11 = invokestatic < Application, Lorg/apache/hadoop/security/UserGroupInformation, isSecurityEnabled()Z > @15 exception:10
+NORMAL initialize:conditional branch(eq, to iindex=16) 11,12 Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, initialize(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      CommandLineOpts commandLineOpts) throws IOException {
+    final InetSocketAddress infoSocAddr = getHttpAddress(conf);
+    final String infoBindAddress = infoSocAddr.getHostName();
+    UserGroupInformation.setConfiguration(conf);
+    if (UserGroupInformation.isSecurityEnabled()) {
+      SecurityUtil.login(conf,
+          DFSConfigKeys.DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY,
+          DFSConfigKeys.DFS_SECONDARY_NAMENODE_KERBEROS_PRINCIPAL_KEY, infoBindAddress);
+    }
+    // initiate Java VM metrics
+    DefaultMetricsSystem.initialize("SecondaryNameNode");
+    JvmMetrics.create("SecondaryNameNode",
+        conf.get(DFSConfigKeys.DFS_METRICS_SESSION_ID_KEY),
+        DefaultMetricsSystem.instance());
+
+    // Create connection to the namenode.
+    shouldRun = true;
+    nameNodeAddr = NameNode.getServiceAddress(conf, true);
+
+    this.conf = conf;
+    this.namenode = NameNodeProxies.createNonHAProxy(conf, nameNodeAddr, 
+        NamenodeProtocol.class, UserGroupInformation.getCurrentUser(),
+        true).getProxy();
+
+    // initialize checkpoint directories
+    fsName = getInfoServer();
+    checkpointDirs = FSImage.getCheckpointDirs(conf,
+                                  "/tmp/hadoop/dfs/namesecondary");
+    checkpointEditsDirs = FSImage.getCheckpointEditsDirs(conf, 
+                                  "/tmp/hadoop/dfs/namesecondary");    
+    checkpointImage = new CheckpointStorage(conf, checkpointDirs, checkpointEditsDirs);
+    checkpointImage.recoverCreate(commandLineOpts.shouldFormat());
+    checkpointImage.deleteTempEdits();
+    
+    namesystem = new FSNamesystem(conf, checkpointImage, true);
+
+    // Disable quota checks
+    namesystem.dir.disableQuotaChecks();
+
+    // Initialize other scheduling parameters from the configuration
+    checkpointConf = new CheckpointConf(conf);
+    nameNodeStatusBeanName = MBeans.register("SecondaryNameNode",
+            "SecondaryNameNodeInfo", this);
+
+    legacyOivImageDir = conf.get(
+        DFSConfigKeys.DFS_NAMENODE_LEGACY_OIV_IMAGE_DIR_KEY);
+
+    LOG.info("Checkpoint Period   :" + checkpointConf.getPeriod() + " secs "
+        + "(" + checkpointConf.getPeriod() / 60 + " min)");
+    LOG.info("Log Size Trigger    :" + checkpointConf.getTxnCount() + " txns");
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V > Context: Everywhere, blocks=[BB[SSA:28..31]13 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V, BB[SSA:24..27]12 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V, BB[SSA:32..32]14 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V, BB[SSA:-1..-2]20 - org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/hdfs/server/namenode/SecondaryNameNode$CommandLineOpts;)V], numberOfBasicBlocks=4, firstLineNumber=193, lastLineNumber=201, firstMethodNumber=184, lastMethodNumber=202, isFirstLineValid=true, methodSrcCode=
+  public SecondaryNameNode(Configuration conf,
+      CommandLineOpts commandLineOpts) throws IOException {
+    try {
+      String nsId = DFSUtil.getSecondaryNameServiceId(conf);
+      if (HAUtil.isHAEnabled(conf, nsId)) {
+        throw new IOException(
+            "Cannot use SecondaryNameNode in an HA cluster." +
+            " The Standby Namenode will perform checkpointing.");
+      }
+      NameNode.initializeGenericKeys(conf, nsId, null);
+      initialize(conf, commandLineOpts);
+    } catch (IOException e) {
+      shutdown();
+      throw e;
+    } catch (HadoopIllegalArgumentException e) {
+      shutdown();
+      throw e;
+    }
+  }
+  
+}

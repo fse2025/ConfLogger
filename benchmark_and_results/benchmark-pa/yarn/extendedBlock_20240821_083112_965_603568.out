@@ -1,0 +1,52 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	WebAppUtils.java	methodSinagture:	org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder;	methodLines:	457:465
+blockLines:	461:-1
+paras:	null
+TaintedStat:	NORMAL loadSslConfiguration:conditional branch(eq, to iindex=14) 2,9 Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, build(Lorg/apache/hadoop/yarn/webapp/WebApp;)Lorg/apache/hadoop/yarn/webapp/WebApp; > Context: Everywhere[339]244 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 241,242 @764 exception:243
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, build(Lorg/apache/hadoop/yarn/webapp/WebApp;)Lorg/apache/hadoop/yarn/webapp/WebApp; > Context: Everywhere[339]244 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 241,242 @764 exception:243
+NORMAL build:conditional branch(eq, to iindex=355) 244,4 Node: < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, build(Lorg/apache/hadoop/yarn/webapp/WebApp;)Lorg/apache/hadoop/yarn/webapp/WebApp; > Context: Everywhere
+NORMAL build:conditional branch(eq, to iindex=355) 245,4 Node: < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, build(Lorg/apache/hadoop/yarn/webapp/WebApp;)Lorg/apache/hadoop/yarn/webapp/WebApp; > Context: Everywhere
+NORMAL build:249 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 246,247 @785 exception:248 Node: < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, build(Lorg/apache/hadoop/yarn/webapp/WebApp;)Lorg/apache/hadoop/yarn/webapp/WebApp; > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL get:return 22 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/http/HttpServer2$Builder, build()Lorg/apache/hadoop/http/HttpServer2; > Context: Everywhere[57]41 = invokevirtual < Extension, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 29,39 @116 exception:40
+NORMAL build:44 = invokevirtual < Extension, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 41,42 @121 exception:43 Node: < Extension, Lorg/apache/hadoop/http/HttpServer2$Builder, build()Lorg/apache/hadoop/http/HttpServer2; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:conditional branch(ne, to iindex=5) 1,2 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL equals:return 22 Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, equals(Ljava/lang/Object;)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, build(Lorg/apache/hadoop/yarn/webapp/WebApp;)Lorg/apache/hadoop/yarn/webapp/WebApp; > Context: Everywhere[372]262 = invokevirtual < Application, Ljava/lang/String, equals(Ljava/lang/Object;)Z > 180,175 @830 exception:261
+NORMAL build:conditional branch(eq, to iindex=443) 262,27 Node: < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, build(Lorg/apache/hadoop/yarn/webapp/WebApp;)Lorg/apache/hadoop/yarn/webapp/WebApp; > Context: Everywhere
+NORMAL build:conditional branch(eq, to iindex=401) 265,4 Node: < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, build(Lorg/apache/hadoop/yarn/webapp/WebApp;)Lorg/apache/hadoop/yarn/webapp/WebApp; > Context: Everywhere
+NORMAL build:269 = getfield < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, conf, <Application,Lorg/apache/hadoop/conf/Configuration> > 1 Node: < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, build(Lorg/apache/hadoop/yarn/webapp/WebApp;)Lorg/apache/hadoop/yarn/webapp/WebApp; > Context: Everywhere
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/webapp/WebApps$Builder, build(Lorg/apache/hadoop/yarn/webapp/WebApp;)Lorg/apache/hadoop/yarn/webapp/WebApp; > Context: Everywhere[407]271 = invokestatic < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder; > 206,269 @914 exception:270 v269
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere v2
+NORMAL loadSslConfiguration:conditional branch(eq, to iindex=14) 2,9 Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+
+    Configuration sslConf = new Configuration(false);
+
+    sslConf.addResource(YarnConfiguration.YARN_SSL_SERVER_RESOURCE_DEFAULT);
+    if (conf != null) {
+      sslConf.addResource(conf);
+    }
+    boolean needsClientAuth = YarnConfiguration.YARN_SSL_CLIENT_HTTPS_NEED_AUTH_DEFAULT;
+    return builder
+        .needsClientAuth(needsClientAuth)
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/yarn/webapp/util/WebAppUtils, loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;)Lorg/apache/hadoop/http/HttpServer2$Builder; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]0 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:3..3]2 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;)Lorg/apache/hadoop/http/HttpServer2$Builder;, BB[SSA:-1..-2]3 - org.apache.hadoop.yarn.webapp.util.WebAppUtils.loadSslConfiguration(Lorg/apache/hadoop/http/HttpServer2$Builder;)Lorg/apache/hadoop/http/HttpServer2$Builder;], numberOfBasicBlocks=4, firstLineNumber=443, lastLineNumber=444, firstMethodNumber=443, lastMethodNumber=444, isFirstLineValid=false, methodSrcCode=
+      HttpServer2.Builder builder) {
+    return loadSslConfiguration(builder, null);
+  }
+}

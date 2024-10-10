@@ -1,0 +1,19 @@
+```java
+String value = null;
+for (String key : keys) {
+    key = addSuffix(key, keySuffix);
+    value = conf.get(key);
+    if (value != null) {
+        // ConfLogger Skipped
+        break;
+    }
+}
+if (value == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter not found for keys with suffix: " + keySuffix + ". Using default value: " + defaultValue);
+    // ConfLogger Inserted End
+    value = defaultValue;
+}
+return value;
+}
+```

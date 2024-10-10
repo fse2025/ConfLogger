@@ -1,0 +1,16 @@
+```java
+double largestMemReq = getMaxExecutorMemoryUsageForTopo(topology, stormConf);
+double topologyWorkerMaxHeapSize =
+ObjectReader.getDouble(stormConf.get(Config.TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB), defaultWorkerMaxHeapSizeMb);
+if (topologyWorkerMaxHeapSize < largestMemReq) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration Error: TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB={} is less than the largest memory requirement of a component in the topology ({}). Consider setting TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB to a larger amount.", topologyWorkerMaxHeapSize, largestMemReq);
+    // ConfLogger Inserted End
+    throw new InvalidTopologyException(
+        "Topology will not be able to be successfully scheduled: Config "
+        + "TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB="
+        + topologyWorkerMaxHeapSize
+        + " < " + largestMemReq + " (Largest memory requirement of a component in the topology)."
+        + " Perhaps set TOPOLOGY_WORKER_MAX_HEAP_SIZE_MB to a larger amount");
+}
+```

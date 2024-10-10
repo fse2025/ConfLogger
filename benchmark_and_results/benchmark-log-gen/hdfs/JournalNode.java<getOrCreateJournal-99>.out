@@ -1,0 +1,66 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	JournalNode.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.server.JournalNode.getOrCreateJournal(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal;	methodLines:	99:122
+blockLines:	109:-1
+paras:	dfs.journalnode.enable.sync
+TaintedStat:	NORMAL getOrCreateJournal:conditional branch(eq, to iindex=58) 54,21 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getOrCreateJournal(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getOrCreateJournal(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal; > Context: Everywhere[50]54 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 50,51,52 @106 exception:53
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getOrCreateJournal(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal; > Context: Everywhere[50]54 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 50,51,52 @106 exception:53
+NORMAL getOrCreateJournal:conditional branch(eq, to iindex=58) 54,21 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getOrCreateJournal(Ljava/lang/String;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      throws IOException {
+    QuorumJournalManager.checkJournalId(jid);
+    
+    Journal journal = journalsById.get(jid);
+    if (journal == null) {
+      File logDir = getLogDir(jid, nameServiceId);
+      LOG.info("Initializing journal in directory " + logDir);
+      journal = new Journal(conf, logDir, jid, startOpt, new ErrorReporter());
+      journalsById.put(jid, journal);
+      // Start SyncJouranl thread, if JournalNode Sync is enabled
+      if (conf.getBoolean(
+          DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_KEY,
+          DFSConfigKeys.DFS_JOURNALNODE_ENABLE_SYNC_DEFAULT)) {
+        startSyncer(journal, jid, nameServiceId);
+      }
+    } else if (journalSyncersById.get(jid) != null &&
+        !journalSyncersById.get(jid).isJournalSyncerStarted() &&
+        !journalsById.get(jid).getTriedJournalSyncerStartedwithnsId() &&
+        nameServiceId != null) {
+      startSyncer(journal, jid, nameServiceId);
+    }
+
+
+    return journal;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, canRollBack(Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/StorageInfo;Lorg/apache/hadoop/hdfs/server/common/StorageInfo;ILjava/lang/String;)Ljava/lang/Boolean; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.canRollBack(Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/StorageInfo;Lorg/apache/hadoop/hdfs/server/common/StorageInfo;ILjava/lang/String;)Ljava/lang/Boolean;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.canRollBack(Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/StorageInfo;Lorg/apache/hadoop/hdfs/server/common/StorageInfo;ILjava/lang/String;)Ljava/lang/Boolean;, BB[SSA:5..8]2 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.canRollBack(Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/StorageInfo;Lorg/apache/hadoop/hdfs/server/common/StorageInfo;ILjava/lang/String;)Ljava/lang/Boolean;, BB[SSA:-1..-2]4 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.canRollBack(Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/StorageInfo;Lorg/apache/hadoop/hdfs/server/common/StorageInfo;ILjava/lang/String;)Ljava/lang/Boolean;], numberOfBasicBlocks=4, firstLineNumber=465, lastLineNumber=466, firstMethodNumber=465, lastMethodNumber=466, isFirstLineValid=false, methodSrcCode=
+      String nameServiceId) throws IOException {
+    return getOrCreateJournal(journalId,
+        nameServiceId, StartupOption.ROLLBACK).canRollBack(
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getOrCreateJournal(Ljava/lang/String;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.getOrCreateJournal(Ljava/lang/String;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.getOrCreateJournal(Ljava/lang/String;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal;, BB[SSA:5..5]2 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.getOrCreateJournal(Ljava/lang/String;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal;, BB[SSA:-1..-2]3 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.getOrCreateJournal(Ljava/lang/String;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal;], numberOfBasicBlocks=4, firstLineNumber=149, lastLineNumber=150, firstMethodNumber=149, lastMethodNumber=150, isFirstLineValid=false, methodSrcCode=
+  public Journal getOrCreateJournal(String jid) throws IOException {
+    return getOrCreateJournal(jid, null, StartupOption.REGULAR);
+  }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, doRollback(Ljava/lang/String;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.doRollback(Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.doRollback(Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:5..5]2 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.doRollback(Ljava/lang/String;Ljava/lang/String;)V, BB[SSA:-1..-2]4 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.doRollback(Ljava/lang/String;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=472, lastLineNumber=474, firstMethodNumber=472, lastMethodNumber=475, isFirstLineValid=false, methodSrcCode=
+                         String nameServiceId) throws IOException {
+    getOrCreateJournal(journalId,
+        nameServiceId, StartupOption.ROLLBACK).doRollback();
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/JournalNode, getOrCreateJournal(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal; > Context: Everywhere, blocks=[BB[SSA:0..4]1 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.getOrCreateJournal(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal;, BB[SSA:-1..-2]0 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.getOrCreateJournal(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal;, BB[SSA:5..5]2 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.getOrCreateJournal(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal;, BB[SSA:-1..-2]3 - org.apache.hadoop.hdfs.qjournal.server.JournalNode.getOrCreateJournal(Ljava/lang/String;Ljava/lang/String;)Lorg/apache/hadoop/hdfs/qjournal/server/Journal;], numberOfBasicBlocks=4, firstLineNumber=155, lastLineNumber=156, firstMethodNumber=155, lastMethodNumber=156, isFirstLineValid=false, methodSrcCode=
+      throws IOException {
+    return getOrCreateJournal(jid, nameServiceId, StartupOption.REGULAR);
+  }
+}

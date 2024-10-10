@@ -1,0 +1,104 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	StormCommon.java	methodSinagture:	org.apache.storm.daemon.StormCommon.hasEventLoggers(Ljava/util/Map;)Z	methodLines:	462:464
+blockLines:	464:-1
+paras:	topology.eventlogger.executors
+TaintedStat:	NORMAL hasEventLoggers:conditional branch(eq, to iindex=12) 5,6 Node: < Application, Lorg/apache/storm/daemon/StormCommon, hasEventLoggers(Ljava/util/Map;)Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, hasEventLoggers(Ljava/util/Map;)Z > Context: Everywhere[2]5 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,3 @4 exception:4
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/StormCommon, hasEventLoggers(Ljava/util/Map;)Z > Context: Everywhere[2]5 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,3 @4 exception:4
+NORMAL hasEventLoggers:conditional branch(eq, to iindex=12) 5,6 Node: < Application, Lorg/apache/storm/daemon/StormCommon, hasEventLoggers(Ljava/util/Map;)Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static boolean hasEventLoggers(Map<String, Object> topoConf) {
+        Object eventLoggerNum = topoConf.get(Config.TOPOLOGY_EVENTLOGGER_EXECUTORS);
+        return eventLoggerNum == null || ObjectReader.getInt(eventLoggerNum) > 0;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/StormCommon, systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology; > Context: Everywhere, blocks=[BB[SSA:8..9]4 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:4..7]3 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:10..11]5 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;, BB[SSA:-1..-2]13 - org.apache.storm.daemon.StormCommon.systemTopologyImpl(Ljava/util/Map;Lorg/apache/storm/generated/StormTopology;)Lorg/apache/storm/generated/StormTopology;], numberOfBasicBlocks=4, firstLineNumber=536, lastLineNumber=538, firstMethodNumber=533, lastMethodNumber=548, isFirstLineValid=true, methodSrcCode=
+    protected StormTopology systemTopologyImpl(Map<String, Object> topoConf, StormTopology topology) throws InvalidTopologyException {
+        validateBasic(topology);
+
+        StormTopology ret = topology.deepCopy();
+        addAcker(topoConf, ret);
+        if (hasEventLoggers(topoConf)) {
+            addEventLogger(topoConf, ret);
+        }
+        addMetricComponents(topoConf, ret);
+        addSystemComponents(topoConf, ret);
+        addMetricStreams(ret);
+        addSystemStreams(ret);
+
+        validateStructure(ret);
+
+        return ret;
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/executor/Executor, <init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V > Context: Everywhere, blocks=[BB[SSA:212..212]116 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:209..211]115 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:213..213]117 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V, BB[SSA:-1..-2]147 - org.apache.storm.executor.Executor.<init>(Lorg/apache/storm/daemon/worker/WorkerState;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;)V], numberOfBasicBlocks=4, firstLineNumber=178, lastLineNumber=192, firstMethodNumber=134, lastMethodNumber=192, isFirstLineValid=true, methodSrcCode=
+
+    protected Executor(WorkerState workerData, List<Long> executorId, Map<String, String> credentials, String type) {
+        this.workerData = workerData;
+        this.executorId = executorId;
+        this.type = type;
+        this.workerTopologyContext = workerData.getWorkerTopologyContext();
+        this.taskIds = StormCommon.executorIdToTasks(executorId);
+        this.componentId = workerTopologyContext.getComponentId(taskIds.get(0));
+        this.openOrPrepareWasCalled = new AtomicBoolean(false);
+        this.topoConf = normalizedComponentConf(workerData.getTopologyConf(), workerTopologyContext, componentId);
+        this.receiveQueue = (workerData.getExecutorReceiveQueueMap().get(executorId));
+        this.stormId = workerData.getTopologyId();
+        this.conf = workerData.getConf();
+        this.sharedExecutorData = new HashMap();
+        this.workerReady = workerData.getIsWorkerActive();
+        this.stormActive = workerData.getIsTopologyActive();
+        this.stormComponentDebug = workerData.getStormComponentToDebug();
+
+        this.executorTransfer = new ExecutorTransfer(workerData, topoConf);
+
+        this.suicideFn = workerData.getSuicideCallback();
+        try {
+            this.stormClusterState = ClusterUtils.mkStormClusterState(workerData.getStateStorage(),
+                                                                      new ClusterStateContext(DaemonType.WORKER, topoConf));
+        } catch (Exception e) {
+            throw Utils.wrapInRuntime(e);
+        }
+
+        this.intervalToTaskToMetricToRegistry = new HashMap<>();
+        this.taskToComponent = workerData.getTaskToComponent();
+        this.streamToComponentToGrouper = outboundComponents(workerTopologyContext, componentId, topoConf);
+        if (this.streamToComponentToGrouper != null) {
+            this.groupers = streamToComponentToGrouper.values().stream()
+                                                      .filter(Objects::nonNull)
+                                                      .flatMap(m -> m.values().stream()).collect(Collectors.toList());
+        } else {
+            this.groupers = Collections.emptyList();
+        }
+        this.reportError = new ReportError(topoConf, stormClusterState, stormId, componentId, workerTopologyContext);
+        this.reportErrorDie = new ReportErrorAndDie(reportError, suicideFn);
+        this.sampler = ConfigUtils.mkStatsSampler(topoConf);
+        this.isDebug = ObjectReader.getBoolean(topoConf.get(Config.TOPOLOGY_DEBUG), false);
+        this.rand = new Random(Utils.secureRandomLong());
+        this.credentials = credentials;
+        this.hasEventLoggers = StormCommon.hasEventLoggers(topoConf);
+        this.ackingEnabled = StormCommon.hasAckers(topoConf);
+
+        try {
+            this.hostname = Utils.hostname();
+        } catch (UnknownHostException ignored) {
+            this.hostname = "";
+        }
+        flushTuple = AddressedTuple.createFlushTuple(workerTopologyContext);
+        this.reportedErrorCount = workerData.getMetricRegistry().rateCounter("__reported-error-count", componentId,
+                taskIds.get(0));
+
+        enableV2MetricsDataPoints = ObjectReader.getBoolean(topoConf.get(Config.TOPOLOGY_ENABLE_V2_METRICS_TICK), false);
+        v2MetricsTickInterval = ObjectReader.getInt(topoConf.get(Config.TOPOLOGY_V2_METRICS_TICK_INTERVAL_SECONDS), 60);
+    }
+
+}

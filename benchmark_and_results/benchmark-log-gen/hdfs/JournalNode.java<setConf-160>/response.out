@@ -1,0 +1,43 @@
+```java
+this.conf = conf;
+
+String journalNodeDir = null;
+Collection<String> nameserviceIds;
+
+nameserviceIds = conf.getTrimmedStringCollection(
+DFSConfigKeys.DFS_INTERNAL_NAMESERVICES_KEY);
+
+if (nameserviceIds.size() == 0) {
+    // ConfLogger Inserted Start
+    logger.warn("No internal nameservices found. Falling back to DFS_NAMESERVICES configuration.");
+    // ConfLogger Inserted End
+    nameserviceIds = conf.getTrimmedStringCollection(
+    DFSConfigKeys.DFS_NAMESERVICES);
+}
+
+//if nameservicesIds size is less than 2, it means it is not a federated
+// setup
+if (nameserviceIds.size() < 2) {
+    // Check in HA, if journal edit dir is set by appending with
+    // nameserviceId
+    for (String nameService : nameserviceIds) {
+        journalNodeDir = conf.get(DFSConfigKeys.DFS_JOURNALNODE_EDITS_DIR_KEY +
+        "." + nameService);
+    }
+    if (journalNodeDir == null) {
+        // ConfLogger Inserted Start
+        logger.warn("JournalNode edit directory not set for any nameservice. Using default directory.");
+        // ConfLogger Inserted End
+        journalNodeDir = conf.get(DFSConfigKeys.DFS_JOURNALNODE_EDITS_DIR_KEY,
+        DFSConfigKeys.DFS_JOURNALNODE_EDITS_DIR_DEFAULT);
+    }
+    localDir.add(new File(journalNodeDir.trim()));
+}
+
+if (this.tracer == null) {
+    this.tracer = new Tracer.Builder("JournalNode").
+    conf(TraceUtils.wrapHadoopConf("journalnode.htrace", conf)).
+    build();
+}
+}
+```

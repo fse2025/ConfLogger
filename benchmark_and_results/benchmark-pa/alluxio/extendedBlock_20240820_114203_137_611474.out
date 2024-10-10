@@ -1,0 +1,70 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	NetworkAddressUtils.java	methodSinagture:	alluxio.util.network.NetworkAddressUtils.getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String;	methodLines:	342:358
+blockLines:	345:-1
+paras:	null
+TaintedStat:	NORMAL getConnectHost:conditional branch(ne, to iindex=22) 14,8 Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere[9]12 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 2,10 @22 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere[9]12 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 2,10 @22 exception:11
+NORMAL getConnectHost:14 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 12 @29 exception:13 Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere[12]14 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 12 @29 exception:13
+NORMAL getConnectHost:conditional branch(ne, to iindex=22) 14,8 Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NetworkAddressUtils.java	methodSinagture:	alluxio.util.network.NetworkAddressUtils.getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String;	methodLines:	342:358
+blockLines:	355:-1
+paras:	null
+TaintedStat:	NORMAL getConnectHost:conditional branch(eq, to iindex=55) 32,8 Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere[46]32 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 2,30 @96 exception:31
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere[46]32 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getBoolean(Lalluxio/conf/PropertyKey;)Z > 2,30 @96 exception:31
+NORMAL getConnectHost:conditional branch(eq, to iindex=55) 32,8 Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	NetworkAddressUtils.java	methodSinagture:	alluxio.util.network.NetworkAddressUtils.getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String;	methodLines:	342:358
+blockLines:	351:-1
+paras:	null
+TaintedStat:	NORMAL getConnectHost:conditional branch(ne, to iindex=44) 27,8 Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere[31]25 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 2,23 @68 exception:24
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere[31]25 = invokeinterface < Application, Lalluxio/conf/AlluxioConfiguration, getString(Lalluxio/conf/PropertyKey;)Ljava/lang/String; > 2,23 @68 exception:24
+NORMAL getConnectHost:27 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 25 @75 exception:26 Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere[34]27 = invokevirtual < Application, Ljava/lang/String, isEmpty()Z > 25 @75 exception:26
+NORMAL getConnectHost:conditional branch(ne, to iindex=44) 27,8 Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectHost(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/lang/String; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static String getConnectHost(ServiceAttributeProvider service, AlluxioConfiguration conf) {
+    if (conf.isSet(service.getHostNameKey())) {
+      String connectHost = conf.getString(service.getHostNameKey());
+      if (!connectHost.isEmpty() && !connectHost.equals(WILDCARD_ADDRESS)) {
+        return connectHost;
+      }
+    }
+    if (conf.isSet(service.getBindHostKey())) {
+      String bindHost = conf.getString(service.getBindHostKey());
+      if (!bindHost.isEmpty() && !bindHost.equals(WILDCARD_ADDRESS)) {
+        return bindHost;
+      }
+    }
+    if (conf.getBoolean(PropertyKey.NETWORK_IP_ADDRESS_USED)) {
+      return getLocalIpAddress((int) conf.getMs(PropertyKey.NETWORK_HOST_RESOLUTION_TIMEOUT_MS));
+    }
+    return getLocalHostName((int) conf.getMs(PropertyKey.NETWORK_HOST_RESOLUTION_TIMEOUT_MS));
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lalluxio/util/network/NetworkAddressUtils, getConnectAddress(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/net/InetSocketAddress; > Context: Everywhere, blocks=[BB[SSA:0..2]1 - alluxio.util.network.NetworkAddressUtils.getConnectAddress(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/net/InetSocketAddress;, BB[SSA:-1..-2]0 - alluxio.util.network.NetworkAddressUtils.getConnectAddress(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/net/InetSocketAddress;, BB[SSA:3..5]2 - alluxio.util.network.NetworkAddressUtils.getConnectAddress(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/net/InetSocketAddress;, BB[SSA:-1..-2]5 - alluxio.util.network.NetworkAddressUtils.getConnectAddress(Lalluxio/util/network/NetworkAddressUtils$ServiceAttributeProvider;Lalluxio/conf/AlluxioConfiguration;)Ljava/net/InetSocketAddress;], numberOfBasicBlocks=4, firstLineNumber=283, lastLineNumber=284, firstMethodNumber=283, lastMethodNumber=284, isFirstLineValid=false, methodSrcCode=
+                                                    AlluxioConfiguration conf) {
+    return InetSocketAddress.createUnresolved(getConnectHost(service, conf),
+        getPort(service, conf));
+}

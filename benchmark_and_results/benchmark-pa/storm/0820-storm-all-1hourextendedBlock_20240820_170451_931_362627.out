@@ -1,0 +1,41 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BasicContainer.java	methodSinagture:	org.apache.storm.daemon.supervisor.BasicContainer.asStringList(Ljava/lang/Object;)Ljava/util/List;	methodLines:	416:422
+blockLines:	417:-1
+paras:	topology.classpath
+TaintedStat:	NORMAL asStringList:conditional branch(eq, to iindex=13) 4,5 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, asStringList(Ljava/lang/Object;)Ljava/util/List; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String; > Context: Everywhere[32]27 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 24,25 @74 exception:26
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String; > Context: Everywhere[32]27 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 24,25 @74 exception:26
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String; > Context: Everywhere[33]29 = invokevirtual < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, asStringList(Ljava/lang/Object;)Ljava/util/List; > 1,27 @79 exception:28 v27
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, asStringList(Ljava/lang/Object;)Ljava/util/List; > Context: Everywhere v2
+NORMAL asStringList:4 = instanceof 2 <Application,Ljava/lang/String> Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, asStringList(Ljava/lang/Object;)Ljava/util/List; > Context: Everywhere
+NORMAL asStringList:conditional branch(eq, to iindex=13) 4,5 Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, asStringList(Ljava/lang/Object;)Ljava/util/List; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private List<String> asStringList(Object o) {
+        if (o instanceof String) {
+            return Arrays.asList((String) o);
+        } else if (o instanceof List) {
+            return (List<String>) o;
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/BasicContainer, getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String; > Context: Everywhere, blocks=[BB[SSA:10..10]5 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String;, BB[SSA:8..9]4 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String;, BB[SSA:11..11]6 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String;, BB[SSA:-1..-2]17 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String;, BB[SSA:33..33]13 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String;, BB[SSA:31..32]12 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String;, BB[SSA:34..34]14 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String;, BB[SSA:-1..-2]17 - org.apache.storm.daemon.supervisor.BasicContainer.getWorkerClassPath(Ljava/lang/String;Ljava/util/List;Lorg/apache/storm/utils/SimpleVersion;)Ljava/lang/String;], numberOfBasicBlocks=8, firstLineNumber=439, lastLineNumber=439, firstMethodNumber=433, lastMethodNumber=440, isFirstLineValid=true, methodSrcCode=
+    protected String getWorkerClassPath(String stormJar, List<String> dependencyLocations, SimpleVersion topoVersion) {
+        List<String> workercp = new ArrayList<>();
+        workercp.addAll(asStringList(topoConf.get(Config.TOPOLOGY_CLASSPATH_BEGINNING)));
+        workercp.addAll(frameworkClasspath(topoVersion));
+        workercp.add(stormJar);
+        workercp.addAll(dependencyLocations);
+        workercp.addAll(asStringList(topoConf.get(Config.TOPOLOGY_CLASSPATH)));
+        return CPJ.join(workercp);
+    }
+}

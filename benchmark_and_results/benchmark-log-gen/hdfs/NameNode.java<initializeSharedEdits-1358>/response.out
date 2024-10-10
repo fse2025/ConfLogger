@@ -1,0 +1,95 @@
+```java
+String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+initializeGenericKeys(conf, nsId, namenodeId);
+
+if (conf.get(DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY) == null) {
+    // ConfLogger Skipped
+    LOG.error("No shared edits directory configured for namespace " +
+    nsId + " namenode " + namenodeId);
+    return false;
+}
+
+if (UserGroupInformation.isSecurityEnabled()) {
+    InetSocketAddress socAddr = DFSUtilClient.getNNAddress(conf);
+    SecurityUtil.login(conf, DFS_NAMENODE_KEYTAB_FILE_KEY,
+    DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY, socAddr.getHostName());
+}
+
+NNStorage existingStorage = null;
+FSImage sharedEditsImage = null;
+try {
+    FSNamesystem fsns =
+    FSNamesystem.loadFromDisk(getConfigurationWithoutSharedEdits(conf));
+
+    existingStorage = fsns.getFSImage().getStorage();
+    NamespaceInfo nsInfo = existingStorage.getNamespaceInfo();
+
+    List<URI> sharedEditsDirs = FSNamesystem.getSharedEditsDirs(conf);
+
+    sharedEditsImage = new FSImage(conf,
+    Lists.<URI>newArrayList(),
+    sharedEditsDirs);
+    sharedEditsImage.getEditLog().initJournalsForWrite();
+
+    if (!sharedEditsImage.confirmFormat(force, interactive)) {
+        return true; // abort
+    }
+
+    NNStorage newSharedStorage = sharedEditsImage.getStorage();
+    // Call Storage.format instead of FSImage.format here, since we don't
+    // actually want to save a checkpoint - just prime the dirs with
+    // the existing namespace info
+    newSharedStorage.format(nsInfo);
+    sharedEditsImage.getEditLog().formatNonFileJournals(nsInfo, force);
+
+    // Need to make sure the edit log segments are in good shape to initialize
+    // the shared edits dir.
+    fsns.getFSImage().getEditLog().close();
+    fsns.getFSImage().getEditLog().initJournalsForWrite();
+    fsns.getFSImage().getEditLog().recoverUnclosedStreams();
+
+    copyEditLogSegmentsToSharedDir(fsns, sharedEditsDirs, newSharedStorage,
+    conf);
+} catch (IOException ioe) {
+    // ConfLogger Commented: Not Informative
+    // LOG.error("Could not initialize shared edits dir", ioe);
+    // ConfLogger Inserted Start
+    logger.error("Could not initialize shared edits dir. Please check the configuration parameters: " +
+                 "namespaceId=" + nsId + ", namenodeId=" + namenodeId + 
+                 ", DFS_NAMENODE_SHARED_EDITS_DIR_KEY=" + conf.get(DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY), ioe);
+    // ConfLogger Inserted End
+    return true; // aborted
+} finally {
+    if (sharedEditsImage != null) {
+        try {
+            sharedEditsImage.close();
+        }  catch (IOException ioe) {
+            // ConfLogger Commented: Not Informative
+            // LOG.warn("Could not close sharedEditsImage", ioe);
+            // ConfLogger Inserted Start
+            logger.warn("Could not close sharedEditsImage. Please check the configuration parameters: " +
+                        "namespaceId=" + nsId + ", namenodeId=" + namenodeId + 
+                        ", DFS_NAMENODE_SHARED_EDITS_DIR_KEY=" + conf.get(DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY), ioe);
+            // ConfLogger Inserted End
+        }
+    }
+    // Have to unlock storage explicitly for the case when we're running in a
+    // unit test, which runs in the same JVM as NNs.
+    if (existingStorage != null) {
+        try {
+            existingStorage.unlockAll();
+        } catch (IOException ioe) {
+            // ConfLogger Commented: Not Informative
+            // LOG.warn("Could not unlock storage directories", ioe);
+            // ConfLogger Inserted Start
+            logger.warn("Could not unlock storage directories. Please check the configuration parameters: " +
+                        "namespaceId=" + nsId + ", namenodeId=" + namenodeId + 
+                        ", DFS_NAMENODE_SHARED_EDITS_DIR_KEY=" + conf.get(DFSConfigKeys.DFS_NAMENODE_SHARED_EDITS_DIR_KEY), ioe);
+            // ConfLogger Inserted End
+            return true; // aborted
+        }
+    }
+}
+return false; // did not abort
+```

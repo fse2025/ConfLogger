@@ -1,0 +1,53 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AsyncDispatcher.java	methodSinagture:	org.apache.hadoop.yarn.event.AsyncDispatcher.serviceStop()V	methodLines:	198:228
+blockLines:	209:-1
+paras:	yarn.dispatcher.drain-events.timeout
+TaintedStat:	NORMAL serviceStop:conditional branch(ge, to iindex=58) 28,4 Node: < Application, Lorg/apache/hadoop/yarn/event/AsyncDispatcher, serviceStop()V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/event/AsyncDispatcher, serviceStop()V > Context: Everywhere[15]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 12,13,14 @34 exception:15
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/yarn/event/AsyncDispatcher, serviceStop()V > Context: Everywhere[15]16 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 12,13,14 @34 exception:15
+NORMAL serviceStop:17 = binaryop(add) 10 , 16 Node: < Application, Lorg/apache/hadoop/yarn/event/AsyncDispatcher, serviceStop()V > Context: Everywhere
+NORMAL serviceStop:28 = compare 27,17 opcode=cmp Node: < Application, Lorg/apache/hadoop/yarn/event/AsyncDispatcher, serviceStop()V > Context: Everywhere
+NORMAL serviceStop:conditional branch(ge, to iindex=58) 28,4 Node: < Application, Lorg/apache/hadoop/yarn/event/AsyncDispatcher, serviceStop()V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  protected void serviceStop() throws Exception {
+    if (drainEventsOnStop) {
+      blockNewEvents = true;
+      LOG.info("AsyncDispatcher is draining to stop, ignoring any new events.");
+      long endTime = System.currentTimeMillis() + getConfig()
+          .getLong(YarnConfiguration.DISPATCHER_DRAIN_EVENTS_TIMEOUT,
+              YarnConfiguration.DEFAULT_DISPATCHER_DRAIN_EVENTS_TIMEOUT);
+
+      synchronized (waitForDrained) {
+        while (!isDrained() && eventHandlingThread != null
+            && eventHandlingThread.isAlive()
+            && System.currentTimeMillis() < endTime) {
+          waitForDrained.wait(100);
+          LOG.info("Waiting for AsyncDispatcher to drain. Thread state is :" +
+              eventHandlingThread.getState());
+        }
+      }
+    }
+    stopped = true;
+    if (eventHandlingThread != null) {
+      eventHandlingThread.interrupt();
+      try {
+        eventHandlingThread.join();
+      } catch (InterruptedException ie) {
+        LOG.warn("Interrupted Exception while stopping", ie);
+      }
+    }
+
+    // stop all the components
+    super.serviceStop();
+  }
+
+
+
+====================ctx:=======================

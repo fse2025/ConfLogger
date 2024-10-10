@@ -1,0 +1,23 @@
+```java
+String binaryTokenFilename =
+conf.get(MRJobConfig.MAPREDUCE_JOB_CREDENTIALS_BINARY);
+if (binaryTokenFilename != null) { // ConfLogger Inserted Start
+    logger.info("Configuration parameter '{}' is set to '{}'. Attempting to read token storage file.", MRJobConfig.MAPREDUCE_JOB_CREDENTIALS_BINARY, binaryTokenFilename); 
+    // ConfLogger Inserted End
+    Credentials binary;
+    try {
+        binary = Credentials.readTokenStorageFile(
+            FileSystem.getLocal(conf).makeQualified(
+                new Path(binaryTokenFilename)),
+            conf);
+    } catch (IOException e) {
+        logger.error("Failed to read token storage file for configuration parameter '{}'. Value: '{}'", MRJobConfig.MAPREDUCE_JOB_CREDENTIALS_BINARY, binaryTokenFilename); // ConfLogger Inserted Start
+        throw new RuntimeException(e);
+    }
+    // supplement existing tokens with the tokens in the binary file
+    creds.mergeAll(binary);
+} else { // ConfLogger Inserted Start
+    logger.warn("Configuration parameter '{}' is not set. Skipping token storage file reading.", MRJobConfig.MAPREDUCE_JOB_CREDENTIALS_BINARY);
+    // ConfLogger Inserted End
+}
+```

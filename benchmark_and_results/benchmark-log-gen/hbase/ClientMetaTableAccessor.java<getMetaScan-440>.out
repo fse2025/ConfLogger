@@ -1,0 +1,100 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ClientMetaTableAccessor.java	methodSinagture:	org.apache.hadoop.hbase.ClientMetaTableAccessor.getMetaScan(Lorg/apache/hadoop/hbase/client/AsyncTable;I)Lorg/apache/hadoop/hbase/client/Scan;	methodLines:	440:455
+blockLines:	445:-1
+paras:	null
+TaintedStat:	NORMAL getMetaScan:conditional branch(eq, to iindex=21) 17,15 Node: < Application, Lorg/apache/hadoop/hbase/ClientMetaTableAccessor, getMetaScan(Lorg/apache/hadoop/hbase/client/AsyncTable;I)Lorg/apache/hadoop/hbase/client/Scan; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ClientMetaTableAccessor, getMetaScan(Lorg/apache/hadoop/hbase/client/AsyncTable;I)Lorg/apache/hadoop/hbase/client/Scan; > Context: Everywhere[14]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 13,14,15 @31 exception:16
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ClientMetaTableAccessor, getMetaScan(Lorg/apache/hadoop/hbase/client/AsyncTable;I)Lorg/apache/hadoop/hbase/client/Scan; > Context: Everywhere[14]17 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 13,14,15 @31 exception:16
+NORMAL getMetaScan:conditional branch(eq, to iindex=21) 17,15 Node: < Application, Lorg/apache/hadoop/hbase/ClientMetaTableAccessor, getMetaScan(Lorg/apache/hadoop/hbase/client/AsyncTable;I)Lorg/apache/hadoop/hbase/client/Scan; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	ClientMetaTableAccessor.java	methodSinagture:	org.apache.hadoop.hbase.ClientMetaTableAccessor.getMetaScan(Lorg/apache/hadoop/hbase/client/AsyncTable;I)Lorg/apache/hadoop/hbase/client/Scan;	methodLines:	440:455
+blockLines:	450:-1
+paras:	null
+TaintedStat:	NORMAL getMetaScan:conditional branch(gt, to iindex=28) 2,11 Node: < Application, Lorg/apache/hadoop/hbase/ClientMetaTableAccessor, getMetaScan(Lorg/apache/hadoop/hbase/client/AsyncTable;I)Lorg/apache/hadoop/hbase/client/Scan; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ClientMetaTableAccessor, getMetaScan(Lorg/apache/hadoop/hbase/client/AsyncTable;I)Lorg/apache/hadoop/hbase/client/Scan; > Context: Everywhere[8]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 7,8,9 @18 exception:10
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hbase/ClientMetaTableAccessor, getMetaScan(Lorg/apache/hadoop/hbase/client/AsyncTable;I)Lorg/apache/hadoop/hbase/client/Scan; > Context: Everywhere[8]11 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 7,8,9 @18 exception:10
+NORMAL getMetaScan:conditional branch(gt, to iindex=28) 2,11 Node: < Application, Lorg/apache/hadoop/hbase/ClientMetaTableAccessor, getMetaScan(Lorg/apache/hadoop/hbase/client/AsyncTable;I)Lorg/apache/hadoop/hbase/client/Scan; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private static Scan getMetaScan(AsyncTable<?> metaTable, int rowUpperLimit) {
+    Scan scan = new Scan();
+    int scannerCaching = metaTable.getConfiguration().getInt(HConstants.HBASE_META_SCANNER_CACHING,
+      HConstants.DEFAULT_HBASE_META_SCANNER_CACHING);
+    if (
+      metaTable.getConfiguration().getBoolean(HConstants.USE_META_REPLICAS,
+        HConstants.DEFAULT_USE_META_REPLICAS)
+    ) {
+      scan.setConsistency(Consistency.TIMELINE);
+    }
+    if (rowUpperLimit <= scannerCaching) {
+      scan.setLimit(rowUpperLimit);
+    }
+    int rows = Math.min(rowUpperLimit, scannerCaching);
+    scan.setCaching(rows);
+    return scan;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hbase/ClientMetaTableAccessor, scanMeta(Lorg/apache/hadoop/hbase/client/AsyncTable;[B[BLorg/apache/hadoop/hbase/ClientMetaTableAccessor$QueryType;ILorg/apache/hadoop/hbase/ClientMetaTableAccessor$Visitor;)Ljava/util/concurrent/CompletableFuture; > Context: Everywhere, blocks=[BB[SSA:6..9]4 - org.apache.hadoop.hbase.ClientMetaTableAccessor.scanMeta(Lorg/apache/hadoop/hbase/client/AsyncTable;[B[BLorg/apache/hadoop/hbase/ClientMetaTableAccessor$QueryType;ILorg/apache/hadoop/hbase/ClientMetaTableAccessor$Visitor;)Ljava/util/concurrent/CompletableFuture;, BB[SSA:3..4]2 - org.apache.hadoop.hbase.ClientMetaTableAccessor.scanMeta(Lorg/apache/hadoop/hbase/client/AsyncTable;[B[BLorg/apache/hadoop/hbase/ClientMetaTableAccessor$QueryType;ILorg/apache/hadoop/hbase/ClientMetaTableAccessor$Visitor;)Ljava/util/concurrent/CompletableFuture;, BB[SSA:5..5]3 - org.apache.hadoop.hbase.ClientMetaTableAccessor.scanMeta(Lorg/apache/hadoop/hbase/client/AsyncTable;[B[BLorg/apache/hadoop/hbase/ClientMetaTableAccessor$QueryType;ILorg/apache/hadoop/hbase/ClientMetaTableAccessor$Visitor;)Ljava/util/concurrent/CompletableFuture;, BB[SSA:10..12]5 - org.apache.hadoop.hbase.ClientMetaTableAccessor.scanMeta(Lorg/apache/hadoop/hbase/client/AsyncTable;[B[BLorg/apache/hadoop/hbase/ClientMetaTableAccessor$QueryType;ILorg/apache/hadoop/hbase/ClientMetaTableAccessor$Visitor;)Ljava/util/concurrent/CompletableFuture;, BB[SSA:-1..-2]55 - org.apache.hadoop.hbase.ClientMetaTableAccessor.scanMeta(Lorg/apache/hadoop/hbase/client/AsyncTable;[B[BLorg/apache/hadoop/hbase/ClientMetaTableAccessor$QueryType;ILorg/apache/hadoop/hbase/ClientMetaTableAccessor$Visitor;)Ljava/util/concurrent/CompletableFuture;], numberOfBasicBlocks=5, firstLineNumber=242, lastLineNumber=244, firstMethodNumber=241, lastMethodNumber=292, isFirstLineValid=true, methodSrcCode=
+    byte[] startRow, byte[] stopRow, QueryType type, int maxRows, final Visitor visitor) {
+    int rowUpperLimit = maxRows > 0 ? maxRows : Integer.MAX_VALUE;
+    Scan scan = getMetaScan(metaTable, rowUpperLimit);
+    for (byte[] family : type.getFamilies()) {
+      scan.addFamily(family);
+    }
+    if (startRow != null) {
+      scan.withStartRow(startRow);
+    }
+    if (stopRow != null) {
+      scan.withStopRow(stopRow);
+    }
+
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("Scanning META" + " starting at row=" + Bytes.toStringBinary(scan.getStartRow())
+        + " stopping at row=" + Bytes.toStringBinary(scan.getStopRow()) + " for max="
+        + rowUpperLimit + " with caching=" + scan.getCaching());
+    }
+
+    CompletableFuture<Void> future = new CompletableFuture<Void>();
+    // Get the region locator's meta replica mode.
+    CatalogReplicaMode metaReplicaMode = CatalogReplicaMode.fromString(metaTable.getConfiguration()
+      .get(LOCATOR_META_REPLICAS_MODE, CatalogReplicaMode.NONE.toString()));
+
+    if (metaReplicaMode == CatalogReplicaMode.LOAD_BALANCE) {
+      addListener(metaTable.getDescriptor(), (desc, error) -> {
+        if (error != null) {
+          LOG.error("Failed to get meta table descriptor, error: ", error);
+          future.completeExceptionally(error);
+          return;
+        }
+
+        int numOfReplicas = desc.getRegionReplication();
+        if (numOfReplicas > 1) {
+          int replicaId = ThreadLocalRandom.current().nextInt(numOfReplicas);
+
+          // When the replicaId is 0, do not set to Consistency.TIMELINE
+          if (replicaId > 0) {
+            scan.setReplicaId(replicaId);
+            scan.setConsistency(Consistency.TIMELINE);
+          }
+        }
+        metaTable.scan(scan, new MetaTableScanResultConsumer(rowUpperLimit, visitor, future));
+      });
+    } else {
+      if (metaReplicaMode == CatalogReplicaMode.HEDGED_READ) {
+        scan.setConsistency(Consistency.TIMELINE);
+      }
+      metaTable.scan(scan, new MetaTableScanResultConsumer(rowUpperLimit, visitor, future));
+    }
+
+    return future;
+  }
+}

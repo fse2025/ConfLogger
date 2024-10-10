@@ -1,0 +1,75 @@
+```java
+String getServerPrincipal(SaslAuth authType) throws IOException {
+    KerberosInfo krbInfo = SecurityUtil.getKerberosInfo(protocol, conf);
+    LOG.debug("Get kerberos info proto:" + protocol + " info:" + krbInfo);
+    if (krbInfo == null) { // protocol has no support for kerberos
+        return null;
+    }
+    String serverKey = krbInfo.serverPrincipal();
+    if (serverKey == null) {
+        throw new IllegalArgumentException(
+            "Can't obtain server Kerberos config key from protocol="
+            + protocol.getCanonicalName());
+    }
+    // construct server advertised principal for comparision
+    String serverPrincipal = new KerberosPrincipal(
+        authType.getProtocol() + "/" + authType.getServerId(),
+        KerberosPrincipal.KRB_NT_SRV_HST).getName();
+
+    // use the pattern if defined
+    String serverKeyPattern = conf.get(serverKey + ".pattern");
+    if (serverKeyPattern != null && !serverKeyPattern.isEmpty()) {
+        Pattern pattern = GlobPattern.compile(serverKeyPattern);
+        if (!pattern.matcher(serverPrincipal).matches()) {
+            // ConfLogger Inserted Start
+            logger.error(String.format(
+                "Server has invalid Kerberos principal: %s, doesn't match the pattern: %s. " +
+                "Ensure the server principal matches the expected pattern defined in the configuration.",
+                serverPrincipal, serverKeyPattern));
+            // ConfLogger Inserted End
+            throw new IllegalArgumentException(String.format(
+                "Server has invalid Kerberos principal: %s,"
+                + " doesn't match the pattern: %s",
+                serverPrincipal, serverKeyPattern));
+        }
+    } else {
+        // check that the server advertised principal matches our conf
+        String confPrincipal = SecurityUtil.getServerPrincipal(
+            conf.get(serverKey), serverAddr.getAddress());
+        // ConfLogger Inserted Start
+        if (confPrincipal == null || confPrincipal.isEmpty()) {
+            logger.error("Failed to specify server's Kerberos principal name. " +
+                         "Ensure the configuration provides a valid principal name for the server.");
+        }
+        // ConfLogger Inserted End
+        if (confPrincipal == null || confPrincipal.isEmpty()) {
+            throw new IllegalArgumentException(
+                "Failed to specify server's Kerberos principal name");
+        }
+        KerberosName name = new KerberosName(confPrincipal);
+        // ConfLogger Inserted Start
+        if (name.getHostName() == null) {
+            logger.error("Kerberos principal name does NOT have the expected hostname part: " +
+                         confPrincipal + ". Ensure the principal name includes a valid hostname.");
+        }
+        // ConfLogger Inserted End
+        if (name.getHostName() == null) {
+            throw new IllegalArgumentException(
+                "Kerberos principal name does NOT have the expected hostname part: "
+                + confPrincipal);
+        }
+        if (!serverPrincipal.equals(confPrincipal)) {
+            // ConfLogger Inserted Start
+            logger.error(String.format(
+                "Server has invalid Kerberos principal: %s, expecting: %s. " +
+                "Ensure the server principal matches the expected configuration principal.",
+                serverPrincipal, confPrincipal));
+            // ConfLogger Inserted End
+            throw new IllegalArgumentException(String.format(
+                "Server has invalid Kerberos principal: %s, expecting: %s",
+                serverPrincipal, confPrincipal));
+        }
+    }
+    return serverPrincipal;
+}
+```

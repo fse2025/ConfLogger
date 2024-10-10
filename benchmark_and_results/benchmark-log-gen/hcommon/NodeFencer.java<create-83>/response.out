@@ -1,0 +1,10 @@
+```java
+String confStr = conf.get(confKey);
+if (confStr == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter '{}' is not set. Please ensure it is properly configured.", confKey);
+    // ConfLogger Inserted End
+    return null;
+}
+return new NodeFencer(conf, confStr);
+```

@@ -1,0 +1,168 @@
+```java
+private synchronized void initServer() throws IOException {
+    if (mStateMachine != null) {
+        mStateMachine.close();
+    }
+    mStateMachine = new JournalStateMachine(mJournals, this, mStateMachineStorage);
+
+    RaftProperties properties = new RaftProperties();
+    Parameters parameters = new Parameters();
+
+    // TODO(feng): implement a custom RpcType to integrate with Alluxio authentication service
+    RaftConfigKeys.Rpc.setType(properties, SupportedRpcType.GRPC);
+
+    // RPC port
+    GrpcConfigKeys.Server.setPort(properties, mLocalAddress.getPort());
+
+    // storage path
+    maybeMigrateOldJournal();
+    RaftServerConfigKeys.setStorageDir(properties, Collections.singletonList(
+            RaftJournalUtils.getRaftJournalDir(mPath)));
+
+    // segment size
+    long segmentSize = Configuration.getBytes(PropertyKey.MASTER_JOURNAL_LOG_SIZE_BYTES_MAX);
+    LOG.debug("Creating journal with max segment size {}", segmentSize);
+    if (segmentSize > Integer.MAX_VALUE) {
+        // ConfLogger Skipped: The log message already contains configuration parameter key and value.
+        LOG.warn("{} has value {} but must not exceed {}. Resetting to {}.",
+                PropertyKey.MASTER_JOURNAL_LOG_SIZE_BYTES_MAX, segmentSize, Integer.MAX_VALUE,
+                Integer.MAX_VALUE);
+        segmentSize = Integer.MAX_VALUE;
+    }
+    RaftServerConfigKeys.Log.setSegmentSizeMax(properties, SizeInBytes.valueOf(segmentSize));
+
+    // the following configurations need to be changed when the single journal entry
+    // is unexpectedly big.
+    RaftServerConfigKeys.Log.Appender.setBufferByteLimit(properties,
+            SizeInBytes.valueOf(Configuration.global()
+                    .getBytes(PropertyKey.MASTER_EMBEDDED_JOURNAL_ENTRY_SIZE_MAX)));
+    // this property defines the maximum allowed size of the concurrent journal flush requests.
+    // if the total size of the journal entries contained in the flush requests
+    // are bigger than the given threshold, Ratis may error out as
+    // `Log entry size 117146048 exceeds the max buffer limit of 104857600`
+    RaftServerConfigKeys.Write.setByteLimit(properties,
+            SizeInBytes.valueOf(Configuration.global()
+                    .getBytes(PropertyKey.MASTER_EMBEDDED_JOURNAL_FLUSH_SIZE_MAX)));
+    // this property defines the maximum allowed size of the concurrent journal write IO tasks.
+    // if the total size of the journal entries contained in the write IO tasks
+    // are bigger than the given threshold, ratis may error out as
+    // `SegmentedRaftLogWorker: elementNumBytes = 78215699 > byteLimit = 67108864`
+    RaftServerConfigKeys.Log.setQueueByteLimit(properties, (int) Configuration
+            .global().getBytes(PropertyKey.MASTER_EMBEDDED_JOURNAL_FLUSH_SIZE_MAX));
+
+    // Override election/heartbeat timeouts for single master cluster if election timeout is not
+    // set explicitly. This is to speed up single master cluster boot-up.
+    long min = Configuration.getMs(PropertyKey.MASTER_EMBEDDED_JOURNAL_MIN_ELECTION_TIMEOUT);
+    long max = Configuration.getMs(PropertyKey.MASTER_EMBEDDED_JOURNAL_MAX_ELECTION_TIMEOUT);
+    if (mClusterAddresses.size() == 1
+            && !Configuration.isSetByUser(
+            PropertyKey.MASTER_EMBEDDED_JOURNAL_MIN_ELECTION_TIMEOUT)
+            && !Configuration.isSetByUser(
+            PropertyKey.MASTER_EMBEDDED_JOURNAL_MAX_ELECTION_TIMEOUT)) {
+        LOG.info("Overriding election timeout to {}ms for single master cluster.",
+                SINGLE_MASTER_ELECTION_TIMEOUT_MS);
+        min = SINGLE_MASTER_ELECTION_TIMEOUT_MS;
+        max = 2 * min;
+    }
+    Preconditions.checkState(min < max,
+            "Min election timeout (%sms) should be less than max election timeout (%sms)", min, max);
+
+    // election timeout, heartbeat timeout is automatically 1/2 of the value
+    RaftServerConfigKeys.Rpc.setTimeoutMin(properties,
+            TimeDuration.valueOf(min, TimeUnit.MILLISECONDS));
+    RaftServerConfigKeys.Rpc.setTimeoutMax(properties,
+            TimeDuration.valueOf(max, TimeUnit.MILLISECONDS));
+
+    // request timeout
+    RaftServerConfigKeys.Rpc.setRequestTimeout(properties, TimeDuration.valueOf(
+            Configuration.getMs(PropertyKey.MASTER_EMBEDDED_JOURNAL_TRANSPORT_REQUEST_TIMEOUT_MS),
+            TimeUnit.MILLISECONDS));
+
+    RaftServerConfigKeys.RetryCache.setExpiryTime(properties, TimeDuration.valueOf(
+            Configuration.getMs(PropertyKey.MASTER_EMBEDDED_JOURNAL_RETRY_CACHE_EXPIRY_TIME),
+            TimeUnit.MILLISECONDS));
+
+    // snapshot retention
+    RaftServerConfigKeys.Snapshot.setRetentionFileNum(properties, 2);
+
+    // unsafe flush
+    RaftServerConfigKeys.Log.setUnsafeFlushEnabled(properties,
+            Configuration.getBoolean(PropertyKey.MASTER_EMBEDDED_JOURNAL_UNSAFE_FLUSH_ENABLED));
+
+    // snapshot interval
+    RaftServerConfigKeys.Snapshot.setAutoTriggerEnabled(
+            properties, true);
+    long snapshotAutoTriggerThreshold =
+            Configuration.getLong(PropertyKey.MASTER_JOURNAL_CHECKPOINT_PERIOD_ENTRIES);
+    RaftServerConfigKeys.Snapshot.setAutoTriggerThreshold(properties,
+            snapshotAutoTriggerThreshold);
+    // minimum distance between two snapshots in number of log entries
+    RaftServerConfigKeys.Snapshot.setCreationGap(properties, 1L);
+
+    if (Configuration.getBoolean(PropertyKey.MASTER_JOURNAL_LOCAL_LOG_COMPACTION)) {
+        // ConfLogger Inserted Start
+        logger.info("Local log compaction is enabled. Purging log files after snapshot and setting purge gap to 1.");
+        // ConfLogger Inserted End
+        // purges log files after taking a snapshot successfully
+        RaftServerConfigKeys.Log.setPurgeUptoSnapshotIndex(properties, true);
+        // leaves no gap between log file purges: all log files included in a newly installed
+        // snapshot are purged right away
+        RaftServerConfigKeys.Log.setPurgeGap(properties, 1);
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("Local log compaction is disabled. Log files will not be purged after snapshot.");
+        // ConfLogger Inserted End
+    }
+
+    RaftServerConfigKeys.Log.Appender.setInstallSnapshotEnabled(
+            properties, false);
+
+    // if left enabled, the System.exit() called by Ratis can deadlock with the AlluxioMaster
+    // process shutdown hook. Description:
+    // * The AlluxioMaster starts the RaftJournalSystem using RaftJournalSystem.startInternal().
+    //   It now holds a synchronized lock on RaftJournalSystem.
+    // * startInternal calls mServer.start() and fails for any reason, calling System.exit(int) -->
+    //   Runtime.getRuntime().exit(int) in Ratis.
+    // * Runtime.getRuntime().exit(int) calls the shutdown hooks, including the {@link ProcessUtils)
+    //   --> process.stop() --> RaftJournalSystem.stopInternal(), which cannot proceed because of
+    //   the synchronized lock on RaftJournalSystem.
+    // This line disables the System.exit(int) call in Ratis internally in favor of an
+    // Exception being thrown. This prevents the deadlock.
+    org.apache.ratis.util.ExitUtils.disableSystemExit();
+
+    /*
+     * Soft disable RPC level safety.
+     *
+     * Without these overrides, the leader will step down upon detecting a long running GC over
+     * 10sec. This is not desirable for a single master cluster. Additionally, reduced safety should
+     * be provided via standard leader election in clustered mode.
+     */
+    RaftServerConfigKeys.Rpc.setSlownessTimeout(properties,
+            TimeDuration.valueOf(Long.MAX_VALUE, TimeUnit.MILLISECONDS));
+    RaftServerConfigKeys.LeaderElection.setLeaderStepDownWaitTime(properties,
+            TimeDuration.valueOf(Long.MAX_VALUE, TimeUnit.MILLISECONDS));
+
+    long messageSize = Configuration.getBytes(
+            PropertyKey.MASTER_EMBEDDED_JOURNAL_TRANSPORT_MAX_INBOUND_MESSAGE_SIZE);
+    GrpcConfigKeys.setMessageSizeMax(properties,
+            SizeInBytes.valueOf(messageSize));
+    RatisDropwizardExports.registerRatisMetricReporters(mRatisMetricsMap);
+
+    mergeAlluxioRatisConfig(properties);
+
+    // TODO(feng): clean up embedded journal configuration
+    // build server
+    mServer = RaftServer.newBuilder()
+            .setServerId(mPeerId)
+            .setGroup(mRaftGroup)
+            .setStateMachine(mStateMachine)
+            .setProperties(properties)
+            .setParameters(parameters)
+            .build();
+    super.registerMetrics();
+    MetricsSystem.registerGaugeIfAbsent(MetricKey.CLUSTER_LEADER_INDEX.getName(),
+            this::getLeaderIndex);
+    MetricsSystem.registerGaugeIfAbsent(MetricKey.MASTER_ROLE_ID.getName(), this::getRoleId);
+    MetricsSystem.registerGaugeIfAbsent(MetricKey.CLUSTER_LEADER_ID.getName(), this::getLeaderId);
+}
+```

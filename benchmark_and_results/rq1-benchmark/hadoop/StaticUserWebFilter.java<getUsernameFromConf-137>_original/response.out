@@ -1,0 +1,26 @@
+```java
+static String getUsernameFromConf(Configuration conf) {
+    String oldStyleUgi = conf.get(DEPRECATED_UGI_KEY);
+    if (oldStyleUgi != null) {
+        // We can't use the normal configuration deprecation mechanism here
+        // since we need to split out the username from the configured UGI.
+        // ConfLogger Skipped: The existing log warns about the deprecated configuration parameter and suggests the correct one.
+        LOG.warn(DEPRECATED_UGI_KEY + " should not be used. Instead, use " +
+        HADOOP_HTTP_STATIC_USER + ".");
+        String[] parts = oldStyleUgi.split(",");
+        return parts[0];
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("Using default or configured value for " + HADOOP_HTTP_STATIC_USER + ". Default value: " + DEFAULT_HADOOP_HTTP_STATIC_USER);
+        // ConfLogger Inserted End
+        return conf.get(HADOOP_HTTP_STATIC_USER, DEFAULT_HADOOP_HTTP_STATIC_USER);
+    }
+}
+```
+
+### Explanation:
+1. **Task 1**: The existing log statement within the `if (oldStyleUgi != null)` block is a warning about the use of a deprecated configuration parameter. It provides guidance on using the correct parameter, so it is skipped with a comment explaining the reason.
+   
+2. **Task 2**: 
+   - The code snippet is of type 1, as it checks if a parameter (`oldStyleUgi`) is properly set and handles the case where it is not.
+   - A new log statement is inserted in the `else` block to inform about the use of the default or configured value for `HADOOP_HTTP_STATIC_USER`. This log provides information on the configuration parameter being used and its default value, which helps in understanding the behavior when the deprecated parameter is not set.

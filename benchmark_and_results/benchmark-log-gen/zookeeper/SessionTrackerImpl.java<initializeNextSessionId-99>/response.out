@@ -1,0 +1,12 @@
+```java
+nextSid = (Time.currentElapsedTime() << 24) >>> 8;
+nextSid = nextSid | (id << 56);
+if (nextSid == EphemeralType.CONTAINER_EPHEMERAL_OWNER) {
+    // ConfLogger Inserted Start
+    logger.warn("nextSid value matched EphemeralType.CONTAINER_EPHEMERAL_OWNER. Incrementing nextSid to avoid conflict. Original nextSid: " + nextSid);
+    // ConfLogger Inserted End
+    ++nextSid;  // this is an unlikely edge case, but check it just in case
+}
+return nextSid;
+}
+```

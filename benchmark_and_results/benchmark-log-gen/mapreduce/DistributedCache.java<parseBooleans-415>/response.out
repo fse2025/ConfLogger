@@ -1,0 +1,14 @@
+```java
+if (null == strs) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'strs' is null. Expected a non-null array of strings for parsing.");
+    // ConfLogger Inserted End
+    return null;
+}
+boolean[] result = new boolean[strs.length];
+for(int i=0; i < strs.length; ++i) {
+    result[i] = Boolean.parseBoolean(strs[i]);
+}
+return result;
+}
+```

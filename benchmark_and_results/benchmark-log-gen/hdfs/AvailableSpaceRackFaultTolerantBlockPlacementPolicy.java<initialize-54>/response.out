@@ -1,0 +1,49 @@
+```java
+super.initialize(conf, stats, clusterMap, host2datanodeMap);
+float balancedPreferencePercent = conf.getFloat(
+DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_KEY,
+DFS_NAMENODE_AVAILABLE_SPACE_BLOCK_RACK_FAULT_TOLERANT_PLACEMENT_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_DEFAULT);
+
+balancedSpaceTolerance = conf.getInt(
+DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_KEY,
+DFS_NAMENODE_AVAILABLE_SPACE_BLOCK_RACK_FAULT_TOLERANT_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_DEFAULT);
+
+LOG.info("Available space rack fault tolerant block placement policy "
++ "initialized: "
++ DFSConfigKeys.DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_KEY
++ " = " + balancedPreferencePercent);
+
+// ConfLogger Skipped
+if (balancedPreferencePercent > 1.0) {
+LOG.warn("The value of "
++ DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_KEY
++ " is greater than 1.0 but should be in the range 0.0 - 1.0");
+}
+if (balancedPreferencePercent < 0.5) {
+LOG.warn("The value of "
++ DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_PREFERENCE_FRACTION_KEY
++ " is less than 0.5 so datanodes with more used percent will"
++ " receive  more block allocations.");
+}
+
+// ConfLogger Inserted Start
+if (balancedSpaceTolerance > 20 || balancedSpaceTolerance < 0) {
+LOG.warn("The value of "
++ DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_KEY
++ " is invalid, Current value is " + balancedSpaceTolerance + ", Default value " +
+DFS_NAMENODE_AVAILABLE_SPACE_BLOCK_RACK_FAULT_TOLERANT_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_DEFAULT
++ " will be used instead.");
+logger.warn("Configuration parameter '"
+    + DFS_NAMENODE_AVAILABLE_SPACE_RACK_FAULT_TOLERANT_BLOCK_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_KEY
+    + "' has an invalid value: " + balancedSpaceTolerance
+    + ". It should be between 0 and 20. Default value of "
+    + DFS_NAMENODE_AVAILABLE_SPACE_BLOCK_RACK_FAULT_TOLERANT_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_DEFAULT
+    + " will be used instead.");
+balancedSpaceTolerance =
+DFS_NAMENODE_AVAILABLE_SPACE_BLOCK_RACK_FAULT_TOLERANT_PLACEMENT_POLICY_BALANCED_SPACE_TOLERANCE_DEFAULT;
+}
+// ConfLogger Inserted End
+
+balancedPreference = (int) (100 * balancedPreferencePercent);
+}
+```

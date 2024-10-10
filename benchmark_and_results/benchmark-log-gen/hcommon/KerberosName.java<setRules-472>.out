@@ -1,0 +1,63 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	KerberosName.java	methodSinagture:	org.apache.hadoop.security.authentication.util.KerberosName.setRules(Ljava/lang/String;)V	methodLines:	472:474
+blockLines:	473:-1
+paras:	hadoop.security.auth_to_local
+TaintedStat:	NORMAL setRules:conditional branch(eq, to iindex=6) 1,3 Node: < Application, Lorg/apache/hadoop/security/authentication/util/KerberosName, setRules(Ljava/lang/String;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/HadoopKerberosName, setConfiguration(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[24]20 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,18,17 @68 exception:19
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/security/HadoopKerberosName, setConfiguration(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[24]20 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; > 1,18,17 @68 exception:19
+PARAM_CALLER:Node: < Application, Lorg/apache/hadoop/security/HadoopKerberosName, setConfiguration(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[27]invokestatic < Application, Lorg/apache/hadoop/security/HadoopKerberosName, setRules(Ljava/lang/String;)V > 20 @73 exception:21 v20
+PARAM_CALLEE:Node: < Application, Lorg/apache/hadoop/security/authentication/util/KerberosName, setRules(Ljava/lang/String;)V > Context: Everywhere v1
+NORMAL setRules:conditional branch(eq, to iindex=6) 1,3 Node: < Application, Lorg/apache/hadoop/security/authentication/util/KerberosName, setRules(Ljava/lang/String;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public static void setRules(String ruleString) {
+    rules = (ruleString != null) ? parseRules(ruleString) : null;
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/HadoopKerberosName, setConfiguration(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=64, lastMethodNumber=85, isFirstLineValid=true, methodSrcCode=
+    final String defaultRule;
+    switch (SecurityUtil.getAuthenticationMethod(conf)) {
+      case KERBEROS:
+      case KERBEROS_SSL:
+        try {
+          KerberosUtil.getDefaultRealm();
+        } catch (Exception ke) {
+          throw new IllegalArgumentException("Can't get Kerberos realm", ke);
+        }
+        defaultRule = "DEFAULT";
+        break;
+      default:
+        // just extract the simple user name
+        defaultRule = "RULE:[1:$1] RULE:[2:$1]";
+        break; 
+    }
+    String ruleString = conf.get(HADOOP_SECURITY_AUTH_TO_LOCAL, defaultRule);
+    setRules(ruleString);
+
+    String ruleMechanism = conf.get(HADOOP_SECURITY_AUTH_TO_LOCAL_MECHANISM,  DEFAULT_MECHANISM);
+    setRuleMechanism(ruleMechanism);
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/security/UserGroupInformation, reset()V > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=371, lastMethodNumber=380, isFirstLineValid=true, methodSrcCode=
+  public static void reset() {
+    authenticationMethod = null;
+    conf = null;
+    groups = null;
+    kerberosMinSecondsBeforeRelogin = 0;
+    kerberosKeyTabLoginRenewalEnabled = false;
+    kerberosLoginRenewalExecutor = Optional.empty();
+    setLoginUser(null);
+    HadoopKerberosName.setRules(null);
+  }
+  
+}

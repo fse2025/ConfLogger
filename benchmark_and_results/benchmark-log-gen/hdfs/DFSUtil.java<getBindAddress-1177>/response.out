@@ -1,0 +1,22 @@
+```java
+String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+String bindHostActualKey;
+if (nsId != null) {
+    String namenodeId = HAUtil.getNameNodeId(conf, nsId);
+    address = DFSUtilClient.getAddressesForNameserviceId(
+        conf, nsId, null, confKey).get(namenodeId);
+    bindHostActualKey = DFSUtil.addKeySuffixes(bindHostKey, nsId, namenodeId);
+} else {
+    address = NetUtils.createSocketAddr(conf.get(confKey, defaultValue));
+    bindHostActualKey = bindHostKey;
+}
+
+String bindHost = conf.get(bindHostActualKey);
+if (bindHost == null || bindHost.isEmpty()) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter '{}' is not set or empty. Using address hostname '{}' instead.", bindHostActualKey, address.getHostName());
+    // ConfLogger Inserted End
+    bindHost = address.getHostName();
+}
+return new InetSocketAddress(bindHost, address.getPort());
+```

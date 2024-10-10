@@ -1,0 +1,86 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Balancer.java	methodSinagture:	org.apache.hadoop.hdfs.server.balancer.Balancer.getInt(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;I)I	methodLines:	262:268
+blockLines:	265:-1
+paras:	null
+TaintedStat:	NORMAL getInt:conditional branch(gt, to iindex=44) 6,28 Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Balancer, getInt(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;I)I > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Balancer, getInt(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;I)I > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,2,3 @3 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Balancer, getInt(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;I)I > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getInt(Ljava/lang/String;I)I > 1,2,3 @3 exception:5
+NORMAL getInt:conditional branch(gt, to iindex=44) 6,28 Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Balancer, getInt(Lorg/apache/hadoop/conf/Configuration;Ljava/lang/String;I)I > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  static int getInt(Configuration conf, String key, int defaultValue) {
+    final int v = conf.getInt(key, defaultValue);
+    LOG.info(key + " = " + v + " (default=" + defaultValue + ")");
+    if (v <= 0) {
+      throw new HadoopIllegalArgumentException(key + " = " + v  + " <= " + 0);
+    }
+    return v;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/balancer/Balancer, <init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:22..25]14 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:21..21]13 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:26..30]15 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:31..35]16 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:26..30]15 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:36..40]17 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:36..40]17 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:31..35]16 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:41..45]18 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:66..70]23 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:61..65]22 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:71..75]24 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]44 - org.apache.hadoop.hdfs.server.balancer.Balancer.<init>(Lorg/apache/hadoop/hdfs/server/balancer/NameNodeConnector;Lorg/apache/hadoop/hdfs/server/balancer/BalancerParameters;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=16, firstLineNumber=309, lastLineNumber=320, firstMethodNumber=286, lastMethodNumber=341, isFirstLineValid=false, methodSrcCode=
+  Balancer(NameNodeConnector theblockpool, BalancerParameters p,
+      Configuration conf) {
+    // NameNode configuration parameters for balancing
+    getInt(conf, DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_GETBLOCKS_MAX_QPS_DEFAULT);
+    final long movedWinWidth = getLong(conf,
+        DFSConfigKeys.DFS_BALANCER_MOVEDWINWIDTH_KEY,
+        DFSConfigKeys.DFS_BALANCER_MOVEDWINWIDTH_DEFAULT);
+    final int moverThreads = getInt(conf,
+        DFSConfigKeys.DFS_BALANCER_MOVERTHREADS_KEY,
+        DFSConfigKeys.DFS_BALANCER_MOVERTHREADS_DEFAULT);
+    final int dispatcherThreads = getInt(conf,
+        DFSConfigKeys.DFS_BALANCER_DISPATCHERTHREADS_KEY,
+        DFSConfigKeys.DFS_BALANCER_DISPATCHERTHREADS_DEFAULT);
+    final long getBlocksSize = getLongBytes(conf,
+        DFSConfigKeys.DFS_BALANCER_GETBLOCKS_SIZE_KEY,
+        DFSConfigKeys.DFS_BALANCER_GETBLOCKS_SIZE_DEFAULT);
+    final long getBlocksMinBlockSize = getLongBytes(conf,
+        DFSConfigKeys.DFS_BALANCER_GETBLOCKS_MIN_BLOCK_SIZE_KEY,
+        DFSConfigKeys.DFS_BALANCER_GETBLOCKS_MIN_BLOCK_SIZE_DEFAULT);
+    final int blockMoveTimeout = conf.getInt(
+        DFSConfigKeys.DFS_BALANCER_BLOCK_MOVE_TIMEOUT,
+        DFSConfigKeys.DFS_BALANCER_BLOCK_MOVE_TIMEOUT_DEFAULT);
+    final int maxNoMoveInterval = conf.getInt(
+        DFSConfigKeys.DFS_BALANCER_MAX_NO_MOVE_INTERVAL_KEY,
+        DFSConfigKeys.DFS_BALANCER_MAX_NO_MOVE_INTERVAL_DEFAULT);
+    final long maxIterationTime = conf.getLong(
+        DFSConfigKeys.DFS_BALANCER_MAX_ITERATION_TIME_KEY,
+        DFSConfigKeys.DFS_BALANCER_MAX_ITERATION_TIME_DEFAULT);
+
+    // DataNode configuration parameters for balancing
+    final int maxConcurrentMovesPerNode = getInt(conf,
+        DFSConfigKeys.DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY,
+        DFSConfigKeys.DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT);
+    getLongBytes(conf, DFSConfigKeys.DFS_DATANODE_BALANCE_BANDWIDTHPERSEC_KEY,
+        DFSConfigKeys.DFS_DATANODE_BALANCE_BANDWIDTHPERSEC_DEFAULT);
+
+    this.nnc = theblockpool;
+    this.dispatcher =
+        new Dispatcher(theblockpool, p.getIncludedNodes(),
+            p.getExcludedNodes(), movedWinWidth, moverThreads,
+            dispatcherThreads, maxConcurrentMovesPerNode, getBlocksSize,
+            getBlocksMinBlockSize, blockMoveTimeout, maxNoMoveInterval,
+            maxIterationTime, conf);
+    this.threshold = p.getThreshold();
+    this.policy = p.getBalancingPolicy();
+    this.sourceNodes = p.getSourceNodes();
+    this.runDuringUpgrade = p.getRunDuringUpgrade();
+
+    this.maxSizeToMove = getLongBytes(conf,
+        DFSConfigKeys.DFS_BALANCER_MAX_SIZE_TO_MOVE_KEY,
+        DFSConfigKeys.DFS_BALANCER_MAX_SIZE_TO_MOVE_DEFAULT);
+    this.defaultBlockSize = getLongBytes(conf,
+        DFSConfigKeys.DFS_BLOCK_SIZE_KEY,
+        DFSConfigKeys.DFS_BLOCK_SIZE_DEFAULT);
+  }
+  
+}

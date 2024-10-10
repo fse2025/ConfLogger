@@ -1,0 +1,16 @@
+```java
+String key = getEnabledConfigKey();
+boolean enabled = conf.getBoolean(key, false);
+if (enabled) {
+    // ConfLogger Inserted Start
+    logger.info("CORS filter is enabled. Configuration key: " + key + " is set to 'true'. Adding Cross Origin Filter with parameters: " + getFilterParameters(conf, getPrefix()));
+    // ConfLogger Inserted End
+    container.addGlobalFilter("Cross Origin Filter",
+    CrossOriginFilter.class.getName(),
+    getFilterParameters(conf, getPrefix()));
+} else {
+    // ConfLogger Skipped: The existing log provides guidance on how to enable the CORS filter by setting the configuration key to 'true'.
+    LOG.info("CORS filter not enabled. Please set " + key
+    + " to 'true' to enable it");
+}
+```

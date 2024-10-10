@@ -1,0 +1,14 @@
+```java
+if (!conf.getBoolean(DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY,
+    DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_DEFAULT)) {
+    // ConfLogger Inserted Start
+    logger.error("Configuration parameter {} is set to false, preventing the filesystem from being formatted. To format the filesystem, set {} to true.", DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY, DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY);
+    // ConfLogger Inserted End
+    throw new IOException("The option " + DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY
+        + " is set to false for this filesystem, so it "
+        + "cannot be formatted. You will need to set "
+        + DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY +" parameter "
+        + "to true in order to format this filesystem");
+}
+}
+```

@@ -1,0 +1,16 @@
+```java
+String[] pkgList  = getConf().getStrings(AVRO_REFLECT_PACKAGES);
+packages = new HashSet<String>();
+if (pkgList != null) {
+    // ConfLogger Inserted Start
+    logger.debug("AVRO_REFLECT_PACKAGES is set. Processing package list: " + Arrays.toString(pkgList));
+    // ConfLogger Inserted End
+    for (String pkg : pkgList) {
+        packages.add(pkg.trim());
+    }
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("AVRO_REFLECT_PACKAGES is not set. No packages will be added.");
+    // ConfLogger Inserted End
+}
+```

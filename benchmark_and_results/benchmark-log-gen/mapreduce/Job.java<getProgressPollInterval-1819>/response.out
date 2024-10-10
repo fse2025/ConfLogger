@@ -1,0 +1,18 @@
+```java
+int progMonitorPollIntervalMillis = conf.getInt(
+PROGRESS_MONITOR_POLL_INTERVAL_KEY, DEFAULT_MONITOR_POLL_INTERVAL);
+if (progMonitorPollIntervalMillis < 1) {
+// ConfLogger Commented: Not Informative
+// LOG.warn(PROGRESS_MONITOR_POLL_INTERVAL_KEY +
+// " has been set to an invalid value; "
+// + " replacing with " + DEFAULT_MONITOR_POLL_INTERVAL);
+// ConfLogger Inserted Start
+logger.warn("Configuration parameter " + PROGRESS_MONITOR_POLL_INTERVAL_KEY + 
+" has been set to an invalid value: " + progMonitorPollIntervalMillis + 
+". Replacing with default value: " + DEFAULT_MONITOR_POLL_INTERVAL);
+// ConfLogger Inserted End
+progMonitorPollIntervalMillis = DEFAULT_MONITOR_POLL_INTERVAL;
+}
+return progMonitorPollIntervalMillis;
+}
+```

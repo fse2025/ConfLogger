@@ -1,0 +1,17 @@
+```java
+if (newVal == null) {
+    clientBackoffEnabled = IPC_BACKOFF_ENABLE_DEFAULT;
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'newVal' is null. Setting 'clientBackoffEnabled' to default value: {}", IPC_BACKOFF_ENABLE_DEFAULT);
+    // ConfLogger Inserted End
+} else {
+    clientBackoffEnabled = Boolean.parseBoolean(newVal);
+    // ConfLogger Inserted Start
+    logger.info("Configuration parameter 'newVal' is set. Parsed 'clientBackoffEnabled' to: {}", clientBackoffEnabled);
+    // ConfLogger Inserted End
+}
+rpcServer.getClientRpcServer()
+    .setClientBackoffEnabled(clientBackoffEnabled);
+return Boolean.toString(clientBackoffEnabled);
+}
+```

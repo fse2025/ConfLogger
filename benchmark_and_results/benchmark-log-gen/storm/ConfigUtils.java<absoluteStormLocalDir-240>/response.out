@@ -1,0 +1,22 @@
+```java
+String stormHome = System.getProperty(STORM_HOME);
+String localDir = (String) conf.get(Config.STORM_LOCAL_DIR);
+if (localDir == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'Config.STORM_LOCAL_DIR' is not set. Using default directory: " + stormHome + FILE_SEPARATOR + "storm-local");
+    // ConfLogger Inserted End
+    return (stormHome + FILE_SEPARATOR + "storm-local");
+} else {
+    if (new File(localDir).isAbsolute()) {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter 'Config.STORM_LOCAL_DIR' is set to an absolute path: " + localDir);
+        // ConfLogger Inserted End
+        return localDir;
+    } else {
+        // ConfLogger Inserted Start
+        logger.info("Configuration parameter 'Config.STORM_LOCAL_DIR' is set to a relative path. Using combined path: " + stormHome + FILE_SEPARATOR + localDir);
+        // ConfLogger Inserted End
+        return (stormHome + FILE_SEPARATOR + localDir);
+    }
+}
+```

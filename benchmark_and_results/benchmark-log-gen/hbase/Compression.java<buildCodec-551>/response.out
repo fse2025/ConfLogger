@@ -1,0 +1,18 @@
+```java
+String codecClassName = conf.get(algo.confKey, algo.confDefault);
+if (codecClassName == null) {
+    // ConfLogger Inserted Start
+    logger.error("No codec configured for {}. Please ensure the configuration parameter {} is set correctly.", algo.confKey, algo.confKey);
+    // ConfLogger Inserted End
+    throw new RuntimeException("No codec configured for " + algo.confKey);
+}
+Class<?> codecClass = getClassLoaderForCodec().loadClass(codecClassName);
+CompressionCodec codec =
+(CompressionCodec) ReflectionUtils.newInstance(codecClass, new Configuration(conf));
+LOG.info("Loaded codec {} for compression algorithm {}", codec.getClass().getCanonicalName(),
+algo.name());
+return codec;
+} catch (ClassNotFoundException e) {
+throw new RuntimeException(e);
+}
+```

@@ -1,0 +1,200 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	AdvancedFSOps.java	methodSinagture:	org.apache.storm.daemon.supervisor.AdvancedFSOps.make(Ljava/util/Map;)Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;	methodLines:	61:68
+blockLines:	65:-1
+paras:	supervisor.run.worker.as.user
+TaintedStat:	NORMAL make:conditional branch(eq, to iindex=20) 10,5 Node: < Application, Lorg/apache/storm/daemon/supervisor/AdvancedFSOps, make(Ljava/util/Map;)Lorg/apache/storm/daemon/supervisor/AdvancedFSOps; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/AdvancedFSOps, make(Ljava/util/Map;)Lorg/apache/storm/daemon/supervisor/AdvancedFSOps; > Context: Everywhere[10]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,6 @18 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/AdvancedFSOps, make(Ljava/util/Map;)Lorg/apache/storm/daemon/supervisor/AdvancedFSOps; > Context: Everywhere[10]8 = invokeinterface < Application, Ljava/util/Map, get(Ljava/lang/Object;)Ljava/lang/Object; > 1,6 @18 exception:7
+PARAM_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/AdvancedFSOps, make(Ljava/util/Map;)Lorg/apache/storm/daemon/supervisor/AdvancedFSOps; > Context: Everywhere[12]10 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > 8,5 @24 exception:9 v8
+PARAM_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere v1
+NORMAL getBoolean:conditional branch(ne, to iindex=5) 4,1 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 2 Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/storm/daemon/supervisor/AdvancedFSOps, make(Ljava/util/Map;)Lorg/apache/storm/daemon/supervisor/AdvancedFSOps; > Context: Everywhere[12]10 = invokestatic < Application, Lorg/apache/storm/utils/ObjectReader, getBoolean(Ljava/lang/Object;Z)Z > 8,5 @24 exception:9
+NORMAL make:conditional branch(eq, to iindex=20) 10,5 Node: < Application, Lorg/apache/storm/daemon/supervisor/AdvancedFSOps, make(Ljava/util/Map;)Lorg/apache/storm/daemon/supervisor/AdvancedFSOps; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    public static AdvancedFSOps make(Map<String, Object> conf) {
+        if (Utils.isOnWindows()) {
+            return new AdvancedWindowsFSOps(conf);
+        }
+        if (ObjectReader.getBoolean(conf.get(Config.SUPERVISOR_RUN_WORKER_AS_USER), false)) {
+            return new AdvancedRunAsUserFSOps(conf);
+        }
+        return new AdvancedFSOps(conf);
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/localizer/AsyncLocalizer, <init>(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V > Context: Everywhere, blocks=[BB[SSA:0..3]1 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]0 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:4..5]2 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V, BB[SSA:-1..-2]5 - org.apache.storm.localizer.AsyncLocalizer.<init>(Ljava/util/Map;Lorg/apache/storm/metric/StormMetricsRegistry;)V], numberOfBasicBlocks=4, firstLineNumber=143, lastLineNumber=144, firstMethodNumber=143, lastMethodNumber=145, isFirstLineValid=false, methodSrcCode=
+    public AsyncLocalizer(Map<String, Object> conf, StormMetricsRegistry metricsRegistry) throws IOException {
+        this(conf, AdvancedFSOps.make(conf), ConfigUtils.supervisorLocalDir(conf), metricsRegistry);
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/supervisor/Container, <init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Ljava/lang/String;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;)V > Context: Everywhere, blocks=[BB[SSA:44..45]22 - org.apache.storm.daemon.supervisor.Container.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Ljava/lang/String;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;)V, BB[SSA:41..43]21 - org.apache.storm.daemon.supervisor.Container.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Ljava/lang/String;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;)V, BB[SSA:46..46]23 - org.apache.storm.daemon.supervisor.Container.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Ljava/lang/String;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;)V, BB[SSA:-1..-2]118 - org.apache.storm.daemon.supervisor.Container.<init>(Lorg/apache/storm/daemon/supervisor/Container$ContainerType;Ljava/util/Map;Ljava/lang/String;IILorg/apache/storm/generated/LocalAssignment;Lorg/apache/storm/container/ResourceIsolationInterface;Ljava/lang/String;Ljava/util/Map;Lorg/apache/storm/daemon/supervisor/AdvancedFSOps;Lorg/apache/storm/metric/StormMetricsRegistry;Lorg/apache/storm/daemon/supervisor/ContainerMemoryTracker;)V], numberOfBasicBlocks=4, firstLineNumber=126, lastLineNumber=127, firstMethodNumber=112, lastMethodNumber=186, isFirstLineValid=true, methodSrcCode=
+        String workerId, Map<String, Object> topoConf, AdvancedFSOps ops,
+        StormMetricsRegistry metricsRegistry, ContainerMemoryTracker containerMemoryTracker) throws IOException {
+        if (type == null) {
+            throw new IOException("ContainerType parameter is null");
+        }
+        if (conf == null) {
+            throw new IOException("conf parameter value is null");
+        }
+        if (supervisorId == null) {
+            throw new IOException("SupervisorId parameter value is null");
+        }
+
+        symlinksDisabled = (boolean) conf.getOrDefault(Config.DISABLE_SYMLINKS, false);
+
+        if (ops == null) {
+            ops = AdvancedFSOps.make(conf);
+        }
+
+        this.workerId = workerId;
+        this.type = type;
+        this.port = port;
+        this.ops = ops;
+        this.conf = conf;
+        this.supervisorId = supervisorId;
+        this.supervisorPort = supervisorPort;
+        this.resourceIsolationManager = resourceIsolationManager;
+        this.assignment = assignment;
+
+        runAsUser = ObjectReader.getBoolean(conf.get(Config.SUPERVISOR_RUN_WORKER_AS_USER), false);
+        if (runAsUser && Utils.isOnWindows()) {
+            throw new UnsupportedOperationException("ERROR: Windows doesn't support running workers as different users yet");
+        }
+
+        if (this.type.isOnlyKillable()) {
+            if (this.assignment != null) {
+                throw new IOException("With ContainerType==OnlyKillable, expecting LocalAssignment member variable to be null");
+            }
+            if (this.port > 0) {
+                throw new IOException("With ContainerType==OnlyKillable, expecting port member variable <=0 but found " + this.port);
+            }
+            if (this.workerId == null) {
+                throw new IOException("With ContainerType==OnlyKillable, expecting WorkerId member variable to be assigned");
+            }
+            topologyId = null;
+            this.topoConf = null;
+        } else {
+            if (this.assignment == null) {
+                throw new IOException("With ContainerType!=OnlyKillable, expecting LocalAssignment member variable to be assigned");
+            }
+            if (this.port <= 0) {
+                throw new IOException("With ContainerType!=OnlyKillable, expecting port member variable >0 but found " + this.port);
+            }
+            topologyId = assignment.get_topology_id();
+            if (!this.ops.doRequiredTopoFilesExist(this.conf, topologyId)) {
+                LOG.info(
+                    "Missing topology storm code, so can't launch  worker with assignment {} for this supervisor {} on port {} with id {}",
+                        this.assignment,
+                        this.supervisorId, this.port, this.workerId);
+                throw new ContainerRecoveryException("Missing required topology files...");
+            }
+            if (topoConf == null) {
+                this.topoConf = readTopoConf();
+            } else {
+                //For testing...
+                this.topoConf = topoConf;
+            }
+        }
+        this.numCleanupExceptions = metricsRegistry.registerMeter("supervisor:num-cleanup-exceptions");
+        this.numKillExceptions = metricsRegistry.registerMeter("supervisor:num-kill-exceptions");
+        this.numForceKillExceptions = metricsRegistry.registerMeter("supervisor:num-force-kill-exceptions");
+        this.numForceKill = metricsRegistry.registerMeter("supervisor:num-workers-force-kill");
+        this.shutdownDuration = metricsRegistry.registerTimer("supervisor:worker-shutdown-duration-ns");
+        this.cleanupDuration = metricsRegistry.registerTimer("supervisor:worker-per-call-clean-up-duration-ns");
+        this.containerMemoryTracker = containerMemoryTracker;
+    }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/storm/daemon/worker/WorkerState, <init>(Ljava/util/Map;Lorg/apache/storm/messaging/IContext;Ljava/lang/String;Ljava/lang/String;Ljava/util/function/Supplier;ILjava/lang/String;Ljava/util/Map;Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Collection;Lorg/apache/storm/metrics2/StormMetricRegistry;Lorg/apache/storm/generated/Credentials;)V > Context: Everywhere, blocks=[BB[SSA:145..149]62 - org.apache.storm.daemon.worker.WorkerState.<init>(Ljava/util/Map;Lorg/apache/storm/messaging/IContext;Ljava/lang/String;Ljava/lang/String;Ljava/util/function/Supplier;ILjava/lang/String;Ljava/util/Map;Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Collection;Lorg/apache/storm/metrics2/StormMetricRegistry;Lorg/apache/storm/generated/Credentials;)V, BB[SSA:144..144]61 - org.apache.storm.daemon.worker.WorkerState.<init>(Ljava/util/Map;Lorg/apache/storm/messaging/IContext;Ljava/lang/String;Ljava/lang/String;Ljava/util/function/Supplier;ILjava/lang/String;Ljava/util/Map;Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Collection;Lorg/apache/storm/metrics2/StormMetricRegistry;Lorg/apache/storm/generated/Credentials;)V, BB[SSA:150..150]63 - org.apache.storm.daemon.worker.WorkerState.<init>(Ljava/util/Map;Lorg/apache/storm/messaging/IContext;Ljava/lang/String;Ljava/lang/String;Ljava/util/function/Supplier;ILjava/lang/String;Ljava/util/Map;Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Collection;Lorg/apache/storm/metrics2/StormMetricRegistry;Lorg/apache/storm/generated/Credentials;)V, BB[SSA:-1..-2]225 - org.apache.storm.daemon.worker.WorkerState.<init>(Ljava/util/Map;Lorg/apache/storm/messaging/IContext;Ljava/lang/String;Ljava/lang/String;Ljava/util/function/Supplier;ILjava/lang/String;Ljava/util/Map;Lorg/apache/storm/cluster/IStateStorage;Lorg/apache/storm/cluster/IStormClusterState;Ljava/util/Collection;Lorg/apache/storm/metrics2/StormMetricRegistry;Lorg/apache/storm/generated/Credentials;)V], numberOfBasicBlocks=4, firstLineNumber=190, lastLineNumber=191, firstMethodNumber=171, lastMethodNumber=249, isFirstLineValid=true, methodSrcCode=
+            Credentials initialCredentials) throws IOException,
+            InvalidTopologyException {
+        this.metricRegistry = metricRegistry;
+        this.autoCredentials = autoCredentials;
+        this.credentialsAtom = new AtomicReference(initialCredentials);
+        this.conf = conf;
+        this.supervisorIfaceSupplier = supervisorIfaceSupplier;
+        this.mqContext = (null != mqContext) ? mqContext :
+                TransportFactory.makeContext(topologyConf, metricRegistry);
+        this.topologyId = topologyId;
+        this.assignmentId = assignmentId;
+        this.port = port;
+        this.workerId = workerId;
+        this.stateStorage = stateStorage;
+        this.stormClusterState = stormClusterState;
+        this.localExecutors =
+            new HashSet<>(readWorkerExecutors(assignmentId, port, getLocalAssignment(this.stormClusterState, topologyId)));
+        this.isWorkerActive = new CountDownLatch(1);
+        this.isTopologyActive = new AtomicBoolean(false);
+        this.stormComponentToDebug = new AtomicReference<>();
+        this.topology = ConfigUtils.readSupervisorTopology(conf, topologyId, AdvancedFSOps.make(conf));
+        this.taskToComponent = StormCommon.stormTaskInfo(topology, topologyConf);
+        this.executorReceiveQueueMap = mkReceiveQueueMap(topologyConf, localExecutors, taskToComponent);
+        this.localTaskIds = new ArrayList<>();
+        this.taskToExecutorQueue = new HashMap<>();
+        this.blobToLastKnownVersion = new ConcurrentHashMap<>();
+        for (Map.Entry<List<Long>, JCQueue> entry : executorReceiveQueueMap.entrySet()) {
+            List<Integer> taskIds = StormCommon.executorIdToTasks(entry.getKey());
+            for (Integer taskId : taskIds) {
+                this.taskToExecutorQueue.put(taskId, entry.getValue());
+            }
+            this.localTaskIds.addAll(taskIds);
+        }
+        Collections.sort(localTaskIds);
+        this.topologyConf = topologyConf;
+        this.systemTopology = StormCommon.systemTopology(topologyConf, topology);
+        this.componentToStreamToFields = new HashMap<>();
+        for (String c : ThriftTopologyUtils.getComponentIds(systemTopology)) {
+            Map<String, Fields> streamToFields = new HashMap<>();
+            for (Map.Entry<String, StreamInfo> stream :
+                ThriftTopologyUtils.getComponentCommon(systemTopology, c).get_streams().entrySet()) {
+                streamToFields.put(stream.getKey(), new Fields(stream.getValue().get_output_fields()));
+            }
+            componentToStreamToFields.put(c, streamToFields);
+        }
+        this.componentToSortedTasks = Utils.reverseMap(taskToComponent);
+        this.componentToSortedTasks.values().forEach(Collections::sort);
+        this.endpointSocketLock = new ReentrantReadWriteLock();
+        this.cachedNodeToPortSocket = new AtomicReference<>(new HashMap<>());
+        this.cachedTaskToNodePort = new AtomicReference<>(new HashMap<>());
+        this.cachedNodeToHost = new AtomicReference<>(new HashMap<>());
+        this.suicideCallback = Utils.mkSuicideFn();
+        this.uptime = Utils.makeUptimeComputer();
+        this.defaultSharedResources = makeDefaultResources();
+        this.userSharedResources = makeUserResources();
+        this.loadMapping = new LoadMapping();
+        this.assignmentVersions = new AtomicReference<>(new HashMap<>());
+        this.outboundTasks = workerOutboundTasks();
+        this.trySerializeLocal = topologyConf.containsKey(Config.TOPOLOGY_TESTING_ALWAYS_TRY_SERIALIZE)
+                                 && (Boolean) topologyConf.get(Config.TOPOLOGY_TESTING_ALWAYS_TRY_SERIALIZE);
+        if (trySerializeLocal) {
+            LOG.warn("WILL TRY TO SERIALIZE ALL TUPLES (Turn off {} for production", Config.TOPOLOGY_TESTING_ALWAYS_TRY_SERIALIZE);
+        }
+        int maxTaskId = getMaxTaskId(componentToSortedTasks);
+        this.workerTransfer = new WorkerTransfer(this, topologyConf, maxTaskId);
+
+        this.bpTracker = new BackPressureTracker(workerId, taskToExecutorQueue, metricRegistry, taskToComponent);
+        this.deserializedWorkerHooks = deserializeWorkerHooks();
+        LOG.info("Registering IConnectionCallbacks for {}:{}", assignmentId, port);
+        IConnectionCallback cb = new DeserializingConnectionCallback(topologyConf,
+            getWorkerTopologyContext(),
+            this::transferLocalBatch);
+        Supplier<Object> newConnectionResponse = () -> {
+            BackPressureStatus bpStatus = bpTracker.getCurrStatus();
+            LOG.info("Sending BackPressure status to new client. BPStatus: {}", bpStatus);
+            return bpStatus;
+        };
+        this.receiver = this.mqContext.bind(topologyId, port, cb, newConnectionResponse);
+    }
+
+}

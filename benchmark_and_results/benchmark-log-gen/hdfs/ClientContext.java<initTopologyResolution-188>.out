@@ -1,0 +1,83 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	ClientContext.java	methodSinagture:	org.apache.hadoop.hdfs.ClientContext.initTopologyResolution(Lorg/apache/hadoop/conf/Configuration;)V	methodLines:	188:208
+blockLines:	203:-1
+paras:	null
+TaintedStat:	NORMAL initTopologyResolution:conditional branch(eq, to iindex=59) 24,25 Node: < Application, Lorg/apache/hadoop/hdfs/ClientContext, initTopologyResolution(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/ClientContext, initTopologyResolution(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[15]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,9,10,11 @26 exception:12
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/ClientContext, initTopologyResolution(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[15]13 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getClass(Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/Class; > 2,9,10,11 @26 exception:12
+NORMAL initTopologyResolution:15 = invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 13,2 @30 exception:14 Node: < Application, Lorg/apache/hadoop/hdfs/ClientContext, initTopologyResolution(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+NORMAL newInstance:return 21 Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/ClientContext, initTopologyResolution(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[17]15 = invokestatic < Application, Lorg/apache/hadoop/util/ReflectionUtils, newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object; > 13,2 @30 exception:14
+NORMAL initTopologyResolution:16 = checkcast <Application,Lorg/apache/hadoop/net/DNSToSwitchMapping>15 <Application,Lorg/apache/hadoop/net/DNSToSwitchMapping> Node: < Application, Lorg/apache/hadoop/hdfs/ClientContext, initTopologyResolution(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+NORMAL initTopologyResolution:24 = invokeinterface < Application, Lorg/apache/hadoop/net/DNSToSwitchMapping, resolve(Ljava/util/List;)Ljava/util/List; > 16,19 @62 exception:23 Node: < Application, Lorg/apache/hadoop/hdfs/ClientContext, initTopologyResolution(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+METHOD_ENTRY:Node: < Extension, Lorg/apache/hadoop/net/CachedDNSToSwitchMapping, resolve(Ljava/util/List;)Ljava/util/List; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/net/ScriptBasedMapping in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/net/ScriptBasedMapping, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL resolve:6 = new <Extension,Ljava/util/ArrayList>@5 Node: < Extension, Lorg/apache/hadoop/net/CachedDNSToSwitchMapping, resolve(Ljava/util/List;)Ljava/util/List; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/net/ScriptBasedMapping in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/net/ScriptBasedMapping, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL resolve:return 6 Node: < Extension, Lorg/apache/hadoop/net/CachedDNSToSwitchMapping, resolve(Ljava/util/List;)Ljava/util/List; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/net/ScriptBasedMapping in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/net/ScriptBasedMapping, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/net/CachedDNSToSwitchMapping, resolve(Ljava/util/List;)Ljava/util/List; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/net/ScriptBasedMapping in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Extension, Lorg/apache/hadoop/net/ScriptBasedMapping, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere]
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/ClientContext, initTopologyResolution(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere[32]24 = invokeinterface < Application, Lorg/apache/hadoop/net/DNSToSwitchMapping, resolve(Ljava/util/List;)Ljava/util/List; > 16,19 @62 exception:23
+NORMAL initTopologyResolution:conditional branch(eq, to iindex=59) 24,25 Node: < Application, Lorg/apache/hadoop/hdfs/ClientContext, initTopologyResolution(Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private void initTopologyResolution(Configuration config) {
+    topologyResolutionEnabled = config.getBoolean(
+        FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED,
+        FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED_DEFAULT);
+    if (!topologyResolutionEnabled) {
+      return;
+    }
+    DNSToSwitchMapping dnsToSwitchMapping = ReflectionUtils.newInstance(
+        config.getClass(
+            CommonConfigurationKeys.NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY,
+            ScriptBasedMapping.class, DNSToSwitchMapping.class), config);
+    String clientHostName = NetUtils.getLocalHostname();
+    List<String> nodes = new ArrayList<>();
+    nodes.add(clientHostName);
+    List<String> resolvedHosts = dnsToSwitchMapping.resolve(nodes);
+    if (resolvedHosts != null && !resolvedHosts.isEmpty() &&
+        !resolvedHosts.get(0).equals(NetworkTopology.DEFAULT_RACK)) {
+      // The client machine is able to resolve its own network location.
+      this.clientNode = new NodeBase(clientHostName, resolvedHosts.get(0));
+    }
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/ClientContext, <init>(Ljava/lang/String;Lorg/apache/hadoop/hdfs/client/impl/DfsClientConf;Lorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:101..103]47 - org.apache.hadoop.hdfs.ClientContext.<init>(Ljava/lang/String;Lorg/apache/hadoop/hdfs/client/impl/DfsClientConf;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:100..100]46 - org.apache.hadoop.hdfs.ClientContext.<init>(Ljava/lang/String;Lorg/apache/hadoop/hdfs/client/impl/DfsClientConf;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:104..104]48 - org.apache.hadoop.hdfs.ClientContext.<init>(Ljava/lang/String;Lorg/apache/hadoop/hdfs/client/impl/DfsClientConf;Lorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]49 - org.apache.hadoop.hdfs.ClientContext.<init>(Ljava/lang/String;Lorg/apache/hadoop/hdfs/client/impl/DfsClientConf;Lorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=184, lastLineNumber=186, firstMethodNumber=160, lastMethodNumber=186, isFirstLineValid=true, methodSrcCode=
+  private ClientContext(String name, DfsClientConf conf,
+      Configuration config) {
+    final ShortCircuitConf scConf = conf.getShortCircuitConf();
+
+    this.name = name;
+    this.dfsClientConf = conf;
+    this.confString = scConf.confAsString();
+    this.clientShortCircuitNum = conf.getClientShortCircuitNum();
+    this.shortCircuitCache = new ShortCircuitCache[this.clientShortCircuitNum];
+    for (int i = 0; i < this.clientShortCircuitNum; i++) {
+      this.shortCircuitCache[i] = ShortCircuitCache.fromConf(scConf);
+    }
+
+    this.configuration = config;
+    this.peerCache = new PeerCache(scConf.getSocketCacheCapacity(),
+        scConf.getSocketCacheExpiry());
+    this.keyProviderCache = new KeyProviderCache(
+        scConf.getKeyProviderCacheExpiryMs());
+    this.useLegacyBlockReaderLocal = scConf.isUseLegacyBlockReaderLocal();
+    this.domainSocketFactory = new DomainSocketFactory(scConf);
+
+    this.byteArrayManager = ByteArrayManager.newInstance(
+        conf.getWriteByteArrayManagerConf());
+    this.deadNodeDetectionEnabled = conf.isDeadNodeDetectionEnabled();
+    this.locatedBlocksRefresherEnabled = conf.isLocatedBlocksRefresherEnabled();
+    initTopologyResolution(config);
+  }
+
+}

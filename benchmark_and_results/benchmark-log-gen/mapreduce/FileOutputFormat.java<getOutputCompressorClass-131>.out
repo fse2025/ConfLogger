@@ -1,0 +1,130 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	FileOutputFormat.java	methodSinagture:	org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.getOutputCompressorClass(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/lang/Class;)Ljava/lang/Class;	methodLines:	131:144
+blockLines:	135:-1
+paras:	mapreduce.output.fileoutputformat.compress.codec
+TaintedStat:	NORMAL getOutputCompressorClass:conditional branch(eq, to iindex=35) 8,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputFormat, getOutputCompressorClass(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputFormat, getOutputCompressorClass(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @12 exception:7
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputFormat, getOutputCompressorClass(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere[7]8 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, get(Ljava/lang/String;)Ljava/lang/String; > 5,6 @12 exception:7
+NORMAL getOutputCompressorClass:conditional branch(eq, to iindex=35) 8,9 Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/FileOutputFormat, getOutputCompressorClass(Lorg/apache/hadoop/mapreduce/JobContext;Ljava/lang/Class;)Ljava/lang/Class; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+                       Class<? extends CompressionCodec> defaultValue) {
+    Class<? extends CompressionCodec> codecClass = defaultValue;
+    Configuration conf = job.getConfiguration();
+    String name = conf.get(FileOutputFormat.COMPRESS_CODEC);
+    if (name != null) {
+      try {
+        codecClass =
+            conf.getClassByName(name).asSubclass(CompressionCodec.class);
+      } catch (ClassNotFoundException e) {
+        throw new IllegalArgumentException("Compression codec " + name + 
+                                           " was not found.", e);
+      }
+    }
+    return codecClass;
+  }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/SequenceFileOutputFormat, getSequenceWriter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;Ljava/lang/Class;Ljava/lang/Class;)Lorg/apache/hadoop/io/SequenceFile$Writer; > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=47, lastMethodNumber=64, isFirstLineValid=true, methodSrcCode=
+      throws IOException {
+    Configuration conf = context.getConfiguration();
+	    
+    CompressionCodec codec = null;
+    CompressionType compressionType = CompressionType.NONE;
+    if (getCompressOutput(context)) {
+      // find the kind of compression to do
+      compressionType = getOutputCompressionType(context);
+      // find the right codec
+      Class<?> codecClass = getOutputCompressorClass(context, 
+                                                     DefaultCodec.class);
+      codec = (CompressionCodec) 
+        ReflectionUtils.newInstance(codecClass, conf);
+    }
+    // get the path of the temporary output file 
+    Path file = getDefaultWorkFile(context, "");
+    FileSystem fs = file.getFileSystem(conf);
+    return SequenceFile.createWriter(fs, conf, file,
+             keyClass,
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/MapFileOutputFormat, getRecordWriter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordWriter; > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=53, lastMethodNumber=76, isFirstLineValid=true, methodSrcCode=
+      TaskAttemptContext context) throws IOException {
+    Configuration conf = context.getConfiguration();
+    CompressionCodec codec = null;
+    CompressionType compressionType = CompressionType.NONE;
+    if (getCompressOutput(context)) {
+      // find the kind of compression to do
+      compressionType = SequenceFileOutputFormat.getOutputCompressionType(context);
+
+      // find the right codec
+      Class<?> codecClass = getOutputCompressorClass(context,
+	                          DefaultCodec.class);
+      codec = (CompressionCodec) ReflectionUtils.newInstance(codecClass, conf);
+    }
+
+    Path file = getDefaultWorkFile(context, "");
+    FileSystem fs = file.getFileSystem(conf);
+    // ignore the progress parameter, since MapFile is local
+    final MapFile.Writer out =
+      new MapFile.Writer(conf, fs, file.toString(),
+        context.getOutputKeyClass().asSubclass(WritableComparable.class),
+        context.getOutputValueClass().asSubclass(Writable.class),
+        compressionType, codec, context);
+
+    return new RecordWriter<WritableComparable<?>, Writable>() {
+        public void write(WritableComparable<?> key, Writable value)
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/TextOutputFormat, getRecordWriter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordWriter; > Context: Everywhere, blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=112, lastMethodNumber=132, isFirstLineValid=true, methodSrcCode=
+                         ) throws IOException, InterruptedException {
+    Configuration conf = job.getConfiguration();
+    boolean isCompressed = getCompressOutput(job);
+    String keyValueSeparator= conf.get(SEPARATOR, "\t");
+    CompressionCodec codec = null;
+    String extension = "";
+    if (isCompressed) {
+      Class<? extends CompressionCodec> codecClass = 
+        getOutputCompressorClass(job, GzipCodec.class);
+      codec = ReflectionUtils.newInstance(codecClass, conf);
+      extension = codec.getDefaultExtension();
+    }
+    Path file = getDefaultWorkFile(job, extension);
+    FileSystem fs = file.getFileSystem(conf);
+    FSDataOutputStream fileOut = fs.create(file, false);
+    if (isCompressed) {
+      return new LineRecordWriter<>(
+          new DataOutputStream(codec.createOutputStream(fileOut)),
+          keyValueSeparator);
+    } else {
+      return new LineRecordWriter<>(fileOut, keyValueSeparator);
+    }
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/mapreduce/lib/output/TextOutputFormat, getRecordWriter(Lorg/apache/hadoop/mapreduce/TaskAttemptContext;)Lorg/apache/hadoop/mapreduce/RecordWriter; > Context: DelegatingContext [A=ReceiverInstanceContext<SITE_IN_NODE{synthetic  factory < Primordial, Ljava/lang/reflect/Constructor, newInstance([Ljava/lang/Object;)Ljava/lang/Object; >:Lorg/apache/hadoop/mapreduce/lib/output/TextOutputFormat in DelegatingContext [A=DelegatingContext [A=ReceiverInstanceContext<[ConstantKey:< Application, Lorg/apache/hadoop/mapreduce/lib/output/TextOutputFormat, <init>()V >:<Primordial,Ljava/lang/reflect/Constructor>]>, B=CallStringContext: [ org.apache.hadoop.util.ReflectionUtils.newInstance(Ljava/lang/Class;Lorg/apache/hadoop/conf/Configuration;)Ljava/lang/Object;@46 ]], B=Everywhere]}>, B=Everywhere], blocks=null, numberOfBasicBlocks=0, firstLineNumber=0, lastLineNumber=0, firstMethodNumber=112, lastMethodNumber=132, isFirstLineValid=true, methodSrcCode=
+                         ) throws IOException, InterruptedException {
+    Configuration conf = job.getConfiguration();
+    boolean isCompressed = getCompressOutput(job);
+    String keyValueSeparator= conf.get(SEPARATOR, "\t");
+    CompressionCodec codec = null;
+    String extension = "";
+    if (isCompressed) {
+      Class<? extends CompressionCodec> codecClass = 
+        getOutputCompressorClass(job, GzipCodec.class);
+      codec = ReflectionUtils.newInstance(codecClass, conf);
+      extension = codec.getDefaultExtension();
+    }
+    Path file = getDefaultWorkFile(job, extension);
+    FileSystem fs = file.getFileSystem(conf);
+    FSDataOutputStream fileOut = fs.create(file, false);
+    if (isCompressed) {
+      return new LineRecordWriter<>(
+          new DataOutputStream(codec.createOutputStream(fileOut)),
+          keyValueSeparator);
+    } else {
+      return new LineRecordWriter<>(fileOut, keyValueSeparator);
+    }
+}

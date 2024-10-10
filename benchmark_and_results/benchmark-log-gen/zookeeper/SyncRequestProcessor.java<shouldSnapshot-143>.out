@@ -1,0 +1,95 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SyncRequestProcessor.java	methodSinagture:	org.apache.zookeeper.server.SyncRequestProcessor.shouldSnapshot()Z	methodLines:	143:146
+blockLines:	146:-1
+paras:	null
+TaintedStat:	NORMAL shouldSnapshot:conditional branch(le, to iindex=35) 27,21 Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, shouldSnapshot()Z > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, shouldSnapshot()Z > Context: Everywhere[8]12 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getTxnSize()J > 10 @18 exception:11
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, shouldSnapshot()Z > Context: Everywhere[8]12 = invokevirtual < Application, Lorg/apache/zookeeper/server/ZKDatabase, getTxnSize()J > 10 @18 exception:11
+NORMAL shouldSnapshot:27 = compare 12,26 opcode=cmp Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, shouldSnapshot()Z > Context: Everywhere
+NORMAL shouldSnapshot:conditional branch(le, to iindex=35) 27,21 Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, shouldSnapshot()Z > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+    private boolean shouldSnapshot() {
+        int logCount = zks.getZKDatabase().getTxnCount();
+        long logSize = zks.getZKDatabase().getTxnSize();
+        return (logCount > (snapCount / 2 + randRoll))
+               || (snapSizeInBytes > 0 && logSize > (snapSizeInBytes / 2 + randSize));
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/zookeeper/server/SyncRequestProcessor, run()V > Context: Everywhere, blocks=[BB[SSA:60..61]35 - org.apache.zookeeper.server.SyncRequestProcessor.run()V, BB[SSA:58..59]34 - org.apache.zookeeper.server.SyncRequestProcessor.run()V, BB[SSA:62..63]36 - org.apache.zookeeper.server.SyncRequestProcessor.run()V], numberOfBasicBlocks=3, firstLineNumber=181, lastLineNumber=182, firstMethodNumber=159, lastMethodNumber=225, isFirstLineValid=true, methodSrcCode=
+            // in the ensemble take a snapshot at the same time
+            resetSnapshotStats();
+            lastFlushTime = Time.currentElapsedTime();
+            while (true) {
+                ServerMetrics.getMetrics().SYNC_PROCESSOR_QUEUE_SIZE.add(queuedRequests.size());
+
+                long pollTime = Math.min(zks.getMaxWriteQueuePollTime(), getRemainingDelay());
+                Request si = queuedRequests.poll(pollTime, TimeUnit.MILLISECONDS);
+                if (si == null) {
+                    /* We timed out looking for more writes to batch, go ahead and flush immediately */
+                    flush();
+                    si = queuedRequests.take();
+                }
+
+                if (si == REQUEST_OF_DEATH) {
+                    break;
+                }
+
+                long startProcessTime = Time.currentElapsedTime();
+                ServerMetrics.getMetrics().SYNC_PROCESSOR_QUEUE_TIME.add(startProcessTime - si.syncQueueStartTime);
+
+                // track the number of records written to the log
+                if (!si.isThrottled() && zks.getZKDatabase().append(si)) {
+                    if (shouldSnapshot()) {
+                        resetSnapshotStats();
+                        // roll the log
+                        zks.getZKDatabase().rollLog();
+                        // take a snapshot
+                        if (!snapThreadMutex.tryAcquire()) {
+                            LOG.warn("Too busy to snap, skipping");
+                        } else {
+                            new ZooKeeperThread("Snapshot Thread") {
+                                public void run() {
+                                    try {
+                                        zks.takeSnapshot();
+                                    } catch (Exception e) {
+                                        LOG.warn("Unexpected exception", e);
+                                    } finally {
+                                        snapThreadMutex.release();
+                                    }
+                                }
+                            }.start();
+                        }
+                    }
+                } else if (toFlush.isEmpty()) {
+                    // optimization for read heavy workloads
+                    // iff this is a read or a throttled request(which doesn't need to be written to the disk),
+                    // and there are no pending flushes (writes), then just pass this to the next processor
+                    if (nextProcessor != null) {
+                        nextProcessor.processRequest(si);
+                        if (nextProcessor instanceof Flushable) {
+                            ((Flushable) nextProcessor).flush();
+                        }
+                    }
+                    continue;
+                }
+                toFlush.add(si);
+                if (shouldFlush()) {
+                    flush();
+                }
+                ServerMetrics.getMetrics().SYNC_PROCESS_TIME.add(Time.currentElapsedTime() - startProcessTime);
+            }
+        } catch (Throwable t) {
+            handleException(this.getName(), t);
+        }
+        LOG.info("SyncRequestProcessor exited!");
+    }
+
+}

@@ -1,0 +1,15 @@
+```java
+this.conf = conf;
+String proxyStr = conf.get(HADOOP_SOCKS_SERVER_KEY);
+if ((proxyStr != null) && (proxyStr.length() > 0)) {
+    // ConfLogger Inserted Start
+    logger.info("HADOOP_SOCKS_SERVER_KEY is set with a non-empty value: " + proxyStr);
+    // ConfLogger Inserted End
+    setProxy(proxyStr);
+} else {
+    // ConfLogger Inserted Start
+    logger.warn("HADOOP_SOCKS_SERVER_KEY is not set or is empty. Please set a valid proxy server address.");
+    // ConfLogger Inserted End
+}
+}
+```

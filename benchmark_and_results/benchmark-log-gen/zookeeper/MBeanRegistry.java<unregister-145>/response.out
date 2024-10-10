@@ -1,0 +1,18 @@
+```java
+if (bean == null) {
+    // ConfLogger Inserted Start
+    logger.warn("Configuration parameter 'bean' is null. Ensure that the 'bean' parameter is properly set before calling this method.");
+    // ConfLogger Inserted End
+    return;
+}
+String path = mapBean2Path.remove(bean);
+try {
+    unregister(path, bean);
+} catch (JMException e) {
+    // ConfLogger Skipped
+    LOG.warn("Error during unregister of [{}]", bean.getName(), e);
+} catch (Throwable t) {
+    // ConfLogger Skipped
+    LOG.error("Unexpected exception during unregister of [{}]. It should be reviewed and fixed.", bean.getName(), t);
+}
+```

@@ -1,0 +1,36 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	SlowPeerDisabledTracker.java	methodSinagture:	org.apache.hadoop.hdfs.server.blockmanagement.SlowPeerDisabledTracker.<init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;)V	methodLines:	47:54
+blockLines:	52:-1
+paras:	dfs.datanode.peer.stats.enabled
+TaintedStat:	NORMAL <init>:conditional branch(ne, to iindex=14) 9,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/SlowPeerDisabledTracker, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;)V > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/SlowPeerDisabledTracker, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;)V > Context: Everywhere[7]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,6,7 @10 exception:8
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/SlowPeerDisabledTracker, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;)V > Context: Everywhere[7]9 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 2,6,7 @10 exception:8
+NORMAL <init>:conditional branch(ne, to iindex=14) 9,7 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/SlowPeerDisabledTracker, <init>(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;)V > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  public SlowPeerDisabledTracker(Configuration conf, Timer timer) {
+    super(conf, timer);
+    final boolean dataNodePeerStatsEnabledVal =
+        conf.getBoolean(DFSConfigKeys.DFS_DATANODE_PEER_STATS_ENABLED_KEY,
+            DFSConfigKeys.DFS_DATANODE_PEER_STATS_ENABLED_DEFAULT);
+    Preconditions.checkArgument(!dataNodePeerStatsEnabledVal,
+        "SlowPeerDisabledTracker should only be used for disabled slow peer stats.");
+  }
+
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/DatanodeManager, initSlowPeerTracker(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;Z)V > Context: Everywhere, blocks=[BB[SSA:11..14]6 - org.apache.hadoop.hdfs.server.blockmanagement.DatanodeManager.initSlowPeerTracker(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;Z)V, BB[SSA:10..10]5 - org.apache.hadoop.hdfs.server.blockmanagement.DatanodeManager.initSlowPeerTracker(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;Z)V, BB[SSA:15..15]7 - org.apache.hadoop.hdfs.server.blockmanagement.DatanodeManager.initSlowPeerTracker(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;Z)V, BB[SSA:-1..-2]9 - org.apache.hadoop.hdfs.server.blockmanagement.DatanodeManager.initSlowPeerTracker(Lorg/apache/hadoop/conf/Configuration;Lorg/apache/hadoop/util/Timer;Z)V], numberOfBasicBlocks=4, firstLineNumber=375, lastLineNumber=375, firstMethodNumber=374, lastMethodNumber=378, isFirstLineValid=true, methodSrcCode=
+      boolean dataNodePeerStatsEnabled) {
+    this.slowPeerTracker = dataNodePeerStatsEnabled ?
+        new SlowPeerTracker(conf, timer) :
+        new SlowPeerDisabledTracker(conf, timer);
+  }
+
+}

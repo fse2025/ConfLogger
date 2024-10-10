@@ -1,0 +1,294 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	BlockManager.java	methodSinagture:	org.apache.hadoop.hdfs.server.blockmanagement.BlockManager.createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager;	methodLines:	629:684
+blockLines:	636:-1
+paras:	dfs.block.access.key.update.interval
+TaintedStat:	NORMAL createBlockTokenSecretManager:conditional branch(ne, to iindex=26) 6,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere[29]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 1,12,13 @54 exception:14
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere[29]15 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 1,12,13 @54 exception:14
+NORMAL createBlockTokenSecretManager:28 = invokestatic < Application, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > 15 @95 exception:27 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL valueOf:conditional branch(lt, to iindex=19) 5,6 Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL valueOf:return 9 Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/Time, formatTime(J)Ljava/lang/String; > Context: Everywhere[4]8 = invokestatic < Extension, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > 1 @10 exception:7
+NORMAL formatTime:10 = invokevirtual < Extension, Ljava/text/SimpleDateFormat, format(Ljava/lang/Object;)Ljava/lang/String; > 6,8 @13 exception:9 Node: < Extension, Lorg/apache/hadoop/util/Time, formatTime(J)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/text/Format, format(Ljava/lang/Object;)Ljava/lang/String; > Context: Everywhere
+NORMAL format:return 12 Node: < Primordial, Ljava/text/Format, format(Ljava/lang/Object;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/text/Format, format(Ljava/lang/Object;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > Context: Everywhere[81]31 = invokevirtual < Primordial, Ljava/text/Format, format(Ljava/lang/Object;)Ljava/lang/String; > 29,22 @148 exception:30
+PHI Node: < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > Context: Everywhere:53 = phi  40,20,31,20,20,20,51,39,40
+PHI Node: < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > Context: Everywhere:82 = phi  53,20
+NORMAL subformat:84 = invokevirtual < Primordial, Ljava/lang/String, isEmpty()Z > 82 @369 exception:83 Node: < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere[8]9 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 6 @12 exception:8
+NORMAL getBoolean:conditional branch(eq, to iindex=13) 9,10 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @4 exception:5
+NORMAL createBlockTokenSecretManager:conditional branch(ne, to iindex=26) 6,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	BlockManager.java	methodSinagture:	org.apache.hadoop.hdfs.server.blockmanagement.BlockManager.createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager;	methodLines:	629:684
+blockLines:	637:-1
+paras:	dfs.block.access.token.lifetime
+TaintedStat:	NORMAL createBlockTokenSecretManager:conditional branch(eq, to iindex=24) 79,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere[34]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 1,16,13 @64 exception:17
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere[34]18 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getLong(Ljava/lang/String;J)J > 1,16,13 @64 exception:17
+NORMAL createBlockTokenSecretManager:32 = invokestatic < Application, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > 18 @108 exception:31 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL valueOf:conditional branch(lt, to iindex=19) 5,6 Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL valueOf:return 9 Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/util/Time, formatTime(J)Ljava/lang/String; > Context: Everywhere[4]8 = invokestatic < Extension, Ljava/lang/Long, valueOf(J)Ljava/lang/Long; > 1 @10 exception:7
+NORMAL formatTime:10 = invokevirtual < Extension, Ljava/text/SimpleDateFormat, format(Ljava/lang/Object;)Ljava/lang/String; > 6,8 @13 exception:9 Node: < Extension, Lorg/apache/hadoop/util/Time, formatTime(J)Ljava/lang/String; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/text/Format, format(Ljava/lang/Object;)Ljava/lang/String; > Context: Everywhere
+NORMAL format:return 12 Node: < Primordial, Ljava/text/Format, format(Ljava/lang/Object;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/text/Format, format(Ljava/lang/Object;)Ljava/lang/String; > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > Context: Everywhere[81]31 = invokevirtual < Primordial, Ljava/text/Format, format(Ljava/lang/Object;)Ljava/lang/String; > 29,22 @148 exception:30
+PHI Node: < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > Context: Everywhere:53 = phi  40,20,31,20,20,20,51,39,40
+PHI Node: < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > Context: Everywhere:82 = phi  53,20
+NORMAL subformat:84 = invokevirtual < Primordial, Ljava/lang/String, isEmpty()Z > 82 @369 exception:83 Node: < Primordial, Ljava/text/MessageFormat, subformat([Ljava/lang/Object;Ljava/lang/StringBuffer;Ljava/text/FieldPosition;Ljava/util/List;)Ljava/lang/StringBuffer; > Context: Everywhere
+METHOD_ENTRY:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL isEmpty:return 7 Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Primordial, Ljava/lang/String, isEmpty()Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere[8]9 = invokevirtual < Extension, Ljava/lang/String, isEmpty()Z > 6 @12 exception:8
+NORMAL getBoolean:conditional branch(eq, to iindex=13) 9,10 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL getBoolean:return 3 Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLEE:Node: < Extension, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > Context: Everywhere
+NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @4 exception:5
+NORMAL createBlockTokenSecretManager:conditional branch(ne, to iindex=26) 6,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere
+NORMAL createBlockTokenSecretManager:conditional branch(eq, to iindex=24) 79,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere
+
+-------------TaintedSinkInfo----------
+fileName:	BlockManager.java	methodSinagture:	org.apache.hadoop.hdfs.server.blockmanagement.BlockManager.createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager;	methodLines:	629:684
+blockLines:	669:-1
+paras:	dfs.block.access.token.enable
+TaintedStat:	NORMAL createBlockTokenSecretManager:conditional branch(eq, to iindex=144) 39,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @4 exception:5
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere[3]6 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 1,3,4 @4 exception:5
+NORMAL createBlockTokenSecretManager:conditional branch(ne, to iindex=26) 6,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere
+NORMAL createBlockTokenSecretManager:conditional branch(eq, to iindex=144) 39,4 Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, createBlockTokenSecretManager(Lorg/apache/hadoop/conf/Configuration;)Lorg/apache/hadoop/hdfs/security/token/block/BlockTokenSecretManager; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+      final Configuration conf) throws IOException {
+    final boolean isEnabled = conf.getBoolean(
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY, 
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_DEFAULT);
+    LOG.info("{} = {}", DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY,
+            isEnabled);
+
+    if (!isEnabled) {
+      if (UserGroupInformation.isSecurityEnabled()) {
+        String errMessage = "Security is enabled but block access tokens " +
+            "(via " + DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY + ") " +
+            "aren't enabled. This may cause issues " +
+            "when clients attempt to connect to a DataNode. Aborting NameNode";
+        throw new IOException(errMessage);
+      }
+      return null;
+    }
+
+    final long updateMin = conf.getLong(
+        DFSConfigKeys.DFS_BLOCK_ACCESS_KEY_UPDATE_INTERVAL_KEY, 
+        DFSConfigKeys.DFS_BLOCK_ACCESS_KEY_UPDATE_INTERVAL_DEFAULT);
+    final long lifetimeMin = conf.getLong(
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_LIFETIME_KEY, 
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_LIFETIME_DEFAULT);
+    final String encryptionAlgorithm = conf.get(
+        DFSConfigKeys.DFS_DATA_ENCRYPTION_ALGORITHM_KEY);
+    LOG.info("{}={} min(s), {}={} min(s), {}={}",
+        DFSConfigKeys.DFS_BLOCK_ACCESS_KEY_UPDATE_INTERVAL_KEY, updateMin,
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_LIFETIME_KEY, lifetimeMin,
+        DFSConfigKeys.DFS_DATA_ENCRYPTION_ALGORITHM_KEY, encryptionAlgorithm);
+    
+    String nsId = DFSUtil.getNamenodeNameServiceId(conf);
+    boolean isHaEnabled = HAUtil.isHAEnabled(conf, nsId);
+    boolean shouldWriteProtobufToken = conf.getBoolean(
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_PROTOBUF_ENABLE,
+        DFSConfigKeys.DFS_BLOCK_ACCESS_TOKEN_PROTOBUF_ENABLE_DEFAULT);
+
+    boolean shouldWrapQOP = conf.getBoolean(
+        DFS_NAMENODE_SEND_QOP_ENABLED, DFS_NAMENODE_SEND_QOP_ENABLED_DEFAULT);
+
+    if (isHaEnabled) {
+      // figure out which index we are of the nns
+      Collection<String> nnIds = DFSUtilClient.getNameNodeIds(conf, nsId);
+      String nnId = HAUtil.getNameNodeId(conf, nsId);
+      int nnIndex = 0;
+      for (String id : nnIds) {
+        if (id.equals(nnId)) {
+          break;
+        }
+        nnIndex++;
+      }
+      return new BlockTokenSecretManager(updateMin * 60 * 1000L,
+          lifetimeMin * 60 * 1000L, nnIndex, nnIds.size(), null,
+          encryptionAlgorithm, shouldWriteProtobufToken, shouldWrapQOP);
+    } else {
+      return new BlockTokenSecretManager(updateMin*60*1000L,
+          lifetimeMin*60*1000L, 0, 1, null, encryptionAlgorithm,
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/server/blockmanagement/BlockManager, <init>(Lorg/apache/hadoop/hdfs/server/namenode/Namesystem;ZLorg/apache/hadoop/conf/Configuration;)V > Context: Everywhere, blocks=[BB[SSA:192..195]92 - org.apache.hadoop.hdfs.server.blockmanagement.BlockManager.<init>(Lorg/apache/hadoop/hdfs/server/namenode/Namesystem;ZLorg/apache/hadoop/conf/Configuration;)V, BB[SSA:189..191]91 - org.apache.hadoop.hdfs.server.blockmanagement.BlockManager.<init>(Lorg/apache/hadoop/hdfs/server/namenode/Namesystem;ZLorg/apache/hadoop/conf/Configuration;)V, BB[SSA:196..196]93 - org.apache.hadoop.hdfs.server.blockmanagement.BlockManager.<init>(Lorg/apache/hadoop/hdfs/server/namenode/Namesystem;ZLorg/apache/hadoop/conf/Configuration;)V, BB[SSA:-1..-2]236 - org.apache.hadoop.hdfs.server.blockmanagement.BlockManager.<init>(Lorg/apache/hadoop/hdfs/server/namenode/Namesystem;ZLorg/apache/hadoop/conf/Configuration;)V], numberOfBasicBlocks=4, firstLineNumber=507, lastLineNumber=509, firstMethodNumber=476, lastMethodNumber=626, isFirstLineValid=true, methodSrcCode=
+  public BlockManager(final Namesystem namesystem, boolean haEnabled,
+      final Configuration conf) throws IOException {
+    this.namesystem = namesystem;
+    datanodeManager = new DatanodeManager(this, namesystem, conf);
+    heartbeatManager = datanodeManager.getHeartbeatManager();
+    this.blockIdManager = new BlockIdManager(this);
+    blocksPerPostpondedRescan = (int)Math.min(Integer.MAX_VALUE,
+        datanodeManager.getBlocksPerPostponedMisreplicatedBlocksRescan());
+    rescannedMisreplicatedBlocks =
+        new ArrayList<Block>(blocksPerPostpondedRescan);
+    startupDelayBlockDeletionInMs = conf.getLong(
+        DFSConfigKeys.DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_KEY,
+        DFSConfigKeys.DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_DEFAULT) * 1000L;
+    invalidateBlocks = new InvalidateBlocks(
+        datanodeManager.getBlockInvalidateLimit(),
+        startupDelayBlockDeletionInMs,
+        blockIdManager);
+    markedDeleteQueue = new ConcurrentLinkedQueue<>();
+    // Compute the map capacity by allocating 2% of total memory
+    blocksMap = new BlocksMap(
+        LightWeightGSet.computeCapacity(2.0, "BlocksMap"));
+    placementPolicies = new BlockPlacementPolicies(
+      conf, datanodeManager.getFSClusterStats(),
+      datanodeManager.getNetworkTopology(),
+      datanodeManager.getHost2DatanodeMap());
+    storagePolicySuite = BlockStoragePolicySuite.createDefaultSuite();
+    pendingReconstruction = new PendingReconstructionBlocks(conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_KEY,
+        DFSConfigKeys.DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_DEFAULT)
+        * 1000L);
+
+    createSPSManager(conf);
+
+    blockTokenSecretManager = createBlockTokenSecretManager(conf);
+
+    providedStorageMap = new ProvidedStorageMap(namesystem, this, conf);
+
+    this.maxCorruptFilesReturned = conf.getInt(
+      DFSConfigKeys.DFS_DEFAULT_MAX_CORRUPT_FILES_RETURNED_KEY,
+      DFSConfigKeys.DFS_DEFAULT_MAX_CORRUPT_FILES_RETURNED);
+    this.defaultReplication = conf.getInt(DFSConfigKeys.DFS_REPLICATION_KEY,
+        DFSConfigKeys.DFS_REPLICATION_DEFAULT);
+
+    final int maxR = conf.getInt(DFSConfigKeys.DFS_REPLICATION_MAX_KEY,
+        DFSConfigKeys.DFS_REPLICATION_MAX_DEFAULT);
+    final int minR = conf.getInt(DFSConfigKeys.DFS_NAMENODE_REPLICATION_MIN_KEY,
+        DFSConfigKeys.DFS_NAMENODE_REPLICATION_MIN_DEFAULT);
+    if (minR <= 0)
+      throw new IOException("Unexpected configuration parameters: "
+          + DFSConfigKeys.DFS_NAMENODE_REPLICATION_MIN_KEY
+          + " = " + minR + " <= 0");
+    if (maxR > Short.MAX_VALUE)
+      throw new IOException("Unexpected configuration parameters: "
+          + DFSConfigKeys.DFS_REPLICATION_MAX_KEY
+          + " = " + maxR + " > " + Short.MAX_VALUE);
+    if (minR > maxR)
+      throw new IOException("Unexpected configuration parameters: "
+          + DFSConfigKeys.DFS_NAMENODE_REPLICATION_MIN_KEY
+          + " = " + minR + " > "
+          + DFSConfigKeys.DFS_REPLICATION_MAX_KEY
+          + " = " + maxR);
+    this.minReplication = (short)minR;
+    this.maxReplication = (short)maxR;
+
+    this.maxReplicationStreams =
+        conf.getInt(DFSConfigKeys.DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY,
+            DFSConfigKeys.DFS_NAMENODE_REPLICATION_MAX_STREAMS_DEFAULT);
+    this.replicationStreamsHardLimit =
+        conf.getInt(
+            DFSConfigKeys.DFS_NAMENODE_REPLICATION_STREAMS_HARD_LIMIT_KEY,
+            DFSConfigKeys.DFS_NAMENODE_REPLICATION_STREAMS_HARD_LIMIT_DEFAULT);
+    this.blocksInvalidateWorkPct = DFSUtil.getInvalidateWorkPctPerIteration(conf);
+    this.blocksReplWorkMultiplier = DFSUtil.getReplWorkMultiplier(conf);
+
+    this.redundancyRecheckIntervalMs = conf.getTimeDuration(
+        DFSConfigKeys.DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY,
+        DFSConfigKeys.DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_DEFAULT,
+        TimeUnit.SECONDS, TimeUnit.MILLISECONDS);
+
+    this.encryptDataTransfer =
+        conf.getBoolean(DFSConfigKeys.DFS_ENCRYPT_DATA_TRANSFER_KEY,
+            DFSConfigKeys.DFS_ENCRYPT_DATA_TRANSFER_DEFAULT);
+
+    this.maxNumBlocksToLog =
+        conf.getLong(DFSConfigKeys.DFS_MAX_NUM_BLOCKS_TO_LOG_KEY,
+            DFSConfigKeys.DFS_MAX_NUM_BLOCKS_TO_LOG_DEFAULT);
+    this.maxLockHoldTime = conf.getTimeDuration(
+        DFSConfigKeys.DFS_NAMENODE_BLOCKREPORT_MAX_LOCK_HOLD_TIME,
+        DFSConfigKeys.DFS_NAMENODE_BLOCKREPORT_MAX_LOCK_HOLD_TIME_DEFAULT,
+        TimeUnit.MILLISECONDS);
+    this.numBlocksPerIteration = conf.getInt(
+        DFSConfigKeys.DFS_BLOCK_MISREPLICATION_PROCESSING_LIMIT,
+        DFSConfigKeys.DFS_BLOCK_MISREPLICATION_PROCESSING_LIMIT_DEFAULT);
+
+    final int minMaintenanceR = conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY,
+        DFSConfigKeys.DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_DEFAULT);
+
+    if (minMaintenanceR < 0) {
+      throw new IOException("Unexpected configuration parameters: "
+          + DFSConfigKeys.DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY
+          + " = " + minMaintenanceR + " < 0");
+    }
+    if (minMaintenanceR > defaultReplication) {
+      throw new IOException("Unexpected configuration parameters: "
+          + DFSConfigKeys.DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY
+          + " = " + minMaintenanceR + " > "
+          + DFSConfigKeys.DFS_REPLICATION_KEY
+          + " = " + defaultReplication);
+    }
+    this.minReplicationToBeInMaintenance = (short)minMaintenanceR;
+
+    replQueueResetToHeadThreshold = conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_REDUNDANCY_QUEUE_RESTART_ITERATIONS,
+        DFSConfigKeys.DFS_NAMENODE_REDUNDANCY_QUEUE_RESTART_ITERATIONS_DEFAULT);
+    if (replQueueResetToHeadThreshold < 0) {
+      LOG.warn("{} is set to {} and it must be >= 0. Resetting to default {}",
+          DFSConfigKeys.DFS_NAMENODE_REDUNDANCY_QUEUE_RESTART_ITERATIONS,
+          replQueueResetToHeadThreshold, DFSConfigKeys.
+              DFS_NAMENODE_REDUNDANCY_QUEUE_RESTART_ITERATIONS_DEFAULT);
+      replQueueResetToHeadThreshold = DFSConfigKeys.
+          DFS_NAMENODE_REDUNDANCY_QUEUE_RESTART_ITERATIONS_DEFAULT;
+    }
+
+    long heartbeatIntervalSecs = conf.getTimeDuration(
+        DFSConfigKeys.DFS_HEARTBEAT_INTERVAL_KEY,
+        DFSConfigKeys.DFS_HEARTBEAT_INTERVAL_DEFAULT, TimeUnit.SECONDS);
+    long blockRecoveryTimeout = getBlockRecoveryTimeout(heartbeatIntervalSecs);
+    pendingRecoveryBlocks = new PendingRecoveryBlocks(blockRecoveryTimeout);
+
+    this.blockReportLeaseManager = new BlockReportLeaseManager(conf);
+
+    bmSafeMode = new BlockManagerSafeMode(this, namesystem, haEnabled, conf);
+
+    int queueSize = conf.getInt(
+        DFSConfigKeys.DFS_NAMENODE_BLOCKREPORT_QUEUE_SIZE_KEY,
+        DFSConfigKeys.DFS_NAMENODE_BLOCKREPORT_QUEUE_SIZE_DEFAULT);
+    blockReportThread = new BlockReportProcessingThread(queueSize);
+
+    this.deleteCorruptReplicaImmediately =
+        conf.getBoolean(DFS_NAMENODE_CORRUPT_BLOCK_DELETE_IMMEDIATELY_ENABLED,
+            DFS_NAMENODE_CORRUPT_BLOCK_DELETE_IMMEDIATELY_ENABLED_DEFAULT);
+
+    LOG.info("defaultReplication         = {}", defaultReplication);
+    LOG.info("maxReplication             = {}", maxReplication);
+    LOG.info("minReplication             = {}", minReplication);
+    LOG.info("maxReplicationStreams      = {}", maxReplicationStreams);
+    LOG.info("redundancyRecheckInterval  = {}ms", redundancyRecheckIntervalMs);
+    LOG.info("encryptDataTransfer        = {}", encryptDataTransfer);
+    LOG.info("maxNumBlocksToLog          = {}", maxNumBlocksToLog);
+  }
+
+}

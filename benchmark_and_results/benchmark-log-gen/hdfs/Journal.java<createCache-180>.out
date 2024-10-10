@@ -1,0 +1,61 @@
+====================TaintedSinkInfo:=======================
+-------------TaintedSinkInfo----------
+fileName:	Journal.java	methodSinagture:	org.apache.hadoop.hdfs.qjournal.server.Journal.createCache()Lorg/apache/hadoop/hdfs/qjournal/server/JournaledEditsCache;	methodLines:	180:185
+blockLines:	181:-1
+paras:	dfs.ha.tail-edits.in-progress
+TaintedStat:	NORMAL createCache:conditional branch(eq, to iindex=13) 7,5 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/Journal, createCache()Lorg/apache/hadoop/hdfs/qjournal/server/JournaledEditsCache; > Context: Everywhere
+Source:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/Journal, createCache()Lorg/apache/hadoop/hdfs/qjournal/server/JournaledEditsCache; > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 3,4,5 @7 exception:6
+Tainted Path:	NORMAL_RET_CALLER:Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/Journal, createCache()Lorg/apache/hadoop/hdfs/qjournal/server/JournaledEditsCache; > Context: Everywhere[4]7 = invokevirtual < Application, Lorg/apache/hadoop/conf/Configuration, getBoolean(Ljava/lang/String;Z)Z > 3,4,5 @7 exception:6
+NORMAL createCache:conditional branch(eq, to iindex=13) 7,5 Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/Journal, createCache()Lorg/apache/hadoop/hdfs/qjournal/server/JournaledEditsCache; > Context: Everywhere
+
+
+
+====================ExtendedBlocks:=======================
+
+
+====================MethodSrc:=======================
+  private JournaledEditsCache createCache() {
+    if (conf.getBoolean(DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_KEY,
+        DFSConfigKeys.DFS_HA_TAILEDITS_INPROGRESS_DEFAULT)) {
+      return new JournaledEditsCache(conf);
+    } else {
+      return null;
+    }
+
+
+====================ctx:=======================
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/Journal, format(Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;Z)V > Context: Everywhere, blocks=[BB[SSA:34..36]19 - org.apache.hadoop.hdfs.qjournal.server.Journal.format(Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;Z)V, BB[SSA:31..33]18 - org.apache.hadoop.hdfs.qjournal.server.Journal.format(Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;Z)V, BB[SSA:37..37]20 - org.apache.hadoop.hdfs.qjournal.server.Journal.format(Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;Z)V, BB[SSA:-1..-2]23 - org.apache.hadoop.hdfs.qjournal.server.Journal.format(Lorg/apache/hadoop/hdfs/server/protocol/NamespaceInfo;Z)V], numberOfBasicBlocks=4, firstLineNumber=257, lastLineNumber=258, firstMethodNumber=251, lastMethodNumber=260, isFirstLineValid=true, methodSrcCode=
+  void format(NamespaceInfo nsInfo, boolean force) throws IOException {
+    Preconditions.checkState(nsInfo.getNamespaceID() != 0,
+        "can't format with uninitialized namespace info: %s",
+        nsInfo);
+    LOG.info("Formatting journal id : " + journalId + " with namespace info: " +
+        nsInfo + " and force: " + force);
+    storage.format(nsInfo, force);
+    this.cache = createCache();
+    refreshCachedData();
+  }
+
+}
+CtxCodeBlock{node=Node: < Application, Lorg/apache/hadoop/hdfs/qjournal/server/Journal, <init>(Lorg/apache/hadoop/conf/Configuration;Ljava/io/File;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;Lorg/apache/hadoop/hdfs/server/common/StorageErrorReporter;)V > Context: Everywhere, blocks=[BB[SSA:48..50]19 - org.apache.hadoop.hdfs.qjournal.server.Journal.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/io/File;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;Lorg/apache/hadoop/hdfs/server/common/StorageErrorReporter;)V, BB[SSA:47..47]18 - org.apache.hadoop.hdfs.qjournal.server.Journal.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/io/File;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;Lorg/apache/hadoop/hdfs/server/common/StorageErrorReporter;)V, BB[SSA:51..51]20 - org.apache.hadoop.hdfs.qjournal.server.Journal.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/io/File;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;Lorg/apache/hadoop/hdfs/server/common/StorageErrorReporter;)V, BB[SSA:-1..-2]28 - org.apache.hadoop.hdfs.qjournal.server.Journal.<init>(Lorg/apache/hadoop/conf/Configuration;Ljava/io/File;Ljava/lang/String;Lorg/apache/hadoop/hdfs/server/common/HdfsServerConstants$StartupOption;Lorg/apache/hadoop/hdfs/server/common/StorageErrorReporter;)V], numberOfBasicBlocks=4, firstLineNumber=168, lastLineNumber=170, firstMethodNumber=160, lastMethodNumber=178, isFirstLineValid=true, methodSrcCode=
+      StartupOption startOpt, StorageErrorReporter errorReporter)
+      throws IOException {
+    this.conf = conf;
+    storage = new JNStorage(conf, logDir, startOpt, errorReporter);
+    this.journalId = journalId;
+
+    refreshCachedData();
+    
+    this.fjm = storage.getJournalManager();
+
+    this.cache = createCache();
+
+    this.metrics = JournalMetrics.create(this);
+    
+    EditLogFile latest = scanStorageForLatestEdits();
+    if (latest != null) {
+      updateHighestWrittenTxId(latest.getLastTxId());
+    }
+  }
+
+}

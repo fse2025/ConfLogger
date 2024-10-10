@@ -1,0 +1,26 @@
+```java
+if (mConfiguration.getBoolean(PropertyKey.USER_RPC_SHUFFLE_MASTERS_ENABLED)) {
+    addresses = Lists.newArrayList(mConnectDetails.getAddresses());
+    Collections.shuffle(addresses);
+    // ConfLogger Inserted Start
+    logger.info("USER_RPC_SHUFFLE_MASTERS_ENABLED is true. Addresses shuffled: {}", addresses);
+    // ConfLogger Inserted End
+} else {
+    addresses = mConnectDetails.getAddresses();
+    // ConfLogger Inserted Start
+    logger.info("USER_RPC_SHUFFLE_MASTERS_ENABLED is false. Addresses not shuffled: {}", addresses);
+    // ConfLogger Inserted End
+}
+
+if (mConfiguration.getBoolean(PropertyKey.USER_MASTER_POLLING_CONCURRENT)) {
+    // ConfLogger Inserted Start
+    logger.info("USER_MASTER_POLLING_CONCURRENT is true. Using concurrent polling for addresses: {}", addresses);
+    // ConfLogger Inserted End
+    return findActiveAddressConcurrent(addresses);
+} else {
+    // ConfLogger Inserted Start
+    logger.info("USER_MASTER_POLLING_CONCURRENT is false. Using sequential polling for addresses: {}", addresses);
+    // ConfLogger Inserted End
+    return findActiveAddress(addresses);
+}
+```
